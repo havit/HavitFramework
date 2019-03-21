@@ -8,13 +8,11 @@ namespace Havit.Web.Bootstrap.Tutorial
 {
     public static class RouteConfig
 	{
-		#region RegisterRoutes
 		public static void RegisterRoutes(RouteCollection routes)
         {
             var settings = new FriendlyUrlSettings();
             settings.AutoRedirectMode = RedirectMode.Permanent;
             routes.EnableFriendlyUrls(settings);
 		}
-		#endregion
 	}
 }

@@ -30,7 +30,7 @@ namespace Havit.Data.TransientErrorHandling
 		/// <param name="delays">Odstupy mezi jednotlivými pokusy v milisekundách. Pole nesmí být prázdné.</param>
 		public TransientErrorRetryPolicy(int maxAttempts, int[] delays)
 		{
-			Contract.Requires(delays == null || delays.Length > 0);
+			Contract.Requires<ArgumentException>(delays == null || delays.Length > 0);
 
 			this.maxAttempts = maxAttempts;
 			this.delays = delays ?? new int[] { 0 };

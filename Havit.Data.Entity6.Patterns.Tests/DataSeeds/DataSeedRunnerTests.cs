@@ -20,7 +20,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
 		}
 
 		/// <summary>
-		/// Reprodukce bugu 35740
+		/// Reprodukce bugu #35740
 		/// </summary>
 		[TestMethod]
 		public void DataSeedRunner_SeedData_SupportsPairingByNullableProperties()

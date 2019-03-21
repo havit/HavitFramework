@@ -78,8 +78,6 @@ namespace Havit.PayMuzo
 			_smallestUnits = smallestUnits;
 		}
 
-		/*******************************************************************************************************/
-
 		/// <summary>
 		/// Hashtabulka s unikátními sdílenými instancemi.
 		/// </summary>

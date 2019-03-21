@@ -1,27 +1,28 @@
-using System;
-using System.Diagnostics.Contracts;
+ï»¿using System;
+using Havit.Diagnostics.Contracts;
 using Newtonsoft.Json;
 
 namespace Havit.GoPay.DataObjects
 {
 	/// <summary>
-	/// Bázová tøída reprezentující poadavek pro GoPay API
+	/// BÃ¡zovÃ¡ tÅ™Ã­da reprezentujÃ­cÃ­ poÅ¾adavek pro GoPay API
 	/// </summary>
 	public abstract class GoPayRequestBase
 	{
 		/// <summary>
-		/// Access token pro ovìøení autorizace poadavku
+		/// Access token pro ovÄ›Å™enÃ­ autorizace poÅ¾adavku
 		/// </summary>
 		[JsonIgnore]
 		public string AccessToken { get; }
 
 		/// <summary>
-		/// Nastavení access tokenu pro ovìøení autorizace poadavku
+		/// NastavenÃ­ access tokenu pro ovÄ›Å™enÃ­ autorizace poÅ¾adavku
 		/// </summary>
-		/// <param name="accessToken">Access token pro ovìøení autorizace poadavku</param>
+		/// <param name="accessToken">Access token pro ovÄ›Å™enÃ­ autorizace poÅ¾adavku</param>
 		protected GoPayRequestBase(string accessToken)
 		{
-			Contract.Requires(!String.IsNullOrEmpty(accessToken));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(accessToken), nameof(accessToken));
+
 			AccessToken = accessToken;
 		}
 	}

@@ -10,7 +10,6 @@ using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls
 {
-
 	/// <summary>
 	/// Control pro použití jako editor s obousměrným databindingem. Podporuje jen jednu šablonu (ContentTemplate) narozdíl od FormView (ItemTemplate, EditItemTemplate, InsertItemTemplate),
 	/// čímž umožníme generovat designeru fieldy pro controly dle control ID.
@@ -18,7 +17,7 @@ namespace Havit.Web.UI.WebControls
 	/// </summary>
 	[ParseChildren(true)]
 	[PersistChildren(false)]
-	internal class EditView /* nebo FormEdit??? */ : Control
+	internal class EditView : Control
 	{
 		private readonly FormViewExt formViewExt;
 
@@ -226,7 +225,6 @@ namespace Havit.Web.UI.WebControls
 		public void SetRequiresDatabinding()
 		{
 			formViewExt.SetRequiresDatabinding();
-
 		}
 	}
 }

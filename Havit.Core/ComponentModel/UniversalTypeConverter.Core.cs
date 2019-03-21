@@ -20,7 +20,7 @@ namespace Havit.ComponentModel
 		/// <returns>true if <paramref name="value"/> was converted successfully; otherwise, false.</returns>
 		public static bool TryConvertTo(object value, Type targetType, out object result, CultureInfo culture)
 		{
-			Contract.Requires(targetType != null);
+			Contract.Requires<ArgumentNullException>(targetType != null, nameof(targetType));
 
 			bool nullableType = false;
 			// Nullable - vybalíme typ, který je zapouzdřen a tento typ budeme nadále používat jako targetType
@@ -58,49 +58,6 @@ namespace Havit.ComponentModel
 				result = tmpResult;
 				return true;
 			}
-
-			// Následuje další implementace z UniversalTypeConvertoru, kterou my ale nevyužíváme.
-			// Kód je relativně pomalý. Šel by zrychlit různými fintami (zapamatovat si, která metoda pro danou konverzi sourceType -> targetType zafungovala a příště ostatní nezkoušet, atp.
-
-			/*
-			if (TryConvertXPlicit(value, destinationType, ExplicitOperatorMethodName, ref result))
-			{
-				return true;
-			}
-			if (TryConvertXPlicit(value, destinationType, ImplicitOperatorMethodName, ref result))
-			{
-				return true;
-			}
-			if (TryConvertByIntermediateConversion(value, destinationType, ref result, culture, options))
-			{
-				return true;
-			}
-			if (destinationType.IsEnum)
-			{
-				if (TryConvertToEnum(value, destinationType, ref result))
-				{
-					return true;
-				}
-			}
-			if ((options & ConversionOptions.EnhancedTypicalValues) == ConversionOptions.EnhancedTypicalValues)
-			{
-				if (TryConvertSpecialValues(value, destinationType, ref result))
-				{
-					return true;
-				}
-			}
-			if ((options & ConversionOptions.AllowDefaultValueIfWhitespace) == ConversionOptions.AllowDefaultValueIfWhitespace)
-			{
-				if (value is string)
-				{
-					if (IsWhiteSpace((string)value))
-					{
-						result = GetDefaultValueOfType(destinationType);
-						return true;
-					}
-				}
-			}
-			*/
 
 			result = null;
 			return false;

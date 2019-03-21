@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections;
 using System.Web;
 using System.Web.Caching;
@@ -88,17 +89,10 @@ namespace Havit.Web
 		/// of <see cref="System.Web.HttpContext.Current"/>.</returns>
 		public static string ResolveUrl(string url)
 		{
-			HttpContext context = HttpContext.Current;
-			if (context == null)
-			{
-				throw new InvalidOperationException("HttpContext.Current is null.");
-			}
-			else if (context.Request == null)
-			{
-				throw new InvalidOperationException("HttpContext.Current.Request is null.");
-			}
-			
-			return ResolveUrl(context.Request.ApplicationPath, url);
+			HttpRequest request = HttpContext.Current?.Request;
+			Contract.Requires<InvalidOperationException>(request != null, "HttpContext.Current.Request unavailable.");
+
+			return ResolveUrl(request.ApplicationPath, url);
 		}
 	}
 }

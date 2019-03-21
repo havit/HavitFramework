@@ -48,7 +48,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			Contract.Requires(propertyPath != null);
+			Contract.Requires<ArgumentNullException>(propertyPath != null, nameof(propertyPath));
 
 			LoadInternal(new TEntity[] { entity }, propertyPath);
 			return new NotSuportedFluentDataLoader<TProperty>();
@@ -62,7 +62,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		public void Load<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
 		{
-			Contract.Requires(propertyPaths != null);
+			Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
@@ -77,8 +77,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			Contract.Requires(entities != null);
-			Contract.Requires(propertyPath != null);
+			Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
+			Contract.Requires<ArgumentNullException>(propertyPath != null, nameof(propertyPath));
 
 			LoadInternal(entities, propertyPath);
 			return new NotSuportedFluentDataLoader<TProperty>();
@@ -92,8 +92,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		public void LoadAll<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
 		{
-			Contract.Requires(entities != null);
-			Contract.Requires(propertyPaths != null);
+			Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
+			Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
@@ -110,7 +110,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			Contract.Requires(propertyPath != null);
+			Contract.Requires<ArgumentNullException>(propertyPath != null, nameof(propertyPath));
 
 			await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
 			return new NotSuportedFluentDataLoader<TProperty>();
@@ -124,7 +124,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		public async Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
 		{
-			Contract.Requires(propertyPaths != null);
+			Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
@@ -141,7 +141,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-			Contract.Requires(propertyPath != null);
+			Contract.Requires<ArgumentNullException>(propertyPath != null, nameof(propertyPath));
 
 			await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
 
@@ -156,7 +156,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
 			where TEntity : class
 		{
-			Contract.Requires(propertyPaths != null);
+			Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
@@ -412,8 +412,8 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		private Expression<Func<TEntity, bool>> GetWhereExpression<TEntity>(List<int> ids)
 			where TEntity : class
 		{
-			Contract.Requires(ids != null);
-			Contract.Requires(ids.Count > 0);
+			Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
+			Contract.Requires<ArgumentException>(ids.Count > 0, nameof(ids));
 
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 

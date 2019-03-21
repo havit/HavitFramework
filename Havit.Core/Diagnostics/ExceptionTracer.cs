@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Diagnostics
 {
@@ -187,10 +188,7 @@ namespace Havit.Diagnostics
 		/// <param name="eventId">ID eventu, pod kterým se má výjimka zaznamenat</param>
 		public void TraceException(Exception exception, TraceEventType eventType, int eventId)
 		{
-			if (exception == null)
-			{
-				throw new ArgumentNullException("exception");
-			}
+			Contract.Requires<ArgumentNullException>(exception != null, nameof(exception));
 
 			RunUsingTraceSource(delegate(TraceSource ts)
 			{

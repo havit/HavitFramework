@@ -70,7 +70,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public async Task<Stream> ReadAsync(string fileName)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			Stream s = await PerformReadAsync(fileName).ConfigureAwait(false);
 			return Read_EnsureDecryption(s);
@@ -94,7 +94,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public void ReadToStream(string fileName, Stream stream)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			if (!SupportsBasicEncryption)
 			{
@@ -117,7 +117,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public async Task ReadToStreamAsync(string fileName, Stream stream)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			if (!SupportsBasicEncryption)
 			{
@@ -140,12 +140,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public void Save(string fileName, Stream fileContent, string contentType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
-
-			if (fileContent.CanSeek && (fileContent.Position != 0))
-			{
-				throw new InvalidOperationException("Actual position in the stream is not at the beginning.");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
+			Contract.Requires<InvalidOperationException>(!fileContent.CanSeek || fileContent.Position == 0, "Actual position in the stream is not at the beginning.");
 
 			if (!SupportsBasicEncryption)
 			{
@@ -166,12 +162,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public async Task SaveAsync(string fileName, Stream fileContent, string contentType)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
-
-			if (fileContent.CanSeek && (fileContent.Position != 0))
-			{
-				throw new InvalidOperationException("Actual position in the stream is not at the beginning.");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
+			Contract.Requires<InvalidOperationException>(!fileContent.CanSeek || fileContent.Position == 0, "Actual position in the stream is not at the beginning.");
 
 			if (!SupportsBasicEncryption)
 			{

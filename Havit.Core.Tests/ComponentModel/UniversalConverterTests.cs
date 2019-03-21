@@ -158,6 +158,5 @@ namespace Havit.Tests.ComponentModel
             Assert.IsTrue(success);
             Assert.AreEqual(new DateTime(2013, 2, 1), result17);
         }
-
     }
 }

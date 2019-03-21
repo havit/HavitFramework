@@ -7,9 +7,6 @@ using Havit.Text.RegularExpressions;
 
 namespace Havit.Tests.Text
 {
-	/// <summary>
-	/// Test RegexPatterns.
-	/// </summary>
 	[TestClass]	
 	public class RegexPatternsTests
 	{

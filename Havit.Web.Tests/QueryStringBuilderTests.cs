@@ -5,16 +5,9 @@ using System.Collections.Generic;
 using Havit.Web;
 namespace Havit.Web.Tests
 {
-	/// <summary>
-	/// This is a test class for Havit.Web.QueryStringBuilder and is intended
-	/// to contain all Havit.Web.QueryStringBuilder Unit Tests
-	/// </summary>
 	[TestClass]
 	public class QueryStringBuilderTests
 	{
-		/// <summary>
-		/// A test for Add (string, string)
-		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void QueryStringBuilder_Add_Null_ThrowsException()
@@ -23,9 +16,6 @@ namespace Havit.Web.Tests
 			target.Add(null, "cokoliv");
 		}
 
-		/// <summary>
-		/// A test for Set (string, string)
-		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void QueryStringBuilder_Set_Null_ThrowsException()
@@ -34,9 +24,6 @@ namespace Havit.Web.Tests
 			target.Set(null, "cokoliv");
 		}
 
-		/// <summary>
-		/// A test for ToString ()
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_ToString_Simple()
 		{
@@ -52,9 +39,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for ToString ()
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_ToString_EncodeSpace()
 		{
@@ -69,9 +53,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for ToString ()
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_ToString_EncodeText()
 		{
@@ -86,9 +67,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for ToString ()
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_ToString_EncodeAmpersand()
 		{
@@ -103,9 +81,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for GetUrlWithQueryString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_GetUrlWithQueryString_Simple()
 		{
@@ -122,9 +97,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for GetUrlWithQueryString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_GetUrlWithQueryString_ExistingQueryStringSimple()
 		{
@@ -141,9 +113,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for GetUrlWithQueryString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_GetUrlWithQueryString_ExistingQueryStringWithAmpersand()
 		{
@@ -160,9 +129,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for GetUrlWithQueryString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_GetUrlWithQueryString_UrlWithQuestionMark()
 		{
@@ -179,9 +145,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for FillFromString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_FillFromString_Simple()
 		{
@@ -197,9 +160,6 @@ namespace Havit.Web.Tests
 			Assert.IsTrue(target.ToString() == queryString);
 		}
 
-		/// <summary>
-		/// A test for FillFromString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_FillFromString_UrlEncoded()
 		{
@@ -212,9 +172,6 @@ namespace Havit.Web.Tests
 			Assert.IsTrue(target["key"] == "ěščřžýáíéúů");
 		}
 
-		/// <summary>
-		/// A test for FillFromString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_FillFromString_Ampersands()
 		{
@@ -230,9 +187,6 @@ namespace Havit.Web.Tests
 			Assert.IsTrue(target.ToString() == "key1=value1&key2=value2");
 		}
 
-		/// <summary>
-		/// A test for FillFromString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_FillFromString_EmptyValue()
 		{
@@ -247,9 +201,6 @@ namespace Havit.Web.Tests
 			Assert.IsTrue(target.ToString() == "key1=");
 		}
 
-		/// <summary>
-		/// A test for FillFromString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_FillFromString_EmptyInput()
 		{
@@ -263,9 +214,6 @@ namespace Havit.Web.Tests
 			Assert.IsTrue(target.ToString() == String.Empty);
 		}
 
-		/// <summary>
-		/// A test for FillFromString (string)
-		/// </summary>
 		[TestMethod]
 		public void QueryStringBuilder_FillFromString_NullInput()
 		{

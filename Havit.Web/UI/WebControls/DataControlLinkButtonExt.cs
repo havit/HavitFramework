@@ -13,13 +13,9 @@ namespace Havit.Web.UI.WebControls
 	[SupportsEventValidation]
 	internal class DataControlLinkButtonExt : LinkButton
 	{
-		// Fields
-
 		private string _callbackArgument;
 		private readonly IPostBackContainer _container;
 		private bool _enableCallback;
-
-		// Properties
 
 		public override bool CausesValidation
 		{
@@ -40,8 +36,6 @@ namespace Havit.Web.UI.WebControls
 				base.CausesValidation = value;
 			}
 		}
-
-		// Methods
 
 		internal DataControlLinkButtonExt(IPostBackContainer container)
 		{

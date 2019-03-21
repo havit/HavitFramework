@@ -43,8 +43,8 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		/// <param name="componentRegistrationOptions">Nastavení registrací.</param>
 		public EntityPatternsInstaller(IWindsorContainer container, ComponentRegistrationOptions componentRegistrationOptions)
 		{
-			Contract.Requires<ArgumentNullException>(container != null);
-			Contract.Requires<ArgumentNullException>(componentRegistrationOptions != null);
+			Contract.Requires<ArgumentNullException>(container != null, nameof(container));
+			Contract.Requires<ArgumentNullException>(componentRegistrationOptions != null, nameof(componentRegistrationOptions));
 
 			this.container = container;
 			this.componentRegistrationOptions = componentRegistrationOptions;

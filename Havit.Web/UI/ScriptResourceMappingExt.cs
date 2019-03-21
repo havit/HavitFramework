@@ -51,9 +51,9 @@ namespace Havit.Web.UI
 		/// <param name="resourceName">Jméno registrovaného scriptu.</param>
 		public static TryEnsureScriptRegistrationResult TryEnsureScriptRegistration(this ScriptResourceMapping scriptResourceMapping, Page page, string resourceName)
 		{
-			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
-			Contract.Requires<ArgumentNullException>(page != null, "page");
-			Contract.Requires(!String.IsNullOrEmpty(resourceName));
+			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, nameof(scriptResourceMapping));
+			Contract.Requires<ArgumentNullException>(page != null, nameof(page));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(resourceName), nameof(resourceName));
 
 			ScriptManager currentScriptManager = ScriptManager.GetCurrent(page);
 			bool scriptResourceExists = (currentScriptManager != null) && currentScriptManager.Scripts.Any(script => script.Name.Equals(resourceName));
@@ -121,10 +121,10 @@ namespace Havit.Web.UI
 		/// <param name="embeddedResourceName">Embedded resource name.</param>
 		public static void EnsureScriptRegistrationForEmbeddedResource(this ScriptResourceMapping scriptResourceMapping, Page page, Type type, string embeddedResourceName)
 		{
-			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
-			Contract.Requires<ArgumentNullException>(page != null, "page");
-			Contract.Requires<ArgumentNullException>(type != null, "type");
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), "Parameter embeddedResourceName cannot be an empty string.");
+			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, nameof(scriptResourceMapping));
+			Contract.Requires<ArgumentNullException>(page != null, nameof(page));
+			Contract.Requires<ArgumentNullException>(type != null, nameof(type));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), nameof(embeddedResourceName));
 
 			EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, page, null, type, embeddedResourceName);
 		}
@@ -138,11 +138,11 @@ namespace Havit.Web.UI
 		/// <param name="embeddedResourceName">Embedded resource name.</param>
 		public static void EnsureScriptRegistrationForEmbeddedResource(this ScriptResourceMapping scriptResourceMapping, Control control, Type type, string embeddedResourceName)
 		{
-			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, "scriptResourceMapping");
-			Contract.Requires<ArgumentNullException>(control != null, "control");
-			Contract.Requires<ArgumentException>(control.Page != null, "Parameter control.Page cannot be null.");
-			Contract.Requires<ArgumentNullException>(type != null, "type");
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), "Parameter embeddedResourceName cannot be an empty string.");
+			Contract.Requires<ArgumentNullException>(scriptResourceMapping != null, nameof(scriptResourceMapping));
+			Contract.Requires<ArgumentNullException>(control != null, nameof(control));
+			Contract.Requires<ArgumentException>(control.Page != null, nameof(control) + "." + nameof(control.Page));
+			Contract.Requires<ArgumentNullException>(type != null, nameof(type));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), nameof(embeddedResourceName));
 
 			EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, control.Page, control, type, embeddedResourceName);
 		}

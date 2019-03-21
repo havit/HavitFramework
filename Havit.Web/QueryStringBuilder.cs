@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web
 {
@@ -34,10 +35,7 @@ namespace Havit.Web
 		/// <param name="value">hodnota</param>
 		public override void Add(string name, string value)
 		{
-			if (String.IsNullOrEmpty(name))
-			{
-				throw new ArgumentException("Argument nesmí být null ani String.Empty.", "name");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(name), nameof(name));
 
 			base.Add(name, value);
 		}
@@ -51,10 +49,7 @@ namespace Havit.Web
 		/// <param name="value">hodnota</param>
 		public override void Set(string name, string value)
 		{
-			if (String.IsNullOrEmpty(name))
-			{
-				throw new ArgumentException("Argument nesmí být null ani String.Empty.", "name");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(name), nameof(name));
 
 			base.Set(name, value);
 		}

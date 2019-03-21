@@ -3,12 +3,12 @@ using System;
 namespace Havit.Services.Ares
 {
 	/// <summary>
-	/// Obálka pro data z odpovìdi ze služeb ARES - pøehled ekonomických subjektù, pøehled osob.
+	/// Obálka pro data z odpovìdi ze služeb ARES - přehled ekonomických subjektů, přehled osob.
 	/// </summary>
 	public class AresPrehledSubjektuItem
 	{
 		/// <summary>
-		/// IÈO obchodní firmy zapsané v OR.
+		/// IČO obchodní firmy zapsané v OR.
 		/// </summary>
 		public string Ico { get; set; }
 

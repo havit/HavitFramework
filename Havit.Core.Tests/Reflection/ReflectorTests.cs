@@ -6,9 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Reflection
 {
-	/// <summary>
-	/// Test třídy Havit.Reflection.Reflector.
-	/// </summary>
 	[TestClass]
 	public class ReflectorTests
 	{

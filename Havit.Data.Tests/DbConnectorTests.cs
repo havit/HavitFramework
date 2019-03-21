@@ -12,16 +12,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Tests
 {
-	/// <summary>
-	/// This is a test class for Havit.Data.DbConnector and is intended
-	/// to contain all Havit.Data.DbConnector Unit Tests
-	/// </summary>
 	[TestClass]
 	public class DbConnectorTests
 	{
-		/// <summary>
-		/// A test for DbConnector (ConnectionStringSettings)
-		/// </summary>
 		[TestMethod]
 		public void DbConnector_Constructor_ConnectionStringSettings()
 		{
@@ -32,9 +25,6 @@ namespace Havit.Data.Tests
             Assert.AreEqual(target.ProviderFactory.GetType(), typeof(OleDbFactory));
 		}
 
-		/// <summary>
-		/// A test for DbConnector (string, DbProviderFactory)
-		/// </summary>
 		[TestMethod]
 		public void DbConnector_Constructor_StringAndDbProviderFactory()
 		{
@@ -47,9 +37,6 @@ namespace Havit.Data.Tests
             Assert.AreEqual(target.ProviderFactory, providerFactory);
 		}
 
-		/// <summary>
-		/// A test for DbConnector (string, string)
-		/// </summary>
 		[TestMethod]
 		public void DbConnector_Constructor_StringAndString()
 		{
@@ -62,9 +49,6 @@ namespace Havit.Data.Tests
             Assert.AreEqual(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
 		}
 
-		/// <summary>
-		/// A test for Default
-		/// </summary>
 		[TestMethod]
 		public void DbConnector_Default_get_set_get_set()
 		{
@@ -80,9 +64,6 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(previousVal, DbConnector.Default);
 		}
 
-		/// <summary>
-		/// A test for Default
-		/// </summary>
 		[TestMethod]
 		public void DbConnector_Default_get()
 		{
@@ -90,10 +71,6 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(DbConnector.Default.ProviderFactory.GetType(), typeof(SqlClientFactory));
 		}
 
-		/// <summary>
-		/// A test for ExecuteScalar (string)
-		/// </summary>
-		[TestMethod]
 		public void DbConnector_ExecuteScalar()
 		{
 			string commandText = "SELECT Symbol FROM dbo.Role WHERE RoleID=-1";

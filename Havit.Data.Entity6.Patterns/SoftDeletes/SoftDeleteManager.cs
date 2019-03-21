@@ -30,7 +30,7 @@ namespace Havit.Data.Entity.Patterns.SoftDeletes
 		/// </summary>
 		public bool IsSoftDeleteSupported(Type entityType)
 		{
-			Contract.Requires(entityType != null);
+			Contract.Requires<ArgumentNullException>(entityType != null, nameof(entityType));
 
 			PropertyInfo deletedProperty = entityType.GetProperty("Deleted");
 			return (deletedProperty != null) && deletedProperty.PropertyType == typeof(DateTime?);

@@ -45,11 +45,11 @@ namespace Havit.Linq
 			bool removeItemFromCollection = true)
 			where TTarget : class
 		{
-			Contract.Requires<ArgumentNullException>(target != null);
-			Contract.Requires<ArgumentNullException>(source != null);
-			Contract.Requires<ArgumentNullException>(sourceKeySelector != null);
-			Contract.Requires<ArgumentNullException>(targetKeySelector != null);
-			Contract.Requires<InvalidOperationException>(removeItemFromCollection || (removeItemAction != null));
+			Contract.Requires<ArgumentNullException>(target != null, nameof(target));
+			Contract.Requires<ArgumentNullException>(source != null, nameof(source));
+			Contract.Requires<ArgumentNullException>(sourceKeySelector != null, nameof(sourceKeySelector));
+			Contract.Requires<ArgumentNullException>(targetKeySelector != null, nameof(targetKeySelector));
+			Contract.Requires<InvalidOperationException>(removeItemFromCollection || (removeItemAction != null), $"{nameof(removeItemFromCollection)} || ({nameof(removeItemAction)} != null)");
 
 			var joinedCollections = target.FullOuterJoin(
 				rightSource: source,

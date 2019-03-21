@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Havit.PayMuzo.WebServiceProxies;
 using System.Security.Cryptography.X509Certificates;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.PayMuzo
 {
@@ -50,22 +51,10 @@ namespace Havit.PayMuzo
 			ulong merchantNumber,
 			X509Certificate2 merchantCertificate)
 		{
-			if (String.IsNullOrEmpty(serviceUrl))
-			{
-				throw new ArgumentException("Argument nesmí být null ani String.Empty.", "serviceUrl");
-			}
-			if (payMuzoGateCertificate == null)
-			{
-				throw new ArgumentNullException("payMuzoGateCertificate");
-			}
-			if (merchantNumber < 0ul)
-			{
-				throw new ArgumentException("Argument musí být kladný", "merchantNumber");
-			}
-			if (merchantCertificate == null)
-			{
-				throw new ArgumentNullException("merchantCertificate");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(serviceUrl), nameof(serviceUrl));
+			Contract.Requires<ArgumentNullException>(payMuzoGateCertificate != null, nameof(payMuzoGateCertificate));
+			Contract.Requires<ArgumentOutOfRangeException>(merchantNumber >= 0ul, nameof(merchantNumber));
+			Contract.Requires<ArgumentNullException>(merchantCertificate != null, nameof(merchantCertificate));
 
 			this.serviceUrl = serviceUrl;
 
@@ -86,10 +75,7 @@ namespace Havit.PayMuzo
 		/// <returns>orderState</returns>
 		public PayMuzoOrderState QueryOrderState(int orderNumber)
 		{
-			if (orderNumber < 0)
-			{
-				throw new ArgumentException("Argument musí být nezáporné číslo", "orderNumber");
-			}
+			Contract.Requires<ArgumentOutOfRangeException>(orderNumber >= 0, nameof(orderNumber));
 			
 			PayMuzoRequestData request = new PayMuzoRequestData();
 			request.Add("MERCHANTNUMBER", merchantNumber.ToString());

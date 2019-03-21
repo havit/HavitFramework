@@ -19,8 +19,8 @@ namespace Havit.Data.Entity
 		/// </summary>
 		public static void RegisterModelFromAssembly(this DbModelBuilder modelBuilder, Assembly assembly)
 		{
-			Contract.Requires(modelBuilder != null);
-			Contract.Requires(assembly != null);
+			Contract.Requires<ArgumentNullException>(modelBuilder != null, nameof(modelBuilder));
+			Contract.Requires<ArgumentNullException>(assembly != null, nameof(modelBuilder));
 
 			List<Type> assemblyTypes = assembly.GetTypes().Where(assemblyType => assemblyType.IsPublic && assemblyType.IsClass).ToList();
 			foreach (Type assemblyType in assemblyTypes)

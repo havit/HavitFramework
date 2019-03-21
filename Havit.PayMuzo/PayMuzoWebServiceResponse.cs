@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -35,10 +36,7 @@ namespace Havit.PayMuzo
 		/// <param name="response">odpověď z WebService</param>
 		protected PayMuzoWebServiceResponse(Havit.PayMuzo.WebServiceProxies.Response response)
 		{
-			if (response == null)
-			{
-				throw new ArgumentNullException("response");
-			}
+			Contract.Requires(response != null, nameof(response));
 
 			ParseResponse(response);
 			this.NormalizedRawData = CreateNormalizedData(response);

@@ -10,16 +10,9 @@ using System.IO;
 
 namespace Havit.Data.Tests
 {
-	/// <summary>
-	/// This is a test class for Havit.Data.DataRecord and is intended
-	/// to contain all Havit.Data.DataRecord Unit Tests
-	/// </summary>
 	[TestClass]
 	public class DataRecordTests
 	{
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		public void DataRecord_TryGetTest_NacteniInt()
 		{
@@ -45,9 +38,6 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		public void DataRecord_TryGetTest_NullOK()
 		{
@@ -73,9 +63,6 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		public void DataRecord_TryGetTest_PretypovaniIntNaNullableInt()
 		{
@@ -101,9 +88,6 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		public void DataRecord_TryGetTest_PretypovaniDecimalNaDouble()
 		{
@@ -129,9 +113,6 @@ namespace Havit.Data.Tests
 			Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidCastException))]
 		public void DataRecord_TryGetTest_InvalidCast()
@@ -153,9 +134,6 @@ namespace Havit.Data.Tests
 			actual = record.TryGet(fieldName, out tryGetTarget);
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(ArgumentException))]
 		public void DataRecord_TryGetTest_NenalezenoFullLoad()
@@ -177,9 +155,6 @@ namespace Havit.Data.Tests
 			actual = record.TryGet(fieldName, out tryGetTarget);
 		}
 
-		/// <summary>
-		/// A test for TryGet&lt;&gt; (string, out T)
-		/// </summary>
 		[TestMethod]
 		public void DataRecord_TryGetTest_NenalezenoNotFullLoad()
 		{
@@ -244,5 +219,4 @@ namespace Havit.Data.Tests
 
 		}
 	}
-
 }

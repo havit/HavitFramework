@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.Diagnostics.Contracts;
 using Havit.GoPay.Codebooks;
 using Havit.GoPay.DataObjects;
 using Havit.GoPay.DataObjects.Errors;
@@ -38,15 +38,8 @@ namespace Havit.GoPay
 		/// <exception cref="ArgumentNullException">Thrown when instance of the <see cref="HttpClient" /> (or its <see cref="Uri">BaseAddress</see>) is missing.</exception>
 		public GoPayClient(HttpClient httpClient)
 		{
-			if (httpClient == null)
-			{
-				throw new ArgumentNullException(nameof(httpClient));
-			}
-
-			if (httpClient.BaseAddress == null)
-			{
-				throw new InvalidOperationException("HttpClient nemá nastavenu BaseAddress.");
-			}
+			Contract.Requires<ArgumentNullException>(httpClient != null, nameof(httpClient));
+			Contract.Requires<ArgumentException>(httpClient.BaseAddress != null, "HttpClient nemá nastavenu BaseAddress.");
 
 			this.httpClient = httpClient;
 

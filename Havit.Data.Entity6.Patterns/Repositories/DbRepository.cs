@@ -90,9 +90,9 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// </summary>
 		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
 		{
-			Contract.Requires<ArgumentException>(dbContext != null);
-			Contract.Requires<ArgumentException>(dataSource != null);
-			Contract.Requires<ArgumentException>(softDeleteManager != null);
+			Contract.Requires<ArgumentException>(dbContext != null, nameof(dbContext));
+			Contract.Requires<ArgumentException>(dataSource != null, nameof(dataSource));
+			Contract.Requires<ArgumentException>(softDeleteManager != null, nameof(softDeleteManager));
 
 			this.dbContext = dbContext;
 			this.dataSource = dataSource;
@@ -161,7 +161,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 		public TEntity GetObject(int id)
 		{
-			Contract.Requires<ArgumentException>(id != default(int));
+			Contract.Requires<ArgumentException>(id != default, nameof(id));
 
 			TEntity result = dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.Find(id));
 			if (result == null)
@@ -180,7 +180,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 		public async Task<TEntity> GetObjectAsync(int id)
 		{
-			Contract.Requires<ArgumentException>(id != default(int));
+			Contract.Requires<ArgumentException>(id != default, nameof(id));
 
 			TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(id)).ConfigureAwait(false);
 			if (result == null)
@@ -199,14 +199,14 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 		public List<TEntity> GetObjects(params int[] ids)
 		{			
-			Contract.Requires(ids != null);
+			Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
 			HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 			HashSet<int> idsToLoad = new HashSet<int>();
 
 			foreach (int id in ids)
 			{
-				Contract.Assert<ArgumentException>(id != default(int));
+				Contract.Assert<ArgumentException>(id != default, nameof(id));
 
 				if (DbSetLocalsDictionary.TryGetValue(id, out TEntity loadedEntity))
 				{
@@ -246,14 +246,14 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 		public async Task<List<TEntity>> GetObjectsAsync(params int[] ids)
 		{
-			Contract.Requires(ids != null);
+			Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
 			HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 			HashSet<int> idsToLoad = new HashSet<int>();
 
 			foreach (int id in ids)
 			{
-				Contract.Assert<ArgumentException>(id != default(int));
+				Contract.Assert<ArgumentException>(id != default, nameof(id));
 
 				if (DbSetLocalsDictionary.TryGetValue(id, out TEntity loadedEntity))
 				{
@@ -370,7 +370,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// </summary>
 		protected void LoadReferences(params TEntity[] entities)
 		{
-			Contract.Requires(entities != null);
+			Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
 
 			dataLoader.LoadAll(entities, GetLoadReferences().ToArray());
 		}
@@ -379,8 +379,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 		/// </summary>
 		protected async Task LoadReferencesAsync(params TEntity[] entities)
-		{	
-			Contract.Requires(entities != null);
+		{
+			Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
 
 			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray()).ConfigureAwait(false);
 		}
@@ -396,8 +396,8 @@ namespace Havit.Data.Entity.Patterns.Repositories
 
 		private void ThrowObjectNotFoundException(params int[] missingIds)
 		{
-			Contract.Requires(missingIds != null);
-			Contract.Requires(missingIds.Length > 0);
+			Contract.Requires<ArgumentNullException>(missingIds != null, nameof(missingIds));
+			Contract.Requires<ArgumentException>(missingIds.Length > 0, nameof(missingIds));
 
 			string exceptionText = (missingIds.Length == 1)
 				? String.Format("Object {0} with key {1} not found.", typeof(TEntity).Name, missingIds[0])

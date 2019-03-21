@@ -123,7 +123,7 @@ namespace Havit.Data
 		/// <param name="command"><see cref="DbCommand"/> k nastavení</param>
 		private void SetCommandDefaults(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			if (command.Transaction != null)
 			{
@@ -175,7 +175,7 @@ namespace Havit.Data
 		/// <returns>počet dotčených řádek</returns>
 		public int ExecuteNonQuery(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			SetCommandDefaults(command);
 
@@ -218,6 +218,7 @@ namespace Havit.Data
 		public int ExecuteNonQuery(string commandText, CommandType commandType)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteNonQuery(CreateCommand(commandText, commandType));
 		}
 
@@ -232,6 +233,7 @@ namespace Havit.Data
 		public int ExecuteNonQuery(string commandText)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteNonQuery(commandText, CommandType.Text);
 		}
 
@@ -245,7 +247,7 @@ namespace Havit.Data
 		/// <returns>resultset příkazu ve formě <see cref="DataSet"/>u</returns>
 		public DataSet ExecuteDataSet(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			SetCommandDefaults(command);
 
@@ -288,6 +290,7 @@ namespace Havit.Data
 		public DataSet ExecuteDataSet(string commandText, CommandType commandType)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteDataSet(CreateCommand(commandText, commandType));
 		}
 
@@ -299,6 +302,7 @@ namespace Havit.Data
 		public DataSet ExecuteDataSet(string commandText)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteDataSet(commandText, CommandType.Text);
 		}
 
@@ -312,7 +316,7 @@ namespace Havit.Data
 		/// <returns>první resultset příkazu ve formě <see cref="System.Data.DataTable"/></returns>
 		public DataTable ExecuteDataTable(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			SetCommandDefaults(command);
 
@@ -344,6 +348,7 @@ namespace Havit.Data
 		public DataTable ExecuteDataTable(string commandText, CommandType commandType)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteDataTable(CreateCommand(commandText, commandType));
 		}
 
@@ -355,6 +360,7 @@ namespace Havit.Data
 		public DataTable ExecuteDataTable(string commandText)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteDataTable(commandText, CommandType.Text);
 		}
 
@@ -366,7 +372,7 @@ namespace Havit.Data
 		/// <returns>resultset vykonaného příkazu jako <see cref="DbDataReader"/></returns>
 		public DbDataReader ExecuteReader(DbCommand command, CommandBehavior behavior)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			SetCommandDefaults(command);
 
@@ -416,7 +422,8 @@ namespace Havit.Data
 		/// <returns>resultset vykonaného příkazu jako <see cref="DbDataReader"/></returns>
 		public DbDataReader ExecuteReader(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
+
 			return ExecuteReader(command, CommandBehavior.Default);
 		}
 
@@ -429,6 +436,7 @@ namespace Havit.Data
 		public DbDataReader ExecuteReader(string commandText, CommandType commandType)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteReader(CreateCommand(commandText, commandType));
 		}
 
@@ -441,6 +449,7 @@ namespace Havit.Data
 		public DbDataReader ExecuteReader(string commandText)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteReader(commandText, CommandType.Text);
 		}
 
@@ -454,7 +463,8 @@ namespace Havit.Data
 		/// <returns>první řádek první tabulky resultsetu ve formě <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command, CommandBehavior behavior, DataLoadPower dataLoadPower)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");			
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
+			
 			using (DbDataReader reader = ExecuteReader(command, behavior))
 			{
 				if (reader.Read())
@@ -477,7 +487,8 @@ namespace Havit.Data
 		/// <returns>první řádek první tabulky resultsetu ve formě <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command, CommandBehavior behavior)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
+
 			using (DbDataReader reader = ExecuteReader(command, behavior))
 			{
 				if (reader.Read())
@@ -499,7 +510,8 @@ namespace Havit.Data
 		/// <returns>první řádek první tabulky resultsetu ve formě <see cref="Havit.Data.DataRecord"/></returns>
 		public DataRecord ExecuteDataRecord(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
+
 			return ExecuteDataRecord(command, CommandBehavior.Default);
 		}
 
@@ -516,6 +528,7 @@ namespace Havit.Data
 		public DataRecord ExecuteDataRecord(string commandText, CommandType commandType)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteDataRecord(CreateCommand(commandText, commandType));
 		}
 
@@ -531,6 +544,7 @@ namespace Havit.Data
 		public DataRecord ExecuteDataRecord(string commandText)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteDataRecord(commandText, CommandType.Text);
 		}
 
@@ -544,7 +558,7 @@ namespace Havit.Data
 		/// <returns>první sloupec prvního řádku první tabulky resultsetu</returns>
 		public object ExecuteScalar(DbCommand command)
 		{
-			Contract.Requires<ArgumentNullException>(command != null, "command");
+			Contract.Requires<ArgumentNullException>(command != null, nameof(command));
 
 			SetCommandDefaults(command);
 
@@ -589,6 +603,7 @@ namespace Havit.Data
 		public object ExecuteScalar(string commandText, CommandType commandType)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteScalar(CreateCommand(commandText, commandType));
 		}
 
@@ -601,6 +616,7 @@ namespace Havit.Data
 		public object ExecuteScalar(string commandText)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Parametr commandText nesmí být null ani String.Empty");
+
 			return ExecuteScalar(CreateCommand(commandText, CommandType.Text));
 		}
 
@@ -615,7 +631,7 @@ namespace Havit.Data
 		/// <param name="isolationLevel">požadovaný <see cref="IsolationLevel"/> transakce; pokud je <see cref="IsolationLevel.Unspecified"/>, použije se outerTransaction, pokud je definována, nebo založí nová transakce s defaultním isolation-levelem</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, DbTransaction outerTransaction, IsolationLevel isolationLevel)
 		{
-			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
+			Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
 			
 			DbTransaction currentTransaction = outerTransaction;
 			DbConnection connection;
@@ -702,7 +718,8 @@ namespace Havit.Data
 		/// <param name="outerTransaction">vnější transakce, pokud existuje; jinak <c>null</c></param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, DbTransaction outerTransaction)
 		{
-			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");			
+			Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
+
 			ExecuteTransaction(transactionWork, outerTransaction, IsolationLevel.Unspecified);
 		}
 
@@ -713,7 +730,8 @@ namespace Havit.Data
 		/// <param name="isolationLevel">požadovaný <see cref="IsolationLevel"/> transakce</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork, IsolationLevel isolationLevel)
 		{
-			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
+			Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
+
 			ExecuteTransaction(transactionWork, null, isolationLevel);
 		}
 
@@ -724,7 +742,8 @@ namespace Havit.Data
 		/// <param name="transactionWork"><see cref="DbTransactionDelegate"/> reprezentující s úkony, které mají být součástí transakce</param>
 		public void ExecuteTransaction(DbTransactionDelegate transactionWork)
 		{
-			Contract.Requires<ArgumentNullException>(transactionWork != null, "transactionWork");
+			Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
+
 			ExecuteTransaction(transactionWork, null, IsolationLevel.Unspecified);
 		}
 

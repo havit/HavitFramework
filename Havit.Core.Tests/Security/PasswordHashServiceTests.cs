@@ -10,15 +10,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Security
 {
-	/// <summary>
-	/// Ověřuje správnost implementace třídy PasswordHashService.
-	/// </summary>
 	[TestClass]
 	public class PasswordHashServiceTests
 	{
-		/// <summary>
-		/// Ověřuje správnost metody PasswordHashService.ComputeSHA512HashString.
-		/// </summary>
 		[TestMethod]
 		public void PasswordHashService_ComputeSHA512HashString()
 		{
@@ -33,9 +27,6 @@ namespace Havit.Tests.Security
 			Assert.AreEqual("1A57A2F34DFE0004A9CFE69DC2813A57ADCF84EBF5D50DA377D99329661E416541B8F67B5F81474A8C184D729B8CB876E1DCFAAB59ABE4A4B15DCC98549AD177", PasswordHashService.ComputeSHA512HashString("12", "345"), true);
 		}
 
-		/// <summary>
-		/// Ověřuje správnost metody PasswordHashService.VerifySHA512HashString.
-		/// </summary>
 		[TestMethod]
 		public void PasswordHashService_VerifySHA512HashString()
 		{

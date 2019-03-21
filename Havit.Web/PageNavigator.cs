@@ -4,6 +4,7 @@ using System.Text;
 using System.Web;
 using System.IO;
 using System.Collections.Specialized;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web
 {
@@ -27,11 +28,7 @@ namespace Havit.Web
 			get
 			{
 				HttpContext context = HttpContext.Current;
-
-				if (context == null)
-				{
-					throw new InvalidOperationException("HttpContext.Current je null.");
-				}
+				Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current je null.");
 
 				PageNavigator result = (PageNavigator)context.Items[typeof(PageNavigator)];
 				if (result == null)
@@ -185,10 +182,7 @@ namespace Havit.Web
 		/// </exception>
 		public string GetTransitionalNavigationUrlTo(string toUrl)
 		{
-			if (String.IsNullOrEmpty(toUrl))
-			{
-				throw new ArgumentException("Není zadána hodnota.", "toUrl");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(toUrl), nameof(toUrl));
 
 			toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
 			return GetNavigationToUrlInternal(null, toUrl, true);
@@ -207,15 +201,8 @@ namespace Havit.Web
 		/// </exception>
 		public string GetNavigationUrlFromTo(string fromUrl, string toUrl)
 		{
-			if (String.IsNullOrEmpty(fromUrl))
-			{
-				throw new ArgumentException("Není zadána hodnota.", "fromUrl");
-			}
-
-			if (String.IsNullOrEmpty(toUrl))
-			{
-				throw new ArgumentException("Není zadána hodnota.", "toUrl");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fromUrl), nameof(fromUrl));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(toUrl), nameof(toUrl));
 
 			fromUrl = GetUrlWithoutNavigationUrlParameter(fromUrl);
 			toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
@@ -232,10 +219,7 @@ namespace Havit.Web
 		/// </exception>
 		public string GetNavigationUrlFromRawUrlTo(string toUrl)
 		{
-			if (String.IsNullOrEmpty(toUrl))
-			{
-				throw new ArgumentException("Není zadána hodnota.", "toUrl");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(toUrl), nameof(toUrl));
 
 			string fromUrl = GetUrlWithoutNavigationUrlParameter(_currentContext.Request.RawUrl);
 			toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
@@ -376,7 +360,6 @@ namespace Havit.Web
 			qsb.Remove(PageNavigator.UrlsQueryParameterName);
 			// a opet slozime adresu
 			return qsb.GetUrlWithQueryString(urlParts[0]);
-
 		}
 	}
 }

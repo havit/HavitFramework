@@ -101,8 +101,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString));
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString), nameof(blobStorageConnectionString));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName), nameof(containerName));
 
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
@@ -115,7 +115,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override bool Exists(string fileName)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			return blob.Exists();
@@ -126,7 +126,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public override async Task<bool> ExistsAsync(string fileName)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			CloudBlockBlob blob = GetBlobReference(fileName);
 			return await blob.ExistsAsync().ConfigureAwait(false);
@@ -362,6 +362,5 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			return (this.encryptionPolicy == null) ? null : new BlobRequestOptions { EncryptionPolicy = this.encryptionPolicy };
 		}
-
 	}
 }

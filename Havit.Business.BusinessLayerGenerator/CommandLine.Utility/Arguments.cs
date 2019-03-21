@@ -41,8 +41,7 @@ namespace Havit.Business.BusinessLayerGenerator.CommandLine.Utility
 						{
 							if (!parameters.ContainsKey(parameter))
 							{
-								parts[0] =
-									remover.Replace(parts[0], "$1");
+								parts[0] = remover.Replace(parts[0], "$1");
 
 								parameters.Add(parameter, parts[0]);
 							}

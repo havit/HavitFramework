@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web;
+using Havit.Diagnostics.Contracts;
 using Havit.Reflection;
 
 namespace Havit.Web
@@ -26,21 +27,12 @@ namespace Havit.Web
 		/// <param name="endResponse">Indikuje, zdali má skončit zpracování vykonávání stránky.</param>
 		public static void MovedPermanently(string url, bool endResponse)
 		{
-			if ((HttpContext.Current == null)
-				|| (HttpContext.Current.Response == null))
-			{
-				throw new InvalidOperationException("HttpContext.Current.Response unavailable.");
-			}
-			HttpResponse response = HttpContext.Current.Response;
+			HttpResponse response = HttpContext.Current?.Response;
+			Contract.Requires<InvalidOperationException>(response != null, "HttpContext.Current.Response unavailable.");
 
-			if (url == null)
-			{
-				throw new ArgumentNullException("url");
-			}
-			if (url.IndexOf('\n') >= 0)
-			{
-				throw new ArgumentException("Cannot redirect to newline");
-			}
+			Contract.Requires<ArgumentNullException>(url != null, nameof(url));
+			Contract.Requires<ArgumentException>(!url.Contains("\n"), "Cannot redirect to newline");
+
 			url = response.ApplyAppPathModifier(url);
 			url = HttpUtilityExt.UrlEncodePathWithQueryString(url);
 			
@@ -82,13 +74,9 @@ namespace Havit.Web
 		/// <param name="endResponse">Indikuje, zdali má skončit zpracování vykonávání stránky.</param>
 		public static void Gone(bool endResponse)
 		{
-			if ((HttpContext.Current == null)
-				|| (HttpContext.Current.Response == null))
-			{
-				throw new InvalidOperationException("HttpContext.Current.Response unavailable.");
-			}
-			HttpResponse response = HttpContext.Current.Response;
-			
+			HttpResponse response = HttpContext.Current?.Response;
+			Contract.Requires<InvalidOperationException>(response != null, "HttpContext.Current.Response unavailable.");
+
 			response.Clear();
 			response.StatusCode = 410;
 			response.StatusDescription = "Gone";

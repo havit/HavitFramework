@@ -5,6 +5,7 @@ using Havit;
 using System.Globalization;
 using System.Configuration;
 using System.Resources;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web
 {
@@ -238,12 +239,8 @@ namespace Havit.Web
 		/// <returns>Text encodovaný pro použití v URL.</returns>
 		public static string UrlEncodePathWithQueryString(string urlWithQueryString)
 		{
-			if ((HttpContext.Current == null)
-				|| (HttpContext.Current.Request == null))
-			{
-				throw new InvalidOperationException("HttpContext.Current.Request unavailable.");
-			}
-			HttpRequest request = HttpContext.Current.Request;
+			HttpRequest request = HttpContext.Current?.Request;
+			Contract.Requires<InvalidOperationException>(request != null, "HttpContext.Current.Request unavailable.");
 
 			int otaznik = urlWithQueryString.IndexOf('?');
 			if (otaznik >= 0)

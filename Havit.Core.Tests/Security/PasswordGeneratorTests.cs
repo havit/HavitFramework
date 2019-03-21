@@ -6,15 +6,9 @@ using Havit.Security;
 
 namespace Havit.Tests.Security
 {
-	/// <summary>
-	/// Test třídy PasswordGenerator.
-	/// </summary>
 	[TestClass]
 	public class PasswordGeneratorTests
 	{
-		/// <summary>
-		/// A test for Generate (int, int, PasswordCharacterSet, bool, bool) - length
-		/// </summary>
 		[TestMethod]
 		public void PasswordGenerator_Generate_HasLengthBetweenMinimumAndMaximum()
 		{
@@ -32,9 +26,6 @@ namespace Havit.Tests.Security
 			Assert.IsTrue(actual.Length <= maximumLength);
 		}
 
-		/// <summary>
-		/// A test for Generate (int, int, PasswordCharacterSet, bool, bool) - length
-		/// </summary>
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void PasswordGenerator_Generate_ThrowsExceptionForLonPasswords()

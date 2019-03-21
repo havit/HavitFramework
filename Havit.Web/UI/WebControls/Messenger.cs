@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -88,10 +89,8 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="text">text zprávy</param>
 		public void AddMessage(MessageType messageType, string text)
 		{
-			if (String.IsNullOrEmpty(text))
-			{
-				throw new ArgumentException("Parametr nesmí být null ani String.Empty", "text");
-			}
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(text), nameof(text));
+
 			AddMessage(new MessengerMessage(text, messageType));
 		}
 

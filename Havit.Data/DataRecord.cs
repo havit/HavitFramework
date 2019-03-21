@@ -25,8 +25,6 @@ namespace Havit.Data
 		public bool FullLoad
 		{
 			get { return DataLoadPower == DataLoadPower.FullLoad; }
-//			set { 
-//				fullLoad = value; }
 		}
 
 		/// <summary>

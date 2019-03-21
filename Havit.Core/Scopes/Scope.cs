@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Scopes
 {
@@ -79,10 +80,8 @@ namespace Havit.Scopes
 		/// <param name="ownsInstance">indikuje, zdali instanci vlastníme, tedy zdali ji máme s koncem scopu disposovat</param>
 		protected Scope(T instance, IScopeRepository<T> scopeRepository, bool ownsInstance)
 		{
-			if (instance == null)
-			{
-				throw new ArgumentNullException("instance");
-			}
+			Contract.Requires<ArgumentNullException>(instance != null, nameof(instance));
+
 			this.instance = instance;
 			this.scopeRepository = scopeRepository;
 			this.ownsInstance = ownsInstance;

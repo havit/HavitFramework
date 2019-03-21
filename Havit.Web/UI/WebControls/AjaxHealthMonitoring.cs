@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Services.Protocols;
 using System.Web.UI;
+using Havit.Diagnostics.Contracts;
 using Havit.Web.Management;
 
 namespace Havit.Web.UI.WebControls
@@ -24,10 +25,8 @@ namespace Havit.Web.UI.WebControls
 			base.OnInit(e);
 
 			ScriptManager scriptManager = ScriptManager.GetCurrent(Page);
-			if (scriptManager == null)
-			{
-				throw new InvalidOperationException("Ve stránce nebyl nalezen ScriptManager, který je controlem AjaxHealthMonitoring vyžadován.");
-			}
+			Contract.Requires<InvalidOperationException>(scriptManager != null, "Ve stránce nebyl nalezen ScriptManager, který je controlem AjaxHealthMonitoring vyžadován.");
+
 			scriptManager.AsyncPostBackError += new EventHandler<AsyncPostBackErrorEventArgs>(ScriptManager_AsyncPostBackError);
 		}
 

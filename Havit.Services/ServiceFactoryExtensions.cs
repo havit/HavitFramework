@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 
 namespace Havit.Services
 {
@@ -16,7 +17,7 @@ namespace Havit.Services
 		public static void ExecuteAction<TService>(this IServiceFactory<TService> serviceFactory, Action<TService> action)
 			where TService : class
 		{
-			global::Havit.Diagnostics.Contracts.Contract.Requires(serviceFactory != null);
+			Contract.Requires(serviceFactory != null);
 
 			using (var service = serviceFactory.CreateDisposableService())
 			{
@@ -33,7 +34,7 @@ namespace Havit.Services
 		public static ServiceFactoryDisposableWrapper<TService> CreateDisposableService<TService>(this IServiceFactory<TService> serviceFactory)
 			where TService : class
 		{
-			global::Havit.Diagnostics.Contracts.Contract.Requires(serviceFactory != null);
+			Contract.Requires(serviceFactory != null);
 
 			return new ServiceFactoryDisposableWrapper<TService>(serviceFactory);
 		}

@@ -4,17 +4,9 @@ using System;
 
 namespace Havit.Web.Tests
 {
-
-	/// <summary>
-	/// This is a test class for HttpServerUtilityExtTest and is intended
-	/// to contain all HttpServerUtilityExtTest Unit Tests
-	/// </summary>
 	[TestClass]
 	public class HttpServerUtilityExtTests
 	{
-		/// <summary>
-		/// A test for ResolveUrl
-		/// </summary>
 		[TestMethod]
 		public void ResolveUrlTest_Standard()
 		{
@@ -26,9 +18,6 @@ namespace Havit.Web.Tests
 			Assert.AreEqual(expected, actual);
 		}
 
-		/// <summary>
-		/// A test for ResolveUrl
-		/// </summary>
 		[TestMethod]
 		public void ResolveUrlTest_SlashEndingAppPath()
 		{

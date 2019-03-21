@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -208,15 +209,8 @@ namespace Havit.Linq
 		/// <param name="size">Velikost jednoho segmentu (chunku). Nejmenší možná hodnota he 1.</param>
 		public static IEnumerable<T[]> Chunkify<T>(this IEnumerable<T> source, int size)
 		{
-			if (source == null)
-			{
-				throw new ArgumentNullException("source");
-			}
-
-			if (size < 1)
-			{
-				throw new ArgumentOutOfRangeException("size");
-			}
+			Contract.Requires<ArgumentNullException>(source != null, nameof(source));
+			Contract.Requires<ArgumentOutOfRangeException>(size > 0, nameof(size));
 
 			using (var iter = source.GetEnumerator())
 			{

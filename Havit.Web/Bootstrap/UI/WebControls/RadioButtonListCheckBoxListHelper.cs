@@ -19,8 +19,8 @@ namespace Havit.Web.Bootstrap.UI.WebControls
 		/// </summary>
 		internal static void Render(IRadioButtonListCheckBoxList control, HtmlTextWriter writer)
 		{
-			Contract.Requires(control.RepeatLayout == RepeatLayout.Flow, "The only supported layout is RepeatLayout.Flow.");
-			Contract.Requires(control.RepeatColumns <= 1, "RepeatColumns is not supported.");
+			Contract.Requires<NotSupportedException>(control.RepeatLayout == RepeatLayout.Flow, "The only supported layout is RepeatLayout.Flow.");
+			Contract.Requires<NotSupportedException>(control.RepeatColumns <= 1, "RepeatColumns is not supported.");
 
 			// Vypíšeme obalující SPAN
 			control.CssClass = (control.CssClass + " " + ((control.RepeatDirection == RepeatDirection.Horizontal) ? "btn-group" : "btn-group-vertical")).Trim();

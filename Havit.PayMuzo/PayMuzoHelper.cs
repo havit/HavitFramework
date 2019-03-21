@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.PayMuzo
 {
@@ -143,15 +144,8 @@ namespace Havit.PayMuzo
 		/// <param name="certificate">certifikát s veřejným i privátním klíčem</param>
 		public static void AddDigestToRequest(PayMuzoRequestData requestData, X509Certificate2 certificate)
 		{
-			if (requestData == null)
-			{
-				throw new ArgumentNullException(nameof(requestData));
-			}
-
-			if (certificate == null)
-			{
-				throw new ArgumentNullException(nameof(certificate));
-			}
+			Contract.Requires<ArgumentNullException>(requestData != null, nameof(requestData));
+			Contract.Requires<ArgumentNullException>(certificate != null, nameof(certificate));
 
 			string rawData = requestData.GetPipedRawData();
 
@@ -169,14 +163,8 @@ namespace Havit.PayMuzo
 		/// <returns>podpis</returns>
 		public static string CreateDigest(string data, X509Certificate2 certificate, bool urlEncode)
 		{
-			if (certificate == null)
-			{
-				throw new ArgumentNullException(nameof(certificate));
-			}
-			if (String.IsNullOrEmpty(data))
-			{
-				throw new ArgumentException("Argument data nesmí být null ani String.Empty.", nameof(data));
-			}
+			Contract.Requires<ArgumentNullException>(certificate != null, nameof(certificate));
+			Contract.Requires<ArgumentException>(data != null, "Argument data nesmí být null ani String.Empty.");
 
 			RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)certificate.PrivateKey;
 

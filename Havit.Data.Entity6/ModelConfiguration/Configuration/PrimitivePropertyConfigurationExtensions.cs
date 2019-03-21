@@ -9,7 +9,7 @@ namespace Havit.Data.Entity.ModelConfiguration.Configuration
 	{
 		public static object GetAnnotation(this PrimitivePropertyConfiguration property, string annotationName)
 		{
-			// převzato z https://github.com/mj1856/EntityFramework.IndexingExtensions/blob/master/EntityFramework.IndexingExtensions/IndexingExtensions.cs
+			// inspirováno z https://github.com/mj1856/EntityFramework.IndexingExtensions/blob/master/EntityFramework.IndexingExtensions/IndexingExtensions.cs
 			var configuration = typeof(PrimitivePropertyConfiguration)
 				.GetProperty("Configuration", BindingFlags.Instance | BindingFlags.NonPublic)
 				.GetValue(property, null);

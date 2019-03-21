@@ -49,16 +49,10 @@ namespace Havit.Web.Security
 		/// <param name="ticket">authentication-ticket</param>
 		public static void ApplyAuthenticationTicket(FormsAuthenticationTicket ticket)
 		{
-			if (ticket == null)
-			{
-				throw new ArgumentNullException("ticket");
-			}
+			Contract.Requires<ArgumentNullException>(ticket != null, nameof(ticket));
 			
 			HttpContext context = HttpContext.Current;
-			if (context == null)
-			{
-				throw new InvalidOperationException("HttpContext.Current not available");
-			}
+			Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current not available");
 
 			string[] roles = null;
 			if (!String.IsNullOrEmpty(ticket.UserData))
@@ -85,10 +79,7 @@ namespace Havit.Web.Security
 		public static void ApplyAuthenticationTicket()
 		{
 			HttpContext context = HttpContext.Current;
-			if (context == null)
-			{
-				throw new InvalidOperationException("HttpContext.Current not available");
-			}
+			Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current not available");
 
 			HttpCookie authenticationCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
 			if (authenticationCookie != null)
@@ -178,10 +169,7 @@ namespace Havit.Web.Security
 		public static HttpCookie GetAuthCookie(string username, string[] roles, bool createPersistentCookie, string cookiePath)
 		{
 			HttpContext context = HttpContext.Current;
-			if (context == null)
-			{
-				throw new InvalidOperationException("HttpContext.Current not available");
-			}
+			Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current not available");
 
 			FormsAuthenticationTicket authTicket = GetAuthTicket(username, roles, createPersistentCookie, cookiePath);
 
@@ -227,10 +215,7 @@ namespace Havit.Web.Security
 			if (username != null)
 			{
 				HttpContext context = HttpContext.Current;
-				if (context == null)
-				{
-					throw new InvalidOperationException("HttpContext.Current not available");
-				}
+				Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current not available");
 
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
@@ -278,10 +263,7 @@ namespace Havit.Web.Security
 			if (username != null)
 			{
 				HttpContext context = HttpContext.Current;
-				if (context == null)
-				{
-					throw new InvalidOperationException("HttpContext.Current not available");
-				}
+				Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current not available");
 
 				HttpCookie authCookie = GetAuthCookie(username, roles, createPersistentCookie, cookiePath);
 				context.Response.Cookies.Add(authCookie);

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.ComponentModel;
 using System.Reflection;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web.UI.WebControls
 {
@@ -158,10 +159,7 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="controlContainer">Control container (řádek GridView), kterému se získává hodnota.</param>
 		protected override object GetValue(Control controlContainer)
 		{
-			if (controlContainer == null)
-			{
-				throw new ArgumentNullException("controlContainer");
-			}
+			Contract.Requires<ArgumentNullException>(controlContainer != null, nameof(controlContainer));
 
 			object dataItem = DataBinder.GetDataItem(controlContainer);
 

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit
 {
@@ -19,10 +20,8 @@ namespace Havit
 		/// <returns>string containing a specified number of characters from the left side of a string</returns>
 		public static string Left(this string str, int length)
 		{
-			if (length < 0)
-			{
-				throw new ArgumentException("Argument length nesmí být menší než 0.", "length");
-			}
+			Contract.Requires<ArgumentOutOfRangeException>(length >= 0, "Argument length nesmí být menší než 0.");
+
 			if ((length == 0) || (str == null))
 			{
 				return String.Empty;
@@ -42,10 +41,8 @@ namespace Havit
 		/// <returns>string containing a specified number of characters from the right side of a string</returns>
 		public static string Right(this string str, int length)
 		{
-			if (length < 0)
-			{
-				throw new ArgumentException("Argument length nesmí být menší než 0.", "length");
-			}
+			Contract.Requires<ArgumentOutOfRangeException>(length >= 0, "Argument length nesmí být menší než 0.");
+
 			if ((length == 0) || (str == null))
 			{
 				return String.Empty;
@@ -79,18 +76,6 @@ namespace Havit
 			}
 
 			return sb.ToString();
-
-			/*
-			 * původní implementace pro .NET Framework 1.1
-			const string s		= "áÁéÉíÍýÝěĚóÓšŠčČřŘžŽňŇůŮúÚťŤďĎäÄëËiIöÖüÜĺĹ";
-			const string bez	= "aAeEiIyYeEoOsScCrRzZnNuUuUtTdDaAeEiIoOuUlL";
-  
-			for (int i=0; i <= s.Length-1; i++)
-			{
-				text = text.Replace(s[i], bez[i]);
-			}
-			return text;
-			*/
 		}
 
 		/// <summary>

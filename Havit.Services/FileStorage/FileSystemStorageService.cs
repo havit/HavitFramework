@@ -202,7 +202,8 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
+
 			return File.GetLastWriteTimeUtc(GetFullPath(fileName));
 		}
 

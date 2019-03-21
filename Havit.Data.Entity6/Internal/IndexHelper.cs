@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure.Annotations;
 using Havit.Data.Entity.ModelConfiguration.Edm;
@@ -16,7 +17,7 @@ namespace Havit.Data.Entity.Internal
 		/// </summary>
 		public static void AddIndex(EdmProperty column, bool unique = false)
 		{
-			Contract.Requires(column != null);
+			Contract.Requires<ArgumentNullException>(column != null, nameof(column));
 
 			AddIndex(new EdmProperty[] { column }, unique);
 		}
@@ -26,8 +27,8 @@ namespace Havit.Data.Entity.Internal
 		/// </summary>
 		public static void AddIndex(EdmProperty[] columns, bool unique = false)
 		{
-			Contract.Requires(columns != null);
-			Contract.Requires(columns.Length > 0);
+			Contract.Requires<ArgumentNullException>(columns != null, nameof(columns));
+			Contract.Requires<ArgumentException>(columns.Length > 0, nameof(columns));
 
 			string indexName = IndexNameHelper.GetIndexName(columns, unique);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls
@@ -58,11 +59,9 @@ namespace Havit.Web.UI.WebControls
         /// <param name="messageType">typ zprávy</param>
         public MessengerMessage(string text, MessageType messageType)
         {
-            if (String.IsNullOrEmpty(text))
-            {
-                throw new ArgumentException("Parametr nesmí být null ani String.Empty", "messageType");
-            }
-            this._messageType = messageType;
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(text), nameof(text));
+
+			this._messageType = messageType;
             this._text = text;
         }
     }

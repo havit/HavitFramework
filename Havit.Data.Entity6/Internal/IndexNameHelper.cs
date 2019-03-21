@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Core.Metadata.Edm;
+﻿using System;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Text;
 using Havit.Diagnostics.Contracts;
@@ -17,8 +18,8 @@ namespace Havit.Data.Entity.Internal
 		/// </summary>
 		public static string GetIndexName(EdmProperty[] columns, bool unique)
 		{
-			Contract.Requires(columns != null);
-			Contract.Requires(columns.Length > 0);
+			Contract.Requires<ArgumentNullException>(columns != null, nameof(columns));
+			Contract.Requires<ArgumentException>(columns.Length > 0, nameof(columns));
 
 			StringBuilder indexNameBuilder = new StringBuilder();
 			if (unique)

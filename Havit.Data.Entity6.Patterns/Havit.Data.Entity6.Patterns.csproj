@@ -11,6 +11,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>2.0.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>

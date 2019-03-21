@@ -17,7 +17,8 @@
   
   <!-- Publish NuGet -->
   <PropertyGroup Condition="'$(GeneratePackageOnBuild)' == 'true'">
-	<PackageOutputPath Condition="'$(PublishDirectory)' != ''">$(PublishDirectory)\NuGet</PackageOutputPath>
+    <NuGetPublishFolder Condition="'$(NuGetPublishFolder)' == ''">PublicNuGets</NuGetPublishFolder>
+	  <PackageOutputPath Condition="'$(PublishDirectory)' != ''">$(PublishDirectory)\$(NuGetPublishFolder)</PackageOutputPath>
   </PropertyGroup>
   <!-- /Publish NuGet -->
 

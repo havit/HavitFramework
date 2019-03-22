@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <PropertyGroup>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>2.0.1</PackageVersion>
+	<PackageVersion>2.0.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions for Castle Windsor</Description>
   </PropertyGroup>
 
@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
     <ProjectReference Include="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
   </ItemGroup>
 

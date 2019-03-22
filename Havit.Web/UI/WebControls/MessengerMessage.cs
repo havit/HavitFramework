@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Havit.Diagnostics.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace Havit.Web.UI.WebControls

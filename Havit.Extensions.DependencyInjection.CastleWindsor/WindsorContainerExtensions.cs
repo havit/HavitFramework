@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using Castle.MicroKernel.ModelBuilder.Descriptors;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Registration.Lifestyle;
 using Castle.Windsor;
+using Havit.Diagnostics.Contracts;
 using Havit.Extensions.DependencyInjection.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 

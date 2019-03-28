@@ -18,10 +18,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		CacheOptions GetEntityCacheOptions<TEntity>(TEntity entity)
 			where TEntity : class;
 
-		/// <summary>
-		/// Vrací cache options pro cachování všech klíčů entit daného typu.
-		/// </summary>
-		CacheOptions GetAllKeysCacheOptions<TEntity>()
+        /// <summary>
+        /// Vrací cache options pro cachování kolekce dané entity.
+        /// </summary>
+        CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
+            where TEntity : class;
+
+        /// <summary>
+        /// Vrací cache options pro cachování všech klíčů entit daného typu.
+        /// </summary>
+        CacheOptions GetAllKeysCacheOptions<TEntity>()
 			where TEntity : class;
-	}
+    }
 }

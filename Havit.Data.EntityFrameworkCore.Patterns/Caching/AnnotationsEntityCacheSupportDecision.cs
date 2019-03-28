@@ -26,16 +26,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	{
 		private readonly Lazy<Dictionary<Type, bool>> shouldCacheEntities;
 		private readonly Lazy<Dictionary<Type, bool>> shouldCacheAllKeys;
-        private readonly Lazy<Dictionary<TypePropertyName, Type>> collectionTargetTypes;
+        private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        public AnnotationsEntityCacheSupportDecision(IDbContextFactory dbContextFactory)
+        public AnnotationsEntityCacheSupportDecision(IDbContextFactory dbContextFactory, ICollectionTargetTypeStore collectionTargetTypeStore)
 		{
 			shouldCacheEntities = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
 			shouldCacheAllKeys = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
-            collectionTargetTypes = GetLazyCollectionTargetTypesDictionary(dbContextFactory);
+            this.collectionTargetTypeStore = collectionTargetTypeStore;
         }
 
 		/// <inheritdoc />
@@ -53,14 +53,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
         /// <inheritdoc />
         public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
         {
-            if (collectionTargetTypes.Value.TryGetValue(new TypePropertyName(entityType, propertyName), out var targetType))
-            {
-                return ShouldCacheEntityType(targetType);
-            }
-            else
-            {
-                throw new InvalidOperationException($"Cannot resolve target type for {entityType.Name}.{propertyName}.");
-            }
+            return ShouldCacheEntityType(collectionTargetTypeStore.GetCollectionTargetType(entityType, propertyName));
         }
 
         /// <inheritdoc />
@@ -89,25 +82,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				return result;
 			}, LazyThreadSafetyMode.PublicationOnly);
 		}
-
-        private Lazy<Dictionary<TypePropertyName, Type>> GetLazyCollectionTargetTypesDictionary(IDbContextFactory dbContextFactory)
-        {
-            return new Lazy<Dictionary<TypePropertyName, Type>>(() =>
-            {
-                Dictionary<TypePropertyName, Type> result = null;
-                dbContextFactory.ExecuteAction(dbContext =>
-                {
-                    result = dbContext.Model.GetApplicationEntityTypes()
-                    .SelectMany(entityType => entityType.GetNavigations())
-                    .Where(navigation => navigation.IsCollection())
-                    .ToDictionary(
-                        navigation => new TypePropertyName(navigation.DeclaringEntityType.ClrType, navigation.Name),
-                        navigation => navigation.GetTargetType().ClrType);
-                });
-                return result;
-            }, LazyThreadSafetyMode.PublicationOnly);
-        }
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool GetValueFromDictionary(Dictionary<Type, bool> valuesDictionary, Type type)

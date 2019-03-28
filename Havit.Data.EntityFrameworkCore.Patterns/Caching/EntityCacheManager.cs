@@ -188,7 +188,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
 
 				object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
-				cacheService.Add(cacheKey, entityPropertyMembersKeys);
+				cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetCollectionCacheOptions(entity, propertyName));
 			}
 		}
 

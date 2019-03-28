@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Services;
 using Havit.Services.Caching;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -18,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory, TimeSpan absoluteExpiration, TimeSpan slidingExpiration) : base(dbContextFactory)
+		public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory, ICollectionTargetTypeStore collectionTargetTypeStore, TimeSpan absoluteExpiration, TimeSpan slidingExpiration) : base(dbContextFactory, collectionTargetTypeStore)
 		{
 			this.absoluteExpiration = (absoluteExpiration == TimeSpan.Zero) ? (TimeSpan?)null : absoluteExpiration;
 			this.slidingExpiration = (slidingExpiration == TimeSpan.Zero) ? (TimeSpan?)null : slidingExpiration;

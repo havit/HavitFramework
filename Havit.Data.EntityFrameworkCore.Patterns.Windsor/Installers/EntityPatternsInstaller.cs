@@ -68,7 +68,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				.ImplementedBy(typeof(TDbContext))
 				.ApplyLifestyle(componentRegistrationOptions.DbContextLifestyle);
 
-			// Pro odizolování jednotlivých dataseedů od sebe zaregistrujeme též t
+			// Pro odizolování jednotlivých dataseedů od sebe zaregistrujeme též transientní dbContext
 			var transientRegistration = Component.For(typeof(IDbContext))
 				.ImplementedBy(typeof(TDbContext))
 				.LifestyleTransient()
@@ -131,8 +131,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Component.For<IEntityValidationRunner>().ImplementedBy<EntityValidationRunner>().LifestyleSingleton(),
 				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton(),
 				Component.For<IEntityKeyAccessor>().ImplementedBy<DbEntityKeyAccessor>().LifestyleSingleton(),
-				Component.For<IReferencingCollectionsStore>().ImplementedBy<ReferencingCollectionsStore>().LifestyleSingleton()
-			);
+				Component.For<IReferencingCollectionsStore>().ImplementedBy<ReferencingCollectionsStore>().LifestyleSingleton(),
+				Component.For<ICollectionTargetTypeStore>().ImplementedBy<CollectionTargetTypeStore>().LifestyleSingleton()                
+            );
 			return this;
 		}
 

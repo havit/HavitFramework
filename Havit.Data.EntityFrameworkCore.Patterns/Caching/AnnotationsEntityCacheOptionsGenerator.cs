@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Services;
 using Havit.Services.Caching;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -23,14 +24,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerator
 	{
 		private readonly Lazy<Dictionary<Type, CacheOptions>> cacheOptionsDictionary;
+        private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public AnnotationsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory)
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        public AnnotationsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory, ICollectionTargetTypeStore collectionTargetTypeStore)
 		{
 			cacheOptionsDictionary = GetLazyDictionary(dbContextFactory);
-		}
+            this.collectionTargetTypeStore = collectionTargetTypeStore;
+        }
 
 		/// <inheritdoc />
 		public CacheOptions GetEntityCacheOptions<TEntity>(TEntity entity)
@@ -40,7 +43,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc />
-		public CacheOptions GetAllKeysCacheOptions<TEntity>()
+        public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName) where TEntity : class
+        {
+			return GetValueFromDictionary(cacheOptionsDictionary.Value, collectionTargetTypeStore.GetCollectionTargetType(typeof(TEntity), propertyName));
+        }
+
+        /// <inheritdoc />
+        public CacheOptions GetAllKeysCacheOptions<TEntity>()
 			where TEntity : class
 		{
 			return GetValueFromDictionary(cacheOptionsDictionary.Value, typeof(TEntity));
@@ -120,6 +129,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}
 			return null;
 		}
-
-	}
+    }
 }

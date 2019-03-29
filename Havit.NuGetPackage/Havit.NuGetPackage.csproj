@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <PropertyGroup>
+    <NuGetPublishFolder>PrivateNuGets</NuGetPublishFolder> <!-- Nutno uvést před importem, aby se v v nuget.targets použilo. -->
+  </PropertyGroup>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageId>Havit</PackageId>
     <PackageVersion>1.9.0</PackageVersion>
-    <NuGetPublishFolder>PrivateNuGets</NuGetPublishFolder>
     <Description>HAVIT .NET Framework Extensions. This package is OBSOLETE, use Havit.Core package instead of this one.</Description>
     <!-- Nepublikujeme výstup buildu projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>

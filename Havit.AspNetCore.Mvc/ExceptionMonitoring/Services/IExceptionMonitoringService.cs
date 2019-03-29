@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 
 namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
 {
@@ -8,7 +8,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
     public interface IExceptionMonitoringService
     {
 		/// <summary>
-		/// Zpracuje pøedanou výjimku.
+		/// Zpracuje pÅ™edanou vÃ½jimku.
 		/// </summary>
         void HandleException(Exception exception);
     }

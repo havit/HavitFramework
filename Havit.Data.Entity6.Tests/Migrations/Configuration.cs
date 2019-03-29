@@ -1,4 +1,4 @@
-namespace Havit.Data.Entity.Tests.Migrations
+﻿namespace Havit.Data.Entity.Tests.Migrations
 {
     using System;
     using System.Data.Entity;

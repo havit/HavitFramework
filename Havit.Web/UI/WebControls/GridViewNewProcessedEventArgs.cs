@@ -1,9 +1,9 @@
-using System;
+ï»¿using System;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Parametry události ukonèení události pro zaloení nového záznamu.
+	/// Parametry udÃ¡losti ukonÄenÃ­ udÃ¡losti pro zaloÅ¾enÃ­ novÃ©ho zÃ¡znamu.
 	/// </summary>
 	public class GridViewNewProcessedEventArgs : EventArgs
 	{

@@ -1,9 +1,9 @@
-using System.ComponentModel;
+Ôªøusing System.ComponentModel;
 
 namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Parametry ud·losti zaË·tek ud·losti pro zaloûenÌ novÈho z·znamu.
+	/// Parametry ud√°losti zaƒç√°tek ud√°losti pro zalo≈æen√≠ nov√©ho z√°znamu.
 	/// </summary>	
 	public class GridViewNewProcessingEventArgs : CancelEventArgs
 	{

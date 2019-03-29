@@ -1,21 +1,21 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Havit.Data.Patterns.DataSeeds.Profiles
 {
     /// <summary>
-    /// Pøedek pro implementaci profilù seedovaných dat.
+    /// PÅ™edek pro implementaci profilÅ¯ seedovanÃ½ch dat.
     /// </summary>
     public abstract class DataSeedProfile : IDataSeedProfile
     {
         /// <summary>
-        /// Vrací název profilu. Implementováno tak, že vrací celé jméno typu profilu.
+        /// VracÃ­ nÃ¡zev profilu. ImplementovÃ¡no tak, Å¾e vracÃ­ celÃ© jmÃ©no typu profilu.
         /// </summary>
         public string ProfileName => this.GetType().FullName;
 
         /// <summary>
-        /// Vrací profily (resp. jejich typy), které musejí být naseedovány pøed tímto profilem.
+        /// VracÃ­ profily (resp. jejich typy), kterÃ© musejÃ­ bÃ½t naseedovÃ¡ny pÅ™ed tÃ­mto profilem.
         /// </summary>
         public virtual IEnumerable<Type> GetPrerequisiteProfiles()
         {

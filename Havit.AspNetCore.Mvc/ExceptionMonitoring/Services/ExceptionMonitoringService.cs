@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters;
@@ -9,7 +9,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
 {
 	/// <summary>
 	/// Exception monitoring.
-	/// Zpracuje výjimku pøedáním exception monitoring processorùm.
+	/// Zpracuje vÃ½jimku pÅ™edÃ¡nÃ­m exception monitoring processorÅ¯m.
 	/// </summary>
     public class ExceptionMonitoringService : IExceptionMonitoringService
     {
@@ -26,7 +26,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
         }
 
 		/// <summary>
-		/// Zpracuje výjimku pøedáním exception monitoring processorùm.
+		/// Zpracuje vÃ½jimku pÅ™edÃ¡nÃ­m exception monitoring processorÅ¯m.
 		/// </summary>
         public void HandleException(Exception exception)
         {
@@ -60,8 +60,8 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
         }
 
 		/// <summary>
-		/// Vrací true, pokud se má výjimka zpracovávat (pøedávat procesorùm).
-		/// Vždy vrací true, ale umožòuje potomkùm chování pøedefinovat.
+		/// VracÃ­ true, pokud se mÃ¡ vÃ½jimka zpracovÃ¡vat (pÅ™edÃ¡vat procesorÅ¯m).
+		/// VÅ¾dy vracÃ­ true, ale umoÅ¾Åˆuje potomkÅ¯m chovÃ¡nÃ­ pÅ™edefinovat.
 		/// </summary>
         protected virtual bool ShouldHandleException(Exception exception)
         {

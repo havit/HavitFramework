@@ -1,24 +1,24 @@
-namespace Havit.Web.UI.WebControls
+ï»¿namespace Havit.Web.UI.WebControls
 {
 	/// <summary>
-	/// Reim renderování struktury HTML DateTimeBoxu.
+	/// ReÅ¾im renderovÃ¡nÃ­ struktury HTML DateTimeBoxu.
 	/// </summary>
 	public enum DateTimeBoxContainerRenderMode
 	{
 		/// <summary>
-		/// Zajišuje renderování standardní struktury - textbox pro hodnotu, tvrdá mezera a obrázek/ikonka pro vıbìr kalendáøe.
+		/// ZajiÅ¡Å¥uje renderovÃ¡nÃ­ standardnÃ­ struktury - textbox pro hodnotu, tvrdÃ¡ mezera a obrÃ¡zek/ikonka pro vÃ½bÄ›r kalendÃ¡Å™e.
 		/// </summary>
 		Standard,
 
 		/// <summary>
-		/// Viz BootstrapInputGroupButtonOnRight, avšak ikonka pro vıbìr kalendáøe je nalevo.
+		/// Viz BootstrapInputGroupButtonOnRight, avÅ¡ak ikonka pro vÃ½bÄ›r kalendÃ¡Å™e je nalevo.
 		/// </summary>
 		BootstrapInputGroupButtonOnLeft,
 
 		/// <summary>
-		/// Zajišuje renderování struktury dle konvencí Bootstrapu pro Input Group a Input Group Button.
-		/// Tøídy input-group, input-group-btn pro DIVy a form-control pro textbox jsou pøidány automaticky.
-		/// Ikonka pro vıbìr kalendáøe je napravo.
+		/// ZajiÅ¡Å¥uje renderovÃ¡nÃ­ struktury dle konvencÃ­ Bootstrapu pro Input Group a Input Group Button.
+		/// TÅ™Ã­dy input-group, input-group-btn pro DIVy a form-control pro textbox jsou pÅ™idÃ¡ny automaticky.
+		/// Ikonka pro vÃ½bÄ›r kalendÃ¡Å™e je napravo.
 		/// </summary>
 		BootstrapInputGroupButtonOnRight
 	}

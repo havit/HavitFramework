@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
 {
 	/// <summary>
-	/// Exception procesor zasílající výjimku na email.
+	/// Exception procesor zasÃ­lajÃ­cÃ­ vÃ½jimku na email.
 	/// </summary>
     public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
     {
@@ -31,8 +31,8 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
         }
 
 		/// <summary>
-		/// Zpravuje výjimku zaslanou do exception monitoringu.
-		/// Odesílá výjimku na email.
+		/// Zpravuje vÃ½jimku zaslanou do exception monitoringu.
+		/// OdesÃ­lÃ¡ vÃ½jimku na email.
 		/// </summary>
         public void ProcessException(Exception exception)
         {
@@ -66,7 +66,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
         }
 
 		/// <summary>
-		/// Vrací mail message k odeslání.
+		/// VracÃ­ mail message k odeslÃ¡nÃ­.
 		/// </summary>
         protected virtual MailMessage PrepareMailMessage(Exception exception)
         {
@@ -84,7 +84,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
         }
 
 		/// <summary>
-		/// Vratí odesílatele emailu.
+		/// VratÃ­ odesÃ­latele emailu.
 		/// </summary>
         protected virtual MailAddress GetMailMessageFrom(Exception exception)
         {
@@ -92,7 +92,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
         }
 
 	    /// <summary>
-	    /// Vratí adresáta emailu.
+	    /// VratÃ­ adresÃ¡ta emailu.
 	    /// </summary>
         protected virtual List<MailAddress> GetMailMessageTo(Exception exception)
         {
@@ -110,13 +110,13 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
         }
 
 	    /// <summary>
-	    /// Vratí pøedmìt emailu.
+	    /// VratÃ­ pÅ™edmÄ›t emailu.
 	    /// </summary>
         protected virtual string GetMailMessageSubject(Exception exception)
         {
             string message = exception.Message;
 
-            // pøedmìt mailu nesmí obsahovat znaky \r a \n
+            // pÅ™edmÄ›t mailu nesmÃ­ obsahovat znaky \r a \n
             if (message.Contains("\r"))
             {
                 message = message.Left(message.IndexOf('\r'));
@@ -132,7 +132,7 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
         }
 
 		/// <summary>
-		/// Vrátí text emailu.
+		/// VrÃ¡tÃ­ text emailu.
 		/// </summary>
         protected virtual string GetMailMessageBody(Exception exception) => exceptionFormatter.FormatException(exception);
     }

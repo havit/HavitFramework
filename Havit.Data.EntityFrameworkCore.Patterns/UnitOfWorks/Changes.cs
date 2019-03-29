@@ -1,22 +1,22 @@
-namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
+ï»¿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 {
 	/// <summary>
-	/// Zmìny objektù v UnitOfWork.
+	/// ZmÄ›ny objektÅ¯ v UnitOfWork.
 	/// </summary>
 	public class Changes
 	{
 		/// <summary>
-		/// Registrované objekty pro Insert.
+		/// RegistrovanÃ© objekty pro Insert.
 		/// </summary>
 		public object[] Inserts { get; set; }
 
 		/// <summary>
-		/// Registrované objekty pro Update.
+		/// RegistrovanÃ© objekty pro Update.
 		/// </summary>
 		public object[] Updates { get; set; }
 
 		/// <summary>
-		/// Registrované objekty pro Delete.
+		/// RegistrovanÃ© objekty pro Delete.
 		/// </summary>
 		public object[] Deletes { get; set; }
 	}

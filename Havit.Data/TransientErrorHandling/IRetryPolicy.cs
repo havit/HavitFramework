@@ -1,14 +1,14 @@
-using System;
+ï»¿using System;
 
 namespace Havit.Data.TransientErrorHandling
 {
 	/// <summary>
-	/// Získává informaci o tom, zda má bıt pokus o provedení dané akce v pøípadì neúspìchu opakován.
+	/// ZÃ­skÃ¡vÃ¡ informaci o tom, zda mÃ¡ bÃ½t pokus o provedenÃ­ danÃ© akce v pÅ™Ã­padÄ› neÃºspÄ›chu opakovÃ¡n.
 	/// </summary>
 	internal interface IRetryPolicy
 	{
 		/// <summary>
-		/// Vrací informaci o tom, jestli má bıt proveden další pokus a s jakım odstupem.
+		/// VracÃ­ informaci o tom, jestli mÃ¡ bÃ½t proveden dalÅ¡Ã­ pokus a s jakÃ½m odstupem.
 		/// </summary>
 		RetryPolicyInfo GetRetryPolicyInfo(int attemptNumber, Exception exception);
 	}

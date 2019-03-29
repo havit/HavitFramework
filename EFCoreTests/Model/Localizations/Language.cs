@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Havit.Data.EntityFrameworkCore.Attributes;
 using Havit.Model.Localizations;

@@ -1,20 +1,20 @@
-using Newtonsoft.Json;
+ï»¿using Newtonsoft.Json;
 
 namespace Havit.GoPay.DataObjects
 {
 	/// <summary>
-	/// Návratová a notifikaèní URL
+	/// NÃ¡vratovÃ¡ a notifikaÄnÃ­ URL
 	/// </summary>
 	public class GoPayCallback
 	{
 		/// <summary>
-		/// URL adresa pro návrat na eshop
+		/// URL adresa pro nÃ¡vrat na eshop
 		/// </summary>
 		[JsonProperty("return_url")]
 		public string ReturnUrl { get; set; }
 
 		/// <summary>
-		/// URL adresa pro odeslání asynchronní notifikace v pøípadì zmìny stavu platby
+		/// URL adresa pro odeslÃ¡nÃ­ asynchronnÃ­ notifikace v pÅ™Ã­padÄ› zmÄ›ny stavu platby
 		/// </summary>
 		[JsonProperty("notification_url")]
 		public string NotificationUrl { get; set; }

@@ -1,4 +1,4 @@
-<Project>
+ï»¿<Project>
 
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -6,8 +6,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</PackageIconUrl>
 
-    <!-- Jako default nebudeme dávat content do balíèkù (staèí ukliknutí a máme content v nuget balíèku).
-		 V projektech, ve kterých content do nuget balíèku chceme, si jej povolíme. -->
+    <!-- Jako default nebudeme dÃ¡vat content do balÃ­ÄkÅ¯ (staÄÃ­ ukliknutÃ­ a mÃ¡me content v nuget balÃ­Äku).
+		 V projektech, ve kterÃ½ch content do nuget balÃ­Äku chceme, si jej povolÃ­me. -->
     <IncludeContentInPack>false</IncludeContentInPack>
   </PropertyGroup>
 
@@ -23,9 +23,9 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <!-- Pokud se tento øádek dostane do WebForms projektu, rozbije restorování nuget balíèkù, bohužel nepomáhá ani jedno podmínìní pomocí Condition.
-         Proto nepoužíváme Directory.Build.targets,  který by se automaticky použil pro všechny projekty,
-         ale do projektù importujeme tento NuGet.targets. -->
+    <!-- Pokud se tento Å™Ã¡dek dostane do WebForms projektu, rozbije restorovÃ¡nÃ­ nuget balÃ­ÄkÅ¯, bohuÅ¾el nepomÃ¡hÃ¡ ani jedno podmÃ­nÄ›nÃ­ pomocÃ­ Condition.
+         Proto nepouÅ¾Ã­vÃ¡me Directory.Build.targets,  kterÃ½ by se automaticky pouÅ¾il pro vÅ¡echny projekty,
+         ale do projektÅ¯ importujeme tento NuGet.targets. -->
     <PackageReference Include="Microsoft.SourceLink.Vsts.Git" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
   </ItemGroup>
 

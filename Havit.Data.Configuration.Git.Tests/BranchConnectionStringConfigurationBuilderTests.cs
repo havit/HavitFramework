@@ -1,4 +1,4 @@
-using System.Configuration;
+﻿using System.Configuration;
 using System.Linq;
 using Havit.Data.Configuration.Git;
 using Havit.Data.Configuration.Git.Core;

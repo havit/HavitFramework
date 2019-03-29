@@ -1,32 +1,32 @@
-namespace Havit.GoPay.Codebooks
+ï»¿namespace Havit.GoPay.Codebooks
 {
 	/// <summary>
-	/// Nastavení jazyka platební brány
+	/// NastavenÃ­ jazyka platebnÃ­ brÃ¡ny
 	/// </summary>
 	public enum GoPayLanguage
 	{
 		/// <summary>
-		/// Èeština
+		/// ÄŒeÅ¡tina
 		/// </summary>
 		CS,
 
 		/// <summary>
-		/// Angliètina
+		/// AngliÄtina
 		/// </summary>
 		EN,
 
 		/// <summary>
-		/// Slovenština
+		/// SlovenÅ¡tina
 		/// </summary>
 		SK,
 
 		/// <summary>
-		/// Nìmèina
+		/// NÄ›mÄina
 		/// </summary>
 		DE,
 
 		/// <summary>
-		/// Ruština
+		/// RuÅ¡tina
 		/// </summary>
 		RU
 	}

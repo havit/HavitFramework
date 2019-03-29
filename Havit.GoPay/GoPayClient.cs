@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -39,7 +39,7 @@ namespace Havit.GoPay
 		public GoPayClient(HttpClient httpClient)
 		{
 			Contract.Requires<ArgumentNullException>(httpClient != null, nameof(httpClient));
-			Contract.Requires<ArgumentException>(httpClient.BaseAddress != null, "HttpClient nemá nastavenu BaseAddress.");
+			Contract.Requires<ArgumentException>(httpClient.BaseAddress != null, "HttpClient nemÃ¡ nastavenu BaseAddress.");
 
 			this.httpClient = httpClient;
 
@@ -50,10 +50,10 @@ namespace Havit.GoPay
 		}
 
 		/// <summary>
-		/// Získání pøístupového tokenu
+		/// ZÃ­skÃ¡nÃ­ pÅ™Ã­stupovÃ©ho tokenu
 		/// </summary>
-		/// <param name="clientId">Identifikátor klienta</param>
-		/// <param name="clientSecret">Tajnı kód klienta</param>
+		/// <param name="clientId">IdentifikÃ¡tor klienta</param>
+		/// <param name="clientSecret">TajnÃ½ kÃ³d klienta</param>
 		/// <param name="scope">Scope</param>
 		/// <returns>GoPayResponse</returns>
 		public virtual GoPayResponse GetToken(string clientId, string clientSecret, GoPayPaymentScope scope)
@@ -79,7 +79,7 @@ namespace Havit.GoPay
 		}
 
 		/// <summary>
-		/// Vytvoøení platby
+		/// VytvoÅ™enÃ­ platby
 		/// </summary>
 		/// <param name="request">Request</param>
 		/// <returns>GoPayResponse</returns>
@@ -90,10 +90,10 @@ namespace Havit.GoPay
 		}
 
 		/// <summary>
-		/// Získání platby
+		/// ZÃ­skÃ¡nÃ­ platby
 		/// </summary>
-		/// <param name="paymentId">Identifikátor platby</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="paymentId">IdentifikÃ¡tor platby</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public GoPayResponse GetPayment(long paymentId, string accessToken)
 		{
@@ -101,11 +101,11 @@ namespace Havit.GoPay
 		}
 
 		/// <summary>
-		/// Vrácení platby
+		/// VrÃ¡cenÃ­ platby
 		/// </summary>
-		/// <param name="paymentId">Identifikátor platby</param>
-		/// <param name="amount">èástka</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="paymentId">IdentifikÃ¡tor platby</param>
+		/// <param name="amount">ÄÃ¡stka</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public GoPayResponse RefundPayment(long paymentId, long amount, string accessToken)
 		{
@@ -130,8 +130,8 @@ namespace Havit.GoPay
 		/// <summary>
 		/// CancelRecurrentPayment
 		/// </summary>
-		/// <param name="paymentId">Identifikátor platby</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="paymentId">IdentifikÃ¡tor platby</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CancelRecurrentPayment(long paymentId, string accessToken)
 		{
@@ -141,8 +141,8 @@ namespace Havit.GoPay
 		/// <summary>
 		/// CancelPreauthorizedPayment
 		/// </summary>
-		/// <param name="paymentId">Identifikátor platby</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="paymentId">IdentifikÃ¡tor platby</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CancelPreauthorizedPayment(long paymentId, string accessToken)
 		{
@@ -152,8 +152,8 @@ namespace Havit.GoPay
 		/// <summary>
 		/// CapturePayment
 		/// </summary>
-		/// <param name="paymentId">Identifikátor platby</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="paymentId">IdentifikÃ¡tor platby</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public GoPayResponse CapturePayment(long paymentId, string accessToken)
 		{
@@ -163,8 +163,8 @@ namespace Havit.GoPay
 		/// <summary>
 		/// CapturePaymentAsync
 		/// </summary>
-		/// <param name="paymentId">Identifikátor platby</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="paymentId">IdentifikÃ¡tor platby</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public async Task<GoPayResponse> CapturePaymentAsync(long paymentId, string accessToken)
 		{
@@ -175,7 +175,7 @@ namespace Havit.GoPay
 		/// GetAllowedPaymentMethods
 		/// </summary>
 		/// <param name="goId">goId</param>
-		/// <param name="accessToken">Pøístupovı token</param>
+		/// <param name="accessToken">PÅ™Ã­stupovÃ½ token</param>
 		/// <returns>GoPayResponse</returns>
 		public GoPayResponse GetAllowedPaymentMethods(long goId, string accessToken)
 		{

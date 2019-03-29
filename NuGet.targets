@@ -1,0 +1,39 @@
+<Project>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>HAVIT</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</PackageIconUrl>
+
+    <!-- Jako default nebudeme dávat content do balíèkù (staèí ukliknutí a máme content v nuget balíèku).
+		 V projektech, ve kterých content do nuget balíèku chceme, si jej povolíme. -->
+    <IncludeContentInPack>false</IncludeContentInPack>
+  </PropertyGroup>
+
+  <!-- SourceLink -->
+  <PropertyGroup>
+    <!-- Source: https://github.com/dotnet/sourcelink/#using-sourcelink -->
+    <!-- Optional: Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Optional: Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Optional: Include the PDB in the built .nupkg -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Pokud se tento øádek dostane do WebForms projektu, rozbije restorování nuget balíèkù, bohužel nepomáhá ani jedno podmínìní pomocí Condition.
+         Proto nepoužíváme Directory.Build.targets,  který by se automaticky použil pro všechny projekty,
+         ale do projektù importujeme tento NuGet.targets. -->
+    <PackageReference Include="Microsoft.SourceLink.Vsts.Git" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Publish NuGet -->
+  <PropertyGroup>
+    <NuGetPublishFolder Condition="'$(NuGetPublishFolder)' == ''">PublicNuGets</NuGetPublishFolder>
+    <PackageOutputPath Condition="'$(PublishDirectory)' != ''">$(PublishDirectory)\$(NuGetPublishFolder)</PackageOutputPath>
+  </PropertyGroup>
+  <!-- /Publish NuGet -->
+
+</Project>

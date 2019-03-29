@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>2.0.1</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Retrieves current git working tree branch and sets it into connection strings (not intended to be used in projects directly)</Description>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions - Retrieves current git working tree branch and sets it into connection strings (not intended to be used in projects directly)</Description>
   </PropertyGroup>
 </Project>

@@ -82,7 +82,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 	ProjectSection(SolutionItems) = preProject
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		Directory.Build.props = Directory.Build.props
-		Directory.Build.targets = Directory.Build.targets
+		NuGet.targets = NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{345552D1-56B8-41F1-9513-AD2F31D2F985}"
@@ -224,7 +224,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsoleApp", "TestConso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Core", "Havit.Core\Havit.Core.csproj", "{9F542D56-262C-4569-96FD-84AD9AA7B381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.NuGetPackage", "Havit.NuGetPackage\Havit.NuGetPackage.csproj", "{3FDD2013-1F21-4645-90A5-938649958734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.NuGetPackage", "Havit.NuGetPackage\Havit.NuGetPackage.csproj", "{3FDD2013-1F21-4645-90A5-938649958734}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Core.Tests", "Havit.Core.Tests\Havit.Core.Tests.csproj", "{48BA6236-3B42-41AB-AC48-7F977E85863E}"
 EndProject

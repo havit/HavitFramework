@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <!-- NuGet -->
+  <!-- Glimpse ke obsolete, již nepublikujeme nové verze. -->
+  <!--<Import Project="../NuGet.targets"/>-->
   <PropertyGroup>
-    <!-- Glimpse ke obsolete, již nepublikujeme nové verze. -->
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageVersion>1.7.1</PackageVersion>
     <IncludeContentInPack>true</IncludeContentInPack>
     <Description>HAVIT .NET Framework Extensions - DbConnector extension for Glimpse</Description>

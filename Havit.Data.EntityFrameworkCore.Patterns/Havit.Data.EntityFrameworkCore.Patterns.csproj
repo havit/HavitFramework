@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>2.0.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	<LangVersion>latest</LangVersion>

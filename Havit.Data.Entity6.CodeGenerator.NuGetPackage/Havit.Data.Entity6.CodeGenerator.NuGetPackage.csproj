@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageVersion>2.0.1</PackageVersion>
 	<PackageId>Havit.Data.Entity6.CodeGenerator</PackageId>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>

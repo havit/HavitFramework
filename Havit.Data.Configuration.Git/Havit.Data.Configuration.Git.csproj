@@ -2,20 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>2.0.1</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Applies git branch into connection strings (for classic ASP.NET projects with System.Configuration)</Description>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions - Applies git branch into connection strings (for classic ASP.NET projects with System.Configuration)</Description>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.Configuration.Git.Core\Havit.Data.Configuration.Git.Core.csproj" />
   </ItemGroup>

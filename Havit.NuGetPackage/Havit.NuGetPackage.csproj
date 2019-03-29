@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Havit</PackageId>
     <PackageVersion>1.9.0</PackageVersion>
     <NuGetPublishFolder>PrivateNuGets</NuGetPublishFolder>

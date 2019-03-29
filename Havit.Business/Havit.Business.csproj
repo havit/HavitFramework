@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net46</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>net46</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>2.0.1</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Business Class Library</Description>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions - Business Class Library</Description>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data\Havit.Data.csproj" />
     <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />

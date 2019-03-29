@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net46</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>net46</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-  
+
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageVersion>2.0.1</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Web Class Library for HAVIT Business Layer</Description>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions - Web Class Library for HAVIT Business Layer</Description>
   </PropertyGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
-	<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
+    <ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
+    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-	<Reference Include="System.Web" Pack="false" />
+    <Reference Include="System.Web" Pack="false" />
   </ItemGroup>
 
 </Project>

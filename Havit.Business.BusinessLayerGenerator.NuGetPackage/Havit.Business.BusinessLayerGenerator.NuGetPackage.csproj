@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<!-- BLG, přestože sám je implementován v .NET Frameworku 4.7.1 chceme umožnit nainstalovat i do projektů targetující starší frameworky. -->
+    <!-- BLG, přestože sám je implementován v .NET Frameworku 4.7.1 chceme umožnit nainstalovat i do projektů targetující starší frameworky. -->
     <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
 
   <!-- NuGet -->
+  <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageId>Havit.Business.BLGenerator</PackageId>
-	<PackageVersion>2.0.1</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
-	<!-- Publikujeme výstup buildu jiného projektu. -->
-	<IncludeBuildOutput>false</IncludeBuildOutput>
-	<!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
-	<IncludeContentInPack>true</IncludeContentInPack>
+    <PackageId>Havit.Business.BLGenerator</PackageId>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
+    <!-- Publikujeme výstup buildu jiného projektu. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
+    <IncludeContentInPack>true</IncludeContentInPack>
   </PropertyGroup>
-  
+
   <ItemGroup>
-	<Content Include="..\Havit.Business.BusinessLayerGenerator\bin\$(Configuration)\net471\**">
-	  <Pack>true</Pack>
-	  <PackagePath>tools\BLG</PackagePath>
-	</Content>
+    <Content Include="..\Havit.Business.BusinessLayerGenerator\bin\$(Configuration)\net471\**">
+      <Pack>true</Pack>
+      <PackagePath>tools\BLG</PackagePath>
+    </Content>
   </ItemGroup>
-  
+
 </Project>

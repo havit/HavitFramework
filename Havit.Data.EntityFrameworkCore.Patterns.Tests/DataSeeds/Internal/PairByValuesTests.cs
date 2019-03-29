@@ -63,5 +63,29 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds.Internal
 			// Act + Assert
 			Assert.AreEqual("1", item.ToString());
 		}
-	}
+
+        [TestMethod]
+        public void PairByValues_ToString_SupportsNullInData()
+        {
+            // Arrange + Act
+            string result = new PairByValues(new object[] { null }).ToString();
+            
+            // Assert
+            Assert.AreEqual("null", result);
+        }
+
+        /// <summary>
+        /// Bug 43592: Seedování dat se složeným klíčem, pokud je jedna z hodnot null
+        /// </summary>
+        [TestMethod]
+        public void PairByValues_GetHashCode_SupportsNullInData()
+        {
+            // Arrange + Act
+            int hashCode = new PairByValues(new object[] { null }).GetHashCode();
+
+            // Assert
+            // no exception was thown
+        }
+
+    }
 }

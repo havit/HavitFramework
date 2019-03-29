@@ -27,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal
 
 		public override int GetHashCode()
 		{
-			return Data.Aggregate(0, (value, item) => value ^ item.GetHashCode());
+			return Data.Aggregate(0, (value, item) => value ^ (item?.GetHashCode() ?? 0));
 		}
 
 		public override string ToString()

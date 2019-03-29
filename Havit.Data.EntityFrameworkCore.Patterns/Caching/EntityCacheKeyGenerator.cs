@@ -19,7 +19,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        /// <param name="dbContextFactory"></param>
         public EntityCacheKeyGenerator(IDbContextFactory dbContextFactory)
         {
             typeToCacheKeyCoreMapping = GetLazyDictionary(dbContextFactory);

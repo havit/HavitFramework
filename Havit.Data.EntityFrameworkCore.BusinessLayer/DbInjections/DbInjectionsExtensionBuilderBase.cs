@@ -15,7 +15,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 	public abstract class DbInjectionsExtensionBuilderBase<TBuilder>
 		where TBuilder : DbInjectionsExtensionBuilderBase<TBuilder>
 	{
-		/// <inheritdoc />
+		/// <summary>
+        /// Konstruktor.
+        /// </summary>
 		protected DbInjectionsExtensionBuilderBase(DbContextOptionsBuilder optionsBuilder)
 		{
 			Contract.Assert<ArgumentNullException>(optionsBuilder != null);

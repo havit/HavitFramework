@@ -12,7 +12,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 	/// </summary>
 	public class DbInjectionsExtensionBuilder : DbInjectionsExtensionBuilderBase<DbInjectionsExtensionBuilder>
 	{
-		/// <inheritdoc />
+		/// <summary>
+        /// Konstruktor.
+        /// </summary>
 		public DbInjectionsExtensionBuilder(DbContextOptionsBuilder optionsBuilder) 
 			: base(optionsBuilder)
 		{

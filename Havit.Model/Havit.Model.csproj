@@ -11,6 +11,5 @@
     <PackageVersion>2.0.1</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Model Class Library</Description>
   </PropertyGroup>
-  <Import Project="../NuGet.targets" />
 
 </Project>

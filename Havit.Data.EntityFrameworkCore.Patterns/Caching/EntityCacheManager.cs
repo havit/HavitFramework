@@ -272,7 +272,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		{
 			if (cacheService.SupportsCacheDependencies)
 			{
-				cacheService.Remove(entityCacheDependencyManager.GetSaveCacheDependencyKey(entityType, entityKey));
+				cacheService.Remove(entityCacheDependencyManager.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
 			}
 		}
 
@@ -280,7 +280,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		{
 			if (cacheService.SupportsCacheDependencies)
 			{
-				cacheService.Remove(entityCacheDependencyManager.GetAnySaveCacheDependencyKey(entityType, false));
+				cacheService.Remove(entityCacheDependencyManager.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
 			}
 		}
     }

@@ -22,10 +22,17 @@ namespace Havit.Web.Management
 		private readonly CultureInfo _currentCulture;
 		private readonly CultureInfo _currentUiCulture;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		[Obsolete]		
+        private readonly string _requestInfo_HttpMethod = String.Empty;
+        private readonly string _requestInfo_UrlReferrer = String.Empty;
+        private readonly string _requestInfo_UserAgent = String.Empty;
+        private readonly string _userInfo_IdentityName = String.Empty;
+        private readonly string _userInfo_IsAuthenticated = String.Empty;
+        private readonly string _userInfo_AuthenticationType = String.Empty;
+
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        [Obsolete]		
 		public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, null)
 		{
 		}
@@ -37,10 +44,21 @@ namespace Havit.Web.Management
 			: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
 		{
 			this._currentHttpContext = currentHttpContext;
-			if ((currentHttpContext != null) && (currentHttpContext.ApplicationInstance != null))
-			{
-				this._currentApplicationInstanceType = currentHttpContext.ApplicationInstance.GetType();
-			}
+            if (currentHttpContext != null)
+            {
+                _requestInfo_HttpMethod = GetValueWithExceptionHandling(() => currentHttpContext.Request.HttpMethod);
+                _requestInfo_UrlReferrer = GetValueWithExceptionHandling(() => currentHttpContext.Request.UrlReferrer?.ToString() ?? String.Empty);
+                _requestInfo_UserAgent = GetValueWithExceptionHandling(() => currentHttpContext.Request.UserAgent ?? String.Empty);
+                _userInfo_IdentityName = GetValueWithExceptionHandling(() => currentHttpContext.User.Identity.Name ?? String.Empty);
+                _userInfo_IsAuthenticated = GetValueWithExceptionHandling(() => currentHttpContext.User.Identity.IsAuthenticated.ToString() ?? String.Empty);
+                _userInfo_AuthenticationType = GetValueWithExceptionHandling(() => currentHttpContext.User.Identity.AuthenticationType ?? String.Empty);
+
+                if (currentHttpContext.ApplicationInstance != null)
+			    {
+                    this._currentApplicationInstanceType = currentHttpContext.ApplicationInstance.GetType();
+                }
+            }
+
 			_currentCulture = CultureInfo.CurrentCulture;
 			_currentUiCulture = CultureInfo.CurrentUICulture;
 		}
@@ -134,81 +152,13 @@ namespace Havit.Web.Management
 		{
 			sb.AppendLine("    Request URL: " + requestInformation.RequestUrl);
 			sb.AppendLine("    Request path: " + requestInformation.RequestPath);
-
-			if (_currentHttpContext != null)
-			{
-				string httpMethod;
-				try
-				{
-					httpMethod = _currentHttpContext.Request.HttpMethod;
-				}
-				catch
-				{
-					httpMethod = ExceptionText;
-				}
-				sb.AppendLine("    Request verb: " + httpMethod);
-			}
-
+			sb.AppendLine("    Request verb: " + _requestInfo_HttpMethod);
 			sb.AppendLine("    User host address: " + requestInformation.UserHostAddress);
-
-			string userName;
-			try
-			{
-				userName = requestInformation.Principal.Identity.Name;
-			}
-			catch
-			{
-				userName = ExceptionText;
-			}
-			sb.AppendLine("    User: " + userName);
-
-			string isAuthenticated;
-			try
-			{
-				isAuthenticated = requestInformation.Principal.Identity.IsAuthenticated.ToString();
-			}
-			catch
-			{
-				isAuthenticated = ExceptionText;
-			}
-			sb.AppendLine("    Is authenticated: " + isAuthenticated);
-
-			string authenticationType;
-			try
-			{
-				authenticationType = requestInformation.Principal.Identity.AuthenticationType;
-			}
-			catch
-			{
-				authenticationType = ExceptionText;
-			}
-			sb.AppendLine("    Authentication type: " + authenticationType);
-
-			if (_currentHttpContext != null)
-			{
-				string urlReferrer;
-
-				try
-				{
-					urlReferrer = _currentHttpContext.Request.UrlReferrer.ToString();
-				}
-				catch
-				{
-					urlReferrer = ExceptionText;
-				}
-				sb.AppendLine("    Referrer: " + urlReferrer);
-
-				string userAgent;
-				try
-				{
-					userAgent = _currentHttpContext.Request.UserAgent;
-				}
-				catch
-				{
-					userAgent = ExceptionText;
-				}
-				sb.AppendLine("    User agent: " + userAgent);
-			}
+			sb.AppendLine("    User: " + _userInfo_IdentityName);
+			sb.AppendLine("    Is authenticated: " + _userInfo_IsAuthenticated);
+			sb.AppendLine("    Authentication type: " + _userInfo_AuthenticationType);
+			sb.AppendLine("    Referrer: " + _requestInfo_UrlReferrer);
+			sb.AppendLine("    User agent: " + _requestInfo_UserAgent);
 		}
 
 		/// <summary>
@@ -246,5 +196,20 @@ namespace Havit.Web.Management
 				sb.AppendLine(exception.ToString());
 			}
 		}
+
+        /// <summary>
+        /// Získá hodnotu z dané funkce, pokud dojde k výjimce, vrací ExceptionText.
+        /// </summary>
+        private string GetValueWithExceptionHandling(Func<string> valueFunc)
+        {
+            try
+            {
+                return valueFunc();
+            }
+            catch
+            {
+                return ExceptionText;
+            }
+        }
 	}
 }

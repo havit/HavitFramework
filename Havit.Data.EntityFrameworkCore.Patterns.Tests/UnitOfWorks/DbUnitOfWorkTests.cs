@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
@@ -26,8 +27,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			// Act
 			dbUnitOfWork.Commit();
@@ -45,8 +47,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			// Act
 			await dbUnitOfWork.CommitAsync();
@@ -62,8 +65,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			// Arrange
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			Language language = new Language();
 			language.Culture = "";
@@ -85,8 +89,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			// Arrange
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			Language language = new Language();
 			language.Culture = "";
@@ -108,8 +113,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			// Arrange
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			// Act
 			Language language = new Language();
@@ -132,8 +138,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			// Arrange
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			// Act
 			Language language = new Language();
@@ -158,8 +165,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			mockDbUnitOfWork.CallBase = true;
 
 			mockDbContext.Setup(m => m.SaveChanges()).Callback(() =>
@@ -186,7 +194,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
 
-			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			mockDbUnitOfWork.CallBase = true;
 
 			mockDbContext.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))
@@ -215,8 +223,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			Language language = new Language();
 
 			// Act
@@ -235,8 +244,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			Language language = new Language { Id = 100 };
 
 			// Act
@@ -256,6 +266,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
 			using (TestDbContext testDbContext = new TestDbContext())
 			{
@@ -270,7 +281,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 				Language language = testDbContext.Set<Language>().Single();
 				ItemWithDeleted itemWithDeleted = testDbContext.Set<ItemWithDeleted>().Single();
 
-				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 				// Act
 				dbUnitOfWork.AddForDelete(language);
@@ -310,8 +321,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 				SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
 				Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 				Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+				IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+				DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 				// Act
 				dbUnitOfWork.AddForUpdate(language2);
@@ -341,8 +353,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 			// Act
 			dbUnitOfWork.AddRangeForInsert(new[] { new ItemWithDeleted(), new ItemWithDeleted(), new ItemWithDeleted() });
@@ -361,8 +374,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 
 			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
 			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+			IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
 
-			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, new NoCachingEntityCacheManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			dbUnitOfWork.RegisterAfterCommitAction(() => counter += 1);
 			Debug.Assert(counter == 0);
 
@@ -373,5 +387,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			dbUnitOfWork.Commit();
 			Assert.AreEqual(1, counter); // nedošlo k zavolání zaregistrované akce, registrace byla zrušena
 		}
+
+		private IEntityCacheDependencyManager CreateEntityCacheDependencyManager()
+		{
+			Mock<IEntityCacheDependencyManager> mockEntityCacheDependencyManager = new Mock<IEntityCacheDependencyManager>(MockBehavior.Strict);
+			mockEntityCacheDependencyManager.Setup(m => m.InvalidateDependencies(It.IsAny<Changes>()));
+
+			return mockEntityCacheDependencyManager.Object;
+		}
+
 	}
 }

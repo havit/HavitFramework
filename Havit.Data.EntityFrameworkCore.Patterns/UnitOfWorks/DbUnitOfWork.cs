@@ -36,14 +36,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		protected ISoftDeleteManager SoftDeleteManager { get; private set; }
 
 		/// <summary>
-		/// EntityCacheManager používaný repository.
+		/// EntityCacheManager používaný v tomto Unit of Worku.
 		/// </summary>
-		protected IEntityCacheManager EntityCacheManager { get; private set; }			
+		protected IEntityCacheManager EntityCacheManager { get; private set; }
+
+		/// <summary>
+		/// EntityCacheDependencyManager používaný v tomto Unit of Worku.
+		/// </summary>
+		protected IEntityCacheDependencyManager EntityCacheDependencyManager { get; private set; }
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner)
+		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IEntityCacheDependencyManager entityCacheDependencyManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner)
 		{
 			Contract.Requires<ArgumentNullException>(dbContext != null, nameof(dbContext));
 			Contract.Requires<ArgumentNullException>(softDeleteManager != null, nameof(softDeleteManager));
@@ -51,6 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 			DbContext = dbContext;
 			SoftDeleteManager = softDeleteManager;
 			EntityCacheManager = entityCacheManager;
+			EntityCacheDependencyManager = entityCacheDependencyManager;
 			this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
 			this.entityValidationRunner = entityValidationRunner;
 		}
@@ -267,31 +273,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		/// </summary>
 		protected virtual void InvalidateEntityCache(Changes allKnownChanges)
 		{
-			IEntityCacheManager cacheManager = this.EntityCacheManager;
-            
-            if (allKnownChanges.Inserts.Length > 0)
-            {
-                foreach (var insertedEntity in allKnownChanges.Inserts)
-                {
-                    cacheManager.InvalidateEntity(ChangeType.Insert, insertedEntity);
-                }
-            }
-
-            if (allKnownChanges.Updates.Length > 0)
-            {
-                foreach (var updatedEntity in allKnownChanges.Updates)
-                {
-                    cacheManager.InvalidateEntity(ChangeType.Update, updatedEntity);
-                }
-            }
-
-            if (allKnownChanges.Deletes.Length > 0)
-            {
-                foreach (var deletedEntity in allKnownChanges.Deletes)
-                {
-                    cacheManager.InvalidateEntity(ChangeType.Delete, deletedEntity);
-                }
-            }
+			EntityCacheManager.Invalidate(allKnownChanges);
+			EntityCacheDependencyManager.InvalidateDependencies(allKnownChanges);
 		}
 
 	}

@@ -28,15 +28,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			where TEntity : class;
 
 		/// <summary>
-		/// Přijme notifikaci o změně entity a zajistí její invalidaci v cache.
+		/// Přijme notifikaci o změně entit a zajistí jejich invalidaci v cache.
 		/// </summary>
-		/// <remarks>
-		/// Tato metoda není generická (na rozdíl od ostatních), kvůli zamýšlenému použití.
-		/// Pro pohodlné volání této metody z DbUnitOfWork.Commit, kde máme k dispozici jen pole objektů,
-		/// nepoužijeme tedy generikum, abychom nemuseli metodu volat reflexí pro každou entitu.
-		/// </remarks>
-		void InvalidateEntity(ChangeType changeType, object entity);
-
+		void Invalidate(Changes changes);
 
 		/// <summary>
 		/// Pokusí se z cache načíst kolekci dané entity. Pokud je kolekce entity v cache nalezena a vrácena, vrací true. Jinak false. 

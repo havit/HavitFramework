@@ -23,7 +23,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	/// <item>ICacheService zajišťuje uložení do cache.</item>
 	/// <item>IEntityCacheKeyGenerator zajišťuje generování klíče, pod jakým jsou entity registrovány do cache.</item>
 	/// <item>IEntityCacheOptionsGenerator zajišťuje generování cache options, se kterými jsou entity registrovány do cache (umožňuje řešit prioritu nebo sliding expiraci, atp.)</item>
-	/// <item>IEntityCacheDependencyManager zajišťuje získání klíčů pro invalidaci závislých záznamů.</item>
 	/// </list>
 	/// </summary>
 	public class EntityCacheManager : IEntityCacheManager
@@ -32,7 +31,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IEntityCacheSupportDecision entityCacheSupportDecision;
 		private readonly IEntityCacheKeyGenerator entityCacheKeyGenerator;
 		private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
-		private readonly IEntityCacheDependencyManager entityCacheDependencyManager;
 		private readonly IDbContext dbContext;
         private readonly IReferencingCollectionsStore referencingCollectionsStore;
         private readonly IEntityKeyAccessor entityKeyAccessor;
@@ -41,13 +39,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityCacheDependencyManager entityCacheDependencyManager, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingCollectionsStore referencingCollectionsStore)
+		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingCollectionsStore referencingCollectionsStore)
 		{
 			this.cacheService = cacheService;
 			this.entityCacheSupportDecision = entityCacheSupportDecision;
 			this.entityCacheKeyGenerator = entityCacheKeyGenerator;
 			this.entityCacheOptionsGenerator = entityCacheOptionsGenerator;
-			this.entityCacheDependencyManager = entityCacheDependencyManager;
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 			this.dbContext = dbContext;
@@ -193,7 +190,43 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc />
-		public void InvalidateEntity(ChangeType changeType, object entity)
+		public void Invalidate(Changes changes)
+		{
+			HashSet<Type> typesToInvalidateGetAll = new HashSet<Type>();
+
+			if (changes.Inserts.Length > 0)
+			{
+				foreach (var insertedEntity in changes.Inserts)
+				{
+					InvalidateEntityWithCollectionsInternal(ChangeType.Insert, insertedEntity, typesToInvalidateGetAll);
+				}
+			}
+
+			if (changes.Updates.Length > 0)
+			{
+				foreach (var updatedEntity in changes.Updates)
+				{
+					InvalidateEntityWithCollectionsInternal(ChangeType.Update, updatedEntity, typesToInvalidateGetAll);
+				}
+			}
+
+			if (changes.Deletes.Length > 0)
+			{
+				foreach (var deletedEntity in changes.Deletes)
+				{
+					InvalidateEntityWithCollectionsInternal(ChangeType.Delete, deletedEntity, typesToInvalidateGetAll);
+				}
+			}
+
+			// invalidaci GetAll uděláme jen jednou pro každý typ (omezíme tak množství zpráv předávaných při případné distribuované invalidaci)
+			// zároveň máme zajištěno, že ji provádíme jen pro podporované typy (tj. neprovádíme pro M:N třídy)
+			foreach (Type typeToInvalidateGetAll in typesToInvalidateGetAll)
+			{
+				InvalidateGetAllInternal(typeToInvalidateGetAll);
+			}
+		}
+
+		private void InvalidateEntityWithCollectionsInternal(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateGetAll)
 		{
 			Contract.Requires(entity != null);
 
@@ -222,14 +255,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
                 }
 
                 InvalidateCollectionsInternal(entityType, entity);
-                InvalidateGetAllInternal(entityType);
-
-                if (changeType != ChangeType.Insert)
-                {
-                    // na nových záznamech nemohou být závislosti, neinvalidujeme
-                    InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue);
-                }
-                InvalidateAnySaveCacheDependencyKeyInternal(entityType);
+				typesToInvalidateGetAll.Add(entityType);
             }
 		}
 
@@ -267,21 +293,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
                 cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
             }
         }
-
-		private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey)
-		{
-			if (cacheService.SupportsCacheDependencies)
-			{
-				cacheService.Remove(entityCacheDependencyManager.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
-			}
-		}
-
-		private void InvalidateAnySaveCacheDependencyKeyInternal(Type entityType)
-		{
-			if (cacheService.SupportsCacheDependencies)
-			{
-				cacheService.Remove(entityCacheDependencyManager.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
-			}
-		}
-    }
+	}
 }

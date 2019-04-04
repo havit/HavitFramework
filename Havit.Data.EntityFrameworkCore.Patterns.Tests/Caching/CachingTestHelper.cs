@@ -21,8 +21,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
                     IEntityCacheSupportDecision entityCacheSupportDecision = null,
                     IEntityCacheOptionsGenerator entityCacheOptionsGenerator = null,
                     IEntityCacheKeyGenerator entityCacheKeyGenerator = null,
-                    ICacheService cacheService = null,
-                    IEntityCacheDependencyManager entityCacheDependencyManager = null)
+                    ICacheService cacheService = null)
         {
             if (dbContext == null)
             {
@@ -49,11 +48,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
                 cacheService = new NullCacheService();
             }
 
-            if (entityCacheDependencyManager == null)
-            {
-                entityCacheDependencyManager = new EntityCacheDependencyManager(cacheService);
-            }
-
             IPropertyLambdaExpressionManager propertyLambdaExpressionManager = new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder());
             IReferencingCollectionsStore referencingCollectionStore = new ReferencingCollectionsStore(dbContext.CreateDbContextFactory());
 
@@ -62,11 +56,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
                 entityCacheSupportDecision,
                 entityCacheKeyGenerator,
                 entityCacheOptionsGenerator,
-                entityCacheDependencyManager,
                 new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()),
                 propertyLambdaExpressionManager,
                 dbContext,
                 referencingCollectionStore);
         }
-    }
+	}
 }

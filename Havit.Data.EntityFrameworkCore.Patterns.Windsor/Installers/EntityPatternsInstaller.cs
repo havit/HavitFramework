@@ -132,7 +132,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton(),
 				Component.For<IEntityKeyAccessor>().ImplementedBy<DbEntityKeyAccessor>().LifestyleSingleton(),
 				Component.For<IReferencingCollectionsStore>().ImplementedBy<ReferencingCollectionsStore>().LifestyleSingleton(),
-				Component.For<ICollectionTargetTypeStore>().ImplementedBy<CollectionTargetTypeStore>().LifestyleSingleton()                
+				Component.For<ICollectionTargetTypeStore>().ImplementedBy<CollectionTargetTypeStore>().LifestyleSingleton(),
+				Component.For<IEntityCacheDependencyKeyGenerator>().ImplementedBy<EntityCacheDependencyKeyGenerator>().LifestyleSingleton(),
+				Component.For<IEntityCacheDependencyManager>().ImplementedBy<EntityCacheDependencyManager>().LifestyleSingleton()
             );
 			return this;
 		}

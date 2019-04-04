@@ -20,7 +20,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers.Caching
 			RegisterEntityCacheOptionsGenerator(container);
 			RegisterEntityCacheKeyGenerator(container);
 			RegisterEntityCacheSupportDecision(container);
-			RegisterEntityCacheDependencyManager(container);
 		}
 
 		/// <summary>
@@ -45,14 +44,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers.Caching
 		protected virtual void RegisterEntityCacheSupportDecision(IWindsorContainer container)
 		{
 			container.Register(Component.For<IEntityCacheSupportDecision>().ImplementedBy<AnnotationsEntityCacheSupportDecision>().LifestyleSingleton());
-		}
-
-		/// <summary>
-		/// Zaregistruje službu, která zajišťuje možnost invalidování závislých záznamů při změně cachovaného objektu.
-		/// </summary>
-		protected virtual void RegisterEntityCacheDependencyManager(IWindsorContainer container)
-		{
-			container.Register(Component.For<IEntityCacheDependencyManager>().ImplementedBy<EntityCacheDependencyManager>().LifestyleSingleton());
 		}
 	}
 }

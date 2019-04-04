@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -241,7 +242,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
         }
         
         [TestMethod]
-		public void EntityCacheManager_InvalidateEntity_RemovesEntityOnUpdate()
+		public void EntityCacheManager_InvalidateEntity_RemovesEntityAndAllKeysOnUpdate()
 		{
             // Arrange
             DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
@@ -253,22 +254,32 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
 			var entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
-			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
+			string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
+			string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
                 dbContext: dbContext,
                 cacheService: cacheServiceMock.Object,
                 entityCacheKeyGenerator: entityCacheKeyGenerator);
 
+			Changes changes = new Changes
+			{
+				Inserts = new object[0],
+				Updates = new object[] { loginAccount },
+				Deletes = new object[0]
+			};
+
 			// Act
-			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Update, loginAccount);
+			entityCacheManager.Invalidate(changes);
 
 			// Assert
-			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Once); // volá se ještě pro AllKeys, tak musíme kontrolovat jen klíč pro entitu
+			cacheServiceMock.Verify(m => m.Remove(entityCacheKey), Times.Once);
+			cacheServiceMock.Verify(m => m.Remove(allKeysCacheKey), Times.Once);
+			cacheServiceMock.Verify(m => m.Remove(It.IsAny<string>()), Times.Exactly(2)); // a nic víc
 		}
         
 		[TestMethod]
-		public void EntityCacheManager_InvalidateEntity_DoesNotRemoveEntityOnInsert()
+		public void EntityCacheManager_InvalidateEntity_DoesNotRemoveEntityButRemovesAllKeysOnInsert()
 		{
             // Arrange
             DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
@@ -280,49 +291,31 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
 			var entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
-			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
+			string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
+			string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
                 dbContext: dbContext,
                 cacheService: cacheServiceMock.Object,
                 entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-			// Act
-			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Insert, loginAccount);
-
-			// Assert
-			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Never); // volá se ještě pro AllKeys, tak musíme kontrolovat jen klíč pro entitu
-		}
-        
-		[TestMethod]
-		public void EntityCacheManager_InvalidateEntity_RemovesDependencies()
-		{
-            // Arrange
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-            LoginAccount loginAccount = new LoginAccount { Id = 1 };
-            dbContext.Attach(loginAccount);
-
-            Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
-			cacheServiceMock.Setup(m => m.Contains(It.IsAny<string>())).Returns(false);
-			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
-			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
-			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(true);
-
-			EntityCacheDependencyManager entityCacheDependencyManager = new EntityCacheDependencyManager(cacheServiceMock.Object);
-			string cacheKey = entityCacheDependencyManager.GetSaveCacheDependencyKey(typeof(LoginAccount), loginAccount.Id);
-
-			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                cacheService: cacheServiceMock.Object,
-                entityCacheDependencyManager: entityCacheDependencyManager);
+			Changes changes = new Changes
+			{
+				Inserts = new object[] { loginAccount },
+				Updates = new object[0],
+				Deletes = new object[0]
+			};
 
 			// Act
-			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Update, loginAccount);
+			entityCacheManager.Invalidate(changes);
 
 			// Assert
-			cacheServiceMock.Verify(m => m.Remove(cacheKey), Times.Once); // volá se ještě pro entitu a AllKeys, tak musíme kontrolovat jen klíč pro entitu
+			cacheServiceMock.Verify(m => m.Remove(entityCacheKey), Times.Never);
+			cacheServiceMock.Verify(m => m.Remove(allKeysCacheKey), Times.Once);
+			cacheServiceMock.Verify(m => m.Remove(It.IsAny<string>()), Times.Once); // a nic víc
+
 		}
-       
+
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_SupportsManyToMany()
 		{
@@ -333,8 +326,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
             EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
 
+			Changes changes = new Changes
+			{
+				Inserts = new object[0],
+				Updates = new object[0],
+				Deletes = new object[] { membership }
+			};
 			// Act
-			entityCacheManager.InvalidateEntity(Patterns.UnitOfWorks.ChangeType.Delete, membership);
+			entityCacheManager.Invalidate(changes);
 
 			// Assert
 			// no exception was thrown

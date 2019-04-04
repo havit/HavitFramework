@@ -23,14 +23,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <summary>
-		/// Nic nedělá, neinvaliduje.
-		/// </summary>
-		public void InvalidateEntity(ChangeType changeType, object entity)
-		{
-			// NOOP
-		}
-
-		/// <summary>
 		/// Nic nedělá, neukládá do cache.
 		/// </summary>
 		public void StoreEntity<TEntity>(TEntity entity)
@@ -79,5 +71,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		{
 			// NOOP
 		}
+
+		/// <summary>
+		/// Nic nedělá, neinvaliduje.
+		/// </summary>
+		public void Invalidate(Changes changes)
+		{
+			// NOOP
+		}
+
 	}
 }

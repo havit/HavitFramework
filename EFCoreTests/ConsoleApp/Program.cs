@@ -36,6 +36,7 @@ using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.EFCoreTests.DataLayer.Seeds.Core;
 using Havit.EFCoreTests.DataLayer.Repositories.Security;
 using System.Data.SqlClient;
+using Havit.Data.Patterns.Exceptions;
 
 namespace ConsoleApp1
 {
@@ -49,12 +50,12 @@ namespace ConsoleApp1
 			//GenerateSecurity(100, 10, 3, container);
 			//GenerateAutoBarva(100, container);
 			//DebugModelInfo(container);
-			DebugDataLoader(container);
+			//DebugDataLoader(container);
             //DebugFlagClass(container);
             //DebugTransactions(container);
             //DebugSeeding(container);
 			//DebugSeeding(container); // seed role
-            //DebugCaching(container);
+            DebugCaching(container);
 			//DebugOwnedTypes(container);
 		}
 
@@ -250,50 +251,70 @@ namespace ConsoleApp1
 
 		private static void DebugCaching(IWindsorContainer container)
 		{
-            //// do cache
-            //using (var scope = container.BeginScope())
-            //{
-            //	var dbContext = container.Resolve<IDbContext>();
-            //	var role = dbContext.Set<Role>().Find(1);
-            //	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
-            //}
+			//// do cache
+			//using (var scope = container.BeginScope())
+			//{
+			//	var dbContext = container.Resolve<IDbContext>();
+			//	var role = dbContext.Set<Role>().Find(1);
+			//	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
+			//}
 
-            //// do cache
-            //using (var scope = container.BeginScope())
-            //{
-            //	var roleRepository = container.Resolve<IRoleRepository>();
-            //	roleRepository.GetObject(1);
-            //}
+			//// do cache
+			//using (var scope = container.BeginScope())
+			//{
+			//	var roleRepository = container.Resolve<IRoleRepository>();
+			//	roleRepository.GetObject(1);
+			//}
 
-            //// z cache
-            //using (var scope = container.BeginScope())
-            //{
-            //	var roleRepository = container.Resolve<IRoleRepository>();
-            //	Role role = roleRepository.GetObject(1);
+			//// z cache
+			//using (var scope = container.BeginScope())
+			//{
+			//	var roleRepository = container.Resolve<IRoleRepository>();
+			//	Role role = roleRepository.GetObject(1);
 
-            //	// invalidace
-            //	role.Name += "0";
+			//	// invalidace
+			//	role.Name += "0";
 
-            //	var unitOfWork = container.Resolve<IUnitOfWork>();
-            //	unitOfWork.Commit();
-            //}
+			//	var unitOfWork = container.Resolve<IUnitOfWork>();
+			//	unitOfWork.Commit();
+			//}
 
-            //// do cache
-            //using (var scope = container.BeginScope())
-            //{
-            //	var roleRepository = container.Resolve<IRoleRepository>();
-            //	roleRepository.GetObject(1);
-            //}
+			//// do cache
+			//using (var scope = container.BeginScope())
+			//{
+			//	var roleRepository = container.Resolve<IRoleRepository>();
+			//	roleRepository.GetObject(1);
+			//}
 
-            // invalidace
-            for (int iteration = 0; iteration < 100; iteration++)
-            {
-                LoginAccount loginAccount = new LoginAccount();
+			// invalidace
+
+			using (var scope = container.BeginScope())
+			{
+				var uow = container.Resolve<IUnitOfWork>();
+				var roleRepository = container.Resolve<IRoleRepository>();
+				Role role;
+				try
+				{
+					role = roleRepository.GetObject(-999);
+					role.Name = "0";
+				}
+				catch (ObjectNotFoundException)
+				{
+					role = new Role { Id = -999, Name = "0" };
+					uow.AddForInsert(role);
+				}
+				uow.Commit();
+			}
+
+			for (int iteration = 0; iteration < 100; iteration++)
+            {                
                 using (var scope = container.BeginScope())
                 {
                     var uow = container.Resolve<IUnitOfWork>();
-                    uow.AddForInsert(loginAccount);
-                    //uow.AddRangeForInsert(Enumerable.Range(1, 1000).Select(roleId => new Membership { LoginAccount = loginAccount, RoleId = roleId }));// peklo, LoginAccountID není nastaveno!
+					var roleRepository = container.Resolve<IRoleRepository>();
+					Role role = roleRepository.GetObject(-999);
+					role.Name = (int.Parse(role.Name) + 1).ToString();
+					uow.AddForUpdate(role);
                     uow.Commit();
                 }
             }

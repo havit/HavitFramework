@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
@@ -247,25 +249,38 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
             else
             {
                 object entityKeyValue = entityKeyValues.Single();
-
-                if (changeType != ChangeType.Insert)
-                {
-                    // nové záznamy nemohou být v cache, neinvalidujeme
-                    InvalidateEntityInternal(entityType, entity, entityKeyValue);
-                }
-
+                    
+                InvalidateEntityInternal(changeType, entityType, entity, entityKeyValue);
                 InvalidateCollectionsInternal(entityType, entity);
 				typesToInvalidateGetAll.Add(entityType);
             }
 		}
 
-		private void InvalidateEntityInternal(Type entityType, object entity, object entityKey)
-		{
-            // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
-            if (entityCacheSupportDecision.ShouldCacheEntity(entity))
+		private void InvalidateEntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey)
+		{			
+			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+			if (entityCacheSupportDecision.ShouldCacheEntity(entity))
             {
-                cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
-            }
+				if (changeType != ChangeType.Insert)
+				{
+					// nové entity nemohou být v cache, neinvalidujeme
+					cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
+				}
+
+				// když už objekt máme, můžeme jej uložit do cache
+				// protože je metoda StoreEntity generická, musíme přes reflexi
+				try
+				{
+					this.GetType()
+						.GetMethod(nameof(StoreEntity))
+						.MakeGenericMethod(entityType)
+						.Invoke(this, new[] { entity });
+				}
+				catch (TargetInvocationException targetInvocationException)
+				{
+					ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+				}
+			}
 		}
 
         private void InvalidateCollectionsInternal(Type entityType, object entity)

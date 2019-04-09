@@ -67,7 +67,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 					var entry = dbContext.GetEntry(result, suppressDetectChanges: true);
 					entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
 					entry.CurrentValues.SetValues(cacheValues); // aby byly naplněny vlastnosti entity
-					dbContext.Set<TEntity>().AttachRange(new TEntity[] { result }); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
+					dbContext.Set<TEntity>().Attach(result); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
 
 					entity = result;
 					return true;
@@ -156,7 +156,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 								{
 									typeof(TPropertyItem).GetProperty(propertyNames[i]).SetValue(instance, entityPropertyMemberKey[i]);
 								}
-								dbSet.AttachRange(new TPropertyItem[] { instance });
+								dbSet.Attach(instance);
 							}
 						}
 						return true;

@@ -48,7 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             if (dataSeedVersion == null)
             {
                 dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
-                dbContext.Set<DataSeedVersion>().AddRange(new[] { dataSeedVersion });
+                dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
             }
             dataSeedVersion.Version = currentState;
             dbContext.SaveChanges();

@@ -44,11 +44,12 @@ namespace ConsoleApp1
 		public static void Main(string[] args)
 		{
 			var container = ConfigureAndCreateWindsorContainer();
-            //UpdateDatabase(container);
-            //GenerateLanguages(1, container);
-            //GenerateSecurity(100, 10, 3, container);
-            //DebugModelInfo(container);
-            DebugDataLoader(container);
+			//UpdateDatabase(container);
+			//GenerateLanguages(1, container);
+			//GenerateSecurity(100, 10, 3, container);
+			//GenerateAutoBarva(100, container);
+			//DebugModelInfo(container);
+			DebugDataLoader(container);
             //DebugFlagClass(container);
             //DebugTransactions(container);
             //DebugSeeding(container);
@@ -60,7 +61,7 @@ namespace ConsoleApp1
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
 			var loggerFactory = new LoggerFactory();
-			// loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
+			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 			//loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -75,7 +76,7 @@ namespace ConsoleApp1
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() }.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromHours(1)))
+			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
 				.RegisterDataLayer(typeof(ILanguageRepository).Assembly)
 				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
@@ -151,6 +152,26 @@ namespace ConsoleApp1
 			}
 		}
 
+		private static void GenerateAutoBarva(int count, IWindsorContainer container)
+		{
+			using (var scope = container.BeginScope())
+			{
+				var dbContext = container.Resolve<IDbContext>();
+				dbContext.Database.Migrate();
+
+				var unitOfWork = container.Resolve<IUnitOfWork>();
+
+				var auta = Enumerable.Range(0, count).Select(i => new Auto
+				{
+					Barva = new Barva()
+				}).ToList();
+
+				unitOfWork.AddRangeForInsert(auta);
+				unitOfWork.Commit();
+			}
+		}
+
+
 
 		private static void DebugDataLoader(IWindsorContainer container)
 		{
@@ -161,8 +182,8 @@ namespace ConsoleApp1
 					var dbContext = container.Resolve<IDbContext>();
 					var dataLoader = container.Resolve<IDataLoader>();
 
-					var loginAccounts = dbContext.Set<LoginAccount>().AsQueryable().Take(3).ToList();
-					dataLoader.LoadAll(loginAccounts, m => m.Memberships).ThenLoad(m => m.Role);
+					var auta = dbContext.Set<Auto>().AsQueryable().ToList();
+					dataLoader.LoadAll(auta, a => a.Barva);
 				}
 			}
 
@@ -187,7 +208,7 @@ namespace ConsoleApp1
 				dbContext.Database.Migrate();
 				FlagClass flagClass = new FlagClass();
 				flagClass.MyFlag = false;
-				dbContext.Set<FlagClass>().AddRange(new FlagClass[] { flagClass });
+				dbContext.Set<FlagClass>().Add(flagClass);
 				dbContext.SaveChanges();
 			}
 		}
@@ -272,7 +293,7 @@ namespace ConsoleApp1
                 {
                     var uow = container.Resolve<IUnitOfWork>();
                     uow.AddForInsert(loginAccount);
-                    uow.AddRangeForInsert(Enumerable.Range(1, 1000).Select(roleId => new Membership { LoginAccount = loginAccount, RoleId = roleId }));// peklo, LoginAccountID není nastaveno!
+                    //uow.AddRangeForInsert(Enumerable.Range(1, 1000).Select(roleId => new Membership { LoginAccount = loginAccount, RoleId = roleId }));// peklo, LoginAccountID není nastaveno!
                     uow.Commit();
                 }
             }

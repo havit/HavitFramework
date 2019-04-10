@@ -250,6 +250,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             dbContext.Attach(loginAccount);
 
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
 			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
@@ -287,6 +288,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             dbContext.Attach(loginAccount);
 
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
 			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 

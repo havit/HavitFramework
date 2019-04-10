@@ -249,14 +249,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
             else
             {
                 object entityKeyValue = entityKeyValues.Single();
-                    
-                InvalidateEntityInternal(changeType, entityType, entity, entityKeyValue);
+
+				InvalidateEntityAndStoreEntityInternal(changeType, entityType, entity, entityKeyValue);
                 InvalidateCollectionsInternal(entityType, entity);
 				typesToInvalidateGetAll.Add(entityType);
             }
 		}
 
-		private void InvalidateEntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey)
+		private void InvalidateEntityAndStoreEntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey)
 		{			
 			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 			if (entityCacheSupportDecision.ShouldCacheEntity(entity))

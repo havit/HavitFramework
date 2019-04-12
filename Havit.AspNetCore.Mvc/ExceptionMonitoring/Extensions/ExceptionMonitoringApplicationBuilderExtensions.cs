@@ -1,20 +1,22 @@
-﻿using Havit.AspNetCore.Mvc.ExceptionMonitoring.Middlewares;
-using Havit.Diagnostics.Contracts;
-using Microsoft.AspNetCore.Builder;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Havit.AspNetCore.Mvc.ExceptionMonitoring.ExceptionHandlers;
+using Havit.AspNetCore.Mvc.ExceptionMonitoring.Middlewares;
+using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
+using Havit.Diagnostics.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 
 // Správný namespace je Microsoft.AspNetCore.Builder!
 
 namespace Microsoft.AspNetCore.Builder
 {
-	/// <summary>
-	/// <see cref="IApplicationBuilder"/> extension methods for the <see cref="ExceptionMonitoringMiddleware"/>.
-	/// </summary>
-	public static class ExceptionMonitoringApplicationBuilderExtensions
+    /// <summary>
+    /// <see cref="IApplicationBuilder"/> extension methods for the <see cref="ExceptionMonitoringMiddleware"/>.
+    /// </summary>
+    public static class ExceptionMonitoringApplicationBuilderExtensions
 	{
 		/// <summary>
 		/// Adds a ExceptionMonitoringMiddleware to your web application pipeline to handle failed requests.
@@ -25,5 +27,21 @@ namespace Microsoft.AspNetCore.Builder
 
 			return app.UseMiddleware<ExceptionMonitoringMiddleware>();
 		}
-	}
+
+        public static IApplicationBuilder UseUnobservedTaskExceptionHandler(this IApplicationBuilder app)
+        {
+            Contract.Requires<ArgumentNullException>(app != null, nameof(app));
+
+            UnobservedTaskExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
+
+            return app;
+        }
+
+        public static IApplicationBuilder UseAppDomainUnhandledExceptionHandler(this IApplicationBuilder app)
+        {
+            AppDomainUnhandledExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
+
+            return app;
+        }
+    }
 }

@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.1</PackageVersion>
+    <PackageVersion>2.0.4</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
   </PropertyGroup>
 

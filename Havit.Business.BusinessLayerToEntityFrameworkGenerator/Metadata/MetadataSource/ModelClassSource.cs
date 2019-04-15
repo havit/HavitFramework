@@ -17,10 +17,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 				.OrderBy(t => t.Name, StringComparer.InvariantCultureIgnoreCase)
 				.ToArray();
 
-			var modelClasses = new List<GeneratedModelClass>(tables.Length);
+            // First pass: discover tables, references, etc.
+			var modelClasses = new Dictionary<string, GeneratedModelClass>(tables.Length);
 			foreach (Table table in tables)
-			{
-				if (table.Name.StartsWith("TulipReports_") || table.Name.StartsWith("__"))
+            {
+                if (table.Name.StartsWith("TulipReports_") || table.Name.StartsWith("__") || table.Name.StartsWith("QRTZ_"))
 				{
 					ConsoleHelper.WriteLineInfo("Ignoring table: {0}", table.Name);
 					continue;
@@ -30,10 +31,20 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata.Metada
 
 				CheckRules(table);
 
-				modelClasses.Add(GetModelClass(table));
+                GeneratedModelClass generatedModelClass = GetModelClass(table);
+                modelClasses.Add(generatedModelClass.Name, generatedModelClass);
 			}
 
-			return modelClasses;
+            // Second pass: store references to target tables in collection properties
+            foreach (GeneratedModelClass modelClass in modelClasses.Values)
+            {
+                foreach (EntityCollectionProperty collectionProperty in modelClass.CollectionProperties)
+                {
+                    collectionProperty.TargetClass = modelClasses[ClassHelper.GetClassName(collectionProperty.TargetTable)];
+                }
+            }
+
+			return modelClasses.Values.ToList();
 		}
 
 		private void CheckRules(Table table)

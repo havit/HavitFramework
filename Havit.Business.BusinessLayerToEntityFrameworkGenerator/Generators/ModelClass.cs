@@ -393,14 +393,14 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				}
 
 				string className;
-				if (Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model") == Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(collectionProperty.TargetTable, "Model"))
+				if (modelClass.Namespace == collectionProperty.TargetClass.Namespace)
 				{
-					className = ClassHelper.GetClassName(collectionProperty.TargetTable);
+					className = collectionProperty.TargetClass.Name;
 				}
 				else
-				{
-					className = Helpers.NamingConventions.ClassHelper.GetClassFullName(collectionProperty.TargetTable, "Model");
-				}
+                {
+                    className = collectionProperty.TargetClassFullName;
+                }
 				writer.WriteLine($"public List<{className}> {collection.PropertyName} {{ get; }} = new List<{className}>();");
 				writer.WriteLine();
 			}

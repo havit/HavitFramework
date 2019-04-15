@@ -10,5 +10,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 		public CollectionProperty CollectionProperty { get; set; }
 
 		public Table TargetTable => CollectionProperty.IsManyToMany ? CollectionProperty.JoinTable : CollectionProperty.TargetTable;
-	}
+
+        public GeneratedModelClass TargetClass { get; set; }
+
+        public string TargetClassFullName => $"{TargetClass.Namespace}.{TargetClass.Name}";
+    }
 }

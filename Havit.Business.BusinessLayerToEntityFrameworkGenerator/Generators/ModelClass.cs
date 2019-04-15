@@ -154,7 +154,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			            enumPropertyName = $"\"{enumPropertyName}\"";
 			        }
 
-			        attributeBuilder.AddParameter("EnumPropertyName", enumPropertyName);
+			        attributeBuilder.AddParameter(enumPropertyName);
                 }
 
 				writer.WriteLine(attributeBuilder.ToString());
@@ -301,7 +301,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					accessModifierAttributeBuilder.AddParameter("SetAccessModifier", $"\"setAccessModifier\"");
 				}
 
-				if (accessModifierAttributeBuilder.Parameters.Count > 0)
+				if (accessModifierAttributeBuilder.NamedParameters.Count > 0)
 				{
 					writer.WriteLine(accessModifierAttributeBuilder.ToString());
 				}
@@ -381,7 +381,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			    attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "LoadAll");
 			    attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "Sorting");
 
-			    if (attributeBuilder.Parameters.Any())
+			    if (attributeBuilder.NamedParameters.Any())
 			    {
 			        writer.WriteLine(attributeBuilder.ToString());
 			    }

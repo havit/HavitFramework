@@ -8,28 +8,39 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 	{
 		public string AttributeName { get; }
 
-		public Dictionary<string, string> Parameters { get; }
+        public List<string> Parameters { get; }
+
+		public Dictionary<string, string> NamedParameters { get; }
 
 		public AttributeStringBuilder(string attributeName)
 		{
 			AttributeName = attributeName;
 
-			Parameters = new Dictionary<string, string>();
+			NamedParameters = new Dictionary<string, string>();
+            Parameters = new List<string>();
+		}
+
+		public AttributeStringBuilder AddParameter(string value)
+		{
+			Parameters.Add(value);
+			return this;
 		}
 
 		public AttributeStringBuilder AddParameter(string name, string value)
 		{
-			Parameters.Add(name, value);
+			NamedParameters.Add(name, value);
 			return this;
 		}
 
 		public override string ToString()
-		{
-			string attribute = $"[{AttributeName}";
-			if (Parameters.Count > 0)
-			{
-				attribute += $"({string.Join(", ", Parameters.Select(p => $"{p.Key} = {p.Value}"))})";
-			}
+        {
+            var allParameters = Parameters.Concat(NamedParameters.Select(p => $"{p.Key} = {p.Value}"));
+
+            string attribute = $"[{AttributeName}";
+			if (NamedParameters.Count > 0 || Parameters.Count > 0)
+            {
+                attribute += $"({string.Join(", ", allParameters)})";
+            }
 			attribute += "]";
 			return attribute;
 		}

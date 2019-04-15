@@ -293,12 +293,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				}
 				if (!String.IsNullOrEmpty(getAccessModifier))
 				{
-					accessModifierAttributeBuilder.AddParameter("GetAccessModifier", $"\"getAccessModifier\"");
+					accessModifierAttributeBuilder.AddParameter("GetAccessModifier", $"\"{getAccessModifier}\"");
 				}
 
 				if (!String.IsNullOrEmpty(setAccessModifier))
 				{
-					accessModifierAttributeBuilder.AddParameter("SetAccessModifier", $"\"setAccessModifier\"");
+					accessModifierAttributeBuilder.AddParameter("SetAccessModifier", $"\"{setAccessModifier}\"");
 				}
 
 				if (accessModifierAttributeBuilder.NamedParameters.Count > 0)

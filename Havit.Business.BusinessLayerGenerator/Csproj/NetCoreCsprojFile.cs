@@ -32,7 +32,12 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj
 			return itemGroup;
 		}
 
-		protected override void SaveChangesCore()
+        public override void Ensures(string filename)
+        {
+            // new .csproj file does not need explicitly list files to compile in Compile ItemGroup
+        }
+
+        protected override void SaveChangesCore()
 		{
 			File.WriteAllText(Filename, Content.ToString().Trim());
 		}

@@ -254,7 +254,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			if (indexedColumns.Count == 1)
 			{
 				Column column = modelClass.Table.Columns[indexedColumns.Single().Name];
-				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", code, entityCammelCase, GetPropertyForIndex(column)));
+				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", code, entityCammelCase, modelClass.GetPropertyFor(column).Name));
 			}
 			else
 			{
@@ -266,7 +266,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					Column column = modelClass.Table.Columns[indexedColumn.Name];
 					writer.WriteLine(String.Format("{0}.{1}{2}",
 						entityCammelCase, //0
-						GetPropertyForIndex(column), // 1
+                        modelClass.GetPropertyFor(column).Name, // 1
 						(i < (indexedColumns.Count - 1)) ? "," : "")); // 2
 				}
 				writer.Unindent();
@@ -279,15 +279,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine("}");
 			writer.WriteLine("}");
 			writer.WriteLine("}");
-		}
-
-		private static string GetPropertyForIndex(Column column)
-		{
-			return column.InPrimaryKey
-				? "Id"
-				: column.IsForeignKey
-					? PropertyHelper.GetPropertyName(column, "Id") + "Id" // + "Id" je hack, jak z databáze pro ClientID udělat Client a z něj ClientId
-					: column.Name;
 		}
 
 	}

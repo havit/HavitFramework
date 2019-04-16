@@ -29,7 +29,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 
 		public EntityProperty GetPropertyFor(Column column)
 		{
-			return Properties.FirstOrDefault(p => p.Column == column);
+			return GetColumnProperties().FirstOrDefault(p => p.Column == column);
 		}
 
 		public IEnumerable<EntityProperty> GetColumnProperties()

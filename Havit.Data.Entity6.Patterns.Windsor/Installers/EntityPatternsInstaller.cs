@@ -21,6 +21,7 @@ using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
+using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
@@ -67,8 +68,10 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 			where TLanguage : class, ILanguage
 		{
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
+			Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
 			container.Register(
-				Component.For<ILanguageService>().ImplementedBy(currentLanguageServiceType).LifestyleSingleton(),
+				Component.For(typeof(ILanguageService)).ImplementedBy(currentLanguageServiceType).ApplyLifestyle(componentRegistrationOptions.GeneralLifestyle),
+				Component.For(typeof(ILanguageByCultureService)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleSingleton(),
 				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton(),
 
 				// Registrujeme jen pro TLanguage, možná bude časem třeba pro všechny modelové třídy (pak bychom přesunuli do jiné metody v této třídě).

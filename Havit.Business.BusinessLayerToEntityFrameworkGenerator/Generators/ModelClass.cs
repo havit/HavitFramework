@@ -355,9 +355,19 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				}
 
 				if (BusinessLayerGenerator.Helpers.TypeHelper.IsNonstandardType(column))
-				{
-					writer.WriteLine($"[PropertyType(\"{BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column)}\")]");
-				}
+                {
+                    var propertyTypeAttributeBuilder = new AttributeStringBuilder("PropertyType");
+                    string propertyTypeName = BusinessLayerGenerator.Helpers.TypeHelper.GetPropertyTypeName(column);
+                    propertyTypeAttributeBuilder.AddParameter($"\"{propertyTypeName}\"");
+
+                    string converter = ColumnHelper.GetStringExtendedProperty(column, "PropertyTypeConverter");
+                    if (!string.IsNullOrEmpty(converter))
+                    {
+                        propertyTypeAttributeBuilder.AddParameter("Converter", $"\"{converter}\"");
+                    }
+
+                    writer.WriteLine(propertyTypeAttributeBuilder.ToString());
+                }
 
 				if (ColumnHelper.GetBoolExtendedProperty(column, "CheckForeignKeyName") == false)
 				{

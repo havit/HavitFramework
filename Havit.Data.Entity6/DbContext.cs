@@ -61,7 +61,7 @@ namespace Havit.Data.Entity
 		/// }
 		/// </code>
 		/// </summary>
-#pragma warning disable S3253 // "base()" constructor calls should not be explicitly made // JK: Chci ho zde pro přehlednost!			
+#pragma warning disable S3253 // "base()" constructor calls should not be explicitly made // JK: Chci ho zde pro přehlednost!
 		protected DbContext(DbContextDefaultDatabase dbContextDefaultDatabase) : base()
 #pragma warning restore S3253 // "base()" constructor calls should not be explicitly made
 		{
@@ -311,6 +311,29 @@ namespace Havit.Data.Entity
 				finally
 				{
 					AutoDetectChangesEnabled = true;
+				}
+			}
+			else
+			{
+				return action();
+			}
+		}
+
+		/// <summary>
+		/// Provede akci s Configuration.UseDatabaseNullSemantics nastaveným na true, přičemž je poté Configuration.UseDatabaseNullSemantics nastaven na původní hodnotu.
+		/// </summary>
+		public TResult ExecuteWithDatabaseNullSemantics<TResult>(Func<TResult> action)
+		{
+			if (!Configuration.UseDatabaseNullSemantics)
+			{
+				try
+				{
+					Configuration.UseDatabaseNullSemantics = true;
+					return action();
+				}
+				finally
+				{
+					Configuration.UseDatabaseNullSemantics = false;
 				}
 			}
 			else

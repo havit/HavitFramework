@@ -95,5 +95,10 @@ namespace Havit.Data.Entity
 		/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 		/// </summary>
 		TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action);
+
+		/// <summary>
+		/// Provede akci s Configuration.UseDatabaseNullSemantics nastaveným na true, přičemž je poté Configuration.UseDatabaseNullSemantics nastaven na původní hodnotu.
+		/// </summary>
+		TResult ExecuteWithDatabaseNullSemantics<TResult>(Func<TResult> action);
 	}
 }

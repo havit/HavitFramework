@@ -10,7 +10,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<PackageVersion>2.0.1</PackageVersion>
+	<PackageVersion>2.0.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
   </PropertyGroup>
   

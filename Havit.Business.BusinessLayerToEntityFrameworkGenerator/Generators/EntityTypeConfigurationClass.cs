@@ -4,18 +4,15 @@ using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
-using Havit.Business.BusinessLayerGenerator.Helpers.Types;
 using Havit.Business.BusinessLayerGenerator.Writers;
-using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Settings;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
 using FileHelper = Havit.Business.BusinessLayerGenerator.Helpers.FileHelper;
 
 namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 {
-	public static class EntityTypeConfigurationClass
+    public static class EntityTypeConfigurationClass
 	{
 		public static void Generate(GeneratedModel model, GeneratedModelClass modelClass, CsprojFile entityCsprojFile)
 		{
@@ -32,6 +29,8 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			// configuration directives for collections shouldn't be necessary, they're covered by EF Core conventions
 			shouldSave |= WritePrincipals(writer, modelClass);
 			shouldSave |= WriteCustomIndexes(writer, modelClass);
+            shouldSave |= WritePropertyMetadata(writer, modelClass);
+
 			WriteNamespaceClassConstructorEnd(writer);
 
 			if (shouldSave)
@@ -48,7 +47,40 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			}
 		}
 
-		/// <summary>
+        private static bool WritePropertyMetadata(CodeWriter writer, GeneratedModelClass modelClass)
+        {
+            bool result = false;
+            foreach (EntityProperty columnProperty in modelClass.GetColumnProperties())
+            {
+                if (!string.IsNullOrEmpty(columnProperty.Column.ComputedText))
+                {
+                    writer.WriteLine(String.Format("builder.Property({0} => {0}.{1})",
+                        ConventionsHelper.GetCammelCase(modelClass.Name),
+                        columnProperty.Name));
+                    writer.Indent();
+
+                    // Fluent API does not allow setting PERSISTED flag. It can be however placed directly into the SQL statement (officially endorsed workaround)
+                    // https://github.com/aspnet/EntityFrameworkCore/issues/6682#issuecomment-459093219
+                    var computeSql = columnProperty.Column.ComputedText;
+                    if (columnProperty.Column.IsPersisted)
+                    {
+                        computeSql += " PERSISTED";
+                    }
+                    writer.WriteLine(String.Format(".HasComputedColumnSql(\"{0}\")", computeSql));
+                    writer.WriteLine(".HasConventionSuppressed<StringPropertiesDefaultValueConvention>()");
+
+                    writer.EndPreviousStatement();
+                    writer.Unindent();
+                    writer.WriteLine();
+
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
 		/// Zapíše usings na všechny možné potřebné namespace.
 		/// </summary>
 		public static void WriteUsings(CodeWriter writer, Table table)

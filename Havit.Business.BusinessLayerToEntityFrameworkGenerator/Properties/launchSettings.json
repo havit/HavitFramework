@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Havit.Business.BusinessLayerToEntityFrameworkGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "-sqlserver:sqldev.havit.local -database:XeroxWebTool -solutionpath:c:\\Dev\\080.XWT\\"
+    },
+    "080.XWT-SQLDEV": {
+      "commandName": "Project",
+      "commandLineArgs": "-sqlserver:sqldev.havit.local -database:XeroxWebTool -solutionpath:c:\\Dev\\080.XWT\\"
+    },
+    "080.XWT-localdb": {
+      "commandName": "Project",
+      "commandLineArgs": "-sqlserver:(localdb)\\mssqllocaldb -database:XeroxWebTool_Copy -solutionpath:c:\\Dev\\080.XWT\\"
+    }
+  }
+}

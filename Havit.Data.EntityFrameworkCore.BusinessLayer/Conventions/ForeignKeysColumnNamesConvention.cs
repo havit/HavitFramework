@@ -33,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	        {
 		        IEnumerable<IMutableProperty> foreignKeyProperties = entityType.GetForeignKeys()
 			        .SelectMany(fk => fk.Properties)
-			        .Except(entityType.FindPrimaryKey().Properties);
+			        .Except(entityType.FindPrimaryKey()?.Properties ?? Enumerable.Empty<IMutableProperty>() /* řeší situace, kdy nemá tabulka PK (což je chyba, ale během vývoje se to může chvilkově vyskytnout) */);
 
 				foreach (IMutableProperty property in foreignKeyProperties)
 				{

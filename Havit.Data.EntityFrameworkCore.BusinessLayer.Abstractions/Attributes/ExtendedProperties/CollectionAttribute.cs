@@ -4,15 +4,16 @@ using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
 {
-	/// <summary>
-	/// Extended property pro vygenerování kolekce.
-	/// </summary>
-	/// <remarks>
-	/// Collection_Xyz_IncludeDeleted<br/>
-	/// Collection_Xyz_Sorting<br/>
-	/// Collection_Xyz_CloneMode<br/>
-	/// </remarks>
-	[AttributeUsage(AttributeTargets.Property)]
+    /// <summary>
+    /// Extended property pro vygenerování kolekce.
+    /// </summary>
+    /// <remarks>
+    /// Collection_Xyz_IncludeDeleted<br/>
+    /// Collection_Xyz_Sorting<br/>
+    /// Collection_Xyz_CloneMode<br/>
+    /// Collection_Xyz_PropertyAccessModifier<br/>
+    /// </remarks>
+    [AttributeUsage(AttributeTargets.Property)]
 	public class CollectionAttribute : ExtendedPropertiesAttribute
 	{
 		/// <summary>
@@ -30,10 +31,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 		/// </summary>
 		public string Sorting { get; set; } = null;
 
+        /// <summary>
+        /// Výchozí viditelnost pro property kolekce. Nesmí být private, pokud jiné třídy tuto vlastnost používají (např. CreateObject(owner)).
+        /// </summary>
+        public AccessModifier PropertyAccessModifier { get; set; } = AccessModifier.Public;
+
 		/// <inheritdoc />
 		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>()
 			.AddIfNotDefault($"Collection_{memberInfo.Name}_IncludeDeleted", IncludeDeleted, false)
 			//.AddIfNotDefault($"Collection_{memberInfo.Name}_LoadAll", LoadAll)
+            .AddIfNotDefault($"Collection_{memberInfo.Name}_PropertyAccessModifier", PropertyAccessModifier, AccessModifier.Public)
 			.AddIfNotDefault($"Collection_{memberInfo.Name}_Sorting", Sorting, null);
 	}
 }

@@ -36,12 +36,31 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 				{
 					yield return FixAlterDatabaseOperation(alterDatabaseOperation);
 				}
-				else
+                else if (migrationOperation is AlterTableOperation alterTableOperation)
+                {
+                    yield return FixAlterTableOperation(alterTableOperation);
+                }
+                else
 				{
 					yield return migrationOperation;
 				}
 			}
 		}
+
+        private MigrationOperation FixAlterTableOperation(AlterTableOperation originalOperation)
+        {
+            (IEnumerable<Annotation> currentAnnotations, IEnumerable<Annotation> oldAnnotations) = RemoveDuplicateAnnotations(originalOperation, originalOperation.OldTable);
+            AlterTableOperation alterTableOperation = new AlterTableOperation
+            {
+                Name = originalOperation.Name,
+                Schema = originalOperation.Schema,
+                IsDestructiveChange = originalOperation.IsDestructiveChange
+            };
+            alterTableOperation.AddAnnotations(currentAnnotations);
+            alterTableOperation.OldTable.AddAnnotations(oldAnnotations);
+
+            return alterTableOperation;
+        }
 
         private MigrationOperation FixAlterDatabaseOperation(AlterDatabaseOperation originalOperation)
 		{

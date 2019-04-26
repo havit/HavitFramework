@@ -15,6 +15,118 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
 {
     public class AlterOperationsFixUpMigrationModelDifferTests
     {
+        private const string TestAnnotationPrefix = "TestAnnotations:";
+
+        [TestClass]
+        public class AlterTable
+        {
+            [Table("Dummy")]
+            private class DummyEntity
+            {
+                public int Id { get; set; }
+            }
+
+            /// <summary>
+            /// Tests, whether two equal entities (with equal annotations) don't result in migration operation.
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterTable_NoChange_NoMigration()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
+                var operations = source.Diff(target);
+
+                Assert.AreEqual(0, operations.Count);
+            }
+
+            /// <summary>
+            /// Tests, whether changing one annotation on entity results in one migration operation (<see cref="AlterTableOperation"/>.
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterTable_TwoAnnotationsOneChanged_OneOperation()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
+                var operations = source.Diff(target);
+
+                Assert.AreEqual(1, operations.Count);
+                Assert.IsInstanceOfType(operations[0], typeof(AlterTableOperation));
+            }
+
+            /// <summary>
+            /// Tests, whether the model differ preserves other properties of <see cref="AlterTableOperation"/>.
+            ///
+            /// Specifically, checks whether table name from newer model is preserved.
+            ///
+            /// Does not test result of annotation fix up (done by other tests).
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterTable_TwoAnnotationsOneChanged_OtherPropertiesAreSame()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .ToTable("SourceTable")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .ToTable("TargetTable")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
+                var operations = source.Diff(target);
+
+                // Changing table name yields multiple operations (such as recreating PK), we are interested only in AlterTableOperation
+                Assert.AreEqual(1, operations.OfType<AlterTableOperation>().Count());
+
+                var operation = operations.OfType<AlterTableOperation>().First();
+                Assert.AreEqual("TargetTable", operation.Name);
+                Assert.IsNull(operation.Schema);
+            }
+
+            /// <summary>
+            /// Tests, whether the model differ correctly removes extra annotation from <see cref="AlterTableOperation"/> and <see cref="AlterTableOperation.OldTable"/> annotations.
+            ///
+            /// Source:
+            ///     - Annotation2:ValueA
+            ///     - Annotation2:ValueB
+            /// Target:
+            ///     - Annotation2:ValueA
+            ///     - Annotation2:ValueB_amended
+            ///
+            /// (Annotation Annotation2:ValueA does not have to be in the migration operation)
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterTable_TwoAnnotationsOneChanged_OneOperationWithOnlyOneCurrentAnnotation()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
+                var operations = source.Diff(target);
+
+                Assert.AreEqual(1, operations.Count);
+
+                var operation = (AlterTableOperation)operations[0];
+                Assert.AreEqual(1, operation.GetAnnotations().Count());
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.GetAnnotations().First().Name);
+                Assert.AreEqual("ValueB_amended", operation.GetAnnotations().First().Value);
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldTable.GetAnnotations().First().Name);
+                Assert.AreEqual("ValueB", operation.OldTable.GetAnnotations().First().Value);
+            }
+        }
+
         [TestClass]
         public class AlterDatabase
         {
@@ -125,15 +237,25 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
                 IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
                 builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
-                    .WithAnnotationProvider<AllAnnotationsMigrationsAnnotationProvider>());
+                    .WithAnnotationProvider<TestAnnotationsMigrationsAnnotationProvider>());
                 builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<DbInjectionsExtension>().WithConsolidateStatementsForMigrationsAnnotationsForModel(true));
             }
         }
 
-        private class AllAnnotationsMigrationsAnnotationProvider : Microsoft.EntityFrameworkCore.Migrations.MigrationsAnnotationProvider
+        private class TestAnnotationsMigrationsAnnotationProvider : Microsoft.EntityFrameworkCore.Migrations.MigrationsAnnotationProvider
         {
-            public AllAnnotationsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies) : base(dependencies)
+            public TestAnnotationsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies) : base(dependencies)
             {
+            }
+
+            public override IEnumerable<IAnnotation> For(IProperty property)
+            {
+                return property.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
+            }
+
+            public override IEnumerable<IAnnotation> For(IEntityType entityType)
+            {
+                return entityType.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
             public override IEnumerable<IAnnotation> For(IModel model)

@@ -128,6 +128,126 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections
         }
 
         [TestClass]
+        public class AlterColumn
+        {
+            [Table("Dummy")]
+            private class DummyEntity
+            {
+                public int Id { get; set; }
+
+                public string MyProperty { get; set; }
+            }
+
+            /// <summary>
+            /// Tests, whether two equal entities (with equal annotations) don't result in migration operation.
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterColumn_NoChange_NoMigration()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty).HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty).HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
+                var operations = source.Diff(target);
+
+                Assert.AreEqual(0, operations.Count);
+            }
+
+            /// <summary>
+            /// Tests, whether changing one annotation on property results in one migration operation (<see cref="AlterColumnOperation"/>.
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterColumn_TwoAnnotationsOneChanged_OneOperation()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty)
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty)
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
+                var operations = source.Diff(target);
+
+                Assert.AreEqual(1, operations.Count);
+                Assert.IsInstanceOfType(operations[0], typeof(AlterColumnOperation));
+            }
+
+            /// <summary>
+            /// Tests, whether the model differ preserves other properties of <see cref="AlterColumnOperation"/>.
+            ///
+            /// Specifically, checks whether column name from newer model is preserved.
+            ///
+            /// Does not test result of annotation fix up (done by other tests).
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterColumn_TwoAnnotationsOneChanged_OtherPropertiesAreSame()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty)
+                        .HasColumnName("SourceColumn")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>()
+                        .Property(x => x.MyProperty)
+                        .HasColumnName("TargetColumn")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
+                var operations = source.Diff(target);
+
+                // Changing table name yields other operations (such as renaming column), we are interested only in AlterColumnOperation
+                Assert.AreEqual(1, operations.OfType<AlterColumnOperation>().Count());
+
+                var operation = operations.OfType<AlterColumnOperation>().First();
+                Assert.AreEqual("TargetColumn", operation.Name);
+                Assert.AreEqual("Dummy", operation.Table);
+                Assert.AreEqual(typeof(string), operation.ClrType);
+                Assert.AreEqual(null, operation.ColumnType);
+                Assert.AreEqual(true, operation.IsNullable);
+                Assert.AreEqual(typeof(string), operation.OldColumn.ClrType);
+                Assert.AreEqual(null, operation.OldColumn.ColumnType);
+                Assert.AreEqual(true, operation.OldColumn.IsNullable);
+                Assert.IsNull(operation.Schema);
+            }
+
+            /// <summary>
+            /// Tests, whether the model differ correctly removes extra annotation from <see cref="AlterColumnOperation"/> and <see cref="AlterColumnOperation.OldColumn"/> annotations.
+            ///
+            /// Source:
+            ///     - Annotation2:ValueA
+            ///     - Annotation2:ValueB
+            /// Target:
+            ///     - Annotation2:ValueA
+            ///     - Annotation2:ValueB_amended
+            ///
+            /// (Annotation Annotation2:ValueA does not have to be in the migration operation)
+            /// </summary>
+            [TestMethod]
+            public void AlterOperationsFixUpMigrationModelDiffer_AlterColumn_TwoAnnotationsOneChanged_OneOperationWithOnlyOneCurrentAnnotation()
+            {
+                var source = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty)
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
+                var target = new EndToEndTestDbContext<DummyEntity>(builder =>
+                    builder.Entity<DummyEntity>().Property(x => x.MyProperty)
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+                        .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
+                var operations = source.Diff(target);
+
+                Assert.AreEqual(1, operations.Count);
+
+                var operation = (AlterColumnOperation)operations[0];
+                Assert.AreEqual(1, operation.GetAnnotations().Count());
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.GetAnnotations().First().Name);
+                Assert.AreEqual("ValueB_amended", operation.GetAnnotations().First().Value);
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldColumn.GetAnnotations().First().Name);
+                Assert.AreEqual("ValueB", operation.OldColumn.GetAnnotations().First().Value);
+            }
+        }
+
+        [TestClass]
         public class AlterDatabase
         {
             [Table("Dummy")]

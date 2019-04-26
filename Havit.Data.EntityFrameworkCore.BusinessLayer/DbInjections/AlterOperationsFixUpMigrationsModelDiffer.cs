@@ -40,12 +40,56 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
                 {
                     yield return FixAlterTableOperation(alterTableOperation);
                 }
+                else if (migrationOperation is AlterColumnOperation alterColumnOperation)
+                {
+                    yield return FixAlterColumnOperation(alterColumnOperation);
+                }
                 else
 				{
 					yield return migrationOperation;
 				}
 			}
 		}
+
+        private MigrationOperation FixAlterColumnOperation(AlterColumnOperation originalOperation)
+        {
+            (IEnumerable<Annotation> currentAnnotations, IEnumerable<Annotation> oldAnnotations) = RemoveDuplicateAnnotations(originalOperation, originalOperation.OldColumn);
+            var alterTableOperation = new AlterColumnOperation
+            {
+                Name = originalOperation.Name,
+                Schema = originalOperation.Schema,
+                Table = originalOperation.Table,
+                ClrType = originalOperation.ClrType,
+                ComputedColumnSql = originalOperation.ComputedColumnSql,
+                ColumnType = originalOperation.ColumnType,
+                DefaultValue = originalOperation.DefaultValue,
+                DefaultValueSql = originalOperation.DefaultValueSql,
+                IsDestructiveChange = originalOperation.IsDestructiveChange,
+                IsFixedLength = originalOperation.IsFixedLength,
+                IsNullable = originalOperation.IsNullable,
+                IsRowVersion = originalOperation.IsRowVersion,
+                IsUnicode = originalOperation.IsUnicode,
+                MaxLength = originalOperation.MaxLength,
+                OldColumn = new ColumnOperation
+                {
+                    ClrType = originalOperation.OldColumn.ClrType,
+                    ComputedColumnSql = originalOperation.OldColumn.ComputedColumnSql,
+                    ColumnType = originalOperation.OldColumn.ColumnType,
+                    DefaultValue = originalOperation.OldColumn.DefaultValue,
+                    DefaultValueSql = originalOperation.OldColumn.DefaultValueSql,
+                    IsDestructiveChange = originalOperation.OldColumn.IsDestructiveChange,
+                    IsFixedLength = originalOperation.OldColumn.IsFixedLength,
+                    IsNullable = originalOperation.OldColumn.IsNullable,
+                    IsRowVersion = originalOperation.OldColumn.IsRowVersion,
+                    IsUnicode = originalOperation.OldColumn.IsUnicode,
+                    MaxLength = originalOperation.OldColumn.MaxLength,
+                }
+            };
+            alterTableOperation.AddAnnotations(currentAnnotations);
+            alterTableOperation.OldColumn.AddAnnotations(oldAnnotations);
+
+            return alterTableOperation;
+        }
 
         private MigrationOperation FixAlterTableOperation(AlterTableOperation originalOperation)
         {

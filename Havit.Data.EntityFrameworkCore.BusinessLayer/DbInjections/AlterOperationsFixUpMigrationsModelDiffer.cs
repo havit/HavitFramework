@@ -109,7 +109,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
         private MigrationOperation FixAlterDatabaseOperation(AlterDatabaseOperation originalOperation)
 		{
             (IEnumerable<Annotation> currentAnnotations, IEnumerable<Annotation> oldAnnotations) = RemoveDuplicateAnnotations(originalOperation, originalOperation.OldDatabase);
-			var alterDatabaseOperation = new AlterDatabaseOperation();
+            var alterDatabaseOperation = new AlterDatabaseOperation
+            {
+                IsDestructiveChange = originalOperation.IsDestructiveChange
+            };
             alterDatabaseOperation.AddAnnotations(currentAnnotations);
             alterDatabaseOperation.OldDatabase.AddAnnotations(oldAnnotations);
 

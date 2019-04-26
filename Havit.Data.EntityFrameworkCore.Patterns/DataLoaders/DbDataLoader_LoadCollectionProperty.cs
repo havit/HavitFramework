@@ -2,6 +2,7 @@
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
+using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
@@ -106,14 +107,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
             // Performance: No big issue.
             var foreignKeyProperty = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+			
+			Contract.Assert(foreignKeyProperty.ClrType == typeof(int) || foreignKeyProperty.ClrType == typeof(int?));
 
 			List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
 			return dbContext.Set<TProperty>()
-					.AsQueryable()
-					// workaround: Bez následujícího řádku může při vykonávání dotazu dojít System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
-					// Chráněno testy DbDataLoader_Load_Collection_SupportsNullableForeignKeysInMemory a DbDataLoader_Load_Collection_SupportsNullableForeignKeysInDatabase (pokud odebereme následující řádek, budou tyto testy failovat).
-					.WhereIf(foreignKeyProperty.ClrType == typeof(int?), item => null != EF.Property<int?>(item, foreignKeyProperty.Name))
-					.Where(primaryKeysToLoad.ContainsEffective<TProperty>(item => EF.Property<int>(item, foreignKeyProperty.Name)));
+				.AsQueryable()
+				// workaround: Bez následujícího řádku může při vykonávání dotazu dojít System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
+				// Chráněno testy DbDataLoader_Load_Collection_SupportsNullableForeignKeysInMemory a DbDataLoader_Load_Collection_SupportsNullableForeignKeysInDatabase (pokud odebereme následující řádek, budou tyto testy failovat).
+				.WhereIf(foreignKeyProperty.ClrType == typeof(int?), item => null != EF.Property<int?>(item, foreignKeyProperty.Name))
+				// Nyní musíme ověřit, zda pracujeme s int nebo Nullable<int>, přičemž pro Nullable<int> potřebujeme zvláštní péči:
+				// Zkompilovat a spustit jde pro oba případy jen varianta s int, avšak v runtime způsobí client-side evaluation (podmínka se nedostane do dotazu, ale je vyhodnocena entity frameworkem), což z výkonových důvodů opravdu nechceme.
+				// Proto doplníme variantu pro int?, která tento problém vyřeší.
+				// Toto chování není chráněno žádným testem.
+				.WhereIf(foreignKeyProperty.ClrType == typeof(int?), primaryKeysToLoad.ContainsEffective<TProperty>(item => (int)EF.Property<int?>(item, foreignKeyProperty.Name)))
+				.WhereIf(foreignKeyProperty.ClrType == typeof(int), primaryKeysToLoad.ContainsEffective<TProperty>(item => EF.Property<int>(item, foreignKeyProperty.Name)));
 		}
 
 		private void LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(List<TEntity> loadedEntities, string propertyName)

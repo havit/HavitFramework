@@ -12,9 +12,7 @@ using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.EFCoreTests.DataLayer.Repositories.Localizations;
 using Havit.EFCoreTests.Entity;
-using Havit.EFCoreTests.Model.Localizations;
 using Havit.Services;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
@@ -27,16 +25,16 @@ using Microsoft.Extensions.Options;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.EFCoreTests.Model;
 using System.Collections.Generic;
-using Havit.EFCoreTests.Model.Security;
 using Microsoft.Extensions.Logging;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using System.Transactions;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.EFCoreTests.DataLayer.Seeds.Core;
-using Havit.EFCoreTests.DataLayer.Repositories.Security;
 using System.Data.SqlClient;
 using Havit.Data.Patterns.Exceptions;
+using Havit.EFCoreTests.DataLayer.Repositories;
+using System.Linq.Expressions;
 
 namespace ConsoleApp1
 {
@@ -45,28 +43,17 @@ namespace ConsoleApp1
 		public static void Main(string[] args)
 		{
 			var container = ConfigureAndCreateWindsorContainer();
-			//UpdateDatabase(container);
-			//GenerateLanguages(1, container);
-			//GenerateSecurity(100, 10, 3, container);
-			//GenerateAutoBarva(100, container);
-			//DebugModelInfo(container);
-			//DebugDataLoader(container);
-            //DebugFlagClass(container);
-            //DebugTransactions(container);
-            //DebugSeeding(container);
-			//DebugSeeding(container); // seed role
-            DebugCaching(container);
-			//DebugOwnedTypes(container);
+			UpdateDatabase(container);
+            Debug(container);
 		}
 
 		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
 		{
 			var loggerFactory = new LoggerFactory();
 			loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
-			//loggerFactory.AddConsole((categoryName, logLevel) => (categoryName == DbLoggerCategory.Database.Transaction.Name));
 
 			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
-				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity")
+				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
 				//.UseInMemoryDatabase("ConsoleApp")
 				.UseLoggerFactory(loggerFactory)
 				.Options;
@@ -78,7 +65,7 @@ namespace ConsoleApp1
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 
 			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
-				.RegisterDataLayer(typeof(ILanguageRepository).Assembly)
+				.RegisterDataLayer(typeof(IPersonRepository).Assembly)
 				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
 				.RegisterEntityPatterns();
 
@@ -96,242 +83,32 @@ namespace ConsoleApp1
 			using (var scope = container.BeginScope())
 			{
 				var dbContext = container.Resolve<IDbContext>();
-				//dbContext.Database.EnsureDeleted();
+				dbContext.Database.EnsureDeleted();
 				dbContext.Database.Migrate();
 			}
 		}
 
-		private static void GenerateLanguages(int targetCount, IWindsorContainer container)
+		private static void Debug(IWindsorContainer container)
 		{
-			using (var scope = container.BeginScope())
-			{
-				var languageRepository = container.Resolve<ILanguageRepository>();
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-
-				var currentLanguages = languageRepository.GetAll();
-				for (int i = currentLanguages.Count; i < targetCount; i++)
-				{
-					unitOfWork.AddRangeForInsert<Language>(new Language[] { new Language() });
-				}
-
-				if (targetCount > currentLanguages.Count)
-				{
-					unitOfWork.AddRangeForDelete(currentLanguages.Take(currentLanguages.Count - targetCount).ToArray());
-				}
-				unitOfWork.Commit();
-			}
-		}
-
-		private static void GenerateSecurity(int loginAccountsCount, int rolesCount, int membershipsPerLoginAccountCount, IWindsorContainer container)
-		{
-			using (var scope = container.BeginScope())
-			{
-				var dbContext = container.Resolve<IDbContext>();
-				dbContext.Database.Migrate();
-
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-
-				List<LoginAccount> loginAccounts = Enumerable.Range(0, loginAccountsCount).Select(i => new LoginAccount { Username = Guid.NewGuid().ToString() }).ToList();
-				List<Role> roles = Enumerable.Range(0, rolesCount).Select(i => new Role { Id = i + 1, Name = Guid.NewGuid().ToString() }).ToList();
-
-				foreach (LoginAccount loginAccount in loginAccounts)
-				{
-					loginAccount.Memberships.AddRange(roles
-						.OrderBy(item => Guid.NewGuid()) // náhodná role
-						.Take(membershipsPerLoginAccountCount)
-						.Select(role => new Membership
-						{
-							LoginAccount = loginAccount,
-							Role = role
-						})
-						.ToList());
-				}
-
-				unitOfWork.AddRangeForInsert(roles);
-				unitOfWork.AddRangeForInsert(loginAccounts);
-				unitOfWork.Commit();
-			}
-		}
-
-		private static void GenerateAutoBarva(int count, IWindsorContainer container)
-		{
-			using (var scope = container.BeginScope())
-			{
-				var dbContext = container.Resolve<IDbContext>();
-				dbContext.Database.Migrate();
-
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-
-				var auta = Enumerable.Range(0, count).Select(i => new Auto
-				{
-					Barva = new Barva()
-				}).ToList();
-
-				unitOfWork.AddRangeForInsert(auta);
-				unitOfWork.Commit();
-			}
-		}
-
-
-
-		private static void DebugDataLoader(IWindsorContainer container)
-		{
-			for (int i = 0; i < 5; i++)
-			{
-				using (var scope = container.BeginScope())
-				{
-					var dbContext = container.Resolve<IDbContext>();
-					var dataLoader = container.Resolve<IDataLoader>();
-
-					var auta = dbContext.Set<Auto>().AsQueryable().ToList();
-					dataLoader.LoadAll(auta, a => a.Barva);
-				}
-			}
-
-		}
-
-		private static void DebugModelInfo(IWindsorContainer container)
-		{
-			using (var scope = container.BeginScope())
-			{
-                var dbContext = container.Resolve<IDbContext>();
-                var navigation = dbContext.Model.FindEntityType(typeof(LoginAccount)).FindNavigation(nameof(LoginAccount.Memberships));
-                Console.WriteLine(navigation.IsCollection());
-                Console.WriteLine(navigation.GetTargetType());
-            }
-        }
-
-		private static void DebugFlagClass(IWindsorContainer container)
-		{
-			using (var scope = container.BeginScope())
-			{
-				var dbContext = container.Resolve<IDbContext>();
-				dbContext.Database.Migrate();
-				FlagClass flagClass = new FlagClass();
-				flagClass.MyFlag = false;
-				dbContext.Set<FlagClass>().Add(flagClass);
-				dbContext.SaveChanges();
-			}
-		}
-
-		private static void DebugTransactions(IWindsorContainer container)
-		{
-			Action<IDbContext> action = (IDbContext dbContext) =>
-			{
-				dbContext.Set<FlagClass>().AsQueryable().ToList();
-			};
-
-			using (var transactionScope = new TransactionScope(TransactionScopeOption.Required))
-			{
-				using (var scope = container.BeginScope())
-				{
-					var dbContext = container.Resolve<IDbContext>();
-					action(dbContext);
-				}
-
-				using (var scope = container.BeginScope())
-				{
-					var dbContext = container.Resolve<IDbContext>();
-					action(dbContext);
-				}
-
-				transactionScope.Complete();
-			}
-			System.Threading.Thread.Sleep(1000);
-		}
-
-		private static void DebugSeeding(IWindsorContainer container)
-		{
-			using (var scope = container.BeginScope())
-			{
-				var dataSeedRunner = container.Resolve<IDataSeedRunner>();
-				dataSeedRunner.SeedData<CoreProfile>();
-			}
-		}
-
-		private static void DebugCaching(IWindsorContainer container)
-		{
-			//// do cache
-			//using (var scope = container.BeginScope())
-			//{
-			//	var dbContext = container.Resolve<IDbContext>();
-			//	var role = dbContext.Set<Role>().Find(1);
-			//	Console.WriteLine(dbContext.GetEntry(role, suppressDetectChanges: true).State);
-			//}
-
-			//// do cache
-			//using (var scope = container.BeginScope())
-			//{
-			//	var roleRepository = container.Resolve<IRoleRepository>();
-			//	roleRepository.GetObject(1);
-			//}
-
-			//// z cache
-			//using (var scope = container.BeginScope())
-			//{
-			//	var roleRepository = container.Resolve<IRoleRepository>();
-			//	Role role = roleRepository.GetObject(1);
-
-			//	// invalidace
-			//	role.Name += "0";
-
-			//	var unitOfWork = container.Resolve<IUnitOfWork>();
-			//	unitOfWork.Commit();
-			//}
-
-			//// do cache
-			//using (var scope = container.BeginScope())
-			//{
-			//	var roleRepository = container.Resolve<IRoleRepository>();
-			//	roleRepository.GetObject(1);
-			//}
-
-			// invalidace
-
 			using (var scope = container.BeginScope())
 			{
 				var uow = container.Resolve<IUnitOfWork>();
-				var roleRepository = container.Resolve<IRoleRepository>();
-				Role role;
-				try
-				{
-					role = roleRepository.GetObject(-999);
-					role.Name = "0";
-				}
-				catch (ObjectNotFoundException)
-				{
-					role = new Role { Id = -999, Name = "0" };
-					uow.AddForInsert(role);
-				}
+				
+				uow.AddRangeForInsert(Enumerable.Range(0, 10).Select(i => new Person()));
 				uow.Commit();
 			}
 
-			for (int iteration = 0; iteration < 100; iteration++)
-            {                
-                using (var scope = container.BeginScope())
-                {
-                    var uow = container.Resolve<IUnitOfWork>();
-					var roleRepository = container.Resolve<IRoleRepository>();
-					Role role = roleRepository.GetObject(-999);
-					role.Name = (int.Parse(role.Name) + 1).ToString();
-					uow.AddForUpdate(role);
-                    uow.Commit();
-                }
-            }
-        }
-
-		private static void DebugOwnedTypes(IWindsorContainer container)
-		{
 			using (var scope = container.BeginScope())
 			{
-				Subject subject = new Subject { Name = "Name", HomeAddress = new Address { City = "City", Street = "Street", ZipCode = "Zip" } };
-				var unitOfWork = container.Resolve<IUnitOfWork>();
-				unitOfWork.AddForInsert(subject);
-				unitOfWork.Commit();
-				subject.HomeAddress.City = "New City";
-				unitOfWork.Commit();
+				var personRepository = container.Resolve<IPersonRepository>();
+				var dataLoader = container.Resolve<IDataLoader>();
+
+				List<Person> persons = personRepository.GetObjects(1, 3, 5, 7, 9);
+				dataLoader.LoadAll(persons, p => p.Subordinates);
 			}
+
 		}
+
 
 	}
 }

@@ -2,6 +2,7 @@
 using Havit.Data.EntityFrameworkCore;
 using Havit.EFCoreTests.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Havit.EFCoreTests.Entity
 {
@@ -24,22 +25,19 @@ namespace Havit.EFCoreTests.Entity
 			// NOOP
 		}
 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			base.OnConfiguring(optionsBuilder);
+			optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
+		}
+
 		/// <inheritdoc />
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
 			base.CustomizeModelCreating(modelBuilder);
 
-			modelBuilder.RegisterModelFromAssembly(typeof(Havit.EFCoreTests.Model.Localizations.Language).Assembly);
+			modelBuilder.RegisterModelFromAssembly(typeof(Havit.EFCoreTests.Model.Person).Assembly);
 			modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
-
-			modelBuilder.Entity<FlagClass>().Property(fc => fc.MyFlag).HasDefaultValue(true).ValueGeneratedNever();
-			modelBuilder.Entity<ClassWithDefaults>(cb =>
-			{
-				cb.Property(fc => fc.DateTimeValue).HasDefaultValue(new DateTime(2018, 12, 24)).ValueGeneratedNever();
-				cb.Property(fc => fc.StringValue).HasDefaultValue("ABC").ValueGeneratedNever();
-				cb.Property(fc => fc.IntValue).HasDefaultValue(0).ValueGeneratedNever();
-				cb.Property(fc => fc.BoolValue).HasDefaultValue(true).ValueGeneratedNever();
-			});
 		}
 	}
 }

@@ -83,7 +83,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 	        {
 		        var serviceCharacteristics = EntityFrameworkRelationalServicesBuilder.RelationalServices[typeof(IMigrationsModelDiffer)];
 
-				services.Add(ServiceDescriptor.Describe(typeof(IMigrationsModelDiffer), typeof(AlterDatabaseFixUpMigrationsModelDiffer), serviceCharacteristics.Lifetime));
+				services.Add(ServiceDescriptor.Describe(typeof(IMigrationsModelDiffer), typeof(AlterOperationsFixUpMigrationsModelDiffer), serviceCharacteristics.Lifetime));
 			}
 
             return false;

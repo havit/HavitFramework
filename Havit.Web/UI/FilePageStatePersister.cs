@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Havit.Services.FileStorage;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,91 +13,34 @@ namespace Havit.Web.UI
 	/// <summary>
 	/// Persister pro uložení viewstate/controlstate do filesystému.
 	/// </summary>
-	public partial class FilePageStatePersister : PageStatePersister
+	public partial class FilePageStatePersister : FileStoragePageStatePersister
 	{
-		private readonly Page _page;
-		private readonly IFileNamingStrategy _fileNamingStrategy;
-		private readonly ILogService _logService;
-
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
-		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů</param>
-		public FilePageStatePersister(Page page, IFileNamingStrategy fileNamingStrategy) : base(page)
+		/// <param name="root">Složka, do které se ukládá viewstate.</param>
+		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů.</param>
+		public FilePageStatePersister(Page page, string root, IFileNamingStrategy fileNamingStrategy) : base(page, new FileSystemStorageService(root), fileNamingStrategy)
 		{
-			_page = page;
-			_fileNamingStrategy = fileNamingStrategy;
-			_logService = new FilePageStatePersisterLogService();
 		}
 
 		/// <summary>
-		/// Konstruktor.
+		/// Konstruktor. Použije strategii PerUserNamingStrategy.
 		/// </summary>
 		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
-		/// <param name="root">Použije strategii PerUserNamingStrategy s  daným rootem.</param>
+		/// <param name="root">Složka, do které se ukládá viewstate.</param>
 		public FilePageStatePersister(Page page, string root)
-			: this(page, new PerUserNamingStrategy(root))
+			: this(page, root, new PerUserNamingStrategy())
 		{
-		}
-
-		/// <summary>
-		/// Uložení viewstate/controlstate.
-		/// </summary>
-		public override void Save()
-		{
-			string storageSymbol = _fileNamingStrategy.GetStorageSymbol(); // získáme symbol, ten si dále zapamatujeme "do stránky"
-			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
-
-			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(storageFilename)); // založíme složku, pokud ještě neexistuje (jinak File.CreateText padá)			
-			
-			using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Create))
-			{
-				LosFormatter formatter = new LosFormatter();				
-				formatter.Serialize(fileStream, new Pair(this.ViewState, this.ControlState));
-				_logService.Log(String.Format("{0}\tSaved", storageFilename));
-			}
-
-			// do hidden fieldu si uložíme symbol
-			// můžeme ukládat i jinak, ale hidden field pak obsahuje string s koncem řádku! (blbost .NET Frameworku)
-			HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
-			hiddenFieldPageStatePersister.ControlState = storageSymbol;
-			hiddenFieldPageStatePersister.Save();
-		}
-
-		/// <summary>
-		/// Načtení viewstate/controlstate.
-		/// </summary>
-		public override void Load()
-		{
-			// načteme si symbol z hidden fieldu
-			HiddenFieldPageStatePersister hiddenFieldPageStatePersister = new HiddenFieldPageStatePersister(_page);
-			hiddenFieldPageStatePersister.Load();
-			string storageSymbol = (string)hiddenFieldPageStatePersister.ControlState;
-			string storageFilename = _fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
-
-			try
-			{
-				using (System.IO.FileStream fileStream = System.IO.File.Open(storageFilename, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete))
-				{
-					LosFormatter formatter = new LosFormatter();
-					Pair pair = (Pair)formatter.Deserialize(fileStream);
-
-					ViewState = pair.First;
-					ControlState = pair.Second;
-				}
-				_logService.Log(String.Format("{0}\tLoaded", storageFilename));
-			}
-			catch (Exception e)
-			{
-				_logService.Log(String.Format("{0}\tLoad failed", storageFilename));
-				throw new ViewStateLoadFailedException("Nepodařilo se načíst viewstate.", e);
-			}
 		}
 
 		/// <summary>
 		/// Strategie pro pojmenování souborů.
 		/// </summary>
+		/// <remarks>
+		/// Jako vnitřní třída v FilePageStatePersisteru je pouze z důvodu zpětné kompatibility. S předkem FileStoragePageStatePersisterBase, který ji používá, není situace úplně přehledná a pochopitelná.
+		/// </remarks>
 		public interface IFileNamingStrategy
 		{
 			/// <summary>
@@ -112,12 +57,15 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Služba pro logování operací file page persisteru.
 		/// </summary>
+		/// <remarks>
+		/// Jako vnitřní třída v FilePageStatePersisteru je pouze z důvodu zpětné kompatibility. S předkem FileStoragePageStatePersisterBase, který ji používá, není situace úplně přehledná a pochopitelná.
+		/// </remarks> 
 		internal interface ILogService
 		{
 			/// <summary>
 			/// Zapíše zprávu do logu.
 			/// </summary>
-			void Log(string message);
+			void Log(string message, TraceEventType eventType = TraceEventType.Information);
 		}
 	}
 }

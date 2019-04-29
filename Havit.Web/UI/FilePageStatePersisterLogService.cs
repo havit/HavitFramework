@@ -19,9 +19,9 @@ namespace Havit.Web.UI
 		/// <summary>
 		/// Zapíše zprávu do logu.
 		/// </summary>
-		public void Log(string message)
+		public void Log(string message, TraceEventType eventType = TraceEventType.Information)
 		{
-			traceSource.TraceInformation(message);
+			traceSource.TraceEvent(eventType, 0, message, null);
 			traceSource.Flush();
 		}
 	}

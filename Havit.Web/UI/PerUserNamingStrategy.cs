@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Services.FileStorage;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,16 +20,10 @@ namespace Havit.Web.UI
 			private const string AnonymousUserFolderName = "_anonymous";
 
 			/// <summary>
-			/// Root, do kterého se ukládá viewstate/controlstate.
-			/// </summary>
-			protected string Root { get; private set; }
-
-			/// <summary>
 			/// Konstruktor.
 			/// </summary>
-			public PerUserNamingStrategy(string root)
+			public PerUserNamingStrategy()
 			{
-				Root = root;
 			}
 
 			/// <summary>
@@ -37,65 +32,72 @@ namespace Havit.Web.UI
 			/// Maximální stáří souborů se určuje parametrem fileAge. Pokud má hodnotu null, mažou se alespoň den staré soubory.
 			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
-			public static void DeleteUserFiles(string root, string username, TimeSpan? fileAge = null)
+			public static void DeleteUserFiles(IFileStorageService fileStorageService, string username, TimeSpan? fileAge = null)
 			{
 				FilePageStatePersister.ILogService logService = new FilePageStatePersisterLogService();
 
-				DateTime now = DateTime.Now;
+				DateTime utcNow = DateTime.Now.ToUniversalTime();
 
 				if (fileAge == null)
 				{
 					fileAge = new TimeSpan(1, 0, 0, 0);
 				}
-				string folder = Path.Combine(root, GetFolderForUserName(username));
-				if (System.IO.Directory.Exists(folder))
+
+				var files = fileStorageService.EnumerateFiles(GetFolderForUserName(username) + "\\*").ToList();
+				foreach (var file in files)
 				{
-					string[] files = System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.AllDirectories);
-					foreach (string file in files)
+					if ((utcNow - file.LastModifiedUtc) > fileAge.Value)
 					{
-						if ((now - System.IO.File.GetLastWriteTime(file)) > fileAge.Value)
+						try
 						{
-							try
-							{
-								System.IO.File.Delete(file);
-								logService.Log(String.Format("{0}\tDeleted", file));
-							}
-							catch (Exception) // pokud nějaký soubor nejde smazat, končíme s mazáním
-							{
-								logService.Log(String.Format("{0}\tDelete failed", file));
-								return;
-							}
+							fileStorageService.Delete(file.Name);
+							logService.Log(String.Format("{0}\tDeleted", file));
+						}
+						catch (Exception) // pokud nějaký soubor nejde smazat, končíme s mazáním
+						{
+							logService.Log(String.Format("{0}\tDelete failed", file), System.Diagnostics.TraceEventType.Warning);
+
+							return;
 						}
 					}
 				}
 			}
 
 			/// <summary>
-			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
+			/// Smaže soubory konkrétního uživatele.
+			/// Pokud není uživatel zadán (String.IsNullOrEmpty), maže soubory anonymního uživatele.
+			/// Maximální stáří souborů se určuje parametrem fileAge. Pokud má hodnotu null, mažou se alespoň den staré soubory.
 			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
-			public static void DeleteOldAnonymousFiles(string root)
+			/// <remarks>
+			/// Předpokládá se uložení viewstate do file systému.
+			/// Metoda existuje z důvodu zpětné kompatibility.
+			/// </remarks>
+			public static void DeleteUserFiles(string root, string username, TimeSpan? fileAge = null)
 			{
-				DeleteUserFiles(root, null, new TimeSpan(2, 0, 0, 0)); // 2 dny
+				DeleteUserFiles(new FileSystemStorageService(root), username, fileAge);
 			}
 
 			/// <summary>
-			/// Vrátí název SLOŽKY pro uložení viewstate pro daného uživatele (ale nikoliv celou cestu).
+			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
+			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
 			/// </summary>
-			private static string GetFolderForUserName(string username)
+			public static void DeleteOldAnonymousFiles(IFileStorageService fileStorageService, TimeSpan? fileAge = null)
 			{
-				if (String.IsNullOrEmpty(username))
-				{
-					username = AnonymousUserFolderName;
-				}
-								
-				string userFolder = username.ToLower();
-				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
-				{
-					userFolder = userFolder.Replace(invalidChar, '_');
-				}
+				DeleteUserFiles(fileStorageService, null, fileAge ?? new TimeSpan(2, 0, 0, 0)); // 2 dny
+			}
 
-				return String.Format(FolderNamePattern, userFolder);
+			/// <summary>
+			/// Smaže soubory starší dnou dnů anonymního uživatele uživatele.
+			/// V případě, že se některý soubor nepodaří smazat, je mazání ukončeno, ale není vyhozena výjimka.
+			/// </summary>
+			/// <remarks>
+			/// Předpokládá se uložení viewstate do file systému.
+			/// Metoda existuje z důvodu zpětné kompatibility.
+			/// </remarks>
+			public static void DeleteOldAnonymousFiles(string root, TimeSpan? fileAge = null)
+			{
+				DeleteOldAnonymousFiles(new FileSystemStorageService(root), fileAge);
 			}
 
 			/// <summary>
@@ -129,7 +131,26 @@ namespace Havit.Web.UI
 					throw new ArgumentException("Symbol nesmí obsahovat více než jedno zpětné lomítko.");
 				}
 
-				return System.IO.Path.Combine(Root, symbol);
+				return symbol;
+			}
+
+			/// <summary>
+			/// Vrátí název SLOŽKY pro uložení viewstate pro daného uživatele (ale nikoliv celou cestu).
+			/// </summary>
+			private static string GetFolderForUserName(string username)
+			{
+				if (String.IsNullOrEmpty(username))
+				{
+					username = AnonymousUserFolderName;
+				}
+
+				string userFolder = username.ToLower();
+				foreach (char invalidChar in System.IO.Path.GetInvalidFileNameChars())
+				{
+					userFolder = userFolder.Replace(invalidChar, '_');
+				}
+
+				return String.Format(FolderNamePattern, userFolder);
 			}
 		}
 	}

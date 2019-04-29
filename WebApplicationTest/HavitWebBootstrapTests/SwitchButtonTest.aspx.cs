@@ -11,19 +11,6 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
 {
 	public partial class SwitchButtonTest : System.Web.UI.Page
 	{
-		protected override PageStatePersister PageStatePersister
-		{
-			get
-			{
-				if (pageStatePersister == null)
-				{
-					pageStatePersister = new FilePageStatePersister(this, new FilePageStatePersister.PerUserNamingStrategy(@"\\TOPOL\Workspace\002.HFW\ViewState"));
-				}
-				return pageStatePersister;
-			}
-		}
-		private PageStatePersister pageStatePersister;
-
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);

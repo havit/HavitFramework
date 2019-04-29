@@ -200,6 +200,7 @@
     <Content Include="HavitWebTests\CheckBoxDropDownListTest.aspx" />
     <Content Include="HavitWebTests\DateTimeBoxTest2.aspx" />
     <Content Include="HavitWebTests\EditViewTest.aspx" />
+    <Content Include="HavitWebTests\FilePageStatePersisterTest.aspx" />
     <Content Include="HavitWebTests\FormViewTest.aspx" />
     <Content Include="HavitWebTests\GridViewExt-Filtr.aspx" />
     <Content Include="HavitWebBootstrapTests\Bootstrap.Master" />
@@ -552,6 +553,13 @@
     <Compile Include="HavitWebTests\EditViewTest.aspx.designer.cs">
       <DependentUpon>EditViewTest.aspx</DependentUpon>
     </Compile>
+    <Compile Include="HavitWebTests\FilePageStatePersisterTest.aspx.cs">
+      <DependentUpon>FilePageStatePersisterTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\FilePageStatePersisterTest.aspx.designer.cs">
+      <DependentUpon>FilePageStatePersisterTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="HavitWebTests\FormViewTest.aspx.cs">
       <DependentUpon>FormViewTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -806,6 +814,10 @@
     <ProjectReference Include="..\Havit.Enterprise.Web\Havit.Enterprise.Web.csproj">
       <Project>{7478BEA8-791F-47E9-ADD9-18F2D34619EA}</Project>
       <Name>Havit.Enterprise.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj">
+      <Project>{2e4ae0cf-fa21-4fbc-9274-e56bc5d9494e}</Project>
+      <Name>Havit.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Havit.Web\Havit.Web.csproj">
       <Project>{52891FB3-CA20-403B-AC25-7D9CA5738B6B}</Project>

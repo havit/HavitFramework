@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.3</PackageVersion>
+	<PackageVersion>2.0.4</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
   </PropertyGroup>
 
@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
 	<TypeScriptCompile Include="Bootstrap\Content\js\ModalExtension.ts" />

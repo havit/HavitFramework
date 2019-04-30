@@ -14,6 +14,7 @@
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj" />
 	<ProjectReference Include="..\Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj" />
+	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
 	<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" PrivateAssets="All" />
   </ItemGroup>
 

@@ -488,6 +488,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                 warningAction();
             }
+
+            var extendedPropertyDefaultValue = ColumnHelper.GetStringExtendedProperty(column, "DefaultValue");
+            if (!string.IsNullOrEmpty(extendedPropertyDefaultValue))
+            {
+                writer.WriteLine($"[BusinessLayerDefaultValue(\"{extendedPropertyDefaultValue}\")]");
+            }
         }
 
         public static void WriteNamespaceClassEnd(CodeWriter writer)

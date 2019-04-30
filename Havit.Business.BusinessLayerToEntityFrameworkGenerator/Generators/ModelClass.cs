@@ -217,6 +217,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                         continue;
                     }
 
+                    string description = ColumnHelper.GetDescription(fk.Column, suppressDefaults: true);
+
+                    writer.WriteCommentSummary(description);
+
                     if (ColumnHelper.IsIgnored(pk.Property.Column))
                     {
                         writer.WriteLine("[Ignored]");

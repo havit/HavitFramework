@@ -137,6 +137,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine(String.Format("[MethodAccessModifier(\"{0}\")]", methodAccessModifier));
 	        }
 
+	        bool? isIgnored  = dbStoredProcedure.StoredProcedure.GetBoolExtendedProperty("Ignored");
+	        if (isIgnored == true)
+			{
+				writer.WriteLine("[Ignored]");
+	        }
+
 			writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }

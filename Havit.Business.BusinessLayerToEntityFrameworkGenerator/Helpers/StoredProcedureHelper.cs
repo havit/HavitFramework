@@ -9,5 +9,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
 		{
 			return ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromStoredProcedure(storedProcedure), key);
 		}
+		public static bool? GetBoolExtendedProperty(this StoredProcedure storedProcedure, string key)
+		{
+			return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromStoredProcedure(storedProcedure), key, $"SP: {storedProcedure.Name}-{key}");
+		}
 	}
 }

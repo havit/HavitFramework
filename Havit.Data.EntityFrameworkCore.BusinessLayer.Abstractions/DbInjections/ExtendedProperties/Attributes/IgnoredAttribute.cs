@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProp
         {
             return new Dictionary<string, string>
             {
-                { BusinessLayer.Attributes.ExtendedProperties.IgnoredAttribute.ExtendedPropertyName, "true"}
+                { BusinessLayer.Attributes.ExtendedProperties.IgnoredAttribute.ExtendedPropertyName, "true" }
             };
         }
     }

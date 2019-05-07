@@ -94,6 +94,22 @@ namespace Havit.Services.Caching
 		private string[] cacheDependencyKeys;
 
 		/// <summary>
+		/// Vytvoří kopii cache options.
+		/// Pokud je zdrojová cache options uzamčena pro změny, kopie uzamčena nebude.
+		/// </summary>
+		public CacheOptions Clone()
+		{
+			return new CacheOptions
+			{
+				AbsoluteExpiration = this.AbsoluteExpiration,
+				SlidingExpiration = this.SlidingExpiration,
+				Priority = this.Priority,
+				Size = this.Size,
+				CacheDependencyKeys = this.CacheDependencyKeys
+			};
+		}
+
+		/// <summary>
 		/// Zamkne kolekci vůči změnám. Od toho okamžiku není možné změnit položky v kolekci.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Advanced)]

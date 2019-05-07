@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views
 		/// <param name="createScriptResourceName">Názov resource s create skriptom pre view.</param>
 		/// <param name="resourceAssembly">Assembly, ve které se resource hledá. Volitelný parametr. Není-li uveden, hledá se v assembly dle GetDefaultResourceAssembly().</param>
 		/// <returns><see cref="ViewDbInjection"/> objekt reprezentujúci view.</returns>
-		protected ViewDbInjection Procedure(string createScriptResourceName, Assembly resourceAssembly = null)
+		protected ViewDbInjection View(string createScriptResourceName, Assembly resourceAssembly = null)
 		{
 			resourceAssembly = resourceAssembly ?? GetDefaultResourceAssembly();
 

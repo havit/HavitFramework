@@ -318,6 +318,50 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
 		}
 
+		// Bug #44100: Cachování - EntityCacheManager se s invalidací snaží uložit do cache i právě mazanou entitu
+		[TestMethod]
+		public void EntityCacheManager_InvalidateEntity_DoesNotStoreDeletedEntity()
+		{
+			// Arrange
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			LoginAccount loginAccount = new LoginAccount { Id = 1 };
+
+			// deleted entity, simulation of UnitOfWork.AddForDelete() + Commit()
+			dbContext.Add(loginAccount);
+			dbContext.SaveChanges();
+			dbContext.Remove(loginAccount);
+			dbContext.SaveChanges();
+
+			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
+			cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
+			cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
+
+			var entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
+			string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
+			string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
+
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+				dbContext: dbContext,
+				cacheService: cacheServiceMock.Object,
+				entityCacheKeyGenerator: entityCacheKeyGenerator);
+
+			Changes changes = new Changes
+			{
+				Inserts = new object[0],
+				Updates = new object[0],
+				Deletes = new object[] { loginAccount },
+			};
+
+			// Act
+			entityCacheManager.Invalidate(changes);
+
+			// Assert
+			cacheServiceMock.Verify(m => m.Add(entityCacheKey, It.IsAny<object>(), It.IsAny<CacheOptions>()), Times.Never);
+			cacheServiceMock.Verify(m => m.Remove(entityCacheKey), Times.Once);
+			cacheServiceMock.Verify(m => m.Remove(allKeysCacheKey), Times.Once);
+		}
+
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_SupportsManyToMany()
 		{

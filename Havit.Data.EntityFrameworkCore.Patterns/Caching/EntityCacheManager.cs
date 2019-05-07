@@ -267,18 +267,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 					cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
 				}
 
-				// když už objekt máme, můžeme jej uložit do cache
-				// protože je metoda StoreEntity generická, musíme přes reflexi
-				try
+				if (changeType != ChangeType.Delete)
 				{
-					this.GetType()
-						.GetMethod(nameof(StoreEntity))
-						.MakeGenericMethod(entityType)
-						.Invoke(this, new[] { entity });
-				}
-				catch (TargetInvocationException targetInvocationException)
-				{
-					ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+					// když už objekt máme, můžeme jej uložit do cache
+					// protože je metoda StoreEntity generická, musíme přes reflexi
+					try
+					{
+						this.GetType()
+							.GetMethod(nameof(StoreEntity))
+							.MakeGenericMethod(entityType)
+							.Invoke(this, new[] { entity });
+					}
+					catch (TargetInvocationException targetInvocationException)
+					{
+						ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+					}
 				}
 			}
 		}

@@ -102,10 +102,10 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For<IPropertyLambdaExpressionStore>().ImplementedBy<PropertyLambdaExpressionStore>().LifestyleSingleton(),
 				Component.For<IPropertyLoadSequenceResolver>().ImplementedBy<PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution>().LifestyleSingleton(),
 				Component.For<IBeforeCommitProcessorsRunner>().ImplementedBy<BeforeCommitProcessorsRunner>().LifestyleSingleton(),
-				Component.For<IBeforeCommitProcessorsFactory>().AsFactory().LifestyleSingleton(),
+				Component.For<IBeforeCommitProcessorsFactory>().AsFactory(),
 				Component.For<IBeforeCommitProcessor<object>>().ImplementedBy<SetCreatedToInsertingEntitiesBeforeCommitProcessor>().LifestyleSingleton(),
 				Component.For<IEntityValidationRunner>().ImplementedBy<EntityValidationRunner>().LifestyleSingleton(),
-				Component.For<IEntityValidatorsFactory>().AsFactory().LifestyleSingleton()
+				Component.For<IEntityValidatorsFactory>().AsFactory()
 			);
 			return this;
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -277,9 +278,9 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", AzureBlobStorageServiceOptions options = null, EncryptionOptions encryptionOptions = null)
 		{
-			return new AzureBlobStorageService("DefaultEndpointsProtocol=https;AccountName=hfwtestsstorage;AccountKey=3yuNhy/gYB6JDZ+bljB+vNBs4DrjjgvK7ZFfCR2QrZWoy4dEuYuSAApkQ2GkmKb01U2bidXq5/SpNDFm8uflDw==;", container, options, (EncryptionOptions)encryptionOptions);
+			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
+			// use your own Azure Storage account if you do not have access to this file
+			return new AzureBlobStorageService(File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"), container, options, (EncryptionOptions)encryptionOptions);
 		}
-
-
 	}
 }

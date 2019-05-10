@@ -2,13 +2,8 @@
 
   <PropertyGroup>
 	<TargetFramework>net46</TargetFramework>
-	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<RootNamespace>Havit.Data.Entity.Patterns.Tests</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-	<Compile Include="..\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.10.0" />

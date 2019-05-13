@@ -9,11 +9,11 @@ using Havit.Services.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
-namespace Havit.Services.Tests.FileStorage
+namespace Havit.Services.TestHelpers.FileStorage
 {
-	internal static class FileStorageServiceTestInternals
+	public static class FileStorageServiceTestHelpers
 	{
-		internal static void FileStorageService_Exists_ReturnsFalseWhenNotFound(IFileStorageService fileStorageService)
+		public static void FileStorageService_Exists_ReturnsFalseWhenNotFound(IFileStorageService fileStorageService)
 		{
 			// Act
 			bool exists = fileStorageService.Exists(Guid.NewGuid().ToString()); // spoléháme na náhodné číslo
@@ -22,7 +22,7 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(exists);
 		}
 
-		internal static async Task FileStorageService_ExistsAsync_ReturnsFalseWhenNotFound(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_ExistsAsync_ReturnsFalseWhenNotFound(IFileStorageServiceAsync fileStorageService)
 		{
 			// Act
 			bool exists = await fileStorageService.ExistsAsync(Guid.NewGuid().ToString()); // spoléháme na náhodné číslo
@@ -31,7 +31,7 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(exists);
 		}
 
-		internal static void FileStorageService_Exists_ReturnsTrueForExistingBlob(IFileStorageService fileStorageService)
+		public static void FileStorageService_Exists_ReturnsTrueForExistingBlob(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string blobName = Guid.NewGuid().ToString();
@@ -51,7 +51,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(blobName);
 		}
 
-		internal static async Task FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string blobName = Guid.NewGuid().ToString();
@@ -71,7 +71,7 @@ namespace Havit.Services.Tests.FileStorage
 			await fileStorageService.DeleteAsync(blobName);
 		}
 
-		internal static void FileStorageService_DoesNotExistsAfterDelete(IFileStorageService fileStorageService)
+		public static void FileStorageService_DoesNotExistsAfterDelete(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string blobName = Guid.NewGuid().ToString();
@@ -90,7 +90,7 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(exists);
 		}
 
-		internal static async Task FileStorageService_DoesNotExistsAfterDeleteAsync(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_DoesNotExistsAfterDeleteAsync(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string blobName = Guid.NewGuid().ToString();
@@ -109,7 +109,7 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(exists);
 		}
 
-		internal static void FileStorageService_Save_AcceptsPathWithNewSubfolders(IFileStorageService fileStorageService)
+		public static void FileStorageService_Save_AcceptsPathWithNewSubfolders(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string folderName = Guid.NewGuid().ToString();
@@ -128,7 +128,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(fileName);
 		}
 
-		internal static async Task FileStorageService_SaveAsync_AcceptsPathWithNewSubfolders(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_SaveAsync_AcceptsPathWithNewSubfolders(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string folderName = Guid.NewGuid().ToString();
@@ -147,7 +147,7 @@ namespace Havit.Services.Tests.FileStorage
 			await fileStorageService.DeleteAsync(fileName);
 		}
 
-		internal static void FileStorageService_SaveDoNotAcceptSeekedStream(IFileStorageService fileStorageService)
+		public static void FileStorageService_SaveDoNotAcceptSeekedStream(IFileStorageService fileStorageService)
 		{
 			using (MemoryStream ms = new MemoryStream())
 			{
@@ -156,7 +156,7 @@ namespace Havit.Services.Tests.FileStorage
 			}
 		}
 
-		internal static async Task FileStorageService_SaveAsyncDoNotAcceptSeekedStream(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_SaveAsyncDoNotAcceptSeekedStream(IFileStorageServiceAsync fileStorageService)
 		{
 			using (MemoryStream ms = new MemoryStream())
 			{
@@ -165,7 +165,7 @@ namespace Havit.Services.Tests.FileStorage
 			}
 		}
 
-		internal static void FileStorageService_SavedAndReadContentsAreSame_Perform(IFileStorageService fileStorageService)
+		public static void FileStorageService_SavedAndReadContentsAreSame_Perform(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
@@ -212,7 +212,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(filename);
 		}
 
-		internal static async Task FileStorageService_SavedAndReadContentsAreSame_PerformAsync(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_SavedAndReadContentsAreSame_PerformAsync(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
@@ -259,7 +259,7 @@ namespace Havit.Services.Tests.FileStorage
 			await fileStorageService.DeleteAsync(filename);
 		}
 
-		internal static void FileStorageService_EnumerateFiles_SupportsSearchPattern(IFileStorageService fileStorageService)
+		public static void FileStorageService_EnumerateFiles_SupportsSearchPattern(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string testFilename = "test123[#].txt";
@@ -288,7 +288,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
-		internal static async Task FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string testFilename = "test123[#].txt";
@@ -317,7 +317,7 @@ namespace Havit.Services.Tests.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
-		internal static void FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(IFileStorageService fileStorageService)
+		public static void FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string testFilename = @"subfolder1/subfolder2/test123.txt";
@@ -363,7 +363,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
-		internal static async Task FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string testFilename = @"subfolder1/subfolder2/test123.txt";
@@ -410,7 +410,7 @@ namespace Havit.Services.Tests.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
-		internal static void FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(IFileStorageService fileStorageService)
+		public static void FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string testFilename = "file.txt";
@@ -433,7 +433,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
-		internal static async Task FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string testFilename = "file.txt";
@@ -456,7 +456,7 @@ namespace Havit.Services.Tests.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
-		internal static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		public static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
@@ -495,7 +495,7 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
-		internal static async Task FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		public static async Task FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
-using Havit.Services.Tests.FileStorage;
+using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
@@ -36,111 +36,111 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[TestMethod]
 		public void AzureBlobStorageService_Exists_ReturnsFalseWhenNotFound()
 		{
-			FileStorageServiceTestInternals.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_ExistsAsync_ReturnsFalseWhenNotFound()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_ExistsAsync_ReturnsFalseWhenNotFound(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_ExistsAsync_ReturnsFalseWhenNotFound(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_Exists_ReturnsTrueForExistingBlob()
 		{
-			FileStorageServiceTestInternals.FileStorageService_Exists_ReturnsTrueForExistingBlob(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsTrueForExistingBlob(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_ExistsAsync_ReturnsTrueForExistingBlob()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void AzureBlobStorageService_SaveDoNotAcceptSeekedStream()
 		{
-			FileStorageServiceTestInternals.FileStorageService_SaveDoNotAcceptSeekedStream(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_SaveDoNotAcceptSeekedStream(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public async Task AzureBlobStorageService_SaveAsyncDoesNotAcceptSeekedStream()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_SavedAndReadContentsAreSame()
 		{
-			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_SavedAndReadContentsAreSame_Async()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_Save_AcceptsPathWithNewSubfolders()
 		{
-			FileStorageServiceTestInternals.FileStorageService_Save_AcceptsPathWithNewSubfolders(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Save_AcceptsPathWithNewSubfolders(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_SaveAsync_AcceptsPathWithNewSubfolders()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_SaveAsync_AcceptsPathWithNewSubfolders(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_SaveAsync_AcceptsPathWithNewSubfolders(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_SavedAndReadContentsWithEncryptionAreSame()
 		{
-			FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_SavedAndReadContentsWithEncryptionAreSame_Async()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_DoesNotExistsAfterDelete()
 		{
-			FileStorageServiceTestInternals.FileStorageService_DoesNotExistsAfterDelete(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_DoesNotExistsAfterDelete(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_DoesNotExistsAfterDeleteAsync()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_DoesNotExistsAfterDeleteAsync(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_DoesNotExistsAfterDeleteAsync(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPattern()
 		{
-			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPattern()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{			
-			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
@@ -176,25 +176,25 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerateFiles_HasLastModifiedUtcAndSize()
 		{
-			FileStorageServiceTestInternals.FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
-			FileStorageServiceTestInternals.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
-			await FileStorageServiceTestInternals.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]

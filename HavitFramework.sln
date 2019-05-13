@@ -201,6 +201,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Core.Tests", "Havit.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreWebApplication", "AspNetCoreWebApplication\AspNetCoreWebApplication.csproj", "{82DFF0EC-0842-4280-8708-5BAA5FA207E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.TestHelpers", "Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj", "{54196DA6-3753-4457-85FD-637D15FDF088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -499,6 +501,10 @@ Global
 		{82DFF0EC-0842-4280-8708-5BAA5FA207E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82DFF0EC-0842-4280-8708-5BAA5FA207E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82DFF0EC-0842-4280-8708-5BAA5FA207E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54196DA6-3753-4457-85FD-637D15FDF088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54196DA6-3753-4457-85FD-637D15FDF088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54196DA6-3753-4457-85FD-637D15FDF088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54196DA6-3753-4457-85FD-637D15FDF088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -587,6 +593,7 @@ Global
 		{3FDD2013-1F21-4645-90A5-938649958734} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{48BA6236-3B42-41AB-AC48-7F977E85863E} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{82DFF0EC-0842-4280-8708-5BAA5FA207E4} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
+		{54196DA6-3753-4457-85FD-637D15FDF088} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

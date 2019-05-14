@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataSources;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
-using Havit.Data.Entity.Tests.Helpers;
-using Havit.Data.Entity.Tests.Infrastructure;
+using Havit.Data.Entity.Patterns.Tests.Helpers;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

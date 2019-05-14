@@ -1,6 +1,5 @@
 ﻿using System.Data.Entity;
 using Havit.Data.Entity.Helpers;
-using Havit.Data.Entity.Tests;
 
 namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
 {

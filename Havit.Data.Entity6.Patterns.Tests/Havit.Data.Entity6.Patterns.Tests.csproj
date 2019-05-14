@@ -18,7 +18,6 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" />
-	<ProjectReference Include="..\Havit.Data.Entity6.Tests\Havit.Data.Entity6.Tests.csproj" />
   </ItemGroup>
   
 </Project>

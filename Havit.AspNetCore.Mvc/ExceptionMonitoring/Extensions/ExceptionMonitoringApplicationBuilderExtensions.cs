@@ -28,7 +28,10 @@ namespace Microsoft.AspNetCore.Builder
 			return app.UseMiddleware<ExceptionMonitoringMiddleware>();
 		}
 
-        public static IApplicationBuilder UseUnobservedTaskExceptionHandler(this IApplicationBuilder app)
+		/// <summary>
+		/// Adds IExceptionMonitoringService (DI) as registered handler of UnobservedTaskExceptionHandler.
+		/// </summary>
+		public static IApplicationBuilder UseUnobservedTaskExceptionHandler(this IApplicationBuilder app)
         {
             Contract.Requires<ArgumentNullException>(app != null, nameof(app));
 
@@ -37,7 +40,10 @@ namespace Microsoft.AspNetCore.Builder
             return app;
         }
 
-        public static IApplicationBuilder UseAppDomainUnhandledExceptionHandler(this IApplicationBuilder app)
+		/// <summary>
+		/// Adds IExceptionMonitoringService (DI) as registered handler of AppDomainUnhandledExceptionHandler.
+		/// </summary>
+		public static IApplicationBuilder UseAppDomainUnhandledExceptionHandler(this IApplicationBuilder app)
         {
             AppDomainUnhandledExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
 

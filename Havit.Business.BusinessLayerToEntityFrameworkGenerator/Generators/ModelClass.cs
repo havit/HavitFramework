@@ -35,6 +35,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             WriteMembers(writer, modelClass);
 
             WriteEnumClassMembers(writer, modelClass);
+            WriteResourceClassEnumMembers(writer, modelClass);
             WriteNamespaceClassEnd(writer);
 
             writer.Save();
@@ -103,6 +104,46 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                 else
                 {
                     writer.WriteLine(String.Format("{0} = {1}", enumMember.MemberName, enumMember.MemberID));
+                }
+            }
+            writer.WriteLine("}");
+        }
+
+        private static void WriteResourceClassEnumMembers(CodeWriter writer, GeneratedModelClass modelClass)
+        {
+            if (modelClass.Name != "ResourceClass")
+            {
+                return;
+            }
+
+            writer.WriteLine("public enum Entry");
+            writer.WriteLine("{");
+            List<ResourceClass> resourceClasses = ResourceHelper.GetResourceClasses(modelClass.Table);
+
+            for (int i = 0; i < resourceClasses.Count; i++)
+            {
+                ResourceClass resourceClass = resourceClasses[i];
+                string comment = !String.IsNullOrEmpty(resourceClass.Comment) ? resourceClass.Comment : resourceClass.ClassName;
+                if (!String.IsNullOrEmpty(comment) && (comment != resourceClass.ClassName))
+                {
+                    if (i > 0)
+                    {
+                        writer.WriteLine();
+                    }
+                    writer.WriteCommentSummary(comment);
+                }
+                
+                var enumMember = resourceClass.ClassName
+                    .Replace('/', '_')
+                    .Replace('-', '_')
+                    .Replace('.', '_');
+                if (i < (resourceClasses.Count - 1))
+                {
+                    writer.WriteLine(String.Format("{0} = {1},", enumMember, resourceClass.ID));
+                }
+                else
+                {
+                    writer.WriteLine(String.Format("{0} = {1}", enumMember, resourceClass.ID));
                 }
             }
             writer.WriteLine("}");

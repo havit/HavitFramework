@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Havit.Data.Configuration.Git.Core;
@@ -39,12 +40,28 @@ namespace Havit.Extensions.Configuration.ConnectionStrings.Git
 		}
 
 		public string this[string key]
-		{
-			get => IsConnectionStringKey(key) ? TransformConnectionString(configurationRoot[key]) : configurationRoot[key];
-			set => configurationRoot[key] = value;
-		}
+        {
+            get
+            {
+                if (IsConnectionStringKey(key))
+                {
+                    string connectionString = configurationRoot[key];
+                    if (connectionString == null)
+                    {
+                        throw new ArgumentException(
+                            $"Specified connection string ('{key}') not found, cannot transform it using current Git branch." +
+                            " Please make sure configuration is correctly set up.", nameof(key));
+                    }
 
-		public void Reload()
+                    return TransformConnectionString(connectionString);
+                }
+
+                return configurationRoot[key];
+            }
+            set => configurationRoot[key] = value;
+        }
+
+        public void Reload()
 		{
 			configurationRoot.Reload();
 		}

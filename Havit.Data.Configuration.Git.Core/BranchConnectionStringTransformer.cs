@@ -14,6 +14,11 @@ namespace Havit.Data.Configuration.Git.Core
 
 		public string ChangeDatabaseName(string connectionString, string projectPath)
 		{
+            if (connectionString == null)
+            {
+                return null;
+            }
+
 			// TODO: consider using System.Data.SqlClient.SqlConnectionStringBuilder
 			var match = Regex.Match(connectionString, "Initial Catalog=([^;]*)");
 			if (!match.Success)

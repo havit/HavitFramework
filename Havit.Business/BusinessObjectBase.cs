@@ -495,7 +495,7 @@ namespace Havit.Business
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public virtual bool Equals(BusinessObjectBase obj)
 		{
-			if ((obj == null) || (this.GetType() != obj.GetType()))
+			if (obj == null)
 			{
 				return false;
 			}
@@ -507,7 +507,7 @@ namespace Havit.Business
 			}
 			
 			// běžné objekty jsou si rovny, pokud mají stejné ID
-			if (!Object.Equals(this.ID, obj.ID))
+			if (!Object.Equals(this.ID, obj.ID) || (this.GetType() != obj.GetType()))
 			{
 				return false;
 			}
@@ -521,12 +521,7 @@ namespace Havit.Business
 		/// <returns>true, pokud jsou si rovny; jinak false</returns>
 		public override bool Equals(object obj)
 		{
-			BusinessObjectBase bob = obj as BusinessObjectBase;
-			if (bob != null)
-			{
-				return this.Equals(bob);
-			}
-			return false;
+			return (obj is BusinessObjectBase) ? this.Equals((BusinessObjectBase)obj) : false;
 		}
 
 		/// <summary>
@@ -557,7 +552,7 @@ namespace Havit.Business
 		/// </summary>
 		public override int GetHashCode()
 		{
-			return this.ID;
+			return _isNew ? base.GetHashCode() : this.ID;
 		}
 
 		/// <summary>

@@ -132,7 +132,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                     }
                     writer.WriteCommentSummary(comment);
                 }
-                
+
                 var enumMember = resourceClass.ClassName
                     .Replace('/', '_')
                     .Replace('-', '_')
@@ -420,8 +420,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                     writer.WriteLine("[CheckForeignKeyName(false)]");
                 }
 
+                string codeDefaultValue = GetCodeDefaultValue(column, type);
 
-                writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));
+                if (!string.IsNullOrEmpty(codeDefaultValue))
+                {
+                    writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }} = {3};", accesssModifierText, entityProperty.TypeName, entityProperty.Name, codeDefaultValue));
+
+                }
+                else
+                {
+                    writer.WriteLine(String.Format("{0} {1} {2} {{ get; set; }}", accesssModifierText, entityProperty.TypeName, entityProperty.Name));
+                }
 
                 writer.WriteLine();
             }
@@ -467,6 +476,31 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                 writer.WriteLine();
             }
 
+        }
+
+        private static string GetCodeDefaultValue(Column column, Type type)
+        {
+            if (column.DefaultConstraint != null)
+            {
+                string defaultValue = column.DefaultConstraint.Text;
+                string defaultValueTrimmed = defaultValue.TrimStart('(').TrimEnd(')');
+                if (column.Nullable && ((column.DataType.SqlDataType == SqlDataType.Decimal) || (column.DataType.SqlDataType == SqlDataType.Money)))
+                {
+                    // [DefaultValue(0)]
+                    // public Decimal? TotalAmountAmount { get; set; }
+                    // Cannot set default value '0' of type 'System.Int32' on property 'TotalAmountAmount' of type 'System.Nullable`1[System.Decimal]' in entity type '
+                    // workaround:
+                    return $"{defaultValueTrimmed}";
+                }
+
+                if ((column.DataType.SqlDataType == SqlDataType.NVarChar) || (column.DataType.SqlDataType == SqlDataType.NVarCharMax))
+                {
+                    var stringDefault = defaultValueTrimmed.TrimStart('N').Trim('\'').Replace("\\", "\\\\").Replace("\"", "\\\"");
+                    return $"\"{stringDefault}\"";
+                }
+            }
+
+            return null;
         }
 
         private static void WriteDefault(CodeWriter writer, Table table, Column column, Type type)
@@ -527,7 +561,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                 if ((column.DataType.SqlDataType == SqlDataType.NVarChar) || (column.DataType.SqlDataType == SqlDataType.NVarCharMax))
                 {
                     var stringDefault = defaultValueTrimmed.TrimStart('N').Trim('\'').Replace("\\", "\\\\").Replace("\"", "\\\"");
-                    writer.WriteLine($"[DefaultValue(\"{stringDefault}\")]");
+                    if (!string.IsNullOrEmpty(stringDefault))
+                    {
+                        writer.WriteLine($"[DefaultValue(\"{stringDefault}\")]");
+                    }
+
                     return;
                 }
 

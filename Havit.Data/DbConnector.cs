@@ -20,7 +20,23 @@ namespace Havit.Data
 	/// </summary>	
 	public class DbConnector
 	{
-		private readonly TraceSource commandExecutionTrace = new TraceSource("DbConnector Command Execution Trace", SourceLevels.All);
+		/// <summary>
+		/// TraceSource pro hlášení prováděných SQL dotazů. 
+		/// Použití pro vývoj a ladění:
+		/// 1) Glimpse
+		/// 2) Debug
+		/// </summary>
+		/// <remarks>
+		/// Vzhledem k existenci novějších nástrojů ve standardním nastavení vypínáme. Důvodem je, že bez dalšího nastavení, existuje Default listener
+		/// a díky němo se zapisují zprávy do logu. Naše zprávy však používají intenzivně String.Format, který je pomalý. Pro větší počet databázových 
+		/// operací to může být zbytečnou brzdou. Pro zapnutí v projektu je možné do konfigurace aplikace uvést:
+		/// &lt;system.diagnostics&gt;
+		///		&lt;sources&gt;
+		///			&lt;source name = "DbConnector Command Execution Trace" switchValue="All" /&gt;
+		///		&lt;/sources&gt;
+		/// &lt;/system.diagnostics&gt;
+		/// </remarks>
+		private readonly TraceSource commandExecutionTrace = new TraceSource("DbConnector Command Execution Trace", SourceLevels.Off);
 
 		/// <summary>
 		/// Vrátí connection-string, který spolu s <see cref="DbConnector.ProviderFactory"/> určuje parametry DbConnectoru.

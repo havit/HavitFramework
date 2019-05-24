@@ -11,20 +11,27 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 	/// </summary>
     public static class MigrationExtensions
     {
-		/// <summary>
-		/// Vykoná SQL skript v rámci migrácie, ktorý je načítaný z resources.
-		/// </summary>
-		/// <param name="migrationBuilder"><see cref="MigrationBuilder"/> používaný v migrácii.</param>
-		/// <param name="resourceName">Názov resource vo volajúcej assembly.</param>
-		/// <param name="suppressTransaction">Parameter pre <see cref="MigrationBuilder.Sql"/>: Indicates whether or not transactions will be suppressed while executing the SQL.</param>
-		public static void SqlResource(this MigrationBuilder migrationBuilder, string resourceName, bool suppressTransaction = false)
+        /// <summary>
+        /// Vykoná SQL skript v rámci migrácie, ktorý je načítaný z resources.
+        /// </summary>
+        /// <param name="migrationBuilder"><see cref="MigrationBuilder"/> používaný v migrácii.</param>
+        /// <param name="resourceName">Názov resource vo volajúcej assembly.</param>
+        /// <param name="suppressTransaction">Parameter pre <see cref="MigrationBuilder.Sql"/>: Indicates whether or not transactions will be suppressed while executing the SQL.</param>
+        public static void SqlResource(this MigrationBuilder migrationBuilder, string resourceName, bool suppressTransaction = false)
         {
-			Contract.Requires<ArgumentNullException>(resourceName != null);
+            Contract.Requires<ArgumentNullException>(resourceName != null);
 
-            using (var textStream = new StreamReader(Assembly.GetCallingAssembly().GetManifestResourceStream(resourceName)))
+            Assembly sqlResourceAssembly = Assembly.GetCallingAssembly();
+
+            using (var stream = sqlResourceAssembly.GetManifestResourceStream(resourceName))
             {
-                string sql = textStream.ReadToEnd();
-	            migrationBuilder.Sql(sql, suppressTransaction);
+                Contract.Assert<ArgumentException>(stream != null, $"Resource name '{resourceName}' does not exist");
+
+                using (var textStream = new StreamReader(stream))
+                {
+                    string sql = textStream.ReadToEnd();
+                    migrationBuilder.Sql(sql, suppressTransaction);
+                }
             }
         }
     }

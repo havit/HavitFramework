@@ -6,10 +6,11 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
 	<PackageVersion>2.0.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
+	<LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">

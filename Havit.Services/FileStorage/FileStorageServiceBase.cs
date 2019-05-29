@@ -179,10 +179,10 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
-		/// Vrátí prefix pro vyhledání pomocí ListBlobs.
+		/// Vrátí prefix pro vyhledání.
 		/// Prefix je úvodní část cesty po poslední '/', která neobsahuje '*' a '?'.
 		/// </summary>
-		protected internal string EnumerableFilesGetPrefix(string searchPattern)
+		static protected internal string EnumerableFilesGetPrefix(string searchPattern)
 		{
 			if ((searchPattern != null) && searchPattern.Contains('/'))
 			{

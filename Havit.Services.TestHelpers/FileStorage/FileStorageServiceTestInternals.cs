@@ -31,7 +31,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			Assert.IsFalse(exists);
 		}
 
-		public static void FileStorageService_Exists_ReturnsTrueForExistingBlob(IFileStorageService fileStorageService)
+		public static void FileStorageService_Exists_ReturnsTrueWhenExists(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string blobName = Guid.NewGuid().ToString();
@@ -51,7 +51,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService.Delete(blobName);
 		}
 
-		public static async Task FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_ExistsAsync_ReturnsTrueWhenExists(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string blobName = Guid.NewGuid().ToString();
@@ -113,7 +113,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 		{
 			// Arrange
 			string folderName = Guid.NewGuid().ToString();
-			string fileName = folderName + "/" + Guid.NewGuid().ToString();
+			string fileName = folderName + "/subfolder/" + Guid.NewGuid().ToString();
 
 			// Act
 			using (MemoryStream ms = new MemoryStream())
@@ -410,7 +410,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
-		public static void FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(IFileStorageService fileStorageService)
+		public static void FileStorageService_EnumerateFiles_HasLastModifiedUtc(IFileStorageService fileStorageService)
 		{
 			// Arrange
 			string testFilename = "file.txt";
@@ -427,13 +427,34 @@ namespace Havit.Services.TestHelpers.FileStorage
 
 			// Assert
 			Assert.AreNotEqual(default(DateTime), files.Single().LastModifiedUtc);
+
+			// Clean-up
+			fileStorageService.Delete(testFilename);
+		}
+
+		public static void FileStorageService_EnumerateFiles_HasSize(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string testFilename = "file.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				ms.WriteByte(0); // zapíšeme jeden byte
+				ms.Seek(0, SeekOrigin.Begin);
+
+				fileStorageService.Save(testFilename, ms, "text/plain");
+			}
+
+			// Act
+			List<FileInfo> files = fileStorageService.EnumerateFiles(testFilename).ToList();
+
+			// Assert
 			Assert.AreEqual(1, files.Single().Size); // zapsali jsme jeden byte
 
 			// Clean-up
 			fileStorageService.Delete(testFilename);
 		}
 
-		public static async Task FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(IFileStorageServiceAsync fileStorageService)
+		public static async Task FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(IFileStorageServiceAsync fileStorageService)
 		{
 			// Arrange
 			string testFilename = "file.txt";
@@ -450,6 +471,26 @@ namespace Havit.Services.TestHelpers.FileStorage
 
 			// Assert
 			Assert.AreNotEqual(default(DateTime), files.Single().LastModifiedUtc);
+
+			// Clean-up
+			await fileStorageService.DeleteAsync(testFilename);
+		}
+		public static async Task FileStorageService_EnumerateFilesAsync_HasSize(IFileStorageServiceAsync fileStorageService)
+		{
+			// Arrange
+			string testFilename = "file.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				ms.WriteByte(0); // zapíšeme jeden byte
+				ms.Seek(0, SeekOrigin.Begin);
+
+				await fileStorageService.SaveAsync(testFilename, ms, "text/plain");
+			}
+
+			// Act
+			List<FileInfo> files = (await fileStorageService.EnumerateFilesAsync(testFilename)).ToList();
+
+			// Assert
 			Assert.AreEqual(1, files.Single().Size); // zapsali jsme jeden byte
 
 			// Clean-up

@@ -23,14 +23,19 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		{
 			// testy jsou slušné, mažou po sobě
 			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
-			CleanUp();
+
+			// Nemůžeme smazat celý container, protože pokud metoda je ukončena před skutečným smazáním. Další operace nad containerem,
+			// dokud je mazán, oznamují chybu 409 Confict s popisem "The specified container is being deleted."
+			// Proto raději smažeme jen bloby.
+
+			var service = GetAzureBlobStorageService();
+			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
 		}
 
 		[ClassCleanup]
 		public static void CleanUp()
 		{
-			var service = GetAzureBlobStorageService();
-			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+			GetAzureBlobStorageService().GetContainerReference().Delete();
 		}
 
 		[TestMethod]
@@ -46,15 +51,15 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_Exists_ReturnsTrueForExistingBlob()
+		public void AzureBlobStorageService_Exists_ReturnsTrueWhenExists()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsTrueForExistingBlob(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsTrueWhenExists(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_ExistsAsync_ReturnsTrueForExistingBlob()
+		public async Task AzureBlobStorageService_ExistsAsync_ReturnsTrueWhenExists()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_ExistsAsync_ReturnsTrueWhenExists(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
@@ -144,45 +149,27 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_EnumerableFilesGetPrefix_CorrectlyGetPrefix()
+		public void AzureBlobStorageService_EnumerateFiles_HasLastModifiedUtc()
 		{
-			// Arrange
-			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
-
-			// Act + Assert
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix(null));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix(""));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("test.txt"));
-			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/test.*"));
-			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/test.txt"));
-
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/test.txt"));
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/*.txt"));
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/t*.txt"));
-			Assert.AreEqual("SubFolder1", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Sub*/*.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub*/Sub*/*.txt"));
-			Assert.AreEqual("Subfolder1", azureBlobStorageService.EnumerableFilesGetPrefix("Subfolder1/Sub*/test.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub*/Sub/test.txt"));
-			Assert.AreEqual(String.Empty, azureBlobStorageService.EnumerableFilesGetPrefix("/Sub*/test.txt"));
-
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/??.txt"));
-			Assert.AreEqual("SubFolder1/Subfolder2", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Subfolder2/t??.txt"));
-			Assert.AreEqual("SubFolder1", azureBlobStorageService.EnumerableFilesGetPrefix("SubFolder1/Sub??/??.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub??/Sub??/??.txt"));
-			Assert.AreEqual("Subfolder1", azureBlobStorageService.EnumerableFilesGetPrefix("Subfolder1/Sub??/test.txt"));
-			Assert.AreEqual(null, azureBlobStorageService.EnumerableFilesGetPrefix("Sub??/Sub/test.txt"));
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_EnumerateFiles_HasLastModifiedUtcAndSize()
+		public void AzureBlobStorageService_EnumerateFiles_HasSize()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasSize(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize()
+		public async Task AzureBlobStorageService_EnumerateFilesAsync_HasLastModifiedUtc()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_EnumerateFilesAsync_HasSize()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasSize(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]

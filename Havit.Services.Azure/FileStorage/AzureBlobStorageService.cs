@@ -234,7 +234,7 @@ namespace Havit.Services.Azure.FileStorage
 			}
 
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
-			string prefix = EnumerableFilesGetPrefix(searchPattern);
+			string prefix = FileStorageServiceBase.EnumerableFilesGetPrefix(searchPattern);
 
 			EnsureContainer();
 
@@ -257,7 +257,7 @@ namespace Havit.Services.Azure.FileStorage
 			}
 
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
-			string prefix = EnumerableFilesGetPrefix(searchPattern);
+			string prefix = FileStorageServiceBase.EnumerableFilesGetPrefix(searchPattern);
 
 			await EnsureContainerAsync().ConfigureAwait(false);
 
@@ -322,7 +322,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí používaný container (CloudBlobContainer) v Azure Storage Accountu.
 		/// </summary>
-		protected CloudBlobContainer GetContainerReference()
+		protected internal CloudBlobContainer GetContainerReference()
 		{
 			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
 			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();

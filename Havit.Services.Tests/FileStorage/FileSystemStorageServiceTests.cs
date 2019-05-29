@@ -47,15 +47,15 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_Exists_ReturnsTrueForExistingBlob()
+		public void FileSystemStorageService_Exists_ReturnsTrueWhenExists()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsTrueForExistingBlob(GetFileSystemStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsTrueWhenExists(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_ExistsAsync_ReturnsTrueForExistingBlob()
+		public async Task FileSystemStorageService_ExistsAsync_ReturnsTrueWhenExists()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_ExistsAsync_ReturnsTrueForExistingBlob(GetFileSystemStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_ExistsAsync_ReturnsTrueWhenExists(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
@@ -191,15 +191,26 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_EnumerateFiles_HasLastModifiedUtcAndSize()
+		public void FileSystemStorageService_EnumerateFiles_HasLastModifiedUtc()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtcAndSize(GetFileSystemStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize()
+		public void FileSystemStorageService_EnumerateFiles_HasSize()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtcAndSize(GetFileSystemStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasSize(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_EnumerateFilesAsync_HasLastModifiedUtc()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(GetFileSystemStorageService());
+		}
+		[TestMethod]
+		public async Task FileSystemStorageService_EnumerateFilesAsync_HasSize()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasSize(GetFileSystemStorageService());
 		}
 
 		[TestMethod]

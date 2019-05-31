@@ -147,7 +147,10 @@ namespace Havit.Business
 			this._isLoaded = isLoaded;
 			this._isDisconnected = isDisconnected;
 
-			Init();
+			if (isNew || isDisconnected)
+			{
+				Init();
+			}
 		}
 
 		/// <summary>
@@ -238,6 +241,8 @@ namespace Havit.Business
 				{
 					return true;
 				}
+				
+				Init();
 				bool successful = TryLoad_Perform(transaction);
 				if (successful)
 				{
@@ -652,7 +657,7 @@ namespace Havit.Business
 				{
 					// Novému objektu proběhne již proběhl Init() včetně nastavení hodnot vlastnostem.
 					// Načtenému objektu byly hodnoty nastaveny v loadu.
-					// Takže objektu, který není nový a není ani načtený (ghost), zavoláme (znovu) Init. Nastaví se mu nové instance property holderů, ale to nevadí.
+					// Takže objektu, který není nový a není ani načtený (ghost), zavoláme Init.
 					
 					Init(); // Nyní je již objekt ve stavu IsDisconnected.
 					_isLoaded = true;

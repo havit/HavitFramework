@@ -88,6 +88,7 @@ namespace Havit.Business
 			Contract.Requires<ArgumentNullException>(record != null, nameof(record));
 			Contract.Requires<InvalidOperationException>(!this.IsLoaded, "Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
 
+			Init();
 			Load_ParseDataRecord(record);
 
 			if (record.DataLoadPower != DataLoadPower.Ghost)

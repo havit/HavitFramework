@@ -291,8 +291,8 @@ namespace Havit.Business.Tests
 		[TestMethod]
 		public void BusinessObject_GetObject_ReadOnly_SetsObjectToCache()
 		{
-			// Arrange
-			string cacheKey = "Role.GetObject|ID=1";
+			// Arrange			
+			string cacheKey = "BL|Role|1";
 
 			// Precondition
 			Assert.IsFalse(cacheService.Contains(cacheKey));

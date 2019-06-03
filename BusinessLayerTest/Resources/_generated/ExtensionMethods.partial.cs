@@ -27,6 +27,7 @@ namespace Havit.BusinessLayerTest.Resources
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
 	public static partial class ExtensionMethods
 	{
+		#region IEnumerable<Havit.BusinessLayerTest.Resources.ResourceClassCollection>.ToCollection
 		/// <summary>
 		/// Vytvoří Havit.BusinessLayerTest.Resources.ResourceClassCollection z IEnumerable&lt;Havit.BusinessLayerTest.Resources.ResourceClass&gt;.
 		/// </summary>
@@ -34,7 +35,9 @@ namespace Havit.BusinessLayerTest.Resources
 		{
 			return new Havit.BusinessLayerTest.Resources.ResourceClassCollection(objects);
 		}
-
+		#endregion
+		
+		#region IEnumerable<Havit.BusinessLayerTest.Resources.ResourceItemCollection>.ToCollection
 		/// <summary>
 		/// Vytvoří Havit.BusinessLayerTest.Resources.ResourceItemCollection z IEnumerable&lt;Havit.BusinessLayerTest.Resources.ResourceItem&gt;.
 		/// </summary>
@@ -42,7 +45,9 @@ namespace Havit.BusinessLayerTest.Resources
 		{
 			return new Havit.BusinessLayerTest.Resources.ResourceItemCollection(objects);
 		}
-
+		#endregion
+		
+		#region IEnumerable<Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection>.ToCollection
 		/// <summary>
 		/// Vytvoří Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection z IEnumerable&lt;Havit.BusinessLayerTest.Resources.ResourceItemLocalization&gt;.
 		/// </summary>
@@ -50,5 +55,7 @@ namespace Havit.BusinessLayerTest.Resources
 		{
 			return new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(objects);
 		}
+		#endregion
+		
 	}
 }

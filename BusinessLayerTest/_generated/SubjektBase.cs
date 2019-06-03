@@ -223,7 +223,6 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace> _KomunikacePropertyHolder;
-		private Havit.BusinessLayerTest.KomunikaceCollection _loadedKomunikaceValues;
 		
 		#endregion
 		
@@ -250,7 +249,7 @@ namespace Havit.BusinessLayerTest
 			_UzivatelPropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Uzivatel>(this);
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
 			_DeletedPropertyHolder = new PropertyHolder<DateTime?>(this);
-			_KomunikacePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace>(this);
+			_KomunikacePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.KomunikaceCollection, Havit.BusinessLayerTest.Komunikace>(this, Havit.BusinessLayerTest.Komunikace.GetObject);
 			
 			if (IsNew || IsDisconnected)
 			{
@@ -382,36 +381,7 @@ namespace Havit.BusinessLayerTest
 			string _tempKomunikace;
 			if (record.TryGet<string>("Komunikace", out _tempKomunikace))
 			{
-				_KomunikacePropertyHolder.Initialize();
-				_KomunikacePropertyHolder.Value.Clear();
-				if (_tempKomunikace != null)
-				{
-					_KomunikacePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					
-					if (_tempKomunikace.Length > 25)
-					{
-						Span<byte> _tempKomunikaceSpan = Encoding.UTF8.GetBytes(_tempKomunikace);
-						while (_tempKomunikaceSpan.Length > 0)
-						{
-							System.Buffers.Text.Utf8Parser.TryParse(_tempKomunikaceSpan, out int  _komunikaceID, out int _komunikaceBytesConsumed);
-							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(_komunikaceID));
-							
-							_tempKomunikaceSpan = _tempKomunikaceSpan.Slice(_komunikaceBytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
-						}
-					}
-					else
-					{
-						string[] _tempKomunikaceItems = _tempKomunikace.Split('|');
-						int _tempKomunikaceItemsLength = _tempKomunikaceItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
-						for (int i = 0; i < _tempKomunikaceItemsLength; i++)
-						{
-							_KomunikacePropertyHolder.Value.Add(Havit.BusinessLayerTest.Komunikace.GetObject(BusinessObjectBase.FastIntParse(_tempKomunikaceItems[i])));
-						}
-					}
-					
-					_KomunikacePropertyHolder.Value.AllowDuplicates = false;
-					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
-				}
+				_KomunikacePropertyHolder.Initialize(_tempKomunikace);
 			}
 			
 		}
@@ -647,9 +617,9 @@ namespace Havit.BusinessLayerTest
 			}
 			
 			bool dirtyCollectionExists = false;
-			if (_KomunikacePropertyHolder.IsDirty && (_loadedKomunikaceValues != null))
+			if (_KomunikacePropertyHolder.IsDirty && _KomunikacePropertyHolder.LoadedValue.Any())
 			{
-				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_loadedKomunikaceValues.Except(_KomunikacePropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.Subjekt == this))));
+				Havit.BusinessLayerTest.KomunikaceCollection _komunikaceToRemove = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.LoadedValue.Except(_KomunikacePropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.Subjekt == this))));
 				if (_komunikaceToRemove.Count > 0)
 				{
 					dirtyCollectionExists = true;
@@ -658,7 +628,7 @@ namespace Havit.BusinessLayerTest
 					dbParameterKomunikace.TypeName = "dbo.IntTable";
 					dbParameterKomunikace.Value = IntTable.GetSqlParameterValue(_komunikaceToRemove.GetIDs());
 					dbCommand.Parameters.Add(dbParameterKomunikace);
-					_loadedKomunikaceValues = new Havit.BusinessLayerTest.KomunikaceCollection(_KomunikacePropertyHolder.Value);
+					_KomunikacePropertyHolder.UpdateLoadedValue();
 				}
 			}
 			

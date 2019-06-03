@@ -504,19 +504,50 @@ namespace Havit.Business
 			{
 				return false;
 			}
-			
+
+			// Původní kód ponechávám pro lepší čitelnost logiky porovnání objektů
+
 			// nové objekty jsou si rovny pouze v případě identity (stejná reference)
-			if (this.IsNew || obj.IsNew)
-			{
-				return Object.ReferenceEquals(this, obj);
-			}
-			
-			// běžné objekty jsou si rovny, pokud mají stejné ID
-			if (!Object.Equals(this.ID, obj.ID) || (this.GetType() != obj.GetType()))
+			//if (this.IsNew || obj.IsNew)
+			//{
+			//	return Object.ReferenceEquals(this, obj);
+			//}
+
+			//// běžné objekty jsou si rovny, pokud mají stejné ID
+			//if (!Object.Equals(this.ID, obj.ID) || (this.GetType() != obj.GetType()))
+			//{
+			//	return false;
+			//}
+			//return true;
+
+			// Výkonové optimalizovaný kód
+
+			// všechny objekty i nové, pokud mají být stejné, musí mít stejné ID
+			// pokud tedy mají různé ID, nemohou být stejné
+
+			if (this.ID != obj.ID)
 			{
 				return false;
 			}
-			return true;
+
+			// nové objekty jsou si rovny jen při shodě referencí
+			// pokud je shoda referencí je jisté, že jsou si objekty rovny
+			if (Object.ReferenceEquals(this, obj))
+			{
+				return true;
+			}
+
+			// mají stejná ID, nejsou stejné reference
+			// pak nové objekty nejsou stejné
+			if (this.IsNew || obj.IsNew)
+			{
+				return false;
+			}
+
+			// nyní víme, že objekty mají stejné ID a nejde o shodu reference
+			// to může být v případě objektů z různých identity map, unit testy, atp.
+			// objekty jsou si rovny, pokud mají stejný typ
+			return this.GetType() == obj.GetType();
 		}
 		
 		/// <summary>

@@ -200,7 +200,6 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected CollectionPropertyHolder<Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection, Havit.BusinessLayerTest.Resources.ResourceItemLocalization> _LocalizationsPropertyHolder;
-		private Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection _loadedLocalizationsValues;
 		
 		#region CreateLocalization
 		/// <summary>
@@ -243,7 +242,7 @@ namespace Havit.BusinessLayerTest.Resources
 			_ResourceClassPropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Resources.ResourceClass>(this);
 			_ResourceKeyPropertyHolder = new PropertyHolder<string>(this);
 			_DescriptionPropertyHolder = new PropertyHolder<string>(this);
-			_LocalizationsPropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection, Havit.BusinessLayerTest.Resources.ResourceItemLocalization>(this);
+			_LocalizationsPropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection, Havit.BusinessLayerTest.Resources.ResourceItemLocalization>(this, Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetObject);
 			
 			if (IsNew || IsDisconnected)
 			{
@@ -368,36 +367,7 @@ namespace Havit.BusinessLayerTest.Resources
 			string _tempLocalizations;
 			if (record.TryGet<string>("Localizations", out _tempLocalizations))
 			{
-				_LocalizationsPropertyHolder.Initialize();
-				_LocalizationsPropertyHolder.Value.Clear();
-				if (_tempLocalizations != null)
-				{
-					_LocalizationsPropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					
-					if (_tempLocalizations.Length > 25)
-					{
-						Span<byte> _tempLocalizationsSpan = Encoding.UTF8.GetBytes(_tempLocalizations);
-						while (_tempLocalizationsSpan.Length > 0)
-						{
-							System.Buffers.Text.Utf8Parser.TryParse(_tempLocalizationsSpan, out int  _localizationsID, out int _localizationsBytesConsumed);
-							_LocalizationsPropertyHolder.Value.Add(Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetObject(_localizationsID));
-							
-							_tempLocalizationsSpan = _tempLocalizationsSpan.Slice(_localizationsBytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
-						}
-					}
-					else
-					{
-						string[] _tempLocalizationsItems = _tempLocalizations.Split('|');
-						int _tempLocalizationsItemsLength = _tempLocalizationsItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
-						for (int i = 0; i < _tempLocalizationsItemsLength; i++)
-						{
-							_LocalizationsPropertyHolder.Value.Add(Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetObject(BusinessObjectBase.FastIntParse(_tempLocalizationsItems[i])));
-						}
-					}
-					
-					_LocalizationsPropertyHolder.Value.AllowDuplicates = false;
-					_loadedLocalizationsValues = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_LocalizationsPropertyHolder.Value);
-				}
+				_LocalizationsPropertyHolder.Initialize(_tempLocalizations);
 			}
 			
 		}
@@ -613,9 +583,9 @@ namespace Havit.BusinessLayerTest.Resources
 			}
 			
 			bool dirtyCollectionExists = false;
-			if (_LocalizationsPropertyHolder.IsDirty && (_loadedLocalizationsValues != null))
+			if (_LocalizationsPropertyHolder.IsDirty && _LocalizationsPropertyHolder.LoadedValue.Any())
 			{
-				Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection _localizationsToRemove = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_loadedLocalizationsValues.Except(_LocalizationsPropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.ResourceItem == this))));
+				Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection _localizationsToRemove = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_LocalizationsPropertyHolder.LoadedValue.Except(_LocalizationsPropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.ResourceItem == this))));
 				if (_localizationsToRemove.Count > 0)
 				{
 					dirtyCollectionExists = true;
@@ -624,7 +594,7 @@ namespace Havit.BusinessLayerTest.Resources
 					dbParameterLocalizations.TypeName = "dbo.IntTable";
 					dbParameterLocalizations.Value = IntTable.GetSqlParameterValue(_localizationsToRemove.GetIDs());
 					dbCommand.Parameters.Add(dbParameterLocalizations);
-					_loadedLocalizationsValues = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_LocalizationsPropertyHolder.Value);
+					_LocalizationsPropertyHolder.UpdateLoadedValue();
 				}
 			}
 			
@@ -681,9 +651,9 @@ namespace Havit.BusinessLayerTest.Resources
 			dbCommand.Transaction = transaction;
 			
 			StringBuilder commandBuilder = new StringBuilder();
-			if (_LocalizationsPropertyHolder.IsDirty && (_loadedLocalizationsValues != null))
+			if (_LocalizationsPropertyHolder.IsDirty && _LocalizationsPropertyHolder.LoadedValue.Any())
 			{
-				Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection _localizationsToRemove = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_loadedLocalizationsValues.Except(_LocalizationsPropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.ResourceItem == this))));
+				Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection _localizationsToRemove = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_LocalizationsPropertyHolder.LoadedValue.Except(_LocalizationsPropertyHolder.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.ResourceItem == this))));
 				if (_localizationsToRemove.Count > 0)
 				{
 					commandBuilder.AppendFormat("DELETE FROM [dbo].[ResourceItemLocalization] WHERE ([ResourceItemID] = @ResourceItemID) AND [ResourceItemLocalizationID] IN (SELECT [Value] FROM @Localizations);");
@@ -691,7 +661,7 @@ namespace Havit.BusinessLayerTest.Resources
 					dbParameterLocalizations.TypeName = "dbo.IntTable";
 					dbParameterLocalizations.Value = IntTable.GetSqlParameterValue(_localizationsToRemove.GetIDs());
 					dbCommand.Parameters.Add(dbParameterLocalizations);
-					_loadedLocalizationsValues = new Havit.BusinessLayerTest.Resources.ResourceItemLocalizationCollection(_LocalizationsPropertyHolder.Value);
+					_LocalizationsPropertyHolder.UpdateLoadedValue();
 				}
 			}
 			

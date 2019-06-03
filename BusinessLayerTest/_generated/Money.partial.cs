@@ -26,6 +26,7 @@ namespace Havit.BusinessLayerTest
 	/// </summary>
 	public partial class Money : MoneyBase
 	{
+		#region Constructors
 		/// <summary>
 		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 		/// </summary>
@@ -41,5 +42,7 @@ namespace Havit.BusinessLayerTest
 		public Money(decimal? amount, Currency currency) : base(amount, currency)
 		{
 		}
+		#endregion
+		
 	}
 }

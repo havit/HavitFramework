@@ -396,7 +396,7 @@ namespace Havit.BusinessLayerTest
 			_LoginLastPropertyHolder = new PropertyHolder<DateTime?>(this);
 			_LoginCountPropertyHolder = new PropertyHolder<int>(this);
 			_CreatedPropertyHolder = new PropertyHolder<DateTime>(this);
-			_RolePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.RoleCollection, Havit.BusinessLayerTest.Role>(this);
+			_RolePropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.RoleCollection, Havit.BusinessLayerTest.Role>(this, Havit.BusinessLayerTest.Role.GetObject);
 			
 			if (IsNew || IsDisconnected)
 			{
@@ -594,35 +594,7 @@ namespace Havit.BusinessLayerTest
 			string _tempRole;
 			if (record.TryGet<string>("Role", out _tempRole))
 			{
-				_RolePropertyHolder.Initialize();
-				_RolePropertyHolder.Value.Clear();
-				if (_tempRole != null)
-				{
-					_RolePropertyHolder.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.
-					
-					if (_tempRole.Length > 25)
-					{
-						Span<byte> _tempRoleSpan = Encoding.UTF8.GetBytes(_tempRole);
-						while (_tempRoleSpan.Length > 0)
-						{
-							System.Buffers.Text.Utf8Parser.TryParse(_tempRoleSpan, out int  _roleID, out int _roleBytesConsumed);
-							_RolePropertyHolder.Value.Add(Havit.BusinessLayerTest.Role.GetObject(_roleID));
-							
-							_tempRoleSpan = _tempRoleSpan.Slice(_roleBytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
-						}
-					}
-					else
-					{
-						string[] _tempRoleItems = _tempRole.Split('|');
-						int _tempRoleItemsLength = _tempRoleItems.Length - 1; // za každou (i za poslední) položkou je oddělovač
-						for (int i = 0; i < _tempRoleItemsLength; i++)
-						{
-							_RolePropertyHolder.Value.Add(Havit.BusinessLayerTest.Role.GetObject(BusinessObjectBase.FastIntParse(_tempRoleItems[i])));
-						}
-					}
-					
-					_RolePropertyHolder.Value.AllowDuplicates = false;
-				}
+				_RolePropertyHolder.Initialize(_tempRole);
 			}
 			
 		}

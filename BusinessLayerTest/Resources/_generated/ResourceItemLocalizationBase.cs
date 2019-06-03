@@ -615,7 +615,7 @@ namespace Havit.BusinessLayerTest.Resources
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(id != BusinessObjectBase.NoID, "id != BusinessObjectBase.NoID");
 			
-			return "Resources.ResourceItemLocalization.DataRecords|ID=" + id.ToString();
+			return "BL|ResourceItemLocalization|" + id;
 		}
 		
 		/// <summary>
@@ -651,7 +651,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		private static string GetAllIDsCacheKey()
 		{
-			return "Resources.ResourceItemLocalization.GetAll";
+			return "BL|ResourceItemLocalization|GetAll";
 		}
 		
 		/// <summary>
@@ -692,7 +692,7 @@ namespace Havit.BusinessLayerTest.Resources
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
 			
-			string key = "Resources.ResourceItemLocalization.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			string key = "BL|ResourceItemLocalization|SaveDK|" + this.ID;
 			
 			if (ensureInCache)
 			{
@@ -724,7 +724,7 @@ namespace Havit.BusinessLayerTest.Resources
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
 			
-			string key = "Resources.ResourceItemLocalization.AnySaveCacheDependencyKey";
+			string key = "BL|ResourceItemLocalization|AnySaveDK";
 			
 			if (ensureInCache)
 			{

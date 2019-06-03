@@ -1376,7 +1376,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine("[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]");
 				writer.WriteLine("protected static string GetBusinessObjectCacheKey(int id)");
 				writer.WriteLine("{");
-				writer.WriteLine(String.Format("return \"{0}.GetObject|ID=\" + id;", ClassHelper.GetClassFullName(table, false)));
+				writer.WriteLine(String.Format("return \"BL|{0}|\" + id;", CacheHelper.GetCacheKeyCore(table)));
 				writer.WriteLine("}");
 				writer.WriteLine();
 
@@ -1417,7 +1417,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine("{");
 				writer.WriteHavitContract("global::Havit.Diagnostics.Contracts.Contract.Requires(id != BusinessObjectBase.NoID, \"id != BusinessObjectBase.NoID\");");
 				writer.WriteHavitContract("");
-				writer.WriteLine(String.Format("return \"{0}.DataRecords|ID=\" + id.ToString();", ClassHelper.GetClassFullName(table, false)));
+				writer.WriteLine(String.Format("return \"BL|{0}|\" + id;", CacheHelper.GetCacheKeyCore(table)));
 				writer.WriteLine("}");
 				writer.WriteLine();
 
@@ -1468,11 +1468,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				if (hasDeletedColumn)
 				{
-					writer.WriteLine(String.Format("return \"{0}.GetAll|includeDeleted=\" + includeDeleted.ToString();", ClassHelper.GetClassFullName(table, false)));
+					writer.WriteLine(String.Format("return \"BL|{0}|GetAll|\" + includeDeleted;", CacheHelper.GetCacheKeyCore(table)));
 				}
 				else
 				{
-					writer.WriteLine(String.Format("return \"{0}.GetAll\";", ClassHelper.GetClassFullName(table, false)));
+					writer.WriteLine(String.Format("return \"BL|{0}|GetAll\";", CacheHelper.GetCacheKeyCore(table)));
 				}
 				
 				writer.WriteLine("}");
@@ -1536,7 +1536,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine("}");
 				writer.WriteLine("");
 
-				writer.WriteLine(String.Format("string key = \"{0}.SaveCacheDependencyKey|ID=\" + this.ID.ToString();", ClassHelper.GetClassFullName(table, false)));
+				writer.WriteLine(String.Format("string key = \"BL|{0}|SaveDK|\" + this.ID;", CacheHelper.GetCacheKeyCore(table)));
 
 				writer.WriteLine("");
 				writer.WriteLine("if (ensureInCache)");
@@ -1568,7 +1568,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine("}");
 				writer.WriteLine("");
 
-				writer.WriteLine(String.Format("string key = \"{0}.AnySaveCacheDependencyKey\";", ClassHelper.GetClassFullName(table, false)));
+				writer.WriteLine(String.Format("string key = \"BL|{0}|AnySaveDK\";", CacheHelper.GetCacheKeyCore(table)));
 				writer.WriteLine("");
 
 				writer.WriteLine("if (ensureInCache)");

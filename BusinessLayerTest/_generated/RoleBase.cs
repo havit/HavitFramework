@@ -308,7 +308,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected static string GetBusinessObjectCacheKey(int id)
 		{
-			return "Role.GetObject|ID=" + id;
+			return "BL|Role|" + id;
 		}
 		
 		/// <summary>
@@ -341,7 +341,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static string GetAllIDsCacheKey()
 		{
-			return "Role.GetAll";
+			return "BL|Role|GetAll";
 		}
 		
 		/// <summary>

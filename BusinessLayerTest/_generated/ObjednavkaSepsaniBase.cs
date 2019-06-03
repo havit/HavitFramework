@@ -411,7 +411,7 @@ namespace Havit.BusinessLayerTest
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
 			
-			string key = "ObjednavkaSepsani.SaveCacheDependencyKey|ID=" + this.ID.ToString();
+			string key = "BL|ObjednavkaSepsani|SaveDK|" + this.ID;
 			
 			if (ensureInCache)
 			{
@@ -443,7 +443,7 @@ namespace Havit.BusinessLayerTest
 				throw new InvalidOperationException("Použitá BusinessLayerCacheService nepodporuje cache dependencies.");
 			}
 			
-			string key = "ObjednavkaSepsani.AnySaveCacheDependencyKey";
+			string key = "BL|ObjednavkaSepsani|AnySaveDK";
 			
 			if (ensureInCache)
 			{

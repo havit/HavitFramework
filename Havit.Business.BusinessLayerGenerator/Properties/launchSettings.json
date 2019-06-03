@@ -8,6 +8,10 @@
       "commandName": "Project",
       "commandLineArgs": "-outputpath:D:\\Temp -sqlserver:(localdb)\\mssqllocaldb -database:Goran -strategy:HavitCodeFirst",
       "workingDirectory": "D:\\Temp"
+    },
+    "021.DSV": {
+      "commandName": "Project",
+      "commandLineArgs": "-outputpath:D:\\Dev\\021.DSV\\BusinessLayer -sqlserver:sqldev -database:DsvCommerce"
     }
   }
 }

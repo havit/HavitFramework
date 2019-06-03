@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Helpers;
+using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Microsoft.SqlServer.Management.Smo;
 
@@ -47,5 +49,28 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			}
 			return null;
 		}
+
+		public static string GetCacheKeyCore(Table table)
+		{
+			if (table == _getCacheKeyCoreLastTable)
+			{
+				return _getCacheKeyCoreLastResult;
+			}
+
+			string shortName = ClassHelper.GetClassName(table);
+			string longName = ClassHelper.GetClassFullName(table, false);
+
+			// pokud je stejný název třídy ve více namespaces, pak použijeme název vč. namespace, jinak jen samotný název třídy
+			var duplicates = DatabaseHelper.GetWorkingTables().Select(dbTable => ClassHelper.GetClassName(dbTable)).Where(name => name == shortName).Count();
+			string result = duplicates == 1 ? shortName : longName;
+
+			_getCacheKeyCoreLastTable = table;
+			_getCacheKeyCoreLastResult = result;
+
+			return result;
+		}
+		private static Table _getCacheKeyCoreLastTable;
+		private static string _getCacheKeyCoreLastResult;
+
 	}
 }

@@ -455,6 +455,15 @@ namespace Havit.Business
 		/***********************************************************************/
 
 		/// <summary>
+		/// Nastaví kontrolu duplikátu (ale na rozdíl od nastaveí vlastnosti AllowDuplicated neprovede kontrolu duplicit).
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		public void DisallowDuplicatesWithoutCheckDuplicates()
+		{
+			_allowDuplicates = false;
+		}
+
+		/// <summary>
 		/// Vrací true, pokud kolekce obsahuje duplicity.
 		/// </summary>		
 		private bool CheckDuplicates()

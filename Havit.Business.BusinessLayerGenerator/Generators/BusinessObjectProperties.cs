@@ -235,13 +235,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine(String.Format("private bool _{0}LoadAllPerformed = false;", ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
 			}
 
-			if (collectionProperty.IsOneToMany && !TableHelper.IsReadOnly(table))
-			{
-				// zapíšeme proměnnou, ve které budeme držet objeky načtené z databáze
-				writer.WriteLine(String.Format("private {0} _loaded{1}Values;",
-					ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable),
-					collectionProperty.PropertyName));
-			}
 			writer.WriteLine();
 		}
 	}

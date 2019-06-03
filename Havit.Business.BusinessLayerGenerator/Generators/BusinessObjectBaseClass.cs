@@ -313,7 +313,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			List<CollectionProperty> collectionProperties = TableHelper.GetCollectionColumns(table);
 			foreach (CollectionProperty collectionProperty in collectionProperties)
 			{
-				writer.WriteLine(String.Format("{0} = new CollectionPropertyHolder<{1}, {2}>(this);", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable), ClassHelper.GetClassFullName(collectionProperty.TargetTable)));
+				writer.WriteLine(String.Format("{0} = new CollectionPropertyHolder<{1}, {2}>(this, {2}.GetObject);", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable), ClassHelper.GetClassFullName(collectionProperty.TargetTable)));
 			}
 
 			writer.WriteLine();
@@ -619,67 +619,13 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine(String.Format("string _temp{0};", collectionProperty.PropertyName));
 				writer.WriteLine(String.Format("if (record.TryGet<string>(\"{0}\", out _temp{0}))", collectionProperty.PropertyName));
 				writer.WriteLine("{");
-				writer.WriteLine(String.Format("{0}.Initialize();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
-				writer.WriteLine(String.Format("{0}.Value.Clear();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
-				writer.WriteLine(String.Format("if (_temp{0} != null)", collectionProperty.PropertyName));
-				writer.WriteLine("{");
-				writer.WriteLine(String.Format("{0}.Value.AllowDuplicates = true; // Z výkonových důvodů. Víme, že duplicity nepřidáme.", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
-
-                if (GeneratorSettings.SystemMemorySpanSupported)
-                {
-                    writer.WriteLine();
-                    writer.WriteLine(String.Format("if (_temp{0}.Length > 25)", collectionProperty.PropertyName));
-                    writer.WriteLine("{");
-                    writer.WriteLine(String.Format("Span<byte> _temp{0}Span = Encoding.UTF8.GetBytes(_temp{0});", collectionProperty.PropertyName));
-                    writer.WriteLine(String.Format("while (_temp{0}Span.Length > 0)", collectionProperty.PropertyName));
-                    writer.WriteLine("{");
-                    writer.WriteLine(String.Format("System.Buffers.Text.Utf8Parser.TryParse(_temp{0}Span, out int  _{1}ID, out int _{1}BytesConsumed);", collectionProperty.PropertyName, ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
-                    writer.WriteLine(String.Format("{0}.Value.Add({1}.GetObject(_{2}ID));",
-                        PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), // 0
-                        ClassHelper.GetClassFullName(collectionProperty.TargetTable), // 1
-                        ConventionsHelper.GetCammelCase(collectionProperty.PropertyName))); // 2
-
-                    writer.WriteLine();
-                    writer.WriteLine(String.Format("_temp{0}Span = _temp{0}Span.Slice(_{1}BytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač", collectionProperty.PropertyName, ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
-
-                    writer.WriteLine("}");
-                    writer.WriteLine("}");
-                    writer.WriteLine("else");
-                    writer.WriteLine("{");
-                }
-
-                writer.WriteLine(String.Format("string[] _temp{0}Items = _temp{0}.Split('|');", collectionProperty.PropertyName));
-				writer.WriteLine(String.Format("int _temp{0}ItemsLength = _temp{0}Items.Length - 1; // za každou (i za poslední) položkou je oddělovač", collectionProperty.PropertyName));
-				writer.WriteLine(String.Format("for (int i = 0; i < _temp{0}ItemsLength; i++)", collectionProperty.PropertyName));
-				writer.WriteLine("{");
-				writer.WriteLine(String.Format("{0}.Value.Add({1}.GetObject(BusinessObjectBase.FastIntParse(_temp{2}Items[i])));", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), ClassHelper.GetClassFullName(collectionProperty.TargetTable), collectionProperty.PropertyName));
-				writer.WriteLine("}");
-
-                if (GeneratorSettings.SystemMemorySpanSupported)
-                {
-                    writer.WriteLine("}");
-                    writer.WriteLine();
-                }
-
-                writer.WriteLine(String.Format("{0}.Value.AllowDuplicates = false;", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName))); // přesunuto sem z frameworku
+				writer.WriteLine(String.Format("{0}.Initialize(_temp{1});", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), collectionProperty.PropertyName));
 
 				if (TableHelper.IsReadOnly(table))
 				{
 					writer.WriteLine(String.Format("{0}.Value.Freeze();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
 				}
 
-				if (collectionProperty.IsOneToMany && !TableHelper.IsReadOnly(table))
-				{
-					writer.WriteLine(String.Format("_loaded{0}Values = new {1}({2}.Value);",
-						collectionProperty.PropertyName,
-						ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable),
-						PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
-				}
-				writer.WriteLine("}");  // if IsNull
-				//if (collectionProperty.LoadAll)
-				//{
-				//    writer.WriteLine(String.Format("{0}.Value.LoadAll();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
-				//}
 				writer.WriteLine("}");
 				writer.WriteLine();
 			}
@@ -889,7 +835,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 					writer.WriteLine(
 						String.Format(
-							"if ({0}.IsDirty && (_loaded{1}Values != null))",
+							"if ({0}.IsDirty && {0}.LoadedValue.Any())",
 							PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName),
 							collectionProperty.PropertyName));
 					writer.WriteLine("{");
@@ -899,16 +845,11 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					// pokud je loaded, pak potřebujeme odmazat ty, které nejslou odmazané jinak a zároveň nepatří někomu jinému
 					writer.WriteLine(
 						String.Format(
-							"{1} _{0}ToRemove = new {1}(_loaded{2}Values.Except({3}.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.{4} == this))));",
-							ConventionsHelper.GetCammelCase(collectionProperty.PropertyName),
-						// 0
-							ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable),
-						// 1
-							collectionProperty.PropertyName,
-						// 2
-							PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName),
-						// 3
-							PropertyHelper.GetPropertyName(collectionProperty.ReferenceColumn)));
+							"{1} _{0}ToRemove = new {1}({2}.LoadedValue.Except({2}.Value).Where(item => !item.IsLoaded || (!item.IsDeleted && (item.{3} == this))));",
+							ConventionsHelper.GetCammelCase(collectionProperty.PropertyName), // 0
+							ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable), // 1
+							PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName), // 2
+							PropertyHelper.GetPropertyName(collectionProperty.ReferenceColumn))); // 3
 
 					writer.WriteLine(
 						String.Format("if (_{0}ToRemove.Count > 0)", ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
@@ -1032,12 +973,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						collectionProperty,
 						String.Format("_{0}ToRemove.GetIDs()", ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
 
-					writer.WriteLine(
-						String.Format(
-							"_loaded{0}Values = new {1}({2}.Value);",
-							collectionProperty.PropertyName,
-							ClassHelper.GetCollectionClassFullName(collectionProperty.TargetTable),
-							PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+					writer.WriteLine(String.Format("{0}.UpdateLoadedValue();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
 
 					writer.WriteLine("}");
 				}

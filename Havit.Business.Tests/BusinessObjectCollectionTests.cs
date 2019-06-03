@@ -160,7 +160,7 @@ namespace Havit.Business.Tests
 		/// Testuje zda clean na prázdné kolekci nenastavuje objekt dirty.
 		/// </summary>
 		[TestMethod]
-		public void BusinessObjectCollection_Clear_DoesNotSetObjectDirtyOnEmtpyCollection()
+		public void BusinessObjectCollection_Clear_DoesNotSetObjectDirtyOnEmptyCollection()
 		{
 			using (new IdentityMapScope())
 			{

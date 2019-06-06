@@ -13,10 +13,10 @@ using Havit.Reflection;
 namespace Havit.Business
 {
 	/// <summary>
-	/// Bázová tøída pro všechny kolekce BusinessObjectBase (Layer SuperType)
+	/// Bázová třída pro všechny kolekce BusinessObjectBase (Layer SuperType)
 	/// </summary>
 	/// <remarks>
-	/// POZOR! Vnitøní implementace je závislá na faktu, že this.Items je List(Of T).
+	/// POZOR! Vnitřní implementace je závislá na faktu, že this.Items je List(Of T).
 	/// To je výchozí chování Collection(Of T), ale pro jistotu si to ještì vynucujeme
 	/// použitím wrappujícího constructoru.
 	/// </remarks>
@@ -51,8 +51,8 @@ namespace Havit.Business
 
 		/// <summary>
 		/// Urèuje, zda je možné do kolekce vložit hodnotu, která již v kolekci je.
-		/// Pokud je nastaveno na true, pøidání hodnoty, která v kolekci již je, vyvolá výjimku.
-		/// Pokud je nastaveno na false (výchozí), je možné hodnotu do kolekce pøidat vícekrát.
+		/// Pokud je nastaveno na true, přidání hodnoty, která v kolekci již je, vyvolá výjimku.
+		/// Pokud je nastaveno na false (výchozí), je možné hodnotu do kolekce přidat vícekrát.
 		/// </summary>
 		public bool AllowDuplicates
 		{
@@ -277,9 +277,9 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Pøidá do kolekce prvky pøedané kolekce.
+		/// Přidá do kolekce prvky předané kolekce.
 		/// </summary>
-		/// <param name="source">Kolekce, jejíž prvky mají být pøidány.</param>
+		/// <param name="source">Kolekce, jejíž prvky mají být přidány.</param>
 		public void AddRange(IEnumerable<TItem> source)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -351,32 +351,32 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Seøadí prvky kolekce dle požadované property, která implementuje IComparable.
+		/// Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
 		/// </summary>
 		/// <remarks>
 		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
-		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potøeba vyšší výkon, je potøeba použít
-		/// overload Sort(Generic Comparsion) s pøímým pøístupem k property.
+		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
+		/// overload Sort(Generic Comparsion) s přímým přístupem k property.
 		/// </remarks>
-		/// <param name="propertyName">property, podle které se má øadit</param>
-		/// <param name="ascending">true, pokud se má øadit vzestupnì, false, pokud sestupnì</param>
+		/// <param name="propertyName">property, podle které se má řadit</param>
+		/// <param name="ascending">true, pokud se má řadit vzestupnì, false, pokud sestupnì</param>
 		[Obsolete]
 		public virtual void Sort(string propertyName, bool ascending)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
-			innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyName, ascending ? SortDirection.Ascending : SortDirection.Descending)));
+			innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyName, ascending ? SortDirection.Ascending : SortDirection.Descending)));			
 		}
-		
+
 		/// <summary>
-		/// Seøadí prvky kolekce dle požadované property, která implementuje IComparable.
+		/// Seřadí prvky kolekce dle požadované property, která implementuje IComparable.
 		/// </summary>
 		/// <remarks>
 		/// Používá <see cref="Havit.Collections.GenericPropertyComparer{T}"/>. K porovnávání podle property
-		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potøeba vyšší výkon, je potøeba použít
-		/// overload Sort(Generic Comparsion) s pøímým pøístupem k property.
+		/// tedy dochází pomocí reflexe - relativnì pomalu. Pokud je potřeba vyšší výkon, je potřeba použít
+		/// overload Sort(Generic Comparsion) s přímým přístupem k property.
 		/// </remarks>
-		/// <param name="propertyInfo">Property, podle které se má øadit.</param>
-		/// <param name="sortDirection">Smìr øazení.</param>
+		/// <param name="propertyInfo">Property, podle které se má řadit.</param>
+		/// <param name="sortDirection">Smìr řazení.</param>
 		public virtual void Sort(PropertyInfo propertyInfo, SortDirection sortDirection)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
@@ -384,13 +384,23 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Seøadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort(Generic Comparsion) inner-Listu.
+		/// Seřadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort inner-Listu.
 		/// </summary>
-		/// <param name="comparsion">srovnání, podle kterého mají být prvky seøazeny</param>
+		/// <param name="comparsion">Srovnání, podle kterého mají být prvky seřazeny.</param>
 		public virtual void Sort(Comparison<TItem> comparsion)
 		{
 			List<TItem> innerList = (List<TItem>)Items;
 			innerList.Sort(comparsion);
+		}
+
+		/// <summary>
+		/// Seřadí prvky kolekce dle zadaného srovnání. Publikuje metodu Sort inner-Listu.
+		/// </summary>
+		/// <param name="comparer">Comparer, podle kterého mají být prvky seřazeny.</param>
+		public virtual void Sort(IComparer<TItem> comparer)
+		{
+			List<TItem> innerList = (List<TItem>)Items;
+			innerList.Sort(comparer);
 		}
 
 		/// <summary>
@@ -409,7 +419,7 @@ namespace Havit.Business
 		}
 
 		/// <summary>
-		/// Uloží všechny prvky kolekce (v transakci, kterou si samo vytvoøí).
+		/// Uloží všechny prvky kolekce (v transakci, kterou si samo vytvoří).
 		/// </summary>
 		public virtual void SaveAll()
 		{

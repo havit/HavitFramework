@@ -5,7 +5,7 @@ using System.Text;
 namespace Havit.Web.UI.WebControls
 {
     /// <summary>
-    /// Tøída implementující customizaci DateTimeBox-u pro special date collection. 
+    /// Třída implementující customizaci DateTimeBox-u pro special date collection. 
     /// </summary>
     public class SpecialDateCustomization : DateTimeBoxDateCustomization
     {
@@ -20,7 +20,7 @@ namespace Havit.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Renderuje funkci pro customizaci hodnot v kalendáøi.
+        /// Renderuje funkci pro customizaci hodnot v kalendáři.
         /// </summary>
         public override string RenderDateStatusHandlerContent()
         {

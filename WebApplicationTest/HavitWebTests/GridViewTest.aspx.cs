@@ -22,7 +22,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		{
 			base.OnInit(e);
 
-			//TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
+			TestGV1.DataBinding += new EventHandler(TestGV_DataBinding);
 			TestGV1.RowCustomizingCommandButton += new GridViewRowCustomizingCommandButtonEventHandler(TestGV_RowCustomizingCommandButton);
 			TestGV1.GetInsertRowDataItem += TestGV1_GetInsertRowDataItem;
 			TestGV1.RowDeleting += TestGV1_RowDeleting;
@@ -72,13 +72,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			//((GridView)sender).DataSource = new object[]
-			//									{
-			//										new { ID = 1, Nazev = "A" },
-			//										new { ID = 2, Nazev = "B" },
-			//										new { ID = 3, Nazev = "C" },
-			//									};
-			((GridView)sender).DataSource = Subjekt.GetAll().ToList();
+			((GridView)sender).DataSource = Subjekt.GetAll().Where(item => item.Nazev.Length > 0).ToList();
 		}
 
 		private object TestGV1_GetInsertRowDataItem()

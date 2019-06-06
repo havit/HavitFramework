@@ -148,10 +148,19 @@ namespace Havit.Web.UI.WebControls
 		{
 			get
 			{
+				if (_sortExpressions == null)
+				{
+					_sortExpressions = new SortExpressions();
+					if (!String.IsNullOrEmpty(DefaultSortExpression))
+					{
+						_sortExpressions.AddSortExpression(DefaultSortExpression);
+					}
+				}
 				return _sortExpressions;
 			}
+
 		}
-		private SortExpressions _sortExpressions = new SortExpressions();
+		private SortExpressions _sortExpressions;
 
 		/// <summary>
 		/// Nastavuje automatický databind na GridView.		
@@ -1016,12 +1025,12 @@ namespace Havit.Web.UI.WebControls
 			IEnumerable sortedData = filteredData;
 			if ((sortedData != null) && AutoSort)
 			{
-				if ((SortExpressions.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
-				{
-					// sorting je nutné změnit na základě DefaultSortExpression,
-					// kdybychom jej nezměnili, tak první kliknutí shodné s DefaultSortExpression nic neudělá
-					_sortExpressions.AddSortExpression(DefaultSortExpression);
-				}
+				//if ((SortExpressions.SortItems.Count == 0) && !String.IsNullOrEmpty(DefaultSortExpression))
+				//{
+				//	// sorting je nutné změnit na základě DefaultSortExpression,
+				//	// kdybychom jej nezměnili, tak první kliknutí shodné s DefaultSortExpression nic neudělá
+				//	_sortExpressions.AddSortExpression(DefaultSortExpression);
+				//}
 
 				sortedData = SortHelper.PropertySort(sortedData, SortExpressions.SortItems);
 			}
@@ -1676,7 +1685,7 @@ namespace Havit.Web.UI.WebControls
 
 			if (!e.Cancel)
 			{
-				_sortExpressions.AddSortExpression(e.SortExpression);
+				SortExpressions.AddSortExpression(e.SortExpression);
 				base.RequiresDataBinding = true;
 			}
 		}

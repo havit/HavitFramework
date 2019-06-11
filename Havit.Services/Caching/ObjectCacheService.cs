@@ -26,11 +26,11 @@ namespace Havit.Services.Caching
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="objectCache">Object cache, která bude použita pro cachování.</param>
-		/// <param name="objectCacheSupportsCacheDependencies">Indikuje, zda předaná object cache podporuje cache dependencies.</param>
-		public ObjectCacheService(ObjectCache objectCache, bool objectCacheSupportsCacheDependencies)
+		/// <param name="useCacheDependenciesSupport">Indikuje, zda má být použita podpora pro cache dependencies.</param>
+		public ObjectCacheService(ObjectCache objectCache, bool useCacheDependenciesSupport = false)
 		{
 			this.CurrentObjectCache = objectCache;
-			this.SupportsCacheDependencies = objectCacheSupportsCacheDependencies;
+			this.SupportsCacheDependencies = useCacheDependenciesSupport;
 		}
 
 		/// <summary>

@@ -201,7 +201,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Core.Tests", "Havit.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreWebApplication", "AspNetCoreWebApplication\AspNetCoreWebApplication.csproj", "{82DFF0EC-0842-4280-8708-5BAA5FA207E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Services.TestHelpers", "Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj", "{54196DA6-3753-4457-85FD-637D15FDF088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.TestHelpers", "Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj", "{54196DA6-3753-4457-85FD-637D15FDF088}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Migrations", "Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj", "{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Migrations.DbInjections", "Havit.Data.EntityFrameworkCore.Migrations.DbInjections\Havit.Data.EntityFrameworkCore.Migrations.DbInjections.csproj", "{3C2B223C-0617-44C0-9EC3-9EDE0EEBC01D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -505,6 +509,14 @@ Global
 		{54196DA6-3753-4457-85FD-637D15FDF088}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54196DA6-3753-4457-85FD-637D15FDF088}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54196DA6-3753-4457-85FD-637D15FDF088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C2B223C-0617-44C0-9EC3-9EDE0EEBC01D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2B223C-0617-44C0-9EC3-9EDE0EEBC01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2B223C-0617-44C0-9EC3-9EDE0EEBC01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2B223C-0617-44C0-9EC3-9EDE0EEBC01D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -594,6 +606,8 @@ Global
 		{48BA6236-3B42-41AB-AC48-7F977E85863E} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{82DFF0EC-0842-4280-8708-5BAA5FA207E4} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 		{54196DA6-3753-4457-85FD-637D15FDF088} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
+		{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
+		{3C2B223C-0617-44C0-9EC3-9EDE0EEBC01D} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

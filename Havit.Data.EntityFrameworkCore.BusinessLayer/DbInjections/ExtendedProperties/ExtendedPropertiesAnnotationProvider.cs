@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.Migrations.DbInjections;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties

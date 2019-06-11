@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageVersion>2.0.5</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer</Description>
@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
+    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations.DbInjections\Havit.Data.EntityFrameworkCore.Migrations.DbInjections.csproj" />
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
   </ItemGroup>

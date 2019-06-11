@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.Views;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+using Havit.Data.EntityFrameworkCore.Migrations.DbInjections.Views;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.DbInjections

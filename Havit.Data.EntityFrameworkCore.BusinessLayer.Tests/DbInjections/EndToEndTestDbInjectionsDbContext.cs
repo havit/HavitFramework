@@ -1,5 +1,6 @@
 ﻿using System;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
+using Havit.Data.EntityFrameworkCore.Migrations.DbInjections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 

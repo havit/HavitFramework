@@ -3,21 +3,22 @@ using System.Reflection;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Migrations.DbInjections;
+using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
-	/// <summary>
-	/// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
-	/// 
-	/// <remarks>
-	/// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
-	/// </remarks>
-	/// </summary>
-	public abstract class BusinessLayerDbContext : DbContext
+    /// <summary>
+    /// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
+    /// 
+    /// <remarks>
+    /// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
+    /// </remarks>
+    /// </summary>
+    public abstract class BusinessLayerDbContext : DbContext
 	{
 		/// <summary>
 		/// Konstruktor.

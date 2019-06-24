@@ -3,7 +3,7 @@
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
     /// <summary>
-    ///     Explicitly implemented by <see cref="DbInjectionsExtensionBuilderBase{TBuilder}" /> to hide
+    ///     Explicitly implemented by <see cref="DbInjectionsExtensionBuilder" /> and <see cref="DbInjectionsExtensionBuilderBase"/> to hide
     ///     methods that are used by DbInjections extension methods but not intended to be called by application
     ///     developers.
     /// </summary>

@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 		public static DbContextOptionsBuilder UseDbInjections(this DbContextOptionsBuilder optionsBuilder, Action<DbInjectionsExtensionBuilder> setupAction = null)
         {
 			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
-
+            
 	        IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
 			var annotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>();

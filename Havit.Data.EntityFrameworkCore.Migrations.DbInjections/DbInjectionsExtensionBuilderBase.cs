@@ -6,29 +6,27 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
 	/// <summary>
-	/// <para>Allows performing specific configuration of DbInjections functionality.</para>
-	/// <para>
-	///		Instances of this class are typically returned from methods that configure the context to use a
-	///     particular extension of DbInjections functionality.
-	/// </para>
+	/// Base class for adding more features to DbInjections functionality.
+	///
+	/// <para>For implementing new functionality, register implementations for various extension points using <see cref="WithOption"/> method.</para>
 	/// </summary>
-	public abstract class DbInjectionsExtensionBuilderBase<TBuilder> : IDbInjectionsExtensionBuilderInfrastructure
-        where TBuilder : DbInjectionsExtensionBuilderBase<TBuilder>
+	public abstract class DbInjectionsExtensionBuilderBase : IDbInjectionsExtensionBuilderInfrastructure
 	{
-		/// <summary>
+        private readonly DbInjectionsExtensionBuilder dbInjectionsExtensionBuilder;
+
+        /// <summary>
         /// Konstruktor.
         /// </summary>
-		protected DbInjectionsExtensionBuilderBase(DbContextOptionsBuilder optionsBuilder)
+		protected DbInjectionsExtensionBuilderBase(DbInjectionsExtensionBuilder dbInjectionsExtensionBuilder)
 		{
-			Contract.Assert<ArgumentNullException>(optionsBuilder != null);
-
-			OptionsBuilder = optionsBuilder;
+            Contract.Assert<ArgumentNullException>(dbInjectionsExtensionBuilder != null);
+            this.dbInjectionsExtensionBuilder = dbInjectionsExtensionBuilder;
 		}
 
-		/// <summary>
-		/// Gets the core options builder.
-		/// </summary>
-		protected virtual DbContextOptionsBuilder OptionsBuilder { get; }
+        /// <summary>
+        /// Gets the core options builder.
+        /// </summary>
+        private DbContextOptionsBuilder OptionsBuilder => ((IDbInjectionsExtensionBuilderInfrastructure)dbInjectionsExtensionBuilder).OptionsBuilder;
 
         DbContextOptionsBuilder IDbInjectionsExtensionBuilderInfrastructure.OptionsBuilder => OptionsBuilder;
 
@@ -36,12 +34,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
         /// Sets an option by cloning the extension used to store the settings. This ensures the builder
         /// does not modify options that are already in use elsewhere.
         /// </summary>
-        protected virtual TBuilder WithOption(Func<DbInjectionsExtension, DbInjectionsExtension> setAction)
+        protected virtual DbInjectionsExtensionBuilder WithOption(Func<DbInjectionsExtension, DbInjectionsExtension> setAction)
 		{
 			((IDbContextOptionsBuilderInfrastructure)OptionsBuilder).AddOrUpdateExtension(
 				setAction(OptionsBuilder.Options.FindExtension<DbInjectionsExtension>() ?? new DbInjectionsExtension()));
 
-			return (TBuilder)this;
-		}
+            return dbInjectionsExtensionBuilder;
+        }
 	}
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
+namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
 {
 	public class EndToEndTestDbContext : TestDbContext
 	{
@@ -16,13 +16,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			this.onModelCreating = onModelCreating;
 		}
 
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-		{
-			base.CustomizeModelCreating(modelBuilder);
-			onModelCreating?.Invoke(modelBuilder);
-		}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-		public IReadOnlyList<MigrationOperation> Diff(DbContext target)
+            onModelCreating?.Invoke(modelBuilder);
+        }
+
+        public IReadOnlyList<MigrationOperation> Diff(DbContext target)
 		{
 			var differ = this.GetService<IMigrationsModelDiffer>();
 			return differ.GetDifferences(Model, target.Model);

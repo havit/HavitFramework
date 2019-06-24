@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
+namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
 {
     public class EndToEndTestDbContext<TEntity> : EndToEndTestDbContext
 		where TEntity : class

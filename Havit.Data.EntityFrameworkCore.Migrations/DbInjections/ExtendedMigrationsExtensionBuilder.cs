@@ -7,16 +7,16 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
     /// <summary>
-    /// <para>Umožňuje nastaviť špecifickú konfiguráciu pre DbInjections na <see cref="DbContextOptions"/>.</para>
-    /// <para>Inštancie tejto triedy vznikajú pomocou extension metódy <see cref="DbInjectionsExtensions.UseDbInjections"/>. Táto trieda nie je navrhnutá tak, aby jej inštancie boli priamo vytvárané v aplikačnom kóde.</para>
+    /// <para>Umožňuje nastaviť špecifickú konfiguráciu pre Extended Migrations na <see cref="DbContextOptions"/>.</para>
+    /// <para>Inštancie tejto triedy vznikajú pomocou extension metódy <see cref="ExtendedMigrationsDbContextOptionsBuilderExtensions.UseExtendedMigrations"/>. Táto trieda nie je navrhnutá tak, aby jej inštancie boli priamo vytvárané v aplikačnom kóde.</para>
     /// 
     /// </summary>
-    public class DbInjectionsExtensionBuilder : IDbInjectionsExtensionBuilderInfrastructure
+    public class ExtendedMigrationsExtensionBuilder : IExtendedMigrationsExtensionBuilderInfrastructure
 	{
 		/// <summary>
         /// Konstruktor.
         /// </summary>
-		public DbInjectionsExtensionBuilder(DbContextOptionsBuilder optionsBuilder)
+		public ExtendedMigrationsExtensionBuilder(DbContextOptionsBuilder optionsBuilder)
         {
             OptionsBuilder = optionsBuilder;
         }
@@ -24,8 +24,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 		/// <summary>
 		/// Zapne podporu pre <see cref="IDbInjector"/> objekty pre uložené procedúry. Umožňuje automaticky spravovať uložené procedúry pomocou migrácii.
 		/// </summary>
-		/// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
-		public DbInjectionsExtensionBuilder UseStoredProcedures()
+		/// <returns>Inštancia <see cref="ExtendedMigrationsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+		public ExtendedMigrationsExtensionBuilder UseStoredProcedures()
 			=> WithOption(e => e
                 .WithAnnotationProvider<StoredProcedureAnnotationProvider>()
                 .WithSqlGenerator<StoredProcedureSqlGenerator>());
@@ -34,15 +34,15 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 		/// Umožňuje vypnúť alebo zapnúť odstraňovanie duplicitných párov aktuálnych a starých anotácii v prípade AlterDatabaseOperation.
 		/// Štandardne je táto funkcionalita zapnutá.
 		/// </summary>
-		/// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
-		public DbInjectionsExtensionBuilder ConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel) =>
+		/// <returns>Inštancia <see cref="ExtendedMigrationsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+		public ExtendedMigrationsExtensionBuilder ConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel) =>
 			WithOption(e => e.WithConsolidateStatementsForMigrationsAnnotationsForModel(consolidateStatementsForMigrationsAnnotationsForModel));
 
 		/// <summary>
 		/// WORK IN PROGRESS: Zapne podporu pre <see cref="IDbInjector"/> objekty pre pohľady. Umožňuje automaticky spravovať pohľady pomocou migrácii.
 		/// </summary>
-		/// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
-		public DbInjectionsExtensionBuilder UseViews()
+		/// <returns>Inštancia <see cref="ExtendedMigrationsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+		public ExtendedMigrationsExtensionBuilder UseViews()
 		{
 			return WithOption(e => e.WithAnnotationProvider<ViewAnnotationProvider>()
                 .WithSqlGenerator<ViewSqlGenerator>());
@@ -53,13 +53,13 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
         /// </summary>
         protected virtual DbContextOptionsBuilder OptionsBuilder { get; }
 
-        DbContextOptionsBuilder IDbInjectionsExtensionBuilderInfrastructure.OptionsBuilder => OptionsBuilder;
+        DbContextOptionsBuilder IExtendedMigrationsExtensionBuilderInfrastructure.OptionsBuilder => OptionsBuilder;
 
         /// <summary>
         /// Sets an option by cloning the extension used to store the settings. This ensures the builder
         /// does not modify options that are already in use elsewhere.
         /// </summary>
-        protected virtual DbInjectionsExtensionBuilder WithOption(Func<DbInjectionsExtension, DbInjectionsExtension> setAction)
+        protected virtual ExtendedMigrationsExtensionBuilder WithOption(Func<DbInjectionsExtension, DbInjectionsExtension> setAction)
         {
             ((IDbContextOptionsBuilderInfrastructure)OptionsBuilder).AddOrUpdateExtension(
                 setAction(OptionsBuilder.Options.FindExtension<DbInjectionsExtension>() ?? new DbInjectionsExtension()));

@@ -3,17 +3,17 @@ using Havit.Data.EntityFrameworkCore.Migrations.DbInjections;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
 {
-    public class BusinessLayerDbInjectionsExtensionBuilder : DbInjectionsExtensionBuilderBase
+    public class BusinessLayerExtendedMigrationsExtensionBuilder : ExtendedMigrationsExtensionBuilderBase
     {
-        public BusinessLayerDbInjectionsExtensionBuilder(DbInjectionsExtensionBuilder builder)
+        public BusinessLayerExtendedMigrationsExtensionBuilder(ExtendedMigrationsExtensionBuilder builder)
             : base(builder)
         {
         }
 
-        public DbInjectionsExtensionBuilder UseExtendedProperties() =>
+        public ExtendedMigrationsExtensionBuilder UseExtendedProperties() =>
             WithOption(e => e.WithAnnotationProvider<ExtendedPropertiesAnnotationProvider>());
 
-        public DbInjectionsExtensionBuilder UseBusinessLayerStoredProcedures() =>
+        public ExtendedMigrationsExtensionBuilder UseBusinessLayerStoredProcedures() =>
             WithOption(e => e
                 .WithAnnotationProvider<StoredProcedureAttachPropertyAnnotationProvider>()
                 .WithAnnotationProvider<StoredProcedureMsDescriptionPropertyAnnotationProvider>());

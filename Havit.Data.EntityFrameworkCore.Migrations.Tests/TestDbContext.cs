@@ -12,7 +12,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseCodeMigrationsInfrastructure();
-            optionsBuilder.UseDbInjections(
+            optionsBuilder.UseExtendedMigrations(
                 builder => builder
                     .UseStoredProcedures()
                     .UseViews());

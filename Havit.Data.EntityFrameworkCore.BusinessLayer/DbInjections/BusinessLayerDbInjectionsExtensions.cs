@@ -16,12 +16,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
         /// <remarks>
         /// Je nutné odekorovať <see cref="IDbInjector"/> objekty pomocou atribútov dediacich z <see cref="DbInjectionExtendedPropertiesAttribute"/>. Podporované sú len tie objekty v DB, na ktoré je možné pridať extended properties v SQL Serveri.
         /// </remarks>
-        /// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
-        public static DbInjectionsExtensionBuilder UseExtendedProperties(this DbInjectionsExtensionBuilder optionsBuilder)
+        /// <returns>Inštancia <see cref="ExtendedMigrationsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+        public static ExtendedMigrationsExtensionBuilder UseExtendedProperties(this ExtendedMigrationsExtensionBuilder optionsBuilder)
         {
             Contract.Requires<ArgumentNullException>(optionsBuilder != null);
 
-            return new BusinessLayerDbInjectionsExtensionBuilder(optionsBuilder)
+            return new BusinessLayerExtendedMigrationsExtensionBuilder(optionsBuilder)
                 .UseExtendedProperties();
         }
 
@@ -31,12 +31,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections
         /// <remarks>
         /// Pre podporu nastavenia MS_Description extended property je nutné zapnúť generovanie dokumentačného XML súboru z XML komentárov na projekte, kde sa DbInjectory uložených procedúr nachádzajú.
         /// </remarks>
-        /// <returns>Inštancia <see cref="DbInjectionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
-        public static DbInjectionsExtensionBuilder UseBusinessLayerStoredProcedures(this DbInjectionsExtensionBuilder optionsBuilder)
+        /// <returns>Inštancia <see cref="ExtendedMigrationsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+        public static ExtendedMigrationsExtensionBuilder UseBusinessLayerStoredProcedures(this ExtendedMigrationsExtensionBuilder optionsBuilder)
         {
             Contract.Requires<ArgumentNullException>(optionsBuilder != null);
 
-            return new BusinessLayerDbInjectionsExtensionBuilder(optionsBuilder)
+            return new BusinessLayerExtendedMigrationsExtensionBuilder(optionsBuilder)
                 .UseBusinessLayerStoredProcedures();
         }
     }

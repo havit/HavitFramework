@@ -8,23 +8,37 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 {
+    /// <summary>
+    /// <see cref="IDbContextOptionsExtension"/> for configuring <see cref="CompositeMigrationsAnnotationProvider"/>.
+    /// </summary>
     public class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsExtension
     {
         private ImmutableList<Type> providers = ImmutableList.Create<Type>();
 
+        /// <inheritdoc />
         public string LogFragment => "";
 
-	    public CompositeMigrationsAnnotationProviderExtension()
+        /// <inheritdoc />
+        public CompositeMigrationsAnnotationProviderExtension()
 	    {
 	    }
 
-	    protected CompositeMigrationsAnnotationProviderExtension(CompositeMigrationsAnnotationProviderExtension copyFrom)
+        /// <inheritdoc />
+        protected CompositeMigrationsAnnotationProviderExtension(CompositeMigrationsAnnotationProviderExtension copyFrom)
 	    {
 		    providers = copyFrom.providers;
 	    }
 
+	    /// <summary>
+	    /// Clones this instance.
+	    /// </summary>
 	    protected virtual CompositeMigrationsAnnotationProviderExtension Clone() => new CompositeMigrationsAnnotationProviderExtension(this);
 
+	    /// <summary>
+	    /// Registers specified type of <see cref="IMigrationsAnnotationProvider"/>.
+	    /// </summary>
+	    /// <typeparam name="T">Implementation of <see cref="IMigrationsAnnotationProvider"/></typeparam>
+	    /// <returns>Clone of <see cref="CompositeMigrationsAnnotationProviderExtension"/>.</returns>
 	    public CompositeMigrationsAnnotationProviderExtension WithAnnotationProvider<T>()
             where T : IMigrationsAnnotationProvider
 	    {
@@ -33,6 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 			return clone;
         }
 
+        /// <inheritdoc />
         public bool ApplyServices(IServiceCollection services)
         {
             var currentProviderTypes = providers.ToArray();
@@ -48,11 +63,13 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
             return false;
         }
 
+        /// <inheritdoc />
         public long GetServiceProviderHashCode()
         {
             return providers.Aggregate(358, (current, next) => current ^ next.GetHashCode());
         }
 
+        /// <inheritdoc />
         public void Validate(IDbContextOptions options)
         {
             // no validation

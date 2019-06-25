@@ -8,11 +8,15 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
+    /// <summary>
+    /// Generates necessary CREATE, ALTER or DROP SQL scripts for <see cref="IDbInjection"/> defined in <see cref="IModel"/> (stored as <see cref="IAnnotation"/>s).
+    /// </summary>
     public class DbInjectionMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
     {
         private readonly IDbInjectionAnnotationProvider dbInjectionAnnotationProvider;
         private readonly IDbInjectionSqlResolver dbInjectionSqlResolver;
 
+        /// <inheritdoc />
         public DbInjectionMigrationOperationSqlGenerator(
             IDbInjectionAnnotationProvider dbInjectionAnnotationProvider,
             IDbInjectionSqlResolver dbInjectionSqlResolver)
@@ -21,6 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
             this.dbInjectionSqlResolver = dbInjectionSqlResolver;
         }
 
+        /// <inheritdoc />
         public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
         {
 	        var oldAnnotations = GetAnnotations(operation.OldDatabase.GetAnnotations());
@@ -64,7 +69,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
             }
         }
 
-        protected void GenerateCreateCommands(List<IAnnotation> newAnnotations, MigrationCommandListBuilder builder)
+        private void GenerateCreateCommands(List<IAnnotation> newAnnotations, MigrationCommandListBuilder builder)
         {
             foreach (var annotation in newAnnotations)
             {

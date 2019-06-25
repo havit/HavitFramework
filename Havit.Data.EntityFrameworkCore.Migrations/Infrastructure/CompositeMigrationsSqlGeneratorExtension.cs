@@ -8,24 +8,38 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 {
+    /// <summary>
+    /// <see cref="IDbContextOptionsExtension"/> for configuring <see cref="CompositeMigrationsSqlGenerator"/>.
+    /// </summary>
     public class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtension
 	{
 		private ImmutableList<Type> generatorTypes = ImmutableList.Create<Type>();
 
-		public string LogFragment => "";
+        /// <inheritdoc />
+        public string LogFragment => "";
 
-		public CompositeMigrationsSqlGeneratorExtension()
+        /// <inheritdoc />
+        public CompositeMigrationsSqlGeneratorExtension()
 		{
 		}
 
-		protected CompositeMigrationsSqlGeneratorExtension(CompositeMigrationsSqlGeneratorExtension copyFrom)
+        /// <inheritdoc />
+        protected CompositeMigrationsSqlGeneratorExtension(CompositeMigrationsSqlGeneratorExtension copyFrom)
 		{
 			generatorTypes = copyFrom.generatorTypes;
-		}
+        }
 
-		protected virtual CompositeMigrationsSqlGeneratorExtension Clone() => new CompositeMigrationsSqlGeneratorExtension(this);
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        protected virtual CompositeMigrationsSqlGeneratorExtension Clone() => new CompositeMigrationsSqlGeneratorExtension(this);
 
-		public CompositeMigrationsSqlGeneratorExtension WithGeneratorType<T>()
+        /// <summary>
+        /// Registers specified type of <see cref="IMigrationOperationSqlGenerator"/>.
+        /// </summary>
+        /// <typeparam name="T">Implementation of <see cref="IMigrationOperationSqlGenerator"/></typeparam>
+        /// <returns>Clone of <see cref="CompositeMigrationsSqlGeneratorExtension"/>.</returns>
+        public CompositeMigrationsSqlGeneratorExtension WithGeneratorType<T>()
             where T : IMigrationOperationSqlGenerator
 		{
 			var clone = Clone();
@@ -33,6 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 			return clone;
 		}
 
+        /// <inheritdoc />
         public bool ApplyServices(IServiceCollection services)
         {
             var currentProviderTypes = generatorTypes.ToArray();
@@ -48,11 +63,13 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
             return false;
         }
 
+        /// <inheritdoc />
         public long GetServiceProviderHashCode()
         {
             return generatorTypes.Aggregate(358, (current, next) => current ^ next.GetHashCode());
         }
 
+        /// <inheritdoc />
         public void Validate(IDbContextOptions options)
         {
             // no validation

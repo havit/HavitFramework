@@ -12,9 +12,17 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
-	public class AlterOperationsFixUpMigrationsModelDiffer : MigrationsModelDiffer
+    /// <summary>
+    /// Modifies behavior of <see cref="MigrationsModelDiffer"/> by removing redundant <see cref="Annotation"/>s on several <see cref="MigrationOperation"/>s.
+    ///
+    /// <remarks>
+    /// Modified operations: <see cref="AlterDatabaseOperation"/>, <see cref="AlterTableOperation"/>, <see cref="AlterColumnOperation"/>.
+    /// </remarks>
+    /// </summary>
+    public class AlterOperationsFixUpMigrationsModelDiffer : MigrationsModelDiffer
 	{
-		public AlterOperationsFixUpMigrationsModelDiffer(
+        /// <inheritdoc />
+        public AlterOperationsFixUpMigrationsModelDiffer(
 			IRelationalTypeMappingSource typeMappingSource,
 			IMigrationsAnnotationProvider migrationsAnnotations,
 			IChangeDetector changeDetector,
@@ -28,7 +36,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 		{
 		}
 
-		protected override IEnumerable<MigrationOperation> Diff(IModel source, IModel target, DiffContext diffContext)
+        /// <inheritdoc />
+        protected override IEnumerable<MigrationOperation> Diff(IModel source, IModel target, DiffContext diffContext)
 		{
 			foreach (MigrationOperation migrationOperation in base.Diff(source, target, diffContext))
 			{

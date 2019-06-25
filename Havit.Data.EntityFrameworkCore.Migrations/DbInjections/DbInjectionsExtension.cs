@@ -8,20 +8,30 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
+    /// <summary>
+    /// <see cref="IDbContextOptionsExtension"/> for configuring <see cref="IMigrationsAnnotationProvider"/>s and <see cref="IDbInjectionSqlGenerator"/>s.
+    /// </summary>
 	public class DbInjectionsExtension : IDbContextOptionsExtension
     {
         private ImmutableList<Type> annotationProviders = ImmutableList.Create<Type>();
         private ImmutableList<Type> sqlGenerators = ImmutableList.Create<Type>();
 	    private bool consolidateStatementsForMigrationsAnnotationsForModel = true;
 
-	    public string LogFragment => "";
+        /// <inheritdoc />
+        public string LogFragment => "";
 
-	    public DbInjectionsExtension()
+        /// <inheritdoc />
+        public DbInjectionsExtension()
 	    {
 	    }
 
 	    // NB: When adding new options, make sure to update the copy ctor below.
 
+		/// <summary>
+		/// Copy constructor.
+		///
+		/// <remarks>Pattern from original EF Core source.</remarks>
+		/// </summary>
 		protected DbInjectionsExtension(DbInjectionsExtension copyFrom)
 	    {
 		    annotationProviders = copyFrom.annotationProviders;
@@ -29,18 +39,38 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 		    consolidateStatementsForMigrationsAnnotationsForModel = copyFrom.consolidateStatementsForMigrationsAnnotationsForModel;
 	    }
 
-		protected virtual DbInjectionsExtension Clone() => new DbInjectionsExtension(this);
+        /// <summary>
+        /// Clones this <see cref="IDbContextOptionsExtension"/>.
+        ///
+        /// <remarks>Pattern from original EF Core source.</remarks>
+        /// </summary>
+        protected virtual DbInjectionsExtension Clone() => new DbInjectionsExtension(this);
 
-	    public bool ConsolidateStatementsForMigrationsAnnotationsForModel => consolidateStatementsForMigrationsAnnotationsForModel;
+        /// <summary>
+        /// Specifies, whether generated code statements in migrations with annotations should be consolidated.
+        /// 
+        /// If enabled <see cref="AlterOperationsFixUpMigrationsModelDiffer"/> is used instead of original implementation of <see cref="IMigrationsModelDiffer"/>.
+        /// </summary>
+        public bool ConsolidateStatementsForMigrationsAnnotationsForModel => consolidateStatementsForMigrationsAnnotationsForModel;
 
-		public DbInjectionsExtension WithConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel)
+        /// <summary>
+        /// Consolidate generated code statements in migrations with annotations (e.g. AlterDatabase().Annotation().OldAnnotation()).
+        ///
+        /// Enables or disables <see cref="AlterOperationsFixUpMigrationsModelDiffer"/>.
+        /// </summary>
+        public DbInjectionsExtension WithConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel)
 	    {
 		    var clone = Clone();
 		    clone.consolidateStatementsForMigrationsAnnotationsForModel = consolidateStatementsForMigrationsAnnotationsForModel;
 		    return clone;
 	    }
 
-		public DbInjectionsExtension WithAnnotationProvider<T>()
+        /// <summary>
+        /// Registers <see cref="IDbInjectionAnnotationProvider"/> to use.
+        /// </summary>
+        /// <typeparam name="T">Implementation of <see cref="IDbInjectionAnnotationProvider"/> to register.</typeparam>
+        /// <returns>A new instance of <see cref="DbInjectionsExtension"/> with option changed.</returns>
+        public DbInjectionsExtension WithAnnotationProvider<T>()
             where T : IDbInjectionAnnotationProvider
 	    {
 			// clone with new IDbInjectionAnnotationProvider
@@ -51,6 +81,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 		    return clone;
 	    }
 
+	    /// <summary>
+	    /// Registers <see cref="IDbInjectionSqlGenerator"/> to use.
+	    /// </summary>
+	    /// <typeparam name="T">Implementation of <see cref="IDbInjectionSqlGenerator"/> to register.</typeparam>
+	    /// <returns>A new instance of <see cref="DbInjectionsExtension"/> with option changed.</returns>
 	    public DbInjectionsExtension WithSqlGenerator<T>()
             where T : IDbInjectionSqlGenerator
 		{
@@ -60,7 +95,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 			return clone;
 		}
 
-	    public bool ApplyServices(IServiceCollection services)
+        /// <inheritdoc />
+        public bool ApplyServices(IServiceCollection services)
         {
             var currentProviderTypes = annotationProviders.ToArray();
             CompositeDbInjectionAnnotationProvider AnnotationProviderFactory(IServiceProvider serviceProvider)
@@ -89,14 +125,16 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
             return false;
         }
 
-	    public long GetServiceProviderHashCode()
+        /// <inheritdoc />
+        public long GetServiceProviderHashCode()
         {
             var hashCode = annotationProviders.Aggregate(358, (current, next) => current ^ next.GetHashCode());
 	        hashCode = sqlGenerators.Aggregate(hashCode, (current, next) => current ^ next.GetHashCode());
 	        return hashCode;
         }
 
-	    public void Validate(IDbContextOptions options)
+        /// <inheritdoc />
+        public void Validate(IDbContextOptions options)
         {
             // no validations
         }

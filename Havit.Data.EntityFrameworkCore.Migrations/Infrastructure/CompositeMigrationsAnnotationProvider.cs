@@ -6,82 +6,102 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 {
+    /// <summary>
+    /// Composite implementation of <see cref="IMigrationsAnnotationProvider"/>. Encapsulates <see cref="IMigrationsAnnotationProvider"/> components and concatenates annotations for various elements of the <see cref="IModel"/>.
+    ///
+    /// Annotations are used by EF Core Migrations and are defined on various elements of the <see cref="IModel" />.
+    /// </summary>
     public class CompositeMigrationsAnnotationProvider : MigrationsAnnotationProvider
 	{
 	    private readonly IEnumerable<IMigrationsAnnotationProvider> providers;
 
-	    public CompositeMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IEnumerable<IMigrationsAnnotationProvider> providers)
+        /// <inheritdoc />
+        public CompositeMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IEnumerable<IMigrationsAnnotationProvider> providers)
 			: base(dependencies)
 	    {
 	        this.providers = providers;
 	    }
 
-	    public override IEnumerable<IAnnotation> For(IModel model)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(IModel model)
 	    {
 		    return base.For(model).Concat(providers.SelectMany(provider => provider.For(model)));
         }
 
-	    public override IEnumerable<IAnnotation> For(IKey key)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(IKey key)
 	    {
 	        return base.For(key).Concat(providers.SelectMany(provider => provider.For(key)));
         }
 
-	    public override IEnumerable<IAnnotation> For(IIndex index)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(IIndex index)
 	    {
 	        return base.For(index).Concat(providers.SelectMany(provider => provider.For(index)));
         }
 
-	    public override IEnumerable<IAnnotation> For(IForeignKey foreignKey)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(IForeignKey foreignKey)
 	    {
 	        return base.For(foreignKey).Concat(providers.SelectMany(provider => provider.For(foreignKey)));
         }
 
-	    public override IEnumerable<IAnnotation> For(IProperty property)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(IProperty property)
 	    {
 	        return base.For(property).Concat(providers.SelectMany(provider => provider.For(property)));
         }
 
-	    public override IEnumerable<IAnnotation> For(ISequence sequence)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(ISequence sequence)
 	    {
 	        return base.For(sequence).Concat(providers.SelectMany(provider => provider.For(sequence)));
         }
 
-	    public override IEnumerable<IAnnotation> For(IEntityType entityType)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> For(IEntityType entityType)
 	    {
 	        return base.For(entityType).Concat(providers.SelectMany(provider => provider.For(entityType)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(IModel model)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(IModel model)
 	    {
 	        return base.ForRemove(model).Concat(providers.SelectMany(provider => provider.ForRemove(model)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(IKey key)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(IKey key)
 	    {
 	        return base.ForRemove(key).Concat(providers.SelectMany(provider => provider.ForRemove(key)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(IIndex index)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(IIndex index)
 	    {
 	        return base.ForRemove(index).Concat(providers.SelectMany(provider => provider.ForRemove(index)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(IForeignKey foreignKey)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(IForeignKey foreignKey)
 	    {
 	        return base.ForRemove(foreignKey).Concat(providers.SelectMany(provider => provider.ForRemove(foreignKey)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(IProperty property)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(IProperty property)
 	    {
 	        return base.ForRemove(property).Concat(providers.SelectMany(provider => provider.ForRemove(property)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(ISequence sequence)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(ISequence sequence)
 	    {
 	        return base.ForRemove(sequence).Concat(providers.SelectMany(provider => provider.ForRemove(sequence)));
 	    }
 
-	    public override IEnumerable<IAnnotation> ForRemove(IEntityType entityType)
+        /// <inheritdoc />
+        public override IEnumerable<IAnnotation> ForRemove(IEntityType entityType)
 	    {
 	        return base.ForRemove(entityType).Concat(providers.SelectMany(provider => provider.ForRemove(entityType)));
 	    }

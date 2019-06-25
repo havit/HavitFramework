@@ -5,11 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections.Views
 {
+	/// <summary>
+	/// Implementation of <see cref="IDbInjectionAnnotationProvider"/>, that handles <see cref="ViewDbInjection"/>s.
+	/// </summary>
 	public class ViewAnnotationProvider : DbInjectionAnnotationProvider<ViewDbInjection>
 	{
 		private const string AnnotationPrefix = "View:";
 
-		protected override List<IAnnotation> GetAnnotations(ViewDbInjection dbInjection, MemberInfo memberInfo)
+        /// <inheritdoc />
+        protected override List<IAnnotation> GetAnnotations(ViewDbInjection dbInjection, MemberInfo memberInfo)
 		{
 			return new List<IAnnotation>
 			{
@@ -17,18 +21,19 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections.Views
 			};
 		}
 
-		protected override List<ViewDbInjection> GetDbInjections(List<IAnnotation> annotations)
+        /// <inheritdoc />
+        protected override List<ViewDbInjection> GetDbInjections(List<IAnnotation> annotations)
 		{
 			var spAnnotations = annotations.Where(annotation => annotation.Name.StartsWith(AnnotationPrefix));
 
 			return spAnnotations.Select(annotation => new ViewDbInjection
 			{
 				CreateSql = (string)annotation.Value,
-				ViewName = ParseProcedureName(annotation)
+				ViewName = ParseViewName(annotation)
 			}).ToList();
 		}
 
-		private string ParseProcedureName(IAnnotation annotation)
+		private string ParseViewName(IAnnotation annotation)
 		{
 			return annotation.Name.Split(':').Last();
 		}

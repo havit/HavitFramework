@@ -6,11 +6,15 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 {
-	public class CompositeMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
+    /// <summary>
+    /// Composite implementation of <see cref="IMigrationsSqlGenerator"/>. Encapsulates <see cref="IMigrationOperationSqlGenerator"/> components and runs each operation separately on all generators.
+    /// </summary>
+    public class CompositeMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
     {
         private readonly IEnumerable<IMigrationOperationSqlGenerator> operationGenerators;
 
-	    public CompositeMigrationsSqlGenerator(
+        /// <inheritdoc />
+        public CompositeMigrationsSqlGenerator(
 		    MigrationsSqlGeneratorDependencies dependencies,
 		    IMigrationsAnnotationProvider migrationsAnnotations,
 		    IEnumerable<IMigrationOperationSqlGenerator> operationGenerators) 
@@ -19,6 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 		    this.operationGenerators = operationGenerators;
 	    }
 
+        /// <inheritdoc />
         protected override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 	    {
 		    base.Generate(operation, model, builder);
@@ -26,35 +31,40 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 	    }
 
-	    protected override void Generate(AlterTableOperation operation, IModel model, MigrationCommandListBuilder builder)
+        /// <inheritdoc />
+        protected override void Generate(AlterTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 	    {
 		    base.Generate(operation, model, builder);
 
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 		}
 
-	    protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
+        /// <inheritdoc />
+        protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 	    {
 		    base.Generate(operation, model, builder);
 
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 		}
 
-	    protected override void Generate(AlterColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
+        /// <inheritdoc />
+        protected override void Generate(AlterColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 	    {
 		    base.Generate(operation, model, builder);
 
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 		}
 
-	    protected override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
+        /// <inheritdoc />
+        protected override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
 	    {
 		    base.Generate(operation, model, builder);
 
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 		}
 
-	    protected override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
+        /// <inheritdoc />
+        protected override void Generate(SqlServerCreateDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
 	    {
 		    base.Generate(operation, model, builder);
 

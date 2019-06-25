@@ -5,10 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections.StoredProcedures
 {
+    /// <summary>
+    /// Implementation of <see cref="IDbInjectionAnnotationProvider"/>, that handles <see cref="StoredProcedureDbInjection"/>s.
+    /// </summary>
     public class StoredProcedureAnnotationProvider : DbInjectionAnnotationProvider<StoredProcedureDbInjection>
     {
         private const string AnnotationPrefix = "StoredProcedure:";
 
+        /// <inheritdoc />
         protected override List<IAnnotation> GetAnnotations(StoredProcedureDbInjection dbAnnotation, MemberInfo memberInfo)
         {
             return new List<IAnnotation>
@@ -17,6 +21,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections.StoredProcedure
             };
         }
 
+        /// <inheritdoc />
         protected override List<StoredProcedureDbInjection> GetDbInjections(List<IAnnotation> annotations)
         {
             var spAnnotations = annotations.Where(annotation => annotation.Name.StartsWith(AnnotationPrefix));

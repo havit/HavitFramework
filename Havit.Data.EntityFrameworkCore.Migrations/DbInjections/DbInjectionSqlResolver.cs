@@ -4,21 +4,25 @@ using System.Linq;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
-	public class DbInjectionSqlResolver : IDbInjectionSqlResolver
+    /// <inheritdoc />
+    public class DbInjectionSqlResolver : IDbInjectionSqlResolver
 	{
 		private readonly IEnumerable<IDbInjectionSqlGenerator> sqlGenerators;
 
-		public DbInjectionSqlResolver(IEnumerable<IDbInjectionSqlGenerator> sqlGenerators)
+        /// <inheritdoc />
+        public DbInjectionSqlResolver(IEnumerable<IDbInjectionSqlGenerator> sqlGenerators)
 		{
 			this.sqlGenerators = sqlGenerators;
 		}
 
-		public List<string> ResolveAlterSqlScripts(List<IDbInjection> dbInjections)
+        /// <inheritdoc />
+        public List<string> ResolveAlterSqlScripts(List<IDbInjection> dbInjections)
 		{
 			return CollectSqlScripts(dbInjections, ((generator, injection) => generator.GenerateAlterSql(injection)));
 		}
 
-		public List<string> ResolveDropSqlScripts(List<IDbInjection> dbInjections)
+        /// <inheritdoc />
+        public List<string> ResolveDropSqlScripts(List<IDbInjection> dbInjections)
 		{
 			return CollectSqlScripts(dbInjections, ((generator, injection) => generator.GenerateDropSql(injection)));
 		}

@@ -6,15 +6,15 @@ using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 {
-	/// <summary>
-	/// Extension metódy pre registráciu infraštruktúrnych služieb používaných podporou pre extended properties a DB Injections.
-	/// </summary>
-	public static class InfrastructureExtensions
+    /// <summary>
+    /// Extension metódy pre registráciu infraštruktúrnych služieb používané podporou pre Extended Migrations.
+    /// </summary>
+    public static class InfrastructureExtensions
 	{
 		/// <summary>
-		/// Registruje infraštruktúrne služby používané podporou pre extended properties a DB Injections.
+		/// Registruje infraštruktúrne služby používané podporou pre Extended Migrations.
 		/// </summary>
-		public static void UseCodeMigrationsInfrastructure(this DbContextOptionsBuilder optionsBuilder)
+		public static void UseExtendedMigrationsInfrastructure(this DbContextOptionsBuilder optionsBuilder)
 		{
 			Contract.Requires<ArgumentNullException>(optionsBuilder != null);
 

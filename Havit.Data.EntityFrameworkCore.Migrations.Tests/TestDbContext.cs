@@ -1,6 +1,4 @@
 ﻿using System.Data.SqlClient;
-using Havit.Data.EntityFrameworkCore.Migrations.DbInjections;
-using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -11,7 +9,6 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseCodeMigrationsInfrastructure();
             optionsBuilder.UseExtendedMigrations(
                 builder => builder
                     .UseStoredProcedures()

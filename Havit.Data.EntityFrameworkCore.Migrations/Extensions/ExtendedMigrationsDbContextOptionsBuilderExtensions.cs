@@ -29,6 +29,8 @@ namespace Microsoft.EntityFrameworkCore
             Contract.Requires<ArgumentNullException>(optionsBuilder != null);
             Contract.Requires<ArgumentNullException>(setupAction != null);
 
+            optionsBuilder.UseExtendedMigrationsInfrastructure();
+
             IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
             var annotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>();

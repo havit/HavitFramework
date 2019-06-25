@@ -40,7 +40,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		{
 			base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseCodeMigrationsInfrastructure();
             optionsBuilder.UseExtendedMigrations(builder => builder
 				.UseStoredProcedures()
 				.UseExtendedProperties()

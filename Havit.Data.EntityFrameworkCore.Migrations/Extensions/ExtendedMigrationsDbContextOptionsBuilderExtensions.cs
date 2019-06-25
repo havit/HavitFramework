@@ -14,11 +14,20 @@ namespace Microsoft.EntityFrameworkCore
     public static class ExtendedMigrationsDbContextOptionsBuilderExtensions
     {
         /// <summary>
+        /// Registruje služby používané podporou pre Extended Migrations.
+        ///
+        /// <para>V štandardnom nastavení zapne podporu pre správu uložených procedúr a pohľadov pomocou migrácii.</para>
+        /// </summary>
+        public static DbContextOptionsBuilder UseExtendedMigrations(this DbContextOptionsBuilder optionsBuilder)
+            => UseExtendedMigrations(optionsBuilder, builder => builder.UseStoredProcedures().UseViews());
+
+        /// <summary>
         /// Registruje služby používané podporou pre Extended Migrations. Pomocou <paramref name="setupAction"/> je možné aktivovať rôzne funkčnosti Extended Migrations.
         /// </summary>
-        public static DbContextOptionsBuilder UseExtendedMigrations(this DbContextOptionsBuilder optionsBuilder, Action<ExtendedMigrationsExtensionBuilder> setupAction = null)
+        public static DbContextOptionsBuilder UseExtendedMigrations(this DbContextOptionsBuilder optionsBuilder, Action<ExtendedMigrationsExtensionBuilder> setupAction)
         {
             Contract.Requires<ArgumentNullException>(optionsBuilder != null);
+            Contract.Requires<ArgumentNullException>(setupAction != null);
 
             IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 

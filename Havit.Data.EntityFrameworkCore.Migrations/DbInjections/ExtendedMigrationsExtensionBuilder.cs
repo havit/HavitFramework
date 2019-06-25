@@ -8,8 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.DbInjections
 {
     /// <summary>
     /// <para>Umožňuje nastaviť špecifickú konfiguráciu pre Extended Migrations na <see cref="DbContextOptions"/>.</para>
-    /// <para>Inštancie tejto triedy vznikajú pomocou extension metódy <see cref="ExtendedMigrationsDbContextOptionsBuilderExtensions.UseExtendedMigrations"/>. Táto trieda nie je navrhnutá tak, aby jej inštancie boli priamo vytvárané v aplikačnom kóde.</para>
-    /// 
+    /// <para>Inštancie tejto triedy vznikajú pomocou extension metódy <see cref="ExtendedMigrationsDbContextOptionsBuilderExtensions.UseExtendedMigrations(DbContextOptionsBuilder,Action{ExtendedMigrationsExtensionBuilder})"/>. Táto trieda nie je navrhnutá tak, aby jej inštancie boli priamo vytvárané v aplikačnom kóde.</para>
     /// </summary>
     public class ExtendedMigrationsExtensionBuilder : IExtendedMigrationsExtensionBuilderInfrastructure
 	{

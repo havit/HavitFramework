@@ -72,7 +72,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 			container.Register(
 				Component.For(typeof(ILanguageService)).ImplementedBy(currentLanguageServiceType).ApplyLifestyle(componentRegistrationOptions.GeneralLifestyle),
 				Component.For(typeof(ILanguageByCultureService)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleSingleton(),
-				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton(),
+				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleTransient(),
 
 				// Registrujeme jen pro TLanguage, možná bude časem třeba pro všechny modelové třídy (pak bychom přesunuli do jiné metody v této třídě).
 				Component.For<IEntityKeyAccessor<TLanguage, int>>().ImplementedBy<EntityKeyAccessor<TLanguage>>().LifestyleSingleton()

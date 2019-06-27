@@ -100,7 +100,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 			container.Register(
 				Component.For(typeof(ILanguageService)).ImplementedBy(currentLanguageServiceType).ApplyLifestyle(componentRegistrationOptions.GeneralLifestyle),
 				Component.For(typeof(ILanguageByCultureService)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleSingleton(),
-				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleSingleton()
+				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleTransient()
 			);
 			return this;
 		}

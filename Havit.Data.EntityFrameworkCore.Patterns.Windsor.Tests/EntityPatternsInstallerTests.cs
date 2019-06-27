@@ -1,6 +1,8 @@
 ﻿using Castle.Facilities.TypedFactory;
+using Castle.Facilities.TypedFactory.Internal;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Handlers;
+using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
@@ -20,6 +22,7 @@ using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.TimeServices;
+using Havit.TestHelpers.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Text;
@@ -30,26 +33,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 	public class EntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void EntityPatternsInstaller_AllRegisteredComponentsShouldHaveRegisteredAllDependencies()
+		public void EntityPatternsInstaller_RegisteredComponentsShouldHaveRegisteredDependencies()
 		{
 			// Arrange + Act
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Assert
-			var diagnostic = new PotentiallyMisconfiguredComponentsDiagnostic(container.Kernel);
-			IHandler[] handlers = diagnostic.Inspect();
-			if (handlers != null && handlers.Any())
-			{
-				var builder = new StringBuilder();
-				builder.AppendFormat("Misconfigured components ({0})\r\n", handlers.Count());
-				foreach (IHandler handler in handlers)
-				{
-					var info = (IExposeDependencyInfo)handler;
-					var inspector = new DependencyInspector(builder);
-					info.ObtainDependencyDetails(inspector);
-				}
-				Assert.Fail(builder.ToString());
-			}
+			MisconfiguredComponentsHelper.AssertMisconfiguredComponents(container);
+		}
+
+		[TestMethod]
+		public void EntityPatternsInstaller_RegisteredComponentsShouldNotHaveLifestyleMismatches()
+		{
+			// Arrange + Act
+			var container = Helpers.CreateAndSetupWindsorContainer();
+
+			// Assert
+			PotentialLifestyleMismatchesHelper.AssertPotentialLifestyleMismatches(container, cm => cm.Implementation != typeof(TypedFactoryInterceptor));
 		}
 
 		[TestMethod]
@@ -72,8 +72,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<ILanguageService>();
-			container.Resolve<ILocalizationService>();
+			using (container.BeginScope())
+			{
+				container.Resolve<ILanguageService>();
+				container.Resolve<ILocalizationService>();
+			}
 
 			// Assert			
 			// no exception was thrown
@@ -86,8 +89,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<ILanguageDataSource>();
-			container.Resolve<IDataSource<Language>>();
+			using (container.BeginScope())
+			{
+				container.Resolve<ILanguageDataSource>();
+				container.Resolve<IDataSource<Language>>();
+			}
 
 			// Assert			
 			// no exception was thrown
@@ -100,9 +106,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<ILanguageRepository>();
-			container.Resolve<IRepository<Language>>();
-			container.Resolve<IRepositoryAsync<Language>>();
+			using (container.BeginScope())
+			{
+				container.Resolve<ILanguageRepository>();
+				container.Resolve<IRepository<Language>>();
+				container.Resolve<IRepositoryAsync<Language>>();
+			}
 
 			// Assert			
 			// no exception was thrown
@@ -115,9 +124,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IDataLoader>();
-			container.Resolve<IDataLoaderAsync>();
-
+			using (container.BeginScope())
+			{
+				container.Resolve<IDataLoader>();
+				container.Resolve<IDataLoaderAsync>();
+			}
 			// Assert
 			// no exception was thrown
 		}
@@ -129,8 +140,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IUnitOfWork>();
-			container.Resolve<IUnitOfWorkAsync>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IUnitOfWork>();
+				container.Resolve<IUnitOfWorkAsync>();
+			}
 
 			// Assert
 			// no exception was thrown
@@ -143,7 +157,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IEntityCacheManager>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IEntityCacheManager>();
+			}
 
 			// Assert
 			// no exception was thrown
@@ -172,7 +189,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IDataSeedRunner>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IDataSeedRunner>();
+			}
 
 			// Assert
 			// no exception was thrown and...

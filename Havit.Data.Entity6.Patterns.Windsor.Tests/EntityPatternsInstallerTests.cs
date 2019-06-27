@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Castle.Facilities.TypedFactory;
+using Castle.Facilities.TypedFactory.Internal;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Handlers;
 using Castle.MicroKernel.Lifestyle;
@@ -10,6 +11,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Castle.Windsor.Diagnostics;
+using Castle.Windsor.Diagnostics.Helpers;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.Windsor;
@@ -23,6 +25,7 @@ using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.TimeServices;
+using Havit.TestHelpers.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity6.Patterns.Windsor.Tests
@@ -31,26 +34,23 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 	public class EntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void EntityPatternsInstaller_AllRegisteredComponentsShouldHaveRegisteredAllDependencies()
+		public void EntityPatternsInstaller_RegisteredComponentsShouldHaveRegisteredDependencies()
 		{
 			// Arrange + Act
 			var container = CreateAndSetupWindsorContainer();
 
 			// Assert
-			var diagnostic = new PotentiallyMisconfiguredComponentsDiagnostic(container.Kernel);
-			IHandler[] handlers = diagnostic.Inspect();
-			if (handlers != null && handlers.Any())
-			{
-				var builder = new StringBuilder();
-				builder.AppendFormat("Misconfigured components ({0})\r\n", handlers.Count());
-				foreach (IHandler handler in handlers)
-				{
-					var info = (IExposeDependencyInfo)handler;
-					var inspector = new DependencyInspector(builder);
-					info.ObtainDependencyDetails(inspector);
-				}
-				Assert.Fail(builder.ToString());
-			}
+			MisconfiguredComponentsHelper.AssertMisconfiguredComponents(container);
+		}
+
+		[TestMethod]
+		public void EntityPatternsInstaller_RegisteredComponentsShouldNotHaveLifestyleMismatches()
+		{
+			// Arrange + Act
+			var container = CreateAndSetupWindsorContainer();
+
+			// Assert
+			PotentialLifestyleMismatchesHelper.AssertPotentialLifestyleMismatches(container, cm => cm.Implementation != typeof(TypedFactoryInterceptor));
 		}
 
 		[TestMethod]
@@ -143,7 +143,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = l => l.Scoped() })
 				.RegisterEntityPatterns()
-				//.RegisterDbContext<TestDbContext>()
+				.RegisterDbContext<TestDbContext>()
 				.RegisterLocalizationServices<Language>()
 				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
 

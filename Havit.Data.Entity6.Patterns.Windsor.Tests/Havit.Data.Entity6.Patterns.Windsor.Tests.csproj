@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj" />
+    <ProjectReference Include="..\Havit.TestHelpers\Havit.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

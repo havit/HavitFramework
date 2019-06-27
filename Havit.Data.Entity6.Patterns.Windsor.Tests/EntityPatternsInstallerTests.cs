@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Handlers;
 using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
+using Castle.Windsor.Diagnostics;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.Windsor;
@@ -26,6 +30,29 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 	[TestClass]
 	public class EntityPatternsInstallerTests
 	{
+		[TestMethod]
+		public void EntityPatternsInstaller_AllRegisteredComponentsShouldHaveRegisteredAllDependencies()
+		{
+			// Arrange + Act
+			var container = CreateAndSetupWindsorContainer();
+
+			// Assert
+			var diagnostic = new PotentiallyMisconfiguredComponentsDiagnostic(container.Kernel);
+			IHandler[] handlers = diagnostic.Inspect();
+			if (handlers != null && handlers.Any())
+			{
+				var builder = new StringBuilder();
+				builder.AppendFormat("Misconfigured components ({0})\r\n", handlers.Count());
+				foreach (IHandler handler in handlers)
+				{
+					var info = (IExposeDependencyInfo)handler;
+					var inspector = new DependencyInspector(builder);
+					info.ObtainDependencyDetails(inspector);
+				}
+				Assert.Fail(builder.ToString());
+			}
+		}
+
 		[TestMethod]
 		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
@@ -116,7 +143,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = l => l.Scoped() })
 				.RegisterEntityPatterns()
-				.RegisterDbContext<TestDbContext>()
+				//.RegisterDbContext<TestDbContext>()
 				.RegisterLocalizationServices<Language>()
 				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
 

@@ -1,7 +1,10 @@
 ﻿using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Handlers;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
+using Castle.Windsor.Diagnostics;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
@@ -18,12 +21,37 @@ using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
+using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 {
 	[TestClass]
 	public class EntityPatternsInstallerTests
 	{
+		[TestMethod]
+		public void EntityPatternsInstaller_AllRegisteredComponentsShouldHaveRegisteredAllDependencies()
+		{
+			// Arrange + Act
+			var container = Helpers.CreateAndSetupWindsorContainer();
+
+			// Assert
+			var diagnostic = new PotentiallyMisconfiguredComponentsDiagnostic(container.Kernel);
+			IHandler[] handlers = diagnostic.Inspect();
+			if (handlers != null && handlers.Any())
+			{
+				var builder = new StringBuilder();
+				builder.AppendFormat("Misconfigured components ({0})\r\n", handlers.Count());
+				foreach (IHandler handler in handlers)
+				{
+					var info = (IExposeDependencyInfo)handler;
+					var inspector = new DependencyInspector(builder);
+					info.ObtainDependencyDetails(inspector);
+				}
+				Assert.Fail(builder.ToString());
+			}
+		}
+
 		[TestMethod]
 		public void EntityPatternsInstaller_ShouldRegisterDbContextFactory()
 		{

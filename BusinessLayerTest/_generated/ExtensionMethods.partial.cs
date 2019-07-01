@@ -87,6 +87,16 @@ namespace Havit.BusinessLayerTest
 		}
 		#endregion
 		
+		#region IEnumerable<Havit.BusinessLayerTest.RoleLocalizationCollection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.RoleLocalizationCollection z IEnumerable&lt;Havit.BusinessLayerTest.RoleLocalization&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.RoleLocalizationCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.RoleLocalization> objects)
+		{
+			return new Havit.BusinessLayerTest.RoleLocalizationCollection(objects);
+		}
+		#endregion
+		
 		#region IEnumerable<Havit.BusinessLayerTest.SubjektCollection>.ToCollection
 		/// <summary>
 		/// Vytvoří Havit.BusinessLayerTest.SubjektCollection z IEnumerable&lt;Havit.BusinessLayerTest.Subjekt&gt;.

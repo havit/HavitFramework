@@ -29,23 +29,23 @@ using Havit.Data.SqlTypes;
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Role.
+	/// Kolekce business objektů typu Havit.BusinessLayerTest.RoleLocalization.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public partial class RoleCollectionBase : BusinessObjectCollection<Role, RoleCollection>
+	public partial class RoleLocalizationCollectionBase : BusinessObjectCollection<RoleLocalization, RoleLocalizationCollection>, ILocalizationCollection
 	{
 		#region Constructors
 		/// <summary>
 		/// Vytvoří novou instanci kolekce.
 		/// </summary>
-		public RoleCollectionBase() : base()
+		public RoleLocalizationCollectionBase() : base()
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří novou instanci kolekce a zkopíruje do ní prvky z předané kolekce.
 		/// </summary>
-		public RoleCollectionBase(IEnumerable<Role> collection) : base(collection)
+		public RoleLocalizationCollectionBase(IEnumerable<RoleLocalization> collection) : base(collection)
 		{
 		}
 		#endregion
@@ -54,7 +54,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Prohledá kolekci a vrátí první nalezený prvek odpovídající kritériu match.
 		/// </summary>
-		public override Role Find(Predicate<Role> match)
+		public override RoleLocalization Find(Predicate<RoleLocalization> match)
 		{
 			LoadAll();
 			return base.Find(match);
@@ -63,7 +63,7 @@ namespace Havit.BusinessLayerTest
 		/// <summary>
 		/// Prohledá kolekci a vrátí všechny prvky odpovídající kritériu match.
 		/// </summary>
-		public override RoleCollection FindAll(Predicate<Role> match)
+		public override RoleLocalizationCollection FindAll(Predicate<RoleLocalization> match)
 		{
 			LoadAll();
 			return base.FindAll(match);
@@ -110,7 +110,7 @@ namespace Havit.BusinessLayerTest
 		/// Před řazením načtě všechny prvky metodou LoadAll.
 		/// </summary>
 		/// <param name="comparsion">srovnání, podle kterého mají být prvky seřazeny</param>
-		public override void Sort(Comparison<Role> comparsion)
+		public override void Sort(Comparison<RoleLocalization> comparsion)
 		{
 			LoadAll();
 			base.Sort(comparsion);
@@ -119,7 +119,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region LoadAll
 		/// <summary>
-		/// Načte všechny prvky kolekce a jejich lokalizace.
+		/// Načte všechny prvky kolekce.
 		/// </summary>
 		public void LoadAll()
 		{
@@ -127,7 +127,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Načte všechny prvky kolekce a jejich lokalizace.
+		/// Načte všechny prvky kolekce.
 		/// </summary>
 		public void LoadAll(DbTransaction transaction)
 		{
@@ -136,11 +136,11 @@ namespace Havit.BusinessLayerTest
 				return;
 			}
 			
-			Dictionary<int, Role> ghosts = new Dictionary<int, Role>();
+			Dictionary<int, RoleLocalization> ghosts = new Dictionary<int, RoleLocalization>();
 			
 			for (int i = 0; i < this.Count; i++)
 			{
-				Role currentObject = this[i];
+				RoleLocalization currentObject = this[i];
 				if ((currentObject != null) && (!currentObject.IsLoaded))
 				{
 					if (!ghosts.ContainsKey(currentObject.ID))
@@ -156,8 +156,8 @@ namespace Havit.BusinessLayerTest
 				dbCommand.Transaction = transaction;
 				
 				QueryParams queryParams = new QueryParams();
-				queryParams.ObjectInfo = Role.ObjectInfo;
-				queryParams.Conditions.Add(ReferenceCondition.CreateIn(Role.Properties.ID, ghosts.Keys.ToArray()));
+				queryParams.ObjectInfo = RoleLocalization.ObjectInfo;
+				queryParams.Conditions.Add(ReferenceCondition.CreateIn(RoleLocalization.Properties.ID, ghosts.Keys.ToArray()));
 				queryParams.IncludeDeleted = true;
 				queryParams.PrepareCommand(dbCommand, SqlServerPlatform.SqlServer2008, CommandBuilderOptions.None);
 				
@@ -166,9 +166,9 @@ namespace Havit.BusinessLayerTest
 					while (reader.Read())
 					{
 						DataRecord dataRecord = new DataRecord(reader, queryParams.GetDataLoadPower());
-						int id = dataRecord.Get<int>(Role.Properties.ID.FieldName);
+						int id = dataRecord.Get<int>(RoleLocalization.Properties.ID.FieldName);
 						
-						Role ghost = ghosts[id];
+						RoleLocalization ghost = ghosts[id];
 						if (!ghost.IsLoaded)
 						{
 							ghost.Load(dataRecord);
@@ -177,17 +177,56 @@ namespace Havit.BusinessLayerTest
 				}
 			}
 			
-			RoleLocalizationCollection localizations = new RoleLocalizationCollection();
-			foreach (Role role in this)
-			{
-				if (role != null)
-				{
-					localizations.AddRange(role.Localizations);
-				}
-			}
-			localizations.LoadAll(transaction);
-			
 			LoadAllRequired = false;
+		}
+		#endregion
+		
+		#region Localizations
+		/// <summary>
+		/// Vrací objekt s lokalizovanými daty na základě jazyka, který je předán.
+		/// </summary>
+		public RoleLocalization this[Havit.BusinessLayerTest.Language language]
+		{
+			get
+			{
+				return this.Find(delegate(RoleLocalization item)
+					{
+						return (item.Language == language);
+					});
+			}
+		}
+		
+		/// <summary>
+		/// Vrací objekt s lokalizovanými daty na základě aktuálního jazyka (aktuální jazyk se hledá na základě CurrentUICulture).
+		/// </summary>
+		public virtual RoleLocalization Current
+		{
+			get
+			{
+				return this[Havit.BusinessLayerTest.Language.Current];
+			}
+		}
+		
+		/// <summary>
+		/// Vrací objekt s lokalizovanými daty na základě jazyka, který je předán.
+		/// </summary>
+		BusinessObjectBase ILocalizationCollection.this[ILanguage language]
+		{
+			get
+			{
+				return this[(Havit.BusinessLayerTest.Language)language];
+			}
+		}
+		
+		/// <summary>
+		/// Vrací objekt s lokalizovanými daty na základě aktuálního jazyka (aktuální jazyk se hledá na základě CurrentUICulture).
+		/// </summary>
+		BusinessObjectBase ILocalizationCollection.Current
+		{
+			get
+			{
+				return this.Current;
+			}
 		}
 		#endregion
 		

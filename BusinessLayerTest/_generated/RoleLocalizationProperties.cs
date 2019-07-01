@@ -29,20 +29,21 @@ using Havit.Data.SqlTypes;
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
-	/// Objektová reprezentace metadat vlastností typu Role.
+	/// Objektová reprezentace metadat vlastností typu RoleLocalization.
 	/// </summary>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public class RoleProperties
+	public class RoleLocalizationProperties
 	{
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public RoleProperties()
+		public RoleLocalizationProperties()
 		{
 			_id = new FieldPropertyInfo();
-			_symbol = new FieldPropertyInfo();
-			_localizations = new CollectionPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _symbol, _localizations);
+			_role = new ReferenceFieldPropertyInfo();
+			_language = new ReferenceFieldPropertyInfo();
+			_nazev = new FieldPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _role, _language, _nazev);
 		}
 		
 		/// <summary>
@@ -50,9 +51,10 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public void Initialize(ObjectInfo objectInfo)
 		{
-			_id.Initialize(objectInfo, "ID", "RoleID", true, SqlDbType.Int, false, 4);
-			_symbol.Initialize(objectInfo, "Symbol", "Symbol", false, SqlDbType.VarChar, true, 50);
-			_localizations.Initialize(objectInfo, "Localizations", typeof(Havit.BusinessLayerTest.RoleLocalization), "(SELECT CAST([_items].[RoleLocalizationID] AS NVARCHAR(11)) + '|' FROM [dbo].[RoleLocalization] AS [_items] WHERE ([_items].[RoleID] = [dbo].[Role].[RoleID]) FOR XML PATH('')) AS [Localizations]");
+			_id.Initialize(objectInfo, "ID", "RoleLocalizationID", true, SqlDbType.Int, false, 4);
+			_role.Initialize(objectInfo, "Role", "RoleID", false, SqlDbType.Int, false, 4, typeof(Havit.BusinessLayerTest.Role), Havit.BusinessLayerTest.Role.ObjectInfo);
+			_language.Initialize(objectInfo, "Language", "LanguageID", false, SqlDbType.Int, false, 4, typeof(Havit.BusinessLayerTest.Language), Havit.BusinessLayerTest.Language.ObjectInfo);
+			_nazev.Initialize(objectInfo, "Nazev", "Nazev", false, SqlDbType.NVarChar, false, 50);
 		}
 		
 		/// <summary>
@@ -68,31 +70,43 @@ namespace Havit.BusinessLayerTest
 		private FieldPropertyInfo _id;
 		
 		/// <summary>
-		/// Symbol role (název pro ASP.NET autrhorization)
+		/// Lokalizovaný objekt.
 		/// </summary>
-		public FieldPropertyInfo Symbol
+		public ReferenceFieldPropertyInfo Role
 		{
 			get
 			{
-				return _symbol;
+				return _role;
 			}
 		}
-		private FieldPropertyInfo _symbol;
+		private ReferenceFieldPropertyInfo _role;
 		
 		/// <summary>
-		/// Lokalizované hodnoty.
+		/// Jazyk lokalizovaných dat.
 		/// </summary>
-		public CollectionPropertyInfo Localizations
+		public ReferenceFieldPropertyInfo Language
 		{
 			get
 			{
-				return _localizations;
+				return _language;
 			}
 		}
-		private CollectionPropertyInfo _localizations;
+		private ReferenceFieldPropertyInfo _language;
 		
 		/// <summary>
-		/// Všechny sloupečky typu Role.
+		/// Název.
+		/// </summary>
+		public FieldPropertyInfo Nazev
+		{
+			get
+			{
+				return _nazev;
+			}
+		}
+		private FieldPropertyInfo _nazev;
+		
+		/// <summary>
+		/// Všechny sloupečky typu RoleLocalization.
 		/// </summary>
 		public PropertyInfoCollection All
 		{

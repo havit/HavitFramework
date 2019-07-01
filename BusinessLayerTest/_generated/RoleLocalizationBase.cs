@@ -29,30 +29,38 @@ using Havit.Data.SqlTypes;
 namespace Havit.BusinessLayerTest
 {
 	/// <summary>
-	/// Uživatelská role. Určuje oprávnění v systému. [cached, read-only]
+	/// Lokalizace objektu Havit.BusinessLayerTest.Role. [cached, read-only]
 	/// </summary>
 	/// <remarks>
 	/// <code>
-	/// CREATE TABLE [dbo].[Role](
+	/// CREATE TABLE [dbo].[RoleLocalization](
+	/// 	[RoleLocalizationID] [int] NOT NULL,
 	/// 	[RoleID] [int] NOT NULL,
-	/// 	[Symbol] [varchar](50) COLLATE Czech_CI_AS NULL,
-	///  CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+	/// 	[LanguageID] [int] NOT NULL,
+	/// 	[Nazev] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL,
+	///  CONSTRAINT [PK_RoleLocalization] PRIMARY KEY CLUSTERED 
 	/// (
-	/// 	[RoleID] ASC
+	/// 	[RoleLocalizationID] ASC
 	/// )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	/// ) ON [PRIMARY]
-	/// ALTER TABLE [dbo].[Role] ADD  CONSTRAINT [DF_Role_Symbol]  DEFAULT (N'') FOR [Symbol]
+	/// ALTER TABLE [dbo].[RoleLocalization] ADD  CONSTRAINT [DF_RoleLocalization_Nazev]  DEFAULT (N'') FOR [Nazev]
+	/// ALTER TABLE [dbo].[RoleLocalization]  WITH NOCHECK ADD  CONSTRAINT [FK_RoleLocalization_Language] FOREIGN KEY([LanguageID])
+	/// REFERENCES [dbo].[Language] ([LanguageID])
+	/// ALTER TABLE [dbo].[RoleLocalization] CHECK CONSTRAINT [FK_RoleLocalization_Language]
+	/// ALTER TABLE [dbo].[RoleLocalization]  WITH NOCHECK ADD  CONSTRAINT [FK_RoleLocalization_Role] FOREIGN KEY([RoleID])
+	/// REFERENCES [dbo].[Role] ([RoleID])
+	/// ALTER TABLE [dbo].[RoleLocalization] CHECK CONSTRAINT [FK_RoleLocalization_Role]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public abstract class RoleBase : ActiveRecordBusinessObjectBase, ILocalizable
+	public abstract class RoleLocalizationBase : ActiveRecordBusinessObjectBase
 	{
 		#region Static constructor
-		static RoleBase()
+		static RoleLocalizationBase()
 		{
 			objectInfo = new ObjectInfo();
-			properties = new RoleProperties();
-			objectInfo.Initialize("dbo", "Role", "Role", "Havit.BusinessLayerTest", true, null, Role.GetObject, Role.GetAll, null, properties.All);
+			properties = new RoleLocalizationProperties();
+			objectInfo.Initialize("dbo", "RoleLocalization", "RoleLocalization", "Havit.BusinessLayerTest", true, null, RoleLocalization.GetObject, RoleLocalization.GetAll, null, properties.All);
 			properties.Initialize(objectInfo);
 		}
 		#endregion
@@ -63,105 +71,114 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		/// <param name="connectionMode">Režim business objektu.</param>
 		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		protected RoleBase(ConnectionMode connectionMode) : base(connectionMode)
+		protected RoleLocalizationBase(ConnectionMode connectionMode) : base(connectionMode)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci existujícího objektu.
 		/// </summary>
-		/// <param name="id">RoleID (PK).</param>
+		/// <param name="id">RoleLocalizationID (PK).</param>
 		/// <param name="connectionMode">Režim business objektu.</param>
-		protected RoleBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
+		protected RoleLocalizationBase(int id, ConnectionMode connectionMode) : base(id, connectionMode)
 		{
 		}
 		
 		/// <summary>
 		/// Vytvoří instanci objektu na základě dat (i částečných) načtených z databáze.
 		/// </summary>
-		/// <param name="id">RoleID (PK).</param>
+		/// <param name="id">RoleLocalizationID (PK).</param>
 		/// <param name="record">DataRecord s daty objektu (i částečnými).</param>
-		protected RoleBase(int id, DataRecord record) : base(id, record)
+		protected RoleLocalizationBase(int id, DataRecord record) : base(id, record)
 		{
 		}
 		#endregion
 		
 		#region Properties dle sloupců databázové tabulky
 		/// <summary>
-		/// Symbol role (název pro ASP.NET autrhorization) [varchar(50), nullable, default N'']
+		/// Lokalizovaný objekt. [int, not-null]
 		/// </summary>
-		public virtual string Symbol
+		public virtual Havit.BusinessLayerTest.Role Role
 		{
 			get
 			{
 				EnsureLoaded();
-				return _SymbolPropertyHolder.Value;
+				return _RolePropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				
+				if (!Object.Equals(_RolePropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Role oldValue = _RolePropertyHolder.Value;
+					_RolePropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Role), oldValue, value));
+				}
+			}
+		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Role.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected PropertyHolder<Havit.BusinessLayerTest.Role> _RolePropertyHolder;
+		
+		/// <summary>
+		/// Jazyk lokalizovaných dat. [int, not-null]
+		/// </summary>
+		public virtual Havit.BusinessLayerTest.Language Language
+		{
+			get
+			{
+				EnsureLoaded();
+				return _LanguagePropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				
+				if (!Object.Equals(_LanguagePropertyHolder.Value, value))
+				{
+					Havit.BusinessLayerTest.Language oldValue = _LanguagePropertyHolder.Value;
+					_LanguagePropertyHolder.Value = value;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Language), oldValue, value));
+				}
+			}
+		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Language.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected PropertyHolder<Havit.BusinessLayerTest.Language> _LanguagePropertyHolder;
+		
+		/// <summary>
+		/// Název. [nvarchar(50), not-null, default N'']
+		/// </summary>
+		public virtual string Nazev
+		{
+			get
+			{
+				EnsureLoaded();
+				return _NazevPropertyHolder.Value;
 			}
 			private set
 			{
 				EnsureLoaded();
 				
 				string newValue = value ?? String.Empty;
-				if (!Object.Equals(_SymbolPropertyHolder.Value, newValue))
+				if (!Object.Equals(_NazevPropertyHolder.Value, newValue))
 				{
-					string oldValue = _SymbolPropertyHolder.Value;
-					_SymbolPropertyHolder.Value = newValue;
-					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Symbol), oldValue, newValue));
+					string oldValue = _NazevPropertyHolder.Value;
+					_NazevPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Nazev), oldValue, newValue));
 				}
 			}
 		}
 		/// <summary>
-		/// PropertyHolder pro vlastnost Symbol.
+		/// PropertyHolder pro vlastnost Nazev.
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		protected PropertyHolder<string> _SymbolPropertyHolder;
-		
-		/// <summary>
-		/// Lokalizované hodnoty.
-		/// </summary>
-		public virtual Havit.BusinessLayerTest.RoleLocalizationCollection Localizations
-		{
-			get
-			{
-				EnsureLoaded();
-				return _LocalizationsPropertyHolder.Value;
-			}
-		}
-		/// <summary>
-		/// PropertyHolder pro vlastnost Localizations.
-		/// </summary>
-		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		protected CollectionPropertyHolder<Havit.BusinessLayerTest.RoleLocalizationCollection, Havit.BusinessLayerTest.RoleLocalization> _LocalizationsPropertyHolder;
-		
-		#region CreateLocalization
-		/// <summary>
-		/// Vytvoří položku lokalizace pro daný jazyk.
-		/// </summary>
-		public RoleLocalization CreateLocalization(Havit.BusinessLayerTest.Language language)
-		{
-			throw new InvalidOperationException("Metoda CreateLocalization není podporována na read-only objektech a objektech s negenerovanou metodou CreateObject.");
-		}
-		#endregion
-		
-		#region ILocalizable interface implementation
-		/// <summary>
-		/// Vytvoří položku lokalizace pro daný jazyk.
-		/// </summary>
-		BusinessObjectBase ILocalizable.CreateLocalization(ILanguage language)
-		{
-			return this.CreateLocalization((Havit.BusinessLayerTest.Language)language);
-		}
-		/// <summary>
-		/// Vytvoří položku lokalizace pro daný jazyk.
-		/// </summary>
-		ILocalizationCollection ILocalizable.Localizations
-		{
-			get
-			{
-				return this.Localizations;
-			}
-		}
-		#endregion
+		protected PropertyHolder<string> _NazevPropertyHolder;
 		
 		#endregion
 		
@@ -171,13 +188,15 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		protected override void Init()
 		{
-			_SymbolPropertyHolder = new PropertyHolder<string>(this);
-			_LocalizationsPropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.RoleLocalizationCollection, Havit.BusinessLayerTest.RoleLocalization>(this, Havit.BusinessLayerTest.RoleLocalization.GetObject);
+			_RolePropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Role>(this);
+			_LanguagePropertyHolder = new PropertyHolder<Havit.BusinessLayerTest.Language>(this);
+			_NazevPropertyHolder = new PropertyHolder<string>(this);
 			
 			if (IsNew || IsDisconnected)
 			{
-				_SymbolPropertyHolder.Value = String.Empty;
-				_LocalizationsPropertyHolder.Initialize();
+				_RolePropertyHolder.Value = null;
+				_LanguagePropertyHolder.Value = null;
+				_NazevPropertyHolder.Value = String.Empty;
 			}
 			
 			base.Init();
@@ -192,8 +211,9 @@ namespace Havit.BusinessLayerTest
 		{
 			base.CleanDirty();
 			
-			_SymbolPropertyHolder.IsDirty = false;
-			_LocalizationsPropertyHolder.IsDirty = false;
+			_RolePropertyHolder.IsDirty = false;
+			_LanguagePropertyHolder.IsDirty = false;
+			_NazevPropertyHolder.IsDirty = false;
 		}
 		#endregion
 		
@@ -208,9 +228,19 @@ namespace Havit.BusinessLayerTest
 		{
 			base.CheckConstraints();
 			
-			if (_SymbolPropertyHolder.IsDirty && (_SymbolPropertyHolder.Value != null) && (_SymbolPropertyHolder.Value.Length > 50))
+			if (_RolePropertyHolder.IsDirty && (_RolePropertyHolder.Value == null))
 			{
-				throw new ConstraintViolationException(this, "Vlastnost \"Symbol\" - řetězec přesáhl maximální délku 50 znaků.");
+				throw new ConstraintViolationException(this, "Vlastnost \"Role\" nesmí nabývat hodnoty null.");
+			}
+			
+			if (_LanguagePropertyHolder.IsDirty && (_LanguagePropertyHolder.Value == null))
+			{
+				throw new ConstraintViolationException(this, "Vlastnost \"Language\" nesmí nabývat hodnoty null.");
+			}
+			
+			if (_NazevPropertyHolder.IsDirty && (_NazevPropertyHolder.Value != null) && (_NazevPropertyHolder.Value.Length > 50))
+			{
+				throw new ConstraintViolationException(this, "Vlastnost \"Nazev\" - řetězec přesáhl maximální délku 50 znaků.");
 			}
 			
 		}
@@ -228,15 +258,15 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [RoleID], [Symbol], (SELECT CAST([_items].[RoleLocalizationID] AS NVARCHAR(11)) + '|' FROM [dbo].[RoleLocalization] AS [_items] WHERE ([_items].[RoleID] = @RoleID) FOR XML PATH('')) AS [Localizations] FROM [dbo].[Role] WHERE [RoleID] = @RoleID";
+			dbCommand.CommandText = "SELECT [RoleLocalizationID], [RoleID], [LanguageID], [Nazev] FROM [dbo].[RoleLocalization] WHERE [RoleLocalizationID] = @RoleLocalizationID";
 			dbCommand.Transaction = transaction;
 			
-			DbParameter dbParameterRoleID = DbConnector.Default.ProviderFactory.CreateParameter();
-			dbParameterRoleID.DbType = DbType.Int32;
-			dbParameterRoleID.Direction = ParameterDirection.Input;
-			dbParameterRoleID.ParameterName = "RoleID";
-			dbParameterRoleID.Value = this.ID;
-			dbCommand.Parameters.Add(dbParameterRoleID);
+			DbParameter dbParameterRoleLocalizationID = DbConnector.Default.ProviderFactory.CreateParameter();
+			dbParameterRoleLocalizationID.DbType = DbType.Int32;
+			dbParameterRoleLocalizationID.Direction = ParameterDirection.Input;
+			dbParameterRoleLocalizationID.ParameterName = "RoleLocalizationID";
+			dbParameterRoleLocalizationID.Value = this.ID;
+			dbCommand.Parameters.Add(dbParameterRoleLocalizationID);
 			
 			result = DbConnector.Default.ExecuteDataRecord(dbCommand);
 			
@@ -256,19 +286,24 @@ namespace Havit.BusinessLayerTest
 				{
 					if (!this.IsLoaded)
 					{
-						this.ID = record.Get<int>("RoleID");
+						this.ID = record.Get<int>("RoleLocalizationID");
 						
-						string _tempSymbol;
-						if (record.TryGet<string>("Symbol", out _tempSymbol))
+						int _tempRole;
+						if (record.TryGet<int>("RoleID", out _tempRole))
 						{
-							_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
+							_RolePropertyHolder.Value = Havit.BusinessLayerTest.Role.GetObject(_tempRole);
 						}
 						
-						string _tempLocalizations;
-						if (record.TryGet<string>("Localizations", out _tempLocalizations))
+						int _tempLanguage;
+						if (record.TryGet<int>("LanguageID", out _tempLanguage))
 						{
-							_LocalizationsPropertyHolder.Initialize(_tempLocalizations);
-							_LocalizationsPropertyHolder.Value.Freeze();
+							_LanguagePropertyHolder.Value = Havit.BusinessLayerTest.Language.GetObject(_tempLanguage);
+						}
+						
+						string _tempNazev;
+						if (record.TryGet<string>("Nazev", out _tempNazev))
+						{
+							_NazevPropertyHolder.Value = _tempNazev ?? String.Empty;
 						}
 						
 					}
@@ -308,7 +343,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		public override sealed void Save_MinimalInsert(DbTransaction transaction)
 		{
-			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
 		}
 		
 		/// <summary>
@@ -317,7 +352,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_FullInsert(DbTransaction transaction)
 		{
-			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
 		}
 		
 		/// <summary>
@@ -326,7 +361,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Update(DbTransaction transaction)
 		{
-			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
 		}
 		
 		/// <summary>
@@ -335,7 +370,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Insert_InsertRequiredForMinimalInsert(DbTransaction transaction)
 		{
-			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
 		}
 		
 		/// <summary>
@@ -344,7 +379,19 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Save_Insert_InsertRequiredForFullInsert(DbTransaction transaction)
 		{
-			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
+		}
+		
+		/// <summary>
+		/// Smaže objekt, nebo ho označí jako smazaný, podle zvolené logiky. Změnu uloží do databáze, v transakci.
+		/// </summary>
+		/// <remarks>
+		/// Neprovede se, pokud je již objekt smazán.
+		/// </remarks>
+		/// <param name="transaction">Transakce DbTransaction, v rámci které se smazání provede; null, pokud bez transakce.</param>
+		public override void Delete(DbTransaction transaction)
+		{
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
 		}
 		
 		/// <summary>
@@ -353,7 +400,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Delete_Perform(DbTransaction transaction)
 		{
-			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.Role jsou určeny jen pro čtení.");
+			throw new InvalidOperationException("Objekty třídy Havit.BusinessLayerTest.RoleLocalization jsou určeny jen pro čtení.");
 		}
 		
 		#endregion
@@ -365,7 +412,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected static string GetBusinessObjectCacheKey(int id)
 		{
-			return "BL|Role|" + id;
+			return "BL|RoleLocalization|" + id;
 		}
 		
 		/// <summary>
@@ -374,11 +421,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected static void AddBusinessObjectToCache(BusinessObjectBase businessObject)
 		{
-			Havit.Services.Caching.CacheOptions options = new Havit.Services.Caching.CacheOptions
-			{
-				Priority = Havit.Services.Caching.CacheItemPriority.NotRemovable
-			};
-			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(Role), GetBusinessObjectCacheKey(businessObject.ID), businessObject, options);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddBusinessObjectToCache(typeof(RoleLocalization), GetBusinessObjectCacheKey(businessObject.ID), businessObject);
 		}
 		
 		/// <summary>
@@ -387,7 +430,7 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		internal static BusinessObjectBase GetBusinessObjectFromCache(int id)
 		{
-			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(Role), GetBusinessObjectCacheKey(id));
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetBusinessObjectFromCache(typeof(RoleLocalization), GetBusinessObjectCacheKey(id));
 		}
 		
 		#endregion
@@ -398,7 +441,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static string GetAllIDsCacheKey()
 		{
-			return "BL|Role|GetAll";
+			return "BL|RoleLocalization|GetAll";
 		}
 		
 		/// <summary>
@@ -406,7 +449,7 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static int[] GetAllIDsFromCache()
 		{
-			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetAllIDsFromCache(typeof(Role), GetAllIDsCacheKey());
+			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetAllIDsFromCache(typeof(RoleLocalization), GetAllIDsCacheKey());
 		}
 		
 		/// <summary>
@@ -414,196 +457,84 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		private static void AddAllIDsToCache(int[] ids)
 		{
-			Havit.Services.Caching.CacheOptions options = new Havit.Services.Caching.CacheOptions
-			{
-				Priority = Havit.Services.Caching.CacheItemPriority.NotRemovable
-			};
-			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(Role), GetAllIDsCacheKey(), ids, options);
+			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(RoleLocalization), GetAllIDsCacheKey(), ids);
 		}
 		
-		#endregion
-		
-		#region Enum members
-		/// <summary>
-		/// ZaporneID [-1]
-		/// </summary>
-		public static Role ZaporneID
-		{
-			get
-			{
-				return Role.GetObject(EnumIDs.ZaporneID);
-			}
-		}
-		
-		/// <summary>
-		/// NuloveID [0]
-		/// </summary>
-		public static Role NuloveID
-		{
-			get
-			{
-				return Role.GetObject(EnumIDs.NuloveID);
-			}
-		}
-		
-		/// <summary>
-		/// Administrator [1]
-		/// </summary>
-		public static Role Administrator
-		{
-			get
-			{
-				return Role.GetObject(EnumIDs.Administrator);
-			}
-		}
-		
-		/// <summary>
-		/// Editor [2]
-		/// </summary>
-		public static Role Editor
-		{
-			get
-			{
-				return Role.GetObject(EnumIDs.Editor);
-			}
-		}
-		
-		/// <summary>
-		/// Publisher [3]
-		/// </summary>
-		public static Role Publisher
-		{
-			get
-			{
-				return Role.GetObject(EnumIDs.Publisher);
-			}
-		}
-		
-		/// <summary>
-		/// Operator [4]
-		/// </summary>
-		public static Role Operator
-		{
-			get
-			{
-				return Role.GetObject(EnumIDs.Operator);
-			}
-		}
-		
-		#endregion
-		
-		#region EnumIDs (class)
-		/// <summary>
-		/// Konstanty ID objektů EnumClass.
-		/// </summary>
-		public static class EnumIDs
-		{
-			/// <summary>
-			/// ZaporneID [-1]
-			/// </summary>
-			public const int ZaporneID = -1;
-			
-			/// <summary>
-			/// NuloveID [0]
-			/// </summary>
-			public const int NuloveID = 0;
-			
-			/// <summary>
-			/// Administrator [1]
-			/// </summary>
-			public const int Administrator = 1;
-			
-			/// <summary>
-			/// Editor [2]
-			/// </summary>
-			public const int Editor = 2;
-			
-			/// <summary>
-			/// Publisher [3]
-			/// </summary>
-			public const int Publisher = 3;
-			
-			/// <summary>
-			/// Operator [4]
-			/// </summary>
-			public const int Operator = 4;
-			
-		}
 		#endregion
 		
 		#region GetFirst, GetList, GetAll
 		/// <summary>
-		/// Vrátí první nalezený objekt typu Role dle parametrů v queryParams.
+		/// Vrátí první nalezený objekt typu RoleLocalization dle parametrů v queryParams.
 		/// Pokud není žádný objekt nalezen, vrací null.
 		/// </summary>
-		public static Role GetFirst(QueryParams queryParams)
+		public static RoleLocalization GetFirst(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
-			return Role.GetFirst(queryParams, null);
+			return RoleLocalization.GetFirst(queryParams, null);
 		}
 		
 		/// <summary>
-		/// Vrátí první nalezený objekt typu Role dle parametrů v queryParams.
+		/// Vrátí první nalezený objekt typu RoleLocalization dle parametrů v queryParams.
 		/// Pokud není žádný objekt nalezen, vrací null. Data jsou načítána v předané transakci.
 		/// </summary>
-		public static Role GetFirst(QueryParams queryParams, DbTransaction transaction)
+		public static RoleLocalization GetFirst(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			int? originalTopRecords = queryParams.TopRecords;
 			queryParams.TopRecords = 1;
-			RoleCollection getListResult = Role.GetList(queryParams, transaction);
+			RoleLocalizationCollection getListResult = RoleLocalization.GetList(queryParams, transaction);
 			queryParams.TopRecords = originalTopRecords;
 			return (getListResult.Count == 0) ? null : getListResult[0];
 		}
 		
 		/// <summary>
-		/// Vrátí objekty typu Role dle parametrů v queryParams.
+		/// Vrátí objekty typu RoleLocalization dle parametrů v queryParams.
 		/// </summary>
-		internal static RoleCollection GetList(QueryParams queryParams)
+		internal static RoleLocalizationCollection GetList(QueryParams queryParams)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
-			return Role.GetList(queryParams, null);
+			return RoleLocalization.GetList(queryParams, null);
 		}
 		
 		/// <summary>
-		/// Vrátí objekty typu Role dle parametrů v queryParams. Data jsou načítána v předané transakci.
+		/// Vrátí objekty typu RoleLocalization dle parametrů v queryParams. Data jsou načítána v předané transakci.
 		/// </summary>
-		internal static RoleCollection GetList(QueryParams queryParams, DbTransaction transaction)
+		internal static RoleLocalizationCollection GetList(QueryParams queryParams, DbTransaction transaction)
 		{
 			global::Havit.Diagnostics.Contracts.Contract.Requires(queryParams != null, "queryParams != null");
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
 			dbCommand.Transaction = transaction;
 			
-			queryParams.ObjectInfo = Role.ObjectInfo;
+			queryParams.ObjectInfo = RoleLocalization.ObjectInfo;
 			if (queryParams.Properties.Count > 0)
 			{
-				queryParams.Properties.Add(Role.Properties.ID);
+				queryParams.Properties.Add(RoleLocalization.Properties.ID);
 			}
 			
 			queryParams.PrepareCommand(dbCommand, SqlServerPlatform.SqlServer2008, CommandBuilderOptions.None);
-			return Role.GetList(dbCommand, queryParams.GetDataLoadPower());
+			return RoleLocalization.GetList(dbCommand, queryParams.GetDataLoadPower());
 		}
 		
-		private static RoleCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
+		private static RoleLocalizationCollection GetList(DbCommand dbCommand, DataLoadPower dataLoadPower)
 		{
 			if (dbCommand == null)
 			{
 				throw new ArgumentNullException("dbCommand");
 			}
 			
-			RoleCollection result = new RoleCollection();
+			RoleLocalizationCollection result = new RoleLocalizationCollection();
 			
 			using (DbDataReader reader = DbConnector.Default.ExecuteReader(dbCommand))
 			{
 				while (reader.Read())
 				{
 					DataRecord dataRecord = new DataRecord(reader, dataLoadPower);
-					Role role = Role.GetObject(dataRecord);
-					result.Add(role);
+					RoleLocalization roleLocalization = RoleLocalization.GetObject(dataRecord);
+					result.Add(roleLocalization);
 				}
 			}
 			
@@ -613,13 +544,11 @@ namespace Havit.BusinessLayerTest
 		private static object lockGetAllCacheAccess = new object();
 		
 		/// <summary>
-		/// Vrátí všechny objekty typu Role.
+		/// Vrátí všechny objekty typu RoleLocalization.
 		/// </summary>
-		public static RoleCollection GetAll()
+		public static RoleLocalizationCollection GetAll()
 		{
-			RoleLocalization.GetAll();
-			
-			RoleCollection collection = null;
+			RoleLocalizationCollection collection = null;
 			int[] ids = null;
 			
 			ids = GetAllIDsFromCache();
@@ -631,7 +560,7 @@ namespace Havit.BusinessLayerTest
 					if (ids == null)
 					{
 						QueryParams queryParams = new QueryParams();
-						collection = Role.GetList(queryParams);
+						collection = RoleLocalization.GetList(queryParams);
 						ids = collection.GetIDs();
 						
 						AddAllIDsToCache(ids);
@@ -640,8 +569,8 @@ namespace Havit.BusinessLayerTest
 			}
 			if (collection == null)
 			{
-				collection = new RoleCollection();
-				collection.AddRange(Role.GetObjects(ids));
+				collection = new RoleLocalizationCollection();
+				collection.AddRange(RoleLocalization.GetObjects(ids));
 				collection.LoadAll();
 			}
 			
@@ -656,23 +585,13 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public override string ToString()
 		{
-			switch (this.ID)
-			{
-				case EnumIDs.ZaporneID: return "Role.ZaporneID";
-				case EnumIDs.NuloveID: return "Role.NuloveID";
-				case EnumIDs.Administrator: return "Role.Administrator";
-				case EnumIDs.Editor: return "Role.Editor";
-				case EnumIDs.Publisher: return "Role.Publisher";
-				case EnumIDs.Operator: return "Role.Operator";
-			}
-			
-			return String.Format("Role(ID={0})", this.ID);
+			return String.Format("RoleLocalization(ID={0})", this.ID);
 		}
 		#endregion
 		
 		#region ObjectInfo
 		/// <summary>
-		/// Objektová reprezentace metadat typu Role.
+		/// Objektová reprezentace metadat typu RoleLocalization.
 		/// </summary>
 		public static ObjectInfo ObjectInfo
 		{
@@ -686,16 +605,16 @@ namespace Havit.BusinessLayerTest
 		
 		#region Properties
 		/// <summary>
-		/// Objektová reprezentace metadat vlastností typu Role.
+		/// Objektová reprezentace metadat vlastností typu RoleLocalization.
 		/// </summary>
-		public static RoleProperties Properties
+		public static RoleLocalizationProperties Properties
 		{
 			get
 			{
 				return properties;
 			}
 		}
-		private static RoleProperties properties;
+		private static RoleLocalizationProperties properties;
 		#endregion
 		
 	}

@@ -119,38 +119,47 @@ namespace Havit.Business
 		{
 			if (itemIDsWithDelemiter != null)
 			{
-				_value = new CollectionType();
-
-				if (itemIDsWithDelemiter.Length > 25)
+				// cachované readonly objekty mohou inicializovat objekt paralelně, proti čemuž se potřebujeme ochránit
+				// nechci zakládat nový zámek, použiji instanci, nezamykáme nikde nic jiného
+				// (úvaha, že bychom pro zámek použili itemIDsWithDelemiter je chybná, neboť v extrémním případě již může být null)
+				lock (this) 
 				{
-					Span<byte> itemIDsSpan = Encoding.UTF8.GetBytes(itemIDsWithDelemiter);
-					while (itemIDsSpan.Length > 0)
+					if (itemIDsWithDelemiter != null)
 					{
-						System.Buffers.Text.Utf8Parser.TryParse(itemIDsSpan, out int id, out int bytesConsumed);
-						_value.Add(getObjectFunc(id));
+						_value = new CollectionType();
 
-						itemIDsSpan = itemIDsSpan.Slice(bytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+						if (itemIDsWithDelemiter.Length > 25)
+						{
+							Span<byte> itemIDsSpan = Encoding.UTF8.GetBytes(itemIDsWithDelemiter);
+							while (itemIDsSpan.Length > 0)
+							{
+								System.Buffers.Text.Utf8Parser.TryParse(itemIDsSpan, out int id, out int bytesConsumed);
+								_value.Add(getObjectFunc(id));
+
+								itemIDsSpan = itemIDsSpan.Slice(bytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+							}
+						}
+						else
+						{
+							string[] itemIDs = itemIDsWithDelemiter.Split('|');
+							int itemIDsLength = itemIDs.Length - 1; // za každou (i za poslední) položkou je oddělovač
+							for (int i = 0; i < itemIDsLength; i++)
+							{
+								_value.Add(getObjectFunc(BusinessObjectBase.FastIntParse(itemIDs[i])));
+							}
+						}
 					}
-				}
-				else
-				{
-					string[] itemIDs = itemIDsWithDelemiter.Split('|');
-					int itemIDsLength = itemIDs.Length - 1; // za každou (i za poslední) položkou je oddělovač
-					for (int i = 0; i < itemIDsLength; i++)
+
+					_value.DisallowDuplicatesWithoutCheckDuplicates();
+					_value.CollectionChanged += delegate (object sender, EventArgs e)
 					{
-						_value.Add(getObjectFunc(BusinessObjectBase.FastIntParse(itemIDs[i])));
-					}
+						IsDirty = true;
+					};
+
+					itemIDsWithDelemiter = null;
+
+					UpdateLoadedValue(); // musí být až na konci - implementace volá Value a pokud by nebylo až za předchozím řádkem, provedli bychom StackOverflowException				}
 				}
-
-				_value.DisallowDuplicatesWithoutCheckDuplicates();
-				_value.CollectionChanged += delegate (object sender, EventArgs e)
-				{
-					IsDirty = true;
-				};
-
-				itemIDsWithDelemiter = null;
-
-				UpdateLoadedValue(); // musí být až na konci - implementace volá Value a pokud by nebylo až za předchozím řádkem, provedli bychom StackOverflowException				}
 			}
 		}
 

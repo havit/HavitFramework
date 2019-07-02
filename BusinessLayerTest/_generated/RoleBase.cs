@@ -250,32 +250,22 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
-			if (!this.IsLoaded)
+			this.ID = record.Get<int>("RoleID");
+			
+			string _tempSymbol;
+			if (record.TryGet<string>("Symbol", out _tempSymbol))
 			{
-				lock (_loadParseDataRecordLock)
-				{
-					if (!this.IsLoaded)
-					{
-						this.ID = record.Get<int>("RoleID");
-						
-						string _tempSymbol;
-						if (record.TryGet<string>("Symbol", out _tempSymbol))
-						{
-							_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
-						}
-						
-						string _tempLocalizations;
-						if (record.TryGet<string>("Localizations", out _tempLocalizations))
-						{
-							_LocalizationsPropertyHolder.Initialize(_tempLocalizations);
-							_LocalizationsPropertyHolder.Value.Freeze();
-						}
-						
-					}
-				}
+				_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
 			}
+			
+			string _tempLocalizations;
+			if (record.TryGet<string>("Localizations", out _tempLocalizations))
+			{
+				_LocalizationsPropertyHolder.Initialize(_tempLocalizations);
+				_LocalizationsPropertyHolder.Value.Freeze();
+			}
+			
 		}
-		private object _loadParseDataRecordLock = new object();
 		#endregion
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete, Delete_Perform

@@ -80,22 +80,46 @@ namespace Havit.Business
 
 		/// <summary>
 		/// Nastaví objektu hodnoty z DataRecordu.
-		/// Pokud je objekt již načten, vyhodí výjimku.
+		/// Pokud je objekt již načten, neudělá nic.
 		/// </summary>
 		/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze.</param>
 		public void Load(DataRecord record)
 		{
 			Contract.Requires<ArgumentNullException>(record != null, nameof(record));
-			Contract.Requires<InvalidOperationException>(!this.IsLoaded, "Nelze nastavit objektu hodnoty z DataRecordu, pokud objekt není ghostem.");
 
-			Init();
-			Load_ParseDataRecord(record);
-
-			if (record.DataLoadPower != DataLoadPower.Ghost)
-			{
-				this.IsLoaded = true;
+			// Máme-li instanci ghosta a máme načíst datarecord ghosta, není co načítat.
+			if (record.DataLoadPower == DataLoadPower.Ghost)
+			{				
+				return;
 			}
-			this.IsDirty = false;
+
+			if (loadLock == null)
+			{
+				lock (loadLockInitializerLock)
+				{
+					if (loadLock == null)
+					{
+						loadLock = new object();
+					}
+				}
+			}
+
+			// Volání této metody je zvenku chráněno, aby se nevolala, pokud je objekt načtený.
+			// Avšak pro cachované readonly objekty může při práci ve více threadech objekt načítat více threadů současně.
+			// Před tím se ochráníme zámkem a testem, zda je objekt již načten i v této metodě. Ochrany zvenku je tak možné odstranit.
+			lock (loadLock)
+			{
+				if (this.IsLoaded)
+				{
+					return;
+				}
+
+				Init();
+				Load_ParseDataRecord(record);
+
+				this.IsLoaded = true;
+				this.IsDirty = false;
+			}
 		}
 
 		/// <summary>

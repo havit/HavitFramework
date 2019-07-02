@@ -520,18 +520,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("protected override sealed void Load_ParseDataRecord(DataRecord record)");
 			writer.WriteLine("{");
 
-			if (TableHelper.IsCachable(table) && (TableHelper.CanCacheBusinessObjectInstances(table)))
-			{
-				// Cachované readonly objekty sdílejí instance, je možná kolize načtení ve více threadech.
-				// Ideální by bylo řešit jinde, toto je poslední zoufalý pokus, jak tomu předejít.
-				// Předpokládá se, že se do jedné instance načítá vždy do samé (jde o readonly objekty).
-				writer.WriteLine("if (!this.IsLoaded)");
-				writer.WriteLine("{");
-				writer.WriteLine("lock (_loadParseDataRecordLock)");
-				writer.WriteLine("{");
-				writer.WriteLine("if (!this.IsLoaded)");
-				writer.WriteLine("{");
-			}
 
 			writer.WriteLine(String.Format("this.ID = record.Get<int>(\"{0}\");", TableHelper.GetPrimaryKey(table).Name));
 			writer.WriteLine();
@@ -630,19 +618,9 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine();
 			}
 
-			if (TableHelper.IsCachable(table) && (TableHelper.CanCacheBusinessObjectInstances(table)))
-			{
-				writer.WriteLine("}"); // !IsLoaded
-				writer.WriteLine("}"); // lock
-				writer.WriteLine("}"); // !IsLoaded
-			}
 
 			writer.WriteLine("}"); // method
 
-			if (TableHelper.IsCachable(table) && (TableHelper.CanCacheBusinessObjectInstances(table)))
-			{
-				writer.WriteLine("private object _loadParseDataRecordLock = new object();");
-			}
 
 		}
 

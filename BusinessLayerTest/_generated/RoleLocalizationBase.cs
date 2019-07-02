@@ -280,37 +280,27 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
-			if (!this.IsLoaded)
+			this.ID = record.Get<int>("RoleLocalizationID");
+			
+			int _tempRole;
+			if (record.TryGet<int>("RoleID", out _tempRole))
 			{
-				lock (_loadParseDataRecordLock)
-				{
-					if (!this.IsLoaded)
-					{
-						this.ID = record.Get<int>("RoleLocalizationID");
-						
-						int _tempRole;
-						if (record.TryGet<int>("RoleID", out _tempRole))
-						{
-							_RolePropertyHolder.Value = Havit.BusinessLayerTest.Role.GetObject(_tempRole);
-						}
-						
-						int _tempLanguage;
-						if (record.TryGet<int>("LanguageID", out _tempLanguage))
-						{
-							_LanguagePropertyHolder.Value = Havit.BusinessLayerTest.Language.GetObject(_tempLanguage);
-						}
-						
-						string _tempNazev;
-						if (record.TryGet<string>("Nazev", out _tempNazev))
-						{
-							_NazevPropertyHolder.Value = _tempNazev ?? String.Empty;
-						}
-						
-					}
-				}
+				_RolePropertyHolder.Value = Havit.BusinessLayerTest.Role.GetObject(_tempRole);
 			}
+			
+			int _tempLanguage;
+			if (record.TryGet<int>("LanguageID", out _tempLanguage))
+			{
+				_LanguagePropertyHolder.Value = Havit.BusinessLayerTest.Language.GetObject(_tempLanguage);
+			}
+			
+			string _tempNazev;
+			if (record.TryGet<string>("Nazev", out _tempNazev))
+			{
+				_NazevPropertyHolder.Value = _tempNazev ?? String.Empty;
+			}
+			
 		}
-		private object _loadParseDataRecordLock = new object();
 		#endregion
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete, Delete_Perform

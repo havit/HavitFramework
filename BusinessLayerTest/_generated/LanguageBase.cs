@@ -377,55 +377,45 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
-			if (!this.IsLoaded)
+			this.ID = record.Get<int>("LanguageID");
+			
+			string _tempUICulture;
+			if (record.TryGet<string>("UICulture", out _tempUICulture))
 			{
-				lock (_loadParseDataRecordLock)
-				{
-					if (!this.IsLoaded)
-					{
-						this.ID = record.Get<int>("LanguageID");
-						
-						string _tempUICulture;
-						if (record.TryGet<string>("UICulture", out _tempUICulture))
-						{
-							_UICulturePropertyHolder.Value = _tempUICulture ?? String.Empty;
-						}
-						
-						string _tempCulture;
-						if (record.TryGet<string>("Culture", out _tempCulture))
-						{
-							_CulturePropertyHolder.Value = _tempCulture ?? String.Empty;
-						}
-						
-						string _tempName;
-						if (record.TryGet<string>("Name", out _tempName))
-						{
-							_NamePropertyHolder.Value = _tempName ?? String.Empty;
-						}
-						
-						bool _tempAktivni;
-						if (record.TryGet<bool>("Aktivni", out _tempAktivni))
-						{
-							_AktivniPropertyHolder.Value = _tempAktivni;
-						}
-						
-						bool _tempEditacePovolena;
-						if (record.TryGet<bool>("EditacePovolena", out _tempEditacePovolena))
-						{
-							_EditacePovolenaPropertyHolder.Value = _tempEditacePovolena;
-						}
-						
-						int _tempPoradi;
-						if (record.TryGet<int>("Poradi", out _tempPoradi))
-						{
-							_PoradiPropertyHolder.Value = _tempPoradi;
-						}
-						
-					}
-				}
+				_UICulturePropertyHolder.Value = _tempUICulture ?? String.Empty;
 			}
+			
+			string _tempCulture;
+			if (record.TryGet<string>("Culture", out _tempCulture))
+			{
+				_CulturePropertyHolder.Value = _tempCulture ?? String.Empty;
+			}
+			
+			string _tempName;
+			if (record.TryGet<string>("Name", out _tempName))
+			{
+				_NamePropertyHolder.Value = _tempName ?? String.Empty;
+			}
+			
+			bool _tempAktivni;
+			if (record.TryGet<bool>("Aktivni", out _tempAktivni))
+			{
+				_AktivniPropertyHolder.Value = _tempAktivni;
+			}
+			
+			bool _tempEditacePovolena;
+			if (record.TryGet<bool>("EditacePovolena", out _tempEditacePovolena))
+			{
+				_EditacePovolenaPropertyHolder.Value = _tempEditacePovolena;
+			}
+			
+			int _tempPoradi;
+			if (record.TryGet<int>("Poradi", out _tempPoradi))
+			{
+				_PoradiPropertyHolder.Value = _tempPoradi;
+			}
+			
 		}
-		private object _loadParseDataRecordLock = new object();
 		#endregion
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete, Delete_Perform

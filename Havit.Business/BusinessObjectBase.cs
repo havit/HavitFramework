@@ -198,9 +198,9 @@ namespace Havit.Business
 		}
 
 		// zámek pro inicializaci zámku pro načítání objektů
-		private static readonly object loadLockInitializerLock = new object();
+		private protected static readonly object loadLockInitializerLock = new object();
 		// zámek pro načítání objektů
-		private volatile object loadLock;
+		private protected volatile object loadLock;
 
 		/// <summary>
 		/// Nahraje objekt z perzistentního uložiště (pro disconnected objekty nic nedělá).
@@ -241,8 +241,14 @@ namespace Havit.Business
 				{
 					return true;
 				}
-				
-				Init();
+
+				if (!this.IsLoaded)
+				{
+					// Init nevoláme opakovaně - cached readonly objekt již může být "hotov" a v cache.
+					// Voláním Init takový objekt rozbijeme - bude (stále) loaded, ale nebude mít inicializované hodnoty property holderů.
+					// Jenže než nastavíme vlastnosti v TryLoad_Perform, může již jiný thread s objektem pracovat.
+					Init();
+				}
 				bool successful = TryLoad_Perform(transaction);
 				if (successful)
 				{

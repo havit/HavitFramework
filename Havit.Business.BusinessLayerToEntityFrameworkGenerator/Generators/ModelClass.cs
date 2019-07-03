@@ -442,9 +442,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                 writer.WriteCommentSummary(collection.Description);
 
+                if (!string.IsNullOrEmpty(TableHelper.GetStringExtendedProperty(table, $"Collection_{collectionProperty.Name}_LoadAll")))
+                {
+                    ConsoleHelper.WriteLineWarning($"Table {table.Name} has defined extended property LoadAll for {collection.PropertyName} collection. LoadAll is not supported by EFCore.BL (and is considered deprecated).");
+                }
+
                 var attributeBuilder = new AttributeStringBuilder("Collection");
                 attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "IncludeDeleted");
-                attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "LoadAll");
                 attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "Sorting");
 
                 var propertyAccessModifierString = TableHelper.GetStringExtendedProperty(table, $"Collection_{collectionProperty.Name}_PropertyAccessModifier");

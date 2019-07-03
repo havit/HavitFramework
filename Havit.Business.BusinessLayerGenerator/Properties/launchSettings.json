@@ -6,7 +6,7 @@
     },
     "003.GOR": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Temp -sqlserver:(localdb)\\mssqllocaldb -database:Goran -strategy:HavitCodeFirst",
+      "commandLineArgs": "-outputpath:D:\\DEV\\003.GOR\\BusinessLayer -sqlserver:sqldev -database:Goran",
       "workingDirectory": "D:\\Temp"
     },
     "021.DSV": {

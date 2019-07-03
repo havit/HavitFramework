@@ -495,32 +495,47 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static bool CanCacheBusinessObjectInstances(Table table)
 		{
-			if (IsCachable(table) && IsReadOnly(table))
+			if (!IsCachable(table) || !IsReadOnly(table))
 			{
-				foreach (Column column in TableHelper.GetPropertyColumns(table))
-				{
-					if (TypeHelper.IsBusinessObjectReference(column))
-					{
-						Table referencedTable = ColumnHelper.GetReferencedTable(column);
-						if (!TableHelper.IsReadOnly(referencedTable))
-						{
-							return false; // tabulka obsahuje odkaz na non-readonly tabulku, nemůžeme cachovat instance
-						}
-					}
-				}
-
-				foreach (CollectionProperty collection in TableHelper.GetCollectionColumns(table))
-				{
-					if (!TableHelper.IsReadOnly(collection.TargetTable))
-					{
-						return false; // tabulka obsahuje odkaz na non-readonly tabulku, nemůžeme cachovat instance
-					}
-				}
-
-				return true; // tabulka neobsahuje odkaz na non-readonly tabulku, můžeme cachovat instance
+				return false; // tabulka není cachovaná (nebo readonly), nemůžeme cachovat instance
 			}
 
-			return false; // tabulka není cachovaná (ani readonly), nemůžeme cachovat instance
+			HashSet<Table> referencedTablesIncludingSelf = new HashSet<Table>();
+			// získáme všechny závislé tabulky (vč. tabulky samotné) a to včetně tranzitivních závislostí (tedy závislostí závislostí)
+			CanCacheBusinessObjectInstances_AddReferencedTables(referencedTablesIncludingSelf, table); 
+
+			// pokud jsou všechny (tranzitivně) referencované tabulky read-only, můžeme cachovat instance
+			return referencedTablesIncludingSelf.All(referencedTable => TableHelper.IsReadOnly(referencedTable));
+		}
+
+		/// <summary>
+		/// Přidá do hashsetu tabulku a všechny její tranzitivní závislosti (tabulky referované cizími klíči a tabulky referované kolekcemi).
+		/// </summary>
+		private static void CanCacheBusinessObjectInstances_AddReferencedTables(HashSet<Table> referencedTables, Table table)
+		{
+			if (referencedTables.Contains(table))
+			{
+				// už jsme tu byli, chráníme se před cyklem (nic neobvyklého)
+				return;
+			}
+
+			// zaznamenáme si tabulku
+			referencedTables.Add(table);
+
+			// a projdeme všechny její závislosti
+			foreach (Column column in TableHelper.GetPropertyColumns(table))
+			{
+				if (TypeHelper.IsBusinessObjectReference(column))
+				{
+					Table referencedTable = ColumnHelper.GetReferencedTable(column);
+					CanCacheBusinessObjectInstances_AddReferencedTables(referencedTables, referencedTable);
+				}
+			}
+
+			foreach (CollectionProperty collection in TableHelper.GetCollectionColumns(table))
+			{
+				CanCacheBusinessObjectInstances_AddReferencedTables(referencedTables, collection.TargetTable);
+			}
 		}
 
 		/// <summary>

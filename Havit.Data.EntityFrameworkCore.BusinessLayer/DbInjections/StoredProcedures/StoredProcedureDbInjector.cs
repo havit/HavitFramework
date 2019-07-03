@@ -38,6 +38,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProced
 		/// </summary>
 		private Assembly GetDefaultResourceAssembly() => GetType().Assembly;
 
-        private string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)PROCEDURE(\s+)(\[.*?\]\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
+        internal string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE\s+PROCEDURE\s+(\[?.*?\]?\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
     }
 }

@@ -552,7 +552,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                     return;
                 }
 
-                if ((column.DataType.SqlDataType == SqlDataType.Int) || (column.DataType.SqlDataType == SqlDataType.SmallInt) || (column.DataType.SqlDataType == SqlDataType.Float) || (column.DataType.SqlDataType == SqlDataType.Decimal) || (column.DataType.SqlDataType == SqlDataType.Money))
+                if ((column.DataType.SqlDataType == SqlDataType.Int) ||
+                    (column.DataType.SqlDataType == SqlDataType.SmallInt) ||
+                    (column.DataType.SqlDataType == SqlDataType.Float) ||
+                    (column.DataType.SqlDataType == SqlDataType.Decimal) ||
+                    (column.DataType.SqlDataType == SqlDataType.Money) ||
+                    (column.DataType.SqlDataType == SqlDataType.Numeric))
                 {
                     // u floatu, decimalu a money spoléháme, že je zapsáno rozumně (neotřebujeme f či M na konci, tj. stačí 0, 0.0 a netřeba 0f, 0.0f, 0M, 0.0M);
                     writer.WriteLine($"[DefaultValue({defaultValueTrimmed})]");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
@@ -491,6 +492,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                     // Cannot set default value '0' of type 'System.Int32' on property 'TotalAmountAmount' of type 'System.Nullable`1[System.Decimal]' in entity type '
                     // workaround:
                     return $"{defaultValueTrimmed}";
+                }
+
+                if ((column.DataType.SqlDataType == SqlDataType.Int) || (column.DataType.SqlDataType == SqlDataType.SmallInt) || (column.DataType.SqlDataType == SqlDataType.Float) || (column.DataType.SqlDataType == SqlDataType.Decimal))
+                {
+                    // u floatu, decimalu a money spoléháme, že je zapsáno rozumně (neotřebujeme f či M na konci, tj. stačí 0, 0.0 a netřeba 0f, 0.0f, 0M, 0.0M);
+                    if (double.TryParse(defaultValueTrimmed, out double number) && number != 0)
+                    {
+                        return number.ToString(CultureInfo.InvariantCulture);
+                    }
                 }
 
                 if ((column.DataType.SqlDataType == SqlDataType.NVarChar) || (column.DataType.SqlDataType == SqlDataType.NVarCharMax))

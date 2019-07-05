@@ -263,6 +263,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                     writer.WriteCommentSummary(description);
 
+                    Type type = Helpers.TypeHelper.GetPropertyType(pk.Property);
+                    WriteDefault(writer, table, pk.Property.Column, type);
+
                     if (ColumnHelper.IsIgnored(pk.Property.Column))
                     {
                         writer.WriteLine("[Ignored]");
@@ -278,6 +281,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                 string description = ColumnHelper.GetDescription(pk.Property.Column, suppressDefaults: true);
                 writer.WriteCommentSummary(description); // vypisuje jen neprázdné
+
+                Type type = Helpers.TypeHelper.GetPropertyType(pk.Property);
+                WriteDefault(writer, table, pk.Property.Column, type);
 
                 if (ColumnHelper.GetBoolExtendedProperty(pk.Property.Column, "Ignored") == true)
                 {

@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseExtendedMigrations(
+            optionsBuilder.UseModelExtensions(
                 builder => builder
                     .UseStoredProcedures()
                     .UseViews());

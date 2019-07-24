@@ -45,7 +45,7 @@ namespace Havit.BusinessLayerTest
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	public abstract class RoleBase : ActiveRecordBusinessObjectBase
+	public abstract class RoleBase : ActiveRecordBusinessObjectBase, ILocalizable
 	{
 		#region Static constructor
 		static RoleBase()
@@ -116,6 +116,53 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<string> _SymbolPropertyHolder;
 		
+		/// <summary>
+		/// Lokalizované hodnoty.
+		/// </summary>
+		public virtual Havit.BusinessLayerTest.RoleLocalizationCollection Localizations
+		{
+			get
+			{
+				EnsureLoaded();
+				return _LocalizationsPropertyHolder.Value;
+			}
+		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Localizations.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected CollectionPropertyHolder<Havit.BusinessLayerTest.RoleLocalizationCollection, Havit.BusinessLayerTest.RoleLocalization> _LocalizationsPropertyHolder;
+		
+		#region CreateLocalization
+		/// <summary>
+		/// Vytvoří položku lokalizace pro daný jazyk.
+		/// </summary>
+		public RoleLocalization CreateLocalization(Havit.BusinessLayerTest.Language language)
+		{
+			throw new InvalidOperationException("Metoda CreateLocalization není podporována na read-only objektech a objektech s negenerovanou metodou CreateObject.");
+		}
+		#endregion
+		
+		#region ILocalizable interface implementation
+		/// <summary>
+		/// Vytvoří položku lokalizace pro daný jazyk.
+		/// </summary>
+		BusinessObjectBase ILocalizable.CreateLocalization(ILanguage language)
+		{
+			return this.CreateLocalization((Havit.BusinessLayerTest.Language)language);
+		}
+		/// <summary>
+		/// Vytvoří položku lokalizace pro daný jazyk.
+		/// </summary>
+		ILocalizationCollection ILocalizable.Localizations
+		{
+			get
+			{
+				return this.Localizations;
+			}
+		}
+		#endregion
+		
 		#endregion
 		
 		#region Init
@@ -125,10 +172,12 @@ namespace Havit.BusinessLayerTest
 		protected override void Init()
 		{
 			_SymbolPropertyHolder = new PropertyHolder<string>(this);
+			_LocalizationsPropertyHolder = new CollectionPropertyHolder<Havit.BusinessLayerTest.RoleLocalizationCollection, Havit.BusinessLayerTest.RoleLocalization>(this, Havit.BusinessLayerTest.RoleLocalization.GetObject);
 			
 			if (IsNew || IsDisconnected)
 			{
 				_SymbolPropertyHolder.Value = String.Empty;
+				_LocalizationsPropertyHolder.Initialize();
 			}
 			
 			base.Init();
@@ -144,6 +193,7 @@ namespace Havit.BusinessLayerTest
 			base.CleanDirty();
 			
 			_SymbolPropertyHolder.IsDirty = false;
+			_LocalizationsPropertyHolder.IsDirty = false;
 		}
 		#endregion
 		
@@ -178,7 +228,7 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [RoleID], [Symbol] FROM [dbo].[Role] WHERE [RoleID] = @RoleID";
+			dbCommand.CommandText = "SELECT [RoleID], [Symbol], (SELECT CAST([_items].[RoleLocalizationID] AS NVARCHAR(11)) + '|' FROM [dbo].[RoleLocalization] AS [_items] WHERE ([_items].[RoleID] = @RoleID) FOR XML PATH('')) AS [Localizations] FROM [dbo].[Role] WHERE [RoleID] = @RoleID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterRoleID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -200,25 +250,22 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected override sealed void Load_ParseDataRecord(DataRecord record)
 		{
-			if (!this.IsLoaded)
+			this.ID = record.Get<int>("RoleID");
+			
+			string _tempSymbol;
+			if (record.TryGet<string>("Symbol", out _tempSymbol))
 			{
-				lock (_loadParseDataRecordLock)
-				{
-					if (!this.IsLoaded)
-					{
-						this.ID = record.Get<int>("RoleID");
-						
-						string _tempSymbol;
-						if (record.TryGet<string>("Symbol", out _tempSymbol))
-						{
-							_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
-						}
-						
-					}
-				}
+				_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
 			}
+			
+			string _tempLocalizations;
+			if (record.TryGet<string>("Localizations", out _tempLocalizations))
+			{
+				_LocalizationsPropertyHolder.Initialize(_tempLocalizations);
+				_LocalizationsPropertyHolder.Value.Freeze();
+			}
+			
 		}
-		private object _loadParseDataRecordLock = new object();
 		#endregion
 		
 		#region Save & Delete: Save_SaveMembers, Save_SaveCollections, Save_MinimalInsert, Save_FullInsert, Save_Update, Save_Insert_InsertRequiredForMinimalInsert, Save_Insert_InsertRequiredForFullInsert, Delete, Delete_Perform
@@ -560,6 +607,8 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public static RoleCollection GetAll()
 		{
+			RoleLocalization.GetAll();
+			
 			RoleCollection collection = null;
 			int[] ids = null;
 			

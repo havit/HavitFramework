@@ -245,7 +245,10 @@ namespace Havit.Business.Query
 					Conditions.Add(deletedCondition);
 				}
 
-				if ((objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime) || (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.SmallDateTime))
+				if ((objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime)
+					|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.SmallDateTime) 
+					|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime2)
+					|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTimeOffset))
 				{
 					deletedCondition = NullCondition.CreateIsNull(objectInfo.DeletedProperty);
 					Conditions.Add(deletedCondition);

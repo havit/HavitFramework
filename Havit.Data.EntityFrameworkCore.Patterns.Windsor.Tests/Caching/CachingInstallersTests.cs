@@ -1,4 +1,5 @@
 ﻿using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
@@ -58,7 +59,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Caching
 			var container = Helpers.CreateAndSetupWindsorContainer();
 
 			// Act
-			container.Resolve<IEntityCacheManager>();
+			using (container.BeginScope())
+			{
+				container.Resolve<IEntityCacheManager>();
+			}
 
 			// Assert			
 			// no exception was thrown

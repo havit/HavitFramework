@@ -33,11 +33,11 @@ namespace Havit.Services.Caching
 		/// Kostruktor.
 		/// </summary>
 		/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>
-		/// <param name="objectCacheSupportsCacheDependencies">Indikuje, zda má být použit mechanismus pro cache dependencies.</param>
-		public MemoryCacheService(IMemoryCache memoryCache, bool objectCacheSupportsCacheDependencies = false)
+		/// <param name="useCacheDependenciesSupport">Indikuje, zda má být použita podpora pro cache dependencies.</param>
+		public MemoryCacheService(IMemoryCache memoryCache, bool useCacheDependenciesSupport = false)
 	    {
 		    this.memoryCache = memoryCache;
-			this.SupportsCacheDependencies = objectCacheSupportsCacheDependencies;
+			this.SupportsCacheDependencies = useCacheDependenciesSupport;
 		}
 
 	    /// <summary>

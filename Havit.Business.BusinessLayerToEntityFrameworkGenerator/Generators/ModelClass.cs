@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Havit.Business.BusinessLayerGenerator.Csproj;
@@ -262,6 +263,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                     writer.WriteCommentSummary(description);
 
+                    Type type = Helpers.TypeHelper.GetPropertyType(pk.Property);
+                    WriteDefault(writer, table, pk.Property.Column, type);
+
                     if (ColumnHelper.IsIgnored(pk.Property.Column))
                     {
                         writer.WriteLine("[Ignored]");
@@ -277,6 +281,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                 string description = ColumnHelper.GetDescription(pk.Property.Column, suppressDefaults: true);
                 writer.WriteCommentSummary(description); // vypisuje jen neprázdné
+
+                Type type = Helpers.TypeHelper.GetPropertyType(pk.Property);
+                WriteDefault(writer, table, pk.Property.Column, type);
 
                 if (ColumnHelper.GetBoolExtendedProperty(pk.Property.Column, "Ignored") == true)
                 {
@@ -441,9 +448,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                 writer.WriteCommentSummary(collection.Description);
 
+                if (!string.IsNullOrEmpty(TableHelper.GetStringExtendedProperty(table, $"Collection_{collectionProperty.Name}_LoadAll")))
+                {
+                    ConsoleHelper.WriteLineWarning($"Table {table.Name} has defined extended property LoadAll for {collection.PropertyName} collection. LoadAll is not supported by EFCore.BL (and is considered deprecated).");
+                }
+
                 var attributeBuilder = new AttributeStringBuilder("Collection");
                 attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "IncludeDeleted");
-                attributeBuilder.AddBoolExtendedProperty(table, $"Collection_{collectionProperty.Name}", "LoadAll");
                 attributeBuilder.AddStringExtendedProperty(table, $"Collection_{collectionProperty.Name}", "Sorting");
 
                 var propertyAccessModifierString = TableHelper.GetStringExtendedProperty(table, $"Collection_{collectionProperty.Name}_PropertyAccessModifier");
@@ -493,6 +504,15 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                     return $"{defaultValueTrimmed}";
                 }
 
+                if ((column.DataType.SqlDataType == SqlDataType.Int) || (column.DataType.SqlDataType == SqlDataType.SmallInt) || (column.DataType.SqlDataType == SqlDataType.Float) || (column.DataType.SqlDataType == SqlDataType.Decimal))
+                {
+                    // u floatu, decimalu a money spoléháme, že je zapsáno rozumně (neotřebujeme f či M na konci, tj. stačí 0, 0.0 a netřeba 0f, 0.0f, 0M, 0.0M);
+                    if (double.TryParse(defaultValueTrimmed, out double number) && number != 0)
+                    {
+                        return number.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
+
                 if ((column.DataType.SqlDataType == SqlDataType.NVarChar) || (column.DataType.SqlDataType == SqlDataType.NVarCharMax))
                 {
                     var stringDefault = defaultValueTrimmed.TrimStart('N').Trim('\'').Replace("\\", "\\\\").Replace("\"", "\\\"");
@@ -538,7 +558,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                     return;
                 }
 
-                if ((column.DataType.SqlDataType == SqlDataType.Int) || (column.DataType.SqlDataType == SqlDataType.SmallInt) || (column.DataType.SqlDataType == SqlDataType.Float) || (column.DataType.SqlDataType == SqlDataType.Decimal) || (column.DataType.SqlDataType == SqlDataType.Money))
+                if ((column.DataType.SqlDataType == SqlDataType.Int) ||
+                    (column.DataType.SqlDataType == SqlDataType.SmallInt) ||
+                    (column.DataType.SqlDataType == SqlDataType.Float) ||
+                    (column.DataType.SqlDataType == SqlDataType.Decimal) ||
+                    (column.DataType.SqlDataType == SqlDataType.Money) ||
+                    (column.DataType.SqlDataType == SqlDataType.Numeric))
                 {
                     // u floatu, decimalu a money spoléháme, že je zapsáno rozumně (neotřebujeme f či M na konci, tj. stačí 0, 0.0 a netřeba 0f, 0.0f, 0M, 0.0M);
                     writer.WriteLine($"[DefaultValue({defaultValueTrimmed})]");

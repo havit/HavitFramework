@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
-			container.WithEntityPatternsInstaller(componentRegistrationOptions ?? new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Singleton })
+			container.WithEntityPatternsInstaller(componentRegistrationOptions ?? new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
 				.RegisterEntityPatterns()
 				.RegisterDbContext<TestDbContext>()
 				.RegisterLocalizationServices<Language>()

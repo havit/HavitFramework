@@ -641,7 +641,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		private static string GetAllIDsCacheKey(bool includeDeleted)
 		{
-			return "BL|ResourceClass|GetAll|" + includeDeleted.ToString();
+			return "BL|ResourceClass|GetAll|" + includeDeleted;
 		}
 		
 		/// <summary>

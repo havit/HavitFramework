@@ -87,6 +87,36 @@ namespace Havit.BusinessLayerTest
 		}
 		#endregion
 		
+		#region IEnumerable<Havit.BusinessLayerTest.RoleLocalizationCollection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.RoleLocalizationCollection z IEnumerable&lt;Havit.BusinessLayerTest.RoleLocalization&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.RoleLocalizationCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.RoleLocalization> objects)
+		{
+			return new Havit.BusinessLayerTest.RoleLocalizationCollection(objects);
+		}
+		#endregion
+		
+		#region IEnumerable<Havit.BusinessLayerTest.SoftDeleteWithDateTime2Collection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.SoftDeleteWithDateTime2Collection z IEnumerable&lt;Havit.BusinessLayerTest.SoftDeleteWithDateTime2&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.SoftDeleteWithDateTime2Collection ToCollection(this IEnumerable<Havit.BusinessLayerTest.SoftDeleteWithDateTime2> objects)
+		{
+			return new Havit.BusinessLayerTest.SoftDeleteWithDateTime2Collection(objects);
+		}
+		#endregion
+		
+		#region IEnumerable<Havit.BusinessLayerTest.SoftDeleteWithDateTimeOffsetCollection>.ToCollection
+		/// <summary>
+		/// Vytvoří Havit.BusinessLayerTest.SoftDeleteWithDateTimeOffsetCollection z IEnumerable&lt;Havit.BusinessLayerTest.SoftDeleteWithDateTimeOffset&gt;.
+		/// </summary>
+		public static Havit.BusinessLayerTest.SoftDeleteWithDateTimeOffsetCollection ToCollection(this IEnumerable<Havit.BusinessLayerTest.SoftDeleteWithDateTimeOffset> objects)
+		{
+			return new Havit.BusinessLayerTest.SoftDeleteWithDateTimeOffsetCollection(objects);
+		}
+		#endregion
+		
 		#region IEnumerable<Havit.BusinessLayerTest.SubjektCollection>.ToCollection
 		/// <summary>
 		/// Vytvoří Havit.BusinessLayerTest.SubjektCollection z IEnumerable&lt;Havit.BusinessLayerTest.Subjekt&gt;.

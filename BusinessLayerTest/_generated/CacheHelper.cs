@@ -86,14 +86,6 @@ namespace Havit.BusinessLayerTest
 				
 				try
 				{
-					Havit.BusinessLayerTest.Resources.ResourceItemLocalization.GetAll();
-				}
-				catch (SqlException)
-				{
-				}
-				
-				try
-				{
 					Havit.BusinessLayerTest.Role.GetAll();
 				}
 				catch (SqlException)

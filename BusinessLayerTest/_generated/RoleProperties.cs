@@ -41,7 +41,8 @@ namespace Havit.BusinessLayerTest
 		{
 			_id = new FieldPropertyInfo();
 			_symbol = new FieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _symbol);
+			_localizations = new CollectionPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _symbol, _localizations);
 		}
 		
 		/// <summary>
@@ -51,6 +52,7 @@ namespace Havit.BusinessLayerTest
 		{
 			_id.Initialize(objectInfo, "ID", "RoleID", true, SqlDbType.Int, false, 4);
 			_symbol.Initialize(objectInfo, "Symbol", "Symbol", false, SqlDbType.VarChar, true, 50);
+			_localizations.Initialize(objectInfo, "Localizations", typeof(Havit.BusinessLayerTest.RoleLocalization), "(SELECT CAST([_items].[RoleLocalizationID] AS NVARCHAR(11)) + '|' FROM [dbo].[RoleLocalization] AS [_items] WHERE ([_items].[RoleID] = [dbo].[Role].[RoleID]) FOR XML PATH('')) AS [Localizations]");
 		}
 		
 		/// <summary>
@@ -76,6 +78,18 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		private FieldPropertyInfo _symbol;
+		
+		/// <summary>
+		/// Lokalizované hodnoty.
+		/// </summary>
+		public CollectionPropertyInfo Localizations
+		{
+			get
+			{
+				return _localizations;
+			}
+		}
+		private CollectionPropertyInfo _localizations;
 		
 		/// <summary>
 		/// Všechny sloupečky typu Role.

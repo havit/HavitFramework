@@ -119,7 +119,7 @@ namespace Havit.BusinessLayerTest
 		
 		#region LoadAll
 		/// <summary>
-		/// Načte všechny prvky kolekce.
+		/// Načte všechny prvky kolekce a jejich lokalizace.
 		/// </summary>
 		public void LoadAll()
 		{
@@ -127,7 +127,7 @@ namespace Havit.BusinessLayerTest
 		}
 		
 		/// <summary>
-		/// Načte všechny prvky kolekce.
+		/// Načte všechny prvky kolekce a jejich lokalizace.
 		/// </summary>
 		public void LoadAll(DbTransaction transaction)
 		{
@@ -176,6 +176,16 @@ namespace Havit.BusinessLayerTest
 					}
 				}
 			}
+			
+			RoleLocalizationCollection localizations = new RoleLocalizationCollection();
+			foreach (Role role in this)
+			{
+				if (role != null)
+				{
+					localizations.AddRange(role.Localizations);
+				}
+			}
+			localizations.LoadAll(transaction);
 			
 			LoadAllRequired = false;
 		}

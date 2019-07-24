@@ -6,15 +6,15 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.2</PackageVersion>
+    <PackageVersion>2.0.3</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions for Castle Windsor</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.1.0" />
-    <PackageReference Include="Castle.Windsor" Version="4.0.0" />
+    <PackageReference Include="Castle.Core" Version="4.3.1" />
+    <PackageReference Include="Castle.Windsor" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>

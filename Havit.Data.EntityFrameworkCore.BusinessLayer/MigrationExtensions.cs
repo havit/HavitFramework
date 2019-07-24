@@ -22,19 +22,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
         {
             Contract.Requires<ArgumentNullException>(migrationBuilder != null);
             Contract.Requires<ArgumentNullException>(resourceName != null);
-
-            Assembly sqlResourceAssembly = Assembly.GetCallingAssembly();
-
             Contract.Requires<ArgumentNullException>(sqlResourceAssembly != null);
 
             using (var stream = sqlResourceAssembly.GetManifestResourceStream(resourceName))
             {
-                if (stream == null)
-                {
-                    throw new ArgumentException($"Resource name '{resourceName}' does not exist.\n\nAssembly: {sqlResourceAssembly.FullName}\n\n. Following resources exist: \n\n{string.Join("\n", sqlResourceAssembly.GetManifestResourceNames())}");
-                }
-
-                Contract.Assert<ArgumentException>(stream != null, $"Resource name '{resourceName}' does not exist");
+                Contract.Assert<ArgumentException>(stream != null, 
+                    $"Resource name '{resourceName}' does not exist.\n\nAssembly: {sqlResourceAssembly.FullName}\n\n. " +
+                    $"Following resources exist: \n\n{string.Join("\n", sqlResourceAssembly.GetManifestResourceNames())}");
 
                 using (var textStream = new StreamReader(stream))
                 {

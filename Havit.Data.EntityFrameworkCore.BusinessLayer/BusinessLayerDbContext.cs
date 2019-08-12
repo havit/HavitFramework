@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
-	/// <summary>
-	/// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
-	/// 
-	/// <remarks>
-	/// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
-	/// </remarks>
-	/// </summary>
-	public abstract class BusinessLayerDbContext : DbContext
+    /// <summary>
+    /// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
+    /// 
+    /// <remarks>
+    /// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
+    /// </remarks>
+    /// </summary>
+    public abstract class BusinessLayerDbContext : DbContext
 	{
 		/// <summary>
 		/// Konstruktor.
@@ -39,8 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseCodeMigrationsInfrastructure();
-			optionsBuilder.UseDbInjections(builder => builder
+            optionsBuilder.UseModelExtensions(builder => builder
 				.UseStoredProcedures()
 				.UseExtendedProperties()
 				.UseBusinessLayerStoredProcedures()
@@ -77,11 +77,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		}
 
 		/// <summary>
-		/// Registruje DB injectors z <paramref name="injectionsAssembly"/>. Vyžaduje, aby v DbContexte bola zaregistrovaná služba <see cref="IDbInjectionAnnotationProvider"/> (štandardne je registrovaná v <see cref="OnConfiguring"/>.
+		/// Registruje <see cref="IModelExtender"/>y z <paramref name="extendersAssembly"/>. Vyžaduje, aby v DbContexte bola zaregistrovaná služba <see cref="IModelExtensionAnnotationProvider"/> (štandardne je registrovaná v <see cref="OnConfiguring"/>.
 		/// </summary>
-	    protected void RegisterDbInjections(ModelBuilder modelBuilder, Assembly injectionsAssembly = default)
+	    protected void RegisterModelExtensions(ModelBuilder modelBuilder, Assembly extendersAssembly = default)
 	    {
-            modelBuilder.ForDbInjections(this.GetService<IDbInjectionAnnotationProvider>(), injectionsAssembly ?? Assembly.GetCallingAssembly());
+            modelBuilder.ForModelExtensions(this.GetService<IModelExtensionAnnotationProvider>(), extendersAssembly ?? Assembly.GetCallingAssembly());
 	    }
 	}
 }

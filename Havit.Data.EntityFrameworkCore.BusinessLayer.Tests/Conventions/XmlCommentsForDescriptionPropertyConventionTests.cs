@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +9,7 @@ using static Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions.XmlComment
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 {
-	public class XmlCommentsForDescriptionPropertyConventionTests
+    public class XmlCommentsForDescriptionPropertyConventionTests
 	{
 		[TestClass]
 		public class NestedTypeWithXmlComment_EntityHasCorrectMsDescription

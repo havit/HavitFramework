@@ -123,21 +123,22 @@ namespace Havit.Data.Patterns.DataSeeds
 	            Stack<IDataSeed> dataSeedsStack = new Stack<IDataSeed>();
 	            foreach (IDataSeed dataSeed in dataSeedsInProfile)
 	            {
-	                SeedService(dataSeed, dataSeedsStack, dataSeedsInProfileByType, completedDataSeeds);
+	                SeedService(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds);
 	            }
 
 	            dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
 	        }
 	    }
 
-        /// <summary>
-        /// Provede seedování jednoho předpisu. V této metodě dochází zejména k vyhodnocení závislostí předpisů a detekci cyklů závislostí.
-        /// </summary>
-        /// <param name="dataSeed">Předpis k seedování.</param>
-        /// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
-        /// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
-        /// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
-        private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile)
+		/// <summary>
+		/// Provede seedování jednoho předpisu. V této metodě dochází zejména k vyhodnocení závislostí předpisů a detekci cyklů závislostí.
+		/// </summary>
+		/// <param name="dataSeed">Předpis k seedování.</param>
+		/// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
+		/// <param name="profile">Profil, který je seedován.</param>
+		/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
+		/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
+		private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile)
 		{
 			// Already completed?
 			if (completedDataSeedsInProfile.Contains(dataSeed))
@@ -166,9 +167,12 @@ namespace Havit.Data.Patterns.DataSeeds
 					IDataSeed prerequisitedDbSeed;
 					if (!dataSeedsInProfileByType.TryGetValue(prerequisiteType, out prerequisitedDbSeed)) // neumožňujeme jako závislost použít předpis seedování dat z jiného profilu
 					{
-						throw new InvalidOperationException(String.Format("Prerequisite {1} for data seed {0} was not found.", dataSeed.GetType().Name, prerequisiteType.Name));
+						throw new InvalidOperationException(String.Format("Prerequisite {0} for data seed {1} was not found. Data seeds and prerequisities must be in the same profile ({2}).",
+							prerequisiteType.Name,
+							dataSeed.GetType().Name,
+							profile.ProfileName));
 					}
-					SeedService(prerequisitedDbSeed, stack, dataSeedsInProfileByType, completedDataSeedsInProfile);
+					SeedService(prerequisitedDbSeed, stack, profile, dataSeedsInProfileByType, completedDataSeedsInProfile);
 				}
 			}
 

@@ -9,7 +9,7 @@
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageVersion>2.0.0-preview</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - DB Injections</Description>
+    <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Model Extensions</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -97,5 +97,52 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 				Assert.AreEqual("Calculates total amount.", Regex.Match(command.CommandText, "@value=N'(.*?)'", RegexOptions.Singleline).Groups[1].Value.Trim('\r', '\n', ' '));
 		    }
 	    }
+
+        /// <summary>
+        /// Checks, whether dropping procedure generates IF EXISTS statements for dropping extended properties (workaround for Bug 45536)
+        /// </summary>
+        [TestClass]
+        public class DeletingStoredProcedureIfExistsForExtendedProperties
+        {
+            public class InvoiceStoredProcedures : StoredProcedureModelExtender
+            {
+                /// <summary>
+                /// Calculates total amount.
+                /// </summary>
+                /// <returns>Total amount</returns>
+                [MethodName(nameof(TotalAmount))]
+                [Result(StoredProcedureResultType.DataTable)]
+                [MethodAccessModifier("public")]
+                public StoredProcedureModelExtension TotalAmount()
+                {
+                    return new StoredProcedureModelExtension { CreateSql = $"CREATE PROCEDURE [{nameof(TotalAmount)}]", ProcedureName = nameof(TotalAmount) };
+                }
+            }
+
+            [Table("Dummy")]
+            private class Entity
+            {
+                public int Id { get; set; }
+            }
+
+            [TestMethod]
+            public void StoredProcedureModelExtensions_DroppingStoredProcedureWithExtendedProperty_DroppingExtendedPropertyHasIfObjectIdCheck()
+            {
+                var source = new EndToEndTestModelExtensionsDbContext<Entity>(typeof(InvoiceStoredProcedures));
+                var target = new EndToEndTestModelExtensionsDbContext<Entity>();
+
+                var commands = source.Migrate(target);
+
+                Assert.AreNotEqual(0, commands.Count);
+
+                var dropExtendedPropertyCommand = commands.First(c => c.CommandText.Contains("EXEC sys.sp_dropextendedproperty @name=N'MS_Description'"));
+
+                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[TotalAmount]') IS NOT NULL
+BEGIN
+    EXEC sys.sp_dropextendedproperty @name=N'MS_Description', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'TotalAmount'
+END
+", dropExtendedPropertyCommand.CommandText);
+            }
+        }
     }
 }

@@ -39,9 +39,38 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
 					migrations[0].CommandText);
 			}
-		}
+        }
+        [TestClass]
+        public class AddingPropertyToTableInNonDefaultSchema
+        {
+            [Table("Table")]
+            private class SourceEntity
+            {
+                public int Id { get; set; }
+            }
 
-		[TestClass]
+            [TestExtendedProperties("Jiri", "Value")]
+            [Table("Table")]
+            private class TargetEntity
+            {
+                public int Id { get; set; }
+            }
+
+            [TestMethod]
+            public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToTable()
+            {
+                var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+                var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+                var migrations = source.Migrate(target);
+
+                Assert.AreEqual(1, migrations.Count);
+                Assert.AreEqual(
+                    "EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table'",
+                    migrations[0].CommandText);
+            }
+        }
+
+        [TestClass]
 		public class AddingPropertyToTableUsingExtension
 		{
 			[Table("Table")]
@@ -103,9 +132,41 @@ BEGIN
 END
 ", migrations[0].CommandText);
 			}
-		}
+        }
 
-		[TestClass]
+        [TestClass]
+        public class RemovingPropertyFromTableInNonDefaultSchema
+        {
+            [TestExtendedProperties("Jiri", "Value")]
+            [Table("Table")]
+            private class SourceEntity
+            {
+                public int Id { get; set; }
+            }
+
+            [Table("Table")]
+            private class TargetEntity
+            {
+                public int Id { get; set; }
+            }
+
+            [TestMethod]
+            public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromTable()
+            {
+                var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+                var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+                var migrations = source.Migrate(target);
+
+                Assert.AreEqual(1, migrations.Count);
+                Assert.AreEqual(@"IF OBJECT_ID(N'[custom_schema].[Table]') IS NOT NULL
+BEGIN
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table'
+END
+", migrations[0].CommandText);
+            }
+        }
+
+        [TestClass]
 		public class ChangingPropertyOnTable
 		{
 			[TestExtendedProperties("Jiri", "OldValue")]
@@ -136,7 +197,38 @@ END
 			}
 		}
 
-		[TestClass]
+        [TestClass]
+        public class ChangingPropertyOnTableInNonDefaultSchema
+        {
+            [TestExtendedProperties("Jiri", "OldValue")]
+            [Table("Table")]
+            private class SourceEntity
+            {
+                public int Id { get; set; }
+            }
+
+            [TestExtendedProperties("Jiri", "NewValue")]
+            [Table("Table")]
+            private class TargetEntity
+            {
+                public int Id { get; set; }
+            }
+
+            [TestMethod]
+            public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingPropertyOnTable()
+            {
+                var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+                var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+                var migrations = source.Migrate(target);
+
+                Assert.AreEqual(1, migrations.Count);
+                Assert.AreEqual(
+                    "EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table'",
+                    migrations[0].CommandText);
+            }
+        }
+
+        [TestClass]
 		public class AddingPropertyToColumn
 		{
 			[Table("Table")]

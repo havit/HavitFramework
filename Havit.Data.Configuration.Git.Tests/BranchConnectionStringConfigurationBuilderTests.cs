@@ -22,15 +22,27 @@ namespace Havit.Data.Configuration.Git.Tests
 			Assert.AreSame(appSettingsSection, section);
 		}
 
-		[TestMethod]
-		public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_BranchIsMaster_ConnectionStringIsUnchanged()
+        [TestMethod]
+        public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_ConnectionStringDoesNotContainPlaceholder_ConnectionStringIsUnchanged()
+        {
+            var builder = CreateBuilder(currentBranchName: "master");
+
+            var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName";
+
+            string connString = builder.TransformConnectionString(originalConnectionString, "");
+
+            Assert.AreEqual(originalConnectionString, connString);
+        }
+
+
+        [TestMethod]
+		public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_BranchIsMaster_ConnectionStringContainsMasterSuffix()
 		{
 			var builder = CreateBuilder(currentBranchName: "master");
 
-			var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName";
-			string connString = builder.TransformConnectionString(originalConnectionString, "");
+            string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName", "");
 
-			Assert.AreEqual(originalConnectionString, connString);
+			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_master;Application Name=MyName", connString);
 		}
 
 
@@ -39,7 +51,7 @@ namespace Havit.Data.Configuration.Git.Tests
 		{
 			var builder = CreateBuilder(currentBranchName: "test");
 
-			string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName", "");
+			string connString = builder.TransformConnectionString("Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName", "");
 
 			Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_test;Application Name=MyName", connString);
 		}
@@ -51,7 +63,7 @@ namespace Havit.Data.Configuration.Git.Tests
 
 			var configurationSection = new ConnectionStringsSection()
 			{
-				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName") }
+				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName") }
 			};
 
 			ConfigurationSection modifiedSection = builder.ProcessConfigurationSection(configurationSection);
@@ -65,7 +77,7 @@ namespace Havit.Data.Configuration.Git.Tests
 
 			var configurationSection = new ConnectionStringsSection
 			{
-				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName") }
+				ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName") }
 			};
 
 			var modifiedSection = (ConnectionStringsSection)builder.ProcessConfigurationSection(configurationSection);

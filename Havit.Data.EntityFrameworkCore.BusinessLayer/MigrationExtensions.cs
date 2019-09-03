@@ -26,7 +26,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 
             using (var stream = sqlResourceAssembly.GetManifestResourceStream(resourceName))
             {
-                Contract.Assert<ArgumentException>(stream != null, $"Resource name '{resourceName}' does not exist");
+                Contract.Assert<ArgumentException>(stream != null, 
+                    $"Resource name '{resourceName}' does not exist.\n\nAssembly: {sqlResourceAssembly.FullName}\n\n. " +
+                    $"Following resources exist: \n\n{string.Join("\n", sqlResourceAssembly.GetManifestResourceNames())}");
 
                 using (var textStream = new StreamReader(stream))
                 {

@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-
-namespace Havit.Data.EntityFrameworkCore.Tests.Properties
+﻿namespace Havit.Data.EntityFrameworkCore.Tests.Properties
 {
-	internal static class AssemblyInfo
+    internal static class AssemblyInfo
 	{
 
 	}

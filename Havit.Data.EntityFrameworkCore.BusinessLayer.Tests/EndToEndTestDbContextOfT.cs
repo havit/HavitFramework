@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 {
-	internal class EndToEndTestDbContext<TEntity> : EndToEndTestDbContext
+    public class EndToEndTestDbContext<TEntity> : EndToEndTestDbContext
 		where TEntity : class
 	{
 		public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)

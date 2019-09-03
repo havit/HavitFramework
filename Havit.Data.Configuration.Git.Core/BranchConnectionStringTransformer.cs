@@ -1,11 +1,12 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Havit.Data.Configuration.Git.Core
 {
-	public class BranchConnectionStringTransformer
+    public class BranchConnectionStringTransformer
 	{
-		private readonly IGitRepositoryProvider gitRepositoryProvider;
+        public const string BranchNamePlaceholder = "#BRANCH_NAME#";
+
+        private readonly IGitRepositoryProvider gitRepositoryProvider;
 
 		public BranchConnectionStringTransformer(IGitRepositoryProvider gitRepositoryProvider)
 		{
@@ -31,11 +32,7 @@ namespace Havit.Data.Configuration.Git.Core
 		private string DetermineDatabaseName(string originalDbName, string configPath)
 		{
 			string repositoryBranch = gitRepositoryProvider.GetBranch(configPath);
-			if (repositoryBranch == "master" || repositoryBranch == null)
-			{
-				return originalDbName;
-			}
-			return $"{originalDbName}_{repositoryBranch}";
+			return originalDbName.Replace(BranchNamePlaceholder, repositoryBranch);
 		}
 	}
 }

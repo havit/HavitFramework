@@ -68,10 +68,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             writer.WriteLine("using System.Collections.Generic;");
             writer.WriteLine("using System.Linq;");
             writer.WriteLine("using System.Text;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.StoredProcedures;");
-			writer.WriteLine("using static Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes.DataLoadPowerType;");
-			writer.WriteLine("using ResultType = Havit.Data.EntityFrameworkCore.BusinessLayer.DbInjections.ExtendedProperties.Attributes.StoredProcedureResultType;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes;");
+			writer.WriteLine("using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;");
+			writer.WriteLine("using static Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes.DataLoadPowerType;");
+			writer.WriteLine("using ResultType = Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes.StoredProcedureResultType;");
             if (entityClass != null)
             {
                 writer.WriteLine($"using {entityClass.Namespace};");
@@ -89,7 +89,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 	        {
 				writer.WriteLine(String.Format("[Attach(nameof({0}))]", entityClass.Name));
 	        }
-            writer.WriteLine(String.Format("public class {0} : StoredProcedureDbInjector", spClassName));
+            writer.WriteLine(String.Format("public class {0} : StoredProcedureModelExtender", spClassName));
             writer.WriteLine("{");
         }
 
@@ -143,7 +143,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine("[Ignored]");
 	        }
 
-			writer.WriteLine(String.Format("public StoredProcedureDbInjection {0}()", dbStoredProcedure.Name));
+			writer.WriteLine(String.Format("public StoredProcedureModelExtension {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }
 

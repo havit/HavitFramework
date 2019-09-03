@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -17,11 +17,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 	    private const string TableLevel1Type = "TABLE";
 
 	    private readonly IRelationalTypeMappingSource typeMappingSource;
+        private readonly ISqlGenerationHelper sqlGenerationHelper;
 
-	    public ExtendedPropertiesMigrationOperationSqlGenerator(IRelationalTypeMappingSource typeMappingSource)
-		{
-		    this.typeMappingSource = typeMappingSource;
-		}
+        public ExtendedPropertiesMigrationOperationSqlGenerator(
+            IRelationalTypeMappingSource typeMappingSource,
+            ISqlGenerationHelper sqlGenerationHelper)
+        {
+            this.typeMappingSource = typeMappingSource;
+            this.sqlGenerationHelper = sqlGenerationHelper;
+        }
 
         public override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
@@ -187,18 +191,29 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void DropExtendedPropertyLevel1WithType(string name, string schemaName, string level1Type, string level1Name, MigrationCommandListBuilder builder)
 		{
-			builder
-				.Append("EXEC sys.sp_dropextendedproperty @name=")
-				.Append(GenerateSqlLiteral(name))
-				.Append(", @level0type=N'SCHEMA', @level0name=")
-				.Append(GenerateSqlLiteral(schemaName))
-				.Append(", @level1type=N'")
-				.Append(level1Type)
-				.Append("', @level1name=")
-				.Append(GenerateSqlLiteral(level1Name))
-				.Append("")
-				.EndCommand();
-		}
+            builder
+                .Append("IF OBJECT_ID(")
+                .Append(GenerateSqlLiteral(sqlGenerationHelper.DelimitIdentifier(level1Name, schemaName)))
+                .AppendLine(") IS NOT NULL")
+                .AppendLine("BEGIN");
+
+            using (builder.Indent())
+            {
+                builder
+                    .Append("EXEC sys.sp_dropextendedproperty @name=")
+                    .Append(GenerateSqlLiteral(name))
+                    .Append(", @level0type=N'SCHEMA', @level0name=")
+                    .Append(GenerateSqlLiteral(schemaName))
+                    .Append(", @level1type=N'")
+                    .Append(level1Type)
+                    .Append("', @level1name=")
+                    .Append(GenerateSqlLiteral(level1Name))
+                    .AppendLine("");
+            }
+
+            builder.AppendLine("END")
+                .EndCommand();
+        }
 		private void DropExtendedPropertyLevel1(string name, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			DropExtendedPropertyLevel1WithType(name, schemaName, TableLevel1Type, tableName, builder);

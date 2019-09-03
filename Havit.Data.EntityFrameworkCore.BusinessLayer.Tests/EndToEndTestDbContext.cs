@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 {
-	internal class EndToEndTestDbContext : TestDbContext
+	public class EndToEndTestDbContext : TestDbContext
 	{
 		private readonly Action<ModelBuilder> onModelCreating;
 

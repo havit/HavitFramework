@@ -224,7 +224,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 								propertyToLoad.SourceType,
 								propertyToLoad.TargetType,
 								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+							.Invoke(this, new object[] { propertyToLoad.PropertyName, propertyToLoad.OriginalPropertyName, entities });
 					}
 					catch (TargetInvocationException ex)
 					{
@@ -298,7 +298,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 								propertyToLoad.SourceType,
 								propertyToLoad.TargetType,
 								propertyToLoad.CollectionItemType)
-							.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+							.Invoke(this, new object[] { propertyToLoad.PropertyName, propertyToLoad.OriginalPropertyName, entities });
 					}
 					catch (TargetInvocationException ex)
 					{

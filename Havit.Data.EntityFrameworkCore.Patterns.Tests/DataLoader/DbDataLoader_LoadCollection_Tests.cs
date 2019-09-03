@@ -253,5 +253,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsTrue(master1.Children.All(item => item != null), "Položky kolekce Children proměné master1 nejsou načteny.");
 			Assert.IsTrue(master2.Children.All(item => item != null), "Položky kolekce Children proměné master2 nejsou načteny.");
 		}
+
+		[TestMethod]
+		public void DbDataLoader_Load_Collection_LoadDependenciesFromNotSubstituedProperty()
+		{
+			// Arrange
+			SeedOneToManyTestData(deleted: true);
+
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			Mock<IDbContextFactory> dbContextFactoryMock = new Mock<IDbContextFactory>();
+			dbContextFactoryMock.Setup(m => m.CreateService()).Returns(dbContext);
+			dbContextFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDbContext>()));
+
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextFactoryMock.Object));
+
+			Master master = dbContext.Master.First();
+
+			// Act
+			DbFluentDataLoader<ICollection<Child>> fluentDataLoader = (DbFluentDataLoader<ICollection<Child>>)dataLoader.Load(master, m => m.Children);
+
+			// Assert
+			Assert.AreEqual(0, fluentDataLoader.Data.Count(), "Jsou vybráni smazané Child k načítání závislostí.");
+		}
 	}
 }

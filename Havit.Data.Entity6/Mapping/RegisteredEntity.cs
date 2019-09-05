@@ -43,7 +43,7 @@ namespace Havit.Data.Entity.Mapping.Internal
 		/// <summary>
 		/// Identifier if registered entity has primary key.
 		/// </summary>
-		public bool HasDatabaseGeneratedIdentity { get; set; } // TODO: TW: RegisteredProperty.StoreGeneratedPattern zatím nefunguje, vracíme se tedy k HasDatabaseGeneratedIdentity, pak je třeba dořešit
+		public bool HasDatabaseGeneratedIdentity { get; set; }
 		
 		/// <summary>
 		/// Properties of registered entity.

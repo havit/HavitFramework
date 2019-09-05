@@ -67,7 +67,7 @@ namespace Havit.Data.Entity.Mapping.Internal
 											  FullName = entityType.FullName,
 											  Type = type,
 											  HasEntryEnum = type.GetNestedType("Entry")?.IsEnum ?? false,
-											  HasDatabaseGeneratedIdentity = HasDatabaseGeneratedIdentity(entityType, objectContext), // TODO: TW: RegisteredProperty.StoreGeneratedPattern zatím nefunguje, vracíme se tedy k HasDatabaseGeneratedIdentity, pak je třeba dořešit
+											  HasDatabaseGeneratedIdentity = HasDatabaseGeneratedIdentity(entityType, objectContext),
 											  Properties = GetProperties(entityType, type, objectContext),
 											  PrimaryKeys = GetPrimaryKeys(entityType, type, objectContext),
 										  }).ToList();
@@ -163,7 +163,6 @@ namespace Havit.Data.Entity.Mapping.Internal
 					// OSpace Child {Id-None, MasterId-None, Master}
 					// SSpace Child {ChildId-Identity, MasterId-None}
 					// CSpace Child {Master, Id-None, MasterId-None}
-					// TODO: TW: Vymyslet, jak přes OSpace.member dohledat patřičný SSpace.member (mohou mít různé názvy)
 					result.StoreGeneratedPattern = ((EdmProperty)member).StoreGeneratedPattern; // je vždy None - tato informace je obsažena v SSpace
 					//var sEntityType = objectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.SSpace).Single(item => item.Name == ((EdmProperty)member).DeclaringType.Name);
 					//result.StoreGeneratedPattern = ((EdmProperty) sEntityType.DeclaredMembers.Where(dm => dm.Name == member.Name))

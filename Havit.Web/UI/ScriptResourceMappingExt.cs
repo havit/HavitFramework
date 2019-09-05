@@ -31,11 +31,6 @@ namespace Havit.Web.UI
 					throw new InvalidOperationException(String.Format("Missing script resource mapping '{0}'. Please add a ScriptResourceMapping named '{0}' (case-sensitive).", resourceName));
 
 				case TryEnsureScriptRegistrationResult.ScriptResourceMappingWhileAsyncPostback:
-					// TODO: lépe udělat persistence skriptů - vlastní script manager?
-					//if (HttpContext.Current.IsDebuggingEnabled)
-					//{
-					//	throw new InvalidOperationException(String.Format("Attempting to register '{0}' during asynchronous postback, which is not possible. Register script in the page or in master page.", resourceName));
-					//}
 					break;
 
 				default:
@@ -94,11 +89,6 @@ namespace Havit.Web.UI
 			{
 				ScriptManager.ScriptResourceMapping.AddDefinition(resourceFullName, new ScriptResourceDefinition { Path = page.ClientScript.GetWebResourceUrl(type, embeddedResourceName) });
 			}
-			// TODO: lépe udělat persistence skriptů - vlastní script manager?
-			//else if (currentScriptManager.IsInAsyncPostBack && !scriptResourceExists && HttpContext.Current.IsDebuggingEnabled)
-			//{
-			//	throw new InvalidOperationException(String.Format("Attempting to register embedded resource script '{0}' during asynchronous postback, which is not possible. Register script in the page or in master page.", embeddedResourceName));
-			//}
 			else
 			{
 				if (control == null)

@@ -24,7 +24,7 @@ namespace Havit.Services.Azure.FileStorage
 	{
 		private readonly string fileStorageConnectionString;
 		private readonly string fileShareName;
-		private readonly string[] rootDirectoryNameSegments; // TODO JK: Implementovat použití
+		private readonly string[] rootDirectoryNameSegments;
 
 		private volatile bool fileShareAlreadyCreated = false;
 

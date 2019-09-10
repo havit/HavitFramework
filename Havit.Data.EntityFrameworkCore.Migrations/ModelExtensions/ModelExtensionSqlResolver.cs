@@ -9,8 +9,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 	{
 		private readonly IEnumerable<IModelExtensionSqlGenerator> sqlGenerators;
 
-        /// <inheritdoc />
-        public ModelExtensionSqlResolver(IEnumerable<IModelExtensionSqlGenerator> sqlGenerators)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public ModelExtensionSqlResolver(IEnumerable<IModelExtensionSqlGenerator> sqlGenerators)
 		{
 			this.sqlGenerators = sqlGenerators;
 		}

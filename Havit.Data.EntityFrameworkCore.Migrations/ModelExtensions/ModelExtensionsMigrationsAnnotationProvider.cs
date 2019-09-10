@@ -15,8 +15,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
     {
         private readonly IModelExtensionAnnotationProvider annotationProvider;
 
-        /// <inheritdoc />
-        public ModelExtensionsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IModelExtensionAnnotationProvider annotationProvider)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public ModelExtensionsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IModelExtensionAnnotationProvider annotationProvider)
             : base(dependencies)
         {
             this.annotationProvider = annotationProvider;

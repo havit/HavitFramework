@@ -18,13 +18,17 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <inheritdoc />
         public string LogFragment => "";
 
-        /// <inheritdoc />
-        public CompositeMigrationsAnnotationProviderExtension()
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public CompositeMigrationsAnnotationProviderExtension()
 	    {
 	    }
 
-        /// <inheritdoc />
-        protected CompositeMigrationsAnnotationProviderExtension(CompositeMigrationsAnnotationProviderExtension copyFrom)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		protected CompositeMigrationsAnnotationProviderExtension(CompositeMigrationsAnnotationProviderExtension copyFrom)
 	    {
 		    providers = copyFrom.providers;
 	    }

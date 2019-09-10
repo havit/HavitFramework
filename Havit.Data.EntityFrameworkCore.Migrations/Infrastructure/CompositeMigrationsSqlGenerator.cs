@@ -13,8 +13,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
     {
         private readonly IEnumerable<IMigrationOperationSqlGenerator> operationGenerators;
 
-        /// <inheritdoc />
-        public CompositeMigrationsSqlGenerator(
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public CompositeMigrationsSqlGenerator(
 		    MigrationsSqlGeneratorDependencies dependencies,
 		    IMigrationsAnnotationProvider migrationsAnnotations,
 		    IEnumerable<IMigrationOperationSqlGenerator> operationGenerators) 

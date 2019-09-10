@@ -21,8 +21,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
     /// </summary>
     public class AlterOperationsFixUpMigrationsModelDiffer : MigrationsModelDiffer
 	{
-        /// <inheritdoc />
-        public AlterOperationsFixUpMigrationsModelDiffer(
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public AlterOperationsFixUpMigrationsModelDiffer(
 			IRelationalTypeMappingSource typeMappingSource,
 			IMigrationsAnnotationProvider migrationsAnnotations,
 			IChangeDetector changeDetector,

@@ -20,8 +20,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
         /// <inheritdoc />
         public string LogFragment => "";
 
-        /// <inheritdoc />
-        public ModelExtensionsExtension()
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public ModelExtensionsExtension()
 	    {
 	    }
 

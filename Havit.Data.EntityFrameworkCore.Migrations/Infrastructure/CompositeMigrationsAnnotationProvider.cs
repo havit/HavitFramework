@@ -15,7 +15,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 	{
 	    private readonly IEnumerable<IMigrationsAnnotationProvider> providers;
 
-        /// <inheritdoc />
+        /// <summary>
+		/// Konstruktor.
+		/// </summary>
         public CompositeMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IEnumerable<IMigrationsAnnotationProvider> providers)
 			: base(dependencies)
 	    {

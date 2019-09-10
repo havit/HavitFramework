@@ -16,8 +16,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
         private readonly IModelExtensionAnnotationProvider modelExtensionAnnotationProvider;
         private readonly IModelExtensionSqlResolver modelExtensionSqlResolver;
 
-        /// <inheritdoc />
-        public ModelExtensionMigrationOperationSqlGenerator(
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public ModelExtensionMigrationOperationSqlGenerator(
             IModelExtensionAnnotationProvider modelExtensionAnnotationProvider,
             IModelExtensionSqlResolver modelExtensionSqlResolver)
         {

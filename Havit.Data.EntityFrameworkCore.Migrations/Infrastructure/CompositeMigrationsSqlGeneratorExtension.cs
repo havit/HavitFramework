@@ -18,13 +18,17 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <inheritdoc />
         public string LogFragment => "";
 
-        /// <inheritdoc />
-        public CompositeMigrationsSqlGeneratorExtension()
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public CompositeMigrationsSqlGeneratorExtension()
 		{
 		}
 
-        /// <inheritdoc />
-        protected CompositeMigrationsSqlGeneratorExtension(CompositeMigrationsSqlGeneratorExtension copyFrom)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		protected CompositeMigrationsSqlGeneratorExtension(CompositeMigrationsSqlGeneratorExtension copyFrom)
 		{
 			generatorTypes = copyFrom.generatorTypes;
         }

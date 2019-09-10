@@ -12,8 +12,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
     {
         private readonly IEnumerable<IModelExtensionAnnotationProvider> providers;
 
-        /// <inheritdoc />
-        public CompositeModelExtensionAnnotationProvider(IEnumerable<IModelExtensionAnnotationProvider> providers)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public CompositeModelExtensionAnnotationProvider(IEnumerable<IModelExtensionAnnotationProvider> providers)
         {
             this.providers = providers;
         }

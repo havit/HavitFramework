@@ -26,11 +26,15 @@ namespace Havit.Business.Tests
 			subjekt1 = Subjekt.CreateObject();
 
 			// Act + Assert
-			Assert.IsTrue(role1.Equals(role1));
+			Assert.IsTrue(role1.Equals(role1));			
+#pragma warning disable 1718 // cílem je otestovat porovnání se sebou samým
 			Assert.IsTrue(role1 == role1);
+#pragma warning restore 1718
 
 			Assert.IsTrue(subjekt1.Equals(subjekt1));
+#pragma warning disable 1718 // cílem je otestovat porovnání se sebou samým
 			Assert.IsTrue(subjekt1 == subjekt1);
+#pragma warning restore 1718
 		}
 
 		[TestMethod]
@@ -59,8 +63,9 @@ namespace Havit.Business.Tests
 			Assert.IsTrue(role1 == role2);
 
 			Assert.IsTrue(role1.Equals(role1));
+#pragma warning disable 1718 // cílem je otestovat porovnání se sebou samým
 			Assert.IsTrue(role1 == role1);
-
+#pragma warning restore 1718
 			// porovnání objektů v různých identity mapách
 			Assert.IsTrue(role1.Equals(role3));
 			Assert.IsTrue(role1 == role3);

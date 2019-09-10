@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Havit.Services.Tests.FileStorage
 {
 	[TestClass]
-	class FileStorageServiceBaseTests
+	public class FileStorageServiceBaseTests
 	{
 		[TestMethod]
 		public void FileStorageServiceBase_EnumerableFilesGetPrefix_CorrectlyGetPrefix()

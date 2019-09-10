@@ -177,7 +177,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Seznam operací pro účely sestavení klíče do cache.
 		/// </summary>
-		public enum CachedStorageOperation
+		protected enum CachedStorageOperation
 		{
 			/// <summary>
 			/// Metoda Exists.

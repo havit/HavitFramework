@@ -6,6 +6,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Services.Caching;
+using Havit.Services.TestHelpers.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

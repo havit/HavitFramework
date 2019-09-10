@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests
+namespace Havit.Services.TestHelpers.Caching
 {
 	public class DictionaryCacheService : ICacheService
 	{

@@ -194,9 +194,6 @@ var Havit;
                                     $('body').off('keypress.havit.web.bootstrap');
                                     ModalExtension.keypressListenerElementSelector = this.modalElementSelector;
                                     $('body').on('keypress.havit.web.bootstrap', function (keypressEvent) {
-                                        if (keypressEvent.which == 13) {
-                                            keypressEvent.preventDefault();
-                                        }
                                         if (_this.closeOnEscapeKey) {
                                             if (keypressEvent.which == 27) {
                                                 eval(_this.escapePostbackScript);
@@ -369,6 +366,9 @@ var Havit;
                             };
                             ModalExtension.suppressFireDefaultButton = function (event) {
                                 if (event.keyCode == 13) {
+                                    if (document.activeElement.nodeName.toLowerCase() == "textarea") {
+                                        return true;
+                                    }
                                     event.cancelBubble = true;
                                     if (event.stopPropagation) {
                                         event.stopPropagation();

@@ -293,9 +293,6 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
                 // we are listener event if we are not listening (by closeOnEscapeKey) - it helps to detect there is child modal
                 ModalExtension.keypressListenerElementSelector = this.modalElementSelector;
                 $('body').on('keypress.havit.web.bootstrap', (keypressEvent) => {
-                    if (keypressEvent.which == 13) {
-                        keypressEvent.preventDefault(); // preventing form submit (in IE the first button on page is clicked)
-                    }
                     if (this.closeOnEscapeKey) {
                         if (keypressEvent.which == 27) {
                             eval(this.escapePostbackScript);
@@ -532,7 +529,11 @@ module Havit.Web.Bootstrap.UI.WebControls.ClientSide {
         public static suppressFireDefaultButton(event: KeyboardEvent) {
             // In IE default button is clicked even it is outside of the dialog.
             // To suppress firing default button click we need to suppress event propagation.
-            if (event.keyCode == 13) {
+			if (event.keyCode == 13) {
+
+				if (document.activeElement.nodeName.toLowerCase() == "textarea") { // do not block enter key in textarea
+					return true;
+				}
                 event.cancelBubble = true;
                 if (event.stopPropagation) {
                     event.stopPropagation();

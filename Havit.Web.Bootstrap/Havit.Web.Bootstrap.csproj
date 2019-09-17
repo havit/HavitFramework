@@ -7,7 +7,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<PackageVersion>2.0.1</PackageVersion>
+	<PackageVersion>2.0.2</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Installs Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) and other client-side Bootstrap dependencies.</Description>
 	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>

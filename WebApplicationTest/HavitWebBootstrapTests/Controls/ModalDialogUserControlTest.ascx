@@ -6,15 +6,16 @@
 		<asp:Panel DefaultButton="ShowNestedButton" runat="server">
 		
 		Hello! This is my first cool dialog.
+			<textarea>ha!</textarea>
 		<br />
 		<asp:CheckBox ID="MyCheckBox" runat="server" />
 		<havit:DateTimeBox runat="server" />
 		<asp:TextBox ID="SubjektTB" Width="150" runat="server" Style="border: 1px solid black;" />
 		<havit:AutoSuggestMenu
-			ID="SubjektASM"
+			ID="SubjektASM" 
 			TargetControlID="SubjektTB"
-			ServicePath="~/HavitWebTests/AutoSuggestMenuService.asmx"
-			OnGetSuggestions="WebApplicationTest.HavitWebTests.AutoSuggestMenuService.GetSuggestions"
+			ServicePath="~/HavitWebTests/AutoSuggestMenuService.asmx"			
+			OnGetSuggestions="Havit.WebApplicationTest.HavitWebTests.AutoSuggestMenuService.GetSuggestions"
 			KeyPressDelay="300"
 			UsePaging="true"
 			PageSize="10"

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Internal
@@ -17,6 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 		private readonly DbContext dbContext;
 		private readonly DbSet<TEntity> dbSet;
 		private readonly Lazy<IKey> primaryKeyLazy;
+		private readonly Lazy<IStateManager> stateManagerLazy;
 
 		/// <summary>
 		/// Konstruktor.
@@ -26,6 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 			this.dbContext = dbContext;
 			this.dbSet = dbContext.Set<TEntity>(); // zde můžeme bez Lazy - veškerá použití třídy jsou schovaná za lazy
 			this.primaryKeyLazy = new Lazy<IKey>(() => dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey(), LazyThreadSafetyMode.None);
+			this.stateManagerLazy = new Lazy<IStateManager>(() => dbContext.GetService<IStateManager>(), LazyThreadSafetyMode.None);
 		}
 
 		/// <summary>
@@ -42,7 +46,9 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 		/// </summary>
 		public TEntity FindTracked(params object[] keyValues)
 		{
-			return (TEntity)dbContext.ChangeTracker.GetInfrastructure().TryGetEntry(primaryKeyLazy.Value, keyValues)?.Entity;
+#pragma warning disable EF1001 // Internal EF Core API usage.
+			return (TEntity)stateManagerLazy.Value.TryGetEntry(primaryKeyLazy.Value, keyValues)?.Entity;
+#pragma warning restore EF1001 // Internal EF Core API usage.
 		}
 
 		/// <summary>
@@ -56,7 +62,7 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 		/// <summary>
 		/// Asynchronously finds an entity with the given primary key values. If an entity with the given primary key values exists in the context, then it is returned immediately without making a request to the store. Otherwise, a request is made to the store for an entity with the given primary key values and this entity, if found, is attached to the context and returned. If no entity is found in the context or the store, then null is returned.
 		/// </summary>
-		public Task<TEntity> FindAsync(params object[] keyValues)
+		public ValueTask<TEntity> FindAsync(params object[] keyValues)
 		{
 			return dbSet.FindAsync(keyValues);
 		}

@@ -26,9 +26,9 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 
 		    foreach (IMutableProperty stringProperty in stringProperties)
 		    {
-				if ((stringProperty.Relational().DefaultValue == null) && String.IsNullOrEmpty(stringProperty.Relational().DefaultValueSql))
+				if ((stringProperty.GetDefaultValue() == null) && String.IsNullOrEmpty(stringProperty.GetDefaultValueSql()))
 			    {
-				    stringProperty.Relational().DefaultValue = String.Empty;
+				    stringProperty.SetDefaultValue(String.Empty);
 					stringProperty.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never; // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
 				}
 			}

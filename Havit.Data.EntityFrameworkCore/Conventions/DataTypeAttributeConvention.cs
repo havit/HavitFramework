@@ -32,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 			{
 				if (item.DataTypeAttribute.DataType == DataType.Date)
 				{
-					item.Property.Relational().ColumnType = "Date";
+					item.Property.SetColumnType("Date");
 				}
 				else
 				{

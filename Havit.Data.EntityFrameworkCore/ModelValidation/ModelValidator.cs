@@ -167,7 +167,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 			foreach (INavigation navigationProperty in entityType.GetNavigations())
 			{
 				// Pro Owned types nemůžeme mít cizí klíč (Bug 41479).
-				if ((!navigationProperty.ForeignKey.IsOwnership) && navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty))
+				if ((!navigationProperty.ForeignKey.IsOwnership) && navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty()))
 				{
 					yield return $"Class {entityType.ClrType.Name} has a navigation property {navigationProperty.Name} with no foreign key.";
 				}
@@ -203,7 +203,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// </summary>
 		internal IEnumerable<string> CheckOnlyForeignKeysEndsWithId(IEntityType entityType)
 		{
-			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty))
+			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
 			{
 				if (property.Name.EndsWith("Id") && !property.IsForeignKey() && !property.IsKey())
 				{
@@ -217,7 +217,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// </summary>
 		internal IEnumerable<string> CheckAllForeignKeysEndsWithId(IEntityType entityType)
 		{
-			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty))
+			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
 			{
 				if (!property.Name.EndsWith("Id") && property.IsForeignKey())
 				{

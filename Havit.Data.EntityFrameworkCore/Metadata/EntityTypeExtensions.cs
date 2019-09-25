@@ -33,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 	    {
 			// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
 			return !entityType.IsOwned()
-				&& !entityType.IsQueryType
+				&& !entityType.IsKeyless()
 				&& (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
 				&& HasExactlyTwoPropertiesWhichAreAlsoForeignKeys(entityType); // třída má právě dvě (skalární) vlastnosti a ty jsou i cizím klíčem
 		}
@@ -43,9 +43,24 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// </summary>
 		internal static bool IsApplicationEntity(this IEntityType entityType)
 		{
-			return !entityType.IsQueryType
+			return !entityType.IsKeyless()
 				&& !entityType.IsOwned()
 				&& !entityType.IsSystemType();
+		}
+
+		/// <summary>
+		/// Vrací true, pokud jde o keyless type (dříve QueryType).
+		/// IsQueryType (&lt; EF Core 3.0) bylo publikováno v interface IEntityType, IsKeyless se v interface nenachází a je pouze v implementaci EntityType;
+		/// </summary>
+		public static bool IsKeyless(this IEntityType entityType)
+		{
+			if (entityType is Microsoft.EntityFrameworkCore.Metadata.Internal.EntityType entityTypeCasted)
+			{
+#pragma warning disable EF1001 // Internal EF Core API usage.
+				return entityTypeCasted.IsKeyless;
+#pragma warning restore EF1001 // Internal EF Core API usage.
+			}
+			return false;
 		}
 	}
 }

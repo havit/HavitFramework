@@ -26,6 +26,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
 			modelBuilder.Entity<GroupToGroup>().HasKey(groupHierarchy => new { groupHierarchy.ChildGroupId, groupHierarchy.ParentGroupId });
 
 			modelBuilder.Entity<IdWithPoorlyNamedForeignKey>().HasOne(item => item.ForeignKey).WithMany().HasForeignKey(item => item.ForeignKeyCode);
+
+			modelBuilder.Entity<KeylessClass>().HasNoKey(); // bez primárního klíče
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

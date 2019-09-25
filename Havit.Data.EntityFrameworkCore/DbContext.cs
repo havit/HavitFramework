@@ -73,6 +73,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// </summary>
 		protected virtual void ModelCreatingCompleting(ModelBuilder modelBuilder)
 		{
+			// TODO: EF Core 3.0 - nahradit konvence
 			var conventions = GetModelConventions().ToList();
 			foreach (var convention in conventions)
 			{
@@ -82,19 +83,13 @@ namespace Havit.Data.EntityFrameworkCore
 
 		/// <summary>
 		/// Vrací konvence použité v modelu.
-		/// Aktuálně vrací tyto konvence:
-		/// <list type="bullet">
-		///		<item>
-		///			<term>DataTypeAttributeConvention</term>
-		///			<description><see cref="DataTypeAttributeConvention"/></description>
-		///		</item>
-		/// </list>
 		/// </summary>
 		protected virtual IEnumerable<IModelConvention> GetModelConventions()
-	    {			
+	    {
+			// TODO: EF Core 3.0 - nahradit konvence
 			yield return new ManyToManyEntityKeyDiscoveryConvention();
 			yield return new DataTypeAttributeConvention();
-		    yield return new CascadeDeleteToRestrictConvention();
+			yield return new CascadeDeleteToRestrictConvention();
 			yield return new CacheAttributeToAnnotationConvention();
 		}
 

@@ -139,6 +139,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			};
 
 			dbContextMock.Object.Attach(child);
+			dbContextMock.Object.Entry(child).Navigation(nameof(Child.Parent)).IsLoaded = true; // starting EF Core 3.0 properties of attached entities are not marked as loaded
 
 			// Act
 			IDataLoader dataLoader = new DbDataLoader(dbContextMock.Object, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(dbContextMock.Object.CreateDbContextFactory()));

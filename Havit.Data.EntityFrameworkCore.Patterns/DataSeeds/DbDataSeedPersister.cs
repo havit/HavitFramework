@@ -277,7 +277,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 
 			return entityType
 				.GetProperties()
-				.Where(item => !item.IsShadowProperty)
+				.Where(item => !item.IsShadowProperty())
 				.Where(p => !PropertyIsIdentity(p))				
 				.ToList();
 		}
@@ -292,7 +292,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 
 			List<IProperty> result = entityType
 				.GetProperties()
-				.Where(item => !item.IsShadowProperty)
+				.Where(item => !item.IsShadowProperty())
 				.Where(p => !p.IsKey()) // hodnotu primárního klíče nelze aktualizovat
 				// .Where(p => !PropertyIsIdentity(p)) - není potřeba, neaktualizujeme žádný PK, natož identitu
 				.ToList();
@@ -312,8 +312,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			return property.ClrType == typeof(Int32) // identitu uvažujeme jen pro Int32
 				&& property.IsPrimaryKey() // byť to není správné, uvažujeme identitu jen na primárním klíči
 				&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // pokud má nastaveno OnAdd, může mít použito autoincrement
-				&& (property.Relational().DefaultValue == null) // ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu výrazem (třeba prázdný řetězec)
-				&& String.IsNullOrEmpty(property.Relational().DefaultValueSql); // a ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu (třeba sekvenci)
+				&& (property.GetDefaultValue() == null) // ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu výrazem (třeba prázdný řetězec)
+				&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // a ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu (třeba sekvenci)
 		}
 	}
 }

@@ -15,14 +15,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 
 		public T Current => source.Current;
 
-		public Task<bool> MoveNext(CancellationToken cancellationToken)
+		public ValueTask<bool> MoveNextAsync()
 		{
-			return Task.FromResult(source.MoveNext());
+			return new ValueTask<bool>(source.MoveNext());
 		}
 
-		public void Dispose()
-		{
-			source.Dispose();
+		public ValueTask DisposeAsync()
+		{			
+			return new ValueTask();
 		}
 	}
 }

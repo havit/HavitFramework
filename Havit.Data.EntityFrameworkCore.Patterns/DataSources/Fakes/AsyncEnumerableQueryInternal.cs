@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 {
@@ -15,9 +16,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 
 		public AsyncEnumerableQueryInternal(Expression expression)
 			: base(expression)
-		{ } 
- 
-		IAsyncEnumerator<T> IAsyncEnumerable<T>.GetEnumerator()
+		{ }
+
+		IAsyncEnumerator<T> IAsyncEnumerable<T>.GetAsyncEnumerator(CancellationToken cancellationToken)
 		{
 			return new AsyncEnumeratorInternal<T>(this.AsEnumerable().GetEnumerator());
 		}

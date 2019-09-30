@@ -11,7 +11,6 @@
 	<Description>HAVIT .NET Framework Extensions - Installs Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) and other client-side Bootstrap dependencies.</Description>
 	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>
-	<IncludeContentInPack>true</IncludeContentInPack>
 	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
 	<ContentTargetFolders>content</ContentTargetFolders>
   </PropertyGroup>

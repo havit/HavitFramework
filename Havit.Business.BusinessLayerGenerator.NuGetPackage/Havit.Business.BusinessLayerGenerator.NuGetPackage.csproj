@@ -13,8 +13,6 @@
     <Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
     <!-- Publikujeme výstup buildu jiného projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
-    <IncludeContentInPack>true</IncludeContentInPack>
   </PropertyGroup>
 
   <ItemGroup>

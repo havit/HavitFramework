@@ -4,13 +4,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>HAVIT</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://www.gravatar.com/avatar/e59ffb10448162f0c6d6b5ae3fecd0ce?s=64</PackageIconUrl>
-
-    <!-- Jako default nebudeme dávat content do balíčků (stačí ukliknutí a máme content v nuget balíčku).
-		 V projektech, ve kterých content do nuget balíčku chceme, si jej povolíme. -->
-    <IncludeContentInPack>false</IncludeContentInPack>
+	<PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="../logo.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+	
   <!-- SourceLink -->
   <PropertyGroup>
     <!-- Source: https://github.com/dotnet/sourcelink/#using-sourcelink -->

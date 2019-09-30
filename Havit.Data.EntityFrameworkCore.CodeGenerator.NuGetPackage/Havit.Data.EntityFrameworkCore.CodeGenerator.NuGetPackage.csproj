@@ -12,8 +12,8 @@
     <PackageVersion>2.0.1</PackageVersion>
     <!-- Publikujeme výstup buildu jiného projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <!-- Výstup je publikován jako content, musíme jeho publikaci povolit. -->
-    <IncludeContentInPack>true</IncludeContentInPack>
+	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
+	<NoWarn>$(NoWarn);NU5128</NoWarn>	  
     <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
   </PropertyGroup>
 

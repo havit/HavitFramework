@@ -15,6 +15,8 @@
     <Description>HAVIT .NET Framework Extensions. This package is OBSOLETE, use Havit.Core package instead of this one.</Description>
     <!-- Nepublikujeme výstup buildu projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
+	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
+	<NoWarn>$(NoWarn);NU5128</NoWarn>	  
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />

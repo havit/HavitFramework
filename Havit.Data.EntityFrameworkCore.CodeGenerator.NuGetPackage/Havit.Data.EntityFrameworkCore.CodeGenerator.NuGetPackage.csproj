@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- CodeGenerator, přestože sám je implementován jako NET Core App 2.1, chceme umožnit nainstalovat do projektů targetující .NET Standard 2.0. -->
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- CodeGenerator, přestože sám je implementován jako NET Core App 3.0, chceme umožnit nainstalovat do projektů targetující .NET Standard 2.1. -->
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <!-- NuGet -->
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Havit.Data.EntityFrameworkCore.CodeGenerator\bin\$(Configuration)\netcoreapp2.1\**">
+    <Content Include="..\Havit.Data.EntityFrameworkCore.CodeGenerator\bin\$(Configuration)\netcoreapp3.0\**">
       <Pack>true</Pack>
       <PackagePath>tools\CodeGenerator</PackagePath>
     </Content>

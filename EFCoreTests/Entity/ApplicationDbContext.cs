@@ -25,12 +25,6 @@ namespace Havit.EFCoreTests.Entity
 			// NOOP
 		}
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
-			optionsBuilder.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-		}
-
 		/// <inheritdoc />
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{

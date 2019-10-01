@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>Havit.EFCoreTests.ConsoleApp</AssemblyName>
     <RootNamespace>Havit.EFCoreTests.ConsoleApp</RootNamespace>
   </PropertyGroup>
@@ -10,10 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="4.1.0" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.3.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

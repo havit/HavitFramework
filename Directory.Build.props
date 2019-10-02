@@ -8,5 +8,7 @@
 	<Product>HAVIT .NET Framework Extensions</Product>
 	<AssemblyTitle>HAVIT .NET Framework Extensions</AssemblyTitle>
   </PropertyGroup>
-
+	
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../')))"/>
+	
 </Project>

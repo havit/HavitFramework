@@ -32,6 +32,14 @@ namespace Havit.Data.Configuration.Git.Core
 		private string DetermineDatabaseName(string originalDbName, string configPath)
 		{
 			string repositoryBranch = gitRepositoryProvider.GetBranch(configPath);
+            if (string.IsNullOrEmpty(repositoryBranch))
+            {
+                // If there's no branch, there's nothing to replace
+                // However currently HeadFileGitRepositoryProvider does not support matching detached HEAD to branch name
+                // (scenario commonly occuring on build agent)
+                return originalDbName;
+            }
+
 			return originalDbName.Replace(BranchNamePlaceholder, repositoryBranch);
 		}
 	}

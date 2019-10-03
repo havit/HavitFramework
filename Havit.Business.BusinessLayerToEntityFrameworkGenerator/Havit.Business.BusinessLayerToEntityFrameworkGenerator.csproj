@@ -1,21 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-	<TargetFramework>net471</TargetFramework>
+	<TargetFramework>netcoreapp3.0</TargetFramework>
 	<OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="140.17283.0" />
-	<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.5.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="150.18178.0" />
+	<PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
+	<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj" />
-	<ProjectReference Include="..\Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj" />
 	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
-	<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

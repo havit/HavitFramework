@@ -219,7 +219,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 		private static bool WriteCustomIndexes(CodeWriter writer, GeneratedModelClass modelClass)
 		{
 			bool result = false;
-			foreach (Index index in modelClass.Table.Indexes)
+			foreach (Microsoft.SqlServer.Management.Smo.Index index in modelClass.Table.Indexes)
 			{
 				// přeskakujeme indexy primárního klíče a automaticky vygenerované indexy
 				if (index.Name.StartsWith("PK_") || index.Name.StartsWith("FKX_"))

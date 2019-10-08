@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 	/// <summary>
 	/// Konvence vyhledá kandidáty na entity reprezentující vztah ManyToMany bez nastaveného primárního klíče a nastaví složený primární klíč.
 	/// </summary>
-	public class ManyToManyEntityKeyDiscoveryConvention : IModelConvention
+/*	public class ManyToManyEntityKeyDiscoveryConvention : IModelConvention
 	{
 		/// <inheritdoc />
 		public void Apply(ModelBuilder modelBuilder)
@@ -25,5 +25,5 @@ namespace Havit.Data.EntityFrameworkCore.Conventions
 				manyToManyCandidateEntityType.SetPrimaryKey(manyToManyCandidateEntityType.GetProperties().OrderBy(property => property.DeclaringEntityType.ClrType.GetProperties().ToList().IndexOf(property.PropertyInfo)).ToList().AsReadOnly());
 			}
 		}
-	}
+	}*/
 }

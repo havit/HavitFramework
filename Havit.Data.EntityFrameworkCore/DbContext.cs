@@ -5,9 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Internal;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Havit.Data.EntityFrameworkCore
@@ -19,6 +22,11 @@ namespace Havit.Data.EntityFrameworkCore
 	    /// Registr akcí k provedení po uložení změn.
 	    /// </summary>
 	    private List<Action> afterSaveChangesActions;
+
+		/// <summary>
+		/// Nastavení DbContextu.
+		/// </summary>
+		protected DbContextSettings Settings { get; } = new DbContextSettings();
 
 		/// <summary>
 		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
@@ -34,18 +42,45 @@ namespace Havit.Data.EntityFrameworkCore
 	    {
 	    }
 
-	    /// <inheritdoc />
-	    /// <remarks>
-	    /// Zajistí nastavení služeb convencí.
-	    /// </remarks>
-	    protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
+		/// <inheritdoc />
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			if (Settings.UseCacheAttributeToAnnotationConvention)
+			{
+				optionsBuilder.UseConventionSetPlugin<CacheAttributeToAnnotationConventionPlugin>();
+			}
+
+			if (Settings.UseCascadeDeleteToRestrictConvention)
+			{
+				optionsBuilder.UseConventionSetPlugin<CascadeDeleteToRestrictConventionPlugin>();
+			}
+
+			if (Settings.UseDataTypeAttributeConvention)
+			{
+				optionsBuilder.UseConventionSetPlugin<DataTypeAttributeConventionPlugin>();
+			}
+
+			if (Settings.UseManyToManyEntityKeyDiscoveryConvention)
+			{
+				// TODO EF Core 3.0: ManyToMany
+			}
+
+			if (Settings.UseStringPropertiesDefaultValueConvention)
+			{
+				optionsBuilder.UseConventionSetPlugin<StringPropertiesDefaultValueConventionPlugin>();
+			}
+
+			base.OnConfiguring(optionsBuilder);
+		}
+
+		/// <inheritdoc />
+		protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
 	    {			
 		    base.OnModelCreating(modelBuilder);			
 		    
 		    RegisterDataSeedVersion(modelBuilder);
 		    
 			CustomizeModelCreating(modelBuilder);
-			ModelCreatingCompleting(modelBuilder);
 	    }
 
 		/// <summary>
@@ -65,32 +100,6 @@ namespace Havit.Data.EntityFrameworkCore
 		protected virtual void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
 			// NOOP - template method
-		}
-
-		/// <summary>
-		/// Metoda volaná po registraci modelu.
-		/// Zajišťuje volání konvencí.
-		/// </summary>
-		protected virtual void ModelCreatingCompleting(ModelBuilder modelBuilder)
-		{
-			// TODO: EF Core 3.0 - nahradit konvence
-			var conventions = GetModelConventions().ToList();
-			foreach (var convention in conventions)
-			{
-				convention.Apply(modelBuilder);
-			}
-		}
-
-		/// <summary>
-		/// Vrací konvence použité v modelu.
-		/// </summary>
-		protected virtual IEnumerable<IModelConvention> GetModelConventions()
-	    {
-			// TODO: EF Core 3.0 - nahradit konvence
-			yield return new ManyToManyEntityKeyDiscoveryConvention();
-			yield return new DataTypeAttributeConvention();
-			yield return new CascadeDeleteToRestrictConvention();
-			yield return new CacheAttributeToAnnotationConvention();
 		}
 
 	    /// <summary>

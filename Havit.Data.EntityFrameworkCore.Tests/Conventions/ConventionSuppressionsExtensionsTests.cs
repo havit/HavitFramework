@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 {
+	// TODO EF Core 3.0: Dokončit, ověřit alternativu, bude-li.
+
+		/*
 	[TestClass]
 	public class ConventionSuppressionsExtensionsTests
 	{
@@ -79,5 +81,5 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 				// NOOP
 			}
 		}
-	}
+	}*/
 }

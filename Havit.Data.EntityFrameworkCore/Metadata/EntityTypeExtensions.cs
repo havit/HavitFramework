@@ -13,11 +13,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
     public static class EntityTypeExtensions
     {
 	    /// <summary>
-	    /// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou HFW automaticky.
+	    /// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou EF automaticky.
 	    /// </summary>
 	    public static bool IsSystemType(this IEntityType entityType)
 	    {
-			return entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion);
+			return (entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion))
+				|| (entityType.ClrType == typeof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow));
 		}
 
 		internal static bool HasExactlyTwoPropertiesWhichAreAlsoForeignKeys(this IEntityType entityType)

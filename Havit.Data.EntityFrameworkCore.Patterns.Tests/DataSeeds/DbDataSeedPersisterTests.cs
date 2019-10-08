@@ -11,7 +11,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using System.ComponentModel.DataAnnotations;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds

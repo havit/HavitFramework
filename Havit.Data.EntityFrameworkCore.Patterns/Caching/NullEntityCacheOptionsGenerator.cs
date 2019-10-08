@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Conventions;
-using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Services;
 using Havit.Services.Caching;
 using Microsoft.EntityFrameworkCore.Metadata;

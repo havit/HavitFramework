@@ -1,5 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Conventions;
-using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Services;
 using Havit.Services.Caching;

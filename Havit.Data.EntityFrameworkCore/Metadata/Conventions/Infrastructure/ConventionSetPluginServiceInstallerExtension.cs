@@ -30,7 +30,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 			}
 
 			private new ConventionSetPluginServiceInstallerExtension Extension
-				=> (ConventionSetPluginServiceInstallerExtension)base.Extension;
+			{
+				get
+				{
+					return (ConventionSetPluginServiceInstallerExtension)base.Extension;
+				}
+			}
 
 			public override bool IsDatabaseProvider => false;
 
@@ -39,8 +44,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 			public override long GetServiceProviderHashCode() => Extension.ConventionType.GetHashCode();
 
 			public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
-				=> debugInfo["ConventionType:" + nameof(Extension.ConventionType)]
-					= (Extension.ConventionType.GetHashCode()).ToString(CultureInfo.InvariantCulture);
+			{
+				debugInfo["ConventionType:" + nameof(Extension.ConventionType)] = (Extension.ConventionType.GetHashCode()).ToString(CultureInfo.InvariantCulture);
+			}
 		}
 	}
 }

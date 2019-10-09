@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Internal;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -62,7 +61,7 @@ namespace Havit.Data.EntityFrameworkCore
 
 			if (Settings.UseManyToManyEntityKeyDiscoveryConvention)
 			{
-				// TODO EF Core 3.0: ManyToMany
+				optionsBuilder.UseConventionSetPlugin<ManyToManyEntityKeyDiscoveryConventionPlugin>();
 			}
 
 			if (Settings.UseStringPropertiesDefaultValueConvention)

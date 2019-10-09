@@ -21,9 +21,10 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 				|| (entityType.ClrType == typeof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow));
 		}
 
-		internal static bool HasExactlyTwoPropertiesWhichAreAlsoForeignKeys(this IEntityType entityType)
+		internal static bool HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(this IEntityType entityType)
 		{
 			return (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
+				&& (entityType.GetProperties().All(item => !item.IsNullable))
 				&& (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
 		}
 
@@ -36,7 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 			return !entityType.IsOwned()
 				&& !entityType.IsKeyless()
 				&& (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
-				&& HasExactlyTwoPropertiesWhichAreAlsoForeignKeys(entityType); // třída má právě dvě (skalární) vlastnosti a ty jsou i cizím klíčem
+				&& HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(entityType); // třída má právě dvě (skalární) vlastnosti a ty jsou i cizím klíčem
 		}
 
 		/// <summary>

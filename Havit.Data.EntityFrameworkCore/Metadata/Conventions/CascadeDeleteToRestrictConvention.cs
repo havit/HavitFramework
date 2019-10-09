@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +17,8 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		// TODO EF Core 3.0: Comment, Proč je to potomek CascadeDeleteConvention, proč je doplněn after a nikoliv replacenut (kvůli suppressu)
 
 		/// <summary>
-		/// Konstructor
+		/// Konstructor.
 		/// </summary>
-		/// <param name="dependencies"></param>
 		public CascadeDeleteToRestrictConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
 		{
 		}

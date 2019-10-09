@@ -9,22 +9,13 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Registruje DataTypeAttributeConvention do ConventionSetu.
 	/// </summary>
-	public class DataTypeAttributeConventionPlugin : IConventionSetPlugin
+	public class ManyToManyEntityKeyDiscoveryConventionPlugin : IConventionSetPlugin
 	{
-		private readonly ProviderConventionSetBuilderDependencies dependencies;
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public DataTypeAttributeConventionPlugin(ProviderConventionSetBuilderDependencies dependencies)
-		{
-			this.dependencies = dependencies;
-		}
-
 		/// <inheritdoc />
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{
-			conventionSet.PropertyAddedConventions.Add(new DataTypeAttributeConvention(dependencies));
+			conventionSet.ForeignKeyAddedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
+			conventionSet.ForeignKeyRequirednessChangedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
 			return conventionSet;
 		}
 	}

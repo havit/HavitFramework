@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 {
@@ -14,15 +15,19 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// </summary>
     public class StringPropertiesDefaultValueConvention : IPropertyAddedConvention
     {
-		// TODO EF Core 3.0: Podpora pro suppress! Je to vůbec implementovatelné? Spíš ne.
-
 		/// <inheritdoc />
 		public void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, IConventionContext<IConventionPropertyBuilder> context)
 		{
 			IConventionProperty property = propertyBuilder.Metadata;
-
+			
 			// Systémové tabulky nechceme změnit.
 			if (property.DeclaringEntityType.IsSystemType())
+			{
+				return;
+			}
+
+			if (property.DeclaringEntityType.IsConventionSuppressed<StringPropertiesDefaultValueConvention>()
+				|| (property.IsConventionSuppressed<StringPropertiesDefaultValueConvention>()))
 			{
 				return;
 			}

@@ -51,6 +51,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		/// <inheritdoc />
 		protected override void ProcessEntityTypeAdded(IConventionEntityTypeBuilder entityTypeBuilder, CacheAttribute attribute, IConventionContext<IConventionEntityTypeBuilder> context)
 		{
+			// Systémové tabulky - nemá cenu řešit, nebudou mít attribut.
+			// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
+
 			if (attribute.CacheEntities)
 			{
 				entityTypeBuilder.HasAnnotation(CacheEntitiesAnnotationName, true, fromDataAnnotation: true);

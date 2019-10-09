@@ -24,11 +24,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		{
 		}
 
-		// TODO EF Core 3.0: Podpora pro suppress! Je to vůbec implementovatelné? Spíš ne.
-
 		/// <inheritdoc />
 		protected override void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, DataTypeAttribute attribute, MemberInfo clrMember, IConventionContext context)
 		{
+			// Systémové tabulky - nemá cenu řešit, nebudou mít attribut.
+			// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
+
 			if (attribute.DataType == DataType.Date)
 			{
 				propertyBuilder.HasColumnType("Date", fromDataAnnotation: true);

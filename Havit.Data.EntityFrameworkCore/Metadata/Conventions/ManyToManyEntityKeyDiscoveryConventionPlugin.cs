@@ -15,7 +15,6 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{
 			conventionSet.ForeignKeyAddedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
-			conventionSet.ForeignKeyRequirednessChangedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
 			return conventionSet;
 		}
 	}

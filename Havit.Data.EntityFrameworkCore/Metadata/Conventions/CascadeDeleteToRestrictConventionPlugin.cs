@@ -26,15 +26,15 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		{
 			CascadeDeleteToRestrictConvention convention = new CascadeDeleteToRestrictConvention(dependencies);
 
-			if (!ConventionSet.AddAfter<IForeignKeyAddedConvention>(conventionSet.ForeignKeyAddedConventions, convention, typeof(CascadeDeleteConvention)))
+			if (!ConventionSet.Replace<IForeignKeyAddedConvention, CascadeDeleteConvention>(conventionSet.ForeignKeyAddedConventions, convention))
 			{
-				// pokud se nepodaří přidat konvenci za CascadeDeleteConvention, přidáme ji na konec (což vlastně můžeme tak jako tak, ale explicitní vyjádření závislosti se hodí).
+				// pokud se nepodaří vyměnit konvenci za CascadeDeleteConvention, přidáme ji
 				conventionSet.ForeignKeyAddedConventions.Add(convention);
 			}
 
-			if (!ConventionSet.AddAfter<IForeignKeyRequirednessChangedConvention>(conventionSet.ForeignKeyRequirednessChangedConventions, convention, typeof(CascadeDeleteConvention)))
+			if (!ConventionSet.Replace<IForeignKeyRequirednessChangedConvention, CascadeDeleteConvention>(conventionSet.ForeignKeyRequirednessChangedConventions, convention))
 			{
-				// pokud se nepodaří přidat konvenci za CascadeDeleteConvention, přidáme ji na konec (což vlastně můžeme tak jako tak, ale explicitní vyjádření závislosti se hodí).
+				// pokud se nepodaří vyměnit konvenci za CascadeDeleteConvention, přidáme ji
 				conventionSet.ForeignKeyRequirednessChangedConventions.Add(convention);
 			}
 

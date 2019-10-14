@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -15,8 +16,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
     {
         private ImmutableList<Type> providers = ImmutableList.Create<Type>();
 
-        /// <inheritdoc />
-        public string LogFragment => "";
+		private DbContextOptionsExtensionInfo _info;
+
+		/// <inheritdoc />
+		public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
 
 		/// <summary>
 		/// Konstruktor.
@@ -52,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         }
 
         /// <inheritdoc />
-        public bool ApplyServices(IServiceCollection services)
+        public void ApplyServices(IServiceCollection services)
         {
             var currentProviderTypes = providers.ToArray();
             CompositeMigrationsAnnotationProvider Factory(IServiceProvider serviceProvider)
@@ -63,8 +66,6 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 
             services.Add(currentProviderTypes.Select(t => ServiceDescriptor.Singleton(t, t)));
             services.Replace(ServiceDescriptor.Singleton<IMigrationsAnnotationProvider, CompositeMigrationsAnnotationProvider>(Factory));
-
-            return false;
         }
 
         /// <inheritdoc />
@@ -78,5 +79,27 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         {
             // no validation
         }
-    }
+
+		protected class ExtensionInfo : DbContextOptionsExtensionInfo
+		{
+			public override bool IsDatabaseProvider => false;
+
+			public override string LogFragment => "";
+
+			public ExtensionInfo(IDbContextOptionsExtension dbContextOptionsExtension) : base(dbContextOptionsExtension)
+			{
+			}
+
+			public override long GetServiceProviderHashCode()
+			{
+				return 0xA5B6;
+			}
+
+			public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
+			{
+				// NOOP
+			}
+		}
+
+	}
 }

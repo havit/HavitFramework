@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
@@ -28,12 +29,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			IRelationalTypeMappingSource typeMappingSource,
 			IMigrationsAnnotationProvider migrationsAnnotations,
 			IChangeDetector changeDetector,
-			StateManagerDependencies stateManagerDependencies,
+			IUpdateAdapterFactory updateAdapterFactory,
 			CommandBatchPreparerDependencies commandBatchPreparerDependencies) 
 			: base(typeMappingSource,
 			migrationsAnnotations,
 			changeDetector,
-			stateManagerDependencies,
+			updateAdapterFactory,
 			commandBatchPreparerDependencies)
 		{
 		}

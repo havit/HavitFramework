@@ -26,9 +26,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 	    }
 
         /// <inheritdoc />
-        protected override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
+        protected override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder, bool terminate = true)
 	    {
-		    base.Generate(operation, model, builder);
+		    base.Generate(operation, model, builder, terminate);
 
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 	    }
@@ -42,9 +42,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 		}
 
         /// <inheritdoc />
-        protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
+        protected override void Generate(AddColumnOperation operation, IModel model, MigrationCommandListBuilder builder, bool terminate = true)
 	    {
-		    base.Generate(operation, model, builder);
+		    base.Generate(operation, model, builder, terminate);
 
 		    RunOnGenerators(generator => generator.Generate(operation, model, builder));
 		}

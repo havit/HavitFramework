@@ -13,13 +13,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
                 builder => builder
                     .UseStoredProcedures()
                     .UseViews());
-            optionsBuilder.ReplaceService<IModelCacheKeyFactory, NoCacheModelCacheKeyFactory>();
             optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
-        }
+			optionsBuilder.EnableServiceProviderCaching(false);
+		}
 
-        private class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory
-        {
-            public object Create(DbContext context) => context.GetHashCode();
-        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +17,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 	{
 		private ImmutableList<Type> generatorTypes = ImmutableList.Create<Type>();
 
-        /// <inheritdoc />
-        public string LogFragment => "";
+		private DbContextOptionsExtensionInfo _info;
+
+		/// <inheritdoc />
+		public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
 
 		/// <summary>
 		/// Konstruktor.
@@ -52,19 +56,21 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 		}
 
         /// <inheritdoc />
-        public bool ApplyServices(IServiceCollection services)
+        public void ApplyServices(IServiceCollection services)
         {
             var currentProviderTypes = generatorTypes.ToArray();
             CompositeMigrationsSqlGenerator Factory(IServiceProvider serviceProvider)
             {
                 var generators = currentProviderTypes.Select(type => (IMigrationOperationSqlGenerator)serviceProvider.GetService(type)).ToArray();
-                return new CompositeMigrationsSqlGenerator(serviceProvider.GetService<MigrationsSqlGeneratorDependencies>(), serviceProvider.GetService<IMigrationsAnnotationProvider>(), generators);
-            }
+				return new CompositeMigrationsSqlGenerator(serviceProvider.GetService<MigrationsSqlGeneratorDependencies>(), serviceProvider.GetService<IMigrationsAnnotationProvider>(), generators);
+			}
 
             services.Add(currentProviderTypes.Select(t => ServiceDescriptor.Singleton(t, t)));
-            services.Replace(ServiceDescriptor.Singleton<IMigrationsSqlGenerator, CompositeMigrationsSqlGenerator>(Factory));
-
-            return false;
+			// Dříve (EF Core 2.x) jsme měli Singleton, avšak při použití v EF Core 3.0 dostáváme při singletonu výjimku
+			// System.ArgumentNullException: Value cannot be null. (Parameter 'currentContext')
+			// vyhozenou z konstruktoru MigrationsSqlGeneratorDependencies.
+			// Dle "dokumentace" (https://github.com/aspnet/EntityFrameworkCore/blob/24b9aa1d2e14fe2e737255ede9b2a7a623fcf2af/src/EFCore.Relational/Infrastructure/EntityFrameworkRelationalServicesBuilder.cs) máme mít Scoped.
+			services.Replace(ServiceDescriptor.Scoped<IMigrationsSqlGenerator, CompositeMigrationsSqlGenerator>(Factory));
         }
 
         /// <inheritdoc />
@@ -78,5 +84,26 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         {
             // no validation
         }
-    }
+
+		protected class ExtensionInfo : DbContextOptionsExtensionInfo
+		{
+			public override bool IsDatabaseProvider => false;
+
+			public override string LogFragment => "";
+
+			public ExtensionInfo(IDbContextOptionsExtension dbContextOptionsExtension) : base(dbContextOptionsExtension)
+			{
+			}
+
+			public override long GetServiceProviderHashCode()
+			{
+				return 0x581B;
+			}
+
+			public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
+			{
+				// NOOP
+			}
+		}
+	}
 }

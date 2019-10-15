@@ -11,14 +11,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 {
     public static class EntityTypeExtensions
     {
-        public static IMutableProperty GetDeletedProperty(this IMutableEntityType entityType)
+        public static IMutableProperty GetBusinessLayerDeletedProperty(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
-            return GetNotIgnoredProperties(entityType).FirstOrDefault(p => (p.Name == "Deleted") && (p.ClrType == typeof(bool) || p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?)));
+            return GetBusinessLayerNotIgnoredProperties(entityType).FirstOrDefault(p => (p.Name == "Deleted") && (p.ClrType == typeof(bool) || p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?)));
         }
 
-        public static IEnumerable<IMutableProperty> GetNotIgnoredProperties(this IMutableEntityType entityType)
+        public static IEnumerable<IMutableProperty> GetBusinessLayerNotIgnoredProperties(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
@@ -31,11 +31,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
             }
         }
 
-        public static bool IsJoinEntity(this IMutableEntityType entityType)
+        public static bool IsBusinessLayerManyToManyEntity(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
-            return GetNotIgnoredProperties(entityType).Count(p => p.IsPrimaryKey() && p.IsForeignKey()) == 2;
+            return GetBusinessLayerNotIgnoredProperties(entityType).Count(p => p.IsPrimaryKey() && p.IsForeignKey()) == 2;
         }
     }
 }

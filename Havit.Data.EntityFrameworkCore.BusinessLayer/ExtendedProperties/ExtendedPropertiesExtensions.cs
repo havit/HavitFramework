@@ -64,7 +64,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			foreach (var entityType in modelBuilder.Model.GetApplicationEntityTypes())
 			{
 				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
-				foreach (var property in entityType.GetProperties().Where(x => !x.IsShadowProperty))
+				foreach (var property in entityType.GetProperties().Where(x => !x.IsShadowProperty()))
 				{
 					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(property, property.PropertyInfo);
 				}
@@ -81,12 +81,23 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 		}
 
 		public static void AddExtendedProperties(this EntityTypeBuilder entityTypeBuilder, IDictionary<string, string> extendedProperties)
-			=> entityTypeBuilder.Metadata.AddExtendedProperties(extendedProperties);
+		{
+			entityTypeBuilder.Metadata.AddExtendedProperties(extendedProperties);
+		}
 
 		public static void AddExtendedProperties(this PropertyBuilder propertyBuilder, IDictionary<string, string> extendedProperties)
-			=> propertyBuilder.Metadata.AddExtendedProperties(extendedProperties);
+		{
+			propertyBuilder.Metadata.AddExtendedProperties(extendedProperties);
+		}
 
 		public static void AddExtendedProperties(this ModelBuilder modelBuilder, IDictionary<string, string> extendedProperties)
-			=> modelBuilder.Model.AddExtendedProperties(extendedProperties);
+		{
+			modelBuilder.Model.AddExtendedProperties(extendedProperties);
+		}
+
+		public static void AddExtendedProperties(this IConventionAnnotatableBuilder annotableBuilder, IDictionary<string, string> extendedProperties)
+		{
+			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotableBuilder, extendedProperties);
+		}
 	}
 }

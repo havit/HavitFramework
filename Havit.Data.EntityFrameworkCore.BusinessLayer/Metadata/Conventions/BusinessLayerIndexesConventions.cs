@@ -3,13 +3,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	// TODO: EF Core 3.0: Dodělat BusinessLayerIndexesConventions
+	// TODO: EF Core 3.0: V konvencích ověřit správnost použití FromDataAnnotation (resp. ConfigurationSource.DataAnnotation vs. ConfigurationSource.Convention).
+
+	/*
 	/// <summary>
 	/// Konvencia pre vytvorenie indexov, ktoré definuje BusinessLayerGenerator. Premenuje taktiež všetky existujúce indexy, aby mali prefix "FKX_".
 	/// 
@@ -23,6 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 	/// 
 	/// <remarks>EF Core inteligentne zahadzuje redundantné indexy, takže zostanú len tie, ktoré majú význam.</remarks>
 	/// </summary>
+	
 	public class BusinessLayerIndexesConventions : IModelConvention
     {
 	    /// <inheritdoc />
@@ -38,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 
 	    private static void AddTableIndexes(IMutableEntityType entityType)
         {
-            IMutableProperty deletedProperty = entityType.GetDeletedProperty();
+            IMutableProperty deletedProperty = entityType.dGetDeletedProperty();
 
             foreach (IMutableProperty property in entityType.GetNotIgnoredProperties())
             {
@@ -145,5 +149,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
                 index.Relational().Name = "FKX_" + index.Relational().Name.Substring(3);
             }
         }
-    }
+    } */
 }

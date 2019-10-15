@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// <summary>
 		/// Nastavení DbContextu.
 		/// </summary>
-		protected DbContextSettings Settings { get; } = new DbContextSettings();
+		protected virtual DbContextSettings Settings { get; private set; }
 
 		/// <summary>
 		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
@@ -39,7 +39,20 @@ namespace Havit.Data.EntityFrameworkCore
 		/// </summary>
 	    protected DbContext(DbContextOptions options) : base(options)
 	    {
+			Settings = CreateDbContextSettings();
 	    }
+
+		/// <summary>
+		/// Vytváří objekt pro nastavení DbContextu.
+		/// </summary>
+		/// <remarks>
+		/// Implementovat velmi opatrně - virtuální metoda je volána z konstruktoru!
+		/// Viz např. https://stackoverflow.com/questions/119506/virtual-member-call-in-a-constructor
+		/// </remarks>
+		protected virtual DbContextSettings CreateDbContextSettings()
+		{
+			return new DbContextSettings();
+		}
 
 		/// <inheritdoc />
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -80,12 +93,14 @@ namespace Havit.Data.EntityFrameworkCore
 		    RegisterDataSeedVersion(modelBuilder);
 		    
 			CustomizeModelCreating(modelBuilder);
-	    }
+			
+			ModelCreatingCompleting(modelBuilder);
+		}
 
 		/// <summary>
 		/// Zaregistruje třídu DataSeedVersion do modelu
 		/// </summary>
-		protected virtual void RegisterDataSeedVersion(ModelBuilder modelBuilder)
+		protected void RegisterDataSeedVersion(ModelBuilder modelBuilder)
 	    {
 		    EntityTypeBuilder<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
 		    dataSeedVersionEntity.ToTable("__DataSeed");
@@ -101,12 +116,20 @@ namespace Havit.Data.EntityFrameworkCore
 			// NOOP - template method
 		}
 
-	    /// <summary>
-	    /// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges(bool)"/>.
-	    /// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
-	    /// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
-	    /// </summary>
-	    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+		/// <summary>
+		/// Metoda volaná po registraci modelu.
+		/// </summary>
+		protected virtual void ModelCreatingCompleting(ModelBuilder modelBuilder)
+		{
+			// NOOP - template method
+		}
+
+		/// <summary>
+		/// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges(bool)"/>.
+		/// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
+		/// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
+		/// </summary>
+		public override int SaveChanges(bool acceptAllChangesOnSuccess)
 	    {
 		    int result = ExecuteWithDbUpdateExceptionHandling(() => base.SaveChanges(acceptAllChangesOnSuccess));			
 		    AfterSaveChanges();

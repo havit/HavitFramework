@@ -301,7 +301,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private string GenerateSqlLiteral(string s) => typeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 
-		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.Relational().DefaultSchema ?? DefaultSchemaName;
+		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.GetDefaultSchema() ?? DefaultSchemaName;
 
 		private static void AlterHelper(IEnumerable<IAnnotation> oldAnnotations, IEnumerable<IAnnotation> newAnnotations,
 			Action<IAnnotation> dropAction, Action<IAnnotation> updateAction, Action<IAnnotation> addAction)

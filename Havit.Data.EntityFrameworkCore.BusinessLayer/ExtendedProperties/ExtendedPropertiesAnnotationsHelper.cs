@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
@@ -67,6 +68,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			foreach (var property in extendedProperties)
 			{
 				annotatable.AddAnnotation(BuildAnnotationName(property.Key), property.Value);
+			}
+		}
+
+		internal static void AddExtendedPropertyAnnotations(IConventionAnnotatableBuilder annotatableBuilder, IDictionary<string, string> extendedProperties)
+		{
+			if (extendedProperties == null)
+			{
+				return;
+			}
+
+			foreach (var property in extendedProperties)
+			{
+				annotatableBuilder.HasAnnotation(BuildAnnotationName(property.Key), property.Value);
 			}
 		}
 

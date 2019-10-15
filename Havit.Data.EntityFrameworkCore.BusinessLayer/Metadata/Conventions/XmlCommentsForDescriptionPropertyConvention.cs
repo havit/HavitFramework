@@ -7,29 +7,30 @@ using System.Xml.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
 	/// <summary>
 	/// Konvencia pre nastavenie MS_Description extended property na entitách pomocou XML komentárov. Je nutné, aby assembly s modelom mala zapnuté generovanie XML komentárov. Súbor s XML komentárom by mal byť umiestnený vedľa assembly samotnej s príponou .XML
 	/// 
 	/// <remarks>U properties pre cudzie kľúče sa vezme XML komentár z navigačnej property (ak existuje a na property pre cudzí kľúč nebol už definovaný komentár).</remarks>
 	/// </summary>
-	public class XmlCommentsForDescriptionPropertyConvention : IModelConvention
+	public class XmlCommentsForDescriptionPropertyConvention : IModelFinalizedConvention
 	{
 		internal const string MsDescriptionExtendedProperty = "MS_Description";
 
 		/// <inheritdoc />
-		public void Apply(ModelBuilder modelBuilder)
+		public void ProcessModelFinalized(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
 		{
 			var xmlCommentParser = new XmlCommentParser();
 
-			var groupedByAssemblies = modelBuilder.Model
+			var groupedByAssemblies = modelBuilder.Metadata
 				.GetApplicationEntityTypes()
 				.GroupBy(entityType => entityType.ClrType.Assembly);
 
@@ -98,7 +99,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 
 				foreach (IMutableNavigation collection in entityType.GetNavigations().Where(n => n.IsCollection()))
 				{
-					if (collection.Name == "Localizations" && collection.ForeignKey.DeclaringEntityType.IsLocalizationEntity())
+					if (collection.Name == "Localizations" && collection.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
 					{
 						// Localizations property cannot have Collection_Description extended property defined
 						continue;
@@ -122,5 +123,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
 		{
 			return String.Join("\n", value.Trim().Trim('\n', '\r').Split('\n').Select(item => item.Trim()));
 		}
+
 	}
 }

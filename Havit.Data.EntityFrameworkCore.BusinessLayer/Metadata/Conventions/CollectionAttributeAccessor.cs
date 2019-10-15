@@ -4,7 +4,7 @@ using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
 	/// <summary>
 	/// Helper trieda pre prístup ku Collection_* extended atribútom z <see cref="INavigation"/>.

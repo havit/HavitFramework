@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +18,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
     /// </summary>
     public abstract class BusinessLayerDbContext : DbContext
 	{
+		protected new virtual BusinessLayerDbContextSettings Settings => (BusinessLayerDbContextSettings)base.Settings;
+
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
@@ -33,6 +33,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		protected BusinessLayerDbContext(DbContextOptions options)
 			: base(options)
 		{
+		}
+
+		/// <inheritdoc />
+		protected override DbContextSettings CreateDbContextSettings()
+		{
+			return new BusinessLayerDbContextSettings();
 		}
 
 		/// <inheritdoc />
@@ -55,26 +61,26 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			base.ModelCreatingCompleting(modelBuilder);
 		}
 
-		/// <inheritdoc />
-		protected override IEnumerable<IModelConvention> GetModelConventions()
-		{
-			foreach (var convention in base.GetModelConventions())
-			{
-				yield return convention;
-			}
+		///// <inheritdoc />
+		//protected override IEnumerable<IModelConvention> GetModelConventions()
+		//{
+		//	foreach (var convention in base.GetModelConventions())
+		//	{
+		//		yield return convention;
+		//	}
 
-			yield return new PrefixedTablePrimaryKeysConvention();
-			yield return new ForeignKeysColumnNamesConvention();
-			yield return new LocalizationTablesParentEntitiesConvention();
-			yield return new DefaultValueSqlAttributeConvention();
-			yield return new DefaultValueAttributeConvention();
-			yield return new StringPropertiesDefaultValueConvention();
-			yield return new NamespaceExtendedPropertyConvention();
-			yield return new CollectionExtendedPropertiesConvention();
-			yield return new XmlCommentsForDescriptionPropertyConvention();
-			yield return new BusinessLayerIndexesConventions();
-            yield return new CharColumnTypeForCharPropertyConvention();
-		}
+		//	yield return new PrefixedTablePrimaryKeysConvention();
+		//	yield return new ForeignKeysColumnNamesConvention();
+		//	yield return new LocalizationTablesParentEntitiesConvention();
+		//	yield return new DefaultValueSqlAttributeConvention();
+		//	yield return new DefaultValueAttributeConvention();
+		//	yield return new StringPropertiesDefaultValueConvention();
+		//	yield return new NamespaceExtendedPropertyConvention();
+		//	yield return new CollectionExtendedPropertiesConvention();
+		//	yield return new XmlCommentsForDescriptionPropertyConvention();
+		//	yield return new BusinessLayerIndexesConventions();
+  //          yield return new CharColumnTypeForCharPropertyConvention();
+		//}
 
 		/// <summary>
 		/// Registruje <see cref="IModelExtender"/>y z <paramref name="extendersAssembly"/>. Vyžaduje, aby v DbContexte bola zaregistrovaná služba <see cref="IModelExtensionAnnotationProvider"/> (štandardne je registrovaná v <see cref="OnConfiguring"/>.

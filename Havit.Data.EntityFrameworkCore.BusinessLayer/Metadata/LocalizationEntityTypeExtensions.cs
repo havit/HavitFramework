@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
         public static readonly string[] LocalizationEntityNameSuffixes = { "Localization", "_Lang" };
         public const string LanguageForeignKeyPropertyName = "LanguageId";
 
-        public static bool IsLocalizationEntity(this IMutableEntityType entityType)
+        public static bool IsBusinessLayerLocalizationEntity(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
                 .Any(localizationTableNameSuffix => entityType.Name.EndsWith(localizationTableNameSuffix) && (entityType.Name.Length > localizationTableNameSuffix.Length));
         }
 
-        public static IMutableEntityType GetLocalizationParentEntityType(this IMutableEntityType localizationEntity)
+        public static IEntityType GetBusinessLayerLocalizationParentEntityType(this IEntityType localizationEntity)
         {
             Contract.Requires<ArgumentNullException>(localizationEntity != null);
 
@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
                 if (localizationEntityName.EndsWith(localizationEntityNameSuffix))
                 {
                     string parentName = localizationEntityName.Substring(0, localizationEntityName.Length - localizationEntityNameSuffix.Length);
-                    IMutableEntityType result = localizationEntity.Model.FindEntityType(parentName);
+                    IEntityType result = localizationEntity.Model.FindEntityType(parentName);
                     if (result != null)
                     {
                         return result;
@@ -39,7 +39,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
             return null;
         }
 
-        public static IMutableProperty GetLanguageProperty(this IMutableEntityType entityType)
+        public static IProperty GetBusinessLayerLanguageProperty(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 

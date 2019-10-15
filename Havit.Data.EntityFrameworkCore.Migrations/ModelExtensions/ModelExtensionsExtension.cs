@@ -142,7 +142,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			// no validations
 		}
 
-		protected class ExtensionInfo : DbContextOptionsExtensionInfo
+		private class ExtensionInfo : DbContextOptionsExtensionInfo
 		{
 			public override bool IsDatabaseProvider => false;
 

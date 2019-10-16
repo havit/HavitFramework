@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using Havit.Data.EntityFrameworkCore.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -14,12 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			base.OnConfiguring(optionsBuilder);
 			optionsBuilder.ReplaceService<IModelCacheKeyFactory, NoCacheModelCacheKeyFactory>();
 			optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
-		}
-
-		protected override IEnumerable<IModelConvention> GetModelConventions()
-		{
-			// no base call
-			return Enumerable.Empty<IModelConvention>();
+			optionsBuilder.EnableServiceProviderCaching(false);
 		}
 
 		private class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory

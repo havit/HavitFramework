@@ -42,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 				IConventionEntityType principalEntityType = relationshipBuilder.Metadata.PrincipalEntityType;
 				string pkColumnName = principalEntityType.FindPrimaryKey().Properties.First().GetColumnName();
-				parentIdProperty.SetColumnName(pkColumnName);
+				parentIdProperty.SetColumnName(pkColumnName, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

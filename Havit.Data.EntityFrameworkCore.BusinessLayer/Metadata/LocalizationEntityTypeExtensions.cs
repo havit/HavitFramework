@@ -5,11 +5,24 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 {
-    public static class LocalizationEntityTypeExtensions
+	/// <summary>
+	/// Extensinsion metody k EntityType s fakty pro oblast lokalizací v Business Layer.
+	/// </summary>
+	public static class LocalizationEntityTypeExtensions
     {
-        public static readonly string[] LocalizationEntityNameSuffixes = { "Localization", "_Lang" };
-        public const string LanguageForeignKeyPropertyName = "LanguageId";
+		/// <summary>
+		/// Seznam suffixů názvu tabulek indikující tabulku s lokalizacemi.
+		/// </summary>
+        private static readonly string[] LocalizationEntityNameSuffixes = { "Localization", "_Lang" };
+		
+		/// <summary>
+		/// Název cizího klíče pro lokalizace.
+		/// </summary>
+        private const string LanguageForeignKeyPropertyName = "LanguageId";
 
+		/// <summary>
+		/// Vrací true, pokud jde o lokalizační (nikoliv lokalizovanou) tabulku.
+		/// </summary>
         public static bool IsBusinessLayerLocalizationEntity(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
@@ -18,6 +31,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
                 .Any(localizationTableNameSuffix => entityType.Name.EndsWith(localizationTableNameSuffix) && (entityType.Name.Length > localizationTableNameSuffix.Length));
         }
 
+		/// <summary>
+		/// pro lokalizační tabulku vrací jí lokalizovanou tabulku.
+		/// </summary>
         public static IEntityType GetBusinessLayerLocalizationParentEntityType(this IEntityType localizationEntity)
         {
             Contract.Requires<ArgumentNullException>(localizationEntity != null);
@@ -39,6 +55,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
             return null;
         }
 
+		/// <summary>
+		/// Vrací sloupec definující jazyk lokalizace.
+		/// </summary>
         public static IProperty GetBusinessLayerLanguageProperty(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);

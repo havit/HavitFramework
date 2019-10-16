@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.Conventions;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Havit.Data.EntityFrameworkCore.BusinessLayer.Conventions.XmlCommentsForDescriptionPropertyConvention;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 {
@@ -29,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(NestedType));
 
-				Assert.AreEqual("A comment", entityType.GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("A comment", entityType.GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -43,7 +41,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(XmlTestEntity));
 
-				Assert.AreEqual("A comment", entityType.GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("A comment", entityType.GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -68,7 +66,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(AClass));
 
-				Assert.AreEqual("Primary key", entityType.FindProperty(nameof(AClass.Id)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("Primary key", entityType.FindProperty(nameof(AClass.Id)).GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -95,7 +93,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(AClass));
 
-				Assert.AreEqual("Some comment", entityType.FindProperty(nameof(AClass.Name)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("Some comment", entityType.FindProperty(nameof(AClass.Name)).GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -168,7 +166,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(Child));
 
-				Assert.AreEqual("Parent comment", entityType.FindProperty(nameof(Child.ParentId)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("Parent comment", entityType.FindProperty(nameof(Child.ParentId)).GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -207,7 +205,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(Child));
 
-				Assert.AreEqual("Parent comment FK", entityType.FindProperty(nameof(Child.ParentId)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("Parent comment FK", entityType.FindProperty(nameof(Child.ParentId)).GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -272,7 +270,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(AClass));
 
-				Assert.AreEqual("Short comment", entityType.FindProperty(nameof(AClass.Name)).GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.AreEqual("Short comment", entityType.FindProperty(nameof(AClass.Name)).GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -299,7 +297,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 
 				var entityType = context.Model.FindEntityType(typeof(AClass));
 
-				Assert.IsNull(entityType.GetStringExtendedProperty(MsDescriptionExtendedProperty));
+				Assert.IsNull(entityType.GetStringExtendedProperty(XmlCommentsForDescriptionPropertyConvention.MsDescriptionExtendedProperty));
 			}
 		}
 
@@ -318,11 +316,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 				base.CustomizeModelCreating(modelBuilder);
 				modelBuilder.Entity<TEntity>();
 				onModelCreating?.Invoke(modelBuilder);
-			}
-
-			protected override IEnumerable<IModelConvention> GetModelConventions()
-			{
-				yield return new XmlCommentsForDescriptionPropertyConvention();
 			}
 		}
 	}

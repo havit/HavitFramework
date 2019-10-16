@@ -14,6 +14,25 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 		public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
 		{
 			this.onModelCreating = onModelCreating;
+
+			Settings.UseCacheAttributeToAnnotationConvention = false;
+			Settings.UseCascadeDeleteToRestrictConvention = false;
+			Settings.UseCharColumnTypeForCharPropertyConvention = false;
+			Settings.UseCollectionExtendedPropertiesConvention = false;
+			Settings.UseDataTypeAttributeConvention = false;
+			Settings.UseDefaultValueAttributeConvention = false;
+			Settings.UseDefaultValueSqlAttributeConvention = false;
+			Settings.UseForeignKeysColumnNamesConvention = false;
+			Settings.UseIndexForForeignKeysConvention = false;
+			Settings.UseIndexForLanguageUiCulturePropertyConvention = false;
+			Settings.UseIndexForLocalizationTableConvention = false;
+			Settings.UseIndexNamingConvention = false;
+			Settings.UseLocalizationTablesParentEntitiesConvention = false;
+			Settings.UseManyToManyEntityKeyDiscoveryConvention = false;
+			Settings.UseNamespaceExtendedPropertyConvention = false;
+			Settings.UsePrefixedTablePrimaryKeysConvention = false;
+			Settings.UseStringPropertiesDefaultValueConvention = false;
+			Settings.UseXmlCommentsForDescriptionPropertyConvention = false;
 		}
 
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)

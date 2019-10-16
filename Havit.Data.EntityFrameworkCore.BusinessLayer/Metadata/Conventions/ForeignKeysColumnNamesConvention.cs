@@ -40,7 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				if (columnName.EndsWith("Id"))
 				{
 					string newColumnName = columnName.Left(columnName.Length - 2 /* "Id".Length */) + "ID";
-					property.SetColumnName(newColumnName);
+					property.SetColumnName(newColumnName, fromDataAnnotation: false /* Convention */);
 				}
 			}
 		}

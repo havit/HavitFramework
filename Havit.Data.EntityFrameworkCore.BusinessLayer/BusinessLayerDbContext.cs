@@ -6,6 +6,8 @@ using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
@@ -46,12 +48,26 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		{
 			base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseModelExtensions(builder => builder
+			optionsBuilder.UseModelExtensions(builder => builder
 				.UseStoredProcedures()
 				.UseExtendedProperties()
 				.UseBusinessLayerStoredProcedures()
 				.UseViews());
 			optionsBuilder.UseSqlServerExtendedProperties();
+
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionExtendedPropertiesConventionPlugin>(() => Settings.UseCollectionExtendedPropertiesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueAttributeConventionPlugin>(() => Settings.UseDefaultValueAttributeConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueSqlAttributeConventionPlugin>(() => Settings.UseDefaultValueSqlAttributeConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysColumnNamesConventionPlugin>(() => Settings.UseForeignKeysColumnNamesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CharColumnTypeForCharPropertyConventionPlugin>(() => Settings.UseCharColumnTypeForCharPropertyConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForForeignKeysConventionPlugin>(() => Settings.UseIndexForForeignKeysConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLanguageUiCulturePropertyConventionPlugin>(() => Settings.UseIndexForLanguageUiCulturePropertyConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLocalizationTableConventionPlugin>(() => Settings.UseIndexForLocalizationTableConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexNamingConventionPlugin>(() => Settings.UseIndexNamingConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTablesParentEntitiesConventionPlugin>(() => Settings.UseLocalizationTablesParentEntitiesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<NamespaceExtendedPropertyConventionPlugin>(() => Settings.UseNamespaceExtendedPropertyConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<PrefixedTablePrimaryKeysConventionPlugin>(() => Settings.UsePrefixedTablePrimaryKeysConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => Settings.UseXmlCommentsForDescriptionPropertyConvention);
 		}
 
 		/// <inheritdoc />

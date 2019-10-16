@@ -3,6 +3,7 @@ using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,6 +11,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	// TODO: EF Core 3.0: fromDataAnnotations
+
 	/// <summary>
 	/// Konvencia pre definovanie Collection_{propertyName} extended properties na entitách. Vynecháva kolekcie s názvom "Localizations", nakoľko by BusinessLayerGenerator vygeneroval kolekciu dvakrát.
 	/// </summary>
@@ -18,6 +21,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 		/// <inheritdoc />
 		public void ProcessNavigationAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionNavigation navigation, IConventionContext<IConventionNavigation> context)
 		{
+			// Systémové tabulky nechceme změnit.
+			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())
+			{
+				return;
+			}
+
+			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<CollectionExtendedPropertiesConvention>())
+			{
+				return;
+			}
+
 			if (navigation.IsCollection())
 			{
 				if ((navigation.Name == "Localizations") && navigation.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
@@ -31,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.DeclaringEntityType.GetTableName() + "." + navigation.ForeignKey.Properties[0].GetColumnName() }
 					};
 
-				relationshipBuilder.Metadata.DeclaringEntityType.Builder.AddExtendedProperties(extendedProperties);
+				relationshipBuilder.Metadata.DeclaringEntityType.AddExtendedProperties(extendedProperties);
 			}
 		}
 	}

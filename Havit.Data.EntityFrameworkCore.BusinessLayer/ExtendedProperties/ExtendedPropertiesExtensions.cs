@@ -95,9 +95,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			modelBuilder.Model.AddExtendedProperties(extendedProperties);
 		}
 
-		public static void AddExtendedProperties(this IConventionAnnotatableBuilder annotableBuilder, IDictionary<string, string> extendedProperties)
+		public static void AddExtendedProperties(this IConventionAnnotatable annotable, IDictionary<string, string> extendedProperties)
 		{
-			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotableBuilder, extendedProperties);
+			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotable, extendedProperties);
 		}
 	}
 }

@@ -12,7 +12,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	// TODO: EF Core 3.0: Dodělat BusinessLayerIndexesConventions
 	// TODO: EF Core 3.0: V konvencích ověřit správnost použití FromDataAnnotation (resp. ConfigurationSource.DataAnnotation vs. ConfigurationSource.Convention).
 
-	/*
 	/// <summary>
 	/// Konvencia pre vytvorenie indexov, ktoré definuje BusinessLayerGenerator. Premenuje taktiež všetky existujúce indexy, aby mali prefix "FKX_".
 	/// 
@@ -26,66 +25,55 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// 
 	/// <remarks>EF Core inteligentne zahadzuje redundantné indexy, takže zostanú len tie, ktoré majú význam.</remarks>
 	/// </summary>
-	
+	/*
 	public class BusinessLayerIndexesConventions : IModelConvention
     {
-	    /// <inheritdoc />
-	    public void Apply(ModelBuilder modelBuilder)
-        {
-            foreach (IMutableEntityType entityType in modelBuilder.Model.GetApplicationEntityTypes())
-            {
-				RenameForeignKeyIndexes(entityType.GetForeignKeys());
-
-		        AddTableIndexes(entityType);
-            }
-        }
-
+	   
 	    private static void AddTableIndexes(IMutableEntityType entityType)
         {
-            IMutableProperty deletedProperty = entityType.dGetDeletedProperty();
+            //IMutableProperty deletedProperty = entityType.dGetDeletedProperty();
 
-            foreach (IMutableProperty property in entityType.GetNotIgnoredProperties())
-            {
-                if (property.IsPrimaryKey() || !property.IsForeignKey())
-                {
-                    continue;
-                }
+            //foreach (IMutableProperty property in entityType.GetNotIgnoredProperties())
+            //{
+            //    if (property.IsPrimaryKey() || !property.IsForeignKey())
+            //    {
+            //        continue;
+            //    }
 
-                IMutableIndex index;
-                if (deletedProperty != null)
-                {
-                    index = entityType.GetOrAddIndex(new[] { property, deletedProperty });
-                }
-                else
-                {
-                    index = entityType.GetOrAddIndex(property);
-                }
+            //    IMutableIndex index;
+            //    if (deletedProperty != null)
+            //    {
+            //        index = entityType.GetOrAddIndex(new[] { property, deletedProperty });
+            //    }
+            //    else
+            //    {
+            //        index = entityType.GetOrAddIndex(property);
+            //    }
 
-                ReplaceIndexPrefix(index);
-            }
+            //}
 
 	        CreateCollectionOrderIndex(entityType);
 
-			if (entityType.IsLocalizationEntity())
-			{
-				IMutableEntityType parentEntity = entityType.GetLocalizationParentEntityType();
-				IMutableProperty parentLocalizationProperty = entityType.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType == parentEntity)?.Properties?[0];
+			//if (entityType.IsLocalizationEntity())
+			//{
+			//	IMutableEntityType parentEntity = entityType.GetLocalizationParentEntityType();
+			//	IMutableProperty parentLocalizationProperty = entityType.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType == parentEntity)?.Properties?[0];
 
-                IMutableProperty languageProperty = entityType.GetLanguageProperty();
+   //             IMutableProperty languageProperty = entityType.GetLanguageProperty();
 
-				IMutableIndex index = entityType.GetOrAddIndex(new[] { parentLocalizationProperty, languageProperty });
-				index.IsUnique = true;
-				ReplaceIndexPrefix(index);
-            }
+			//	IMutableIndex index = entityType.GetOrAddIndex(new[] { parentLocalizationProperty, languageProperty });
+			//	index.IsUnique = true;
+			//	ReplaceIndexPrefix(index);
+   //         }
 
-            if (entityType.IsLanguageEntity())
-            {
-                IMutableProperty uiCultureProperty = entityType.GetUICultureProperty();
-                if (uiCultureProperty != null)
-                {
-                    ReplaceIndexPrefix(entityType.GetOrAddIndex(uiCultureProperty));
-                }
-            }
+            //if (entityType.IsLanguageEntity())
+            //{
+            //    IMutableProperty uiCultureProperty = entityType.GetUICultureProperty();
+            //    if (uiCultureProperty != null)
+            //    {
+            //        ReplaceIndexPrefix(entityType.GetOrAddIndex(uiCultureProperty));
+            //    }
+            //}
         }
 
 	    private static void CreateCollectionOrderIndex(IMutableEntityType entityType)
@@ -132,22 +120,23 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 		    }
 	    }
 
-	    private static void RenameForeignKeyIndexes(IEnumerable<IMutableForeignKey> foreignKeys)
-	    {
-		    foreach (IMutableIndex index in foreignKeys
-			    .Select(k => k.DeclaringEntityType.FindIndex(k.Properties))
-			    .Where(index => index != null))
-		    {
-		        ReplaceIndexPrefix(index);
-		    }
-	    }
+	    //private static void RenameForeignKeyIndexes(IEnumerable<IMutableForeignKey> foreignKeys)
+	    //{
+		   // foreach (IMutableIndex index in foreignKeys
+			  //  .Select(k => k.DeclaringEntityType.FindIndex(k.Properties))
+			  //  .Where(index => index != null))
+		   // {
+		   //     ReplaceIndexPrefix(index);
+		   // }
+	    //}
 
-	    private static void ReplaceIndexPrefix(IMutableIndex index)
-        {
-            if (index.Relational().Name.StartsWith("IX_"))
-            {
-                index.Relational().Name = "FKX_" + index.Relational().Name.Substring(3);
-            }
-        }
-    } */
+	    //private static void ReplaceIndexPrefix(IMutableIndex index)
+     //   {
+     //       if (index.Relational().Name.StartsWith("IX_"))
+     //       {
+     //           index.Relational().Name = "FKX_" + index.Relational().Name.Substring(3);
+     //       }
+     //   }
+    }
+	*/
 }

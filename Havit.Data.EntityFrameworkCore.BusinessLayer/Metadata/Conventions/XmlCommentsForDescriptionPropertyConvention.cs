@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	// TODO: EF Core 3.0: fromDataAnnotations
+
 	/// <summary>
 	/// Konvencia pre nastavenie MS_Description extended property na entitách pomocou XML komentárov. Je nutné, aby assembly s modelom mala zapnuté generovanie XML komentárov. Súbor s XML komentárom by mal byť umiestnený vedľa assembly samotnej s príponou .XML
 	/// 
@@ -24,17 +26,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	public class XmlCommentsForDescriptionPropertyConvention : IModelFinalizedConvention
 	{
 		internal const string MsDescriptionExtendedProperty = "MS_Description";
-
-		/// <inheritdoc />
+		
 		public void ProcessModelFinalized(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
 		{
+			// suppress neřešíme
+			// systémové tabulky řešeny v GetApplicationEntityTypes()
+
 			var xmlCommentParser = new XmlCommentParser();
 
 			var groupedByAssemblies = modelBuilder.Metadata
 				.GetApplicationEntityTypes()
+				.Cast<IConventionEntityType>()
 				.GroupBy(entityType => entityType.ClrType.Assembly);
 
-			foreach (IGrouping<Assembly, IMutableEntityType> assemblyEntities in groupedByAssemblies)
+			foreach (IGrouping<Assembly, IConventionEntityType> assemblyEntities in groupedByAssemblies)
 			{
 				string xmlFile = GetXmlCommentsFileFromAssembly(assemblyEntities.Key);
 				if (string.IsNullOrEmpty(xmlFile))
@@ -56,9 +61,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			return assemblyFile.Directory?.GetFiles(xmlFile).FirstOrDefault()?.FullName;
 		}
 
-		private static void CreateDescriptionExtendedProperties(XmlCommentFile xmlCommentFile, IEnumerable<IMutableEntityType> entities)
+		private static void CreateDescriptionExtendedProperties(XmlCommentFile xmlCommentFile, IEnumerable<IConventionEntityType> entities)
 		{
-			foreach (IMutableEntityType entityType in entities)
+			foreach (IConventionEntityType entityType in entities)
 			{
 				string preprocessedTypeName = entityType.ClrType.FullName.Replace('+', '.');
 				XmlCommentType xmlCommentType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == preprocessedTypeName);
@@ -76,7 +81,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					});
 				}
 
-				foreach (IMutableProperty property in entityType.GetProperties())
+				foreach (IConventionProperty property in entityType.GetProperties())
 				{
 					XmlCommentMember xmlCommentMember = xmlCommentType.Properties.FirstOrDefault(p => p.Name == (xmlCommentType.Name + "." + property.Name));
 					if (xmlCommentMember == null)
@@ -97,7 +102,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					}
 				}
 
-				foreach (IMutableNavigation collection in entityType.GetNavigations().Where(n => n.IsCollection()))
+				foreach (INavigation collection in entityType.GetNavigations().Where(n => n.IsCollection()))
 				{
 					if (collection.Name == "Localizations" && collection.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
 					{

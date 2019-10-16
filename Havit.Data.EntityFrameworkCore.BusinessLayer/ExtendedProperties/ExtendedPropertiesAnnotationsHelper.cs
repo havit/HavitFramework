@@ -71,7 +71,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			}
 		}
 
-		internal static void AddExtendedPropertyAnnotations(IConventionAnnotatableBuilder annotatableBuilder, IDictionary<string, string> extendedProperties)
+		internal static void AddExtendedPropertyAnnotations(IConventionAnnotatable annotatable, IDictionary<string, string> extendedProperties)
 		{
 			if (extendedProperties == null)
 			{
@@ -80,7 +80,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 			foreach (var property in extendedProperties)
 			{
-				annotatableBuilder.HasAnnotation(BuildAnnotationName(property.Key), property.Value);
+				// TODO: EF CORE 3.0 fromDataAnnotation
+				annotatable.SetAnnotation(BuildAnnotationName(property.Key), property.Value, fromDataAnnotation: false);
 			}
 		}
 

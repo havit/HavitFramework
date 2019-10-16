@@ -33,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			var primaryKeysEndingId = keyBuilder.Metadata.Properties.Where(property => property.GetColumnName() == "Id").ToArray();			
 			if (primaryKeysEndingId.Length == 1)
 			{
-				primaryKeysEndingId[0].SetColumnName(keyBuilder.Metadata.DeclaringEntityType.ShortName() + "ID");
+				primaryKeysEndingId[0].SetColumnName(keyBuilder.Metadata.DeclaringEntityType.ShortName() + "ID", fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

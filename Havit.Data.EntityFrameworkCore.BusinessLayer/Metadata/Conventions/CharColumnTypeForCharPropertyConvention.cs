@@ -28,7 +28,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 			if (propertyBuilder.Metadata.ClrType == typeof(char))
 			{
-				propertyBuilder.HasColumnType("nchar(1)", fromDataAnnotation: true);
+				propertyBuilder.HasColumnType("nchar(1)", fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

@@ -56,27 +56,27 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 
 			if (attribute.CacheEntities)
 			{
-				entityTypeBuilder.HasAnnotation(CacheEntitiesAnnotationName, true, fromDataAnnotation: true);
+				entityTypeBuilder.HasAnnotation(CacheEntitiesAnnotationName, true, fromDataAnnotation: true /* DataAnnotation */);
 			}
 
 			if (attribute.CacheAllKeys)
 			{
-				entityTypeBuilder.HasAnnotation(CacheAllKeysAnnotationName, true, fromDataAnnotation: true);
+				entityTypeBuilder.HasAnnotation(CacheAllKeysAnnotationName, true, fromDataAnnotation: true /* DataAnnotation */);
 			}
 
 			if (attribute.AbsoluteExpirationSeconds != 0)
 			{
-				entityTypeBuilder.HasAnnotation(AbsoluteExpirationAnnotationName, attribute.AbsoluteExpirationSeconds, fromDataAnnotation: true);
+				entityTypeBuilder.HasAnnotation(AbsoluteExpirationAnnotationName, attribute.AbsoluteExpirationSeconds, fromDataAnnotation: true /* DataAnnotation */);
 			}
 
 			if (attribute.SlidingExpirationSeconds != 0)
 			{
-				entityTypeBuilder.HasAnnotation(AbsoluteExpirationAnnotationName, attribute.SlidingExpirationSeconds, fromDataAnnotation: true);
+				entityTypeBuilder.HasAnnotation(AbsoluteExpirationAnnotationName, attribute.SlidingExpirationSeconds, fromDataAnnotation: true /* DataAnnotation */);
 			}
 
 			if (attribute.Priority != CacheItemPriority.Normal)
 			{
-				entityTypeBuilder.HasAnnotation(PriorityAnnotationName, attribute.Priority, fromDataAnnotation: true);
+				entityTypeBuilder.HasAnnotation(PriorityAnnotationName, attribute.Priority, fromDataAnnotation: true /* DataAnnotation */);
 			}
 		}
 	}

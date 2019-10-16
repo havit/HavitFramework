@@ -38,7 +38,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				{
 					// fromDataAnnotation: false - není definováno v modelu
 					propertyBuilder.HasDefaultValue(String.Empty, fromDataAnnotation: false);
-					propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: false); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
+					propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: false /* Convention */); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
 				}
 			}
 		}

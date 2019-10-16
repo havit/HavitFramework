@@ -31,5 +31,18 @@ namespace Havit.Data.EntityFrameworkCore
 		{
 			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new ConventionSetPluginServiceInstallerExtension<TConventionSetPlugin>());
 		}
+
+		/// <summary>
+		/// Zajistí podmíněné použití dané implementace IConventionSetPlugin.
+		/// Pro více informací viz UseConventionSetPlugin.
+		/// </summary>
+		public static void ConditionalyUseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder, Func<bool> predicate)
+			where TConventionSetPlugin : class, IConventionSetPlugin
+		{
+			if (predicate())
+			{
+				optionsBuilder.UseConventionSetPlugin<TConventionSetPlugin>();
+			}
+		}
 	}
 }

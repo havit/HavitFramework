@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Registruje StringPropertiesDefaultValueConvention do ConventionSetu.
 	/// </summary>
-	public class StringPropertiesDefaultValueConventionPlugin : IConventionSetPlugin
+	internal class StringPropertiesDefaultValueConventionPlugin : IConventionSetPlugin
 	{
 		/// <inheritdoc />
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 {
-	// TODO EF Core 3.0: Dokončit, ověřit alternativu, bude-li.
+	// TODO: EF Core 3.0: Dokončit, ověřit alternativu, bude-li.
 
 		/*
 	[TestClass]

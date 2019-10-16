@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Registruje DataTypeAttributeConvention do ConventionSetu.
 	/// </summary>
-	public class ManyToManyEntityKeyDiscoveryConventionPlugin : IConventionSetPlugin
+	internal class ManyToManyEntityKeyDiscoveryConventionPlugin : IConventionSetPlugin
 	{
 		/// <inheritdoc />
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)

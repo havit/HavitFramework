@@ -50,6 +50,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		/// <inheritdoc />
 		protected override DeleteBehavior GetTargetDeleteBehavior(IConventionForeignKey foreignKey)
 		{
+			// Předek používá fromDataAnnotation false (tj. Convention), resp. nepoužívá žádnou hodnotu a použije se default, tj. fromDataAnnotation=false.
 			return DeleteBehavior.Restrict;
 		}
 

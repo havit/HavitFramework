@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Registruje CacheAttributeToAnnotationConvention do ConventionSetu.
 	/// </summary>
-	public class CacheAttributeToAnnotationConventionPlugin : IConventionSetPlugin
+	internal class CacheAttributeToAnnotationConventionPlugin : IConventionSetPlugin
 	{
 		private readonly ProviderConventionSetBuilderDependencies dependencies;
 

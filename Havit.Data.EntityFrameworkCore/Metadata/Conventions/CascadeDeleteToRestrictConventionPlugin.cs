@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Registruje CascadeDeleteToRestrictConvention do ConventionSetu.
 	/// </summary>
-	public class CascadeDeleteToRestrictConventionPlugin : IConventionSetPlugin
+	internal class CascadeDeleteToRestrictConventionPlugin : IConventionSetPlugin
 	{
 		private readonly ProviderConventionSetBuilderDependencies dependencies;
 

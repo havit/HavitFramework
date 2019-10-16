@@ -1,4 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Attributes;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 		/// </summary>
 		public static bool IsConventionSuppressed<TConvention>(this IProperty property)
 		{
-			return property.PropertyInfo.IsConventionSuppressed<TConvention>();
+			return !property.IsShadowProperty() && property.PropertyInfo.IsConventionSuppressed<TConvention>();
 		}
 
 		/// <summary>

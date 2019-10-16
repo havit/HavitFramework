@@ -32,12 +32,13 @@ namespace Havit.Data.EntityFrameworkCore
 		/// </summary>
 		protected DbContext()
 		{
+			Settings = CreateDbContextSettings();
 		}
 
 		/// <summary>
 		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext(DbContextOptions)"/>.
 		/// </summary>
-	    protected DbContext(DbContextOptions options) : base(options)
+		protected DbContext(DbContextOptions options) : base(options)
 	    {
 			Settings = CreateDbContextSettings();
 	    }
@@ -57,32 +58,13 @@ namespace Havit.Data.EntityFrameworkCore
 		/// <inheritdoc />
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			if (Settings.UseCacheAttributeToAnnotationConvention)
-			{
-				optionsBuilder.UseConventionSetPlugin<CacheAttributeToAnnotationConventionPlugin>();
-			}
-
-			if (Settings.UseCascadeDeleteToRestrictConvention)
-			{
-				optionsBuilder.UseConventionSetPlugin<CascadeDeleteToRestrictConventionPlugin>();
-			}
-
-			if (Settings.UseDataTypeAttributeConvention)
-			{
-				optionsBuilder.UseConventionSetPlugin<DataTypeAttributeConventionPlugin>();
-			}
-
-			if (Settings.UseManyToManyEntityKeyDiscoveryConvention)
-			{
-				optionsBuilder.UseConventionSetPlugin<ManyToManyEntityKeyDiscoveryConventionPlugin>();
-			}
-
-			if (Settings.UseStringPropertiesDefaultValueConvention)
-			{
-				optionsBuilder.UseConventionSetPlugin<StringPropertiesDefaultValueConventionPlugin>();
-			}
-
 			base.OnConfiguring(optionsBuilder);
+
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CacheAttributeToAnnotationConventionPlugin>(() => Settings.UseCacheAttributeToAnnotationConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CascadeDeleteToRestrictConventionPlugin>(() => Settings.UseCascadeDeleteToRestrictConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<DataTypeAttributeConventionPlugin>(() => Settings.UseDataTypeAttributeConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ManyToManyEntityKeyDiscoveryConventionPlugin>(() => Settings.UseManyToManyEntityKeyDiscoveryConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<StringPropertiesDefaultValueConventionPlugin>(() => Settings.UseStringPropertiesDefaultValueConvention);
 		}
 
 		/// <inheritdoc />

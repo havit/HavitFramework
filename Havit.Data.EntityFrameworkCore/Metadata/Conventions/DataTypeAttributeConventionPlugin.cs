@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Registruje DataTypeAttributeConvention do ConventionSetu.
 	/// </summary>
-	public class DataTypeAttributeConventionPlugin : IConventionSetPlugin
+	internal class DataTypeAttributeConventionPlugin : IConventionSetPlugin
 	{
 		private readonly ProviderConventionSetBuilderDependencies dependencies;
 

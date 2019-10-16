@@ -32,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 
 			if (attribute.DataType == DataType.Date)
 			{
-				propertyBuilder.HasColumnType("Date", fromDataAnnotation: true);
+				propertyBuilder.HasColumnType("Date", fromDataAnnotation: true /* DataAnnotation */);
 			}
 			else
 			{

@@ -40,7 +40,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// <inheritdoc />
 		protected override DbContextSettings CreateDbContextSettings()
 		{
-			return new BusinessLayerDbContextSettings();
+			return new BusinessLayerDbContextSettings
+			{
+				UseStringPropertiesDefaultValueConvention = true
+			};
 		}
 
 		/// <inheritdoc />

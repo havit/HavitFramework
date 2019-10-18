@@ -18,8 +18,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			// a nepublikuje se informace o ignorování indexu z důvodu pokrytí sloupců jinými indexy
 			if (!ConventionSet.AddBefore<IForeignKeyAddedConvention>(conventionSet.ForeignKeyAddedConventions, new IndexForForeignKeysConvention(), typeof(ForeignKeyIndexConvention)))
 			{
-				// pokud by náhodou vestavěná konvence nebyla, přidáme se jako první
-				conventionSet.ForeignKeyAddedConventions.Insert(0, new IndexForForeignKeysConvention());
+				// pokud by náhodou vestavěná konvence nebyla, přidáme se na konec (za ostatní naše konvence)
+				conventionSet.ForeignKeyAddedConventions.Add(new IndexForForeignKeysConvention());
 			}
 			return conventionSet;
 		}

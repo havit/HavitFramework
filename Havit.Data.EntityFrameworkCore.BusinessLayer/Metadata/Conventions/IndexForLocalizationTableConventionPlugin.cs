@@ -12,7 +12,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	internal class IndexForLocalizationTableConventionPlugin : IConventionSetPlugin
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{
+		{			
 			conventionSet.EntityTypeAddedConventions.Add(new IndexForLocalizationTableConvention());
 			return conventionSet;
 		}

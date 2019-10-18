@@ -27,8 +27,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			// Systémové tabulky - nemá cenu řešit, nebudou mít attribut.
 			// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
 
-			propertyBuilder.HasDefaultValue(attribute.Value, fromDataAnnotation: true);
-			propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: true); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
+			propertyBuilder.HasDefaultValue(attribute.Value, fromDataAnnotation: true /* DataAnnotation */);
+			propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: true /* DataAnnotation */); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
 		}
 	}
 }

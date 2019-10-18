@@ -61,15 +61,22 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionExtendedPropertiesConventionPlugin>(() => Settings.UseCollectionExtendedPropertiesConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueAttributeConventionPlugin>(() => Settings.UseDefaultValueAttributeConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueSqlAttributeConventionPlugin>(() => Settings.UseDefaultValueSqlAttributeConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysColumnNamesConventionPlugin>(() => Settings.UseForeignKeysColumnNamesConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<CharColumnTypeForCharPropertyConventionPlugin>(() => Settings.UseCharColumnTypeForCharPropertyConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<NamespaceExtendedPropertyConventionPlugin>(() => Settings.UseNamespaceExtendedPropertyConvention);
+
+			// reagují na přidání cizího klíče, naše konvence musíme dostat před tvorbu indexů vestavěnou v EF Core
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysColumnNamesConventionPlugin>(() => Settings.UseForeignKeysColumnNamesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<PrefixedTablePrimaryKeysConventionPlugin>(() => Settings.UsePrefixedTablePrimaryKeysConvention);
+			// konvence používá primární klíč nastavený v předchozí konvenci
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTablesParentEntitiesConventionPlugin>(() => Settings.UseLocalizationTablesParentEntitiesConvention);
+			// reagují na přidání cizího klíče, konvenci musíme dostat před tvorbu indexů vestavěnou v EF Core, ale až za naše předchozí konvence
 			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForForeignKeysConventionPlugin>(() => Settings.UseIndexForForeignKeysConvention);
+
 			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLanguageUiCulturePropertyConventionPlugin>(() => Settings.UseIndexForLanguageUiCulturePropertyConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLocalizationTableConventionPlugin>(() => Settings.UseIndexForLocalizationTableConvention);
+
 			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexNamingConventionPlugin>(() => Settings.UseIndexNamingConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTablesParentEntitiesConventionPlugin>(() => Settings.UseLocalizationTablesParentEntitiesConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<NamespaceExtendedPropertyConventionPlugin>(() => Settings.UseNamespaceExtendedPropertyConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<PrefixedTablePrimaryKeysConventionPlugin>(() => Settings.UsePrefixedTablePrimaryKeysConvention);
+
 			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => Settings.UseXmlCommentsForDescriptionPropertyConvention);
 		}
 

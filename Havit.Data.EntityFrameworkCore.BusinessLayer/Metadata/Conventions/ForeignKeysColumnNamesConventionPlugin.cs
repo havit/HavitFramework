@@ -13,7 +13,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{			
-			conventionSet.ForeignKeyAddedConventions.Add(new ForeignKeysColumnNamesConvention());
+			ForeignKeysColumnNamesConvention convention = new ForeignKeysColumnNamesConvention();
+
+			// potřebujeme se dostat před tvorbu indexů
+			if (!ConventionSet.AddBefore(conventionSet.ForeignKeyAddedConventions, convention, typeof(ForeignKeyIndexConvention)))
+			{
+				conventionSet.ForeignKeyAddedConventions.Add(convention);
+			}
 			return conventionSet;
 		}
 	}

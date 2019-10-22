@@ -13,7 +13,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
     /// <summary>
     /// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
-    /// 
     /// <remarks>
     /// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
     /// </remarks>
@@ -86,27 +85,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			modelBuilder.ForSqlServerExtendedPropertiesAttributes();
 			base.ModelCreatingCompleting(modelBuilder);
 		}
-
-		///// <inheritdoc />
-		//protected override IEnumerable<IModelConvention> GetModelConventions()
-		//{
-		//	foreach (var convention in base.GetModelConventions())
-		//	{
-		//		yield return convention;
-		//	}
-
-		//	yield return new PrefixedTablePrimaryKeysConvention();
-		//	yield return new ForeignKeysColumnNamesConvention();
-		//	yield return new LocalizationTablesParentEntitiesConvention();
-		//	yield return new DefaultValueSqlAttributeConvention();
-		//	yield return new DefaultValueAttributeConvention();
-		//	yield return new StringPropertiesDefaultValueConvention();
-		//	yield return new NamespaceExtendedPropertyConvention();
-		//	yield return new CollectionExtendedPropertiesConvention();
-		//	yield return new XmlCommentsForDescriptionPropertyConvention();
-		//	yield return new BusinessLayerIndexesConventions();
-  //          yield return new CharColumnTypeForCharPropertyConvention();
-		//}
 
 		/// <summary>
 		/// Registruje <see cref="IModelExtender"/>y z <paramref name="extendersAssembly"/>. Vyžaduje, aby v DbContexte bola zaregistrovaná služba <see cref="IModelExtensionAnnotationProvider"/> (štandardne je registrovaná v <see cref="OnConfiguring"/>.

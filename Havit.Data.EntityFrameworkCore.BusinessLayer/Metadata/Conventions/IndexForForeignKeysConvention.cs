@@ -11,6 +11,9 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	/// <summary>
+	/// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
+	/// </summary>
 	public class IndexForForeignKeysConvention : IForeignKeyAddedConvention
 	{
 		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)

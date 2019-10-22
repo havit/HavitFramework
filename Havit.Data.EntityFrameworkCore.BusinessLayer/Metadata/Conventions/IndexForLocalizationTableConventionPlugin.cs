@@ -12,8 +12,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	internal class IndexForLocalizationTableConventionPlugin : IConventionSetPlugin
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{			
-			conventionSet.EntityTypeAddedConventions.Add(new IndexForLocalizationTableConvention());
+		{
+			var convention = new IndexForLocalizationTableConvention(); // musíme zajistit existenci jen jediné instance!
+
+			conventionSet.ForeignKeyAddedConventions.Add(convention);
+			conventionSet.ForeignKeyPropertiesChangedConventions.Add(convention);
 			return conventionSet;
 		}
 	}

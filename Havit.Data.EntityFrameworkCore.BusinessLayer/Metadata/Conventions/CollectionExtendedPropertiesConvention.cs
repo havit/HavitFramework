@@ -11,8 +11,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO: EF Core 3.0: fromDataAnnotations
-
 	/// <summary>
 	/// Konvencia pre definovanie Collection_{propertyName} extended properties na entitách. Vynecháva kolekcie s názvom "Localizations", nakoľko by BusinessLayerGenerator vygeneroval kolekciu dvakrát.
 	/// </summary>
@@ -45,7 +43,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.DeclaringEntityType.GetTableName() + "." + navigation.ForeignKey.Properties[0].GetColumnName() }
 					};
 
-				relationshipBuilder.Metadata.PrincipalToDependent.DeclaringEntityType.AddExtendedProperties(extendedProperties);
+				relationshipBuilder.Metadata.PrincipalToDependent.DeclaringEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

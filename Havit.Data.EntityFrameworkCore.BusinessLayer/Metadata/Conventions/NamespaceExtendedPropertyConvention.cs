@@ -12,8 +12,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO: EF Core 3.0: fromDataAnnotations
-
 	/// <summary>
 	/// Konvencia pre nastavenie Namespace extended property na všetky entity v modeli. Z namespace triedy sa odstráni názov assembly (Havit.{Projekt}.Model.Common -> Common).
 	/// </summary>
@@ -62,7 +60,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				entityTypeBuilder.Metadata.AddExtendedProperties(new Dictionary<string, string>()
 					{
 						{ "Namespace", entityNamespace },
-					});
+					}, 
+					fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

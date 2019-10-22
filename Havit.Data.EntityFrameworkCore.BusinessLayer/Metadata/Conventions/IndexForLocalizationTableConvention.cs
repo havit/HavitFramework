@@ -8,24 +8,53 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	public class IndexForLocalizationTableConvention : IEntityTypeAddedConvention
+	/// <summary>
+	/// V lokalizačních tabulkách vytváří unikátní index s cizími klíči vedoucími do lokalizované tabulky a do tabulky jazyků.
+	/// </summary>
+	public class IndexForLocalizationTableConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
 	{
-		public void ProcessEntityTypeAdded(IConventionEntityTypeBuilder entityTypeBuilder, IConventionContext<IConventionEntityTypeBuilder> context)
+		// systémové tabulky neřešíme, nebudou IsBusinessLayerLocalizationEntity
+		// suppress nemusíme řešit, vyřeší se odstraněním konvence
+
+		private Dictionary<IConventionEntityType, IConventionIndex> createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
+
+		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
 		{
-			// systémové tabulky neřešíme, nebudou IsBusinessLayerLocalizationEntity
-			// suppress nemusíme řešit, vyřeší se odstraněním konvence
+			EnsureIndex(relationshipBuilder);
+		}
 
-			if (entityTypeBuilder.Metadata.IsBusinessLayerLocalizationEntity())
+		public void ProcessForeignKeyPropertiesChanged(IConventionRelationshipBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IConventionRelationshipBuilder> context)
+		{
+			EnsureIndex(relationshipBuilder);
+		}
+
+		private void EnsureIndex(IConventionRelationshipBuilder relationshipBuilder)
+		{
+			var entityType = relationshipBuilder.Metadata.DeclaringEntityType;
+
+			if (entityType.IsBusinessLayerLocalizationEntity()) // jsme v lokalizační tabulce?
 			{
-				IEntityType parentEntity = entityTypeBuilder.Metadata.GetBusinessLayerLocalizationParentEntityType();
-				IConventionProperty parentLocalizationProperty = entityTypeBuilder.Metadata.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType == parentEntity)?.Properties?[0];
+				// pokud jsme již index udělali, zrušíme jej
+				if (createdIndexes.TryGetValue(entityType, out var index))
+				{
+					entityType.Builder.HasNoIndex(index);
+					createdIndexes.Remove(entityType);
+				}
 
-				IConventionProperty languageProperty = (IConventionProperty)entityTypeBuilder.Metadata.GetBusinessLayerLanguageProperty();
+				// najdeme sloupec s odkazem na parent tabulku
+				IEntityType parentEntity = entityType.GetBusinessLayerLocalizationParentEntityType();
+				IConventionProperty parentLocalizationProperty = entityType.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType == parentEntity)?.Properties?[0];
 
+				// najdeme sloupec s odkazem jazyk
+				IConventionProperty languageProperty = (IConventionProperty)entityType.GetBusinessLayerLanguageProperty();
+
+				// pokud máme sloupec s odkazem na jazyk i na parent tabulku a alespoň jeden z těchto sloupců je v aktuálním relationshipbuilderu
 				if ((parentLocalizationProperty != null) && (languageProperty != null))
 				{
-					IConventionIndexBuilder index = entityTypeBuilder.HasIndex(new List<IConventionProperty> { parentLocalizationProperty, languageProperty }.AsReadOnly(), fromDataAnnotation: false);
-					index.IsUnique(true, fromDataAnnotation: false /* Convention */);
+					// vytvoříme unikátní index
+					IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentLocalizationProperty, languageProperty }.AsReadOnly(), fromDataAnnotation: false);
+					indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
+					createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
 				}
 			}
 		}

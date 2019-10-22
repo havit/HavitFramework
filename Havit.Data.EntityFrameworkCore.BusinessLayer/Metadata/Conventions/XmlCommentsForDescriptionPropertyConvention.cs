@@ -16,8 +16,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO: EF Core 3.0: fromDataAnnotations
-
 	/// <summary>
 	/// Konvencia pre nastavenie MS_Description extended property na entitách pomocou XML komentárov. Je nutné, aby assembly s modelom mala zapnuté generovanie XML komentárov. Súbor s XML komentárom by mal byť umiestnený vedľa assembly samotnej s príponou .XML
 	/// 
@@ -76,9 +74,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				if (!string.IsNullOrWhiteSpace(xmlCommentType.Summary))
 				{
 					entityType.AddExtendedProperties(new Dictionary<string, string>
-					{
-						{ MsDescriptionExtendedProperty, EncodeValue(xmlCommentType.Summary) }
-					});
+						{
+							{ MsDescriptionExtendedProperty, EncodeValue(xmlCommentType.Summary) }
+						},
+						fromDataAnnotation: false /* Convention */);
 				}
 
 				foreach (IConventionProperty property in entityType.GetProperties())
@@ -96,9 +95,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					if (xmlCommentMember != null)
 					{
 						property.AddExtendedProperties(new Dictionary<string, string>
-						{
-							{ MsDescriptionExtendedProperty, EncodeValue(xmlCommentMember.Summary) }
-						});
+							{
+								{ MsDescriptionExtendedProperty, EncodeValue(xmlCommentMember.Summary) }
+							}, fromDataAnnotation: false /* Convention */);
 					}
 				}
 
@@ -115,9 +114,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					if (xmlCommentCollection != null)
 					{
 						entityType.AddExtendedProperties(new Dictionary<string, string>
-						{
-							{ $"Collection_{collection.PropertyInfo.Name}_Description", EncodeValue(xmlCommentCollection.Summary) }
-						});
+							{
+								{ $"Collection_{collection.PropertyInfo.Name}_Description", EncodeValue(xmlCommentCollection.Summary) }
+							},
+							fromDataAnnotation: false);
 					}
 				}
 

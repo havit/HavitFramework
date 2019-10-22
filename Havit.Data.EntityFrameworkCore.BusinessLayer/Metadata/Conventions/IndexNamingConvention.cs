@@ -9,6 +9,9 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	/// <summary>
+	/// Přejmenovává indexy začínající IX_ na FKX_.
+	/// </summary>
 	public class IndexNamingConvention : IIndexAddedConvention
 	{
 		public void ProcessIndexAdded(IConventionIndexBuilder indexBuilder, IConventionContext<IConventionIndexBuilder> context)

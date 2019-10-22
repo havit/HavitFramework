@@ -37,7 +37,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				if ((property.GetDefaultValue() == null) && String.IsNullOrEmpty(property.GetDefaultValueSql()))
 				{
 					propertyBuilder.HasDefaultValue(String.Empty, fromDataAnnotation: false /* Convention */);
-					propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: false /* Convention */); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
+					// Proč ValueGenerated? https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
+					// Proč fromDataAnnotation: true? https://github.com/aspnet/EntityFrameworkCore/issues/18507
+					propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: true /* DataAnnotation */);
 				}
 			}
 		}

@@ -54,12 +54,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// </summary>
 		public bool UseIndexForLocalizationTableConvention { get; set; } = true;
 
+		// TODO EF Core 3.0: Odstranit
+		/*
 		/// <summary>
 		/// Indikuje používání konvence IndexNamingConvention.
 		/// Výchozí hodnota je true.
 		/// </summary>
 		public bool UseIndexNamingConvention { get; set; } = true;
 
+	*/
 		/// <summary>
 		/// Indikuje používání konvence LocalizationTablesParentEntitiesConvention.
 		/// Výchozí hodnota je true.

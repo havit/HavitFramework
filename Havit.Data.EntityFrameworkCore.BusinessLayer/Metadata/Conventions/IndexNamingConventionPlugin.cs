@@ -6,6 +6,8 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	// TODO EF Core 3.0: Odstranit
+	/*
 	/// <summary>
 	/// Registruje IndexNamingConvention do ConventionSetu.
 	/// </summary>
@@ -17,4 +19,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			return conventionSet;
 		}
 	}
+	*/
 }

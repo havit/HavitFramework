@@ -9,10 +9,13 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	// TODO EF Core 3.0: Odstranit
+
+	/*
 	/// <summary>
 	/// Přejmenovává indexy začínající IX_ na FKX_.
 	/// </summary>
-	public class IndexNamingConvention : IIndexAddedConvention
+	public class IndexNamingConvention : IIndexAddedConvention, IPropertyAnnotationChangedConvention
 	{
 		public void ProcessIndexAdded(IConventionIndexBuilder indexBuilder, IConventionContext<IConventionIndexBuilder> context)
 		{
@@ -31,8 +34,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			if ((indexName == indexBuilder.Metadata.GetDefaultName()) // budeme index měnit jen tehdy, má-li výchozí pojmenování
 				&& indexName.StartsWith("IX_"))
 			{
-				indexBuilder.Metadata.SetName("FKX_" + indexName.Substring(3), fromDataAnnotation: false /* Convention */);
+				indexBuilder.Metadata.SetName("FKX_" + indexName.Substring(3), fromDataAnnotation: false /* Convention * /);
 			}
 		}
 	}
+	*/
 }

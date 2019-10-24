@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
@@ -49,10 +50,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				IConventionProperty languageProperty = (IConventionProperty)entityType.GetBusinessLayerLanguageProperty();
 
 				// pokud máme sloupec s odkazem na jazyk i na parent tabulku a alespoň jeden z těchto sloupců je v aktuálním relationshipbuilderu
-				if ((parentLocalizationProperty != null) && (languageProperty != null))
+				if ((parentLocalizationProperty != null) && (languageProperty != null) && !parentLocalizationProperty.IsShadowProperty() && !languageProperty.IsShadowProperty())
 				{
 					// vytvoříme unikátní index
 					IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentLocalizationProperty, languageProperty }.AsReadOnly(), fromDataAnnotation: false);
+					indexBuilder.HasName(IndexForForeignKeysConvention.GetIndexName(indexBuilder.Metadata));
 					indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
 					createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
 				}

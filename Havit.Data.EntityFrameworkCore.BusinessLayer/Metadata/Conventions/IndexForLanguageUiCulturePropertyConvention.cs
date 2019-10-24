@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
@@ -7,6 +8,9 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
+	// TODO EF 3.0: Odstranit?
+	// TODO EF Core 3.0: Přejmenovat vč. Use... a pluginu?
+
 	/// <summary>
 	/// Zajišťuje tvorbu indexů se sloupcem UiCulture v tabulce jazyků.
 	/// </summary>
@@ -22,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			if (entityTypeBuilder.Metadata.IsBusinessLayerLanguageEntity())
 			{
 				IConventionProperty uiCultureProperty = (IConventionProperty)entityTypeBuilder.Metadata.GetBusinessLayerUICultureProperty();
-				if (uiCultureProperty != null)
+				if ((uiCultureProperty != null) && !uiCultureProperty.IsShadowProperty())
 				{
 					entityTypeBuilder.HasIndex(new List<IConventionProperty> { uiCultureProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */);					
 				}

@@ -25,6 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		{
 			return (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
 				&& (entityType.GetProperties().All(item => !item.IsNullable))
+				&& (entityType.GetProperties().All(item => !item.IsShadowProperty())) // jen pro jistotu
 				&& (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
 		}
 

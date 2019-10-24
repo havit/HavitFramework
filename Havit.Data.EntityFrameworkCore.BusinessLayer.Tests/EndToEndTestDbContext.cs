@@ -26,7 +26,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			Settings.UseIndexForForeignKeysConvention = false;
 			Settings.UseIndexForLanguageUiCulturePropertyConvention = false;
 			Settings.UseIndexForLocalizationTableConvention = false;
-			Settings.UseIndexNamingConvention = false;
+			// TODO EF Core 3.0: Vyhodit
+			//Settings.UseIndexNamingConvention = false;
 			Settings.UseLocalizationTablesParentEntitiesConvention = false;
 			Settings.UseManyToManyEntityKeyDiscoveryConvention = false;
 			Settings.UseNamespaceExtendedPropertyConvention = false;

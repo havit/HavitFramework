@@ -74,7 +74,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLanguageUiCulturePropertyConventionPlugin>(() => Settings.UseIndexForLanguageUiCulturePropertyConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLocalizationTableConventionPlugin>(() => Settings.UseIndexForLocalizationTableConvention);
 
-			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexNamingConventionPlugin>(() => Settings.UseIndexNamingConvention);
+			// TODO EF Core 3.0: Odstranit
+			//optionsBuilder.ConditionalyUseConventionSetPlugin<IndexNamingConventionPlugin>(() => Settings.UseIndexNamingConvention);
 
 			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => Settings.UseXmlCommentsForDescriptionPropertyConvention);
 		}

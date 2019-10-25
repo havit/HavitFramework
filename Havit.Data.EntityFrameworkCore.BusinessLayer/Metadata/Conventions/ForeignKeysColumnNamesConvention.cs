@@ -14,9 +14,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// <summary>
 	/// Konvencia pre názvy stĺpcov s cudzím kľúčom - mení suffix z Id na ID (konvencia BusinessLayeru).
 	/// </summary>
-    public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention
+	public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
     {
 		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		{
+			SetColumnName(relationshipBuilder);
+		}
+
+		public void ProcessForeignKeyPropertiesChanged(IConventionRelationshipBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IConventionRelationshipBuilder> context)
+		{
+
+			SetColumnName(relationshipBuilder);
+		}
+
+		private static void SetColumnName(IConventionRelationshipBuilder relationshipBuilder)
 		{
 			// Systémové tabulky nechceme změnit.
 			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())

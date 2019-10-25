@@ -20,6 +20,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			{
 				conventionSet.ForeignKeyAddedConventions.Add(convention);
 			}
+
+			if (!ConventionSet.AddBefore(conventionSet.ForeignKeyPropertiesChangedConventions, convention, typeof(ForeignKeyIndexConvention)))
+			{
+				conventionSet.ForeignKeyPropertiesChangedConventions.Add(convention);
+			}
+
 			return conventionSet;
 		}
 	}

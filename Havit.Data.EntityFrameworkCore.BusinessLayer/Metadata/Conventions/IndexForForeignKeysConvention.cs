@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
@@ -25,18 +26,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 		public void ProcessForeignKeyPropertiesChanged(IConventionRelationshipBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IConventionRelationshipBuilder> context)
 		{
+			// řeší podporu pro shadow property
+			// JK: Nevím úplně proč, ale funguje to. Implementace vychází z ForeignKeyIndexConvention v EF Core 3.0.
+			RemoveIndex(relationshipBuilder.Metadata.DeclaringEntityType.Builder, oldDependentProperties);
 			CreateIndex(relationshipBuilder);
 		}
 
 		public void ProcessForeignKeyRemoved(IConventionEntityTypeBuilder entityTypeBuilder, IConventionForeignKey foreignKey, IConventionContext<IConventionForeignKey> context)
 		{
-			foreach (var property in foreignKey.Properties)
-			{
-				foreach (var index in property.GetContainingIndexes().ToList())
-				{
-					entityTypeBuilder.HasNoIndex(index);
-				}
-			}
+			RemoveIndex(entityTypeBuilder, foreignKey.Properties);
 		}
 
 		public void ProcessPropertyAnnotationChanged(IConventionPropertyBuilder propertyBuilder, string name, IConventionAnnotation annotation, IConventionAnnotation oldAnnotation, IConventionContext<IConventionAnnotation> context)
@@ -73,11 +71,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				IConventionProperty fkProperty = relationshipBuilder.Metadata.Properties.Single();
 				IConventionProperty deletedProperty = (IConventionProperty)relationshipBuilder.Metadata.DeclaringEntityType.GetBusinessLayerDeletedProperty();
 
-				if (fkProperty.IsShadowProperty())
-				{
-					return;
-				}
-
+				// pro shadow property se udělá index vesměs chybně
+				// nicméně dále je zpracován pomocí ProcessForeignKeyPropertiesChanged 
 				var index = relationshipBuilder.Metadata.DeclaringEntityType.Builder.HasIndex(
 					(deletedProperty != null)
 						? new List<IConventionProperty> { fkProperty, deletedProperty }.AsReadOnly()
@@ -103,8 +98,25 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			}
 		}
 
+		private void RemoveIndex(IConventionEntityTypeBuilder entityTypeBuilder, IEnumerable<IConventionProperty> properties)
+		{
+			if (properties.Count() == 1)
+			{
+				IConventionProperty deletedProperty = (IConventionProperty)entityTypeBuilder.Metadata.GetBusinessLayerDeletedProperty();
+				// index je potřeba hledat pomocí FindIndex nad vlastnostmi, nelze použít GetContainingIndexes() nad property
+				var index = entityTypeBuilder.Metadata.FindIndex((deletedProperty != null)
+					? new List<IConventionProperty> { properties.Single(), deletedProperty }.AsReadOnly()
+					: new List<IConventionProperty> { properties.Single() }.AsReadOnly());
+
+				if ((index != null) && index.GetName().StartsWith("FKX_"))
+				{
+					entityTypeBuilder.HasNoIndex(index);
+				}
+			}
+		}
+
 		internal static string GetIndexName(IConventionIndex index)
-		{ 
+		{
 			string indexName = index.GetDefaultName();
 			if (indexName.StartsWith("IX_")) // vždy
 			{

@@ -68,7 +68,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if ((relationshipBuilder.Metadata.Properties.Count == 1) && !relationshipBuilder.Metadata.Properties.Single().IsPrimaryKey())
+			if (relationshipBuilder.Metadata.Properties.Count == 1)
 			{
 				IConventionProperty fkProperty = relationshipBuilder.Metadata.Properties.Single();
 				IConventionProperty deletedProperty = (IConventionProperty)relationshipBuilder.Metadata.DeclaringEntityType.GetBusinessLayerDeletedProperty();
@@ -85,7 +85,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					fromDataAnnotation: false /* Convention */);
 
 				index.HasName(GetIndexName(index.Metadata), fromDataAnnotation: false /* Convention */);
-
 			}
 		}
 
@@ -95,7 +94,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			{
 				if (index.GetName().StartsWith("FKX_")) // jen naše indexy
 				{
-					index.SetName(GetIndexName(index), fromDataAnnotation: false /* Convention */);
+					string newName = GetIndexName(index);
+					if (newName != index.GetName())
+					{
+						index.SetName(GetIndexName(index), fromDataAnnotation: false /* Convention */);
+					}
 				}
 			}
 		}

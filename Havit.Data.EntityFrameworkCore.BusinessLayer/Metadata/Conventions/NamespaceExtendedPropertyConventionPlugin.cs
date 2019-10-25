@@ -13,7 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{
-			conventionSet.EntityTypeAddedConventions.Add(new NamespaceExtendedPropertyConvention());
+			conventionSet.KeyAddedConventions.Add(new NamespaceExtendedPropertyConvention());
 			return conventionSet;
 		}
 	}

@@ -15,12 +15,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// <summary>
 	/// Konvencia pre nastavenie Namespace extended property na všetky entity v modeli. Z namespace triedy sa odstráni názov assembly (Havit.{Projekt}.Model.Common -> Common).
 	/// </summary>
-	public class NamespaceExtendedPropertyConvention : IEntityTypeAddedConvention
+	public class NamespaceExtendedPropertyConvention : IKeyAddedConvention
 	{
-		/// <inheritdoc />
-		public void ProcessEntityTypeAdded(IConventionEntityTypeBuilder entityTypeBuilder, IConventionContext<IConventionEntityTypeBuilder> context)
+		public void ProcessKeyAdded(IConventionKeyBuilder keyBuilder, IConventionContext<IConventionKeyBuilder> context)
 		{
-			IConventionEntityType entityType = entityTypeBuilder.Metadata;
+			IConventionEntityType entityType = keyBuilder.Metadata.DeclaringEntityType;
 
 			// Systémové tabulky nechceme změnit.
 			if (entityType.IsSystemType())
@@ -35,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 			// pokud jde o many to many tabulku, nebudeme extended property generovat
 			// zde řešíme i nestandardní many-to-many tabulku s dalšími (ignorovanými) sloupci
-			if (entityTypeBuilder.Metadata.IsBusinessLayerManyToManyEntity())
+			if (entityType.IsBusinessLayerManyToManyEntity())
 			{
 				return; // nebudeme extended property generovat
 			}
@@ -57,7 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			string entityNamespace = entityType.ClrType.Namespace?.Replace(entityType.ClrType.Assembly.GetName().Name, "").Trim('.');
 			if (!String.IsNullOrEmpty(entityNamespace))
 			{
-				entityTypeBuilder.Metadata.AddExtendedProperties(new Dictionary<string, string>()
+				keyBuilder.Metadata.DeclaringEntityType.AddExtendedProperties(new Dictionary<string, string>()
 					{
 						{ "Namespace", entityNamespace },
 					}, 

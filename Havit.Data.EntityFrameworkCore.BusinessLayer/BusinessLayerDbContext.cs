@@ -69,13 +69,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			// konvence používá primární klíč nastavený v předchozí konvenci
 			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTablesParentEntitiesConventionPlugin>(() => Settings.UseLocalizationTablesParentEntitiesConvention);
 			// reagují na přidání cizího klíče, konvenci musíme dostat před tvorbu indexů vestavěnou v EF Core, ale až za naše předchozí konvence
-			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForForeignKeysConventionPlugin>(() => Settings.UseIndexForForeignKeysConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysIndexConventionPlugin>(() => Settings.UseForeignKeysIndexConvention);
 
-			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLanguageUiCulturePropertyConventionPlugin>(() => Settings.UseIndexForLanguageUiCulturePropertyConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<IndexForLocalizationTableConventionPlugin>(() => Settings.UseIndexForLocalizationTableConvention);
-
-			// TODO EF Core 3.0: Odstranit
-			//optionsBuilder.ConditionalyUseConventionSetPlugin<IndexNamingConventionPlugin>(() => Settings.UseIndexNamingConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LanguageUiCultureIndexConventionPlugin>(() => Settings.UseLanguageUiCultureIndexConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTableIndexConventionPlugin>(() => Settings.LocalizationTableIndexConvention);
 
 			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => Settings.UseXmlCommentsForDescriptionPropertyConvention);
 		}

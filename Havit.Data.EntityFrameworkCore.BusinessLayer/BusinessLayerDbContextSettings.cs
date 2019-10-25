@@ -40,29 +40,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// Indikuje používání konvence IndexForForeignKeysConvention.
 		/// Výchozí hodnota je true.
 		/// </summary>
-		public bool UseIndexForForeignKeysConvention { get; set; } = true;
+		public bool UseForeignKeysIndexConvention { get; set; } = true;
 
 		/// <summary>
 		/// Indikuje používání konvence IndexForLanguageUiCulturePropertyConvention.
 		/// Výchozí hodnota je true.
 		/// </summary>
-		public bool UseIndexForLanguageUiCulturePropertyConvention { get; set; } = true;
+		public bool UseLanguageUiCultureIndexConvention { get; set; } = true;
 
 		/// <summary>
 		/// Indikuje používání konvence IndexForLocalizationTableConvention.
 		/// Výchozí hodnota je true.
 		/// </summary>
-		public bool UseIndexForLocalizationTableConvention { get; set; } = true;
+		public bool LocalizationTableIndexConvention { get; set; } = true;
 
-		// TODO EF Core 3.0: Odstranit
-		/*
-		/// <summary>
-		/// Indikuje používání konvence IndexNamingConvention.
-		/// Výchozí hodnota je true.
-		/// </summary>
-		public bool UseIndexNamingConvention { get; set; } = true;
-
-	*/
 		/// <summary>
 		/// Indikuje používání konvence LocalizationTablesParentEntitiesConvention.
 		/// Výchozí hodnota je true.

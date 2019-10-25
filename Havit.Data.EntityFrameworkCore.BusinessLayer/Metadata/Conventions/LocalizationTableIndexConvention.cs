@@ -12,7 +12,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// <summary>
 	/// V lokalizačních tabulkách vytváří unikátní index s cizími klíči vedoucími do lokalizované tabulky a do tabulky jazyků.
 	/// </summary>
-	public class IndexForLocalizationTableConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
+	public class LocalizationTableIndexConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
 	{
 		// systémové tabulky neřešíme, nebudou IsBusinessLayerLocalizationEntity
 		// suppress nemusíme řešit, vyřeší se odstraněním konvence
@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				{
 					// vytvoříme unikátní index
 					IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentLocalizationProperty, languageProperty }.AsReadOnly(), fromDataAnnotation: false);
-					indexBuilder.HasName(IndexForForeignKeysConvention.GetIndexName(indexBuilder.Metadata));
+					indexBuilder.HasName(ForeignKeysIndexConvention.GetIndexName(indexBuilder.Metadata));
 					indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
 					createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
 				}

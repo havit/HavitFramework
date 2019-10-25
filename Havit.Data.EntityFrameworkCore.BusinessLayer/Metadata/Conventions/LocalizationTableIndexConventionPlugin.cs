@@ -6,18 +6,18 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO EF Core 3.0: Odstranit
-	/*
 	/// <summary>
-	/// Registruje IndexNamingConvention do ConventionSetu.
+	/// Registruje IndexForLocalizationTableConvention do ConventionSetu.
 	/// </summary>
-	internal class IndexNamingConventionPlugin : IConventionSetPlugin
+	internal class LocalizationTableIndexConventionPlugin : IConventionSetPlugin
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{
-			conventionSet.IndexAddedConventions.Add(new IndexNamingConvention());
+			var convention = new LocalizationTableIndexConvention(); // musíme zajistit existenci jen jediné instance!
+
+			conventionSet.ForeignKeyAddedConventions.Add(convention);
+			conventionSet.ForeignKeyPropertiesChangedConventions.Add(convention);
 			return conventionSet;
 		}
 	}
-	*/
 }

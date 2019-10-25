@@ -8,13 +8,12 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO EF 3.0: Odstranit?
 	// TODO EF Core 3.0: Přejmenovat vč. Use... a pluginu?
 
 	/// <summary>
 	/// Zajišťuje tvorbu indexů se sloupcem UiCulture v tabulce jazyků.
 	/// </summary>
-	public class IndexForLanguageUiCulturePropertyConvention : IEntityTypeAddedConvention
+	public class LanguageUiCultureIndexConvention : IEntityTypeAddedConvention
 	{
 		public void ProcessEntityTypeAdded(IConventionEntityTypeBuilder entityTypeBuilder, IConventionContext<IConventionEntityTypeBuilder> context)
 		{

@@ -6,16 +6,14 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO EF 3.0: Vyhodíme vestavěnou tvorbu indexů?
-
 	/// <summary>
 	/// Registruje IndexForForeignKeysConvention do ConventionSetu.
 	/// </summary>
-	internal class IndexForForeignKeysConventionPlugin : IConventionSetPlugin
+	internal class ForeignKeysIndexConventionPlugin : IConventionSetPlugin
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{
-			var convention = new IndexForForeignKeysConvention();
+			var convention = new ForeignKeysIndexConvention();
 			// přidáme se před výchozí ForeignKeyIndexConvention, abychom případně indexy udělali první
 			// ForeignKeyIndexConvention potom indexy, které již máme pokryté, neřeší
 			// a nepublikuje se informace o ignorování indexu z důvodu pokrytí sloupců jinými indexy

@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// <summary>
 	/// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
 	/// </summary>
-	public class IndexForForeignKeysConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention, IForeignKeyRemovedConvention, IPropertyAnnotationChangedConvention, IEntityTypeAnnotationChangedConvention
+	public class ForeignKeysIndexConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention, IForeignKeyRemovedConvention, IPropertyAnnotationChangedConvention, IEntityTypeAnnotationChangedConvention
 	{
 		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
 		{
@@ -61,7 +61,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<IndexForForeignKeysConvention>())
+			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<ForeignKeysIndexConvention>())
 			{
 				return;
 			}

@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
 	// TODO: EF Core 3.0: Dodělat BusinessLayerIndexesConventions
-	// TODO: EF Core 3.0: V konvencích ověřit správnost použití FromDataAnnotation (resp. ConfigurationSource.DataAnnotation vs. ConfigurationSource.Convention).
 
 	/// <summary>
 	/// Konvencia pre vytvorenie indexov, ktoré definuje BusinessLayerGenerator. Premenuje taktiež všetky existujúce indexy, aby mali prefix "FKX_".

@@ -23,14 +23,10 @@ namespace Havit.Tests.Threading
 			{
 				CriticalSection.ExecuteAction(1, () =>
 				{
-					if (shared != 0)
-					{
-						Assert.Fail("Došlo k paralelnímu vstupu do kritické sekce."); // Assert
-					}
+					Assert.AreEqual(0, shared, "Došlo k paralelnímu vstupu do kritické sekce."); // Assert
+
 					shared += 1;
-
 					// something long running?
-
 					shared -= 1;
 				});
 			});
@@ -56,10 +52,23 @@ namespace Havit.Tests.Threading
 		public void CriticalSection_ExecuteAction_CleansUnusedLocks()
 		{
 			// Precondition
-			Assert.AreEqual(0, CriticalSection.CriticalSectionLocks.Keys.Count);
+			Assert.AreEqual(0, CriticalSection.CriticalSectionLocks.Keys.Count, "Precondition failed.");
 
 			// Act
 			CriticalSection.ExecuteAction(1, () => { });					
+
+			// Assert
+			Assert.AreEqual(0, CriticalSection.CriticalSectionLocks.Keys.Count); // dojde k vyčištění?
+		}
+
+		[TestMethod]
+		public async Task CriticalSection_ExecuteAction_Async_CleansUnusedLocks()
+		{
+			// Precondition
+			Assert.AreEqual(0, CriticalSection.CriticalSectionLocks.Keys.Count, "Precondition failed.");
+
+			// Act
+			await CriticalSection.ExecuteActionAsync(1, async () => { await Task.CompletedTask; });
 
 			// Assert
 			Assert.AreEqual(0, CriticalSection.CriticalSectionLocks.Keys.Count); // dojde k vyčištění?

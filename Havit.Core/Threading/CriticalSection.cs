@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Threading
@@ -19,60 +20,99 @@ namespace Havit.Threading
 		/// <summary>
 		/// Vykoná danou akci pod zámkem.
 		/// </summary>
-		/// <param name="lock">
+		/// <param name="lockValue">
 		/// Zámek. 
 		/// Na rozdíl od obyčejného locku (resp. Monitoru) provede zamčení nad jeho hodnotou nikoliv nad jeho instancí.
 		/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
 		/// </param>
 		/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
-		public static void ExecuteAction(object @lock, Action criticalSection)
+		public static void ExecuteAction(object lockValue, Action criticalSection)
 		{
-			CriticalSectionLock currentLockEntry;
+			CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
 
-			// Bráníme se paralelnímu vytvoření CriticalSectionLock. To lze řešit přes ConcurrentDictionary i bez statického zámku.
-			// Dále se bráníme situaci, kdybychom např. zvyšovali čítač z 0 na 1 zámku, který již byl z dictionary vyhozen. ConcurrentDictionary toto takto neumí, statický zámek toto řeší.
-			lock (_staticLock)
-			{
-				if (CriticalSectionLocks.TryGetValue(@lock, out currentLockEntry))
-				{
-					currentLockEntry.UsageCounter += 1;
-				}
-				else
-				{
-					currentLockEntry = new CriticalSectionLock(); // výchozí hodnota čítače je 1
-					Debug.Assert(currentLockEntry.UsageCounter == 1);
-					CriticalSectionLocks.Add(@lock, currentLockEntry);
-				}
-			}
-
+			criticalSectionLock.Semaphore.Wait();
 			try
 			{
-				lock (currentLockEntry) // samotná intance nesoucí čítač slouží jako zámek
-				{
-					criticalSection();
-				}
+				criticalSection();
 			}
 			finally
 			{
-				// Ať už kritická sekce doběhla dobře nebo došlo k výjimce, musíme snížit čítač použití zámku.
-				// Opět pracujeme s čítačem, musíme proto použít statický zámek.
-				lock (_staticLock)
+				criticalSectionLock.Semaphore.Release();
+
+				ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
+			}
+		}
+
+		/// <summary>
+		/// Vykoná danou akci pod zámkem.
+		/// </summary>
+		/// <param name="lockValue">
+		/// Zámek. 
+		/// Na rozdíl od obyčejného locku (resp. Monitoru) provede zamčení nad jeho hodnotou nikoliv nad jeho instancí.
+		/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
+		/// </param>
+		/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
+		public static async Task ExecuteActionAsync(object lockValue, Func<Task> criticalSection)
+		{
+			CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
+
+			await criticalSectionLock.Semaphore.WaitAsync();
+			try
+			{
+				await criticalSection();
+			}
+			finally
+			{
+				criticalSectionLock.Semaphore.Release();
+
+				ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
+			}
+		}
+
+		private static CriticalSectionLock GetCriticalSectionLock(object lockValue)
+		{
+			lock (_staticLock)
+			{
+				if (CriticalSectionLocks.TryGetValue(lockValue, out CriticalSectionLock criticalSectionLock))
 				{
-					currentLockEntry.UsageCounter -= 1;
-					if (currentLockEntry.UsageCounter == 0)
-					{
-						// pokud již nikdo zámek nepoužívá, uklidíme jej
-						CriticalSectionLocks.Remove(@lock);
-					}
+					criticalSectionLock.UsageCounter += 1;
+				}
+				else
+				{
+					criticalSectionLock = new CriticalSectionLock(); // výchozí hodnota čítače je 1
+					Debug.Assert(criticalSectionLock.UsageCounter == 1);
+					CriticalSectionLocks.Add(lockValue, criticalSectionLock);
+				}
+				return criticalSectionLock;
+			}
+		}
+
+		private static void ReleaseCriticalSectionLock(object lockValue, CriticalSectionLock criticalSectionLock)
+		{
+			// Ať už kritická sekce doběhla dobře nebo došlo k výjimce, musíme snížit čítač použití zámku.
+			// Opět pracujeme s čítačem, musíme proto použít statický zámek.
+			lock (_staticLock)
+			{
+				criticalSectionLock.UsageCounter -= 1;
+				if (criticalSectionLock.UsageCounter == 0)
+				{
+					// pokud již nikdo zámek nepoužívá, uklidíme jej
+					CriticalSectionLocks.Remove(lockValue);
+					criticalSectionLock.Semaphore.Dispose();
 				}
 			}
 		}
 
 		/// <summary>
-		/// Reprezentuje skutečný zámek s čítačem použití.
+		/// Nese zámek (semafor) s čítačem použití.
 		/// </summary>
 		internal class CriticalSectionLock
 		{
+			/// <summary>
+			/// Zámek (semafor).
+			/// </summary>
+			public SemaphoreSlim Semaphore { get; set; } = new SemaphoreSlim(1, 1);
+
 			/// <summary>
 			/// Čítač použití. Výhozí hodnota je 1.
 			/// </summary>

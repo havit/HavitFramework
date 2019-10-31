@@ -29,8 +29,8 @@ namespace Havit.Threading
 		{
 			CriticalSectionLock currentLockEntry;
 
-			// Bráníme se paralelnímu vytvoření LockEntry. To lze řešit přes ConcurrentDictionary i bez statického zámku.
-			// Dále se bráníme situaci, kdy bychom napč. zvyšovali čítač z 0 na 1 zámku, který již byl z dictionary vyhozen. ConcurrentDictionary toto takto neumí, statický zámek toto řeší.
+			// Bráníme se paralelnímu vytvoření CriticalSectionLock. To lze řešit přes ConcurrentDictionary i bez statického zámku.
+			// Dále se bráníme situaci, kdybychom např. zvyšovali čítač z 0 na 1 zámku, který již byl z dictionary vyhozen. ConcurrentDictionary toto takto neumí, statický zámek toto řeší.
 			lock (_staticLock)
 			{
 				if (CriticalSectionLocks.TryGetValue(@lock, out currentLockEntry))

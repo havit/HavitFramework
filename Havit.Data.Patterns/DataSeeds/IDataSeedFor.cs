@@ -52,5 +52,19 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// AfterSave je volán nad všemi seedovanými objekty, i nad těmi, které nebyly uloženy (AfterSave je označení fáze seedování, nikoliv označení události nad objektem).
 		/// </summary>
 		IDataSeedFor<TEntity> AfterSave(Action<AfterSaveDataArgs<TEntity>> callback);
+
+		/// <summary>
+		/// Konfiguruje seedování tak, že se při načítání z databáze nepoužije WHERE podmínka, tj. načte se celá databázová tabulka.
+		/// Použije se tam, kde seedujeme veškerá data v databázové tabulce (veškeré systémové číselníky).
+		/// Není implementováno pro Entity Framework 6 (nic nedělá).
+		/// </summary>
+		IDataSeedFor<TEntity> NoDatabaseCondition();
+
+		/// <summary>
+		/// Konfiguruje seedování tak, že se při načítání z databáze použije konkrétní WHERE podmínka.
+		/// Použije se tam, kde se vyplatí použít jednodušší podmínku popisující seedovaná data, než sestavovat dotaz dle seedovaných dat (např. item => item.Id < 0).
+		/// Není implementováno pro Entity Framework 6 (nic nedělá).
+		/// </summary>
+		IDataSeedFor<TEntity> CustomDatabaseCondition(Expression<Func<TEntity, bool>> predicate);
 	}
 }

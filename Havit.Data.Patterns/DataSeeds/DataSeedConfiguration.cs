@@ -50,6 +50,13 @@ namespace Havit.Data.Patterns.DataSeeds
 		public List<ChildDataSeedConfigurationEntry> ChildrenSeeds { get; set; }
 
 		/// <summary>
+		/// Podmínka, která se má použít při načtení dat z databáze.
+		/// Musí zajistit načtení všech potřebných záznamů.
+		/// Avak může způsobit načtení i nepotřených záznamů, s tím se seedování vypořádá a ignoruje je.
+		/// </summary>
+		public Expression<Func<TEntity, bool>> CustomQueryCondition { get; set; }
+
+		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="seedData">Seedovaná data.</param>

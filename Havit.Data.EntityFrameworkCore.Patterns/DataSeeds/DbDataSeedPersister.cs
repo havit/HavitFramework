@@ -37,7 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 
 			IDbSet<TEntity> dbSet = DbContext.Set<TEntity>();
 			List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
-			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations);
+			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
 			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
 
 			if (!configuration.UpdateEnabled)
@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 
 			Update(configuration, seedDataPairsToUpdate);
 			dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
-			
+
 			DoBeforeSaveActions(configuration, seedDataPairs);
 			DbContext.SaveChanges();
 			DoAfterSaveActions(configuration, seedDataPairs);
@@ -85,7 +85,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// <summary>
 		/// Provede párování předpisu seedovaných dat s existujícími objekty.
 		/// </summary>
-		internal List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressions)
+		internal List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressions, Expression<Func<TEntity, bool>> customQueryCondition)
 			where TEntity : class
 		{
 			// vezmeme data k seedování, přidáme k nim klíč pro párování (pro pohodlný left join)
@@ -94,7 +94,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			seedDataWithPairByValues.ThrowIfContainsDuplicates("Source data contains duplicates in pair by expression.");
 
 			// načteme databázová data k seedovaným datům
-			List<TEntity> databaseData = PairWithDbData_LoadDatabaseData(seedData, databaseDataQueryable, pairByExpressions);
+			List<TEntity> databaseData = PairWithDbData_LoadDatabaseData(seedData, databaseDataQueryable, pairByExpressions, customQueryCondition);
 
 			// vezmeme databázová data, přidáme k nim klíč pro párování (pro pohodlný left join)
 			List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues = ToDataWithPairByValues(databaseData, pairByExpressions);
@@ -127,63 +127,102 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		}
 
 		/// <summary>
-		/// Provede párování předpisu seedovaných dat tak, že jsou objekty načteny v dávkách, čímž dochází k optimalizaci množství prováděných databázových operací.
+		/// Provede načtení dat pro párování seedovaných dat s databázovými entitami.
 		/// </summary>
-		private List<TEntity> PairWithDbData_LoadDatabaseData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
+		private List<TEntity> PairWithDbData_LoadDatabaseData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, Expression<Func<TEntity, bool>> customQueryCondition)
 			where TEntity : class
 		{
-			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
+			return (customQueryCondition == null)
+				? PairWithDbData_LoadDatabaseData_AutoQueryCondition(seedData, databaseDataQueryable, pairByExpressionsWithCompilations)
+				: PairWithDbData_LoadDatabaseData_CustomQueryCondition(seedData, databaseDataQueryable, pairByExpressionsWithCompilations, customQueryCondition);
+		}
+
+		/// <summary>
+		/// Provede načtení dat pro párování seedovaných dat s databázovými entitami.
+		/// Objekty načteny v dávkách, čímž dochází k optimalizaci množství prováděných databázových operací.
+		/// </summary>
+		private List<TEntity> PairWithDbData_LoadDatabaseData_AutoQueryCondition<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
+			where TEntity : class
+		{
 			List<TEntity> dbEntities = new List<TEntity>();
 
 			// Chunkify(1000) --> SQL Server 2008: Some part of your SQL statement is nested too deeply. Rewrite the query or break it up into smaller queries.
 			// Proto došlo ke změně na .Chunkify(100), správné číslo hledáme.
 			foreach (TEntity[] chunk in seedData.Chunkify(100))
 			{
-				Expression<Func<TEntity, bool>> chunkWhereExpression = null;
-				foreach (TEntity seedEntity in chunk)
-				{
-					Expression<Func<TEntity, bool>> seedEntityWhereExpression = null;
-
-					for (int i = 0; i < pairByExpressionsWithCompilations.Count; i++)
-					{
-						Expression<Func<TEntity, object>> expression = pairByExpressionsWithCompilations[i].Expression;
-						Func<TEntity, object> lambda = pairByExpressionsWithCompilations[i].CompiledLambda;
-
-						object value = lambda.Invoke(seedEntity);
-
-						Type expressionBodyType = expression.Body.RemoveConvert().Type;
-
-						Expression valueExpression = ((value != null) && (value.GetType() != expressionBodyType))
-							? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
-							: (Expression)Expression.Constant(value);
-
-						Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-							Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // Expression.Constant nejde pro references
-							parameter);
-
-						if (seedEntityWhereExpression != null)
-						{
-							seedEntityWhereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.AndAlso(seedEntityWhereExpression.Body, pairByConditionExpression.Body), parameter);
-						}
-						else
-						{
-							seedEntityWhereExpression = pairByConditionExpression;
-						}
-					}
-
-					if (chunkWhereExpression != null)
-					{
-						chunkWhereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.OrElse(chunkWhereExpression.Body, seedEntityWhereExpression.Body), parameter);
-					}
-					else
-					{
-						chunkWhereExpression = seedEntityWhereExpression;
-					}
-				}
+				Expression<Func<TEntity, bool>> chunkWhereExpression = PairWithDbData_LoadDatabaseData_BuildWhereCondition(chunk, pairByExpressionsWithCompilations);
 				dbEntities.AddRange(databaseDataQueryable.Where(chunkWhereExpression).ToList());
 			}
 
 			return dbEntities;
+		}
+
+		/// <summary>
+		/// Provede načtení dat pro párování seedovaných dat s databázovými entitami.
+		/// Použije uživatelsky definovaný filtr.
+		/// </summary>
+		private List<TEntity> PairWithDbData_LoadDatabaseData_CustomQueryCondition<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, Expression<Func<TEntity, bool>> customDatabaseCondition)
+			where TEntity : class
+		{
+			Expression<Func<TEntity, bool>> seedDataWhereExpression = PairWithDbData_LoadDatabaseData_BuildWhereCondition(seedData, pairByExpressionsWithCompilations);
+			Func<TEntity, bool> seedDataWhereLambda = seedDataWhereExpression.Compile();
+
+			List<TEntity> loadedDbEntities = databaseDataQueryable.Where(customDatabaseCondition).ToList();
+			var filteredLoadedDbEntities = loadedDbEntities.Where(seedDataWhereLambda).ToList();
+			return filteredLoadedDbEntities;
+		}
+
+		/// <summary>
+		/// Sestaví podmínku pro vyfiltrování dat (seedData) při zadaných párovacích výrazech.
+		/// </summary>
+		private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition<TEntity>(IEnumerable<TEntity> seedData, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
+			where TEntity : class
+		{
+			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
+
+			Expression<Func<TEntity, bool>> whereExpression = null;
+			foreach (TEntity seedEntity in seedData)
+			{
+				Expression<Func<TEntity, bool>> seedEntityWhereExpression = null;
+
+				for (int i = 0; i < pairByExpressionsWithCompilations.Count; i++)
+				{
+					Expression<Func<TEntity, object>> expression = pairByExpressionsWithCompilations[i].Expression;
+					Func<TEntity, object> lambda = pairByExpressionsWithCompilations[i].CompiledLambda;
+
+					object value = lambda.Invoke(seedEntity);
+
+					Type expressionBodyType = expression.Body.RemoveConvert().Type;
+
+					Expression valueExpression = ((value != null) && (value.GetType() != expressionBodyType))
+						? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
+						: (Expression)Expression.Constant(value);
+
+					Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
+						Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // Expression.Constant nejde pro references
+						parameter);
+
+					if (seedEntityWhereExpression != null)
+					{
+						seedEntityWhereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.AndAlso(seedEntityWhereExpression.Body, pairByConditionExpression.Body), parameter);
+					}
+					else
+					{
+						seedEntityWhereExpression = pairByConditionExpression;
+					}
+				}
+
+				if (whereExpression != null)
+				{
+					whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.OrElse(whereExpression.Body, seedEntityWhereExpression.Body), parameter);
+				}
+				else
+				{
+					whereExpression = seedEntityWhereExpression;
+				}
+			}
+
+			return whereExpression;
 		}
 
 		/// <summary>
@@ -278,7 +317,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			return entityType
 				.GetProperties()
 				.Where(item => !item.IsShadowProperty)
-				.Where(p => !PropertyIsIdentity(p))				
+				.Where(p => !PropertyIsIdentity(p))
 				.ToList();
 		}
 
@@ -294,7 +333,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 				.GetProperties()
 				.Where(item => !item.IsShadowProperty)
 				.Where(p => !p.IsKey()) // hodnotu primárního klíče nelze aktualizovat
-				// .Where(p => !PropertyIsIdentity(p)) - není potřeba, neaktualizujeme žádný PK, natož identitu
+										// .Where(p => !PropertyIsIdentity(p)) - není potřeba, neaktualizujeme žádný PK, natož identitu
 				.ToList();
 
 			if (excludedProperties != null)

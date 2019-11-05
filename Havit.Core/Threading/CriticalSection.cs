@@ -12,10 +12,30 @@ namespace Havit.Threading
 	/// <summary>
 	/// Zajišťuje spuštění kódu kritické sekce nejvýše jedním threadem, resp. vylučuje jeho paralelní běh ve více threadech.
 	/// </summary>
-	public static class CriticalSection
+	/// <remarks>
+	/// I když třída díky interface usnadňuje možnost použití jako služby, není takové použití vyžadováno. 
+	/// Bez obav tam, kde potřebujeme, vytvářejme instance bez DI containeru.
+	/// </remarks>
+	public class CriticalSection<TKey> : ICriticalSection<TKey>
 	{
-		internal static Dictionary<object, CriticalSectionLock> CriticalSectionLocks = new Dictionary<object, CriticalSectionLock>();
-		private static object _staticLock = new object();
+		private readonly Dictionary<TKey, CriticalSectionLock> criticalSectionLocks;
+		internal Dictionary<TKey, CriticalSectionLock> CriticalSectionLocks => criticalSectionLocks; // pro unit testy
+
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public CriticalSection()
+		{
+			criticalSectionLocks = new Dictionary<TKey, CriticalSectionLock>();
+		}
+
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public CriticalSection(IEqualityComparer<TKey> comparer)
+		{
+			criticalSectionLocks = new Dictionary<TKey, CriticalSectionLock>(comparer);
+		}
 
 		/// <summary>
 		/// Vykoná danou akci pod zámkem.
@@ -26,7 +46,7 @@ namespace Havit.Threading
 		/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
 		/// </param>
 		/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
-		public static void ExecuteAction(object lockValue, Action criticalSection)
+		public void ExecuteAction(TKey lockValue, Action criticalSection)
 		{
 			CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
 
@@ -52,7 +72,7 @@ namespace Havit.Threading
 		/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
 		/// </param>
 		/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
-		public static async Task ExecuteActionAsync(object lockValue, Func<Task> criticalSection)
+		public async Task ExecuteActionAsync(TKey lockValue, Func<Task> criticalSection)
 		{
 			CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
 
@@ -69,11 +89,12 @@ namespace Havit.Threading
 			}
 		}
 
-		internal static CriticalSectionLock GetCriticalSectionLock(object lockValue)
+		internal CriticalSectionLock GetCriticalSectionLock(TKey lockValue)
 		{
-			lock (_staticLock)
+			// Pracujeme s čítačem, musíme proto použít "globální" zámek.
+			lock (criticalSectionLocks) // použijeme dictionary pro zámek
 			{
-				if (CriticalSectionLocks.TryGetValue(lockValue, out CriticalSectionLock criticalSectionLock))
+				if (criticalSectionLocks.TryGetValue(lockValue, out CriticalSectionLock criticalSectionLock))
 				{
 					criticalSectionLock.UsageCounter += 1;
 				}
@@ -81,23 +102,23 @@ namespace Havit.Threading
 				{
 					criticalSectionLock = new CriticalSectionLock(); // výchozí hodnota čítače je 1
 					Debug.Assert(criticalSectionLock.UsageCounter == 1);
-					CriticalSectionLocks.Add(lockValue, criticalSectionLock);
+					criticalSectionLocks.Add(lockValue, criticalSectionLock);
 				}
 				return criticalSectionLock;
 			}
 		}
 
-		internal static void ReleaseCriticalSectionLock(object lockValue, CriticalSectionLock criticalSectionLock)
+		internal void ReleaseCriticalSectionLock(TKey lockValue, CriticalSectionLock criticalSectionLock)
 		{
 			// Ať už kritická sekce doběhla dobře nebo došlo k výjimce, musíme snížit čítač použití zámku.
-			// Opět pracujeme s čítačem, musíme proto použít statický zámek.
-			lock (_staticLock)
+			// Opět pracujeme s čítačem, musíme proto použít "globální" zámek.
+			lock (criticalSectionLocks) // použijeme dictionary pro zámek
 			{
 				criticalSectionLock.UsageCounter -= 1;
 				if (criticalSectionLock.UsageCounter == 0)
 				{
 					// pokud již nikdo zámek nepoužívá, uklidíme jej
-					CriticalSectionLocks.Remove(lockValue);
+					criticalSectionLocks.Remove(lockValue);
 					criticalSectionLock.Semaphore.Dispose();
 				}
 			}

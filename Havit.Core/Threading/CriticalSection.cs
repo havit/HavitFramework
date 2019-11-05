@@ -69,7 +69,7 @@ namespace Havit.Threading
 			}
 		}
 
-		private static CriticalSectionLock GetCriticalSectionLock(object lockValue)
+		internal static CriticalSectionLock GetCriticalSectionLock(object lockValue)
 		{
 			lock (_staticLock)
 			{
@@ -87,7 +87,7 @@ namespace Havit.Threading
 			}
 		}
 
-		private static void ReleaseCriticalSectionLock(object lockValue, CriticalSectionLock criticalSectionLock)
+		internal static void ReleaseCriticalSectionLock(object lockValue, CriticalSectionLock criticalSectionLock)
 		{
 			// Ať už kritická sekce doběhla dobře nebo došlo k výjimce, musíme snížit čítač použití zámku.
 			// Opět pracujeme s čítačem, musíme proto použít statický zámek.

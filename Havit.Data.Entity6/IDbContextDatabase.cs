@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
@@ -9,6 +11,61 @@ namespace Havit.Data.Entity
 	/// </summary>
 	public interface IDbContextDatabase
 	{
+		/// <summary>
+		/// Returns the connection being used by this context. This may cause the connection to be created if it does not already exist.
+		/// </summary>
+		DbConnection Connection { get; }
+
+		/// <summary>
+		/// Gets or sets the timeout value, in seconds, for all context operations. The default
+		/// value is null, where null indicates that the default value of the underlying
+		/// provider will be used.
+		/// </summary>		
+		int? CommandTimeout { get; set; }
+
+		/// <summary>
+		/// Gets the transaction the underlying store connection is enlisted in. May be null.
+		/// </summary>
+		DbContextTransaction CurrentTransaction { get; }
+
+		/// <summary>
+		/// Begins a transaction on the underlying store connection
+		/// </summary>
+		DbContextTransaction BeginTransaction();
+
+		/// <summary>
+		///  Begins a transaction on the underlying store connection using the specified isolation level.
+		/// </summary>
+		DbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
+
+		/// <summary>
+		/// Executes the given DDL/DML command against the database. As with any API that
+		/// accepts SQL it is important to parameterize any user input to protect against
+		/// a SQL injection attack. You can include parameter place holders in the SQL query
+		/// string and then supply parameter values as additional arguments. Any parameter
+		/// values you supply will automatically be converted to a DbParameter. context.Database.ExecuteSqlCommand("UPDATE
+		/// dbo.Posts SET Rating = 5 WHERE Author = @p0", userSuppliedAuthor); Alternatively,
+		/// you can also construct a DbParameter and supply it to SqlQuery. This allows you
+		/// to use named parameters in the SQL query string. context.Database.ExecuteSqlCommand("UPDATE
+		/// dbo.Posts SET Rating = 5 WHERE Author = @author", new SqlParameter("@author",
+		/// userSuppliedAuthor));
+		/// </summary>
+		int ExecuteSqlCommand(string sql, params object[] parameters);
+
+		/// <summary>
+		/// Executes the given DDL/DML command against the database. As with any API that
+		/// accepts SQL it is important to parameterize any user input to protect against
+		/// a SQL injection attack. You can include parameter place holders in the SQL query
+		/// string and then supply parameter values as additional arguments. Any parameter
+		/// values you supply will automatically be converted to a DbParameter. context.Database.ExecuteSqlCommand("UPDATE
+		/// dbo.Posts SET Rating = 5 WHERE Author = @p0", userSuppliedAuthor); Alternatively,
+		/// you can also construct a DbParameter and supply it to SqlQuery. This allows you
+		/// to use named parameters in the SQL query string. context.Database.ExecuteSqlCommand("UPDATE
+		/// dbo.Posts SET Rating = 5 WHERE Author = @author", new SqlParameter("@author",
+		/// userSuppliedAuthor));
+		/// </summary>
+		int ExecuteSqlCommand(TransactionalBehavior transactionalBehavior, string sql, params object[] parameters);
+		
 		/// <summary>
 		/// Creates a raw SQL query that will return elements of the given generic type. The type can be any type that has properties that match the names of the columns returned from the query, or can be a simple primitive type. The type does not have to be an entity type. The results of this query are never tracked by the context even if the type of object returned is an entity type. Use the SqlQuery method to return entities that are tracked by the context. As with any API that accepts SQL it is important to parameterize any user input to protect against a SQL injection attack. You can include parameter place holders in the SQL query string and then supply parameter values as additional arguments. Any parameter values you supply will automatically be converted to a DbParameter. context.Database.SqlQuery&amp;lt;Post&amp;gt;("SELECT * FROM dbo.Posts WHERE Author = @p0", userSuppliedAuthor); Alternatively, you can also construct a DbParameter and supply it to SqlQuery. This allows you to use named parameters in the SQL query string. context.Database.SqlQuery&amp;lt;Post&amp;gt;("SELECT * FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));
 		/// </summary>

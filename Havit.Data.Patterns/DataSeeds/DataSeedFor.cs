@@ -221,5 +221,24 @@ namespace Havit.Data.Patterns.DataSeeds
 			Configuration.AfterSaveActions.Add(callback);
 			return this;
 		}
+
+		/// <summary>
+		/// Konfiguruje seedování tak, že se při načítání z databáze nepoužije WHERE podmínka, tj. načte se celá databázová tabulka.
+		/// Použije se tam, kde seedujeme veškerá data v databázové tabulce (veškeré systémové číselníky).
+		/// </summary>
+		public IDataSeedFor<TEntity> NoDatabaseCondition()
+		{
+			return CustomDatabaseCondition((TEntity item) => true);
+		}
+
+		/// <summary>
+		/// Konfiguruje seedování tak, že se při načítání z databáze použije konkrétní WHERE podmínka.
+		/// Použije se tam, kde se vyplatí použít jednodušší podmínku popisující seedovaná data, než sestavovat dotaz dle seedovaných dat (např. item => item.Id < 0).
+		/// </summary>
+		public IDataSeedFor<TEntity> CustomDatabaseCondition(Expression<Func<TEntity, bool>> predicate)
+		{
+			Configuration.CustomQueryCondition = predicate;
+			return this;
+		}
 	}
 }

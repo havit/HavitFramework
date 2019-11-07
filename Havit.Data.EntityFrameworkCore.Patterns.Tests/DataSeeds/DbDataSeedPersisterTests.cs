@@ -237,8 +237,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 			// exception was thrown
 		}
 
-
-
 		private List<DbContext> GetDbContexts()
 		{
 			return new List<DbContext>

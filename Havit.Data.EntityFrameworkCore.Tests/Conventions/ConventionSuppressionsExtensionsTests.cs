@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Havit.Data.EntityFrameworkCore.Attributes;
+using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -8,12 +11,11 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 {
-	// TODO: EF Core 3.0: Dokončit, ověřit alternativu, bude-li.
-
-		/*
 	[TestClass]
 	public class ConventionSuppressionsExtensionsTests
 	{
+		private const string TestCustomConventionIdentifier = nameof(TestCustomConventionIdentifier);
+
 		[TestMethod]
 		public void ConventionSuppressionsExtensionsTest_IsConventionSuppressed_ReturnsTrueForSuppressedConventions()
 		{
@@ -23,8 +25,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 			// Act in DbContext
 
 			// Assert
-			Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).IsConventionSuppressed<TestConvention>());
-			Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed<TestConvention>());
+			Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
+			Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
 		}
 
 		[TestMethod]
@@ -36,8 +38,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 			// Act in DbContext
 
 			// Assert
-			Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).IsConventionSuppressed<TestConvention>());
-			Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed<TestConvention>());
+			Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
+			Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
 		}
 
 		public class TestDbContext : DbContext
@@ -54,17 +56,16 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 
 				// Act
 				modelBuilder.Entity<EntityWithoutSuppression>();
-				modelBuilder.Entity<EntityWithSuppression>(eb =>
-				{
-					eb.HasConventionSuppressed<TestConvention>();
-					eb.Property(p => p.Value).HasConventionSuppressed<TestConvention>();
-				});				
+				modelBuilder.Entity<EntityWithSuppression>();				
 			}
 		}
 
+		[SuppressConvention(TestCustomConventionIdentifier)]
 		public class EntityWithSuppression
 		{
 			public int Id { get; set; }
+
+			[SuppressConvention(TestCustomConventionIdentifier)]
 			public string Value { get; set; }
 		}
 
@@ -73,13 +74,5 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 			public int Id { get; set; }
 			public string Value { get; set; }
 		}
-
-		public class TestConvention : IModelConvention
-		{
-			public void Apply(ModelBuilder modelBuilder)
-			{
-				// NOOP
-			}
-		}
-	}*/
+	}
 }

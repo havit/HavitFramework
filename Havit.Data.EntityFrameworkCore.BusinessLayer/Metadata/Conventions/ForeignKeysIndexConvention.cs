@@ -59,7 +59,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<ForeignKeysIndexConvention>())
+			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysIndexConvention))
 			{
 				return;
 			}

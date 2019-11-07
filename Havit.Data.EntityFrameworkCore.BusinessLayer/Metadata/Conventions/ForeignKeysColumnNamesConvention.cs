@@ -35,14 +35,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<ForeignKeysColumnNamesConvention>())
+			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysColumnNamesConvention))
 			{
 				return;
 			}
 
 			foreach (var property in relationshipBuilder.Metadata.Properties)
 			{
-				if (property.IsConventionSuppressed<ForeignKeysColumnNamesConvention>())
+				if (property.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysColumnNamesConvention))
 				{
 					continue;
 				}

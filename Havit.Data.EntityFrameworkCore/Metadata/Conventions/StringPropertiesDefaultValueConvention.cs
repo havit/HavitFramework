@@ -26,8 +26,8 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				return;
 			}
 
-			if (property.DeclaringEntityType.IsConventionSuppressed<StringPropertiesDefaultValueConvention>()
-				|| (property.IsConventionSuppressed<StringPropertiesDefaultValueConvention>()))
+			if (property.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.StringPropertiesDefaultValueConvention)
+				|| property.IsConventionSuppressed(ConventionIdentifiers.StringPropertiesDefaultValueConvention))
 			{
 				return;
 			}

@@ -24,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (entityType.IsConventionSuppressed<LocalizationTablesParentEntitiesConvention>())
+			if (entityType.IsConventionSuppressed(ConventionIdentifiers.LocalizationTablesParentEntitiesConvention))
 			{
 				return;
 			}

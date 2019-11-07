@@ -21,7 +21,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (propertyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<CharColumnTypeForCharPropertyConvention>() || propertyBuilder.Metadata.IsConventionSuppressed<CharColumnTypeForCharPropertyConvention>())
+			if (propertyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.CharColumnTypeForCharPropertyConvention) || propertyBuilder.Metadata.IsConventionSuppressed(ConventionIdentifiers.CharColumnTypeForCharPropertyConvention))
 			{
 				return;
 			}

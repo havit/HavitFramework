@@ -27,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (entityType.IsConventionSuppressed<NamespaceExtendedPropertyConvention>())
+			if (entityType.IsConventionSuppressed(ConventionIdentifiers.NamespaceExtendedPropertyConvention))
 			{
 				return;
 			}

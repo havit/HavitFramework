@@ -23,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if (keyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<PrefixedTablePrimaryKeysConvention>())
+			if (keyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.NamespaceExtendedPropertyConvention))
 			{
 				return;
 			}

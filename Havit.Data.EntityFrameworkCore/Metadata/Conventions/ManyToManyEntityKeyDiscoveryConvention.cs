@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed<ManyToManyEntityKeyDiscoveryConvention>())
+			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ManyToManyEntityKeyDiscoveryConvention))
 			{
 				return;
 			}

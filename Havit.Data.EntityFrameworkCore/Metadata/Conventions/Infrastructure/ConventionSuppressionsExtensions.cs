@@ -17,25 +17,25 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 		/// <summary>
 		/// Vrací true, pokud je konvence na daném objektu modelu potlačena.
 		/// </summary>
-		public static bool IsConventionSuppressed<TConvention>(this IEntityType entityType)
+		public static bool IsConventionSuppressed(this IEntityType entityType, string conventionIdentifier)
 		{
-			return entityType.ClrType.IsConventionSuppressed<TConvention>();
+			return entityType.ClrType.IsConventionSuppressed(conventionIdentifier);
 		}
 
 		/// <summary>
 		/// Vrací true, pokud je konvence na dané vlastnosti modelu potlačena.
 		/// </summary>
-		public static bool IsConventionSuppressed<TConvention>(this IProperty property)
+		public static bool IsConventionSuppressed(this IProperty property, string conventionIdentifier)
 		{
-			return !property.IsShadowProperty() && property.PropertyInfo.IsConventionSuppressed<TConvention>();
+			return !property.IsShadowProperty() && property.PropertyInfo.IsConventionSuppressed(conventionIdentifier);
 		}
 
 		/// <summary>
 		/// Vrací true, pokud je konvence potlačena na daném customAttributeProvideru.
 		/// </summary>
-		private static bool IsConventionSuppressed<TConvention>(this ICustomAttributeProvider customAttributeProvider)
+		private static bool IsConventionSuppressed(this ICustomAttributeProvider customAttributeProvider, string conventionIdentifier)
 		{
-			return customAttributeProvider.GetCustomAttributes(typeof(SuppressConventionAttribute), true).Cast<SuppressConventionAttribute>().Any(attribute => attribute.ConventionTypeToSuppress == typeof(TConvention));
+			return customAttributeProvider.GetCustomAttributes(typeof(SuppressConventionAttribute), true).Cast<SuppressConventionAttribute>().Any(attribute => attribute.ConventionIdentifierToSuppress == conventionIdentifier);
 		}
 	}
 }

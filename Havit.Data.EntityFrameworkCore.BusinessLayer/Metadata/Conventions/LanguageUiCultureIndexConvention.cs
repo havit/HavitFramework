@@ -8,8 +8,6 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO EF Core 3.0: Přejmenovat vč. Use... a pluginu?
-
 	/// <summary>
 	/// Zajišťuje tvorbu indexů se sloupcem UiCulture v tabulce jazyků.
 	/// </summary>
@@ -27,7 +25,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				IConventionProperty uiCultureProperty = (IConventionProperty)entityTypeBuilder.Metadata.GetBusinessLayerUICultureProperty();
 				if ((uiCultureProperty != null) && !uiCultureProperty.IsShadowProperty())
 				{
-					entityTypeBuilder.HasIndex(new List<IConventionProperty> { uiCultureProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */);					
+					entityTypeBuilder
+						.HasIndex(new List<IConventionProperty> { uiCultureProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */)
+						.IsUnique(true, fromDataAnnotation: false /* Convention */);					
 				}
 			}
 		}

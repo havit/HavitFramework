@@ -21,7 +21,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
-            return entityType.Name == LanguageEntityName;
+            return entityType.ClrType?.Name == LanguageEntityName;
         }
 
 		/// <summary>

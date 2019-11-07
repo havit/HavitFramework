@@ -12,8 +12,6 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	// TODO EF Core 3.0: Přejmenovat vč. Use... a pluginu
-
 	/// <summary>
 	/// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
 	/// </summary>

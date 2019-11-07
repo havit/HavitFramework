@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Attributes
 {
+
+	// TODO EF Core 3.0: Chyba návrhu - aby mohlo být použité, je potřeba typ potlačené konvence do atributu. Abychom jej mohli použít, museli bychom referencovat i Havit.Data.EntityFramework (a další) s EF Core *do modelu*!
+
 	/// <summary>
 	/// Slouží k označení konvenve jako potlačené.
 	/// </summary>

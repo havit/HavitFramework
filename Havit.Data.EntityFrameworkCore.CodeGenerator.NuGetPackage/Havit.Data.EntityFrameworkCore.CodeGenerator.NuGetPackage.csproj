@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- CodeGenerator, přestože sám je implementován jako NET Core App 3.0, chceme umožnit nainstalovat do projektů targetující .NET Standard 2.1. -->
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <!-- CodeGenerator, přestože sám je implementován jako NET Core App 3.0, chceme umožnit nainstalovat do projektů targetující .NET Standard 2.0. -->
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <!-- NuGet -->

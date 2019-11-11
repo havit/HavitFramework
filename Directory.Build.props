@@ -8,7 +8,11 @@
 	<Product>HAVIT .NET Framework Extensions</Product>
 	<AssemblyTitle>HAVIT .NET Framework Extensions</AssemblyTitle>
   </PropertyGroup>
-	
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../')))"/>
 	
 </Project>

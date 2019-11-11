@@ -11,19 +11,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
 	// TODO: EF Core 3.0: Dodělat BusinessLayerIndexesConventions
 
-	/// <summary>
-	/// Konvencia pre vytvorenie indexov, ktoré definuje BusinessLayerGenerator. Premenuje taktiež všetky existujúce indexy, aby mali prefix "FKX_".
-	/// 
-	/// Konvencie:
-	/// <list>
-	/// <item>každý stĺpec s FK v tabuľke (+ Deleted stĺpec ak existuje)</item>
-	/// <item>na kolekciách, resp. tabuľke s FK definuje index pre stĺpec určený Sorting extended property (Sorting ext. prop. je v entite s kolekciou)</item>
-	/// <item>v lokalizačných tabuľkách (XyLocalization) unikátny index pre ParentId a LanguageId FK</item>
-	/// <item>v tabuľke Langauge na UICulture property (ak existuje)</item>
-	/// </list>
-	/// 
-	/// <remarks>EF Core inteligentne zahadzuje redundantné indexy, takže zostanú len tie, ktoré majú význam.</remarks>
-	/// </summary>
+	///// <summary>
+	///// Konvencia pre vytvorenie indexov, ktoré definuje BusinessLayerGenerator. Premenuje taktiež všetky existujúce indexy, aby mali prefix "FKX_".
+	///// 
+	///// Konvencie:
+	///// <list>
+	///// <item>každý stĺpec s FK v tabuľke (+ Deleted stĺpec ak existuje)</item>
+	///// <item>na kolekciách, resp. tabuľke s FK definuje index pre stĺpec určený Sorting extended property (Sorting ext. prop. je v entite s kolekciou)</item>
+	///// <item>v lokalizačných tabuľkách (XyLocalization) unikátny index pre ParentId a LanguageId FK</item>
+	///// <item>v tabuľke Langauge na UICulture property (ak existuje)</item>
+	///// </list>
+	///// 
+	///// <remarks>EF Core inteligentne zahadzuje redundantné indexy, takže zostanú len tie, ktoré majú význam.</remarks>
+	///// </summary>
 	/*
 	public class BusinessLayerIndexesConventions : IModelConvention
     {

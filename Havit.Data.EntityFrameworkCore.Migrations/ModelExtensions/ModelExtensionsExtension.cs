@@ -129,14 +129,6 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		}
 
 		/// <inheritdoc />
-		public long GetServiceProviderHashCode()
-		{
-			var hashCode = annotationProviders.Aggregate(358, (current, next) => current ^ next.GetHashCode());
-			hashCode = sqlGenerators.Aggregate(hashCode, (current, next) => current ^ next.GetHashCode());
-			return hashCode;
-		}
-
-		/// <inheritdoc />
 		public void Validate(IDbContextOptions options)
 		{
 			// no validations

@@ -4,7 +4,7 @@
 	<TargetFramework>net46</TargetFramework>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<RootNamespace>Havit.Data.Entity</RootNamespace>
-	<NoWarn>1701;1702;1591</NoWarn>
+	<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <!-- NuGet -->

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <NoWarn>($NoWarn);1701;1702;1591;EF1001</NoWarn>	  
   </PropertyGroup>
 
   <!-- NuGet -->

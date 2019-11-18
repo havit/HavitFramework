@@ -59,22 +59,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 	        throw new ArgumentException($"Unknown bool value \"{value}\" in extended property {key}.");
         }
 
-        public static void ForSqlServerExtendedPropertiesAttributes(this ModelBuilder modelBuilder)
-		{
-			foreach (var entityType in modelBuilder.Model.GetApplicationEntityTypes())
-			{
-				ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, entityType.ClrType);
-				foreach (var property in entityType.GetProperties().Where(x => !x.IsShadowProperty()))
-				{
-					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(property, property.PropertyInfo);
-				}
-				foreach (var navigation in entityType.GetNavigations())
-				{
-					ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityType, navigation.PropertyInfo);
-				}
-			}
-		}
-
 		public static void AddExtendedProperties(this IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
 		{
 			ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(annotatable, extendedProperties);

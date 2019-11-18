@@ -12,6 +12,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// </summary>
 		public bool UseCollectionExtendedPropertiesConvention { get; set; } = true;
 
+        /// <summary>
+        /// Indikuje používání konvence ExtendedPropertiesConvention.
+        /// Výchozí hodnota je true.
+        /// </summary>
+        public bool UseAttributeBasedExtendedPropertiesConvention { get; set; } = true;
+
 		/// <summary>
 		/// Indikuje používání konvence DefaultValueAttributeConvention.
 		/// Výchozí hodnota je true.

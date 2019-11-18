@@ -1,10 +1,10 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore
 {
@@ -23,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// 
 		/// - DbContext v OnConfiguring získává DbContextOptionsBuilder.
 		/// - Tento DbContextOptionsBuilder (bohužel explicitně) implementuje interface IDbContextOptionsBuilderInfrastructure.
-		/// - Tento intarface poskytuje metodu pro zaregistrování extension - třídy, službičky, která má možnost ovlivnit ServiceCollection DbContextu.
+		/// - Tento interface poskytuje metodu pro zaregistrování extension - třídy, službičky, která má možnost ovlivnit ServiceCollection DbContextu.
 		/// - ConventionSetPluginServiceInstallerExtension registrujeme pod IConventionSetPlugin do service collection.
 		/// </remarks>
 		public static void UseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder)

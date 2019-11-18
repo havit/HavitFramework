@@ -4,6 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 {
+    /// <summary>
+    /// Tests for <see cref="XmlCommentParser"/>. See class model (in Model namespace) being used.
+    /// </summary>
 	[TestClass]
 	public class XmlCommentParserTests : XmlCommentTestBase
 	{

@@ -56,39 +56,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 		public override void Generate(AlterTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
 			AlterHelper(operation.OldTable.GetAnnotations(), operation.GetAnnotations(),
-				a =>
-				{
-					DropExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Name, builder);
-				},
-				a =>
-				{
-					var value = (string)a.Value;
-					UpdateExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Name, builder);
-				},
-				a =>
-				{
-					var value = (string)a.Value;
-					AddExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Name, builder);
-				});
+				dropAction: a => DropExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Name, builder),
+				updateAction: a => UpdateExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), (string)a.Value, GetSchema(operation.Schema, model), operation.Name, builder),
+				addAction: a => AddExtendedPropertyLevel1(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), (string)a.Value, GetSchema(operation.Schema, model), operation.Name, builder));
 		}
 
 		public override void Generate(AlterColumnOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
 			AlterHelper(operation.OldColumn.GetAnnotations(), operation.GetAnnotations(),
-				a =>
-				{
-					DropExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
-				},
-				a =>
-				{
-					var value = (string)a.Value;
-					UpdateExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
-				},
-				a =>
-				{
-					var value = (string)a.Value;
-					AddExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder);
-				});
+				a => DropExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), GetSchema(operation.Schema, model), operation.Table, operation.Name, builder),
+				a => UpdateExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), (string)a.Value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder),
+				a => AddExtendedPropertyLevel2(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName(a), (string)a.Value, GetSchema(operation.Schema, model), operation.Table, operation.Name, builder));
 		}
 
 		public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
@@ -301,7 +279,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private string GenerateSqlLiteral(string s) => typeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 
-		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? (string)model.GetDefaultSchema() ?? DefaultSchemaName;
+		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? model.GetDefaultSchema() ?? DefaultSchemaName;
 
 		private static void AlterHelper(IEnumerable<IAnnotation> oldAnnotations, IEnumerable<IAnnotation> newAnnotations,
 			Action<IAnnotation> dropAction, Action<IAnnotation> updateAction, Action<IAnnotation> addAction)

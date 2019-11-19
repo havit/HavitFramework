@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.Views;
+using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -65,6 +67,17 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
                 setAction(OptionsBuilder.Options.FindExtension<ModelExtensionsExtension>() ?? new ModelExtensionsExtension()));
 
             return this;
+        }
+
+        /// <summary>
+        /// Nastaví <see cref="Assembly"/>, ktorá obsahuje <see cref="IModelExtender"/> objekty.
+        /// </summary>
+        /// <returns>Inštancia <see cref="ModelExtensionsExtensionBuilder"/>, kvôli implementácii Fluent API.</returns>
+        public ModelExtensionsExtensionBuilder ModelExtensionsAssembly(Assembly modelExtensionsAssembly)
+        {
+            Contract.Requires<ArgumentNullException>(modelExtensionsAssembly != null);
+
+            return WithOption(e => e.WithExtensionsAssembly(modelExtensionsAssembly));
         }
     }
 }

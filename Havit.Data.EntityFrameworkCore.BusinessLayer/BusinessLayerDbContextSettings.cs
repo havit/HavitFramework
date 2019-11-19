@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
+    /// <summary>
+    /// Konfigurácia <see cref="BusinessLayerDbContext"/>u, t.j. DbContextu pre Business Layer aplikácie (aka DB Migrations).
+    ///
+    /// <remarks>Úprava konfigurácie prebieha v metóde <see cref="BusinessLayerDbContext.CreateDbContextSettings"/>, ktorú je potrebné prepísať v aplikačnom DbContexte.</remarks>
+    /// </summary>
 	public class BusinessLayerDbContextSettings : DbContextSettings
 	{
 		/// <summary>
@@ -83,5 +89,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// Výchozí hodnota je true.
 		/// </summary>
 		public bool UseXmlCommentsForDescriptionPropertyConvention { get; set; } = true;
-	}
+
+        /// <summary>
+        /// <see cref="Assembly"/>, ktorá obsahuje Model Extendery (objekty, ktoré reprezentujú rozšírenie dátového modelu napr. o uložené procedúry).
+        /// </summary>
+        ///
+        /// <remarks>
+        /// <para>Štandardne sa nastaví na assembly, v ktorej sa nachádza DbContext aplikácie (t.j. trieda, ktorá dedí od <see cref="BusinessLayerDbContext"/>).</para>
+        /// </remarks>
+        public Assembly ModelExtensionsAssembly { get; set; }
+    }
 }

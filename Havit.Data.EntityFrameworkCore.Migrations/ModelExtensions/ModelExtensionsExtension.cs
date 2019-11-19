@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
+using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,6 +21,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		private ImmutableList<Type> annotationProviders = ImmutableList.Create<Type>();
 		private ImmutableList<Type> sqlGenerators = ImmutableList.Create<Type>();
 		private bool consolidateStatementsForMigrationsAnnotationsForModel = true;
+        private Assembly extensionsAssembly;
 
 		private DbContextOptionsExtensionInfo _info;
 
@@ -42,7 +47,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			annotationProviders = copyFrom.annotationProviders;
 			sqlGenerators = copyFrom.sqlGenerators;
 			consolidateStatementsForMigrationsAnnotationsForModel = copyFrom.consolidateStatementsForMigrationsAnnotationsForModel;
-		}
+            extensionsAssembly = copyFrom.extensionsAssembly;
+        }
 
 		/// <summary>
 		/// Clones this <see cref="IDbContextOptionsExtension"/>.
@@ -57,6 +63,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		/// If enabled <see cref="AlterOperationsFixUpMigrationsModelDiffer"/> is used instead of original implementation of <see cref="IMigrationsModelDiffer"/>.
 		/// </summary>
 		public bool ConsolidateStatementsForMigrationsAnnotationsForModel => consolidateStatementsForMigrationsAnnotationsForModel;
+
+        /// <summary>
+        /// <see cref="Assembly"/> that contains <see cref="IModelExtender"/>s. This assembly is used to register <see cref="IModelExtender"/>s into the model.
+        /// </summary>
+        public Assembly ExtensionsAssembly => extensionsAssembly;
 
 		/// <summary>
 		/// Consolidate generated code statements in migrations with annotations (e.g. AlterDatabase().Annotation().OldAnnotation()).
@@ -100,6 +111,23 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			return clone;
 		}
 
+        /// <summary>
+        /// Configures assembly that contains model extenders.
+        /// </summary>
+        /// <param name="extensionsAssembly">Assembly with model extenders.</param>
+        /// <returns>A new instance of <see cref="ModelExtensionsExtension"/> with option changed.</returns>
+        public ModelExtensionsExtension WithExtensionsAssembly(Assembly extensionsAssembly)
+        {
+            // currently we don't allow setting null, Model Extensions is based around using this assembly
+
+            Contract.Requires<ArgumentNullException>(extensionsAssembly != null);
+
+            // clone with new extensions assembly 
+            var clone = Clone();
+            clone.extensionsAssembly = extensionsAssembly;
+            return clone;
+        }
+
 		/// <inheritdoc />
 		public void ApplyServices(IServiceCollection services)
 		{
@@ -126,13 +154,20 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 
 				services.Add(ServiceDescriptor.Describe(typeof(IMigrationsModelDiffer), typeof(AlterOperationsFixUpMigrationsModelDiffer), serviceCharacteristics.Lifetime));
 			}
-		}
+
+            services.TryAddScoped<IModelExtensionsAssembly, ModelExtensionsAssembly>();
+            new EntityFrameworkServicesBuilder(services)
+                .TryAdd<IConventionSetPlugin, ModelExtensionRegistrationConventionPlugin>();
+        }
 
 		/// <inheritdoc />
 		public void Validate(IDbContextOptions options)
 		{
-			// no validations
-		}
+            if (ExtensionsAssembly == null)
+            {
+                throw new InvalidOperationException("Model Extensions functionality requires configuring Extensions Assembly (which contains Model Extenders).");
+            }
+        }
 
 		private class ExtensionInfo : DbContextOptionsExtensionInfo
 		{

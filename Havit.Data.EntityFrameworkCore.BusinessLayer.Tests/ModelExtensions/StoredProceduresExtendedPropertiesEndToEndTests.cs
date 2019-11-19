@@ -83,7 +83,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 		    [TestMethod]
 		    public void StoredProcedureModelExtensions_EndToEnd_StoredProcedureWithXmlCommentMsDescriptionAdded()
 		    {
-			    var source = new EndToEndTestDbContext<Invoice>();
+			    var source = new EndToEndTestModelExtensionsDbContext<Invoice>();
 			    var target = new EndToEndTestModelExtensionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
 
 				var commands = source.Migrate(target);

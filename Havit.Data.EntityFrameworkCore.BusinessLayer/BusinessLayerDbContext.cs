@@ -1,10 +1,7 @@
-﻿using System.Reflection;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions;
-using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
@@ -38,7 +35,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		{
 			return new BusinessLayerDbContextSettings
 			{
-				UseStringPropertiesDefaultValueConvention = true
+				UseStringPropertiesDefaultValueConvention = true,
+                ModelExtensionsAssembly = GetType().Assembly
 			};
 		}
 
@@ -48,6 +46,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			base.OnConfiguring(optionsBuilder);
 
 			optionsBuilder.UseModelExtensions(builder => builder
+                .ModelExtensionsAssembly(Settings.ModelExtensionsAssembly)
 				.UseStoredProcedures()
 				.UseExtendedProperties()
 				.UseBusinessLayerStoredProcedures()
@@ -74,19 +73,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 
 			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => Settings.UseXmlCommentsForDescriptionPropertyConvention);
 		}
-
-		/// <inheritdoc />
-		protected override void ModelCreatingCompleting(ModelBuilder modelBuilder)
-		{
-			base.ModelCreatingCompleting(modelBuilder);
-		}
-
-		/// <summary>
-		/// Registruje <see cref="IModelExtender"/>y z <paramref name="extendersAssembly"/>. Vyžaduje, aby v DbContexte bola zaregistrovaná služba <see cref="IModelExtensionAnnotationProvider"/> (štandardne je registrovaná v <see cref="OnConfiguring"/>.
-		/// </summary>
-	    protected void RegisterModelExtensions(ModelBuilder modelBuilder, Assembly extendersAssembly = default)
-	    {
-            modelBuilder.ForModelExtensions(this.GetService<IModelExtensionAnnotationProvider>(), extendersAssembly ?? Assembly.GetCallingAssembly());
-	    }
 	}
 }

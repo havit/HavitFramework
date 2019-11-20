@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,17 +8,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	/// <summary>
-	/// Konvencia pre názvy stĺpcov s cudzím kľúčom - mení suffix z Id na ID (konvencia BusinessLayeru).
-	/// </summary>
-	public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
+    /// <summary>
+    /// Konvencia pre názvy stĺpcov s cudzím kľúčom - mení suffix z Id na ID (konvencia BusinessLayeru).
+    /// </summary>
+    public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
     {
-		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(
+            IConventionRelationshipBuilder relationshipBuilder,
+            IConventionContext<IConventionRelationshipBuilder> context)
 		{
 			SetColumnName(relationshipBuilder);
 		}
 
-		public void ProcessForeignKeyPropertiesChanged(IConventionRelationshipBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyPropertiesChanged(
+            IConventionRelationshipBuilder relationshipBuilder,
+            IReadOnlyList<IConventionProperty> oldDependentProperties,
+            IConventionKey oldPrincipalKey,
+            IConventionContext<IConventionRelationshipBuilder> context)
 		{
 
 			SetColumnName(relationshipBuilder);

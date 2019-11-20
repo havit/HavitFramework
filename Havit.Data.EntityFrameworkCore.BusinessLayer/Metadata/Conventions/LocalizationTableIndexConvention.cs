@@ -19,12 +19,18 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 		private Dictionary<IConventionEntityType, IConventionIndex> createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
 
-		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(
+            IConventionRelationshipBuilder relationshipBuilder,
+            IConventionContext<IConventionRelationshipBuilder> context)
 		{
 			EnsureIndex(relationshipBuilder);
 		}
 
-		public void ProcessForeignKeyPropertiesChanged(IConventionRelationshipBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyPropertiesChanged(
+            IConventionRelationshipBuilder relationshipBuilder,
+            IReadOnlyList<IConventionProperty> oldDependentProperties,
+            IConventionKey oldPrincipalKey,
+            IConventionContext<IConventionRelationshipBuilder> context)
 		{
 			EnsureIndex(relationshipBuilder);
 		}

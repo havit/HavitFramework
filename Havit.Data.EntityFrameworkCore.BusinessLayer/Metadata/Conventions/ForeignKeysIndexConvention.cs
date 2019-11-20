@@ -1,28 +1,36 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-	/// <summary>
-	/// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
-	/// </summary>
-	public class ForeignKeysIndexConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention, IForeignKeyRemovedConvention, IPropertyAnnotationChangedConvention, IEntityTypeAnnotationChangedConvention
+    /// <summary>
+    /// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
+    /// </summary>
+    public class ForeignKeysIndexConvention :
+        IForeignKeyAddedConvention,
+        IForeignKeyPropertiesChangedConvention,
+        IForeignKeyRemovedConvention,
+        IPropertyAnnotationChangedConvention,
+        IEntityTypeAnnotationChangedConvention
 	{
-		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(
+            IConventionRelationshipBuilder relationshipBuilder,
+            IConventionContext<IConventionRelationshipBuilder> context)
 		{
 			CreateIndex(relationshipBuilder);
 		}
 
-		public void ProcessForeignKeyPropertiesChanged(IConventionRelationshipBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IConventionRelationshipBuilder> context)
+        public void ProcessForeignKeyPropertiesChanged(
+            IConventionRelationshipBuilder relationshipBuilder,
+            IReadOnlyList<IConventionProperty> oldDependentProperties,
+            IConventionKey oldPrincipalKey,
+            IConventionContext<IConventionRelationshipBuilder> context)
 		{
 			// řeší podporu pro shadow property
 			// JK: Nevím úplně proč, ale funguje to. Implementace vychází z ForeignKeyIndexConvention v EF Core 3.0.
@@ -30,12 +38,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			CreateIndex(relationshipBuilder);
 		}
 
-		public void ProcessForeignKeyRemoved(IConventionEntityTypeBuilder entityTypeBuilder, IConventionForeignKey foreignKey, IConventionContext<IConventionForeignKey> context)
+        public void ProcessForeignKeyRemoved(
+            IConventionEntityTypeBuilder entityTypeBuilder,
+            IConventionForeignKey foreignKey,
+            IConventionContext<IConventionForeignKey> context)
 		{
 			RemoveIndex(entityTypeBuilder, foreignKey.Properties);
 		}
 
-		public void ProcessPropertyAnnotationChanged(IConventionPropertyBuilder propertyBuilder, string name, IConventionAnnotation annotation, IConventionAnnotation oldAnnotation, IConventionContext<IConventionAnnotation> context)
+        public void ProcessPropertyAnnotationChanged(
+            IConventionPropertyBuilder propertyBuilder,
+            string name,
+            IConventionAnnotation annotation,
+            IConventionAnnotation oldAnnotation,
+            IConventionContext<IConventionAnnotation> context)
 		{
 			if (annotation.Name == RelationalAnnotationNames.ColumnName)
 			{
@@ -43,7 +59,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			}
 		}
 
-		public void ProcessEntityTypeAnnotationChanged(IConventionEntityTypeBuilder entityTypeBuilder, string name, IConventionAnnotation annotation, IConventionAnnotation oldAnnotation, IConventionContext<IConventionAnnotation> context)
+        public void ProcessEntityTypeAnnotationChanged(
+            IConventionEntityTypeBuilder entityTypeBuilder,
+            string name,
+            IConventionAnnotation annotation,
+            IConventionAnnotation oldAnnotation,
+            IConventionContext<IConventionAnnotation> context)
 		{
 			if (annotation.Name == RelationalAnnotationNames.TableName)
 			{

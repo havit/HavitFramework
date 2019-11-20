@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -11,12 +12,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// </summary>
 	public class CollectionAttributeAccessor
 	{
-		private readonly IMutableNavigation navigation;
+		private readonly INavigation navigation;
 
 		/// <summary>
 		/// Konštruktor.
 		/// </summary>
-		public CollectionAttributeAccessor(IMutableNavigation navigation)
+		public CollectionAttributeAccessor(INavigation navigation)
 		{
 			this.navigation = navigation;
 		}
@@ -32,5 +33,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 		/// Accessor property pre <see cref="CollectionAttribute.Sorting"/> property.
 		/// </summary>
 		public string Sorting => GetExtendedProperties().FirstOrDefault(p => p.Item1 == nameof(CollectionAttribute.Sorting)).Item2;
-	}
+
+        public List<string> ParseSortingProperties() =>
+            Regex.Matches(Sorting, "(^|[^{])({([^{}]*)}|\\[([^\\[\\]]*)\\])")
+                .Cast<Match>()
+                .Where(m => m.Success && m.Groups[4].Success)
+                .Select(m => m.Groups[4].Value)
+                .ToList();
+    }
 }

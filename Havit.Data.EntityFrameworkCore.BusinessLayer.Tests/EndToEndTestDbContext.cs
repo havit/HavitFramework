@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions.Fakes;
+using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -34,7 +38,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			Settings.UseXmlCommentsForDescriptionPropertyConvention = false;
 		}
 
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            // stub out Model Extender types, so all extenders in test assembly don't interfere with tests.
+            // Tests should setup their own types when necessary.
+            SetModelExtenderTypes(optionsBuilder, Enumerable.Empty<TypeInfo>());
+        }
+
+        protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
 			base.CustomizeModelCreating(modelBuilder);
 			onModelCreating?.Invoke(modelBuilder);
@@ -52,5 +65,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			var generator = this.GetService<IMigrationsSqlGenerator>();
 			return generator.Generate(diff, this.Model);
 		}
-	}
+
+        /// <summary>
+        /// Replace <see cref="IModelExtensionsAssembly"/> with fake one, that returns types specified in <paramref name="typeInfos"/>.
+        ///
+        /// Uses <see cref="FakeModelExtensionsAssemblyExtension"/> that replaces the service in EF Core's <see cref="IServiceProvider"/>.
+        /// </summary>
+        protected static void SetModelExtenderTypes(DbContextOptionsBuilder optionsBuilder, IEnumerable<TypeInfo> typeInfos)
+        {
+            ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FakeModelExtensionsAssemblyExtension(typeInfos));
+        }
+    }
 }

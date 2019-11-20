@@ -46,6 +46,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 			    var model = source.Model;
 
 			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
+
 			    Assert.AreEqual("Calculates total amount.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
 		    }
 		}

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions.Fakes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 {
@@ -24,7 +22,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 
             IEnumerable<TypeInfo> typeInfos = modelExtenderTypes.Select(t => t.GetTypeInfo());
 
-            ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FakeModelExtensionsAssemblyExtension(typeInfos));
+            // stub out Model Extender types in IModelExtensionsAssembly (used by Model Extensions infrastructure)
+            SetModelExtenderTypes(optionsBuilder, typeInfos);
         }
     }
 }

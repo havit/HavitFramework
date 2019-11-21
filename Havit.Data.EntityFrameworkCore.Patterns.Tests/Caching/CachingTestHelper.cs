@@ -2,8 +2,7 @@
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Services.Caching;
 using Moq;
 using System;
@@ -25,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
         {
             if (dbContext == null)
             {
-                dbContext = new DataLoaderTestDbContext();
+                dbContext = new CachingTestDbContext();
             }
 
             if (entityCacheSupportDecision == null)

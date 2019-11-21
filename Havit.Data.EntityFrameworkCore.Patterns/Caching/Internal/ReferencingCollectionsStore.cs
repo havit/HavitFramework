@@ -48,28 +48,32 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal
             {
                 Dictionary<Type, List<ReferencingCollection>> result = null;
                 dbContextFactory.ExecuteAction(dbContext =>
-                {
-                    result = dbContext.Model
-                    .GetEntityTypes() // získáme entity types
-                                      // z každého EntityType vezmeme ClrType a připojíme ReferencingCollections (klidně prázdný seznam)
-                    .Select(entityType => new
-                    {
-                        ClrType = entityType.ClrType,
-                        // abychom vzali referencující kolekce, vezmeme cizí klíče a z nich "opačný směr", tj. kolekci (neřešíme vazbu 1:1)
-                        ReferencingCollections = entityType.GetForeignKeys().Where(item => item.PrincipalToDependent != null).Select(foreignKey =>
-                    {
-                        var property = foreignKey.Properties.Single();
-                        return new ReferencingCollection
-                        {
-                            EntityType = foreignKey.PrincipalEntityType.ClrType,
-                            GetForeignKeyValue = (dbContext2, entity) => dbContext2.GetEntry(entity, suppressDetectChanges: true).CurrentValues[property],
-                            CollectionPropertyName = foreignKey.PrincipalToDependent.Name
-                        };
-                    })
-                        .ToList()
-                    })
-                    .ToDictionary(item => item.ClrType, item => item.ReferencingCollections);
-                });
+				{
+					result = dbContext.Model
+					.GetEntityTypes() // získáme entity types
+									  // z každého EntityType vezmeme ClrType a připojíme ReferencingCollections (klidně prázdný seznam)
+					.Select(entityType => new
+					{
+						ClrType = entityType.ClrType,
+						// abychom vzali referencující kolekce, vezmeme cizí klíče a z nich "opačný směr", tj. kolekci (neřešíme vazbu 1:1)
+						ReferencingCollections = entityType.GetForeignKeys()
+							.Where(item => (item.PrincipalToDependent != null)
+								&& (item.PrincipalToDependent is Microsoft.EntityFrameworkCore.Metadata.Internal.Navigation)
+								&& (((Microsoft.EntityFrameworkCore.Metadata.Internal.Navigation)item.PrincipalToDependent).CollectionAccessor != null))
+							.Select(foreignKey =>
+							{
+								var property = foreignKey.Properties.Single();
+								return new ReferencingCollection
+								{
+									EntityType = foreignKey.PrincipalEntityType.ClrType,
+									GetForeignKeyValue = (dbContext2, entity) => dbContext2.GetEntry(entity, suppressDetectChanges: true).CurrentValues[property],
+									CollectionPropertyName = foreignKey.PrincipalToDependent.Name
+								};
+							})
+							.ToList()
+					})
+					.ToDictionary(item => item.ClrType, item => item.ReferencingCollections);
+				});
 
                 return result;
             });

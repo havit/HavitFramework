@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.Caching;

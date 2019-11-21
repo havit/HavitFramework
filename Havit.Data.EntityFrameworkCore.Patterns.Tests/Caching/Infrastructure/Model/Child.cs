@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model
 {
 	public class Child
 	{

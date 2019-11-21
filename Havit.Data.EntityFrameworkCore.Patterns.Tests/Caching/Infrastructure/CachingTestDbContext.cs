@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure
@@ -32,6 +34,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure
 
 			// M:N
 			modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
+
+			// 1:1
+			modelBuilder.Entity<ClassB>().HasOne(classB => classB.ClassA).WithOne(c => c.ClassB);
 		}
 	}
 }

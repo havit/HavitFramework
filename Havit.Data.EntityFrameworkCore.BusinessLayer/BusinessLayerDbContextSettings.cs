@@ -19,6 +19,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		public bool UseCollectionExtendedPropertiesConvention { get; set; } = true;
 
         /// <summary>
+        /// Indikuje používání konvence CollectionOrderIndexConvention.
+        /// Výchozí hodnota je false (WIP).
+        /// </summary>
+        public bool UseCollectionOrderIndexConvention { get; set; } = false;
+
+        /// <summary>
         /// Indikuje používání konvence ExtendedPropertiesConvention.
         /// Výchozí hodnota je true.
         /// </summary>
@@ -93,7 +99,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
         /// <summary>
         /// <see cref="Assembly"/>, ktorá obsahuje Model Extendery (objekty, ktoré reprezentujú rozšírenie dátového modelu napr. o uložené procedúry).
         /// </summary>
-        ///
         /// <remarks>
         /// <para>Štandardne sa nastaví na assembly, v ktorej sa nachádza DbContext aplikácie (t.j. trieda, ktorá dedí od <see cref="BusinessLayerDbContext"/>).</para>
         /// </remarks>

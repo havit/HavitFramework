@@ -19,10 +19,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// </summary>
 		public const string CollectionExtendedPropertiesConvention = nameof(CollectionExtendedPropertiesConvention);
 
-		/// <summary>
-		/// Identifikátor konvence ForeignKeysColumnNamesConvention.
-		/// </summary>
-		public const string ForeignKeysColumnNamesConvention = nameof(ForeignKeysColumnNamesConvention);
+        /// <summary>
+        /// Identifikátor konvence CollectionOrderIndexConvention.
+        /// </summary>
+        public const string CollectionOrderIndexConvention = nameof(CollectionOrderIndexConvention);
+
+        /// <summary>
+        /// Identifikátor konvence ForeignKeysColumnNamesConvention.
+        /// </summary>
+        public const string ForeignKeysColumnNamesConvention = nameof(ForeignKeysColumnNamesConvention);
 
 		/// <summary>
 		/// Identifikátor konvence ForeignKeysIndexConvention.
@@ -43,6 +48,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// Identifikátor konvence PrefixedTablePrimaryKeysConvention.
 		/// </summary>
 		public const string PrefixedTablePrimaryKeysConvention = nameof(PrefixedTablePrimaryKeysConvention);
-		
-	}
+    }
 }

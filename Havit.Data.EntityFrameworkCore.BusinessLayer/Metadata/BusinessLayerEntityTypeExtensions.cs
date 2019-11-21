@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Vrátí sloupec reprezentující příznak smazání záznamu.
 		/// </summary>
-        public static IMutableProperty GetBusinessLayerDeletedProperty(this IEntityType entityType)
+        public static IProperty GetBusinessLayerDeletedProperty(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
@@ -27,11 +27,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Vrátí neignorované sloupce (vlastnosti).
 		/// </summary>
-		public static IEnumerable<IMutableProperty> GetBusinessLayerNotIgnoredProperties(this IEntityType entityType)
+		public static IEnumerable<IProperty> GetBusinessLayerNotIgnoredProperties(this IEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
-            foreach (IMutableProperty property in entityType.GetProperties())
+            foreach (IProperty property in entityType.GetProperties())
             {
                 if (!property.GetExtendedProperties().ContainsKey(IgnoredAttribute.ExtendedPropertyName))
                 {

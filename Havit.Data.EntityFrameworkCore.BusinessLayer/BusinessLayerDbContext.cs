@@ -54,6 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			optionsBuilder.UseSqlServerExtendedProperties();
 
 			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionExtendedPropertiesConventionPlugin>(() => Settings.UseCollectionExtendedPropertiesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionOrderIndexConventionPlugin>(() => Settings.UseCollectionOrderIndexConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<ExtendedPropertiesConventionPlugin>(() => Settings.UseAttributeBasedExtendedPropertiesConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueAttributeConventionPlugin>(() => Settings.UseDefaultValueAttributeConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueSqlAttributeConventionPlugin>(() => Settings.UseDefaultValueSqlAttributeConvention);

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -15,10 +13,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
 			optionsBuilder.EnableServiceProviderCaching(false);
 		}
-
-		private class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory
-		{
-			public object Create(Microsoft.EntityFrameworkCore.DbContext context) => context.GetHashCode();
-		}
-	}
+    }
 }

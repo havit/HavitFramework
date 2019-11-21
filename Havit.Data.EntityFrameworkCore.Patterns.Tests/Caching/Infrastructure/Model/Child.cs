@@ -6,7 +6,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.M
 	{
 		public int Id { get; set; }
 
-		// Reference
+		// Reference (nepovinná)
 		public Master Parent { get; set; }
 		public int? ParentId { get; set; }
 

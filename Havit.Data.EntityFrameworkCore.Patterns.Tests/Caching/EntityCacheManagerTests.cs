@@ -385,6 +385,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
 			// Assert
 			// no exception was thrown
-		}               
+		}
+
+		[TestMethod]
+		public void EntityCacheManager_InvalidateEntity_SupportsNotRequiredForeignKeyWithNullValue()
+		{
+			// Arrange
+			CachingTestDbContext dbContext = new CachingTestDbContext();
+			Child child = new Child { ParentId = null };
+
+			dbContext.Attach(child);
+
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
+
+			Changes changes = new Changes
+			{
+				Inserts = new object[0],
+				Updates = new object[] { child },
+				Deletes = new object[0]
+			};
+			// Act
+			entityCacheManager.Invalidate(changes);
+
+			// Assert
+			// no exception was thrown
+		}
 	}
 }

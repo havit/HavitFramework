@@ -8,6 +8,7 @@ using Castle.MicroKernel.Registration.Lifestyle;
 using Castle.Windsor;
 using Havit.Diagnostics.Contracts;
 using Havit.Extensions.DependencyInjection.Abstractions;
+using Havit.Extensions.DependencyInjection.Scanners;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.CastleWindsor
@@ -69,22 +70,13 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
 			Contract.Requires<ArgumentNullException>(container != null, nameof(container));
 			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));
 
-            var itemsToRegister = GetTypesWithServiceAttribute(assembly, profile);
+            var itemsToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
 
             foreach (var itemToRegister in itemsToRegister)
             {
                 BasedOnDescriptor descriptor = Classes.From(itemToRegister.Type).Pick().WithServiceDefaultInterfaces().ApplyLifestyle(itemToRegister.Lifetime, scopedLifetimeConfigurer);
                 container.Register(descriptor);
             }
-        }
-
-        private static TypeAttributeInfo[] GetTypesWithServiceAttribute(Assembly assembly, string profile)
-        {
-            return (from type in assembly.GetTypes()
-                    from serviceAttribute in type.GetCustomAttributes(typeof(ServiceAttribute), false).Cast<ServiceAttribute>()
-                    where (serviceAttribute.Profile == profile)
-                    select new TypeAttributeInfo { Type = type, Lifetime = serviceAttribute.Lifetime })                    
-                    .ToArray();
         }
 
         private static BasedOnDescriptor ApplyLifestyle(this BasedOnDescriptor descriptor, ServiceLifetime lifetime, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer)
@@ -105,14 +97,6 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
                 default:
                     throw new NotSupportedException(lifetime.ToString());
             }
-        }
-
-        [DebuggerDisplay("Type={Type}, Attribute = {Attribute}")]
-        private class TypeAttributeInfo
-        {
-            public Type Type { get; set; }
-
-            public ServiceLifetime Lifetime { get; set; }
-        }
+        }        
     }
 }

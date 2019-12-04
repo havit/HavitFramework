@@ -30,7 +30,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
             {
                 IReadOnlyCollection<TypeInfo> Create()
                 {
-                    return Assembly.DefinedTypes.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition && t.GetInterface(nameof(IModelExtender)) != null).ToImmutableArray();
+                    return Assembly != null ?
+                        Assembly.DefinedTypes.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition && t.GetInterface(nameof(IModelExtender)) != null).ToImmutableArray() :
+                        ImmutableArray<TypeInfo>.Empty;
                 }
 
                 return modelExtenders ??= Create();

@@ -163,10 +163,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		/// <inheritdoc />
 		public void Validate(IDbContextOptions options)
 		{
-            if (ExtensionsAssembly == null)
-            {
-                throw new InvalidOperationException("Model Extensions functionality requires configuring Extensions Assembly (which contains Model Extenders).");
-            }
+            //if (ExtensionsAssembly == null)
+            //{
+            //    throw new InvalidOperationException("Model Extensions functionality requires configuring Extensions Assembly (which contains Model Extenders).");
+            //}
         }
 
 		private class ExtensionInfo : DbContextOptionsExtensionInfo

@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions.Fakes
+namespace Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes
 {
     public class FakeModelExtensionsAssemblyExtension : IDbContextOptionsExtension
     {
@@ -18,6 +20,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions.Fak
 
         public FakeModelExtensionsAssemblyExtension(IEnumerable<TypeInfo> modelExtenders)
         {
+            Contract.Requires<ArgumentNullException>(modelExtenders != null);
+
             this.modelExtenders = modelExtenders;
         }
 

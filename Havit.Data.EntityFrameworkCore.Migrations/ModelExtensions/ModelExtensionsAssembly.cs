@@ -16,11 +16,15 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
         /// <summary>
         /// Constructor
         /// </summary>
-        public ModelExtensionsAssembly(IDbContextOptions dbContextOptions)
+        public ModelExtensionsAssembly(
+            ICurrentDbContext currentDbContext,
+            IDbContextOptions dbContextOptions)
         {
+            Contract.Requires<ArgumentNullException>(currentDbContext != null);
             Contract.Requires<ArgumentNullException>(dbContextOptions != null);
 
-            Assembly = dbContextOptions.FindExtension<ModelExtensionsExtension>()?.ExtensionsAssembly;
+            Assembly = dbContextOptions.FindExtension<ModelExtensionsExtension>()?.ExtensionsAssembly ??
+                       currentDbContext.Context.GetType().GetTypeInfo().Assembly;
         }
 
         /// <inheritdoc />

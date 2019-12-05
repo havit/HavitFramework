@@ -362,7 +362,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             }
         }
 
-        private class TestAnnotationsMigrationsAnnotationProvider : Microsoft.EntityFrameworkCore.Migrations.MigrationsAnnotationProvider
+        private class TestAnnotationsMigrationsAnnotationProvider : MigrationsAnnotationProvider
         {
             public TestAnnotationsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies) : base(dependencies)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
@@ -23,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
             IEnumerable<TypeInfo> typeInfos = modelExtenderTypes.Select(t => t.GetTypeInfo());
 
             // stub out Model Extender types in IModelExtensionsAssembly (used by Model Extensions infrastructure)
-            SetModelExtenderTypes(optionsBuilder, typeInfos);
+            optionsBuilder.SetModelExtenderTypes(typeInfos);
         }
     }
 }

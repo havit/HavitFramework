@@ -3,21 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-  </PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);1701;1702;CS1591</NoWarn>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
   </ItemGroup>
 

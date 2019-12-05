@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-	
-	<!-- Unit testy používají dokumentaci projektu -->
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- Unit testy používají dokumentaci projektu -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj" />
+    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

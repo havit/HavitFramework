@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions.Fakes
+namespace Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes
 {
     public class FakeModelExtensionsAssembly : IModelExtensionsAssembly
     {

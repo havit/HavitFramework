@@ -1,6 +1,8 @@
 ﻿using System.Data.SqlClient;
+using System.Linq;
+using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
 {
@@ -15,7 +17,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
                     .UseViews());
             optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
 			optionsBuilder.EnableServiceProviderCaching(false);
-		}
 
+            // stub out Model Extender types, so all extenders in test assembly don't interfere with tests.
+            // Tests should setup their own types when necessary.
+            optionsBuilder.SetModelExtenderTypes(Enumerable.Empty<TypeInfo>());
+        }
     }
 }

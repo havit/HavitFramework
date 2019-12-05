@@ -1,6 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
+namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 {
     public class TestModelExtender : StoredProcedureModelExtender
     {

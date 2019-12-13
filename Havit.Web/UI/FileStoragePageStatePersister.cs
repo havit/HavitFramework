@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -41,9 +42,9 @@ namespace Havit.Web.UI
 			string storageSymbol = fileNamingStrategy.GetStorageSymbol(); // získáme symbol, ten si dále zapamatujeme "do stránky"
 			string storageFilename = fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
 
-			using (var memoryStream = new MemoryStream(2048))
+			using (var memoryStream = new MemoryStream(4096))
 			{
-				LosFormatter formatter = new LosFormatter();
+				BinaryFormatter formatter = new BinaryFormatter();
 				formatter.Serialize(memoryStream, new Pair(this.ViewState, this.ControlState));
 				memoryStream.Seek(0, SeekOrigin.Begin);
 
@@ -81,14 +82,29 @@ namespace Havit.Web.UI
 			{
 				using (System.IO.Stream stream = fileStorageService.Read(storageFilename))
 				{
-					LosFormatter formatter = new LosFormatter();
-					Pair pair = (Pair)formatter.Deserialize(stream);
+					Pair pair;
+					try
+					{
+						BinaryFormatter formatter = new BinaryFormatter();
+						pair = (Pair)formatter.Deserialize(stream);
+					}
+					catch (System.Runtime.Serialization.SerializationException) when (stream.CanSeek)
+					{
+						logService.Log(String.Format("{0}\tDeserialization failed, trying LosFormatter", storageFilename), System.Diagnostics.TraceEventType.Warning);
+
+						// Zpětná kompatibilita - má význam jen pro tu chvíli, než uživatelé přestanou používat viewstaty, které měly vytvořeny před deploymentem.
+						// Musíme načíst data znovu, proto seek na začátek, což můžeme jen tehdy, pokud je stream seekovatelný (viz podmínka v catch).
+						// Není-li stream seekovatelný, nemáme jak pomoci.
+						stream.Seek(0, SeekOrigin.Begin);
+
+						LosFormatter formatter = new LosFormatter();
+						pair = (Pair)formatter.Deserialize(stream);
+					}
 
 					ViewState = pair.First;
 					ControlState = pair.Second;
 				}
 				logService.Log(String.Format("{0}\tLoaded", storageFilename));
-
 			}
 			catch (Exception e)
 			{

@@ -68,7 +68,7 @@ namespace Havit
 				}
 				else
 				{
-#if NET46
+#if NET462
 					// tohle se snad nikde nepoužívá, proto neoptimalizuji
 					currentDataItem = System.Web.UI.DataBinder.GetIndexedPropertyValue(currentDataItem, expression);
 #else

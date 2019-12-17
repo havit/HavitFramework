@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Havit.Data.EntityFrameworkCore
 {
 	/// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext" />
-	public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
+	public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext, IDbContextTransient
     {
 	    /// <summary>
 	    /// Registr akcí k provedení po uložení změn.

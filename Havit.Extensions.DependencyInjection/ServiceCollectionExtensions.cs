@@ -97,7 +97,7 @@ namespace Havit.Extensions.DependencyInjection
 					// registrace druhého a dalšího interface
 					foreach (var interfaceToRegister in interfacesToRegister.Skip(1) /* až od druhého */)
 					{
-						serviceCollection.Add(new ServiceDescriptor(interfaceToRegister, sp => sp.GetRequiredService(firstInterfaceToRegister), itemToRegister.Lifetime /* Transient! */));
+						serviceCollection.AddSingleton(interfaceToRegister, sp => sp.GetRequiredService(firstInterfaceToRegister));
 					}
 				}
 			}

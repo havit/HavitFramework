@@ -14,7 +14,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 {
     public class DbDataSeedsTests
     {
-        private static DataSeedRunner GetDefaultDataSeedRunner(IDbContext dbContext, params IDataSeed[] dataSeedsParams)
+        private static DataSeedRunner GetDefaultDataSeedRunner(IDbContextTransient dbContext, params IDataSeed[] dataSeedsParams)
         {
             IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
             IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();

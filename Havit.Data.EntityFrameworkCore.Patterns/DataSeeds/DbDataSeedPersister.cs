@@ -22,7 +22,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbDataSeedPersister(IDbContext dbContext)
+		/// <remarks>
+		/// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
+		/// Ale dále se k němu chováme jako k IDbContextu.
+		/// </remarks>
+		public DbDataSeedPersister(IDbContextTransient dbContext)
 		{
 			this.DbContext = dbContext;
 		}

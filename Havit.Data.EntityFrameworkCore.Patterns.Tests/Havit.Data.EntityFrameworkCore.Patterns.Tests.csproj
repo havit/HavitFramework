@@ -16,6 +16,7 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestHelpers\Havit.Data.EntityFrameworkCore.TestHelpers.csproj" />
 	<ProjectReference Include="..\Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj" />
 	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
   </ItemGroup>

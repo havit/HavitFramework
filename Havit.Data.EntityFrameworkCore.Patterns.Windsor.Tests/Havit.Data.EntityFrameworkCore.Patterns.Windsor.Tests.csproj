@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj" />
+    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestHelpers\Havit.Data.EntityFrameworkCore.TestHelpers.csproj" />
     <ProjectReference Include="..\Havit.TestHelpers\Havit.TestHelpers.csproj" />
   </ItemGroup>
 

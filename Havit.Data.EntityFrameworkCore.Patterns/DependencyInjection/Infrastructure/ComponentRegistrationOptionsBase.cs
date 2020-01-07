@@ -1,16 +1,15 @@
 ﻿using System;
-using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.Registration.Lifestyle;
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers.Caching;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
+namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 {
 	/// <summary>
 	/// Nastavení registrace komponent installeru Havit.Data.Entity.Patterns a souvisejících služeb.
+	/// Bázová třída, potomci k použití pro jednotlivých DI kontejnery si určují typ, který definuje lifetime registrace služeb.
 	/// </summary>
-	public class ComponentRegistrationOptions
+	public class ComponentRegistrationOptionsBase<TLifetime>
 	{
 		/// <summary>
 		/// Typ použitého UnitOfWork.
@@ -35,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		/// Výchozí lifestyle, pokud konkrétní není uveden. Není-li hodnota nastavena, vyhazuje výjimku InvalidOperationException.
 		/// Výchozí hodnota není definována.
 		/// </summary>
-		public Func<LifestyleGroup<object>, ComponentRegistration<object>> GeneralLifestyle
+		public TLifetime GeneralLifestyle
 		{
 			get
 			{
@@ -48,12 +47,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				generalLifestyle = value;
 			}
 		}
-		private Func<LifestyleGroup<object>, ComponentRegistration<object>> generalLifestyle;
+		private TLifetime generalLifestyle;
 
 		/// <summary>
 		/// Lifestyle pro DbContext. Pokud není uveden, použije se GeneralLifestyle.
 		/// </summary>
-		public Func<LifestyleGroup<object>, ComponentRegistration<object>> DbContextLifestyle
+		public TLifetime DbContextLifestyle
 		{
 			get
 			{
@@ -65,12 +64,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				dbContextLifestyle = value;
 			}
 		}
-		private Func<LifestyleGroup<object>, ComponentRegistration<object>> dbContextLifestyle;
+		private TLifetime dbContextLifestyle;
 
 		/// <summary>
 		/// Lifestyle pro repositories. Pokud není uveden, použije se GeneralLifestyle.
 		/// </summary>
-		public Func<LifestyleGroup<object>, ComponentRegistration<object>> RepositoriesLifestyle
+		public TLifetime RepositoriesLifestyle
 		{
 			get
 			{
@@ -82,12 +81,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				repositoriesLifestyle = value;
 			}
 		}
-		private Func<LifestyleGroup<object>, ComponentRegistration<object>> repositoriesLifestyle;
+		private TLifetime repositoriesLifestyle;
 
 		/// <summary>
 		/// Lifestyle pro data entries. Pokud není uveden, použije se GeneralLifestyle.
 		/// </summary>
-		public Func<LifestyleGroup<object>, ComponentRegistration<object>> DataEntriesLifestyle
+		public TLifetime DataEntriesLifestyle
 		{
 			get
 			{
@@ -99,12 +98,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				dataEntriesLifestyle = value;
 			}
 		}
-		private Func<LifestyleGroup<object>, ComponentRegistration<object>> dataEntriesLifestyle;
+		private TLifetime dataEntriesLifestyle;
 
 		/// <summary>
 		/// Lifestyle pro unit of work. Pokud není uveden, použije se GeneralLifestyle.
 		/// </summary>
-		public Func<LifestyleGroup<object>, ComponentRegistration<object>> UnitOfWorkLifestyle
+		public TLifetime UnitOfWorkLifestyle
 		{
 			get
 			{
@@ -116,12 +115,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				unitOfWorkLifestyle = value;
 			}
 		}
-		private Func<LifestyleGroup<object>, ComponentRegistration<object>> unitOfWorkLifestyle;
+		private TLifetime unitOfWorkLifestyle;
 
 		/// <summary>
 		/// Lifestyle pro DataLoader. Pokud není uveden, použije se GeneralLifestyle.
 		/// </summary>
-		public Func<LifestyleGroup<object>, ComponentRegistration<object>> DataLoaderLifestyle
+		public TLifetime DataLoaderLifestyle
 		{
 			get
 			{
@@ -133,20 +132,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 				dataLoaderLifestyle = value;
 			}
 		}
-		private Func<LifestyleGroup<object>, ComponentRegistration<object>> dataLoaderLifestyle;
+		private TLifetime dataLoaderLifestyle;
 
 		/// <summary>
 		/// Installer služeb pro cachování. Výchozí hodnotou je instance DefaultCachingInstalleru.
 		/// </summary>
-		public IWindsorInstaller CacheServiceInstaller { get; set; }
+		public ICachingInstaller<TLifetime> CachingInstaller { get; set; }
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ComponentRegistrationOptions()
+		public ComponentRegistrationOptionsBase()
 		{
 			UnitOfWorkType = typeof(DbUnitOfWork);
-			CacheServiceInstaller = new DefaultCachingInstaller();
+			CachingInstaller = new DefaultCachingInstaller<TLifetime>();
 		}		
 	}
 }

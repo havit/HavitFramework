@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
 	<PackageVersion>2.0.6</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Installers for Castle Windsor</Description>

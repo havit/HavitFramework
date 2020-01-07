@@ -64,10 +64,10 @@ namespace ConsoleApp1
 			container.AddFacility<TypedFactoryFacility>();
 			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
-				.RegisterDataLayer(typeof(IPersonRepository).Assembly)
-				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
-				.RegisterEntityPatterns();
+			container.WithEntityPatternsInstaller(c => c.GeneralLifestyle = lf => lf.Scoped() )
+				.AddDataLayer(typeof(IPersonRepository).Assembly)
+				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
+				.AddEntityPatterns();
 
             container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
 			container.Register(Component.For<ICacheService>().ImplementedBy<MemoryCacheService>().LifestyleSingleton());
@@ -96,6 +96,10 @@ namespace ConsoleApp1
 				
 				uow.AddRangeForInsert(Enumerable.Range(0, 10).Select(i => new Person()));
 				uow.Commit();
+
+				var personRepository = container.Resolve<IPersonRepository>();
+				var persons = personRepository.GetAll();
+				Console.WriteLine(persons.Count);
 			}
 
 			using (var scope = container.BeginScope())

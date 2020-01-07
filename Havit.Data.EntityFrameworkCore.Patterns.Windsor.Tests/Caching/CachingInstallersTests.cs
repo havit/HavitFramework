@@ -4,11 +4,12 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.DataLayer;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Entity;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
@@ -26,7 +27,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Caching
 		public void CachingInstallersTests_NoCachingEntityCacheManager()
 		{
 			// Arrange
-			var container = Helpers.CreateAndSetupWindsorContainer(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Singleton }.ConfigureNoCaching());
+			Action<WindsorContainerComponentRegistrationOptions> componentRegistrationAction = c =>
+			{
+				c.GeneralLifestyle = lf => lf.Singleton;
+				c.ConfigureNoCaching();
+			};
+
+			var container = Helpers.CreateAndSetupWindsorContainer(componentRegistrationAction);
 
 			// Act
 			IEntityCacheManager entityCacheManager = container.Resolve<IEntityCacheManager>();
@@ -39,7 +46,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Caching
 		public void CachingInstallersTests_SlidingCachingEntityCacheManager()
 		{
 			// Arrange
-			var container = Helpers.CreateAndSetupWindsorContainer(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Singleton }.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromMinutes(5)));
+			Action<WindsorContainerComponentRegistrationOptions> componentRegistrationAction = c =>
+			{
+				c.GeneralLifestyle = lf => lf.Singleton;
+				c.ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(TimeSpan.FromMinutes(5));
+			};
+
+			var container = Helpers.CreateAndSetupWindsorContainer(componentRegistrationAction);
 
 			// Act
 			IEntityCacheManager entityCacheManager = container.Resolve<IEntityCacheManager>();

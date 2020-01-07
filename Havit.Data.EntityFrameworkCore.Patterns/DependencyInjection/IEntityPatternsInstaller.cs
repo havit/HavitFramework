@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
+namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 {
 	/// <summary>
 	/// Installer Havit.Data.Entity.Patterns a souvisejících služeb.
@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		///		</item>
 		/// </list>
 		/// </summary>
-		IEntityPatternsInstaller RegisterDbContext<TDbContext>(DbContextOptions options = null)
+		IEntityPatternsInstaller AddDbContext<TDbContext>(DbContextOptions options = null)
 			where TDbContext : class, IDbContext;
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		///		</item>
 		/// </list>
 		/// </summary>
-		IEntityPatternsInstaller RegisterLocalizationServices<TLanguage>()
+		IEntityPatternsInstaller AddLocalizationServices<TLanguage>()
 			where TLanguage : class, Havit.Model.Localizations.ILanguage;
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		///		</item>
 		/// </list>
 		/// </summary>
-		IEntityPatternsInstaller RegisterEntityPatterns();
+		IEntityPatternsInstaller AddEntityPatterns();
 
 		/// <summary>
 		/// Registruje do windsor containeru třídy z assembly předané v parametru dataLayerAssembly:
@@ -148,6 +148,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 		///		Nikdy neregistruje služby (třídy), které jsou dekorovány atributem FakeAttribute či které jsou abstraktní.
 		/// </remarks>
 		/// </summary>
-		IEntityPatternsInstaller RegisterDataLayer(Assembly assembly);
+		IEntityPatternsInstaller AddDataLayer(Assembly assembly);
 	}
 }

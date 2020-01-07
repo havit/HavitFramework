@@ -11,9 +11,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.DataLayer;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Entity;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSources;
@@ -26,14 +24,18 @@ using Havit.TestHelpers.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Text;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
+using Havit.Services.Caching;
+using System;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 {
 	[TestClass]
-	public class EntityPatternsInstallerTests
+	public class WindsorContainerEntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisteredComponentsShouldHaveRegisteredDependencies()
+		public void WindsorContainerEntityPatternsInstaller_RegisteredComponentsShouldHaveRegisteredDependencies()
 		{
 			// Arrange + Act
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -43,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_RegisteredComponentsShouldNotHaveLifestyleMismatches()
+		public void WindsorContainerEntityPatternsInstaller_RegisteredComponentsShouldNotHaveLifestyleMismatches()
 		{
 			// Arrange + Act
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -53,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterDbContextFactory()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterDbContextFactory()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -66,7 +68,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -83,7 +85,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterDataSourcesAndDependencies()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterDataSourcesAndDependencies()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -100,7 +102,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterRepositoriesAndDependencies()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterRepositoriesAndDependencies()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -118,7 +120,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -134,7 +136,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -151,7 +153,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterEntityCacheManager()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterEntityCacheManager()
 		{
 			// Arrange
 			var container = Helpers.CreateAndSetupWindsorContainer();
@@ -167,7 +169,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
 		{
 			// Arrange
 			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();
@@ -183,7 +185,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
+		public void WindsorContainerEntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
 		{
 			// Arrange
 			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();
@@ -199,7 +201,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		}
 
 		[TestMethod]
-		public void EntityPatternsInstaller_DbDataSeedPersister_DbContextDependencyIsTransient()
+		public void WindsorContainerEntityPatternsInstaller_DbDataSeedPersister_DbContextDependencyIsTransient()
 		{
 			// Arrange
 			WindsorContainer container = Helpers.CreateAndSetupWindsorContainer();

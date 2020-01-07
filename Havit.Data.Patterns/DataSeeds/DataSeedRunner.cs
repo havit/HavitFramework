@@ -17,6 +17,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	{
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
+		// TODO: Samostatná factory???
 		private readonly IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory;
 
 		/// <summary>

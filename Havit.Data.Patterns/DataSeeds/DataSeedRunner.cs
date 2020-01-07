@@ -17,8 +17,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	{
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
-		// TODO: Samostatná factory???
-		private readonly IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory;
+		private readonly IDataSeedPersisterFactory dataSeedPersisterFactory;
 
 		/// <summary>
 		/// Konstruktor.
@@ -31,7 +30,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// DbDataSeedPersister je registrován jako transientní se závislostí DbContext, který je v tomto případě rovněž transientní.
 		/// Proto se v tomto případě factory IServiceFactory<IDataSeedPersister> popsaná issue netýká.
 		/// </remarks>
-		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IServiceFactory<IDataSeedPersister> dataSeedPersisterFactory)
+		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersisterFactory dataSeedPersisterFactory)
 	    {
 	        Contract.Requires<ArgumentNullException>(dataSeeds != null, nameof(dataSeeds));
 	        Contract.Requires<ArgumentNullException>(dataSeedRunDecision != null, nameof(dataSeedRunDecision));
@@ -191,7 +190,15 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <param name="dataSeed">Předpis seedování dat.</param>
 		private void Seed(IDataSeed dataSeed)
 		{
-			dataSeedPersisterFactory.ExecuteAction(dataSeedPersister => dataSeed.SeedData(dataSeedPersister));
+			IDataSeedPersister dataSeedPersister = dataSeedPersisterFactory.CreateService();
+			try
+			{
+				dataSeed.SeedData(dataSeedPersister);
+			}
+			finally
+			{
+				dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
+			}
 		}
 
 		/// <summary>

@@ -30,7 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		public override void AddFactory(Type factoryType)
 		{
 			// TODO JK: Implementovat
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		/// <inheritdoc/>

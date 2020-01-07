@@ -101,6 +101,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.AddServiceTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
 			installer.AddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 			installer.AddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
+			installer.AddFactory(typeof(IDataSeedPersisterFactory));
 
 			installer.AddFactory(typeof(IDataSourceFactory<>));
 			installer.AddFactory(typeof(IRepositoryFactory<>));

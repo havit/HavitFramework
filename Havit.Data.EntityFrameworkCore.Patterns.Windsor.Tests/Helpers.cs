@@ -25,8 +25,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
 			container.AddFacility<TypedFactoryFacility>();
-			// TODO: Odstranit registraci service factory!
-			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
 			container.WithEntityPatternsInstaller(componentRegistrationAction ?? (c => c.GeneralLifestyle = lf => lf.Scoped()))
 				.AddEntityPatterns()
 				.AddDbContext<TestDbContext>()

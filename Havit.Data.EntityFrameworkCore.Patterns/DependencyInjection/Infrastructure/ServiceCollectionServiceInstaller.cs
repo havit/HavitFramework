@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
+using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.DataSources;
+using Havit.Data.Patterns.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +35,34 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 		public override void AddFactory(Type factoryType)
 		{
-			// TODO JK: Implementovat
-			//throw new NotImplementedException();
+			if (factoryType == typeof(IDbContextFactory))
+			{
+				services.AddSingleton<IDbContextFactory, DbContextFactory>();
+			}
+			else if (factoryType == typeof(IDataSeedPersisterFactory))
+			{
+				services.AddSingleton<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
+			}
+			else if (factoryType == typeof(IDataSourceFactory<>))
+			{
+				services.AddSingleton(typeof(IDataSourceFactory<>), typeof(DataSourceFactory<>));
+			}
+			else if (factoryType == typeof(IRepositoryFactory<>))
+			{
+				services.AddSingleton(typeof(IRepositoryFactory<>), typeof(RepositoryFactory<>));
+			}
+			else if (factoryType == typeof(IBeforeCommitProcessorsFactory))
+			{
+				services.AddSingleton<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
+			}
+			else if (factoryType == typeof(IEntityValidatorsFactory))
+			{
+				services.AddSingleton<IEntityValidatorsFactory, EntityValidatorsFactory>();
+			}
+			else
+			{
+				throw new ArgumentException($"Factory type {factoryType} is not supported.", nameof(factoryType));
+			}
 		}
 
 		/// <inheritdoc/>
@@ -42,7 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// <inheritdoc/>
 		public override void AddServiceSingletonInstance(Type serviceType, object implementation)
 		{
-			services.AddSingleton(new ServiceDescriptor(serviceType, implementation));
+			services.AddSingleton(serviceType, implementation);
 		}
 
 		/// <inheritdoc/>

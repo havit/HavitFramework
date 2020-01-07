@@ -37,7 +37,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers
 {
 	/// <summary>
-	/// Implementace <see cref="IEntityPatternsInstaller"/>u.
+	/// Implementace <see cref="IEntityPatternsInstaller"/>u pro Windsor Container.
 	/// </summary>
 	internal class WindsorContainerEntityPatternsInstaller : EntityPatternsInstallerBase<Func<LifestyleGroup<object>, ComponentRegistration<object>>>
 	{

@@ -15,9 +15,10 @@ using System.Linq;
 using System.Text;
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
 using Havit.Services.Caching;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 {
@@ -190,7 +191,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		{
 			IServiceCollection services = new ServiceCollection();
 
-			// TODO: Upravit na lepší kompatibilitu s konvencemi DI?
 			services.WithEntityPatternsInstaller()
 				.AddEntityPatterns()
 				.AddDbContext<TestDbContext>()

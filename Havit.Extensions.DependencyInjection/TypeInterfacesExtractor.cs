@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Havit.Extensions.DependencyInjection
 {
+	/// <summary>
+	/// Helpers for interfaces types to register the service to DI container.
+	/// </summary>
 	public static class TypeInterfacesExtractor
 	{
 		/// <summary>

@@ -52,7 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
                 builder.Entity<Master>();
                 builder.Entity<Child>();
                 builder.Entity<Master>()
-                    .AddExtendedProperties(new CollectionAttribute { Sorting = "[Count]"}
+                    .AddExtendedProperties(new CollectionAttribute { Sorting = "[Count]" }
                         .GetExtendedProperties(typeof(Master).GetProperty(nameof(Master.Children))));
             });
 

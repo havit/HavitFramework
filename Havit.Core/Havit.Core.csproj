@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RootNamespace>Havit</RootNamespace>
   </PropertyGroup>
@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net46'" />
-    <Reference Include="System.Windows.Forms" Pack="false" Condition="'$(TargetFramework)' == 'net46'" />
+    <Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net462'" />
+    <Reference Include="System.Windows.Forms" Pack="false" Condition="'$(TargetFramework)' == 'net462'" />
   </ItemGroup>
 
 </Project>

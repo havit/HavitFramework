@@ -1,6 +1,7 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.Caching;
@@ -21,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		public void EntityCacheDpendencyManager_InvalidateEntity_RemovesDependencies()
 		{
 			// Arrange
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext = new CachingTestDbContext();
 			LoginAccount loginAccount = new LoginAccount { Id = 1 };
 			dbContext.Attach(loginAccount);
 

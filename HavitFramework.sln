@@ -209,6 +209,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Migrations.Tests", "Havit.Data.EntityFrameworkCore.Migrations.Tests\Havit.Data.EntityFrameworkCore.Migrations.Tests.csproj", "{CE34D734-B487-4A43-9464-636CA4AE2C4E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection", "Havit.Extensions.DependencyInjection\Havit.Extensions.DependencyInjection.csproj", "{368433C8-AF93-4B9B-A9D4-C417EC597067}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AF3363A0-2BB8-4372-8937-21BDADB8FD9E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.Tests", "Havit.Extensions.DependencyInjection.Tests\Havit.Extensions.DependencyInjection.Tests.csproj", "{19BF8B1F-AB9E-4B9B-8108-3AAB5FDF868C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.TestHelpers", "Havit.Data.EntityFrameworkCore.TestHelpers\Havit.Data.EntityFrameworkCore.TestHelpers.csproj", "{2B40F55F-3EE8-4C93-8FAA-101233AA0DAA}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.Migrations.TestHelpers", "Havit.Data.EntityFrameworkCore.Migrations.TestHelpers\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj", "{3CF71BE1-804A-4C50-9BA9-B0F43026BDF3}"
 EndProject
 Global
@@ -525,6 +533,18 @@ Global
 		{CE34D734-B487-4A43-9464-636CA4AE2C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE34D734-B487-4A43-9464-636CA4AE2C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE34D734-B487-4A43-9464-636CA4AE2C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{368433C8-AF93-4B9B-A9D4-C417EC597067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{368433C8-AF93-4B9B-A9D4-C417EC597067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{368433C8-AF93-4B9B-A9D4-C417EC597067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{368433C8-AF93-4B9B-A9D4-C417EC597067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19BF8B1F-AB9E-4B9B-8108-3AAB5FDF868C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19BF8B1F-AB9E-4B9B-8108-3AAB5FDF868C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19BF8B1F-AB9E-4B9B-8108-3AAB5FDF868C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19BF8B1F-AB9E-4B9B-8108-3AAB5FDF868C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B40F55F-3EE8-4C93-8FAA-101233AA0DAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B40F55F-3EE8-4C93-8FAA-101233AA0DAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B40F55F-3EE8-4C93-8FAA-101233AA0DAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B40F55F-3EE8-4C93-8FAA-101233AA0DAA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CF71BE1-804A-4C50-9BA9-B0F43026BDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CF71BE1-804A-4C50-9BA9-B0F43026BDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CF71BE1-804A-4C50-9BA9-B0F43026BDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -620,6 +640,10 @@ Global
 		{54196DA6-3753-4457-85FD-637D15FDF088} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{FADA8E2B-29EA-4D23-956D-0A5C6796D0A5} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 		{CE34D734-B487-4A43-9464-636CA4AE2C4E} = {FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}
+		{368433C8-AF93-4B9B-A9D4-C417EC597067} = {97109FED-C671-49FA-8614-C63D8E5935B9}
+		{AF3363A0-2BB8-4372-8937-21BDADB8FD9E} = {97109FED-C671-49FA-8614-C63D8E5935B9}
+		{19BF8B1F-AB9E-4B9B-8108-3AAB5FDF868C} = {AF3363A0-2BB8-4372-8937-21BDADB8FD9E}
+		{2B40F55F-3EE8-4C93-8FAA-101233AA0DAA} = {FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}
 		{3CF71BE1-804A-4C50-9BA9-B0F43026BDF3} = {FA03CDCB-AEFC-49D1-BBAE-5F623BD5A301}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

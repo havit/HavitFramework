@@ -27,6 +27,7 @@ using Havit.EFCoreTests.Model;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using System.Transactions;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
@@ -42,66 +43,61 @@ namespace ConsoleApp1
 	{
 		public static void Main(string[] args)
 		{
-			var container = ConfigureAndCreateWindsorContainer();
-			UpdateDatabase(container);
-            Debug(container);
+			IServiceProvider serviceProvider = CreateServiceProvider();
+			UpdateDatabase(serviceProvider);
+            Debug(serviceProvider);
 		}
 
-		private static IWindsorContainer ConfigureAndCreateWindsorContainer()
+		private static IServiceProvider CreateServiceProvider()
 		{
 			var loggerFactory = new LoggerFactory();
 			//loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 
-			DbContextOptions options = new DbContextOptionsBuilder<ApplicationDbContext>()
+			var options = new DbContextOptionsBuilder<ApplicationDbContext>()
 				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
 				//.UseInMemoryDatabase("ConsoleApp")
 				.UseLoggerFactory(loggerFactory)
 				.Options;
 
-			IWindsorContainer container = new WindsorContainer();
+			IServiceCollection services = new ServiceCollection();
+			services.WithEntityPatternsInstaller()
+				.AddDataLayer(typeof(IPersonRepository).Assembly)
+				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
+				.AddEntityPatterns();
 
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-			container.AddFacility<TypedFactoryFacility>();
-			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
+			services.AddSingleton<ITimeService, ServerTimeService>();
+			services.AddSingleton<ICacheService, MemoryCacheService>();
+			services.AddSingleton<IOptions<MemoryCacheOptions>, OptionsManager<MemoryCacheOptions>>();
+			services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
+			services.AddSingleton<IMemoryCache, MemoryCache>();
 
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
-				.RegisterDataLayer(typeof(IPersonRepository).Assembly)
-				.RegisterDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
-				.RegisterEntityPatterns();
-
-            container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
-			container.Register(Component.For<ICacheService>().ImplementedBy<MemoryCacheService>().LifestyleSingleton());
-            container.Register(Component.For<IOptions<MemoryCacheOptions>>().ImplementedBy<OptionsManager<MemoryCacheOptions>>().LifestyleSingleton());
-			container.Register(Component.For<IOptionsFactory<MemoryCacheOptions>>().Instance(new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>())));
-			container.Register(Component.For<IMemoryCache>().ImplementedBy<MemoryCache>().LifestyleSingleton());
-
-			return container;
+			return services.BuildServiceProvider();
 		}
 
-		private static void UpdateDatabase(IWindsorContainer container)
+		private static void UpdateDatabase(IServiceProvider serviceProvider)
 		{
-			using (var scope = container.BeginScope())
+			using (serviceProvider.CreateScope())
 			{
-				var dbContext = container.Resolve<IDbContext>();
+				var dbContext = serviceProvider.GetRequiredService<IDbContext>();
 				dbContext.Database.EnsureDeleted();
 				dbContext.Database.Migrate();
 			}
 		}
 
-		private static void Debug(IWindsorContainer container)
+		private static void Debug(IServiceProvider serviceProvider)
 		{
-			using (var scope = container.BeginScope())
+			using (serviceProvider.CreateScope())
 			{
-				var uow = container.Resolve<IUnitOfWork>();
+				var uow = serviceProvider.GetRequiredService<IUnitOfWork>();
 				
 				uow.AddRangeForInsert(Enumerable.Range(0, 10).Select(i => new Person()));
 				uow.Commit();
 			}
 
-			using (var scope = container.BeginScope())
+			using (serviceProvider.CreateScope())
 			{
-				var personRepository = container.Resolve<IPersonRepository>();
-				var dataLoader = container.Resolve<IDataLoader>();
+				var personRepository = serviceProvider.GetRequiredService<IPersonRepository>();
+				var dataLoader = serviceProvider.GetRequiredService<IDataLoader>();
 
 				List<Person> persons = personRepository.GetObjects(1, 3, 5, 7, 9);
 				dataLoader.LoadAll(persons, p => p.Subordinates);

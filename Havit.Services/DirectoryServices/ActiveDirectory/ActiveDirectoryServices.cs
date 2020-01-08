@@ -1,4 +1,4 @@
-﻿#if NET46
+﻿#if NET462
 using Havit.Diagnostics.Contracts;
 using System;
 using System.Collections.Generic;

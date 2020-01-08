@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.Caching;
@@ -21,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		public void EntityCacheManager_Store_CallsShouldCacheEntity()
 		{
             // Arrange
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+            CachingTestDbContext dbContext = new CachingTestDbContext();
             Role role = new Role { Id = 100 };
             dbContext.Attach(role);
 			
@@ -43,7 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		[TestMethod]
 		public void EntityCacheManager_Store_CallsCacheServiceAddWhenShouldCache()
 		{
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext = new CachingTestDbContext();
             Role role = new Role { Id = 100 };
             dbContext.Attach(role);
 
@@ -63,8 +64,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		[TestMethod]
 		public void EntityCacheManager_Store_DoesNotCallCacheServiceAddWhenShouldNotCache()
 		{
-            // Arrange
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			// Arrange
+			CachingTestDbContext dbContext = new CachingTestDbContext();
             Role role = new Role { Id = 100 };
             dbContext.Attach(role);
 
@@ -131,10 +132,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             // Arrange
 			ICacheService cacheService = new DictionaryCacheService();
 
-            DataLoaderTestDbContext dbContext1 = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext1 = new CachingTestDbContext();
 			var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
-            DataLoaderTestDbContext dbContext2 = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext2 = new CachingTestDbContext();
 			var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
             Role role = new Role { Id = 100, Name = "Reader" };
@@ -180,7 +181,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             // Arrange
             ICacheService cacheService = new DictionaryCacheService();
 
-            DataLoaderTestDbContext dbContext1 = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext1 = new CachingTestDbContext();
 
             Master master = new Master { Id = 1 };
             Child child1 = new Child { Id = 100, ParentId = 1, Parent = master };
@@ -191,7 +192,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
             var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
-            DataLoaderTestDbContext dbContext2 = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext2 = new CachingTestDbContext();
             Master masterResult = new Master { Id = 1 };
             dbContext2.Attach(masterResult);
 
@@ -217,7 +218,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             // Arrange
             ICacheService cacheService = new DictionaryCacheService();
 
-            DataLoaderTestDbContext dbContext1 = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext1 = new CachingTestDbContext();
             
             LoginAccount loginAccount = new LoginAccount { Id = 1 };
             Membership membership = new Membership { LoginAccountId = 1, RoleId = 1234 };
@@ -225,7 +226,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
             var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
-            DataLoaderTestDbContext dbContext2 = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext2 = new CachingTestDbContext();
             LoginAccount loginAccountResult = new LoginAccount { Id = 1 };
             dbContext2.Attach(loginAccountResult);
 
@@ -245,8 +246,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
         [TestMethod]
 		public void EntityCacheManager_InvalidateEntity_RemovesEntityAndAllKeysOnUpdate()
 		{
-            // Arrange
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			// Arrange
+			CachingTestDbContext dbContext = new CachingTestDbContext();
             LoginAccount loginAccount = new LoginAccount { Id = 1 };
             dbContext.Attach(loginAccount);
 
@@ -283,8 +284,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_DoesNotRemoveEntityButRemovesAllKeysOnInsert()
 		{
-            // Arrange
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			// Arrange
+			CachingTestDbContext dbContext = new CachingTestDbContext();
             LoginAccount loginAccount = new LoginAccount { Id = 1 };
             dbContext.Attach(loginAccount);
 
@@ -324,7 +325,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		public void EntityCacheManager_InvalidateEntity_DoesNotStoreDeletedEntity()
 		{
 			// Arrange
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext = new CachingTestDbContext();
 			LoginAccount loginAccount = new LoginAccount { Id = 1 };
 
 			// deleted entity, simulation of UnitOfWork.AddForDelete() + Commit()
@@ -367,7 +368,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		public void EntityCacheManager_InvalidateEntity_SupportsManyToMany()
 		{
 			// Arrange
-            DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			CachingTestDbContext dbContext = new CachingTestDbContext();
 			Membership membership = new Membership { LoginAccountId = 100, RoleId = 999 };
             dbContext.Attach(membership);
 
@@ -384,6 +385,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
 			// Assert
 			// no exception was thrown
-		}               
+		}
+
+		[TestMethod]
+		public void EntityCacheManager_InvalidateEntity_SupportsNotRequiredForeignKeyWithNullValue()
+		{
+			// Arrange
+			CachingTestDbContext dbContext = new CachingTestDbContext();
+			Child child = new Child { ParentId = null };
+
+			dbContext.Attach(child);
+
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
+
+			Changes changes = new Changes
+			{
+				Inserts = new object[0],
+				Updates = new object[] { child },
+				Deletes = new object[0]
+			};
+			// Act
+			entityCacheManager.Invalidate(changes);
+
+			// Assert
+			// no exception was thrown
+		}
 	}
 }

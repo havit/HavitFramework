@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-	<TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+	<TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -13,7 +13,7 @@
 	<LangVersion>default</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
 	<Reference Include="System.DirectoryServices" Pack="false" />
 	<Reference Include="System.Runtime.Caching" Pack="false" />
 	<Reference Include="System.Web" Pack="false" />

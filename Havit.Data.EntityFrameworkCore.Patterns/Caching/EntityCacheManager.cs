@@ -295,10 +295,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
                 // Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
                 if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingCollection.EntityType, referencingCollection.CollectionPropertyName))
                 {
-                    // získáme hodnotu cizího klíče
-                    // z ní klíč pro cachování property objektu s daným klíčem
-                    // a odebereme z cache
-                    cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, referencingCollection.GetForeignKeyValue(dbContext, entity), referencingCollection.CollectionPropertyName));
+					// získáme hodnotu cizího klíče
+					object foreignKeyValue = referencingCollection.GetForeignKeyValue(dbContext, entity);
+					// pokud hodnotu cizího klíče máme, tedy máme kolekci, kterou potřebujeme invalidovat
+					if (foreignKeyValue != null)
+					{
+						// z hodnoty cizího klíče získáme klíč pro cachování property objektu s daným klíčem
+						// a odebereme jej z cache
+						cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, foreignKeyValue, referencingCollection.CollectionPropertyName));
+					}
                 }
             }            
         }

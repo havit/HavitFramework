@@ -23,7 +23,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 		    dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
 
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
-			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
@@ -47,7 +47,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
 
-			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
@@ -68,7 +68,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
 			DataSeedCycleB dataSeedCycleB = new DataSeedCycleB();
 
-			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
@@ -85,7 +85,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			// Arrange
 			DataSeedDependentOnItself dataSeedDependentOnItself = new DataSeedDependentOnItself();
 
-			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
@@ -102,7 +102,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			// Arrange
 			Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
 
-			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
@@ -119,7 +119,7 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			// Arrange
 			DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
 
-			Mock<IServiceFactory<IDataSeedPersister>> dataSeedPersisterFactoryMock = new Mock<IServiceFactory<IDataSeedPersister>>(MockBehavior.Strict);
+			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
 			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 

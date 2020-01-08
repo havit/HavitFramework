@@ -1,5 +1,7 @@
 ﻿using Castle.Windsor;
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
+using System;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor
 {
@@ -12,10 +14,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor
 		/// Vrátí installer pro Havit.Data.Entity.Patterns a souvisejících služeb.
 		/// </summary>
 		/// <param name="container">Windsor container.</param>
-		/// <param name="componentRegistrationOptions">Konfigurace registrace komponent.</param>
-		public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IWindsorContainer container, ComponentRegistrationOptions componentRegistrationOptions)
+		/// <param name="componentRegistrationAction">Konfigurace registrace komponent.</param>
+		public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IWindsorContainer container, Action<WindsorContainerComponentRegistrationOptions> componentRegistrationAction = null)
 		{
-			return new EntityPatternsInstaller(container, componentRegistrationOptions);
+			var componentRegistrationOptions = new WindsorContainerComponentRegistrationOptions();
+			componentRegistrationAction?.Invoke(componentRegistrationOptions);
+			return new WindsorContainerEntityPatternsInstaller(container, componentRegistrationOptions);
 		}
 	}
 }

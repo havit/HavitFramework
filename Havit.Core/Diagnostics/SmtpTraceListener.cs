@@ -222,7 +222,7 @@ namespace Havit.Diagnostics
 			// pro konzolovky, ve webových aplikacích vrací null
 			// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 			Assembly assembly = Assembly.GetEntryAssembly();
-#if NET46
+#if NET462
 			// pro requesty webových aplikací, v asynchronním tasku/threadu vrací HttpContext.Current null
 			if ((assembly == null) && (HttpContext.Current != null))
 			{

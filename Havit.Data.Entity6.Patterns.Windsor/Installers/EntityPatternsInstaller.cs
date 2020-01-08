@@ -93,6 +93,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For<IDataSeedRunDecision>().ImplementedBy<OncePerVersionDataSeedRunDecision>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecisionStatePersister>().ImplementedBy<DbDataSeedRunDecisionStatePersister>().LifestyleTransient(),
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),
+				Component.For<IDataSeedPersisterFactory>().AsFactory(),
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
 				Component.For(typeof(IUnitOfWork), typeof(IUnitOfWorkAsync)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),

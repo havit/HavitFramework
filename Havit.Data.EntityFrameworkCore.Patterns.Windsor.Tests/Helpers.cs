@@ -3,9 +3,9 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.DataLayer;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Entity;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
 using Havit.Services;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
@@ -19,18 +19,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 {
 	internal static class Helpers
 	{
-		internal static WindsorContainer CreateAndSetupWindsorContainer(ComponentRegistrationOptions componentRegistrationOptions = null)
+		internal static WindsorContainer CreateAndSetupWindsorContainer(Action<WindsorContainerComponentRegistrationOptions> componentRegistrationAction = null)
 		{
 			WindsorContainer container = new WindsorContainer();
 			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
 			container.AddFacility<TypedFactoryFacility>();
-			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
-			container.WithEntityPatternsInstaller(componentRegistrationOptions ?? new ComponentRegistrationOptions { GeneralLifestyle = lf => lf.Scoped() })
-				.RegisterEntityPatterns()
-				.RegisterDbContext<TestDbContext>()
-				.RegisterLocalizationServices<Language>()
-				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
+			container.WithEntityPatternsInstaller(componentRegistrationAction ?? (c => c.GeneralLifestyle = lf => lf.Scoped()))
+				.AddEntityPatterns()
+				.AddDbContext<TestDbContext>()
+				.AddLocalizationServices<Language>()
+				.AddDataLayer(typeof(ILanguageDataSource).Assembly);
 
 			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
 			container.Register(Component.For<ICacheService>().ImplementedBy<NullCacheService>().LifestyleSingleton());

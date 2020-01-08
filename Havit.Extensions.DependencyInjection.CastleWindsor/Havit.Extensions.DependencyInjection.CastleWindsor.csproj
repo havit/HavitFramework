@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
     <ProjectReference Include="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
+    <ProjectReference Include="..\Havit.Extensions.DependencyInjection\Havit.Extensions.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageId>Havit.Data.EntityFrameworkCore.CodeGenerator</PackageId>
     <PackageVersion>2.0.1</PackageVersion>
@@ -24,4 +24,12 @@
     </Content>
   </ItemGroup>
 
+  <Target Name="NuspecCreationWorkaround" BeforeTargets="GenerateNuspec" AfterTargets="_CalculateInputsOutputsForPack">
+    <!-- Workaround for "The DateTimeOffset specified cannot be converted into a Zip file timestamp." -->
+    <!-- https://github.com/NuGet/Home/issues/7001 -->
+		
+    <!-- Soubory z MS nuget balíčků nemají datum vytvoření (resp. 1980-01-01). Takovýmto souborům se Nuspec brání v kladné časové zóně (asi nějaká chyba při posunu data do UTC nebo něco podobného) -->
+    <!-- Proto souborům, které máme zabalit do nuget balíčku, nastavíme aktuální datum a čas. -->
+    <Touch Files="@(_PackageFiles)" />
+  </Target>
 </Project>

@@ -28,9 +28,9 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="scopedLifetimeConfigurer">(Volitelné.) LifeStyle, který je použit pro ServiceLifetime.Scoped. Pokud není uveden, použije se LifestyleScoped().
         /// Pro scope per ASP.NET Core web request má hodnotu lf => lf.PerAspNetCoreWebRequest().
         /// </param>
-        public static void InstallByServiceAttibute(this IWindsorContainer container, Assembly assembly, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
+        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
         {
-            InstallByServiceAttibute(container, assembly, ServiceAttribute.DefaultProfile, scopedLifetimeConfigurer);
+            InstallByServiceAttribute(container, assembly, ServiceAttribute.DefaultProfile, scopedLifetimeConfigurer);
         }
 
         /// <summary>
@@ -44,13 +44,13 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="scopedLifetimeConfigurer">(Volitelné.) LifeStyle, který je použit pro ServiceLifetime.Scoped. Pokud není uveden, použije se LifestyleScoped().
         /// Pro scope per ASP.NET Core web request má hodnotu lf => lf.PerAspNetCoreWebRequest().
         /// </param>
-        public static void InstallByServiceAttibute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
+        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
         {
 			Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
 
             foreach (string profile in profiles)
             {
-                InstallByServiceAttibute(container, assembly, profile, scopedLifetimeConfigurer);
+                InstallByServiceAttribute(container, assembly, profile, scopedLifetimeConfigurer);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="scopedLifetimeConfigurer">(Volitelné.) LifeStyle, který je použit pro ServiceLifetime.Scoped. Pokud není uveden, použije se LifestyleScoped().
         /// Pro scope per ASP.NET Core web request má hodnotu lf => lf.PerAspNetCoreWebRequest().
         /// </param>
-        public static void InstallByServiceAttibute(this IWindsorContainer container, Assembly assembly, string profile, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
+        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string profile, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
         {
 			Contract.Requires<ArgumentNullException>(container != null, nameof(container));
 			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));

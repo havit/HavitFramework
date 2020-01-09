@@ -23,9 +23,9 @@ namespace Havit.Extensions.DependencyInjection
 		/// <param name="serviceCollection">Service collection where to add classes/interfaces registrations.</param>
 		/// <param name="assembly">Assembly to scan for services.</param>
 		/// <exception cref="InvalidOperationException">There is a class to register with no interface to register with.</exception>
-		public static IServiceCollection AddByServiceAttibute(this IServiceCollection serviceCollection, Assembly assembly)
+		public static IServiceCollection AddByServiceAttribute(this IServiceCollection serviceCollection, Assembly assembly)
 		{
-			return AddByServiceAttibute(serviceCollection, assembly, ServiceAttribute.DefaultProfile);
+			return AddByServiceAttribute(serviceCollection, assembly, ServiceAttribute.DefaultProfile);
 		}
 
 		/// <summary>
@@ -37,13 +37,13 @@ namespace Havit.Extensions.DependencyInjection
 		/// <param name="assembly">Assembly to scan for services.</param>
 		/// <param name="profiles">Profiles to register.</param>
 		/// <exception cref="InvalidOperationException">There is a class to register with no interface to register with.</exception>
-		public static IServiceCollection AddByServiceAttibute(this IServiceCollection serviceCollection, Assembly assembly, string[] profiles)
+		public static IServiceCollection AddByServiceAttribute(this IServiceCollection serviceCollection, Assembly assembly, string[] profiles)
 		{
 			Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
 
 			foreach (string profile in profiles)
 			{
-				AddByServiceAttibute(serviceCollection, assembly, profile);
+				AddByServiceAttribute(serviceCollection, assembly, profile);
 			}
 
 			return serviceCollection;
@@ -58,7 +58,7 @@ namespace Havit.Extensions.DependencyInjection
 		/// <param name="assembly">Assembly to scan for services.</param>
 		/// <param name="profile">Profile to register.</param>
 		/// <exception cref="InvalidOperationException">There is a class to register with no interface to register with.</exception>
-		public static IServiceCollection AddByServiceAttibute(this IServiceCollection serviceCollection, Assembly assembly, string profile)
+		public static IServiceCollection AddByServiceAttribute(this IServiceCollection serviceCollection, Assembly assembly, string profile)
 		{
 			Contract.Requires<ArgumentNullException>(serviceCollection != null, nameof(serviceCollection));
 			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));

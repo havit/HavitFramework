@@ -13,13 +13,13 @@ namespace Havit.Extensions.DependencyInjection.Tests
 	public class ServiceCollectionExtensionsTests
 	{
 		[TestMethod]
-		public void ServiceCollectionExtensions_AddByServiceAttibute_AddsOneClassWithOneInterfaces()
+		public void ServiceCollectionExtensions_AddByServiceAttribute_AddsOneClassWithOneInterfaces()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
 
 			// Act
-			services.AddByServiceAttibute(typeof(MyService).Assembly, nameof(MyService));
+			services.AddByServiceAttribute(typeof(MyService).Assembly, nameof(MyService));
 			services.BuildServiceProvider().GetRequiredService<IService>();
 
 			// Assert
@@ -27,13 +27,13 @@ namespace Havit.Extensions.DependencyInjection.Tests
 		}
 
 		[TestMethod]
-		public void ServiceCollectionExtensions_AddByServiceAttibute_AddsOneClassWithTwoInterfaces()
+		public void ServiceCollectionExtensions_AddByServiceAttribute_AddsOneClassWithTwoInterfaces()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
 
 			// Act
-			services.AddByServiceAttibute(typeof(MyFirstService).Assembly, nameof(MyFirstService));
+			services.AddByServiceAttribute(typeof(MyFirstService).Assembly, nameof(MyFirstService));
 			services.BuildServiceProvider().GetRequiredService<IService>();
 			services.BuildServiceProvider().GetRequiredService<IFirstService>();
 
@@ -43,13 +43,13 @@ namespace Havit.Extensions.DependencyInjection.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
-		public void ServiceCollectionExtensions_AddByServiceAttibute_DoesNotAddsClassWithNoInterface()
+		public void ServiceCollectionExtensions_AddByServiceAttribute_DoesNotAddsClassWithNoInterface()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
 
 			// Act
-			services.AddByServiceAttibute(typeof(NoInterfaceService).Assembly, nameof(NoInterfaceService));
+			services.AddByServiceAttribute(typeof(NoInterfaceService).Assembly, nameof(NoInterfaceService));
 
 			// Assert
 			// assert: exception was thrown

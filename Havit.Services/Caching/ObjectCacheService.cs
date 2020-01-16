@@ -10,6 +10,9 @@ namespace Havit.Services.Caching
 	/// Třída je dostupná pouze pro full .NET Framework (nikoliv pro .NET Standard 2.0).
 	/// </summary>
 	/// <seealso cref="Havit.Services.Caching.ICacheService" />
+	/// <remarks>
+	/// Struktura konstruktorů - viz remarks u třídy MemoryCacheService.
+	/// </remarks>
 	public class ObjectCacheService : ICacheService
 	{
 		/// <summary>
@@ -24,10 +27,20 @@ namespace Havit.Services.Caching
 
 		/// <summary>
 		/// Konstruktor.
+		/// Nebude použita podpora pro cache dependencies.
+		/// </summary>
+		/// <param name="objectCache">Object cache, která bude použita pro cachování.</param>
+		public ObjectCacheService(ObjectCache objectCache) : this(objectCache, false)
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="objectCache">Object cache, která bude použita pro cachování.</param>
 		/// <param name="useCacheDependenciesSupport">Indikuje, zda má být použita podpora pro cache dependencies.</param>
-		public ObjectCacheService(ObjectCache objectCache, bool useCacheDependenciesSupport = false)
+		public ObjectCacheService(ObjectCache objectCache, bool useCacheDependenciesSupport)
 		{
 			this.CurrentObjectCache = objectCache;
 			this.SupportsCacheDependencies = useCacheDependenciesSupport;

@@ -16,7 +16,19 @@ namespace Havit.Services.Caching
 	/// Pozor na paměťovou náročnost, infrastruktura cachování se závuslostmi potřebuje okolo 500 bytes na záznam.
 	/// </summary>
 	/// <seealso cref="Havit.Services.Caching.ICacheService" />
-    public class MemoryCacheService : ICacheService
+	/// <remarks>
+	/// V situaci, kdy má třída dva konstruktory
+	/// - konstruktor s IMemoryCache a bool s výchozí hodnotou
+	/// - konstruktor s IMemoryCache a MemoryCacheServiceOptions
+	/// si Microsoftí service provider neporadí (Exception), který konstruktor použít. 
+	/// Při použití MemoryCacheServiceOptions si service provider myslí, že umí resolvovat oba konstuktory, oba se stejným počtem parametrů (2), protože počítá, že umí i bool s výchozí hodnotou.
+	/// 
+	/// Proto raději použijeme tři konstruktory, kde si již Microsoftí service provider se situací poradí.
+	/// - konstruktor jen s IMemoryCache
+	/// - konstruktor s IMemoryCache a bool
+	/// - konstruktor s IMemoryCache a MemoryCacheServiceOptions
+	/// </remarks>
+	public class MemoryCacheService : ICacheService
     {
 	    /// <summary>
 	    /// IMemoryCache používaná touto třídou.
@@ -30,10 +42,20 @@ namespace Havit.Services.Caching
 
 		/// <summary>
 		/// Konstruktor.
+		/// Nebude použita podpora pro cache dependencies.
+		/// </summary>
+		/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>		
+		public MemoryCacheService(IMemoryCache memoryCache) : this(memoryCache, false)
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>
 		/// <param name="useCacheDependenciesSupport">Indikuje, zda má být použita podpora pro cache dependencies.</param>
-		public MemoryCacheService(IMemoryCache memoryCache, bool useCacheDependenciesSupport = false)
+		public MemoryCacheService(IMemoryCache memoryCache, bool useCacheDependenciesSupport)
 	    {
 		    this.memoryCache = memoryCache;
 			this.SupportsCacheDependencies = useCacheDependenciesSupport;

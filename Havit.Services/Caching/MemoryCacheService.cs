@@ -1,5 +1,4 @@
-﻿#if NETSTANDARD2_0
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -30,7 +29,7 @@ namespace Havit.Services.Caching
 		public bool SupportsCacheDependencies { get; }
 
 		/// <summary>
-		/// Kostruktor.
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>
 		/// <param name="useCacheDependenciesSupport">Indikuje, zda má být použita podpora pro cache dependencies.</param>
@@ -38,6 +37,16 @@ namespace Havit.Services.Caching
 	    {
 		    this.memoryCache = memoryCache;
 			this.SupportsCacheDependencies = useCacheDependenciesSupport;
+		}
+
+		/// <summary>
+		/// Konstruktor (DI friendly).
+		/// </summary>
+		/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>
+		/// <param name="options">Indikuje, zda má být použita podpora pro cache dependencies.</param>
+		public MemoryCacheService(IMemoryCache memoryCache, MemoryCacheServiceOptions options) : this(memoryCache, options.UseCacheDependenciesSupport)
+		{
+			// NOOP
 		}
 
 	    /// <summary>
@@ -206,4 +215,3 @@ namespace Havit.Services.Caching
 		}
     }
 }
-#endif

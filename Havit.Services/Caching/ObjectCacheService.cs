@@ -34,6 +34,16 @@ namespace Havit.Services.Caching
 		}
 
 		/// <summary>
+		/// Konstruktor (DI friendly).
+		/// </summary>
+		/// <param name="objectCache">Object cache, která bude použita pro cachování.</param>
+		/// <param name="options">Indikuje, zda má být použita podpora pro cache dependencies.</param>
+		public ObjectCacheService(ObjectCache objectCache, ObjectCacheServiceOptions options) : this(objectCache, options.UseCacheDependenciesSupport)
+		{
+			// NOOP
+		}
+
+		/// <summary>
 		/// Přidá položku s daným klíčem a hodnotou do cache.
 		/// Prioritu NotRemovable respektuje, pro všechny ostatní použije Default (omezení ObjectCache).
 		/// </summary>

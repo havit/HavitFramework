@@ -47,7 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 				generalLifestyle = value;
 			}
 		}
-		private TLifetime generalLifestyle;
+		private TLifetime generalLifestyle;		
 
 		/// <summary>
 		/// Lifestyle pro DbContext. Pokud není uveden, použije se GeneralLifestyle.
@@ -56,7 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			get
 			{
-				return dbContextLifestyle ?? GeneralLifestyle;
+				return dbContextLifestyleSet ? dbContextLifestyle : GeneralLifestyle;
 			}
 			set
 			{
@@ -65,6 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			}
 		}
 		private TLifetime dbContextLifestyle;
+		private bool dbContextLifestyleSet = false;
 
 		/// <summary>
 		/// Lifestyle pro repositories. Pokud není uveden, použije se GeneralLifestyle.
@@ -73,7 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			get
 			{
-				return repositoriesLifestyle ?? GeneralLifestyle;
+				return repositoriesLifestyleSet ? repositoriesLifestyle : GeneralLifestyle;
 			}
 			set
 			{
@@ -82,6 +83,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			}
 		}
 		private TLifetime repositoriesLifestyle;
+		private bool repositoriesLifestyleSet = false;
 
 		/// <summary>
 		/// Lifestyle pro data entries. Pokud není uveden, použije se GeneralLifestyle.
@@ -90,7 +92,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			get
 			{
-				return dataEntriesLifestyle ?? GeneralLifestyle;
+				return dataEntriesLifestyleSet ? dataEntriesLifestyle : GeneralLifestyle;
 			}
 			set
 			{
@@ -99,6 +101,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			}
 		}
 		private TLifetime dataEntriesLifestyle;
+		private bool dataEntriesLifestyleSet = false;
 
 		/// <summary>
 		/// Lifestyle pro unit of work. Pokud není uveden, použije se GeneralLifestyle.
@@ -107,7 +110,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			get
 			{
-				return unitOfWorkLifestyle ?? GeneralLifestyle;
+				return unitOfWorkLifestyleSet ? unitOfWorkLifestyle : GeneralLifestyle;
 			}
 			set
 			{
@@ -116,6 +119,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			}
 		}
 		private TLifetime unitOfWorkLifestyle;
+		private bool unitOfWorkLifestyleSet = false;
 
 		/// <summary>
 		/// Lifestyle pro DataLoader. Pokud není uveden, použije se GeneralLifestyle.
@@ -124,7 +128,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			get
 			{
-				return dataLoaderLifestyle ?? GeneralLifestyle;
+				return dataLoaderLifestyleSet ? dataLoaderLifestyle : GeneralLifestyle;
 			}
 			set
 			{
@@ -133,6 +137,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			}
 		}
 		private TLifetime dataLoaderLifestyle;
+		private bool dataLoaderLifestyleSet = false;
 
 		/// <summary>
 		/// Installer služeb pro cachování. Výchozí hodnotou je instance DefaultCachingInstalleru.

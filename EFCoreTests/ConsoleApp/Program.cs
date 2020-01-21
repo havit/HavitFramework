@@ -45,7 +45,7 @@ namespace ConsoleApp1
 		{
 			IServiceProvider serviceProvider = CreateServiceProvider();
 			UpdateDatabase(serviceProvider);
-            Debug(serviceProvider);
+			Debug(serviceProvider);
 		}
 
 		private static IServiceProvider CreateServiceProvider()
@@ -86,25 +86,32 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			using (serviceProvider.CreateScope())
+			using (IServiceScope scope = serviceProvider.CreateScope())
 			{
-				var uow = serviceProvider.GetRequiredService<IUnitOfWork>();
-				
-				uow.AddRangeForInsert(Enumerable.Range(0, 10).Select(i => new Person()));
+				var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
+				var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+				var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
+
+				BusinessCase businessCase = new BusinessCase();
+				uow.AddForInsert(businessCase);
+
+				Modelation modelation = new Modelation();
+				uow.AddForInsert(modelation);
+				modelation.BusinessCase = businessCase; // instance nastavena
+				modelation.BusinessCaseId = businessCase.Id;
+				businessCase.Modelations.Add(modelation);
 				uow.Commit();
-			}
 
-			using (serviceProvider.CreateScope())
-			{
-				var personRepository = serviceProvider.GetRequiredService<IPersonRepository>();
-				var dataLoader = serviceProvider.GetRequiredService<IDataLoader>();
+				Console.WriteLine(dbContext.GetEntry(modelation, true).Navigation("BusinessCase").IsLoaded); // avšak vlastnost není považována za načtenou
 
-				List<Person> persons = personRepository.GetObjects(1, 3, 5, 7, 9);
-				dataLoader.LoadAll(persons, p => p.Subordinates);
+				IBusinessCaseRepository businessCaseRepository = scope.ServiceProvider.GetRequiredService<IBusinessCaseRepository>();
+				businessCaseRepository.GetObject(1); // dostaneme objekt do cache
+
+				dataLoader.Load(modelation, m => m.BusinessCase);
+				Console.WriteLine(dbContext.GetEntry(modelation, true).Navigation("BusinessCase").IsLoaded); // avšak vlastnost není považována za načtenou
 			}
 
 		}
-
 
 	}
 }

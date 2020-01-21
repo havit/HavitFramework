@@ -4,18 +4,20 @@ using Havit.EFCoreTests.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Havit.EFCoreTests.Entity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200121103807_BusinessCase_Modelation")]
+    partial class BusinessCase_Modelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -53,7 +55,10 @@ namespace Havit.EFCoreTests.Entity.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BusinessCaseId")
+                    b.Property<int?>("BusinessCaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModelationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -89,8 +94,7 @@ namespace Havit.EFCoreTests.Entity.Migrations
                     b.HasOne("Havit.EFCoreTests.Model.BusinessCase", "BusinessCase")
                         .WithMany("Modelations")
                         .HasForeignKey("BusinessCaseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Havit.EFCoreTests.Model.Person", b =>

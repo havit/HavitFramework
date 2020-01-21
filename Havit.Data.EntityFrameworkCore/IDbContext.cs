@@ -36,8 +36,17 @@ namespace Havit.Data.EntityFrameworkCore
 		/// Provides access to database related information and operations for this context.
 		/// </summary>
 		/// <remarks>
-		/// Zveřejněno (bez wrapperu) pro možnost použít EF Core Migrations (a extension metodu Migrate()).</remarks>
+		/// Zveřejněno (bez wrapperu) pro možnost použít EF Core Migrations (a extension metodu Migrate()).
+		/// </remarks>
 		DatabaseFacade Database { get; }
+
+		/// <summary>
+		/// Provides access to information and operations for entity instances this context is tracking.
+		/// </summary>
+		/// <remarks>
+		/// Pro zjednodušení předáváme celý objekt bez wrapperu.
+		/// </remarks>
+		ChangeTracker ChangeTracker { get; }
 
 		/// <summary>
 		/// Uloží změny.

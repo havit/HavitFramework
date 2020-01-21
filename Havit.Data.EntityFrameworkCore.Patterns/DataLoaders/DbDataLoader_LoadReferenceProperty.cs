@@ -70,6 +70,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
 
+			bool shouldFixup = false;
 			foreignKeysToLoad = new List<object>(entitiesToLoadReference.Count);
 
 			foreach (object foreignKeyValue in foreignKeyValues)
@@ -77,14 +78,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				// Čistě teoreticky nemusela dosud proběhnout detekce změn (resp. fixup), proto se musíme podívat do identity map před tím,
 				// než budeme řešit cache (cache by se mohla pokoušet o vytažení objektu, který je již v identity mapě a došlo by ke kolizi).
 				// Spoléháme na provedení fixupu pomocí changetrackeru.
-				// Možnost tohoto scénáře se však nepodařilo po potvrdit, k této situaci nikdy nedojde.
-				//TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
-				//if (trackedEntity != null)
-				//{
-				//	loadedReferences.Add(trackedEntity);
-				//}
-				//else
-				if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
+
+				// K této situaci dojde, pokud je objekt nejprve zaregistrován do changetrackeru (třeba přidáním do UnitOfWork/DbContextu)
+				// a následně je mu nastavena hodnota cizího klíče (Id objektu), avšak nikoliv nastavení navigation property.
+				TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
+				if (trackedEntity != null)
+				{
+					shouldFixup = true;					
+				}
+				else if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
 				{
 					// NOOP
 				}
@@ -92,6 +94,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				{
 					foreignKeysToLoad.Add(foreignKeyValue);
 				}
+			}
+
+			// Detekovali jsme, že některá z vlastností nebyla načtena, ale hodnota cizího klíče má hodnotu, která již je v identity mapě.
+			// Proto provedeme fixup. AFAIK, implementačně nemáme lepší možnosti, než zavolat DetectChanges.
+			// Teoreticky bychom měli detekci změn volat v ještě menší míře - maximálně jednou na volání Loadu, avšak pro minimální výskyt problému necháváme v této podobě.
+			// Known issue: Property bude i nadále považována za nenačtenou. Avšak díky metodě v IsEntityPropertyLoaded v DbDataLoaderWithLoadedPropertiesMemory nebude docházet k opakovanému zpracování této vlastnosti.
+			if (shouldFixup)
+			{
+				dbContext.ChangeTracker.DetectChanges();
 			}
 		}
 

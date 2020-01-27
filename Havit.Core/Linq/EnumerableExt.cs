@@ -243,13 +243,5 @@ namespace Havit.Linq
 	    {
 	        return !lookupItems.Except(source).Any();
 	    }
-
-        /// <summary>
-        /// Vytvoří hashset z položek kolekce.
-        /// </summary>
-        public static HashSet<TItem> ToHashSet<TItem>(this IEnumerable<TItem> source)
-	    {            
-	        return new HashSet<TItem>(source);
-	    }
     }
 }

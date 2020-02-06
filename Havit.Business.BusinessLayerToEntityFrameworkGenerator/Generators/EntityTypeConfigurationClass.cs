@@ -93,7 +93,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			writer.WriteLine("using System.Text;");
 			writer.WriteLine("using Microsoft.EntityFrameworkCore;");
 			writer.WriteLine("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.Conventions;");			
 			writer.WriteLine($"using {Helpers.NamingConventions.NamespaceHelper.GetNamespaceName(table, "Model")};");
 
 			writer.WriteLine();
@@ -251,10 +250,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 				writer.WriteLine("builder");
 				writer.Indent();
 
-				WriteIndexesColumns(writer, modelClass, indexedColumns, ".ForSqlServerHasIndex");
+				WriteIndexesColumns(writer, modelClass, indexedColumns, ".HasIndex");
 				if (includedIndexedColumns.Count > 0)
 				{
-					WriteIndexesColumns(writer, modelClass, includedIndexedColumns, ".ForSqlServerInclude");
+					WriteIndexesColumns(writer, modelClass, includedIndexedColumns, ".IncludeProperties");
 				}
 
 				if (index.IsUnique)
@@ -280,17 +279,17 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 			return result;
 		}
 
-		private static void WriteIndexesColumns(CodeWriter writer, GeneratedModelClass modelClass, System.Collections.Generic.List<IndexedColumn> indexedColumns, string code)
+		private static void WriteIndexesColumns(CodeWriter writer, GeneratedModelClass modelClass, System.Collections.Generic.List<IndexedColumn> indexedColumns, string methodName)
 		{
 			string entityCammelCase = ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(modelClass.Table));
 			if (indexedColumns.Count == 1)
 			{
 				Column column = modelClass.Table.Columns[indexedColumns.Single().Name];
-				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", code, entityCammelCase, modelClass.GetPropertyFor(column).Name));
+				writer.WriteLine(String.Format("{0}({1} => {1}.{2})", methodName, entityCammelCase, modelClass.GetPropertyFor(column).Name));
 			}
 			else
 			{
-				writer.WriteLine(String.Format("{0}({1} => new", code, ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(modelClass.Table))));
+				writer.WriteLine(String.Format("{0}({1} => new", methodName, ConventionsHelper.GetCammelCase(ClassHelper.GetClassName(modelClass.Table))));
 				writer.WriteLine("{");
 				for (int i = 0; i < indexedColumns.Count; i++)
 				{

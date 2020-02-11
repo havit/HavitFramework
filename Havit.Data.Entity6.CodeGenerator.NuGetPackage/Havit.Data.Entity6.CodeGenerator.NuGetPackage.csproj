@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net462</TargetFramework>
+	<TargetFramework>netstandard2.0</TargetFramework>
 	<NoWarn>$(NoWarn);1701;1702;NU5110;NU5111</NoWarn>
   </PropertyGroup>
 
   <!-- NuGet -->
   <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<PackageVersion>2.0.1</PackageVersion>
+	<PackageVersion>2.2.0</PackageVersion>
 	<PackageId>Havit.Data.Entity6.CodeGenerator</PackageId>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
 

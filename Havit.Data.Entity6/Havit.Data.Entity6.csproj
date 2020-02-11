@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net462</TargetFramework>
+	<TargetFrameworks>net462;netstandard2.1</TargetFrameworks>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<RootNamespace>Havit.Data.Entity</RootNamespace>
 	<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
@@ -10,13 +10,13 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.3</PackageVersion>
+	<PackageVersion>2.2.0</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
   </PropertyGroup>
   
   <ItemGroup>
 	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0" PrivateAssets="all" />
-	<PackageReference Include="EntityFramework" Version="6.2.0" />
+	<PackageReference Include="EntityFramework" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>

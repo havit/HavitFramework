@@ -48,7 +48,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions
                 foreach (MethodInfo method in publicMethods)
                 {
                     var modelExtension = (IModelExtension)method.Invoke(extender, new object[0]);
+                    
                     List<IAnnotation> annotations = modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
+
                     annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, false));
                 }
             }

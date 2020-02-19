@@ -6,6 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 {
+    /// <summary>
+    /// Tests for initializing Model Extensions in <see cref="BusinessLayerDbContext"/>.
+    /// </summary>
     [TestClass]
     public class ModelExtensionsInitializationTests
     {

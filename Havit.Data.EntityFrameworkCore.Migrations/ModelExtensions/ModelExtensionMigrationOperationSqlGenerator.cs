@@ -30,6 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
         /// <inheritdoc />
         public override void Generate(AlterDatabaseOperation operation, IModel model, MigrationCommandListBuilder builder)
         {
+            // WARNING: if this implementation (generate SQL from annotations) changes, update or rewrite tests
 	        var oldAnnotations = GetAnnotations(operation.OldDatabase.GetAnnotations());
             var currentAnnotations = GetAnnotations(operation.GetAnnotations());
 	        var newAnnotations = currentAnnotations.Where(x => !oldAnnotations.ContainsKey(x.Key)).Select(x => x.Value).ToList<IAnnotation>();

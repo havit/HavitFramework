@@ -8,6 +8,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProced
     /// <summary>
     /// Implementation of <see cref="IModelExtensionAnnotationProvider"/>, that handles <see cref="StoredProcedureModelExtension"/>s.
     /// </summary>
+    /// <remarks>
+    /// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
+    /// </remarks>
     public class StoredProcedureAnnotationProvider : ModelExtensionAnnotationProvider<StoredProcedureModelExtension>
     {
         private const string AnnotationPrefix = "StoredProcedure:";

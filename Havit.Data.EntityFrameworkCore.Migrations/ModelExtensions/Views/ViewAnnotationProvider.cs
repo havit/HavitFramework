@@ -8,6 +8,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.Views
 	/// <summary>
 	/// Implementation of <see cref="IModelExtensionAnnotationProvider"/>, that handles <see cref="ViewModelExtension"/>s.
 	/// </summary>
+	/// 
+    /// <remarks>
+    /// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
+    /// </remarks>
 	public class ViewAnnotationProvider : ModelExtensionAnnotationProvider<ViewModelExtension>
 	{
 		private const string AnnotationPrefix = "View:";

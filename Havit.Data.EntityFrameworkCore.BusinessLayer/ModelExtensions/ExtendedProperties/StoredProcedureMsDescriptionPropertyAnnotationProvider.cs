@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties
 {
+    /// <summary>
+    /// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
+    /// </summary>
 	public class StoredProcedureMsDescriptionPropertyAnnotationProvider : ModelExtensionAnnotationProvider<StoredProcedureModelExtension>
 	{
 		private readonly XmlCommentFileCache xmlCommentFileCache = new XmlCommentFileCache();

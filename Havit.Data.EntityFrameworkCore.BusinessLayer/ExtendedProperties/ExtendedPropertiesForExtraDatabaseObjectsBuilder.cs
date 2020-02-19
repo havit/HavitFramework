@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
+	/// <summary>
+    /// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
+	/// </summary>
 	public static class ExtendedPropertiesForExtraDatabaseObjectsBuilder
 	{
 		public static IEnumerable<IAnnotation> ForExtraDatabaseObject(IDictionary<string, string> extendedProperties, string type1, string name, string schema = null)

@@ -22,6 +22,7 @@ using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;
+using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
@@ -98,6 +99,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.AddServiceSingleton(typeof(IDataEntrySymbolStorage<>), typeof(DataEntrySymbolStorage<>));
 			installer.AddServiceSingleton<ICurrentCultureService, CurrentCultureService>();
 			installer.AddServiceTransient<IDataSeedRunner, DataSeedRunner>();
+			installer.AddServiceTransient<ITransactionWrapper, TransactionScopeTransactionWrapper>();
 			installer.AddServiceTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
 			installer.AddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 			installer.AddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();

@@ -6,6 +6,7 @@ using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Havit.Data.Patterns.Transactions.Internal;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
 {
@@ -31,7 +32,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			DataSeedRunner dataSeedRunner = new DataSeedRunner(new IDataSeed[] { new ItemWithNullablePropertySeed() }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+			DataSeedRunner dataSeedRunner = new DataSeedRunner(new IDataSeed[] { new ItemWithNullablePropertySeed() }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
 
 			// Act
 			dataSeedRunner.SeedData<DefaultProfile>();

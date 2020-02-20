@@ -36,6 +36,7 @@ using System.Data.SqlClient;
 using Havit.Data.Patterns.Exceptions;
 using Havit.EFCoreTests.DataLayer.Repositories;
 using System.Linq.Expressions;
+using Havit.Data.Patterns.Transactions.Internal;
 
 namespace ConsoleApp1
 {
@@ -86,31 +87,20 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			using (IServiceScope scope = serviceProvider.CreateScope())
+			ITransactionWrapper transactionWrapper = serviceProvider.GetRequiredService<ITransactionWrapper>();
+			transactionWrapper.ExecuteWithTransaction(() =>
 			{
-				var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-				var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-				var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
-
-				BusinessCase businessCase = new BusinessCase();
-				uow.AddForInsert(businessCase);
-
-				Modelation modelation = new Modelation();
-				uow.AddForInsert(modelation);
-				modelation.BusinessCase = businessCase; // instance nastavena
-				modelation.BusinessCaseId = businessCase.Id;
-				businessCase.Modelations.Add(modelation);
-				uow.Commit();
-
-				Console.WriteLine(dbContext.GetEntry(modelation, true).Navigation("BusinessCase").IsLoaded); // avšak vlastnost není považována za načtenou
-
-				IBusinessCaseRepository businessCaseRepository = scope.ServiceProvider.GetRequiredService<IBusinessCaseRepository>();
-				businessCaseRepository.GetObject(1); // dostaneme objekt do cache
-
-				dataLoader.Load(modelation, m => m.BusinessCase);
-				Console.WriteLine(dbContext.GetEntry(modelation, true).Navigation("BusinessCase").IsLoaded); // avšak vlastnost není považována za načtenou
-			}
-
+				for (int i = 0; i < 5; i++)
+				{
+					using (IServiceScope scope = serviceProvider.CreateScope())
+					{
+						var dbContext = scope.ServiceProvider.GetRequiredService<IDbContextTransient>();
+						BusinessCase businessCase1 = new BusinessCase();
+						dbContext.Set<BusinessCase>().Add(businessCase1);
+						dbContext.SaveChanges();
+					}
+				}
+			});
 		}
 
 	}

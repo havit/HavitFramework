@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
 {
     /// <summary>
     /// A service for generating <see cref="MigrationCommand" /> objects that can then be executed or scripted from a list of <see cref="MigrationOperation" />s.

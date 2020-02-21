@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 {
 	/// <summary>
 	/// Base implementation of <see cref="IMigrationOperationSqlGenerator"/> with virtual implementations.s

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
 {
     /// <summary>
     /// Composite implementation of <see cref="IMigrationsSqlGenerator"/>. Encapsulates <see cref="IMigrationOperationSqlGenerator"/> components and runs each operation separately on all generators.

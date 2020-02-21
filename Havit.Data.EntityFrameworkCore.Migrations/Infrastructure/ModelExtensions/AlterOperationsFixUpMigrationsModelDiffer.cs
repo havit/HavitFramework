@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
+namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
 {
     /// <summary>
     /// Modifies behavior of <see cref="MigrationsModelDiffer"/> by removing redundant <see cref="Annotation"/>s on several <see cref="MigrationOperation"/>s.

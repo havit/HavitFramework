@@ -1,10 +1,11 @@
 ﻿using System;
+using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 {
     /// <summary>
     /// Extension metódy pre registráciu Extended Migrations infraštruktúrnych služieb používané podporou Model Extensions.

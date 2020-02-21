@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
 {
     /// <summary>
     /// <see cref="IDbContextOptionsExtension"/> for configuring <see cref="CompositeMigrationsAnnotationProvider"/>.

@@ -1,6 +1,6 @@
 ﻿using System;
+using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
-using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 

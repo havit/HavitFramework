@@ -47,37 +47,39 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			    .ToDictionary(a => a.Name);
 	    }
 
-	    private void GenerateDropCommands(List<IAnnotation> oldAnnotations, MigrationCommandListBuilder builder)
-        {
-            List<IModelExtension> modelExtensions = modelExtensionAnnotationProvider.GetModelExtensions(oldAnnotations);
-
-            List<string> scripts = modelExtensionSqlResolver.ResolveDropSqlScripts(modelExtensions);
-
-            foreach (string sql in scripts)
-            {
-                builder.Append(sql).EndCommand();
-            }
-        }
-
-	    private void GenerateAlterCommands(List<IAnnotation> existingAnnotations, MigrationCommandListBuilder builder)
-        {
-            List<IModelExtension> modelExtensions = modelExtensionAnnotationProvider.GetModelExtensions(existingAnnotations);
-
-            List<string> scripts = modelExtensionSqlResolver.ResolveAlterSqlScripts(modelExtensions);
-
-            foreach (string sql in scripts)
-            {
-                builder.Append(sql).EndCommand();
-            }
-        }
-
         private void GenerateCreateCommands(List<IAnnotation> newAnnotations, MigrationCommandListBuilder builder)
         {
             foreach (var annotation in newAnnotations)
             {
                 var sql = (string)annotation.Value;
 
-                builder.Append(sql).EndCommand();
+                builder.Append(sql).AppendLine().EndCommand();
+            }
+        }
+
+        private void GenerateDropCommands(List<IAnnotation> oldAnnotations, MigrationCommandListBuilder builder)
+        {
+            List<IModelExtension> modelExtensions = modelExtensionAnnotationProvider.GetModelExtensions(oldAnnotations);
+
+            List<string> scripts = modelExtensionSqlResolver.ResolveDropSqlScripts(modelExtensions);
+
+            GenerateSqlStatements(builder, scripts);
+        }
+
+        private void GenerateAlterCommands(List<IAnnotation> existingAnnotations, MigrationCommandListBuilder builder)
+        {
+            List<IModelExtension> modelExtensions = modelExtensionAnnotationProvider.GetModelExtensions(existingAnnotations);
+
+            List<string> scripts = modelExtensionSqlResolver.ResolveAlterSqlScripts(modelExtensions);
+            
+            GenerateSqlStatements(builder, scripts);
+        }
+
+        private static void GenerateSqlStatements(MigrationCommandListBuilder builder, List<string> scripts)
+        {
+            foreach (string sql in scripts)
+            {
+                builder.Append(sql).AppendLine().EndCommand();
             }
         }
     }

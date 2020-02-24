@@ -5,6 +5,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 {
     public class ViewEndToEndTests
     {
+        private static readonly string Eol = "\r\n";
+
         [TestClass]
         public class AddingView
         {
@@ -31,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
-                    procedure,
+                    procedure + Eol,
                     migrations[0].CommandText);
             }
         }
@@ -62,7 +64,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
-                    newProcedureAlter,
+                    newProcedureAlter + Eol,
                     migrations[0].CommandText);
             }
         }
@@ -91,7 +93,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
-                    "DROP VIEW [GetTables]",
+                    "DROP VIEW [GetTables]" + Eol,
                     migrations[0].CommandText);
             }
         }

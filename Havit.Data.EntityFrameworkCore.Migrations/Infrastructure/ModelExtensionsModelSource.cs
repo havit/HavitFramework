@@ -20,7 +20,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
     {
         private readonly ModelExtensionRegistrationConventionPlugin conventionPlugin;
 
-        /// <inheritdoc cref="ModelSource" />
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public ModelExtensionsModelSource(
             ModelExtensionRegistrationConventionPlugin conventionPlugin,
             ModelSourceDependencies dependencies)

@@ -478,7 +478,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 	        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
 	        {
 	            // Act
-	            IDataLoaderAsync dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+	            IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
 	            await dataLoader.LoadAsync(child, item => item.Parent);
 	        });
@@ -521,7 +521,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.LoginAccount.Add(loginAccount);
 
-	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+	        IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 		    
 	        // Precondition            
 	        Assert.IsNull(loginAccount.Roles);
@@ -574,7 +574,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 
 	        dbContext.LoginAccount.Add(loginAccount);
 
-	        IDataLoaderAsync dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+	        IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
 	        // Precondition            
 	        Assert.IsNotNull(loginAccount.Roles);

@@ -107,9 +107,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			installer.AddFactory(typeof(IDataSourceFactory<>));
 			installer.AddFactory(typeof(IRepositoryFactory<>));
-
-			installer.AddServices(new Type[] { typeof(IUnitOfWork), typeof(IUnitOfWorkAsync) }, componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
-			installer.AddServices(new Type[] { typeof(IDataLoader), typeof(IDataLoaderAsync) }, typeof(DbDataLoaderWithLoadedPropertiesMemory), componentRegistrationOptions.DataLoaderLifestyle);
+			
+			installer.AddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
+			installer.AddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);
 
 			installer.AddServiceSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
 			installer.AddServiceSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
@@ -168,10 +168,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			foreach (Type repositoryType in repositoryTypes)
 			{
 				Type repositoryConstructedInterface = repositoryType.GetSingleConstructedType(typeof(IRepository<>)); // získáme IRepository<KonkrétníTyp>
-				Type repositoryAsyncConstructedInterface = repositoryType.GetSingleConstructedType(typeof(IRepositoryAsync<>)); // získáme IRepositoryAsync<KonkrétníTyp>
 				Type repositoryInterface = repositoryType.GetInterfaces().Where(repositoryTypeInterfaceType => repositoryTypeInterfaceType.ImplementsInterface(repositoryConstructedInterface)).Single(); // získáme IKonkrétníTypDataSource
 
-				installer.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface, repositoryAsyncConstructedInterface }, repositoryType, componentRegistrationOptions.RepositoriesLifestyle);
+				installer.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface }, repositoryType, componentRegistrationOptions.RepositoriesLifestyle);
 			}
 
 			// DataEntries

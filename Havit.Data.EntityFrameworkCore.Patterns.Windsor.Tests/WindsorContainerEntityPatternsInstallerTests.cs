@@ -112,7 +112,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			{
 				container.Resolve<ILanguageRepository>();
 				container.Resolve<IRepository<Language>>();
-				container.Resolve<IRepositoryAsync<Language>>();
 			}
 
 			// Assert			
@@ -129,7 +128,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			using (container.BeginScope())
 			{
 				container.Resolve<IDataLoader>();
-				container.Resolve<IDataLoaderAsync>();
 			}
 			// Assert
 			// no exception was thrown
@@ -145,7 +143,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 			using (container.BeginScope())
 			{
 				container.Resolve<IUnitOfWork>();
-				container.Resolve<IUnitOfWorkAsync>();
 			}
 
 			// Assert

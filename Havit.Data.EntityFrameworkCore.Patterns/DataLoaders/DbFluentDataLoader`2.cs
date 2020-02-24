@@ -15,7 +15,7 @@ namespace Havit.Data.Patterns.DataLoaders
 	/// - TContractEntity je typ vlastnosti Xy, použije se jen pro snadný zápis fluent API, jiný význam nemá.
 	/// - TItem je typ, který je prvkem kolekce Xy.
 	/// </summary>
-	internal class DbFluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TContractEntity>, IFluentDataLoaderAsync<TContractEntity>
+	internal class DbFluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TContractEntity>
 		where TContractEntity : class
 		where TItem : class
 	{
@@ -38,15 +38,9 @@ namespace Havit.Data.Patterns.DataLoaders
 		}
 
 		/// <inheritdoc />
-		async Task<IFluentDataLoaderAsync<TProperty>> IFluentDataLoaderAsync<TContractEntity>.LoadAsync<TProperty>(Expression propertyPath)
+		async Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TContractEntity>.LoadAsync<TProperty>(Expression propertyPath)
 		{
 			return await Loader.LoadAllAsync(Data, (Expression<Func<TItem, TProperty>>)propertyPath).ConfigureAwait(false);
-		}
-
-		/// <inheritdoc />
-		IFluentDataLoaderAsync<TWrappedEntity> IFluentDataLoaderAsync<TContractEntity>.Unwrap<TWrappedEntity>()
-		{
-			return this.Unwrap<TWrappedEntity>();
 		}
 
 		/// <inheritdoc />

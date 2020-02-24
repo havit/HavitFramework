@@ -98,8 +98,8 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For<IDataSeedPersisterFactory>().AsFactory(),
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
-				Component.For(typeof(IUnitOfWork), typeof(IUnitOfWorkAsync)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),
-				Component.For(typeof(IDataLoader), typeof(IDataLoaderAsync)).ImplementedBy<DbDataLoaderWithLoadedPropertiesMemory>().ApplyLifestyle(componentRegistrationOptions.DataLoaderLifestyle),
+				Component.For(typeof(IUnitOfWork)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),
+				Component.For(typeof(IDataLoader)).ImplementedBy(typeof(DbDataLoaderWithLoadedPropertiesMemory)).ApplyLifestyle(componentRegistrationOptions.DataLoaderLifestyle),
 				Component.For<IPropertyLambdaExpressionManager>().ImplementedBy<PropertyLambdaExpressionManager>().LifestyleSingleton(),
 				Component.For<IPropertyLambdaExpressionBuilder>().ImplementedBy<PropertyLambdaExpressionBuilder>().LifestyleSingleton(),
 				Component.For<IPropertyLambdaExpressionStore>().ImplementedBy<PropertyLambdaExpressionStore>().LifestyleSingleton(),
@@ -125,7 +125,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				// proto registrujeme přes IDataSource<KonkrétníTyp> pomocí metody WithServiceConstructedInterface.
 				// Dále registrujeme přes potomky IDataSource<>, např. IKonkrétníTypDataSource.
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbDataSource<>)).WithServiceConstructedInterface(typeof(IDataSource<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataSource<>)).LifestyleTransient(),
-				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceConstructedInterface(typeof(IRepository<>)).WithServiceConstructedInterface(typeof(IRepositoryAsync<>)).WithServiceFromInterface(typeof(IRepository<>)).ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
+				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceConstructedInterface(typeof(IRepository<>)).WithServiceFromInterface(typeof(IRepository<>)).ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
 			);
 			return this;

@@ -14,7 +14,7 @@ namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer
 {
 	public class LanguageRepository : DbRepository<Language>, ILanguageRepository
 	{
-		public LanguageRepository(IDbContext dbContext, IDataSource<Language> dataSource, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager) : base(dbContext, dataSource, dataLoader, dataLoaderAsync, softDeleteManager)
+		public LanguageRepository(IDbContext dbContext, IDataSource<Language> dataSource, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager) : base(dbContext, dataSource, dataLoader, softDeleteManager)
 		{
 		}
 	}

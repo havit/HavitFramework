@@ -13,7 +13,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
     /// Určeno pro použití v unit testech pro mock IDataLoaderu.
     /// </summary>
     [Fake]    
-    public class FakeDataLoader : IDataLoader, IDataLoaderAsync
+    public class FakeDataLoader : IDataLoader
     {
 	    /// <summary>
 	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
@@ -61,11 +61,11 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	    /// Implementace: Nic nedělá.
 	    /// </summary>
-	    public Task<IFluentDataLoaderAsync<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+	    public Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
 		    where TEntity : class
 		    where TProperty : class
 	    {
-		    return Task.FromResult((IFluentDataLoaderAsync<TProperty>)new FakeFluentDataLoader<TProperty>());
+		    return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());
 	    }
 
 	    /// <summary>
@@ -82,11 +82,11 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	    /// Implementace: Nic nedělá.
 	    /// </summary>
-	    public Task<IFluentDataLoaderAsync<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+	    public Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
 		    where TEntity : class
 		    where TProperty : class
 	    {
-		    return Task.FromResult((IFluentDataLoaderAsync<TProperty>)new FakeFluentDataLoader<TProperty>());
+		    return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());
 	    }
 
 	    /// <summary>

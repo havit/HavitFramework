@@ -8,7 +8,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	/// <summary>
 	/// Implementace IFluentDataLoader, která na veškerá volání vyhazuje NotSupportedException.
 	/// </summary>
-	public class NotSuportedFluentDataLoader<TEntity> : IFluentDataLoader<TEntity>, IFluentDataLoaderAsync<TEntity>
+	public class NotSuportedFluentDataLoader<TEntity> : IFluentDataLoader<TEntity>
 		where TEntity : class
 	{
 		/// <summary>
@@ -22,7 +22,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Vyhazuje výjimku NotSupportedException.
 		/// </summary>
-		Task<IFluentDataLoaderAsync<TProperty>> IFluentDataLoaderAsync<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
+		Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
 		{
 			throw CreateNotSupportedException();
 		}
@@ -31,14 +31,6 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// Vyhazuje výjimku NotSupportedException.
 		/// </summary>
 		IFluentDataLoader<TWrappedEntity> IFluentDataLoader<TEntity>.Unwrap<TWrappedEntity>()
-		{
-			throw CreateNotSupportedException();
-		}
-
-		/// <summary>
-		/// Vyhazuje výjimku NotSupportedException.
-		/// </summary>
-		IFluentDataLoaderAsync<TWrappedEntity> IFluentDataLoaderAsync<TEntity>.Unwrap<TWrappedEntity>()
 		{
 			throw CreateNotSupportedException();
 		}

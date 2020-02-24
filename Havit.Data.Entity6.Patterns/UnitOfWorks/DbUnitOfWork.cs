@@ -19,7 +19,7 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 	/// <summary>
 	/// Unit of Work postavená nad <see cref="DbContext" />.
 	/// </summary>
-	public class DbUnitOfWork : IUnitOfWork, IUnitOfWorkAsync
+	public class DbUnitOfWork : IUnitOfWork
 	{
 		private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
 		private readonly IEntityValidationRunner entityValidationRunner;

@@ -23,13 +23,12 @@ namespace Havit.Data.Entity.Patterns.Repositories
 	/// <summary>
 	/// Repository objektů typu TEntity.
 	/// </summary>
-	public abstract class DbRepository<TEntity> : IRepository<TEntity>, IRepositoryAsync<TEntity>
+	public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		 where TEntity : class
 	{
 		private readonly IDbContext dbContext;
 		private readonly IDataSource<TEntity> dataSource;
 		private readonly IDataLoader dataLoader;
-		private readonly IDataLoaderAsync dataLoaderAsync;
 		private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor = new EntityKeyAccessor<TEntity>();
 
 		/// <summary>
@@ -88,7 +87,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
+		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager)
 		{
 			Contract.Requires<ArgumentException>(dbContext != null, nameof(dbContext));
 			Contract.Requires<ArgumentException>(dataSource != null, nameof(dataSource));
@@ -97,7 +96,6 @@ namespace Havit.Data.Entity.Patterns.Repositories
 			this.dbContext = dbContext;
 			this.dataSource = dataSource;
 			this.dataLoader = dataLoader;
-			this.dataLoaderAsync = dataLoaderAsync;
 			this.SoftDeleteManager = softDeleteManager;
 			this._dbSet = new Lazy<DbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
 		}
@@ -382,7 +380,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
 
-			await dataLoaderAsync.LoadAllAsync(entities, GetLoadReferences().ToArray()).ConfigureAwait(false);
+			await dataLoader.LoadAllAsync(entities, GetLoadReferences().ToArray()).ConfigureAwait(false);
 		}
 
 		/// <summary>

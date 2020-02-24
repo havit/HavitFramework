@@ -95,14 +95,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		///			</description>
 		///		</item>
 		///		<item>
-		///			<term>IUnitOfWork, IUnitOfWorkAsync</term>
+		///			<term>IUnitOfWork</term>
 		///			<description>
 		///				Registruje typ dle options installery (UnitOfWorkType).
 		///				Lifestyle je určen dle options installeru (UnitOfWorkLifestyle).
 		///			</description>
 		///		</item>
 		///		<item>
-		///			<term>IDataLoader, IDataLoaderAsync</term>
+		///			<term>IDataLoader</term>
 		///			<description>
 		///				DbDataLoaderWithLoadedPropertiesMemory.
 		///				Lifestyle je určen dle options installeru (DataLoaderLifestyle).

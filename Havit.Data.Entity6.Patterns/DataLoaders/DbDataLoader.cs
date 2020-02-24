@@ -20,7 +20,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 	/// Načte hodnoty vlastnosti třídy, pokud ještě nejsou načteny.
 	/// Podporováno je zřetězení (subjekt => subjekt.Adresa.Zeme.Svetadil) vč. varianty s kolekcemi, kdy je třeba použít AllItems (subjekt => subjekt.Adresy.AllItems().Zeme).
 	/// </summary>
-	public partial class DbDataLoader : IDataLoader, IDataLoaderAsync
+	public partial class DbDataLoader : IDataLoader
 	{
 		private readonly IDbContext dbContext;
 		private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
@@ -106,7 +106,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, který má být načtena.</param>
-		public async Task<IFluentDataLoaderAsync<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		public async Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -137,7 +137,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public async Task<IFluentDataLoaderAsync<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		public async Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{

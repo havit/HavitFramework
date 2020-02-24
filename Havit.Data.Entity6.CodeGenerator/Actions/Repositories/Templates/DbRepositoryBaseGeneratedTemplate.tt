@@ -21,8 +21,8 @@ namespace <#= Model.NamespaceName #>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
 	public abstract class <#= Model.DbRepositoryBaseName #> : DbRepository<<#= Model.ModelClassFullName #>>
 	{
-		protected <#= Model.DbRepositoryBaseName #>(IDbContext dbContext, <#= Model.DataSourceDependencyFullName #> dataSource, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager)
-			: base(dbContext, dataSource, dataLoader, dataLoaderAsync, softDeleteManager)
+		protected <#= Model.DbRepositoryBaseName #>(IDbContext dbContext, <#= Model.DataSourceDependencyFullName #> dataSource, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager)
+			: base(dbContext, dataSource, dataLoader, softDeleteManager)
 		{
 		}
 

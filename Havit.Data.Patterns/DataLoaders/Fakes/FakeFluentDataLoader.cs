@@ -6,7 +6,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 	/// <summary>
 	/// FluentAPI pro explicity data loader, který nic nedělá.
 	/// </summary>
-	public class FakeFluentDataLoader<TEntity> : Havit.Data.Patterns.DataLoaders.IFluentDataLoader<TEntity>, IFluentDataLoaderAsync<TEntity>
+	public class FakeFluentDataLoader<TEntity> : Havit.Data.Patterns.DataLoaders.IFluentDataLoader<TEntity>
 		where TEntity : class
 	{
 		/// <summary>
@@ -22,18 +22,9 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 		/// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 		/// Implementace: Nic nedělá.
 		/// </summary>
-		Task<IFluentDataLoaderAsync<TProperty>> IFluentDataLoaderAsync<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
+		Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
 		{
-			return Task.FromResult((IFluentDataLoaderAsync<TProperty>)new FakeFluentDataLoader<TProperty>());			
-		}
-
-		/// <summary>
-		/// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
-		/// Implementace: Nic nedělá.
-		/// </summary>
-		IFluentDataLoaderAsync<TWrappedEntity> IFluentDataLoaderAsync<TEntity>.Unwrap<TWrappedEntity>()
-		{
-			return new FakeFluentDataLoader<TWrappedEntity>();
+			return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());			
 		}
 
 		/// <summary>

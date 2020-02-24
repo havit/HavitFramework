@@ -19,14 +19,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 	/// <summary>
 	/// Repository objektů typu TEntity.
 	/// </summary>
-	public abstract class DbRepository<TEntity> : IRepository<TEntity>, IRepositoryAsync<TEntity>
+	public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		 where TEntity : class
 	{
 		private readonly IDbContext dbContext;
 		private readonly IDataSource<TEntity> dataSource;
 		private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
 		private readonly IDataLoader dataLoader;
-		private readonly IDataLoaderAsync dataLoaderAsync;
 		
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
@@ -63,7 +62,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
 		{
 			Contract.Requires<ArgumentException>(dbContext != null);
 			Contract.Requires<ArgumentException>(dataSource != null);
@@ -73,7 +72,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			this.dataSource = dataSource;
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.dataLoader = dataLoader;
-			this.dataLoaderAsync = dataLoaderAsync;
 			this.SoftDeleteManager = softDeleteManager;
 			this.EntityCacheManager = entityCacheManager;
 			this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
@@ -404,7 +402,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			var loadReferences = GetLoadReferences().ToArray();
 			if (loadReferences.Any())
 			{
-				await dataLoaderAsync.LoadAllAsync(entities, loadReferences).ConfigureAwait(false);
+				await dataLoader.LoadAllAsync(entities, loadReferences).ConfigureAwait(false);
 			}
 		}
 

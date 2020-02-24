@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace Havit.Data.Patterns.DataLoaders
 {
@@ -22,6 +23,16 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// </remarks>
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		IFluentDataLoader<TProperty> Load<TProperty>(Expression propertyPath)
+			where TProperty : class;
+
+		/// <summary>
+		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+		/// Není určeno pro volání z klientského kódu.
+		/// </summary>
+		/// <param name="propertyPath">
+		/// Vlastnost, která má být načtena.
+		/// </param>
+		Task<IFluentDataLoader<TProperty>> LoadAsync<TProperty>(Expression propertyPath)
 			where TProperty : class;
 
 		/// <summary>

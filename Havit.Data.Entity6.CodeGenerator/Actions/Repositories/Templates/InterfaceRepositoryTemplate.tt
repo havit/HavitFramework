@@ -16,5 +16,5 @@ namespace <#= Model.NamespaceName #>
 	public partial interface <#= Model.InterfaceRepositoryName #>
 	{
 
-	}
+	}	
 }

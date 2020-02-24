@@ -347,7 +347,7 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 
 			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			var dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			var dbRepository = new DbItemWithDeletedRepository(dbContext, dataSource, dbDataLoader, dbDataLoader, softDeleteManager);
+			var dbRepository = new DbItemWithDeletedRepository(dbContext, dataSource, dbDataLoader, softDeleteManager);
 			Dictionary<int, ItemWithDeleted> dbRepositoryDbSetLocalsDictionary = dbRepository.DbSetLocalsDictionary;
 			
 			// Act

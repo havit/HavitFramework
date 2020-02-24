@@ -83,7 +83,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			{
 				serviceProvider.GetRequiredService<ILanguageRepository>();
 				serviceProvider.GetRequiredService<IRepository<Language>>();
-				serviceProvider.GetRequiredService<IRepositoryAsync<Language>>();
 			}
 
 			// Assert			
@@ -100,7 +99,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			using (serviceProvider.CreateScope())
 			{
 				serviceProvider.GetRequiredService<IDataLoader>();
-				serviceProvider.GetRequiredService<IDataLoaderAsync>();
 			}
 			// Assert
 			// no exception was thrown
@@ -116,7 +114,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			using (serviceProvider.CreateScope())
 			{
 				serviceProvider.GetRequiredService<IUnitOfWork>();
-				serviceProvider.GetRequiredService<IUnitOfWorkAsync>();
 			}
 
 			// Assert

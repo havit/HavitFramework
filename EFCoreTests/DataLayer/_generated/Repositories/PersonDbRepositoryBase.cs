@@ -23,8 +23,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 	public abstract class PersonDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.Person>
 	{
-		protected PersonDbRepositoryBase(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IPersonDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.Person, int> entityKeyAccessor, IDataLoader dataLoader, IDataLoaderAsync dataLoaderAsync, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, dataLoaderAsync, softDeleteManager, entityCacheManager)
+		protected PersonDbRepositoryBase(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IPersonDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.Person, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
 		{
 		}
 

@@ -33,7 +33,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		public static async Task<IFluentDataLoaderAsync<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoaderAsync<TEntity>> source, Expression<Func<TEntity, TProperty>> propertyPath)
+		public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<TEntity>> source, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -50,7 +50,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		public static async Task<IFluentDataLoaderAsync<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoaderAsync<ICollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
+		public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<ICollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -60,7 +60,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		public static async Task<IFluentDataLoaderAsync<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoaderAsync<IList<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
+		public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<IList<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -70,7 +70,7 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		public static async Task<IFluentDataLoaderAsync<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoaderAsync<List<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
+		public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<List<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath)
 			where TEntity : class
 			where TProperty : class
 		{

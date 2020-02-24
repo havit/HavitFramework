@@ -74,7 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             {
                 string procedure = $"CREATE OR ALTER PROCEDURE [dbo].[{nameof(GetTables)}]() AS BEGIN SELECT * FROM [sys].[tables] END";
 
-                return new StoredProcedureModelExtension {CreateSql = procedure, ProcedureName = nameof(GetTables)};
+                return new StoredProcedureModelExtension { CreateSql = procedure, ProcedureName = nameof(GetTables) };
             }
         }
 

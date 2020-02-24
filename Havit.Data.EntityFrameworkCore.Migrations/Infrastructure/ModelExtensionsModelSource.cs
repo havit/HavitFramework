@@ -35,7 +35,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <param name="context"> The context the model is being produced for. </param>
         /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
         /// <remarks>
-        ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IMode"/>.
+        ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
         /// </remarks>
         /// <returns> The model to be used. </returns>
         protected override IModel CreateModel(DbContext context, IConventionSetBuilder conventionSetBuilder)

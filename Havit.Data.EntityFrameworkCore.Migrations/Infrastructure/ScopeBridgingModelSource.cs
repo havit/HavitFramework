@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -7,12 +8,16 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
 {
     /// <summary>
     /// Class that bridges singleton <see cref="IModelSource"/> to scoped <see cref="IScopedModelSource"/> (<see cref="IModelSource"/>).
-    ///
-    /// Register <see cref="IScopedModelSource"/> into <see cref="DbContext"/>'s service provider with scoped lifetime.
     /// </summary>
+    /// <remarks>
+    /// Register <see cref="IScopedModelSource"/> into <see cref="DbContext"/>'s service provider with scoped lifetime.
+    /// See <see cref="ModelExtensionsExtension.ApplyServices"/> for usage of <see cref="ScopeBridgingModelSource"/>.
+    /// </remarks>
     public class ScopeBridgingModelSource : ModelSource
     {
-        /// <inheritdoc />
+        /// <summary>
+        /// Pass-through constructor to constructor of <see cref="ModelSource"/>.
+        /// </summary>
         public ScopeBridgingModelSource(ModelSourceDependencies dependencies) 
             : base(dependencies)
         {

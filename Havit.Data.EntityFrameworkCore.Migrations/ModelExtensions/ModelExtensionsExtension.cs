@@ -162,7 +162,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 
 			// replacing IModelSource fixes bug #48448
 			// - only add annotations used by Model Extensions to main DbContext model
-			// - IModelSource is supposed to be singleton, we need to scope for each DbContext (see relevant classes)
+			// - IModelSource is supposed to be singleton, we need to scope for each DbContext
+			//   (see relevant classes such as ScopeBridgingModelSource and ModelExtensionsModelSource)
 			services.ReplaceCoreService<IModelSource, ScopeBridgingModelSource>();
 			services.TryAddScoped<IScopedModelSource, ModelExtensionsModelSource>();
 		}

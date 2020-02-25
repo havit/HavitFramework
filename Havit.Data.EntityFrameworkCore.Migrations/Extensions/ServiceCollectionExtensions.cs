@@ -7,18 +7,20 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace Microsoft.Extensions.DependencyInjection.Extensions
 {
     /// <summary>
-    /// Extension methods for adding and removing services to an <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+    /// Extension methods for adding and removing services to an <see cref="IServiceCollection" />.
     /// </summary>
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Removes the first service in <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> with the same service type
-        /// as <typeparamref name="TService"/> and adds <typeparamref name="TImplementation"/> to the collection. Lifetime is used according to lifetimes specified in <see cref="EntityFrameworkServicesBuilder.CoreServices"/>.
+        /// Removes the first service in <see cref="IServiceCollection" /> of type <typeparamref name="TService"/>
+        /// and adds <typeparamref name="TService"/> back using <typeparamref name="TImplementation"/> as implementation to the collection.
+        /// Lifetime is used according to lifetimes specified in <see cref="EntityFrameworkServicesBuilder.CoreServices"/> or
+        /// <see cref="EntityFrameworkRelationalServicesBuilder.RelationalServices"/>.
         /// </summary>
         /// <typeparam name="TService">The type of the service to replace.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use instead of original implementation.</typeparam>
-        /// <param name="collection">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.</param>
-        /// <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for chaining.</returns>
+        /// <param name="collection">The <see cref="IServiceCollection" />.</param>
+        /// <returns>The <see cref="IServiceCollection" /> for chaining.</returns>
         public static IServiceCollection ReplaceCoreService<TService, TImplementation>(this IServiceCollection collection)
             where TService : class
             where TImplementation : class, TService
@@ -36,39 +38,18 @@ namespace Microsoft.Extensions.DependencyInjection.Extensions
         }
 
         /// <summary>
-        /// Removes the first service in <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> with the same service type
-        /// as <typeparamref name="TService"/> and adds <typeparamref name="TImplementation"/> to the collection using the
-        /// factory specified in <paramref name="implementationFactory" />.
-        /// Lifetime is used according to lifetimes specified in <see cref="EntityFrameworkServicesBuilder.CoreServices"/>.
+        /// Removes the first service in <see cref="IServiceCollection" /> of type <typeparamref name="TService"/>
+        /// and adds service of same type to the collection using the factory specified in <paramref name="implementationFactory" />.
+        /// Lifetime is used according to lifetimes specified in <see cref="EntityFrameworkServicesBuilder.CoreServices"/> or
+        /// <see cref="EntityFrameworkRelationalServicesBuilder.RelationalServices"/>.
         /// </summary>
         /// <typeparam name="TService">The type of the service to replace.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation to use instead of original implementation.</typeparam>
-        /// <param name="collection">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.</param>
-        /// <param name="implementationFactory"></param>
-        /// <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for chaining.</returns>
-        public static IServiceCollection ReplaceCoreService<TService, TImplementation>(
-            this IServiceCollection collection,
-            Func<IServiceProvider, TImplementation> implementationFactory)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            return ReplaceCoreService<TService>(collection, implementationFactory);
-        }
-
-        /// <summary>
-        /// Removes the first service in <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> with the same service type
-        /// as <typeparamref name="TService"/> and adds <typeparamref name="TImplementation"/> to the collection using the
-        /// factory specified in <paramref name="implementationFactory" />.
-        /// Lifetime is used according to lifetimes specified in <see cref="EntityFrameworkServicesBuilder.CoreServices"/>.
-        /// </summary>
-        /// <typeparam name="TService">The type of the service to replace.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation to use instead of original implementation.</typeparam>
-        /// <param name="collection">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.</param>
-        /// <param name="implementationFactory"></param>
-        /// <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> for chaining.</returns>
+        /// <param name="collection">The <see cref="IServiceCollection" />.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        /// <returns>The <see cref="IServiceCollection" /> for chaining.</returns>
         public static IServiceCollection ReplaceCoreService<TService>(
             this IServiceCollection collection,
-            Func<IServiceProvider, object> implementationFactory)
+            Func<IServiceProvider, TService> implementationFactory)
             where TService : class
         {
             Contract.Assert<ArgumentNullException>(collection != null);

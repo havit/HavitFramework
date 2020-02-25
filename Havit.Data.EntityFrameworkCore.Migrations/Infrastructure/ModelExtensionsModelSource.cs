@@ -49,7 +49,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         {
             var conventionSet = conventionPlugin.ModifyConventions(conventionSetBuilder.CreateConventionSet());
 
+            // suppress reason: need to call base implementation that actually creates IModel (without duplicating its code)
+#pragma warning disable SA1100 // Do not prefix calls with base unless local implementation exists
             IModel model = base.CreateModel(context, new StaticConventionSetBuilder(conventionSet));
+#pragma warning restore SA1100 // Do not prefix calls with base unless local implementation exists
 
             return model;
         }

@@ -15,8 +15,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
     /// Does not pollute any other <see cref="IModel"/> created (within DbContext using this <see cref="IModelSource"/>) - mainly HistoryRepository's model.
     /// 
     /// Fixes bug #48448 with polluting HistoryRepository model (and other secondary models).
+    ///
+    /// <see cref="ModelExtensionsModelSource"/> is scoped, because <see cref="ModelExtensionRegistrationConventionPlugin"/> is scoped as well.
+    /// However EF Core depends on <see cref="IModelSource"/> being singleton, so we want to adhere to this precondition.
+    /// <see cref="ScopeBridgingModelSource"/> handles transitioning to scope of currently used DbContext along with caching implemented in <see cref="ModelSource"/>.
     /// </remarks>
-    public class ModelExtensionsModelSource : ModelSource
+    public class ModelExtensionsModelSource : ModelSource, IScopedModelSource
     {
         private readonly ModelExtensionRegistrationConventionPlugin conventionPlugin;
 
@@ -24,15 +28,16 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// Constructor.
         /// </summary>
         public ModelExtensionsModelSource(
-            ModelExtensionRegistrationConventionPlugin conventionPlugin,
-            ModelSourceDependencies dependencies)
+            ModelSourceDependencies dependencies,
+            ModelExtensionRegistrationConventionPlugin conventionPlugin)
             : base(dependencies)
         {
             this.conventionPlugin = conventionPlugin;
         }
 
         /// <summary>
-        ///     Creates the model with Model Extensions annotations.
+        ///     Creates the model with Model Extensions annotations. Caching is not implemented,
+        ///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
         /// </summary>
         /// <param name="context"> The context the model is being produced for. </param>
         /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
@@ -40,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
         /// </remarks>
         /// <returns> The model to be used. </returns>
-        protected override IModel CreateModel(DbContext context, IConventionSetBuilder conventionSetBuilder)
+        public override IModel GetModel(DbContext context, IConventionSetBuilder conventionSetBuilder)
         {
             var conventionSet = conventionPlugin.ModifyConventions(conventionSetBuilder.CreateConventionSet());
 

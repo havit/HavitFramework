@@ -151,10 +151,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			services.AddSingleton<IModelExtensionSqlResolver, ModelExtensionSqlResolver>(DropSqlResolverFactory);
 			if (ConsolidateStatementsForMigrationsAnnotationsForModel)
 			{
-				var serviceCharacteristics = EntityFrameworkRelationalServicesBuilder.RelationalServices[typeof(IMigrationsModelDiffer)];
-
-				services.Add(ServiceDescriptor.Describe(typeof(IMigrationsModelDiffer), typeof(AlterOperationsFixUpMigrationsModelDiffer), serviceCharacteristics.Lifetime));
-			}
+                services.ReplaceCoreService<IMigrationsModelDiffer, AlterOperationsFixUpMigrationsModelDiffer>();
+            }
 
             services.TryAddScoped<IModelExtensionsAssembly, ModelExtensionsAssembly>();
 
@@ -164,7 +162,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 
 			// replacing IModelSource fixes bug #48448
 			// - only add annotations used by Model Extensions to main DbContext model
-			services.ReplaceCoreService<IModelSource, ModelExtensionsModelSource>();
+			// - IModelSource is supposed to be singleton, we need to scope for each DbContext (see relevant classes)
+			services.ReplaceCoreService<IModelSource, ScopeBridgingModelSource>();
+			services.TryAddScoped<IScopedModelSource, ModelExtensionsModelSource>();
 		}
 
 		/// <inheritdoc />

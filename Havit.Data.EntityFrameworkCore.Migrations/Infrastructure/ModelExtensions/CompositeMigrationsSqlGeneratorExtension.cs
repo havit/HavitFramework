@@ -65,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 			services.Add(currentProviderTypes.Select(generatorType => ServiceDescriptor.Describe(
                 typeof(IMigrationOperationSqlGenerator),
                 generatorType,
-                EntityFrameworkServicesBuilder.CoreServices[typeof(IMigrationsSqlGenerator)].Lifetime)));
+                EntityFrameworkRelationalServicesBuilder.RelationalServices[typeof(IMigrationsSqlGenerator)].Lifetime)));
 			services.Replace(ServiceDescriptor.Scoped<IMigrationsSqlGenerator, CompositeMigrationsSqlGenerator>());
         }
 

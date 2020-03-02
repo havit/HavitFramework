@@ -58,17 +58,14 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
         public void ApplyServices(IServiceCollection services)
         {
             var currentProviderTypes = generatorTypes.ToArray();
-			//         CompositeMigrationsSqlGenerator Factory(IServiceProvider serviceProvider)
-			//         {
-			//             var generators = currentProviderTypes.Select(type => (IMigrationOperationSqlGenerator)serviceProvider.GetService(type)).ToArray();
-			//	return new CompositeMigrationsSqlGenerator(serviceProvider.GetService<MigrationsSqlGeneratorDependencies>(), serviceProvider.GetService<IMigrationsAnnotationProvider>(), generators);
-			//}
 
-			services.Add(currentProviderTypes.Select(t => ServiceDescriptor.Scoped(typeof(IMigrationOperationSqlGenerator), t)));
-			// Dříve (EF Core 2.x) jsme měli Singleton, avšak při použití v EF Core 3.0 dostáváme při singletonu výjimku
-			// System.ArgumentNullException: Value cannot be null. (Parameter 'currentContext')
-			// vyhozenou z konstruktoru MigrationsSqlGeneratorDependencies.
-			// Dle "dokumentace" (https://github.com/aspnet/EntityFrameworkCore/blob/24b9aa1d2e14fe2e737255ede9b2a7a623fcf2af/src/EFCore.Relational/Infrastructure/EntityFrameworkRelationalServicesBuilder.cs) máme mít Scoped.
+			// since EF.Core 3.0, IMigrationsSqlGenerator is registered with scoped lifetime
+			// here we'll use exact lifetime of IMigrationsSqlGenerator defined in EF Core
+			// (since implementations IMigrationOperationSqlGenerator of will always be used inside CompositeMigrationsSqlGenerator)
+			services.Add(currentProviderTypes.Select(generatorType => ServiceDescriptor.Describe(
+                typeof(IMigrationOperationSqlGenerator),
+                generatorType,
+                EntityFrameworkServicesBuilder.CoreServices[typeof(IMigrationsSqlGenerator)].Lifetime)));
 			services.Replace(ServiceDescriptor.Scoped<IMigrationsSqlGenerator, CompositeMigrationsSqlGenerator>());
         }
 

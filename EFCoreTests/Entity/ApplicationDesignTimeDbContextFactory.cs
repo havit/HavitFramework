@@ -15,11 +15,7 @@ namespace Havit.EFCoreTests.Entity
 			// Stejně tak  CodeGenerator.
 			// InMemory provider lenze pro tooling EF Core Migrations, je potřeba provider pro SqlServer.
 			// Provider pro SQL Server nejspíš neumí použít connection string z app.configu, lze řešit přes appSettings.json, pokud je startup projectem ASP.NET Core aplikace.
-			string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-			if (string.IsNullOrEmpty(environment))
-			{
-				environment = "Development";
-			}
+			string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
 			// Current path je pro CodeGenerator DataLayer
 			// potřebujeme načíst konfiguraci od Entity, resp. Entity\bin\Debug(Release)\nestandard2.0.

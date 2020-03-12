@@ -40,7 +40,12 @@ namespace Havit.Web.UI.ClientScripts
 			string version = GetVersionString();
 			ScriptManager.ScriptResourceMapping.AddDefinition(HavitFrameworkClientScriptResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/HavitFrameworkClientScript.js?version={0}", version) });
 			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryMultipleSelectResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.multiple.select.js?version={0}", version) });
+
+#if DEBUG  // jquery.autocomplete.js vs. jquery.autocomplete.min.js
+			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryAutoCompleteResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.autocomplete.js?version={0}", version) });
+#else
 			ScriptManager.ScriptResourceMapping.AddDefinition(JQueryAutoCompleteResourceMappingName, new ScriptResourceDefinition { Path = String.Format("~/Scripts/havit.web.clientcontent/jquery.autocomplete.min.js?version={0}", version) });
+#endif
 		}
 
 		/// <summary>

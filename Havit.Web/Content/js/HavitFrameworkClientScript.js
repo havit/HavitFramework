@@ -380,7 +380,7 @@ var havitAutoCompleteTextBoxExtensions = {
             var $clearTextLink = $item.children("a[data-clearText]");
             $item.data("selectedvalue", $textbox.val());
             $textbox.blur(function () { havitAutoCompleteTextBoxExtensions.onBlur($textbox, $hiddenfield, $item); });
-            $textbox.autocomplete(options);
+            $textbox.devbridgeAutocomplete(options); // jQuery UI library also has plugin named autocomplete, you can use plugin alias devbridgeAutocomplete
             $clearTextLink.click(function (event) {
                 event.preventDefault();
                 havitAutoCompleteTextBoxExtensions.onClickClearTextLink($textbox, $hiddenfield, $item);

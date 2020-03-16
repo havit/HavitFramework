@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -35,34 +33,13 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
                     .WithAnnotationProvider<FakeMigrationsAnnotationProvider>());
             }
 
-            using (var dbContext = new TestDbContext(OnConfiguring))
+            using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
             {
                 _ = dbContext.Model;
 
                 Assert.AreEqual(1, dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.Count);
 
                 Assert.AreSame(dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.First(), typeof(FakeMigrationsAnnotationProvider));
-            }
-        }
-
-        private class TestDbContext : DbContext
-        {
-            private readonly Action<DbContextOptionsBuilder> onConfiguring;
-
-            public CompositeMigrationsAnnotationProviderExtension CompositeMigrationsAnnotationProviderExtension { get; private set; }
-
-            public TestDbContext(Action<DbContextOptionsBuilder> onConfiguring = default)
-            {
-                this.onConfiguring = onConfiguring;
-            }
-
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            {
-                optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
-
-                onConfiguring?.Invoke(optionsBuilder);
-
-                CompositeMigrationsAnnotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>();
             }
         }
 

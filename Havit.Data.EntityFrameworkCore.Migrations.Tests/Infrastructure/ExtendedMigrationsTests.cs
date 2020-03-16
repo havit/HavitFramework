@@ -37,7 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
                     .WithGeneratorType<SecondMigrationOperationSqlGenerator>());
             }
 
-            using (var dbContext = new TestDbContext(OnConfiguring))
+            using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
             {
                 _ = dbContext.Model;
 
@@ -47,29 +47,6 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
 
                 CollectionAssert.Contains(generatorTypes, typeof(FirstMigrationOperationSqlGenerator));
                 CollectionAssert.Contains(generatorTypes, typeof(SecondMigrationOperationSqlGenerator));
-            }
-        }
-
-        private class TestDbContext : DbContext
-        {
-            private readonly Action<DbContextOptionsBuilder> onConfiguring;
-
-            public CompositeMigrationsSqlGeneratorExtension CompositeMigrationsSqlGeneratorExtension { get; private set; }
-
-            public TestDbContext(Action<DbContextOptionsBuilder> onConfiguring = default)
-            {
-                this.onConfiguring = onConfiguring;
-            }
-
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            {
-                base.OnConfiguring(optionsBuilder);
-
-                optionsBuilder.UseSqlServer("Server=Dummy");
-
-                onConfiguring?.Invoke(optionsBuilder);
-
-                CompositeMigrationsSqlGeneratorExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>();
             }
         }
 

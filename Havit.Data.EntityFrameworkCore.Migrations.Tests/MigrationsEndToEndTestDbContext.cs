@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
 {
-	public class EndToEndTestDbContext : TestDbContext
+	public class MigrationsEndToEndTestDbContext : TestDbContext
 	{
 		private readonly Action<ModelBuilder> onModelCreating;
 
-		public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
+		public MigrationsEndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
 		{
 			this.onModelCreating = onModelCreating;
 		}

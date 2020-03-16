@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
 {
-    public class EndToEndTestDbContext<TEntity> : EndToEndTestDbContext
+    public class MigrationsEndToEndTestDbContext<TEntity> : MigrationsEndToEndTestDbContext
 		where TEntity : class
 	{
-		public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
+		public MigrationsEndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
 			: base(onModelCreating)
 		{ }
 

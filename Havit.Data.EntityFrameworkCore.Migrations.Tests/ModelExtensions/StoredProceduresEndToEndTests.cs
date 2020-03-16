@@ -27,8 +27,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             {
                 var procedure = "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END";
 
-                var source = new EndToEndTestDbContext<DummySource>();
-                var target = new EndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", procedure));
+                var source = new MigrationsEndToEndTestDbContext<DummySource>();
+                var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", procedure));
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -56,10 +56,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             [TestMethod]
             public void StoredProcedureModelExtensions_EndToEnd_ModifyingStoredProcedure()
             {
-                var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var source = new MigrationsEndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
                 var newProcedure = "CREATE PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
 	            var newProcedureAlter = "ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] WHERE schema_id = 1 END";
-				var target = new EndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", newProcedure));
+				var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("StoredProcedure:GetTables", newProcedure));
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);
@@ -87,8 +87,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             [TestMethod]
             public void StoredProcedureModelExtensions_EndToEnd_DeletingStoredProcedure()
             {
-                var source = new EndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
-                var target = new EndToEndTestDbContext<DummyTarget>();
+                var source = new MigrationsEndToEndTestDbContext<DummySource>(builder => builder.HasAnnotation("StoredProcedure:GetTables", "CREATE OR ALTER PROCEDURE [dbo].[GetTables]() AS BEGIN SELECT * FROM [sys].[tables] END"));
+                var target = new MigrationsEndToEndTestDbContext<DummyTarget>();
                 var migrations = source.Migrate(target);
 
                 Assert.AreEqual(1, migrations.Count);

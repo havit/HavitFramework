@@ -19,10 +19,8 @@ namespace Havit.GoogleAnalytics
         /// <returns>Awaitable task</returns>
         public async Task PostAsync(string requestUri, HttpContent content)
         {
-            using (HttpClient httpClient = GetHttpClient())
-            {
-                await httpClient.PostAsync(requestUri, content);
-            }
+            using HttpClient httpClient = GetHttpClient();
+            await httpClient.PostAsync(requestUri, content);
         }
 
         /// <summary>

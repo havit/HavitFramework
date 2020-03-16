@@ -15,7 +15,8 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
         public void ServiceCollection_CanResolve_IGoogleAnalyticsMeasurementApiClient()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddGoogleAnalyticMeasurementApiClient<FakeGoogleAnalyticsMeasurementApiConfiguration>();
+            services.AddSingleton<IGoogleAnalyticsMeasurementApiConfiguration>(new FakeGoogleAnalyticsMeasurementApiConfiguration());
+            services.AddGoogleAnalyticMeasurementApiClient();
             var provider = services.BuildServiceProvider();
             var client = provider.GetRequiredService<IGoogleAnalyticsMeasurementApiClient>();
 

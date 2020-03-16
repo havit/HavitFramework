@@ -14,9 +14,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
     /// </summary>
     public class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsExtension
     {
-        private ImmutableList<Type> providers = ImmutableList.Create<Type>();
+        private ImmutableHashSet<Type> providers = ImmutableHashSet<Type>.Empty;
 
 		private DbContextOptionsExtensionInfo _info;
+
+        internal IImmutableSet<Type> Providers => providers;
 
 		/// <inheritdoc />
 		public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);

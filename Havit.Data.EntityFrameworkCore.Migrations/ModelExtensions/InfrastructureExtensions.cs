@@ -21,8 +21,16 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 
 			IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
-			builder.AddOrUpdateExtension(new CompositeMigrationsAnnotationProviderExtension().WithAnnotationProvider<SqlServerMigrationsAnnotationProvider>());
-			builder.AddOrUpdateExtension(new CompositeMigrationsSqlGeneratorExtension());
+            // handle multiple invocations of UseExtendedMigrationsInfrastructure
+            var compositeMigrationsAnnotationProviderExtension =
+                optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>() ??
+                new CompositeMigrationsAnnotationProviderExtension();
+            builder.AddOrUpdateExtension(compositeMigrationsAnnotationProviderExtension);
+
+            var compositeMigrationsSqlGeneratorExtension =
+                optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>() ??
+                new CompositeMigrationsSqlGeneratorExtension();
+            builder.AddOrUpdateExtension(compositeMigrationsSqlGeneratorExtension);
 		}
 	}
 }

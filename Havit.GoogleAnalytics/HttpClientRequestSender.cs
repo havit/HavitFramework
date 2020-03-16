@@ -17,10 +17,21 @@ namespace Havit.GoogleAnalytics
         /// <param name="requestUri">Request uri</param>
         /// <param name="content">Content of the request</param>
         /// <returns>Awaitable task</returns>
-        public Task PostAsync(string requestUri, HttpContent content)
+        public async Task PostAsync(string requestUri, HttpContent content)
         {
-            HttpClient httpClient = new HttpClient();
-            return httpClient.PostAsync(requestUri, content).ContinueWith(x => httpClient.Dispose());
+            using (HttpClient httpClient = GetHttpClient())
+            {
+                await httpClient.PostAsync(requestUri, content);
+            }
+        }
+
+        /// <summary>
+        /// Get instance of <see cref="HttpClient"/>
+        /// </summary>
+        /// <returns>Instance of HttpClient</returns>
+        protected virtual HttpClient GetHttpClient()
+        {
+            return new HttpClient();
         }
     }
 }

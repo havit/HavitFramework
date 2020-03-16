@@ -13,12 +13,12 @@ namespace Havit.GoogleAnalytics.Measurements
 	/// <summary>
 	/// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
 	/// </summary>
-	public class GAMeasurementApiClient : IGoogleAnalyticsMeasurementApiClient
+	public class GoogleAnalyticsMeasurementApiClient : IGoogleAnalyticsMeasurementApiClient
 	{
 		private readonly IHttpRequestSender requestSender;
 		private readonly IGoogleAnalyticsMeasurementApiConfiguration configuration;
 
-		private IGAModelSerializer modelSerializer;
+		private IGoogleAnalyticsModelSerializer modelSerializer;
 
 		/// <summary>
 		/// Version of API's for the measurement protocol
@@ -30,20 +30,20 @@ namespace Havit.GoogleAnalytics.Measurements
 		/// </summary>
 		/// <param name="requestSender">HttpClient abstraction</param>
 		/// <param name="configuration">Configuration of this client</param>
-		public GAMeasurementApiClient(
+		public GoogleAnalyticsMeasurementApiClient(
 			IHttpRequestSender requestSender,
 			IGoogleAnalyticsMeasurementApiConfiguration configuration)
 		{
 			this.requestSender = requestSender;
 			this.configuration = configuration;
 
-			this.modelSerializer = new GAPropertyNameAttributeSerializer();
+			this.modelSerializer = new PropertyNameAttributeSerializer();
 		}
 
 		/// <summary>
-		/// Use custom serializer. Default is <see cref="GAPropertyNameAttributeSerializer"/>
+		/// Use custom serializer. Default is <see cref="PropertyNameAttributeSerializer"/>
 		/// </summary>
-		public void UseCustomSerializer(IGAModelSerializer modelSerializer)
+		public void UseCustomSerializer(IGoogleAnalyticsModelSerializer modelSerializer)
 		{
 			this.modelSerializer = modelSerializer;
 		}
@@ -53,16 +53,16 @@ namespace Havit.GoogleAnalytics.Measurements
 		/// </summary>
 		/// <param name="eventModel">Basic and extendable model of the event hit</param>
 		/// <returns>Awaitable Task</returns>
-		public Task TrackEventAsync(GAMeasurementEvent eventModel)
+		public Task TrackEventAsync(MeasurementEvent eventModel)
 		{
 			Contract.Requires<ArgumentNullException>(eventModel != null);
 
 			eventModel.Version = GoogleApiVersion;
 			eventModel.TrackingId = configuration.GoogleAnalyticsTrackingId;
-			new GAMeasurementEventValidator().Validate(eventModel);
+			new MeasurementEventValidator().Validate(eventModel);
 			var itemPostData = modelSerializer.SerializeModel(eventModel);
 
-			return requestSender.PostAsync(configuration.GoogleAnalyticsMeasurementProtocolEndpointUrl, new FormUrlEncodedContent(itemPostData));
+			return requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(itemPostData));
 		}
 	}
 }

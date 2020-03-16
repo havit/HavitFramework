@@ -11,7 +11,7 @@ namespace Havit.GoogleAnalytics.Measurements
     /// <remarks>
     /// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
     /// </remarks>
-    public abstract class GAMeasurementModelBase
+    public abstract class MeasurementModelBase
     {
         /// <summary>
         /// [Required]
@@ -19,7 +19,7 @@ namespace Havit.GoogleAnalytics.Measurements
         /// Must be one of 'pageview', 'screenview', 'event', 'transaction', 'item', 'social', 'exception', 'timing'.
         /// </summary>
         [ParameterName("t")]
-        public abstract GAMeasurementHitType HitType { get; }
+        public abstract MeasurementHitType HitType { get; }
 
         /// <summary>
         /// [Required]

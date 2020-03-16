@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Havit.GoogleAnalytics.Measurements
 {
-    internal static class GAClientIdOrUserIdRequiredValidator
+    internal static class ClientIdOrUserIdRequiredValidator
     {
         public static bool Validate<TModel>(TModel model)
-            where TModel : GAMeasurementModelBase
+            where TModel : MeasurementModelBase
         {
             return !String.IsNullOrEmpty(model.ClientId) || !String.IsNullOrEmpty(model.UserId);
         }

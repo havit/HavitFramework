@@ -12,15 +12,15 @@ namespace Havit.GoogleAnalytics.Measurements
     public interface IGoogleAnalyticsMeasurementApiClient
     {
         /// <summary>
-		/// Use custom serializer. Default is <see cref="GAPropertyNameAttributeSerializer"/>
+		/// Use custom serializer. Default is <see cref="PropertyNameAttributeSerializer"/>
 		/// </summary>
-        void UseCustomSerializer(IGAModelSerializer modelSerializer);
+        void UseCustomSerializer(IGoogleAnalyticsModelSerializer modelSerializer);
 
         /// <summary>
         /// Method that provides basic validation of parameters, serialization and calling of the GA API endpoint
         /// </summary>
         /// <param name="eventModel">Basic and extendable model of the event hit</param>
         /// <returns>Awaitable Task</returns>
-        Task TrackEventAsync(GAMeasurementEvent eventModel);
+        Task TrackEventAsync(MeasurementEvent eventModel);
     }
 }

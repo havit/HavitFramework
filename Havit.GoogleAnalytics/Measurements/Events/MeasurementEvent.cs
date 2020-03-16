@@ -11,12 +11,12 @@ namespace Havit.GoogleAnalytics.Measurements.Events
     /// <remarks>
     /// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#events
     /// </remarks>
-    public class GAMeasurementEvent : GAMeasurementModelBase
+    public class MeasurementEvent : MeasurementModelBase
     {
         /// <summary>
         /// Defines event hit type.
         /// </summary>
-        public override GAMeasurementHitType HitType => GAMeasurementHitType.Event;
+        public override MeasurementHitType HitType => MeasurementHitType.Event;
 
         /// <summary>
         /// [Required]

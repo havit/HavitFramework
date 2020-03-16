@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Havit.GoogleAnalytics.Measurements
+namespace Havit.GoogleAnalytics.Measurements.Transactions
 {
 	/// <summary>
 	/// Transaction product

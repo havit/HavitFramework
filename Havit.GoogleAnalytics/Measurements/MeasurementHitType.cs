@@ -10,7 +10,7 @@ namespace Havit.GoogleAnalytics.Measurements
     /// <remarks>
     /// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#t
     /// </remarks>
-    public enum GAMeasurementHitType
+    public enum MeasurementHitType
     {
         /// <summary>
         /// Event hit type

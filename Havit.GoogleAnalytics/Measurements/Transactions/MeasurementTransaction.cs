@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Havit.GoogleAnalytics.Measurements
+namespace Havit.GoogleAnalytics.Measurements.Transactions
 {
 	/// <summary>
 	/// Standard Ecommerce Transaction (for GTM data-layer)
 	/// https://support.google.com/tagmanager/answer/6107169
 	/// </summary>
-	public class GAEMeasurementTransaction : GAMeasurementModelBase
+	public class GAEMeasurementTransaction : MeasurementModelBase
 	{
 		/// <summary>
 		/// [Required]
 		/// Defines transaction hit type.
 		/// </summary>
-		public override GAMeasurementHitType HitType => GAMeasurementHitType.Transaction;
+		public override MeasurementHitType HitType => MeasurementHitType.Transaction;
 
 		/// <summary>
 		/// [Required]

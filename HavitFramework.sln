@@ -219,7 +219,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Migrations.TestHelpers", "Havit.Data.EntityFrameworkCore.Migrations.TestHelpers\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj", "{3CF71BE1-804A-4C50-9BA9-B0F43026BDF3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.GoogleAnalytics", "Havit.GoogleAnalytics.Measurement\Havit.GoogleAnalytics.csproj", "{CA4C4867-34E6-4C43-B4D4-0762BB46C2A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.GoogleAnalytics", "Havit.GoogleAnalytics\Havit.GoogleAnalytics.csproj", "{CA4C4867-34E6-4C43-B4D4-0762BB46C2A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.GoogleAnalytics.Tests", "Havit.GoogleAnalytics.Tests\Havit.GoogleAnalytics.Tests.csproj", "{28023CD4-0C81-466A-9EF4-E7937D9644AC}"
 EndProject

@@ -9,7 +9,7 @@ namespace Havit.GoogleAnalytics
     /// <summary>
     /// Interface of the serializer for Google Analytics models
     /// </summary>
-    public interface IGAModelSerializer
+    public interface IGoogleAnalyticsModelSerializer
     {
         /// <summary>
         /// Serializes <paramref name="model"/> instance into a key-value collection

@@ -7,7 +7,7 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
 {
     internal class FakeGoogleAnalyticsMeasurementApiConfiguration : IGoogleAnalyticsMeasurementApiConfiguration
     {
-        public string GoogleAnalyticsMeasurementProtocolEndpointUrl => "fakegaendpoint";
+        public string MeasurementEndpointUrl => "fakegaendpoint";
 
         public string GoogleAnalyticsTrackingId => "UA-FAKE";
     }

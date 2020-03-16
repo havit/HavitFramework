@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Havit.GoogleAnalytics
 {
-    internal class GAValueRequiredValidator
+    internal class ValueRequiredValidator
     {
         public static bool Validate(object value, MemberInfo memberInfo)
         {
@@ -15,7 +15,11 @@ namespace Havit.GoogleAnalytics
                 return true;
             }
 
-            if (value.GetType() == typeof(String))
+            if (value == null)
+            {
+                return false;
+            }
+            else if (value.GetType() == typeof(String))
             {
                 return !String.IsNullOrEmpty(value as String);
             }

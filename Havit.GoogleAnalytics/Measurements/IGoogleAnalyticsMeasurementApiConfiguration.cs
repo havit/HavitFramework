@@ -12,13 +12,13 @@ namespace Havit.GoogleAnalytics.Measurements
         /// <summary>
         /// Measurement protocol endpoint url obtainable from GA dashboard
         /// </summary>
-        string GoogleAnalyticsMeasurementProtocolEndpointUrl { get; }
+        string MeasurementEndpointUrl { get; }
 
         /// <summary>
-        /// Tracking ID obtainable from GA dashboard
+        /// The tracking ID / web property ID. The format is UA-XXXX-Y. All collected data is associated by this ID.
         /// </summary>
         /// <remarks>
-        /// https://support.google.com/analytics/thread/13109681
+        /// http://blog.analytics-toolkit.com/2016/google-analytics-tracking-code-id-check-setup/
         /// </remarks>
         string GoogleAnalyticsTrackingId { get; }
     }

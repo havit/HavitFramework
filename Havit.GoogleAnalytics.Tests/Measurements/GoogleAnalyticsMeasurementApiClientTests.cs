@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Havit.GoogleAnalytics.Tests.Measurements
 {
     [TestClass]
-    public class GAMeasurementApiClientTests
+    public class GoogleAnalyticsMeasurementApiClientTests
     {
         private const string configUrl = "https://fakega.com/";
         private const string configTrackingId = "UA-FAKE";
@@ -30,17 +30,17 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
                 .Callback((string urlParam, HttpContent contentParam) => 
                 { 
                     url = urlParam; 
-                    content = contentParam; 
+                    content = contentParam;
                 })
                 .Returns(Task.CompletedTask);
 
-            IGoogleAnalyticsMeasurementApiClient apiClient = new GAMeasurementApiClient(
+            IGoogleAnalyticsMeasurementApiClient apiClient = new GoogleAnalyticsMeasurementApiClient(
                 senderMock.Object,
                 GetConfiguration());
 
             try
             {
-                await apiClient.TrackEventAsync(new GAMeasurementEvent
+                await apiClient.TrackEventAsync(new MeasurementEvent
                 {
                     Action = "action",
                     Category = "cat"
@@ -71,20 +71,21 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
                 })
                 .Returns(Task.CompletedTask);
 
-            IGoogleAnalyticsMeasurementApiClient apiClient = new GAMeasurementApiClient(
+            IGoogleAnalyticsMeasurementApiClient apiClient = new GoogleAnalyticsMeasurementApiClient(
                 senderMock.Object,
                 GetConfiguration());
 
-            await apiClient.TrackEventAsync(new GAMeasurementEvent
+            await apiClient.TrackEventAsync(new MeasurementEvent
             {
                 Action = "action",
                 Category = "cat",
-                ClientId = "0545"
+                ClientId = "0545",
+                Value = 564
             });
 
             Assert.IsNotNull(content);
             string contentString = await content.ReadAsStringAsync();
-            Assert.AreEqual(contentString, "t=event&ec=cat&ea=action&cid=0545&v=1&tid=UA-FAKE");
+            Assert.AreEqual(contentString, "t=event&ec=cat&ea=action&ev=564&cid=0545&v=1&tid=UA-FAKE");
         }
 
         [TestMethod]
@@ -103,11 +104,11 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
                 })
                 .Returns(Task.CompletedTask);
 
-            IGoogleAnalyticsMeasurementApiClient apiClient = new GAMeasurementApiClient(
+            IGoogleAnalyticsMeasurementApiClient apiClient = new GoogleAnalyticsMeasurementApiClient(
                 senderMock.Object,
                 GetConfiguration());
 
-            await apiClient.TrackEventAsync(new GAMeasurementEvent
+            await apiClient.TrackEventAsync(new MeasurementEvent
             {
                 Action = "action",
                 Category = "cat",
@@ -122,7 +123,7 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
         {
             Mock<IGoogleAnalyticsMeasurementApiConfiguration> configMock = new Mock<IGoogleAnalyticsMeasurementApiConfiguration>(MockBehavior.Strict);
             configMock
-                .Setup(x => x.GoogleAnalyticsMeasurementProtocolEndpointUrl)
+                .Setup(x => x.MeasurementEndpointUrl)
                 .Returns(configUrl);
             configMock
                 .Setup(x => x.GoogleAnalyticsTrackingId)

@@ -6,15 +6,15 @@ using System.Text;
 
 namespace Havit.GoogleAnalytics.Measurements.Events
 {
-    internal class GAMeasurementEventValidator : GAValidatorBase<GAMeasurementEvent>
+    internal class MeasurementEventValidator : GoogleAnalyticsValidatorBase<MeasurementEvent>
     {
-        public void Validate(GAMeasurementEvent model)
+        public void Validate(MeasurementEvent model)
         {
-            List<GAValidationResult> validationResults = ValidateModel(model).ToList();
+            List<GoogleAnalyticsValidationResult> validationResults = ValidateModel(model).ToList();
 
-            if (!GAClientIdOrUserIdRequiredValidator.Validate(model))
+            if (!ClientIdOrUserIdRequiredValidator.Validate(model))
             {
-                validationResults.Add(new GAValidationResult
+                validationResults.Add(new GoogleAnalyticsValidationResult
                 {
                     MemberName = "ClientId, UserId",
                     Message = "At least one value required."

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Havit.GoogleAnalytics.Measurement\Havit.GoogleAnalytics.csproj" />
+    <ProjectReference Include="..\Havit.GoogleAnalytics\Havit.GoogleAnalytics.csproj" />
   </ItemGroup>
 
 </Project>

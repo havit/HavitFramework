@@ -10,7 +10,7 @@ namespace Havit.GoogleAnalytics
     /// <summary>
     /// Default serializer
     /// </summary>
-    public class GAPropertyNameAttributeSerializer : IGAModelSerializer
+    public class PropertyNameAttributeSerializer : IGoogleAnalyticsModelSerializer
     {
         /// <summary>
         /// Serializes model instance into key-value collection

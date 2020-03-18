@@ -6,7 +6,7 @@ namespace Havit.GoogleAnalytics
 {
     internal abstract class GoogleAnalyticsValidatorBase<TModel>
     {
-        protected IEnumerable<GoogleAnalyticsValidationResult> ValidateModel(TModel model)
+        protected virtual IEnumerable<GoogleAnalyticsValidationResult> ValidateInternal(TModel model)
         {
             foreach (var property in model.GetType().GetProperties())
             {

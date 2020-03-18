@@ -57,5 +57,51 @@ namespace Havit.GoogleAnalytics.Measurements
         [Required]
         [ParameterName("tid")]
         public string TrackingId { get; internal set; }
+
+        /// <summary>
+        /// [Optional]
+        /// Indicates the data source of the hit.
+        /// Hits sent from analytics.js will have data source set to 'web'; hits sent from one of the mobile SDKs will have data source set to 'app'.
+        /// </summary>
+        [ParameterName("ds")]
+        public string DataSource { get; set; }
+
+        /// <summary>
+        /// [Optional]
+        /// Specifies that a hit be considered non-interactive.
+        /// </summary>
+        public bool NonInteractive { get; set; }
+
+        /// <summary>
+        /// Each custom dimension has an associated index.
+        /// There is a maximum of 20 custom dimensions (200 for Analytics 360 accounts).
+        /// The dimension index must be a positive integer between 1 and 200, inclusive.
+        /// </summary>
+        [ParameterName("cd")]
+        public Dictionary<int, string> CustomDimensions { get; set; } = new Dictionary<int, string>();
+
+        /// <summary>
+        /// Each custom metric has an associated index.
+        /// There is a maximum of 20 custom metrics (200 for Analytics 360 accounts).
+        /// The metric index must be a positive integer between 1 and 200, inclusive.
+        /// </summary>
+        [ParameterName("cm")]
+        public Dictionary<int, int> CustomMetrics { get; set; } = new Dictionary<int, int>();
+
+        /// <summary>
+        /// This method copies properties from the instance object into the <paramref name="target"/>
+        /// </summary>
+        /// <param name="target">Target instance to copy parameters to</param>
+        public virtual void CopyTo(MeasurementModelBase target)
+        {
+            target.ClientId = ClientId;
+            target.UserId = UserId;
+            target.Version = Version;
+            target.TrackingId = TrackingId;
+            target.DataSource = DataSource;
+            target.NonInteractive = NonInteractive;
+            target.CustomDimensions = CustomDimensions;
+            target.CustomMetrics = CustomMetrics;
+        }
     }
 }

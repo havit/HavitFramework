@@ -1,8 +1,11 @@
 ﻿using Havit.Diagnostics.Contracts;
 using Havit.GoogleAnalytics.Measurements.Events;
+using Havit.GoogleAnalytics.Measurements.Transactions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
 using System.Text;
@@ -10,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace Havit.GoogleAnalytics.Measurements
 {
-	/// <summary>
-	/// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
-	/// </summary>
+	/// <inheritdoc/>
 	public class GoogleAnalyticsMeasurementApiClient : IGoogleAnalyticsMeasurementApiClient
 	{
 		private readonly IHttpRequestSender requestSender;
@@ -26,7 +27,7 @@ namespace Havit.GoogleAnalytics.Measurements
 		public string GoogleApiVersion { get; set; } = "1";
 
 		/// <summary>
-		/// Public constructor
+		/// Creates new instance of <see cref="GoogleAnalyticsMeasurementApiClient"/>
 		/// </summary>
 		/// <param name="requestSender">HttpClient abstraction</param>
 		/// <param name="configuration">Configuration of this client</param>
@@ -40,29 +41,57 @@ namespace Havit.GoogleAnalytics.Measurements
 			this.modelSerializer = new PropertyNameAttributeSerializer();
 		}
 
-		/// <summary>
-		/// Use custom serializer. Default is <see cref="PropertyNameAttributeSerializer"/>
-		/// </summary>
+		/// <inheritdoc/>
 		public void UseCustomSerializer(IGoogleAnalyticsModelSerializer modelSerializer)
 		{
 			this.modelSerializer = modelSerializer;
 		}
 
-		/// <summary>
-		/// Method that provides basic validation of parameters, serialization and calling of the GA API endpoint
-		/// </summary>
-		/// <param name="eventModel">Basic and extendable model of the event hit</param>
-		/// <returns>Awaitable Task</returns>
+		/// <inheritdoc/>
 		public Task TrackEventAsync(MeasurementEvent eventModel)
 		{
 			Contract.Requires<ArgumentNullException>(eventModel != null);
-
+			// Set internal properties
 			eventModel.Version = GoogleApiVersion;
 			eventModel.TrackingId = configuration.GoogleAnalyticsTrackingId;
+			// Validate
 			new MeasurementEventValidator().Validate(eventModel);
+			// Serialize
 			var itemPostData = modelSerializer.SerializeModel(eventModel);
-
+			// Post
 			return requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(itemPostData));
+		}
+
+		/// <inheritdoc/>
+		public async Task TrackTransactionAsync(MeasurementTransaction transactionModel, IEnumerable<MeasurementTransactionItemVM> transactionItems)
+		{
+			Contract.Requires<ArgumentNullException>(transactionModel != null);
+			Contract.Requires<ArgumentNullException>(transactionItems != null);
+			// Set internal properties
+			transactionModel.Version = GoogleApiVersion;
+			transactionModel.TrackingId = configuration.GoogleAnalyticsTrackingId;
+			//Validate
+			new MeasurementTransactionValidator().Validate(transactionModel);
+			//Serialize
+			var transactionData = modelSerializer.SerializeModel(transactionModel);
+			// Post
+			await requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(transactionData));
+
+			List<Task> taskList = new List<Task>();
+			foreach (var itemVm in transactionItems)
+			{
+				// Map to ItemModel and copy properties from TransactionModel
+				var itemModel = new MeasurementTransactionItem(transactionModel.TransactionId, itemVm);
+				transactionModel.CopyTo(itemModel);
+				// Validate
+				new MeasurementTransactionItemValidator().Validate(itemModel);
+				// Serialize
+				var itemData = modelSerializer.SerializeModel(itemModel);
+				// Post
+				await requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(itemData));
+			}
+
+			await Task.WhenAll(taskList);
 		}
 	}
 }

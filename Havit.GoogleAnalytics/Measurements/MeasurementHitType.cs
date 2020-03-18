@@ -21,6 +21,11 @@ namespace Havit.GoogleAnalytics.Measurements
         /// Transaction hit type
         /// </summary>
         [ParameterValue("transaction")]
-        Transaction
+        Transaction,
+        /// <summary>
+        /// Transaction item hit type
+        /// </summary>
+        [ParameterValue("item")]
+        Item
     }
 }

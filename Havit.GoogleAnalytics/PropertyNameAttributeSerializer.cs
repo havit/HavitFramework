@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Havit.GoogleAnalytics.ValueSerializers;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -12,6 +14,16 @@ namespace Havit.GoogleAnalytics
     /// </summary>
     public class PropertyNameAttributeSerializer : IGoogleAnalyticsModelSerializer
     {
+        private readonly List<IValueSerializer> serializers;
+
+        /// <summary>
+        /// Create new instance of type <see cref="PropertyNameAttributeSerializer"/>
+        /// </summary>
+        public PropertyNameAttributeSerializer()
+        {
+            this.serializers = new List<IValueSerializer>(ValueSerializerCollection.GetDefaultValueSerializers());
+        }
+
         /// <summary>
         /// Serializes model instance into key-value collection
         /// </summary>
@@ -23,9 +35,9 @@ namespace Havit.GoogleAnalytics
             var itemList = new List<KeyValuePair<string, string>>();
             foreach (var property in model.GetType().GetProperties())
             {
-                if (TrySerializeValue(model, property, out KeyValuePair<string, string>? item))
+                if (TrySerializeValue(model, property, out IEnumerable<KeyValuePair<string, string>> items))
                 {
-                    itemList.Add(item.Value);
+                    itemList.AddRange(items);
                 }
             }
 
@@ -38,105 +50,60 @@ namespace Havit.GoogleAnalytics
         /// <typeparam name="TModel">Type of the model which contains supplied <paramref name="propertyInfo"/></typeparam>
         /// <param name="model">Model instance to serialize</param>
         /// <param name="propertyInfo">Supplied property from the model to serialize</param>
-        /// <param name="item">Out parameter of with the serialized key-value pair</param>
+        /// <param name="items">Out parameter of with the serialized key-value pairs</param>
         /// <returns>Returns true if value was serialized successfully, otherwise false</returns>
-        protected bool TrySerializeValue<TModel>(TModel model, PropertyInfo propertyInfo, out KeyValuePair<string, string>? item)
+        protected bool TrySerializeValue<TModel>(TModel model, PropertyInfo propertyInfo, out IEnumerable<KeyValuePair<string, string>> items)
         {
+            object propertyValue = propertyInfo.GetValue(model);
+            if (propertyValue == null)
+            {
+                items = null;
+                return false;
+            }
+
             ParameterNameAttribute propertyNameAttribute = propertyInfo.GetCustomAttribute<ParameterNameAttribute>(true);
             if (propertyNameAttribute == null)
             {
-                item = null;
+                items = null;
                 return false;
             }
-
             string name = propertyNameAttribute.Name;
-            string value;
-            if (propertyInfo.PropertyType.IsEnum)
+
+            foreach (var serializer in serializers)
             {
-                value = SerializeEnum((Enum)propertyInfo.GetValue(model));
-            }
-            else
-            {
-                value = SerializeValue(propertyInfo.GetValue(model));
+                if (serializer.CanSerialize(propertyValue))
+                {
+                    string value = serializer.Serialize(propertyValue);
+                    items = new[] { new KeyValuePair<string, string>(name, value) };
+                    return true;
+                }
             }
 
-            if (value == null)
+            if (TrySerializeSpecialValue(name, propertyValue, out items))
             {
-                item = null;
-                return false;
+                return true;
             }
 
-            item = new KeyValuePair<string, string>(name, value);
-            return true;
+            items = null;
+            return false;
         }
 
-        /// <summary>
-        /// Serialize enum value
-        /// </summary>
-        /// <param name="value">Enum value</param>
-        /// <returns>Serialized enum value</returns>
-        protected virtual string SerializeEnum(Enum value)
+        private bool TrySerializeSpecialValue(string name, object propertyValue, out IEnumerable<KeyValuePair<string, string>> items)
         {
-            var type = value.GetType();
-            var name = Enum.GetName(type, value);
-            ParameterValueAttribute attribute = type.GetField(name)
-                .GetCustomAttribute<ParameterValueAttribute>();
-
-            return attribute?.Value;
-        }
-
-        /// <summary>
-        /// Serialize supplied value into string
-        /// </summary>
-        /// <param name="value">Supplied value to serialize</param>
-        /// <returns>Serialized value</returns>
-        protected virtual string SerializeValue(object value)
-        {
-            if (value == null)
+            if (propertyValue is IEnumerable<KeyValuePair<int, string>> customDimensions)
             {
-                return null;
+                items = customDimensions.Select(x => new KeyValuePair<string, string>(name + x.Key, x.Value));
+                return true;
             }
-            else if (value is int intValue)
+            else if (propertyValue is IEnumerable<KeyValuePair<int, int>> customMetrics)
             {
-                return intValue.ToString("D", CultureInfo.InvariantCulture);
-            }
-            else if (value is decimal decimalValue)
-            {
-                return decimalValue.ToString("F", CultureInfo.InvariantCulture);
-            }
-            else if (IsNullableType(value.GetType()))
-            {
-                return GetValueFromNullable(value);
+                var serializer = new IntValueSerializer();
+                items = customMetrics.Select(x => new KeyValuePair<string, string>(name + x.Key, serializer.Serialize(x.Value)));
+                return true;
             }
 
-            return value.ToString();
-        }
-
-        /// <summary>
-        /// Returns true if the type is a nullable type
-        /// </summary>
-        /// <param name="type">Type, possibly nullable</param>
-        /// <returns>True if <paramref name="type"/> is nullable, otherwise false</returns>
-        protected virtual bool IsNullableType(Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
-
-        /// <summary>
-        /// Get value from a nullable type
-        /// </summary>
-        /// <param name="nullableValue">Instance of a nullable type</param>
-        /// <returns>Serialized value</returns>
-        protected virtual string GetValueFromNullable(object nullableValue)
-        {
-            if (nullableValue == null)
-            {
-                return null;
-            }
-
-            PropertyInfo valueInfo = nullableValue.GetType().GetProperty("Value");
-            object unboxedValue = valueInfo.GetValue(nullableValue);
-            return SerializeValue(unboxedValue);
+            items = null;
+            return false;
         }
     }
 }

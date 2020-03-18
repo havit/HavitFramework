@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Havit.GoogleAnalytics.Measurements.Transactions
 {
@@ -7,7 +8,7 @@ namespace Havit.GoogleAnalytics.Measurements.Transactions
 	/// Standard Ecommerce Transaction (for GTM data-layer)
 	/// https://support.google.com/tagmanager/answer/6107169
 	/// </summary>
-	public class GAEMeasurementTransaction : MeasurementModelBase
+	public class MeasurementTransaction : MeasurementModelBase
 	{
 		/// <summary>
 		/// [Required]
@@ -17,38 +18,40 @@ namespace Havit.GoogleAnalytics.Measurements.Transactions
 
 		/// <summary>
 		/// [Required]
-		/// Unique transaction identifier 
+		/// A unique identifier for the transaction. 
+		/// This value should be the same for both the Transaction hit and Items hits associated to the particular transaction.
 		/// </summary>
+		[Required]
+		[ParameterName("ti")]
 		public string TransactionId { get; set; }
 
 		/// <summary>
 		/// [Optional]
-		/// Partner or store 
+		/// Specifies the affiliation or store name.
 		/// </summary>
-		public string TransactionAffiliation { get; set; }
-
-		/// <summary>
-		/// [Required]
-		/// Total value of the transaction
-		/// </summary>
-		public decimal TransactionTotal { get; set; }
+		[ParameterName("ta")]
+		public string Affiliation { get; set; }
 
 		/// <summary>
 		/// [Optional]
-		/// Shipping charge for the transaction
+		/// Specifies the total revenue associated with the transaction. 
+		/// This value should include any shipping or tax costs.
 		/// </summary>
-		public decimal? TransactionShipping { get; set; }
+		[ParameterName("tr")]
+		public decimal? Revenue { get; set; }
 
 		/// <summary>
 		/// [Optional]
-		/// Tax amount for the transaction 
+		/// Specifies the total shipping cost of the transaction.
 		/// </summary>
-		public decimal? TransactionTax { get; set; }
+		[ParameterName("ts")]
+		public decimal? Shipping { get; set; }
 
 		/// <summary>
 		/// [Optional]
-		/// List of items purchased in the transaction 
+		/// Specifies the total tax of the transaction.
 		/// </summary>
-		public IList<GATransactionProduct> TransactionProducts { get; } = new List<GATransactionProduct>();
+		[ParameterName("tt")]
+		public decimal? Tax { get; set; }
 	}
 }

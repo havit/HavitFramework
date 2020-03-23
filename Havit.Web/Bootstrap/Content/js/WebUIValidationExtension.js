@@ -13,25 +13,31 @@ else {
         var WebFormsOriginals_ValidationSummaryOnSubmit = null; // remember original ValidationSummaryOnSubmit function
         var WebFormsOriginals_ValidatorOnLoad_OnceOnlyEnabled = false;
         // ensures javascript method replacements
-        // asynchronous request forces WebUIValidation.js to load for the second time
-        // so we have to hook-up again (see ValidatorRenderedExtender class)
+        // Asynchronous request forces WebUIValidation.js to load for the second time,
+        // so we have to hook-up again and agent (see ValidatorRenderedExtender class).
+        // Unfortunatelly there are components (like CKEditor 3.6.4) which also changes Page_ClientValidate methods,
+        // so we store original values only for the first time.
         Havit_Validation_StartUp = function () {
-            if (Page_ClientValidate != Havit_Page_ClientValidate) {
+            if (WebFormsOriginals_Page_ClientValidate == null) {
                 WebFormsOriginals_Page_ClientValidate = Page_ClientValidate;
-                Page_ClientValidate = Havit_Page_ClientValidate;
             }
-            if (ValidatorOnChange != Havit_ValidatorOnChange) {
+            Page_ClientValidate = Havit_Page_ClientValidate;
+
+            if (WebFormsOriginals_ValidatorOnChange == null) {
                 WebFormsOriginals_ValidatorOnChange = ValidatorOnChange;
-                ValidatorOnChange = Havit_ValidatorOnChange;
             }
-            if (ValidatorOnLoad != Havit_ValidatorOnLoad) {
+            ValidatorOnChange = Havit_ValidatorOnChange;
+
+            if (WebFormsOriginals_ValidatorOnLoad == null) {
                 WebFormsOriginals_ValidatorOnLoad = ValidatorOnLoad;
-                ValidatorOnLoad = Havit_ValidatorOnLoad;
             }
-            if (ValidationSummaryOnSubmit != Havit_ValidationSummaryOnSubmit) {
+            ValidatorOnLoad = Havit_ValidatorOnLoad;
+
+            if (WebFormsOriginals_ValidationSummaryOnSubmit == null) {
                 WebFormsOriginals_ValidationSummaryOnSubmit = ValidationSummaryOnSubmit;
-                ValidationSummaryOnSubmit = Havit_ValidationSummaryOnSubmit;
             }
+            ValidationSummaryOnSubmit = Havit_ValidationSummaryOnSubmit;
+
             // set UI after validators evaluation (null means all validation groups!)
             // to enable validations display after postback
             Havit_UpdateValidatorsExtensionsUI(null, true);

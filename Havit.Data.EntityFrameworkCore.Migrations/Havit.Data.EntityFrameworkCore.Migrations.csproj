@@ -9,8 +9,10 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.1.6</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Model Extensions</Description>
+	  <!-- Při povýšení je doporučeno aktualizovat i Havit.Data.EntityFrameworkCore.BusinessLayer,
+	  neboť tento balíček je obvykle distribuován jako závislost Havit.Data.EntityFrameworkCore.BusinessLayer -->
+	  <PackageVersion>2.1.7</PackageVersion>
+	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Model Extensions</Description>
   </PropertyGroup>
 
   <ItemGroup>

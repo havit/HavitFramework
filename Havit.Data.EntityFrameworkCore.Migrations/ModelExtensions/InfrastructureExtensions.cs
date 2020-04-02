@@ -23,13 +23,13 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 
             // handle multiple invocations of UseExtendedMigrationsInfrastructure
             var compositeMigrationsAnnotationProviderExtension =
-                optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>() ??
-                new CompositeMigrationsAnnotationProviderExtension();
+                optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
+                ?? new CompositeMigrationsAnnotationProviderExtension().WithAnnotationProvider<SqlServerMigrationsAnnotationProvider>();
             builder.AddOrUpdateExtension(compositeMigrationsAnnotationProviderExtension);
 
             var compositeMigrationsSqlGeneratorExtension =
-                optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>() ??
-                new CompositeMigrationsSqlGeneratorExtension();
+                optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
+                ?? new CompositeMigrationsSqlGeneratorExtension();
             builder.AddOrUpdateExtension(compositeMigrationsSqlGeneratorExtension);
 		}
 	}

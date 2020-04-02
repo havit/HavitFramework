@@ -37,9 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
             {
                 _ = dbContext.Model;
 
-                Assert.AreEqual(1, dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.Count);
-
-                Assert.AreSame(dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.First(), typeof(FakeMigrationsAnnotationProvider));
+                Assert.AreEqual(1, dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.Count(type => type == typeof(FakeMigrationsAnnotationProvider)));
             }
         }
 

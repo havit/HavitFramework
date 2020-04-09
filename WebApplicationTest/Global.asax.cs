@@ -17,7 +17,7 @@ namespace Havit.WebApplicationTest
 
 			Messenger.StorageType = MessengerStorageType.Cookies;
 
-			FilePageStatePersister.PerUserNamingStrategy.DeleteOldAnonymousFiles(@"\\TOPOL\Workspace\002.HFW\ViewState");
+			//FilePageStatePersister.PerUserNamingStrategy.DeleteOldAnonymousFiles(@"\\TOPOL\Workspace\002.HFW\ViewState");
 		}
 
 		protected void Application_PostAcquireRequestState(object sender, EventArgs e)

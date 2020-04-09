@@ -25,10 +25,14 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 			SubjektLabel.Text = SubjektASM.SelectedValue;
 			TimestampLabel.Text = Convert.ToString(DateTime.Now);
-
-			MyTemplateField.Visible = false;
+			AsyncLabel.Text = Page.IsPostBack
+				? (ScriptManager.GetCurrent(this).IsInAsyncPostBack ? "Async PostBack" : "Classic PostBack")
+				: "Not PostBack";
 			if (!Page.IsPostBack)
 			{
+				MyRepeater.DataSource = new int[] { 1, 2, 3 };
+				MyRepeater.DataBind();
+
 				MyGridView.DataSource = new int[] { 1, 2, 3 };
 				MyGridView.DataBind();
 			}

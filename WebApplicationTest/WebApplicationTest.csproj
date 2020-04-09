@@ -182,6 +182,7 @@
     <Content Include="HavitWebBootstrapTests\ValidatorsTest.aspx" />
     <Content Include="HavitWebTests\AutoCompleteTextBox.aspx" />
     <Content Include="HavitWebTests\AutoSuggestMenu.aspx" />
+    <Content Include="HavitWebTests\AutoSuggestMenuControl.ascx" />
     <Content Include="HavitWebTests\AutoSuggestMenuService.asmx" />
     <Content Include="HavitWebTests\CollapserTest.aspx" />
     <Content Include="HavitWebTests\ControlsValuesPersisterTest.aspx" />
@@ -487,6 +488,13 @@
     </Compile>
     <Compile Include="HavitWebTests\AutoSuggestMenu.aspx.designer.cs">
       <DependentUpon>AutoSuggestMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\AutoSuggestMenuControl.ascx.cs">
+      <DependentUpon>AutoSuggestMenuControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\AutoSuggestMenuControl.ascx.designer.cs">
+      <DependentUpon>AutoSuggestMenuControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebTests\AutoSuggestMenuService.asmx.cs">
       <DependentUpon>AutoSuggestMenuService.asmx</DependentUpon>

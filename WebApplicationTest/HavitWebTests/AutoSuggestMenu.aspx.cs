@@ -19,7 +19,8 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
 	{
-		public int Counter {
+		public int Counter
+		{
 			get => (int)(ViewState["Counter"] ?? 0);
 			set => ViewState["Counter"] = value;
 		}

@@ -22,7 +22,7 @@ using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.WebControls
 {
-     /// <summary>Represents a control for extending TextBox with suggestions.</summary>
+     /// <summary>Represents a control for extending TextBox with suggestions. Not compatible with UpdatePanel.</summary>
     [ValidationProperty("SelectedValue")]
     [DefaultProperty("SelectedValue")]
     [ToolboxData("<{0}:AutoSuggestMenu runat=server></{0}:AutoSuggestMenu>")]
@@ -438,7 +438,10 @@ namespace Havit.Web.UI.WebControls
 
 			if (AutoPostBack)
 			{
+				
 				writer.WriteLine(String.Format("menu.autoPostBackScript=\"{0}\";", Page.ClientScript.GetPostBackEventReference(this, "")));
+				// Pro kompatibilitu s UpdatePanelem je pravděpodobně nutno odpojit se od události kliknutí na HTML element, avšak to následně způsobí dvojí postback.
+				//writer.WriteLine(String.Format("menu.autoPostBackScript=\" window.setTimeout(function() {{ {0} }}, 1);\"", Page.ClientScript.GetPostBackEventReference(this, "")));
 			}
 
 			string func = _onGetSuggestions;
@@ -536,6 +539,7 @@ namespace Havit.Web.UI.WebControls
 
 			//output.WriteLine("<link href=\"" + GetAbsoluteResourcesDir() + "/AutoSuggestMenu.css\" type=\"text/css\" rel=\"stylesheet\">");
 
+			// Pro kompatibilitu s update panelem je nutno renderovat komponentu, nejen její obsah (hidden field).
 			//base.Render(output);
 
 			_hdnSelectedValue.RenderControl(output);

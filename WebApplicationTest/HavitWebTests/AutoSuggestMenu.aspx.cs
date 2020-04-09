@@ -19,15 +19,25 @@ namespace Havit.WebApplicationTest.HavitWebTests
 {
 	public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
 	{
+		public int Counter {
+			get => (int)(ViewState["Counter"] ?? 0);
+			set => ViewState["Counter"] = value;
+		}
+
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
+			Counter += 1;
 
-			SubjektLabel.Text = SubjektASM.SelectedValue;
 			TimestampLabel.Text = Convert.ToString(DateTime.Now);
+			CounterLabel.Text = Counter.ToString();
+			
+			SubjektLabel.Text = SubjektASM.SelectedValue;
+			
 			AsyncLabel.Text = Page.IsPostBack
 				? (ScriptManager.GetCurrent(this).IsInAsyncPostBack ? "Async PostBack" : "Classic PostBack")
-				: "Not PostBack";
+				: "GET";
+
 			if (!Page.IsPostBack)
 			{
 				MyRepeater.DataSource = new int[] { 1, 2, 3 };

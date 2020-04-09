@@ -15,7 +15,7 @@
 		<asp:UpdatePanel runat="server">
 			<ContentTemplate>
 				<div>
-					<asp:Label ID="TimestampLabel" runat="server" />
+					<asp:Label ID="TimestampLabel" runat="server" /> (<asp:Label ID="CounterLabel" runat="server" />)
 				</div>
 				<div>
 					<asp:Label ID="AsyncLabel" runat="server" />

@@ -37,27 +37,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		{
 			if (factoryType == typeof(IDbContextFactory))
 			{
-				services.AddSingleton<IDbContextFactory, DbContextFactory>();
+				services.AddTransient<IDbContextFactory, DbContextFactory>();
 			}
 			else if (factoryType == typeof(IDataSeedPersisterFactory))
 			{
-				services.AddSingleton<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
+				services.AddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 			}
 			else if (factoryType == typeof(IDataSourceFactory<>))
 			{
-				services.AddSingleton(typeof(IDataSourceFactory<>), typeof(DataSourceFactory<>));
+				services.AddTransient(typeof(IDataSourceFactory<>), typeof(DataSourceFactory<>));
 			}
 			else if (factoryType == typeof(IRepositoryFactory<>))
 			{
-				services.AddSingleton(typeof(IRepositoryFactory<>), typeof(RepositoryFactory<>));
+				services.AddTransient(typeof(IRepositoryFactory<>), typeof(RepositoryFactory<>));
 			}
 			else if (factoryType == typeof(IBeforeCommitProcessorsFactory))
 			{
-				services.AddSingleton<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
+				services.AddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
 			}
 			else if (factoryType == typeof(IEntityValidatorsFactory))
 			{
-				services.AddSingleton<IEntityValidatorsFactory, EntityValidatorsFactory>();
+				services.AddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
 			}
 			else
 			{

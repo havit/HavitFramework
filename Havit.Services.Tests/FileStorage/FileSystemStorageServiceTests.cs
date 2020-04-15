@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
+using Havit.Services.TestHelpers;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
@@ -157,7 +158,7 @@ namespace Havit.Services.Tests.FileStorage
 			}
 
 			// Act
-			List<Havit.Services.FileStorage.FileInfo> fileInfos = (await fileSystemStorageService.EnumerateFilesAsync()).ToList();
+			List<Havit.Services.FileStorage.FileInfo> fileInfos = await fileSystemStorageService.EnumerateFilesAsync().ToListAsync();
 
 			// Assert 
 			Assert.IsFalse(fileInfos.Any(fileInfo => fileInfo.Name.Contains(storagePath)));

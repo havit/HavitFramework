@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.6</PackageVersion>
+	<PackageVersion>2.0.7</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
 	<LangVersion>default</LangVersion>
   </PropertyGroup>
@@ -27,6 +27,7 @@
 
   <ItemGroup>
 	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

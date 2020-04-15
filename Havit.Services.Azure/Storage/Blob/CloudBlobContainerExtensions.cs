@@ -17,21 +17,28 @@ namespace Havit.Services.Azure.Storage.Blob
 		/// Načte seznam blobů v containeru.
 		/// Pod pokličkou používá ListBlobsSegmentedAsync a v případě vyskytu více než 5000 položek zřetězí volání, aby došlo k vrácení všech záznamů.
 		/// </summary>
-		public static async Task<List<IListBlobItem>> ListBlobsAsync(this CloudBlobContainer cloudBlobContainer, string prefix, bool useFlatBlobListing)
+		public static async IAsyncEnumerable<IListBlobItem> ListBlobsAsync(this CloudBlobContainer cloudBlobContainer, string prefix, bool useFlatBlobListing)
 		{
-			List<IListBlobItem> results = new List<IListBlobItem>();
 			BlobResultSegment response = await cloudBlobContainer.ListBlobsSegmentedAsync(prefix, useFlatBlobListing, BlobListingDetails.None, null, null, null, null, CancellationToken.None).ConfigureAwait(false);
-			results.AddRange(response.Results);
+
+			foreach (IListBlobItem listBlobItem in response.Results)
+			{
+				yield return listBlobItem;
+			}
+
 			BlobContinuationToken continuationToken = response.ContinuationToken;
 
 			while (continuationToken != null)
 			{
 				response = await cloudBlobContainer.ListBlobsSegmentedAsync(continuationToken).ConfigureAwait(false);
-				results.AddRange(response.Results);
+
+				foreach (IListBlobItem listBlobItem in response.Results)
+				{
+					yield return listBlobItem;
+				}
+
 				continuationToken = response.ContinuationToken;
 			}
-
-			return results;
 		}
 	}
 }

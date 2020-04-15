@@ -400,11 +400,11 @@ namespace Havit.Services.TestHelpers.FileStorage
 			Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\test123.txt", testFilename), @"subfolder1\sub*\test*");
 
 			// složka samotná není nalezena
-			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1")).Any(), @"Folder subfolder1");
-			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\")).Any(), @"Folder subfolder1\");
-			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2")).Any(), @"Folder subfolder1\subfolder2");
-			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync("subfolder1/subfolder2")).Any(), "Folder subfolder1/subfolder2");
-			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2\")).Any(), @"Folder subfolder1\subfolder2\");
+			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1").ToListAsync()).Any(), @"Folder subfolder1");
+			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\").ToListAsync()).Any(), @"Folder subfolder1\");
+			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2").ToListAsync()).Any(), @"Folder subfolder1\subfolder2");
+			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync("subfolder1/subfolder2").ToListAsync()).Any(), "Folder subfolder1/subfolder2");
+			Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2\").ToListAsync()).Any(), @"Folder subfolder1\subfolder2\");
 
 			// Clean-up
 			await fileStorageService.DeleteAsync(testFilename);
@@ -467,7 +467,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Act
-			List<FileInfo> files = (await fileStorageService.EnumerateFilesAsync(testFilename)).ToList();
+			List<FileInfo> files = await fileStorageService.EnumerateFilesAsync(testFilename).ToListAsync();
 
 			// Assert
 			Assert.AreNotEqual(default(DateTime), files.Single().LastModifiedUtc);
@@ -488,7 +488,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Act
-			List<FileInfo> files = (await fileStorageService.EnumerateFilesAsync(testFilename)).ToList();
+			List<FileInfo> files = await fileStorageService.EnumerateFilesAsync(testFilename).ToListAsync();
 
 			// Assert
 			Assert.AreEqual(1, files.Single().Size); // zapsali jsme jeden byte
@@ -583,8 +583,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 
 		private static async Task<bool> FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(IFileStorageServiceAsync fileStorageService, string searchPattern, string testFilename)
 		{
-			IEnumerable<FileInfo> fileInfos = await fileStorageService.EnumerateFilesAsync(searchPattern);
-			return fileInfos.Any(fileInfo => String.Equals(fileInfo.Name, testFilename, StringComparison.InvariantCultureIgnoreCase));
+			return (await fileStorageService.EnumerateFilesAsync(searchPattern).ToListAsync()).Any(fileInfo => String.Equals(fileInfo.Name, testFilename, StringComparison.InvariantCultureIgnoreCase));
 		}
 	}
 }

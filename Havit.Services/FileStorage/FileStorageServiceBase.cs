@@ -230,7 +230,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		public abstract Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string pattern = null);
+		public abstract IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null);
 
 			/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.

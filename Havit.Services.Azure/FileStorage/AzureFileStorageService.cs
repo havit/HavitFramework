@@ -175,8 +175,13 @@ namespace Havit.Services.Azure.FileStorage
 
 			EnsureFileShare();
 
-			var items = EnumerateFiles_ListFilesInHierarchyInternal(GetRootDirectoryReference(), "", prefix);
-			return EnumerateFiles_FilterAndProjectCloudBlobs(items, searchPattern);
+			foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal(GetRootDirectoryReference(), "", prefix))
+			{
+				if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
+				{
+					yield return fileInfo;
+				}
+			}
 		}
 
 		/// <summary>
@@ -186,7 +191,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// Nepodporuje LastModified (ve výsledku není hodnota nastavena).
 		/// Při používání složek je výkonově neefektivní (REST API neumí lepší variantu).
 		/// </remarks>
-		public override async Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string searchPattern = null)
+		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null)
 		{
 			if (!String.IsNullOrWhiteSpace(searchPattern))
 			{
@@ -199,8 +204,13 @@ namespace Havit.Services.Azure.FileStorage
 
 			EnsureFileShare();
 
-			var items = await EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootDirectoryReference(), "", prefix).ConfigureAwait(false);
-			return EnumerateFiles_FilterAndProjectCloudBlobs(items, searchPattern);
+			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootDirectoryReference(), "", prefix))
+			{
+				if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
+				{
+					yield return fileInfo;
+				}
+			}
 		}
 
 		private IEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(CloudFileDirectory directoryReference, string directoryPrefix, string searchPrefix)
@@ -215,7 +225,7 @@ namespace Havit.Services.Azure.FileStorage
 			do
 			{
 				FileResultSegment resultSegment = directoryReference.ListFilesAndDirectoriesSegmented(token);
-				var directoryItems = resultSegment.Results.ToList();
+				var directoryItems = resultSegment.Results;
 
 				foreach (CloudFile file in directoryItems.OfType<CloudFile>())
 				{
@@ -243,55 +253,54 @@ namespace Havit.Services.Azure.FileStorage
 			while (token != null);
 		}
 
-		private async Task<List<FileInfo>> EnumerateFiles_ListFilesInHierarchyInternalAsync(CloudFileDirectory directoryReference, string directoryPrefix, string searchPrefix)
+		private async IAsyncEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(CloudFileDirectory directoryReference, string directoryPrefix, string searchPrefix)
 		{
-			// no yield return? 
-			// The feature 'async streams' is currently in Preview and *unsupported *.To use Preview features, use the 'preview' language version.
-
 			// speed up
 			if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
 			{
-				return new List<FileInfo>();
+				yield break;
 			}
-			
-			List<FileInfo> result = new List<FileInfo>();
 			
 			FileContinuationToken token = null;
 			do
 			{
 				FileResultSegment resultSegment = await directoryReference.ListFilesAndDirectoriesSegmentedAsync(token).ConfigureAwait(false);
-				var directoryItems = resultSegment.Results.ToList();
+				var directoryItems = resultSegment.Results;
 
-
-				result.AddRange(directoryItems.OfType<CloudFile>().Select(file => new FileInfo
+				foreach (CloudFile file in directoryItems.OfType<CloudFile>())
 				{
-					Name = directoryPrefix + file.Name,
-					LastModifiedUtc = file.Properties.LastModified?.UtcDateTime ?? default(DateTime),
-					Size = file.Properties.Length,
-					ContentType = file.Properties.ContentType
-				}));
+					yield return new FileInfo
+					{
+						Name = directoryPrefix + file.Name,
+						LastModifiedUtc = file.Properties.LastModified?.UtcDateTime ?? default(DateTime),
+						Size = file.Properties.Length,
+						ContentType = file.Properties.ContentType
+					};
+				}
 
 				foreach (CloudFileDirectory subdirectory in directoryItems.OfType<CloudFileDirectory>())
 				{
-					var subdirectoryItems = await EnumerateFiles_ListFilesInHierarchyInternalAsync(directoryReference.GetDirectoryReference(subdirectory.Name), directoryPrefix + subdirectory.Name + '/', searchPrefix).ConfigureAwait(false);
-					result.AddRange(subdirectoryItems);
+					var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternal(directoryReference.GetDirectoryReference(subdirectory.Name), directoryPrefix + subdirectory.Name + '/', searchPrefix);
+
+					foreach (var subdirectoryItem in subdirectoryItems)
+					{
+						yield return subdirectoryItem;
+					}
 				}
 
 				token = resultSegment.ContinuationToken;
 			}
 			while (token != null);
-
-			return result;
 		}
 
-		private IEnumerable<FileInfo> EnumerateFiles_FilterAndProjectCloudBlobs(IEnumerable<FileInfo> items, string searchPattern)
+		private bool EnumerateFiles_FilterFileInfo(FileInfo fileInfo, string searchPattern)
 		{
-			if (searchPattern != null)
+			if ((searchPattern != null) && !RegexPatterns.IsFileWildcardMatch(fileInfo.Name, searchPattern))
 			{
-				items = items.Where(item => RegexPatterns.IsFileWildcardMatch(item.Name, searchPattern));
+				return false;
 			}
 
-			return items;
+			return true;
 		}
 
 		/// <summary>

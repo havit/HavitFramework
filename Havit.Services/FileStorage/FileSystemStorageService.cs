@@ -192,9 +192,16 @@ namespace Havit.Services.FileStorage
 		/// ContentType položek je vždy null.
 		/// Nemá asynchronní implementaci, spouští synchronní EnumerateFiles.
 		/// </summary>
-		public override Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string pattern = null)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 		{
-			return Task.FromResult(EnumerateFiles(pattern));
+			// no await here
+			// použijeme synchronní variantu, asynchronní nemáme
+			foreach (FileInfo fileInfo in EnumerateFiles(pattern))
+			{
+				yield return fileInfo;
+			}
 		}
 
 		/// <summary>

@@ -242,13 +242,19 @@ namespace Havit.Services.Azure.FileStorage
 			IEnumerable<IListBlobItem> listBlobItems = GetContainerReference().ListBlobs(prefix, true);
 
 			// filtruj soubory podle masky
-			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, searchPattern);
+			foreach (var listBlobItem in listBlobItems)
+			{
+				if (EnumerateFiles_FilterCloudBlob(listBlobItem, searchPattern))
+				{
+					yield return EnumerateFiles_ProjectCloudBlob(listBlobItem);
+				}
+			}
 		}
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		public override async Task<IEnumerable<FileInfo>> EnumerateFilesAsync(string searchPattern = null)
+		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null)
 		{
 			if (!String.IsNullOrWhiteSpace(searchPattern))
 			{
@@ -262,28 +268,47 @@ namespace Havit.Services.Azure.FileStorage
 			await EnsureContainerAsync().ConfigureAwait(false);
 
 			// nacti soubory s danym prefixem - optimalizace na rychlost
-			List<IListBlobItem> listBlobItems = (await GetContainerReference().ListBlobsAsync(prefix, true).ConfigureAwait(false));
+			IAsyncEnumerable<IListBlobItem> listBlobItems = GetContainerReference().ListBlobsAsync(prefix, true);
 
-			// filtruj soubory podle masky
-			return EnumerateFiles_FilterAndProjectCloudBlobs(listBlobItems, searchPattern);
+			await foreach (IListBlobItem listBlobItem in listBlobItems)
+			{
+				// filtruj soubory podle masky
+				if (EnumerateFiles_FilterCloudBlob(listBlobItem, searchPattern))
+				{
+					yield return EnumerateFiles_ProjectCloudBlob(listBlobItem);
+
+				}
+			}
 		}
 
-		private IEnumerable<FileInfo> EnumerateFiles_FilterAndProjectCloudBlobs(IEnumerable<IListBlobItem> listBlobItems, string searchPattern)
+		private bool EnumerateFiles_FilterCloudBlob(IListBlobItem listBlobItem, string searchPattern)
 		{
-			IEnumerable<CloudBlob> cloudBlobs = listBlobItems.OfType<CloudBlob>();
+			CloudBlob cloudBlob = listBlobItem as CloudBlob;
 
-			if (searchPattern != null)
+			if (cloudBlob == null)
 			{
-				cloudBlobs = cloudBlobs.Where(item => RegexPatterns.IsFileWildcardMatch(item.Name, searchPattern));
+				return false;
 			}
 
-			return cloudBlobs.Select(blob => new FileInfo
+			if ((searchPattern != null) && !RegexPatterns.IsFileWildcardMatch(cloudBlob.Name, searchPattern))
 			{
-				Name = blob.Name,
-				LastModifiedUtc = blob.Properties.LastModified?.UtcDateTime ?? default(DateTime),
-				Size = blob.Properties.Length,
-				ContentType = blob.Properties.ContentType
-			}).ToList();
+				return false;
+			}
+			
+			return true;
+		}
+
+		private FileInfo EnumerateFiles_ProjectCloudBlob(IListBlobItem listBlobItem)
+		{
+			CloudBlob cloudBlob = (CloudBlob)listBlobItem;
+
+			return new FileInfo
+			{
+				Name = cloudBlob.Name,
+				LastModifiedUtc = cloudBlob.Properties.LastModified?.UtcDateTime ?? default(DateTime),
+				Size = cloudBlob.Properties.Length,
+				ContentType = cloudBlob.Properties.ContentType
+			};
 		}
 
 		/// <summary>

@@ -14,26 +14,20 @@ namespace Havit.Data.Patterns.Localizations.Internal
 	/// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 	/// Jazyky jsou načteny do lokální proměné a nejsou nikdy invalidovány.
 	/// </summary>
-	/// <remarks>
-	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
-	/// Tato třída vznikla jako řešení tohoto problému (v dřívejší implementaci LanguageService).
-	/// Repository je registrována jako scoped, proto se této factory popsaná issue týká.
-	/// Použití v metodě EnsureLanguages: Jde o přečtení dat z databáze a jejich zpracování. Použití je zde bezpečné, použití nové Repository a DbContextu zde nevadí.
-	/// </remarks>	
 	public class LanguageByCultureService<TLanguage> : ILanguageByCultureService
 		where TLanguage : class, ILanguage
 	{
-		private readonly IRepositoryFactory<TLanguage> languageRepositoryFactory;
+		private readonly ILanguageByCultureStorage languageByCultureStorage;
+		private readonly IRepository<TLanguage> languageRepository;
 		private readonly IEntityKeyAccessor<TLanguage, int> entityKeyAccessor;
-
-		private volatile Dictionary<string, int> languages;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public LanguageByCultureService(IRepositoryFactory<TLanguage> languageRepositoryFactory, IEntityKeyAccessor<TLanguage, int> entityKeyAccessor)
+		public LanguageByCultureService(ILanguageByCultureStorage languageByCultureStorage, IRepository<TLanguage> languageRepository, IEntityKeyAccessor<TLanguage, int> entityKeyAccessor)
 		{
-			this.languageRepositoryFactory = languageRepositoryFactory;
+			this.languageByCultureStorage = languageByCultureStorage;
+			this.languageRepository = languageRepository;
 			this.entityKeyAccessor = entityKeyAccessor;
 		}
 
@@ -45,12 +39,12 @@ namespace Havit.Data.Patterns.Localizations.Internal
 		/// </exception>
 		public int GetLanguageId(string cultureName)
 		{
-			EnsureLanguages();
+			Dictionary<string, int> languagesByCulture = GetLanguagesByCulture();
 
 			int tmp;
 
 			// nejprve zkusíme hledat podle plného názvu
-			if (languages.TryGetValue(cultureName, out tmp))
+			if (languagesByCulture.TryGetValue(cultureName, out tmp))
 			{
 				return tmp;
 			}
@@ -58,14 +52,14 @@ namespace Havit.Data.Patterns.Localizations.Internal
 			// pokud není nalezeno, hledáme podle samotného jazyka
 			if (cultureName.Length > 2)
 			{
-				if (languages.TryGetValue(cultureName.Substring(0, 2), out tmp))
+				if (languagesByCulture.TryGetValue(cultureName.Substring(0, 2), out tmp))
 				{
 					return tmp;
 				}
 			}
 
 			// pokud není nalezeno, použijeme výchozí jazyk (je-li stanoven).
-			if (languages.TryGetValue("", out tmp))
+			if (languagesByCulture.TryGetValue("", out tmp))
 			{
 				return tmp;
 			}
@@ -76,27 +70,20 @@ namespace Havit.Data.Patterns.Localizations.Internal
 		/// <summary>
 		/// Zajistí načtení jazyků do poměti pro opakované použití.
 		/// </summary>
-		private void EnsureLanguages()
+		private Dictionary<string, int> GetLanguagesByCulture()
 		{
-			if (languages == null)
+			if (languageByCultureStorage.Value == null)
 			{
-				lock (_ensureLanguagesLock)
+				lock (languageByCultureStorage)
 				{
-					if (languages == null)
+					if (languageByCultureStorage.Value == null)
 					{
-						IRepository<TLanguage> languageRepository = languageRepositoryFactory.Create();
-						try
-						{
-							languages = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKeyValue(item));
-						}
-						finally
-						{
-							languageRepositoryFactory.Release(languageRepository);
-						}
+						languageByCultureStorage.Value = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKeyValue(item));
 					}
 				}
 			}
+
+			return languageByCultureStorage.Value;
 		}
-		private readonly object _ensureLanguagesLock = new object();
 	}
 }

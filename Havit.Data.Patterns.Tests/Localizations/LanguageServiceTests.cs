@@ -31,14 +31,11 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			mockRepository.Setup(m => m.GetObject(4)).Returns(language4);
 			mockRepository.Setup(m => m.GetAll()).Returns(new List<Language> { language1, language2, language3, language4 });
 
-			Mock<IRepositoryFactory<Language>> mockRepositoryFactory = new Mock<IRepositoryFactory<Language>>();
-			mockRepositoryFactory.Setup(m => m.Create()).Returns(mockRepository.Object);
-
 			Mock<IEntityKeyAccessor<Language, int>> dataEntryIdentifierAccessorMock = new Mock<IEntityKeyAccessor<Language, int>>();
 			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKeyValue(It.IsAny<Language>())).Returns<Language>(language => language.Id);
 
 			// Act
-			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepository.Object, new LanguageByCultureService<Language>(mockRepositoryFactory.Object, dataEntryIdentifierAccessorMock.Object));
+			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepository.Object, new LanguageByCultureService<Language>(new LanguageByCultureStorage(), mockRepository.Object, dataEntryIdentifierAccessorMock.Object));
 			ILanguage languageResult1 = dbLanguageService.GetLanguage("");
 			ILanguage languageResult2 = dbLanguageService.GetLanguage("en");
 			ILanguage languageResult3 = dbLanguageService.GetLanguage("en-GB");
@@ -71,14 +68,11 @@ namespace Havit.Data.Patterns.Tests.Localizations
 			mockRepository.Setup(m => m.GetObject(4)).Returns(language4);
 			mockRepository.Setup(m => m.GetAll()).Returns(new List<Language> { language1, language2, language3, language4 });
 
-			Mock<IRepositoryFactory<Language>> mockRepositoryFactory = new Mock<IRepositoryFactory<Language>>();
-			mockRepositoryFactory.Setup(m => m.Create()).Returns(mockRepository.Object);
-
 			Mock<IEntityKeyAccessor<Language, int>> dataEntryIdentifierAccessorMock = new Mock<IEntityKeyAccessor<Language, int>>();
 			dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKeyValue(It.IsAny<Language>())).Returns<Language>(language => language.Id);
 
 			// Act
-			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepository.Object, new LanguageByCultureService<Language>(mockRepositoryFactory.Object, dataEntryIdentifierAccessorMock.Object));
+			LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepository.Object, new LanguageByCultureService<Language>(new LanguageByCultureStorage(), mockRepository.Object, dataEntryIdentifierAccessorMock.Object));
 			ILanguage languageResult1 = dbLanguageService.GetDefaultLanguage();
 
 			// Assert

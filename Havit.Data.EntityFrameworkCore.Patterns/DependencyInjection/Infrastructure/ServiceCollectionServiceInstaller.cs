@@ -47,10 +47,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			{
 				services.AddTransient(typeof(IDataSourceFactory<>), typeof(DataSourceFactory<>));
 			}
-			else if (factoryType == typeof(IRepositoryFactory<>))
-			{
-				services.AddTransient(typeof(IRepositoryFactory<>), typeof(RepositoryFactory<>));
-			}
 			else if (factoryType == typeof(IBeforeCommitProcessorsFactory))
 			{
 				services.AddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();

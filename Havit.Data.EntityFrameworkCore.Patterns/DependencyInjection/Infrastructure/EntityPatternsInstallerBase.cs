@@ -82,7 +82,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
 
 			installer.AddService(typeof(ILanguageService), currentLanguageServiceType, componentRegistrationOptions.GeneralLifestyle);
-			installer.AddServiceSingleton(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
+			installer.AddServiceTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
+			installer.AddServiceSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
 			installer.AddServiceTransient<ILocalizationService, LocalizationService>();
 
 			return this;
@@ -106,7 +107,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.AddFactory(typeof(IDataSeedPersisterFactory));
 
 			installer.AddFactory(typeof(IDataSourceFactory<>));
-			installer.AddFactory(typeof(IRepositoryFactory<>));
 			
 			installer.AddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
 			installer.AddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);

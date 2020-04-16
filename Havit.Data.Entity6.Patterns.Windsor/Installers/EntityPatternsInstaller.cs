@@ -72,7 +72,8 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 			Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
 			container.Register(
 				Component.For(typeof(ILanguageService)).ImplementedBy(currentLanguageServiceType).ApplyLifestyle(componentRegistrationOptions.GeneralLifestyle),
-				Component.For(typeof(ILanguageByCultureService)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleSingleton(),
+				Component.For(typeof(ILanguageByCultureService)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleTransient(),
+				Component.For<ILanguageByCultureStorage>().ImplementedBy<LanguageByCultureStorage>().LifestyleSingleton(),
 				Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleTransient(),
 
 				// Registrujeme jen pro TLanguage, možná bude časem třeba pro všechny modelové třídy (pak bychom přesunuli do jiné metody v této třídě).
@@ -97,7 +98,6 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),
 				Component.For<IDataSeedPersisterFactory>().AsFactory(),
 				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
-				Component.For(typeof(IRepositoryFactory<>)).AsFactory(),
 				Component.For(typeof(IUnitOfWork)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),
 				Component.For(typeof(IDataLoader)).ImplementedBy(typeof(DbDataLoaderWithLoadedPropertiesMemory)).ApplyLifestyle(componentRegistrationOptions.DataLoaderLifestyle),
 				Component.For<IPropertyLambdaExpressionManager>().ImplementedBy<PropertyLambdaExpressionManager>().LifestyleSingleton(),

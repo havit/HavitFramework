@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<Content Include="..\Havit.Data.Entity6.CodeGenerator\bin\$(Configuration)\net46\**">
+	<Content Include="..\Havit.Data.Entity6.CodeGenerator\bin\$(Configuration)\net462\**">
 	  <Pack>true</Pack>
 	  <PackagePath>tools\CodeGenerator</PackagePath>
 	</Content>

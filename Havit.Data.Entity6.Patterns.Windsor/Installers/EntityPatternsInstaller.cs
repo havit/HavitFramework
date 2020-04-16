@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Castle.Core.Internal;
 using Castle.Facilities.TypedFactory;
@@ -89,7 +90,6 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		{
 			container.Register(
 				Component.For<ISoftDeleteManager>().ImplementedBy<SoftDeleteManager>().LifestyleSingleton(),
-				Component.For(typeof(IDataEntrySymbolStorage<>)).ImplementedBy(typeof(DataEntrySymbolStorage<>)).LifestyleSingleton(),
 				Component.For<ICurrentCultureService>().ImplementedBy<CurrentCultureService>().LifestyleSingleton(),
 				Component.For<IDataSeedRunner>().ImplementedBy<DataSeedRunner>().LifestyleTransient(),
 				Component.For<ITransactionWrapper>().ImplementedBy<TransactionScopeTransactionWrapper>().LifestyleTransient(),
@@ -97,7 +97,6 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Component.For<IDataSeedRunDecisionStatePersister>().ImplementedBy<DbDataSeedRunDecisionStatePersister>().LifestyleTransient(),
 				Component.For<IDataSeedPersister>().ImplementedBy<DbDataSeedPersister>().LifestyleTransient(),
 				Component.For<IDataSeedPersisterFactory>().AsFactory(),
-				Component.For(typeof(IDataSourceFactory<>)).AsFactory(),
 				Component.For(typeof(IUnitOfWork)).ImplementedBy(componentRegistrationOptions.UnitOfWorkType).ApplyLifestyle(componentRegistrationOptions.UnitOfWorkLifestyle),
 				Component.For(typeof(IDataLoader)).ImplementedBy(typeof(DbDataLoaderWithLoadedPropertiesMemory)).ApplyLifestyle(componentRegistrationOptions.DataLoaderLifestyle),
 				Component.For<IPropertyLambdaExpressionManager>().ImplementedBy<PropertyLambdaExpressionManager>().LifestyleSingleton(),
@@ -128,6 +127,33 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceConstructedInterface(typeof(IRepository<>)).WithServiceFromInterface(typeof(IRepository<>)).ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
 				Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
 			);
+
+			Type[] dataLayerDependencyInjectionEnabledTypes = dataLayerAssembly.GetTypes().Where(type => type.IsClass && type.IsPublic).Where(IsNotAbstract).Where(DoesNotHaveFakeAttribute).ToArray();
+			Type[] dataEntryTypes = dataLayerDependencyInjectionEnabledTypes
+				.Where(type => type.ImplementsInterface(typeof(IDataEntries)) // musí implementovat IDataEntries
+					&& (type.BaseType != null)
+					&& (type.BaseType.IsGenericType)
+					&& (type.BaseType.GetGenericTypeDefinition() == typeof(DataEntries<>))) // a dědit z DataEntries (pro test konstruktorů, viz dále)
+				.ToArray();
+
+			foreach (Type dataEntryType in dataEntryTypes)
+			{
+				Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypDataSource
+
+				// třída DataentryType je již zaregistrovaná, viz výše
+
+				// DataEntrySymbolService+Storage potřebujeme jen pro ty dataEntryTypes, které mají dva konstruktory.
+				// Pokud má jeden konstruktor, je to IRepository.
+				// Pokud má dva konstruktory, je to IDataEntrySymbolService a IRepository.
+
+				if (dataEntryType.GetConstructors().Single().GetParameters().Count() == 2)
+				{
+					Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
+
+					container.Register(Component.For(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolService<>).MakeGenericType(entityType)).LifestyleTransient());
+					container.Register(Component.For(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType)).LifestyleSingleton());
+				}
+			}
 			return this;
 		}
 

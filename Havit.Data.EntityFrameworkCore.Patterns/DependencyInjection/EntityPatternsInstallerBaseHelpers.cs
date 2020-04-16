@@ -11,14 +11,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	internal static class EntityPatternsInstallerBaseHelpers
 	{
 		/// <summary>
-		/// Vrací true, pokud daný typ implementuje daný interface.
-		/// </summary>
-		internal static bool ImplementsInterface(this Type type, Type interfaceType)
-		{
-			return type.GetInterfaces().Any(typeInterfaceType => typeInterfaceType == interfaceType);
-		}
-
-		/// <summary>
 		/// Vrací true, pokud daná třída má jako předka (předka předka, předka předka předka) daný typ.
 		/// </summary>
 		internal static bool HasAncestorOfType(this Type type, Type ancesorType)

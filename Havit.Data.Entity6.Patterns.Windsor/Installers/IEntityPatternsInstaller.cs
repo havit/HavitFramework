@@ -52,9 +52,9 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 		///			</description>
 		///		</item>
 		///		<item>
-		///			<term>IDataEntrySymbolStorage&lt;&gt;</term>
+		///			<term>IDataEntrySymbolService&lt;&gt;</term>
 		///			<description>
-		///				DbDataEntrySymbolStorage&lt;&gt;
+		///				DbDataEntrySymbolService&lt;&gt;
 		///				Lifestyle je singleton.
 		///			</description>
 		///		</item>

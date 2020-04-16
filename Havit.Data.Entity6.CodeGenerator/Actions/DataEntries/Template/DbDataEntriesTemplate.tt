@@ -35,9 +35,9 @@ namespace <#= Model.NamespaceName #>
 		private <#= Model.ModelClassFullName #> <#= entry.FieldName #>;
 
 <# } #>
-<# if (Model.UseDataEntrySymbolStorage) { #>
-		public <#= Model.DbClassName #>(IDataEntrySymbolStorage<<#= Model.ModelClassFullName #>> dataEntrySymbolStorage, IRepository<<#= Model.ModelClassFullName #>> repository)
-			: base(dataEntrySymbolStorage, repository)
+<# if (Model.UseDataEntrySymbolService) { #>
+		public <#= Model.DbClassName #>(IDataEntrySymbolService<<#= Model.ModelClassFullName #>> dataEntrySymbolService, IRepository<<#= Model.ModelClassFullName #>> repository)
+			: base(dataEntrySymbolService, repository)
 <# } else { #>
 		public <#= Model.DbClassName #>(IRepository<<#= Model.ModelClassFullName #>> repository)
 			: base(repository)

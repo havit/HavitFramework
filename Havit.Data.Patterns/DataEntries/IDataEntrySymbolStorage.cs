@@ -1,18 +1,19 @@
-﻿using System;
-using Havit.Data.Patterns.Exceptions;
+﻿using System.Collections.Generic;
 
 namespace Havit.Data.Patterns.DataEntries
 {
 	/// <summary>
-	/// Zajišťuje mapování párovacích symbolů a identifikátorů objektů, resp. získání identifikátoru (primárního klíče) na základě symbolu.
+	/// Párování enumů na identifikátor.
 	/// </summary>
+	/// <remarks>
+	/// Generický typ je zde kvůli DI containeru - pro každý typ entity se udělá vlastní singleton.
+	/// </remarks>
 	public interface IDataEntrySymbolStorage<TEntity>
+		where TEntity : class
 	{
 		/// <summary>
-		/// Vrací hodnotu identifikátoru (primárního klíče) na základě symbolu.		
+		/// Úložiště párování enumů na identifikátor.
 		/// </summary>
-		/// <param name="entry">"Symbol".</param>
-		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Pokud není identifikátor dle symbolu nalezen.</exception>
-		int GetEntryId(Enum entry);
+		Dictionary<string, int> Value { get; set; }
 	}
 }

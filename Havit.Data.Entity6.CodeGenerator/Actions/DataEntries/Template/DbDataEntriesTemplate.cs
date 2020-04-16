@@ -146,7 +146,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
             #line hidden
             
             #line 38 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
- if (Model.UseDataEntrySymbolStorage) { 
+ if (Model.UseDataEntrySymbolService) { 
             
             #line default
             #line hidden
@@ -157,21 +157,21 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
             
             #line default
             #line hidden
-            this.Write("(IDataEntrySymbolStorage<");
+            this.Write("(IDataEntrySymbolService<");
             
             #line 39 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write("> dataEntrySymbolStorage, IRepository<");
+            this.Write("> dataEntrySymbolService, IRepository<");
             
             #line 39 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write("> repository)\r\n\t\t\t: base(dataEntrySymbolStorage, repository)\r\n");
+            this.Write("> repository)\r\n\t\t\t: base(dataEntrySymbolService, repository)\r\n");
             
             #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  } else { 

@@ -43,10 +43,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			{
 				services.AddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 			}
-			else if (factoryType == typeof(IDataSourceFactory<>))
-			{
-				services.AddTransient(typeof(IDataSourceFactory<>), typeof(DataSourceFactory<>));
-			}
 			else if (factoryType == typeof(IBeforeCommitProcessorsFactory))
 			{
 				services.AddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();

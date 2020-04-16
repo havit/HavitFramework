@@ -13,22 +13,20 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 	// TODO: Přesunout do Havit.Data.Patterns.Tests
 
 	[TestClass]
-	public class DataEntrySymbolStorageTests
+	public class DataEntrySymbolServiceTests
 	{
 		[TestMethod]
-		public void DbDataEntrySymbolStorage_GetEntryId_ReturnsId()
+		public void DbDataEntrySymbolService_GetEntryId_ReturnsId()
 		{
 			// Arrange
 			FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource(
 				new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString() },
 				new SupportedClass { Id = 2, Symbol = SupportedClass.Entry.Second.ToString() },
 				new SupportedClass { Id = 3, Symbol = SupportedClass.Entry.Third.ToString() });
-			Mock<IDataSourceFactory<SupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<SupportedClass>>();
-			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 			
 			// Act
-			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
-			int id = dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.Second);
+			DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+			int id = dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.Second);
 
 			// Assert
 			Assert.AreEqual(2, id);
@@ -36,16 +34,14 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 
 		[TestMethod]
 		[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException))]
-		public void DbDataEntrySymbolStorage_GetEntryId_ThrowsExceptionWhenNotFound()
+		public void DbDataEntrySymbolService_GetEntryId_ThrowsExceptionWhenNotFound()
 		{
 			// Arrange
 			FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource();
-			Mock<IDataSourceFactory<SupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<SupportedClass>>();
-			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
-			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
+			DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
 			
 			// Act
-			dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.First);
+			dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
 
 			// Assert by method attribute 
 		}
@@ -53,49 +49,43 @@ namespace Havit.Data.Entity.Patterns.Tests.DataEntries
 		[TestMethod]
 		[ExpectedException(typeof(NotSupportedException))]
 		[SuppressMessage("SonicLint", "S1848", Justification = "Pravidlo říká, nemáme vytvořit instanci, kterou pak nepoužijeme. Zde však testujeme vytvoření instance a k ničemu dalšímu ji nepotřebujeme.")]
-		public void DbDataEntrySymbolStorage_GetEntryId_ThrowsExceptionWhenNotSupported()
+		public void DbDataEntrySymbolService_GetEntryId_ThrowsExceptionWhenNotSupported()
 		{
 			// Arrange
 			FakeNotSupportedClassDataSource fakeDataSource = new FakeNotSupportedClassDataSource();
-			Mock<IDataSourceFactory<NotSupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<NotSupportedClass>>();
-			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 
 			// Act
-			new DataEntrySymbolStorage<NotSupportedClass>(mockDataSourceFactory.Object);
+			new DataEntrySymbolService<NotSupportedClass>(new DataEntrySymbolStorage<NotSupportedClass>(), fakeDataSource);
 	
 			// Assert by method attribute 
 		}
 
 		[TestMethod]
-		public void DbDataEntrySymbolStorage_GetEntryId_SupportsDeletedObjects()
+		public void DbDataEntrySymbolService_GetEntryId_SupportsDeletedObjects()
 		{
 			// Arrange
 			FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource(new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString(), Deleted = DateTime.Now });
-			Mock<IDataSourceFactory<SupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<SupportedClass>>();
-			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 
 			// Act
-			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
-			int id = dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.First);
+			DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+			int id = dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
 
 			// Assert
 			Assert.AreEqual(1, id);
 		}
 
 		[TestMethod]
-		public void DbDataEntrySymbolStorage_GetEntryId_SkipsNullAndEmptySymbols()
+		public void DbDataEntrySymbolService_GetEntryId_SkipsNullAndEmptySymbols()
 		{
 			// Arrange
 			FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource(
 				new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString() },				
 				new SupportedClass { Id = 2, Symbol = null },
 				new SupportedClass { Id = 3, Symbol = String.Empty });
-			Mock<IDataSourceFactory<SupportedClass>> mockDataSourceFactory = new Mock<IDataSourceFactory<SupportedClass>>();
-			mockDataSourceFactory.Setup(mock => mock.Create()).Returns(fakeDataSource);
 
 			// Act
-			DataEntrySymbolStorage<SupportedClass> dbDataEntrySymbolStorage = new DataEntrySymbolStorage<SupportedClass>(mockDataSourceFactory.Object);
-			dbDataEntrySymbolStorage.GetEntryId(SupportedClass.Entry.First);
+			DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+			dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
 
 			// Assert
 			// no exception was thrown

@@ -53,9 +53,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		///			</description>
 		///		</item>
 		///		<item>
-		///			<term>IDataEntrySymbolStorage&lt;&gt;</term>
+		///			<term>IDataEntrySymbolService&lt;&gt;</term>
 		///			<description>
-		///				DbDataEntrySymbolStorage&lt;&gt;
+		///				DbDataEntrySymbolService&lt;&gt;
 		///				Lifestyle je singleton.
 		///			</description>
 		///		</item>

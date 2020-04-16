@@ -27,6 +27,7 @@ using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure
 {
@@ -97,7 +98,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			componentRegistrationOptions.CachingInstaller.Install(installer);
 
 			installer.AddServiceSingleton<ISoftDeleteManager, SoftDeleteManager>();
-			installer.AddServiceSingleton(typeof(IDataEntrySymbolStorage<>), typeof(DataEntrySymbolStorage<>));
 			installer.AddServiceSingleton<ICurrentCultureService, CurrentCultureService>();
 			installer.AddServiceTransient<IDataSeedRunner, DataSeedRunner>();
 			installer.AddServiceTransient<ITransactionWrapper, TransactionScopeTransactionWrapper>();
@@ -106,8 +106,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.AddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
 			installer.AddFactory(typeof(IDataSeedPersisterFactory));
 
-			installer.AddFactory(typeof(IDataSourceFactory<>));
-			
 			installer.AddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
 			installer.AddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);
 
@@ -174,12 +172,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			}
 
 			// DataEntries
-			Type[] dataEntryTypes = dataLayerDependencyInjectionEnabledTypes.Where(type => type.ImplementsInterface(typeof(IDataEntries))).ToArray();
+			Type[] dataEntryTypes = dataLayerDependencyInjectionEnabledTypes
+				.Where(type => type.ImplementsInterface(typeof(IDataEntries)) // musí implementovat IDataEntries
+					&& (type.BaseType != null)
+					&& (type.BaseType.IsGenericType)
+					&& (type.BaseType.GetGenericTypeDefinition() == typeof(DataEntries<>))) // a dědit z DataEntries (pro test konstruktorů, viz dále)
+				.ToArray();
+
 			foreach (Type dataEntryType in dataEntryTypes)
 			{
 				Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypDataSource
 
 				installer.AddService(dataEntryInterface, dataEntryType, componentRegistrationOptions.DataEntriesLifestyle);
+
+				// DataEntrySymbolService+Storage potřebujeme jen pro ty dataEntryTypes, které mají dva konstruktory.
+				// Pokud má jeden konstruktor, je to IRepository.
+				// Pokud má dva konstruktory, je to IDataEntrySymbolService a IRepository.
+
+				if (dataEntryType.GetConstructors().Single().GetParameters().Count() == 2)
+				{					
+					Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
+
+					installer.AddServiceTransient(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType), typeof(DataEntrySymbolService<>).MakeGenericType(entityType));
+					installer.AddServiceSingleton(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType), typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType));
+				}
 			}
 
 			// Potřebujeme zaregistrovat IEntityKeyAccessor<TEntity, int>.

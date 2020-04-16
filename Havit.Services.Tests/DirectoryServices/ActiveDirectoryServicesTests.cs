@@ -9,6 +9,11 @@ namespace Havit.Services.Tests.DirectoryServices
 		[TestMethod]
 		public void ActiveDirectoryServices_GetUserInfo_SearchByDomain()
 		{
+			if (System.Environment.UserDomainName != "HAVIT")
+			{
+				Assert.Inconclusive("Test can successfully run only on machine in HAVIT domain.");
+			}
+
 			ActiveDirectoryServices services = new ActiveDirectoryServices();
 			Assert.IsNotNull(services.GetUserInfo("kanda"), "User 'kanda' not found.");
 			Assert.IsNotNull(services.GetUserInfo(@"havit\kanda"), @"User 'havit\kanda' not found.");
@@ -19,6 +24,11 @@ namespace Havit.Services.Tests.DirectoryServices
 		[TestMethod]
 		public void ActiveDirectoryServices_GetUserInfo_DetailData()
 		{
+			if (System.Environment.UserDomainName != "HAVIT")
+			{
+				Assert.Inconclusive("Test can successfully run only on machine in HAVIT domain.");
+			}
+
 			ActiveDirectoryServices services = new ActiveDirectoryServices();
 			UserInfo userInfo = services.GetUserInfo(@"HAVIT\kanda");
 			Assert.IsNotNull(userInfo, @"User 'HAVIT\kanda' not found.");

@@ -42,7 +42,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// </summary>
 		protected virtual void RegisterEntityCacheSupportDecision(IServiceInstaller<TLifetime> installer)
 		{
-			installer.AddServiceSingleton<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
+			installer.AddServiceTransient<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
+			installer.AddServiceSingleton<IAnnotationsEntityCacheSupportDecisionStorage, AnnotationsEntityCacheSupportDecisionStorage>();
 		}
 	}
 }

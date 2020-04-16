@@ -17,31 +17,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	/// <summary>
 	/// Výchozí strategie definující, zda může být entita cachována. Řídí se anotacemi.
 	/// </summary>
-	/// <remarks>
-	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
-	/// DbContext je registrován scoped, proto se této factory popsaná issue týká.
-	/// Z DbContextu jen čteme metadata (ta jsou pro každý DbContext stejná), issue tedy nemá žádný dopad.
-	/// </remarks>	
 	public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	{
-		private readonly Lazy<Dictionary<Type, bool>> shouldCacheEntities;
-		private readonly Lazy<Dictionary<Type, bool>> shouldCacheAllKeys;
-        private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
+		private readonly IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage;
+		private readonly IDbContext dbContext;
+		private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        public AnnotationsEntityCacheSupportDecision(IDbContextFactory dbContextFactory, ICollectionTargetTypeStore collectionTargetTypeStore)
+        public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeStore collectionTargetTypeStore)
 		{
-			shouldCacheEntities = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
-			shouldCacheAllKeys = GetLazyDictionary(dbContextFactory, entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
-            this.collectionTargetTypeStore = collectionTargetTypeStore;
+			this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
+			this.dbContext = dbContext;
+			this.collectionTargetTypeStore = collectionTargetTypeStore;
         }
 
 		/// <inheritdoc />
 		public virtual bool ShouldCacheEntityType(Type entityType)
 		{
-            return GetValueFromDictionary(shouldCacheEntities.Value, entityType);
+            return GetValueFromDictionary(GetShouldCacheEntitiesDictionary(), entityType);
 		}
 
 		/// <inheritdoc />
@@ -65,22 +60,43 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
         /// <inheritdoc />
         public virtual bool ShouldCacheAllKeys(Type entityType)
 		{
-			return GetValueFromDictionary(shouldCacheAllKeys.Value, entityType);
+			return GetValueFromDictionary(GetShouldCacheAllKeysDictionary(), entityType);
 		}
 
-		private Lazy<Dictionary<Type, TResult>> GetLazyDictionary<TResult>(IDbContextFactory dbContextFactory, Func<IEntityType, TResult> valueFunc)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private Dictionary<Type, bool> GetShouldCacheEntitiesDictionary()
 		{
-			return new Lazy<Dictionary<Type, TResult>>(() =>
+			if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
 			{
-				Dictionary<Type, TResult> result = null;
-				dbContextFactory.ExecuteAction(dbContext =>
+				lock (annotationsEntityCacheSupportDecisionStorage)
 				{
-					result = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
-						entityType => entityType.ClrType,
-						entityType => valueFunc(entityType));
-				});
-				return result;
-			}, LazyThreadSafetyMode.PublicationOnly);
+					if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
+					{
+						annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
+							entityType => entityType.ClrType,
+							entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheAllKeysAnnotationName)?.Value)).GetValueOrDefault(false));
+					}
+				}
+			}
+			return annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities;
+		}
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private Dictionary<Type, bool> GetShouldCacheAllKeysDictionary()
+		{
+			if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
+			{
+				lock (annotationsEntityCacheSupportDecisionStorage)
+				{
+					if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
+					{
+						annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
+							entityType => entityType.ClrType,
+							entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
+					}
+				}
+			}
+			return annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys;
 		}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

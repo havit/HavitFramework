@@ -32,8 +32,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 				AbsoluteExpiration = null
 			};
 
-			installer.AddServiceSingleton<IEntityCacheOptionsGenerator, AnnotationsWithDefaultsEntityCacheOptionsGenerator>();
+			installer.AddServiceTransient<IEntityCacheOptionsGenerator, AnnotationsWithDefaultsEntityCacheOptionsGenerator>();
 			installer.AddServiceSingletonInstance(typeof(AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions), options);
+			installer.AddServiceSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
 		}
 
 		/// <inheritdoc />

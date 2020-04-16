@@ -16,64 +16,70 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	/// <summary>
 	/// Výchozí strategie definující, zda může být entita cachována. Řídí se anotacemi.
 	/// </summary>
-	/// <remarks>
-	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
-	/// DbContext je registrován scoped, proto se této factory popsaná issue týká.
-	/// Z DbContextu jen čteme metadata (ta jsou pro každý DbContext stejná), issue tedy nemá žádný dopad.
-	/// </remarks>
 	public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerator
 	{
-		private readonly Lazy<Dictionary<Type, CacheOptions>> cacheOptionsDictionary;
-        private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
+		private readonly IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage;
+		private readonly IDbContext dbContext;
+		private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        public AnnotationsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory, ICollectionTargetTypeStore collectionTargetTypeStore)
+        public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, ICollectionTargetTypeStore collectionTargetTypeStore)
 		{
-			cacheOptionsDictionary = GetLazyDictionary(dbContextFactory);
-            this.collectionTargetTypeStore = collectionTargetTypeStore;
+			this.annotationsEntityCacheOptionsGeneratorStorage = annotationsEntityCacheOptionsGeneratorStorage;
+			this.dbContext = dbContext;
+			this.collectionTargetTypeStore = collectionTargetTypeStore;
         }
 
 		/// <inheritdoc />
 		public CacheOptions GetEntityCacheOptions<TEntity>(TEntity entity)
 			where TEntity : class
 		{
-			return GetValueFromDictionary(cacheOptionsDictionary.Value, typeof(TEntity));
+			return GetValueForEntity(typeof(TEntity));
 		}
 
 		/// <inheritdoc />
         public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
             where TEntity : class
         {
-			return GetValueFromDictionary(cacheOptionsDictionary.Value, collectionTargetTypeStore.GetCollectionTargetType(typeof(TEntity), propertyName));
+			return GetValueForEntity(collectionTargetTypeStore.GetCollectionTargetType(typeof(TEntity), propertyName));
         }
 
         /// <inheritdoc />
         public CacheOptions GetAllKeysCacheOptions<TEntity>()
 			where TEntity : class
 		{
-			return GetValueFromDictionary(cacheOptionsDictionary.Value, typeof(TEntity));
+			return GetValueForEntity(typeof(TEntity));
 		}
 
-		private Lazy<Dictionary<Type, CacheOptions>> GetLazyDictionary(IDbContextFactory dbContextFactory)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private CacheOptions GetValueForEntity(Type type)
 		{
-			return new Lazy<Dictionary<Type, CacheOptions>>(() =>
+			if (annotationsEntityCacheOptionsGeneratorStorage.Value == null)
 			{
-				Dictionary<Type, CacheOptions> result = null;
-				dbContextFactory.ExecuteAction(dbContext =>
+				lock (annotationsEntityCacheOptionsGeneratorStorage)
 				{
-					result = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
-						entityType => entityType.ClrType,
-						entityType =>
-						{
-							var options = GetCacheOptions(entityType);							
-							options?.Freeze();
-							return options;
-						});
-				});
+					if (annotationsEntityCacheOptionsGeneratorStorage.Value == null)
+					{
+						annotationsEntityCacheOptionsGeneratorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
+												entityType => entityType.ClrType,
+												entityType =>
+												{
+													var options = GetCacheOptions(entityType);
+													options?.Freeze();
+													return options;
+												});
+					}
+				}
+			}
+
+			if (annotationsEntityCacheOptionsGeneratorStorage.Value.TryGetValue(type, out CacheOptions result))
+			{
 				return result;
-			});
+			}
+
+			return null;
 		}
 
 		/// <summary>
@@ -121,14 +127,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private CacheOptions GetValueFromDictionary(Dictionary<Type, CacheOptions> valuesDictionary, Type type)
-		{
-			if (valuesDictionary.TryGetValue(type, out CacheOptions result))
-			{
-				return result;
-			}
-			return null;
-		}
     }
 }

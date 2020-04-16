@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IDbContextFactory dbContextFactory, ICollectionTargetTypeStore collectionTargetTypeStore, AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options) : base(dbContextFactory, collectionTargetTypeStore)
+		public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, ICollectionTargetTypeStore collectionTargetTypeStore, AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options) : base(annotationsEntityCacheOptionsGeneratorStorage, dbContext, collectionTargetTypeStore)
 		{
 			this.absoluteExpiration = options.AbsoluteExpiration;
 			this.slidingExpiration = options.SlidingExpiration;

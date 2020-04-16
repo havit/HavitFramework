@@ -39,7 +39,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
             if (entityCacheKeyGenerator == null)
             {
-                entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContext.CreateDbContextFactory());
+                entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
             }
 
             if (cacheService == null)

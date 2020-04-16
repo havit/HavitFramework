@@ -34,7 +34,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// </summary>
 		protected virtual void RegisterEntityCacheKeyGenerator(IServiceInstaller<TLifetime> installer)
 		{
-			installer.AddServiceSingleton<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
+			installer.AddServiceTransient<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
+			installer.AddServiceSingleton<IEntityCacheKeyGeneratorStorage, EntityCacheKeyGeneratorStorage>();
 		}
 
 		/// <summary>

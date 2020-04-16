@@ -14,69 +14,68 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
     /// </summary>
     public class EntityCacheKeyGenerator : IEntityCacheKeyGenerator
 	{
-        private readonly Lazy<Dictionary<Type, string>> typeToCacheKeyCoreMapping;
+        private readonly IEntityCacheKeyGeneratorStorage entityCacheKeyGeneratorStorage;
+        private readonly IDbContext dbContext;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        public EntityCacheKeyGenerator(IDbContextFactory dbContextFactory)
+        public EntityCacheKeyGenerator(IEntityCacheKeyGeneratorStorage entityCacheKeyGeneratorStorage, IDbContext dbContext)
         {
-            typeToCacheKeyCoreMapping = GetLazyDictionary(dbContextFactory);
+            this.entityCacheKeyGeneratorStorage = entityCacheKeyGeneratorStorage;
+            this.dbContext = dbContext;
         }
 
 		/// <inheritdoc />
 		public string GetEntityCacheKey(Type entityType, object key)
 		{			
-			return GetValueFromDictionary(entityType) + key.ToString();
+			return GetValueForEntity(entityType) + key.ToString();
 		}
 
 		/// <inheritdoc />
 		public string GetCollectionCacheKey(Type entityType, object key, string propertyName)
 		{
-			return GetValueFromDictionary(entityType) + key.ToString() + "|" + propertyName;
+			return GetValueForEntity(entityType) + key.ToString() + "|" + propertyName;
 		}
 
 		/// <inheritdoc />
 		public string GetAllKeysCacheKey(Type entityType)
 		{
-			return GetValueFromDictionary(entityType) + "AllKeys";
+			return GetValueForEntity(entityType) + "AllKeys";
 		}
 
-        private Lazy<Dictionary<Type, string>> GetLazyDictionary(IDbContextFactory dbContextFactory)
-        {
-            return new Lazy<Dictionary<Type, string>>(() =>
-            {
-                Dictionary<Type, string> result = null;
-                dbContextFactory.ExecuteAction(dbContext =>
-                {
-                    var typesByName = dbContext
-                        .Model
-                        .GetApplicationEntityTypes(includeManyToManyEntities: false)
-                        .Select(entityType => entityType.ClrType)
-                        .GroupBy(type => type.Name)
-                        .ToList();
-
-                    var singleTypeOccurences = typesByName
-                        .Where(group => group.Count() == 1) // tam, kde pod jménem máme jen jednu položku (>99%)
-                        .Select(group => new { Type = group.Single(), CacheKeyCore = group.Key }); // použijeme jen název třídy (bez namespace)
-
-                    var multipleTypeOccurences = typesByName
-                            .Where(group => group.Count() > 1) // tam, kde máme pod jedním názvem více tříd v různých namespaces (<1%)
-                            .SelectMany(group => group)
-                            .Select(type => new { Type = type, CacheKeyCore = type.FullName }); // použijeme celý název třídy vč. namespace
-
-                    result = singleTypeOccurences.Concat(multipleTypeOccurences)
-                            .ToDictionary(item => item.Type, item => "EF|" + item.CacheKeyCore + "|");
-                });
-
-                return result;
-            });
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private string GetValueFromDictionary(Type type)
+        private string GetValueForEntity(Type type)
         {
-            if (typeToCacheKeyCoreMapping.Value.TryGetValue(type, out string result))
+            if (entityCacheKeyGeneratorStorage.Value == null)
+            {
+                lock (entityCacheKeyGeneratorStorage)
+                {
+                    if (entityCacheKeyGeneratorStorage.Value == null)
+                    {
+                        var typesByName = dbContext
+                             .Model
+                             .GetApplicationEntityTypes(includeManyToManyEntities: false)
+                             .Select(entityType => entityType.ClrType)
+                             .GroupBy(type => type.Name)
+                             .ToList();
+
+                        var singleTypeOccurences = typesByName
+                            .Where(group => group.Count() == 1) // tam, kde pod jménem máme jen jednu položku (>99%)
+                            .Select(group => new { Type = group.Single(), CacheKeyCore = group.Key }); // použijeme jen název třídy (bez namespace)
+
+                        var multipleTypeOccurences = typesByName
+                                .Where(group => group.Count() > 1) // tam, kde máme pod jedním názvem více tříd v různých namespaces (<1%)
+                                .SelectMany(group => group)
+                                .Select(type => new { Type = type, CacheKeyCore = type.FullName }); // použijeme celý název třídy vč. namespace
+
+                        entityCacheKeyGeneratorStorage.Value = singleTypeOccurences.Concat(multipleTypeOccurences)
+                                .ToDictionary(item => item.Type, item => "EF|" + item.CacheKeyCore + "|");
+                    }
+                }
+            }
+
+            if (entityCacheKeyGeneratorStorage.Value.TryGetValue(type, out string result))
             {
                 return result;
             }

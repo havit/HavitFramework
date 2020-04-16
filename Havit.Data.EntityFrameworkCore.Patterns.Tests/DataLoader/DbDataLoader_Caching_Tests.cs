@@ -149,7 +149,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// připojíme objekt Role k DbContextu jako existující (avšak není v databázi)
 			dbContextInitial.Attach(role);
 
-            EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(dbContextInitial.CreateDbContextFactory());
+            EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContextInitial);
 
             // a tento in memory objekt uložíme do cache (přestože není v databázi)
             EntityCacheManager entityCacheManagerInitial = CachingTestHelper.CreateEntityCacheManager(

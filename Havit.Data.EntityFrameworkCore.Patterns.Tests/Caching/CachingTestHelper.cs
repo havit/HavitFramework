@@ -48,7 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             }
 
             IPropertyLambdaExpressionManager propertyLambdaExpressionManager = new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder());
-            IReferencingCollectionsStore referencingCollectionStore = new ReferencingCollectionsStore(dbContext.CreateDbContextFactory());
+            IReferencingCollectionsService referencingCollectionStore = new ReferencingCollectionsService(new ReferencingCollectionsStorage(), dbContext);
 
             return new EntityCacheManager(
                 cacheService,

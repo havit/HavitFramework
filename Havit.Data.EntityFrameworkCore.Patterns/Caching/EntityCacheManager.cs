@@ -34,14 +34,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IEntityCacheKeyGenerator entityCacheKeyGenerator;
 		private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 		private readonly IDbContext dbContext;
-        private readonly IReferencingCollectionsStore referencingCollectionsStore;
+        private readonly IReferencingCollectionsService referencingCollectionsService;
         private readonly IEntityKeyAccessor entityKeyAccessor;
 		private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingCollectionsStore referencingCollectionsStore)
+		public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingCollectionsService referencingCollectionsService)
 		{
 			this.cacheService = cacheService;
 			this.entityCacheSupportDecision = entityCacheSupportDecision;
@@ -50,7 +50,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 			this.dbContext = dbContext;
-            this.referencingCollectionsStore = referencingCollectionsStore;
+            this.referencingCollectionsService = referencingCollectionsService;
         }
 
 		/// <inheritdoc />
@@ -288,7 +288,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
         private void InvalidateCollectionsInternal(Type entityType, object entity)
         {            
-            var referencingCollections = referencingCollectionsStore.GetReferencingCollections(entityType);            
+            var referencingCollections = referencingCollectionsService.GetReferencingCollections(entityType);            
             foreach (var referencingCollection in referencingCollections)
             {
                 // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.

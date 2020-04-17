@@ -12,17 +12,17 @@ using System.Threading.Tasks;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal
 {
 	[TestClass]
-	public class ReferencingCollectionsStoreTests
+	public class ReferencingCollectionsServiceTests
 	{
 		[TestMethod]
-		public void ReferencingCollectionsStore_GetReferencingCollections_ContainsCollections()
+		public void ReferencingCollectionsService_GetReferencingCollections_ContainsCollections()
 		{
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-			ReferencingCollectionsStore referencingCollectionsStore = new ReferencingCollectionsStore(dbContext.CreateDbContextFactory());
+			ReferencingCollectionsService referencingCollectionsService = new ReferencingCollectionsService(new ReferencingCollectionsStorage(), dbContext);
 
 			// Act
-			var referencingCollections = referencingCollectionsStore.GetReferencingCollections(typeof(Membership));
+			var referencingCollections = referencingCollectionsService.GetReferencingCollections(typeof(Membership));
 
 			// Assert
 			Assert.AreEqual(1, referencingCollections.Count);
@@ -31,28 +31,28 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal
 		}
 
 		[TestMethod]
-		public void ReferencingCollectionsStore_GetReferencingCollections_DoesNotContainReferences()
+		public void ReferencingCollectionsService_GetReferencingCollections_DoesNotContainReferences()
 		{
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-			ReferencingCollectionsStore referencingCollectionsStore = new ReferencingCollectionsStore(dbContext.CreateDbContextFactory());
+			ReferencingCollectionsService referencingCollectionsService = new ReferencingCollectionsService(new ReferencingCollectionsStorage(), dbContext);
 
 			// Act
-			var referencingCollections = referencingCollectionsStore.GetReferencingCollections(typeof(LoginAccount));
+			var referencingCollections = referencingCollectionsService.GetReferencingCollections(typeof(LoginAccount));
 
 			// Assert
 			Assert.AreEqual(0, referencingCollections.Count); // LoginAccount nikdo nereferencuje kolekcí.
 		}
 
 		[TestMethod]
-		public void ReferencingCollectionsStore_GetReferencingCollections_DoesNotContainOneToOneNavigations()
+		public void ReferencingCollectionsService_GetReferencingCollections_DoesNotContainOneToOneNavigations()
 		{
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-			ReferencingCollectionsStore referencingCollectionsStore = new ReferencingCollectionsStore(dbContext.CreateDbContextFactory());
+			ReferencingCollectionsService referencingCollectionsService = new ReferencingCollectionsService(new ReferencingCollectionsStorage(), dbContext);
 
 			// Act
-			var referencingCollections = referencingCollectionsStore.GetReferencingCollections(typeof(ClassB));
+			var referencingCollections = referencingCollectionsService.GetReferencingCollections(typeof(ClassB));
 
 			// Assert
 			Assert.AreEqual(0, referencingCollections.Count); // ClassB je referencováno jako OneToOne reference, nikoliv kolekce.

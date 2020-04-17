@@ -124,7 +124,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			installer.AddServiceTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
 			installer.AddServiceSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
-			installer.AddServiceSingleton<IReferencingCollectionsStore, ReferencingCollectionsStore>();
+			installer.AddServiceTransient<IReferencingCollectionsService, ReferencingCollectionsService>();
+			installer.AddServiceSingleton<IReferencingCollectionsStorage, ReferencingCollectionsStorage>();
 			installer.AddServiceTransient<ICollectionTargetTypeService, CollectionTargetTypeService>();
 			installer.AddServiceSingleton<ICollectionTargetTypeStorage, CollectionTargetTypeStorage>();
 			installer.AddServiceSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();

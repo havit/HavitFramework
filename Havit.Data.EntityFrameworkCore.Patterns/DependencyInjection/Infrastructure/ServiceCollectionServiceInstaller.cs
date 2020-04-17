@@ -35,11 +35,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 		public override void AddFactory(Type factoryType)
 		{
-			if (factoryType == typeof(IDbContextFactory))
-			{
-				services.AddTransient<IDbContextFactory, DbContextFactory>();
-			}
-			else if (factoryType == typeof(IDataSeedPersisterFactory))
+			if (factoryType == typeof(IDataSeedPersisterFactory))
 			{
 				services.AddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 			}

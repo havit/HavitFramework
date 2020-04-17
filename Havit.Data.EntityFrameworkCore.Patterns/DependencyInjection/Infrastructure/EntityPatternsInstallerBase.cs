@@ -68,8 +68,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 				installer.AddServiceSingletonInstance(typeof(DbContextOptions), dbContextOptions);
 			}
 
-			installer.AddFactory(typeof(IDbContextFactory));
-
 			return this;
 		}
 

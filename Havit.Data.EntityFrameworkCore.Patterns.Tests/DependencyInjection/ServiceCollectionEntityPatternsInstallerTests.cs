@@ -26,52 +26,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 	public class ServiceCollectionEntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterDbContextFactory()
-		{
-			// Arrange
-			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
-
-			// Act
-			serviceProvider.GetRequiredService<IDbContextFactory>();
-
-			// Assert			
-			// no exception was thrown
-		}
-
-		/// <summary>
-		/// repro #49402 ServiceCollectionServiceInstaller - resolvování Scoped services ze service-factories padá na InvalidOperationException: Cannot resolve scoped service XYZ from root provider.
-		/// </summary>
-		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldResolveScopedDbContext()
-		{
-			// Arrange
-			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
-			var s1 = serviceProvider.GetService<IDbContextFactory>();
-
-			// Act
-			IDbContext dbContextScope1 = null;
-			using (var scope1 = serviceProvider.CreateScope())
-			{
-				var service = scope1.ServiceProvider.GetRequiredService<IDbContextFactory>();
-				service.ExecuteAction(dbContext =>
-				{
-					dbContextScope1 = dbContext;
-				});
-			}
-
-			using (var scope = serviceProvider.CreateScope())
-			{
-				var service = scope.ServiceProvider.GetRequiredService<IDbContextFactory>();
-				service.ExecuteAction(dbContextScope2 =>
-				{
-					// assert
-					Assert.IsNotNull(dbContextScope2);
-					Assert.AreNotSame(dbContextScope1, dbContextScope2);
-				});
-			}
-		}
-
-		[TestMethod]
 		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange

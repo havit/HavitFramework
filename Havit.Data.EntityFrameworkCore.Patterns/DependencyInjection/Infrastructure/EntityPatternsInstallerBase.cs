@@ -122,11 +122,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			installer.AddFactory(typeof(IEntityValidatorsFactory));
 
-			installer.AddServiceSingleton<IEntityKeyAccessor, DbEntityKeyAccessor>();
+			installer.AddServiceTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
+			installer.AddServiceSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
 			installer.AddServiceSingleton<IReferencingCollectionsStore, ReferencingCollectionsStore>();
 			installer.AddServiceSingleton<ICollectionTargetTypeStore, CollectionTargetTypeStore>();
 			installer.AddServiceSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
-			installer.AddServiceSingleton<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
+			installer.AddServiceTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 
 			return this;
 		}
@@ -213,7 +214,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 					Type interfaceType = typeof(IEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> IEntityKeyAccessor<TEntity, int>
 					Type implementationType = typeof(DbEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> DbEntityKeyAccessor<TEntity, int>
 
-					installer.AddServiceSingleton(interfaceType, implementationType);
+					installer.AddServiceTransient(interfaceType, implementationType);
 				});
 
 			return this;

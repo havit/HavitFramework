@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKeyPropertyName()
 		{
 			// Arrange
-			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new TestDbContext().CreateDbContextFactory());			
+			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), new TestDbContext());			
 
 			// Act + Assert
 			Assert.AreEqual(nameof(Language.Id), dbEntityKeyAccessor.GetEntityKeyPropertyNames(typeof(Language)).Single());
@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKey()
 		{
 			// Arrange
-			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new TestDbContext().CreateDbContextFactory());
+			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), new TestDbContext());
 
 			Language language = new Language() { Id = 999 };
 

@@ -36,7 +36,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			string saveCacheDependencyKey = entityCacheDependencyManager.GetSaveCacheDependencyKey(typeof(LoginAccount), loginAccount.Id);
 			string anySaveCacheDependencyKey = entityCacheDependencyManager.GetAnySaveCacheDependencyKey(typeof(LoginAccount));
 
-			EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object), new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()));
+			EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 
 			Changes changes = new Changes
 			{

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
@@ -14,30 +15,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 	/// <summary>
 	/// Služba pro získávání primárního klíče modelových objektů.
 	/// </summary>
-	/// <remarks>
-	/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
-	/// DbContext je registrován scoped, proto se této factory popsaná issue týká.
-	/// Z DbContextu jen čteme metadata (ta jsou pro každý DbContext stejná), issue tedy nemá žádný dopad.
-	/// </remarks>
 	public class DbEntityKeyAccessor : IEntityKeyAccessor
 	{
-		private readonly Lazy<Dictionary<Type, PropertyInfo[]>> propertyInfos;
+		private readonly IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage;
+		private readonly IDbContext dbContext;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbEntityKeyAccessor(IDbContextFactory dbContextFactory)
+		public DbEntityKeyAccessor(IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage, IDbContext dbContext)
 		{
 			// pro možnost použití jako singletonu pro všechny případy používáme LazyThreadSafetyMode.ExecutionAndPublication
-			propertyInfos = new Lazy<Dictionary<Type, PropertyInfo[]>>(() =>
-			{
-				Dictionary<Type, PropertyInfo[]> result = null;
-				dbContextFactory.ExecuteAction(dbContext =>
-				{
-					result = dbContext.Model.GetApplicationEntityTypes().ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
-				});
-				return result;
-			}, LazyThreadSafetyMode.PublicationOnly);
+			this.dbEntityKeyAccessorStorage = dbEntityKeyAccessorStorage;
+			this.dbContext = dbContext;
 		}
 
 		/// <summary>
@@ -60,7 +50,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 
 		private PropertyInfo[] GetPropertyInfos(Type entityType)
 		{
-			if (propertyInfos.Value.TryGetValue(entityType, out PropertyInfo[] propertyInfo))
+			if (dbEntityKeyAccessorStorage.Value == null)
+			{
+				lock (dbEntityKeyAccessorStorage)
+				{
+					if (dbEntityKeyAccessorStorage.Value == null)
+					{
+						dbEntityKeyAccessorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
+					}
+				}
+			}
+
+			if (dbEntityKeyAccessorStorage.Value.TryGetValue(entityType, out PropertyInfo[] propertyInfo))
 			{
 				return propertyInfo;
 			}

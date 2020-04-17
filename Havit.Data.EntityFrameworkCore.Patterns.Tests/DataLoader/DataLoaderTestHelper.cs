@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
                 entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext);
             }
 
-            return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()));
+            return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
         }
     }
 }

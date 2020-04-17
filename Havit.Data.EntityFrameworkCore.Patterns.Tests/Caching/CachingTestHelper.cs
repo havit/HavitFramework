@@ -55,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
                 entityCacheSupportDecision,
                 entityCacheKeyGenerator,
                 entityCacheOptionsGenerator,
-                new DbEntityKeyAccessor(dbContext.CreateDbContextFactory()),
+                new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext),
                 propertyLambdaExpressionManager,
                 dbContext,
                 referencingCollectionStore);

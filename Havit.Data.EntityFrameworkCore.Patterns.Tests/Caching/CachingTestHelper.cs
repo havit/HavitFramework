@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 
             if (entityCacheOptionsGenerator == null)
             {
-                entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new CollectionTargetTypeStore(dbContext.CreateDbContextFactory()));
+                entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new CollectionTargetTypeService(new CollectionTargetTypeStorage(), dbContext));
             }
 
             if (entityCacheKeyGenerator == null)

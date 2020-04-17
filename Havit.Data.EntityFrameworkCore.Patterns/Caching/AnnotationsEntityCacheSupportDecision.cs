@@ -21,16 +21,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 	{
 		private readonly IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage;
 		private readonly IDbContext dbContext;
-		private readonly ICollectionTargetTypeStore collectionTargetTypeStore;
+		private readonly ICollectionTargetTypeService collectionTargetTypeService;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeStore collectionTargetTypeStore)
+        public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
 		{
 			this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
 			this.dbContext = dbContext;
-			this.collectionTargetTypeStore = collectionTargetTypeStore;
+			this.collectionTargetTypeService = collectionTargetTypeService;
         }
 
 		/// <inheritdoc />
@@ -48,7 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
         /// <inheritdoc />
         public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
         {
-            return ShouldCacheEntityType(collectionTargetTypeStore.GetCollectionTargetType(entityType, propertyName));
+            return ShouldCacheEntityType(collectionTargetTypeService.GetCollectionTargetType(entityType, propertyName));
         }
 
         /// <inheritdoc />

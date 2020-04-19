@@ -181,7 +181,7 @@ namespace Havit.Data.Entity.Validators
 
 				if (pkWithIdentity && !symbolExists)
 				{
-					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and withoud column Symbol (unable to pair items).";
+					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and without column Symbol (unable to pair items).";
 				}
 
 				if (!pkWithIdentity && symbolExists)

@@ -188,12 +188,12 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 
 				if (primaryKeyGenerated && !symbolExists)
 				{
-					yield return $"Class {entityType.ClrType.Name} has Enum mapped to table with primary key with identity and withoud column Symbol (unable to pair items).";
+					yield return $"Class {entityType.ClrType.Name} has Enum mapped to a table with primary key with identity and without column Symbol (unable to pair items).";
 				}
 
 				if (!primaryKeyGenerated && symbolExists)
 				{
-					yield return $"Class {entityType.ClrType.Name} has Enum mapped to table with primary key without identity and with column Symbol (ambiguous pairing fields).";
+					yield return $"Class {entityType.ClrType.Name} has Enum mapped to a table with primary key without identity and with column Symbol (ambiguous pairing fields).";
 				}
 			}
 		}
@@ -207,7 +207,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 			{
 				if (property.Name.EndsWith("Id") && !property.IsForeignKey() && !property.IsKey())
 				{
-					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is not a foreign key. The property name ends with 'Id' which is enabled only for foreign keys.";
+					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is not a foreign key. The property name ends with 'Id' which is allowed only for foreign keys.";
 				}
 			}
 		}
@@ -233,7 +233,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
         {
             if (entityType.IsOwned())
             {
-                yield return $"Class {entityType.ClrType.Name} is a registered owned type. Owned types are not welcome.";
+                yield return $"Class {entityType.ClrType.Name} is a registered owned type. Owned types are not supported.";
             }
         }
 

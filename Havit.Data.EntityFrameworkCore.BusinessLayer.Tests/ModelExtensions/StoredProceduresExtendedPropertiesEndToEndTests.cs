@@ -145,5 +145,56 @@ END
 ", dropExtendedPropertyCommand.CommandText);
             }
         }
-    }
+
+		/// <summary>
+		/// Checks, whether order of migration commands is correct, i.e. first create stored procedure, then add extended properties.
+		/// </summary>
+		[TestClass]
+		public class StoredProcedureWithExtendedPropertiesOrderOfMigrationCommandsIsCorrect
+		{
+			[Attach(nameof(Invoice))]
+			public class InvoiceStoredProcedures : StoredProcedureModelExtender
+			{
+				[MethodName(nameof(TotalAmount))]
+				[Result(StoredProcedureResultType.DataTable)]
+				[MethodAccessModifier("public")]
+				public StoredProcedureModelExtension TotalAmount()
+				{
+					return new StoredProcedureModelExtension { CreateSql = $"CREATE PROCEDURE [{nameof(TotalAmount)}]", ProcedureName = nameof(TotalAmount) };
+				}
+			}
+
+			[Table("Dummy")]
+			private class Invoice
+			{
+				public int Id { get; set; }
+
+				public DateTime Created { get; set; }
+			}
+
+			[TestMethod]
+			public void StoredProcedureModelExtensions_EndToEnd_StoredProcedureWithExtendedPropertiesOrderOfMigrationCommandsIsCorrect()
+			{
+				var source = new EndToEndTestModelExtensionsDbContext<Invoice>();
+				var target = new EndToEndTestModelExtensionsDbContext<Invoice>(typeof(InvoiceStoredProcedures));
+
+				var commands = source.Migrate(target).ToList();
+
+				Assert.AreNotEqual(0, commands.Count);
+
+				// currently checking only whether CREATE PROCEDURE command is before EXEC sys.sp_addextendedproperty commands
+				// (should make it less prone it breakage, when more extensions (that modify generated migration commands) are added to DbContext
+				int createProcedureCommandIndex = commands.FindIndex(c => c.CommandText.StartsWith("CREATE PROCEDURE"));
+                int[] addExtendedPropertyCommandIndexes = commands
+                    .Select((command, index) => new { command, index })
+                    .Where(a => a.command.CommandText.StartsWith("EXEC sys.sp_addextendedproperty"))
+                    .Select(a => a.index)
+                    .ToArray();
+
+				Assert.AreNotEqual(-1, createProcedureCommandIndex);
+
+				Assert.IsTrue(addExtendedPropertyCommandIndexes.All(index => createProcedureCommandIndex < index));
+			}
+		}
+	}
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -100,6 +98,36 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Tests whether registering multiple <see cref="IMigrationOperationSqlGenerator"/> into <see cref="CompositeMigrationsSqlGeneratorExtension"/>
+        /// actually registers them in correct order (i.e. order they were registered).
+        /// </summary>
+        [TestMethod]
+        public void CompositeMigrationsSqlGeneratorExtension_RegisterMultipleGenerators_GeneratorsAreRegisteredInCorrectOrder()
+        {
+            static void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            {
+                optionsBuilder.UseExtendedMigrationsInfrastructure();
+
+                IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+
+                builder.AddOrUpdateExtension(optionsBuilder.Options
+                    .FindExtension<CompositeMigrationsSqlGeneratorExtension>()
+                    .WithGeneratorType<FakeMigrationOperationSqlGenerator>()
+                    .WithGeneratorType<SecondFakeMigrationOperationSqlGenerator>());
+            }
+
+            using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
+            {
+                _ = dbContext.Model;
+
+                Assert.AreEqual(2, dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.Count);
+
+                Assert.AreSame(dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes[0], typeof(FakeMigrationOperationSqlGenerator));
+                Assert.AreSame(dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes[1], typeof(SecondFakeMigrationOperationSqlGenerator));
+            }
+        }
+
         private class FakeMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
         {
             public ICurrentDbContext CurrentDbContext { get; }
@@ -108,6 +136,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
             {
                 CurrentDbContext = currentDbContext;
             }
+        }
+
+        private class SecondFakeMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
+        {
         }
     }
 }

@@ -13,12 +13,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
     /// <see cref="IDbContextOptionsExtension"/> for configuring <see cref="CompositeMigrationsSqlGenerator"/>.
     /// </summary>
     public class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtension
-	{
-		private ImmutableHashSet<Type> generatorTypes = ImmutableHashSet<Type>.Empty;
+    {
+        private ImmutableList<Type> generatorTypes = ImmutableList<Type>.Empty;
 
 		private DbContextOptionsExtensionInfo _info;
 
-        internal IImmutableSet<Type> GeneratorTypes => generatorTypes;
+        internal IImmutableList<Type> GeneratorTypes => generatorTypes;
 
 		/// <inheritdoc />
 		public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
@@ -52,8 +52,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
             where T : IMigrationOperationSqlGenerator
 		{
 			var clone = Clone();
-			clone.generatorTypes = generatorTypes.Add(typeof(T));
-			return clone;
+            if (!clone.generatorTypes.Contains(typeof(T)))
+            {
+                clone.generatorTypes = generatorTypes.Add(typeof(T));
+            }
+
+            return clone;
 		}
 
         /// <inheritdoc />

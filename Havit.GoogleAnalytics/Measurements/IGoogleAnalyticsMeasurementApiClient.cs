@@ -24,7 +24,8 @@ namespace Havit.GoogleAnalytics.Measurements
         /// <param name="eventModel">Basic and extendable model of the event hit</param>
         /// <returns>Awaitable Task</returns>
         /// <exception cref="ValidationException">When a required property is missing or other requirements are not met</exception>
-        Task TrackEventAsync(MeasurementEvent eventModel);
+        Task TrackEventAsync<TModel>(TModel eventModel)
+            where TModel : MeasurementEvent;
 
         /// <summary>
         /// Method that provides basic validation of parameters, serialization and calling of the GA API endpoint
@@ -36,6 +37,7 @@ namespace Havit.GoogleAnalytics.Measurements
         /// </param>
         /// <returns>Awaitable Task</returns>
         /// <exception cref="ValidationException">When a required property is missing or other requirements are not met</exception>
-        Task TrackTransactionAsync(MeasurementTransaction transactionModel, IEnumerable<MeasurementTransactionItemVM> transactionItems);
+        Task TrackTransactionAsync<TModel>(TModel transactionModel, IEnumerable<MeasurementTransactionItemVM> transactionItems)
+            where TModel : MeasurementTransaction;
     }
 }

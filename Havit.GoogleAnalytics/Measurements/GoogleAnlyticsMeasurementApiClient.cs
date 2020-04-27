@@ -48,7 +48,8 @@ namespace Havit.GoogleAnalytics.Measurements
 		}
 
 		/// <inheritdoc/>
-		public Task TrackEventAsync(MeasurementEvent eventModel)
+		public Task TrackEventAsync<TModel>(TModel eventModel)
+			where TModel : MeasurementEvent
 		{
 			Contract.Requires<ArgumentNullException>(eventModel != null);
 			// Set internal properties
@@ -63,7 +64,8 @@ namespace Havit.GoogleAnalytics.Measurements
 		}
 
 		/// <inheritdoc/>
-		public async Task TrackTransactionAsync(MeasurementTransaction transactionModel, IEnumerable<MeasurementTransactionItemVM> transactionItems)
+		public async Task TrackTransactionAsync<TModel>(TModel transactionModel, IEnumerable<MeasurementTransactionItemVM> transactionItems)
+			where TModel : MeasurementTransaction
 		{
 			Contract.Requires<ArgumentNullException>(transactionModel != null);
 			Contract.Requires<ArgumentNullException>(transactionItems != null);

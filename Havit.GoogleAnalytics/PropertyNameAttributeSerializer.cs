@@ -17,11 +17,21 @@ namespace Havit.GoogleAnalytics
         private readonly List<IValueSerializer> serializers;
 
         /// <summary>
-        /// Create new instance of type <see cref="PropertyNameAttributeSerializer"/>
+        /// Create new instance of type <see cref="PropertyNameAttributeSerializer"/> with default value serializers from <see cref="ValueSerializerCollection.GetDefaultValueSerializers"/>
         /// </summary>
         public PropertyNameAttributeSerializer()
         {
             this.serializers = new List<IValueSerializer>(ValueSerializerCollection.GetDefaultValueSerializers());
+        }
+
+        /// <summary>
+        /// Create new instance of type <see cref="PropertyNameAttributeSerializer"/> with custom serializers 
+        /// preffered over default serializers from <see cref="ValueSerializerCollection.GetDefaultValueSerializers"/>
+        /// </summary>
+        public PropertyNameAttributeSerializer(IEnumerable<IValueSerializer> customSerializers)
+        {
+            this.serializers = new List<IValueSerializer>(customSerializers);
+            this.serializers.AddRange(ValueSerializerCollection.GetDefaultValueSerializers());
         }
 
         /// <summary>
@@ -35,7 +45,19 @@ namespace Havit.GoogleAnalytics
             var itemList = new List<KeyValuePair<string, string>>();
             foreach (var property in model.GetType().GetProperties())
             {
-                if (TrySerializeValue(model, property, out IEnumerable<KeyValuePair<string, string>> items))
+                if (!TryGetPropertyName(property, out string name))
+                {
+                    continue;
+                }
+
+                if (!TryGetPropertyValue(model, property, out object propertyValue))
+                {
+                    continue;
+                }
+
+                IEnumerable<KeyValuePair<string, string>> items;
+                if (TrySerializeValue(name, propertyValue, out items)
+                    || TrySerializeSpecialValue(name, propertyValue, out items))
                 {
                     itemList.AddRange(items);
                 }
@@ -45,30 +67,14 @@ namespace Havit.GoogleAnalytics
         }
 
         /// <summary>
-        /// Try to serialize value using supplied model instance (<paramref name="model"/>) and property info (<paramref name="propertyInfo"/>)
+        /// Try to serialize value using supplied parameter name (<paramref name="name"/>) and property value (<paramref name="propertyValue"/>)
         /// </summary>
-        /// <typeparam name="TModel">Type of the model which contains supplied <paramref name="propertyInfo"/></typeparam>
-        /// <param name="model">Model instance to serialize</param>
-        /// <param name="propertyInfo">Supplied property from the model to serialize</param>
+        /// <param name="name">Parameter name for the query string</param>
+        /// <param name="propertyValue">Value to be serialized into query string</param>
         /// <param name="items">Out parameter of with the serialized key-value pairs</param>
         /// <returns>Returns true if value was serialized successfully, otherwise false</returns>
-        protected bool TrySerializeValue<TModel>(TModel model, PropertyInfo propertyInfo, out IEnumerable<KeyValuePair<string, string>> items)
+        protected virtual bool TrySerializeValue(string name, object propertyValue, out IEnumerable<KeyValuePair<string, string>> items)
         {
-            object propertyValue = propertyInfo.GetValue(model);
-            if (propertyValue == null)
-            {
-                items = null;
-                return false;
-            }
-
-            ParameterNameAttribute propertyNameAttribute = propertyInfo.GetCustomAttribute<ParameterNameAttribute>(true);
-            if (propertyNameAttribute == null)
-            {
-                items = null;
-                return false;
-            }
-            string name = propertyNameAttribute.Name;
-
             foreach (var serializer in serializers)
             {
                 if (serializer.CanSerialize(propertyValue))
@@ -79,16 +85,18 @@ namespace Havit.GoogleAnalytics
                 }
             }
 
-            if (TrySerializeSpecialValue(name, propertyValue, out items))
-            {
-                return true;
-            }
-
             items = null;
             return false;
         }
 
-        private bool TrySerializeSpecialValue(string name, object propertyValue, out IEnumerable<KeyValuePair<string, string>> items)
+        /// <summary>
+        /// Try to serialize value using supplied parameter name (<paramref name="name"/>) and property value (<paramref name="propertyValue"/>)
+        /// </summary>
+        /// <param name="name">Parameter name for the query string</param>
+        /// <param name="propertyValue">Value to be serialized into query string</param>
+        /// <param name="items">Out parameter of with the serialized key-value pairs</param>
+        /// <returns>Returns true if value was serialized successfully, otherwise false</returns>
+        protected virtual bool TrySerializeSpecialValue(string name, object propertyValue, out IEnumerable<KeyValuePair<string, string>> items)
         {
             if (propertyValue is IEnumerable<KeyValuePair<int, string>> customDimensions)
             {
@@ -104,6 +112,30 @@ namespace Havit.GoogleAnalytics
 
             items = null;
             return false;
+        }
+
+        private bool TryGetPropertyName(PropertyInfo propertyInfo, out string name)
+        {
+            ParameterNameAttribute propertyNameAttribute = propertyInfo.GetCustomAttribute<ParameterNameAttribute>(true);
+            if (propertyNameAttribute == null)
+            {
+                name = null;
+                return false;
+            }
+
+            name = propertyNameAttribute.Name;
+            return true;
+        }
+
+        private bool TryGetPropertyValue<TModel>(TModel model, PropertyInfo propertyInfo, out object propertyValue)
+        {
+            propertyValue = propertyInfo.GetValue(model);
+            if (propertyValue == null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

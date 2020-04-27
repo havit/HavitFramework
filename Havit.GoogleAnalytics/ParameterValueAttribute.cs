@@ -12,7 +12,7 @@ namespace Havit.GoogleAnalytics
         /// <summary>
         /// Value of the enum that is serialized into a query parameter
         /// </summary>
-        public string Value { get; set; }
+        public string Value { get; }
 
         /// <summary>
         /// Public constructor

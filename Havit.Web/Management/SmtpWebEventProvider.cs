@@ -41,6 +41,10 @@ namespace Havit.Web.Management
 	///			<description>Smtp server k odeslání zprávy.</description>
 	///		</item>
 	///		<item>
+	///			<term>smtpPort</term>
+	///			<description>Port, který se má použít pro komunikaci se Smtp serverem (není-li nastaveno, nepoužije se).</description>
+	///		</item>
+	///		<item>
 	///			<term>smtpUsername</term>
 	///			<description>Username smtp serveru (není-li nastaveno, nepoužije se).</description>
 	///		</item>
@@ -67,6 +71,7 @@ namespace Havit.Web.Management
 		private string _cc;
 		private string _bcc;
 		private string _smtpServer;
+		private int? _smtpPort = null;
 		private string _smtpUsername;
 		private string _smtpPassword;
 		private bool? _smtpEnableSsl = false;
@@ -84,6 +89,7 @@ namespace Havit.Web.Management
 			ProviderUtil.GetAndRemoveStringAttribute(config, "cc", name, ref _cc);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "bcc", name, ref _bcc);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "smtpServer", name, ref _smtpServer);
+			ProviderUtil.GetAndRemoveIntegerAttribute(config, "smtpPort", name, ref _smtpPort);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "smtpUsername", name, ref _smtpUsername);
 			ProviderUtil.GetAndRemoveStringAttribute(config, "smtpPassword", name, ref _smtpPassword);			
 			ProviderUtil.GetAndRemoveBooleanAttribute(config, "smtpEnableSsl", name, ref _smtpEnableSsl);
@@ -123,6 +129,11 @@ namespace Havit.Web.Management
 			if (!String.IsNullOrEmpty(_smtpServer))
 			{
 				smtpClient.Host = _smtpServer;
+			}
+
+			if (_smtpPort != null)
+			{
+				smtpClient.Port = _smtpPort.Value;
 			}
 
 			if (!String.IsNullOrEmpty(_smtpUsername))

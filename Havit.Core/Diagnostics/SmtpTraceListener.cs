@@ -33,6 +33,10 @@ namespace Havit.Diagnostics
 	///			<description>Smtp server k odeslání zprávy.</description>
 	///		</item>
 	///		<item>
+	///			<term>smtpPort</term>
+	///			<description>Port, který se má použít pro komunikaci se Smtp serverem (není-li nastaveno, nepoužije se).</description>
+	///		</item>
+	///		<item>
 	///			<term>smtpUsername</term>
 	///			<description>Username smtp serveru (není-li nastaveno, nepoužije se).</description>
 	///		</item>
@@ -55,6 +59,7 @@ namespace Havit.Diagnostics
 		private readonly string _from;
 		private readonly string _subject;
 		private readonly string _smtpServer;
+		private readonly int? _smtpPort = null;
 		private readonly string _smtpUsername;
 		private readonly string _smtpPassword;
 		private readonly bool? _smtpEnableSsl = false;
@@ -90,6 +95,9 @@ namespace Havit.Diagnostics
 							break;
 						case "smtpserver":
 							_smtpServer = parameterValue;
+							break;
+						case "smtpport":
+							_smtpPort = Int32.Parse(parameterValue);
 							break;
 						case "smtpusername":
 							_smtpUsername = parameterValue;
@@ -149,6 +157,11 @@ namespace Havit.Diagnostics
 			if (!String.IsNullOrEmpty(_smtpServer))
 			{
 				smtpClient.Host = _smtpServer;
+			}
+
+			if (_smtpPort != null)
+			{
+				smtpClient.Port = _smtpPort.Value;
 			}
 
 			if (!String.IsNullOrEmpty(_smtpUsername))

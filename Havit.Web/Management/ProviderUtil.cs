@@ -37,6 +37,20 @@ namespace Havit.Web.Management
 		}
 
 		/// <summary>
+		/// Vyjme z konfigurace (config) hodnotu pro klíč (attrib) a nastaví ji do val jako boolean.
+		/// </summary>
+		internal static void GetAndRemoveIntegerAttribute(NameValueCollection config, string attrib, string providerName, ref int? val)
+		{
+			string value = config.Get(attrib);
+			if (!String.IsNullOrEmpty(value))
+			{
+				val = Int32.Parse(value);
+			}
+			config.Remove(attrib);
+		}
+
+
+		/// <summary>
 		/// Pokud v konfiguraci (config) zbyla nějaká hodnota, je vyhozena výjimka ConfigurationErrorsException.
 		/// </summary>
 		internal static void CheckUnrecognizedAttributes(NameValueCollection config, string providerName)

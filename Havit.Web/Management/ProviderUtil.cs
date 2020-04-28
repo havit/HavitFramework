@@ -37,7 +37,7 @@ namespace Havit.Web.Management
 		}
 
 		/// <summary>
-		/// Vyjme z konfigurace (config) hodnotu pro klíč (attrib) a nastaví ji do val jako boolean.
+		/// Vyjme z konfigurace (config) hodnotu pro klíč (attrib) a nastaví ji do val jako int.
 		/// </summary>
 		internal static void GetAndRemoveIntegerAttribute(NameValueCollection config, string attrib, string providerName, ref int? val)
 		{

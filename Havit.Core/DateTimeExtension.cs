@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Havit
 {
+	/// <summary>
+	/// Extension metody k DateTime.
+	/// </summary>
 	public static class DateTimeExtension
 	{
 		/// <summary>

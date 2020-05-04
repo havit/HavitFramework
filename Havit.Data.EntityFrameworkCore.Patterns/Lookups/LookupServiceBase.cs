@@ -133,7 +133,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		/// a) možnost invalidovat data v případě změny mimo UnitOfWork
 		/// b) možnost invalidovat data pro uvolnění paměti, pokud již párování nemá smysl udržovat v paměti.
 		/// </summary>
-		public void Reset()
+		protected void ClearLookupData()
 		{
 			// Pozor, jako side-effekt dojde k nové kompilaci LookupKeyExpression a Filteru.
 			distributedLookupDataInvalidationService.Invalidate(GetStorageKey());
@@ -194,7 +194,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		/// </summary>
 		void ILookupDataInvalidationService.Invalidate()
 		{
-			Reset();
+			ClearLookupData();
 		}
 
 		/// <summary>

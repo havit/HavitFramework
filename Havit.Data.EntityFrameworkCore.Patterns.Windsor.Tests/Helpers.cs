@@ -22,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests
 		internal static WindsorContainer CreateAndSetupWindsorContainer(Action<WindsorContainerComponentRegistrationOptions> componentRegistrationAction = null)
 		{
 			WindsorContainer container = new WindsorContainer();
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
+			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel, allowEmptyCollections: true));
 
 			container.AddFacility<TypedFactoryFacility>();
 			container.WithEntityPatternsInstaller(componentRegistrationAction ?? (c => c.GeneralLifestyle = lf => lf.Scoped()))

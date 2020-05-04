@@ -7,7 +7,6 @@ using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
-using Castle.Windsor.MsDependencyInjection;
 using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor;
 using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
@@ -37,6 +36,8 @@ using Havit.Data.Patterns.Exceptions;
 using Havit.EFCoreTests.DataLayer.Repositories;
 using System.Linq.Expressions;
 using Havit.Data.Patterns.Transactions.Internal;
+using Havit.EFCoreTests.DataLayer.Lookups;
+using Havit.EFCoreTests.DataLayer.DataSources;
 
 namespace ConsoleApp1
 {
@@ -64,7 +65,9 @@ namespace ConsoleApp1
 			services.WithEntityPatternsInstaller()
 				.AddDataLayer(typeof(IPersonRepository).Assembly)
 				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
-				.AddEntityPatterns();
+				.AddEntityPatterns()
+				.AddLookupService<IUserLookupService, UserLookupService>();
+
 
 			services.AddSingleton<ITimeService, ServerTimeService>();
 			services.AddSingleton<ICacheService, MemoryCacheService>();
@@ -87,20 +90,35 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			ITransactionWrapper transactionWrapper = serviceProvider.GetRequiredService<ITransactionWrapper>();
-			transactionWrapper.ExecuteWithTransaction(() =>
+			var uow = serviceProvider.GetRequiredService<IUnitOfWork>();
+			var userDataSource = serviceProvider.GetRequiredService<IUserDataSource>();
+			if (!userDataSource.Data.Any())
 			{
-				for (int i = 0; i < 5; i++)
-				{
-					using (IServiceScope scope = serviceProvider.CreateScope())
-					{
-						var dbContext = scope.ServiceProvider.GetRequiredService<IDbContextTransient>();
-						BusinessCase businessCase1 = new BusinessCase();
-						dbContext.Set<BusinessCase>().Add(businessCase1);
-						dbContext.SaveChanges();
-					}
-				}
-			});
+				uow.AddForInsert(new User { Username = "user1" });
+				uow.AddForInsert(new User { Username = "user2" });
+				uow.AddForInsert(new User { Username = "user3" });
+				uow.Commit();
+			}
+
+			var userLookupService = serviceProvider.GetRequiredService<IUserLookupService>();
+			Console.WriteLine(userLookupService.GetUserByUsername("user3"));
+
+			uow.AddForInsert(new User { Username = "user5" });
+			uow.Commit();
+
+			Console.WriteLine(userLookupService.GetUserByUsername("user5"));
+
+			uow.AddRangeForDelete(userDataSource.Data.ToList());
+			uow.Commit();
+
+			try
+			{
+				Console.WriteLine(userLookupService.GetUserByUsername("user5"));
+			}
+			catch (ObjectNotFoundException)
+			{
+				Console.WriteLine("Not found.");
+			}
 		}
 
 	}

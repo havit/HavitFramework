@@ -8,6 +8,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
@@ -106,6 +107,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			installer.AddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
 			installer.AddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);
+			installer.AddServiceTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
 
 			installer.AddServiceSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
 			installer.AddServiceSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
@@ -219,6 +221,35 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			return this;
 		}
+
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
+		public IEntityPatternsInstaller AddLookupService<TService, TImplementation>()
+			where TService : class
+			where TImplementation : class, TService, ILookupDataInvalidationService
+		{
+			return AddLookupService<TService, TImplementation, TImplementation>();
+		}
+
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
+		public IEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
+			where TService : class
+			where TImplementation : class, TService
+			where TLookupDataInvalidationService: ILookupDataInvalidationService
+		{
+			if (!lookupServicesAdded)
+			{
+				installer.AddServiceSingleton<IEntityLookupDataStorage, EntityLookupDataStorage>();
+				lookupServicesAdded = true;
+			}
+			installer.AddServicesTransient(new Type[] { typeof(TService), typeof(ILookupDataInvalidationService) }, typeof(TLookupDataInvalidationService));
+
+			return this;
+		}
+		private bool lookupServicesAdded = false;
 
 		/// <summary>
 		/// Vrací true, pokud NEJDE o abstraktní typ.

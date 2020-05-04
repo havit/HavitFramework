@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
@@ -19,6 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 	{
 		private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
 		private readonly IEntityValidationRunner entityValidationRunner;
+		private readonly ILookupDataInvalidationRunner lookupDataInvalidationRunner;
 		private List<Action> afterCommits = null;
 
 		private readonly HashSet<object> insertRegistrations = new HashSet<object>();
@@ -48,7 +50,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IEntityCacheDependencyManager entityCacheDependencyManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner)
+		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IEntityCacheDependencyManager entityCacheDependencyManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner, ILookupDataInvalidationRunner lookupDataInvalidationRunner)
 		{
 			Contract.Requires<ArgumentNullException>(dbContext != null, nameof(dbContext));
 			Contract.Requires<ArgumentNullException>(softDeleteManager != null, nameof(softDeleteManager));
@@ -59,6 +61,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 			EntityCacheDependencyManager = entityCacheDependencyManager;
 			this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
 			this.entityValidationRunner = entityValidationRunner;
+			this.lookupDataInvalidationRunner = lookupDataInvalidationRunner;
 		}
 
 		/// <summary>
@@ -75,6 +78,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 
 			ClearRegistrationHashSets();
 			InvalidateEntityCache(allKnownChanges);
+			lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 
 			AfterCommit();
 		}
@@ -93,6 +97,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 
 			ClearRegistrationHashSets();
 			InvalidateEntityCache(allKnownChanges);
+			lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 
 			AfterCommit();
 		}
@@ -269,13 +274,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		}
 
 		/// <summary>
-		/// Oznámí k invalidaci všechny změněné objekty.
+		/// Oznámí k invalidaci cache všechny změněné objekty.
 		/// </summary>
 		protected virtual void InvalidateEntityCache(Changes allKnownChanges)
 		{
 			EntityCacheManager.Invalidate(allKnownChanges);
 			EntityCacheDependencyManager.InvalidateDependencies(allKnownChanges);
 		}
-
 	}
 }

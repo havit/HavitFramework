@@ -238,7 +238,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		public IEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
 			where TService : class
 			where TImplementation : class, TService
-			where TLookupDataInvalidationService: ILookupDataInvalidationService
+			where TLookupDataInvalidationService : ILookupDataInvalidationService
 		{
 			if (!lookupServicesAdded)
 			{

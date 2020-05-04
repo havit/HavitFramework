@@ -13,7 +13,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		/// </summary>
 		/// <param name="storageKey">Klíč, pod jakým jsou lookup data v evidenci.</param>
 		/// <param name="factory">Pokud nejsou lookup data v evidenci, factory je založí.</param>
-		/// <returns></returns>
 		EntityLookupData<TEntity, TEntityKey, TLookupKey> GetEntityLookupData<TEntity, TEntityKey, TLookupKey>(string storageKey, Func<EntityLookupData<TEntity, TEntityKey, TLookupKey>> factory);
 
 		/// <summary>

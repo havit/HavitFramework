@@ -46,7 +46,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDataSource<TEntity> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager)
+		protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDataSource<TEntity> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager)
 			: this(lookupStorage, repository, dataSource, entityKeyAccessor, softDeleteManager, null)
 		{
 		}
@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDataSource<TEntity> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager, IDistributedLookupDataInvalidationService distributedLookupDataInvalidationService)
+		protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDataSource<TEntity> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager, IDistributedLookupDataInvalidationService distributedLookupDataInvalidationService)
 		{
 			this.lookupStorage = lookupStorage;
 			this.repository = repository;

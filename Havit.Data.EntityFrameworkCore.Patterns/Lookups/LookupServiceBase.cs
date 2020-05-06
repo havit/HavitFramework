@@ -27,13 +27,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 	/// 2) Eventuelně nakonfigurovat chování overridováním virtuálních vlastností.
 	/// 3) Implementovat nějaký vlastní interface, imlementace bude volat GetEntityByLookupKey (ev. GetEntityKeyByLookupKey).
 	/// </summary>
-	/// <typeparam name="TEntity">Entita, kterou hledáme.</typeparam>
 	/// <typeparam name="TLookupKey">Typ klíče.</typeparam>
+	/// <typeparam name="TEntity">Entita, kterou hledáme.</typeparam>
 	/// <remarks>
 	/// Určeno k implementaci občasně měněných entit, ev. entit které se mění hromadně (naráz).
 	/// Není garantována stoprocentní spolehlivost u entit, které se mění často (myšleno zejména paralelně) v různých transakcích - invalidace a aktualizace může proběhnout v jiném pořadí, než v jakém doběhly commity.
 	/// </remarks>
-	public abstract class LookupServiceBase<TEntity, TLookupKey> : ILookupDataInvalidationService
+	public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvalidationService
 		where TEntity : class
 	{
 		private readonly IEntityLookupDataStorage lookupStorage;

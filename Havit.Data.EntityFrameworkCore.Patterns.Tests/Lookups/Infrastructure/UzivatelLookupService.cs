@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups.Infrastructure
 {
-	public class UzivatelLookupService : LookupServiceBase<Uzivatel, string>
+	public class UzivatelLookupService : LookupServiceBase<string, Uzivatel>
 	{
 
 		public UzivatelLookupService(IEntityLookupDataStorage lookupStorage, IRepository<Uzivatel> repository, IDataSource<Uzivatel> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager) : base(lookupStorage, repository, dataSource, entityKeyAccessor, softDeleteManager)

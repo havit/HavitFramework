@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Havit.EFCoreTests.DataLayer.Lookups
 {
-	public class UserLookupService : LookupServiceBase<User, object>, IUserLookupService
+	public class UserLookupService : LookupServiceBase<object, User>, IUserLookupService
 	{
 		public UserLookupService(IEntityLookupDataStorage lookupStorage, IRepository<User> repository, IDataSource<User> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager) : base(lookupStorage, repository, dataSource, entityKeyAccessor, softDeleteManager)
 		{

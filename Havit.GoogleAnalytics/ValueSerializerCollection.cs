@@ -22,7 +22,6 @@ namespace Havit.GoogleAnalytics
                 new IntValueSerializer(),
                 new DecimalValueSerializer(),
                 new EnumValueSerializer(),
-                new NullableValueSerializer()
             };
         }
     }

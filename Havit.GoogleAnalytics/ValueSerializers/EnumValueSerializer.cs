@@ -9,6 +9,11 @@ namespace Havit.GoogleAnalytics.ValueSerializers
     {
         public bool CanSerialize(object value)
         {
+            if (value == null)
+            {
+                return false;
+            }
+
             return value.GetType().IsEnum;
         }
 

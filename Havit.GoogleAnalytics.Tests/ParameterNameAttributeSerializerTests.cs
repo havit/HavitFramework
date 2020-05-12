@@ -20,13 +20,47 @@ namespace Havit.GoogleAnalytics.Tests
             PropertyNameAttributeSerializer serializer = new PropertyNameAttributeSerializer(customSerializers);
             var serializedModel = serializer.SerializeModel(new FakeModel());
 
-            Assert.AreEqual(FakeValueSerializer.SerializedValue, serializedModel.Single().Value);
+            Assert.AreEqual(FakeValueSerializer.SerializedValue, serializedModel.Single(x => x.Key == "xs").Value);
+        }
+
+        [TestMethod]
+        public void Values_IsNullableType_HasValue_CanSerialize()
+        {
+            PropertyNameAttributeSerializer serializer = new PropertyNameAttributeSerializer();
+
+            int value = 100;
+            FakeModel model = new FakeModel
+            {
+                NullableValue = value
+            };
+            
+            var serializedModel = serializer.SerializeModel(model);
+
+            Assert.AreEqual(value.ToString(), serializedModel.Single(x => x.Key == "nv").Value);
+        }
+
+        [TestMethod]
+        public void Values_IsNullableType_IsNull_ShouldNotSerialize()
+        {
+            PropertyNameAttributeSerializer serializer = new PropertyNameAttributeSerializer();
+
+            int? value = null;
+            FakeModel model = new FakeModel
+            {
+                NullableValue = value
+            };
+
+            var serializedModel = serializer.SerializeModel(model);
+
+            Assert.IsTrue(!serializedModel.Any(x => x.Key == "nv"));
         }
 
         internal class FakeModel
         {
             [ParameterName("xs")]
             public string Value { get; set; } = String.Empty;
+            [ParameterName("nv")]
+            public int? NullableValue { get; set; }
         }
 
         internal class FakeValueSerializer : IValueSerializer

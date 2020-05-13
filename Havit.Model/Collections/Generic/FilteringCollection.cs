@@ -10,7 +10,7 @@ namespace Havit.Model.Collections.Generic
 	/// </summary>
 	public class FilteringCollection<T> : ICollection<T>
 	{
-		private readonly List<T> source;
+		private readonly IList<T> source;
 		private readonly Func<T, bool> filter;
 
 		/// <summary>
@@ -18,7 +18,7 @@ namespace Havit.Model.Collections.Generic
 		/// </summary>
 		/// <param name="source">Podkladová kolekce, ve které jsou držena data.</param>
 		/// <param name="filter">Filtr, kterým se podkladová kolekce filtruje.</param>
-		public FilteringCollection(List<T> source, Func<T, bool> filter)
+		public FilteringCollection(IList<T> source, Func<T, bool> filter)
 		{
 			this.source = source;
 			this.filter = filter;
@@ -49,7 +49,17 @@ namespace Havit.Model.Collections.Generic
 		/// </summary>
 		public void AddRange(IEnumerable<T> collection)
 		{
-			source.AddRange(collection);
+			if (source is List<T> list)
+			{
+				list.AddRange(collection);
+			}
+			else
+			{
+				foreach (var item in collection)
+				{
+					source.Add(item);
+				}
+			}
 		}
 
 		/// <summary>
@@ -89,7 +99,23 @@ namespace Havit.Model.Collections.Generic
 		/// </summary>
 		public int RemoveAll(Predicate<T> predicate)
 		{
-			return source.RemoveAll(predicate);
+			if (source is List<T> list)
+			{
+				return list.RemoveAll(predicate);
+			}
+			else
+			{
+				int count = 0;
+				for (int i = source.Count - 1; i >= 0; i--)
+				{
+					if (predicate(source[i]))
+					{
+						source.RemoveAt(i);
+						count++;
+					}
+				}
+				return count;
+			}
 		}
 
 		/// <summary>

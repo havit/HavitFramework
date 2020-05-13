@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.GoogleAnalytics.Measurements.ValueValidators;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

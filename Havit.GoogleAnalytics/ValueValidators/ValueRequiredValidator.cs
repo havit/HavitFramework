@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
+namespace Havit.GoogleAnalytics.ValueValidators
 {
     internal class ValueRequiredValidator
     {

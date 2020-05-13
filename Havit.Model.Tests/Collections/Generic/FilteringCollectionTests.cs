@@ -11,6 +11,20 @@ namespace Havit.Model.Tests.Collections.Generic
 	public class FilteringCollectionTests
 	{
 		[TestMethod]
+		public void FilteringCollection_SourceList_ShouldContaintAddedItem()
+		{
+			// Arrange
+			var list = new List<int>();
+			var filteredList = new FilteringCollection<int>(list, item => true); // nefiltrujeme, jen wrapujeme
+
+			// Act
+			list.Add(1); // přidáme prvek do podkladové kolekce
+
+			// Assert
+			Assert.IsTrue(filteredList.Contains(1)); // musí být vidět i ve filtrované kolekci
+		}
+
+		[TestMethod]
 		public void FilteringCollection_List_Add()
 		{
 			// Arrange

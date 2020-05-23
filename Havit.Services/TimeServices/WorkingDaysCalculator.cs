@@ -10,8 +10,8 @@ namespace Havit.Services.TimeServices
 	/// <summary>
 	/// Calculates number of days between two dates, with excluding weekends and public holidays.
 	/// </summary>
-	public class WorkingDaysCalculator
-    {
+	public class WorkingDaysCalculator : IWorkingDaysCalculator
+	{
 		private readonly IDateInfoProvider dateInfoProvider;
 
 		/// <summary>
@@ -21,7 +21,7 @@ namespace Havit.Services.TimeServices
 		/// <remarks>
 		/// Vast majority of usages stay with the default value so we don't want to force setting of this option through the constructor.
 		/// </remarks>
-		public WeekendDays Weekend { get; set; } = WeekendDays.SaturdayAndSunday;
+		public WeekendDays WeekendConfiguration { get; set; } = WeekendDays.SaturdayAndSunday;
 
 		/// <summary>
 		/// Creates new <see cref="WorkingDaysCalculator"/> instance.<br/>
@@ -101,7 +101,7 @@ namespace Havit.Services.TimeServices
 		/// </summary>
 		public virtual bool IsHoliday(DateTime date)
 		{
-			IDateInfo dateInfo =  dateInfoProvider.GetDateInfo(date.Date);
+			IDateInfo dateInfo = dateInfoProvider.GetDateInfo(date.Date);
 			if (dateInfo != null)
 			{
 				return dateInfo.IsHoliday;
@@ -116,13 +116,13 @@ namespace Havit.Services.TimeServices
 		{
 			return date.DayOfWeek switch
 			{
-				DayOfWeek.Monday => Weekend.HasFlag(WeekendDays.Monday),
-				DayOfWeek.Tuesday => Weekend.HasFlag(WeekendDays.Tuesday),
-				DayOfWeek.Wednesday => Weekend.HasFlag(WeekendDays.Wednesday),
-				DayOfWeek.Thursday => Weekend.HasFlag(WeekendDays.Thursday),
-				DayOfWeek.Friday => Weekend.HasFlag(WeekendDays.Friday),
-				DayOfWeek.Saturday => Weekend.HasFlag(WeekendDays.Saturday),
-				DayOfWeek.Sunday => Weekend.HasFlag(WeekendDays.Sunday),
+				DayOfWeek.Monday => WeekendConfiguration.HasFlag(WeekendDays.Monday),
+				DayOfWeek.Tuesday => WeekendConfiguration.HasFlag(WeekendDays.Tuesday),
+				DayOfWeek.Wednesday => WeekendConfiguration.HasFlag(WeekendDays.Wednesday),
+				DayOfWeek.Thursday => WeekendConfiguration.HasFlag(WeekendDays.Thursday),
+				DayOfWeek.Friday => WeekendConfiguration.HasFlag(WeekendDays.Friday),
+				DayOfWeek.Saturday => WeekendConfiguration.HasFlag(WeekendDays.Saturday),
+				DayOfWeek.Sunday => WeekendConfiguration.HasFlag(WeekendDays.Sunday),
 				_ => throw new InvalidOperationException("Unknown DayOfWeek.")
 			};
 		}
@@ -163,14 +163,14 @@ namespace Havit.Services.TimeServices
 		[Flags]
 		public enum WeekendDays
 		{
-			None =				0,
-			Monday =			0b_0000_0001,
-			Tuesday =			0b_0000_0010,
-			Wednesday =			0b_0000_0100,
-			Thursday =			0b_0000_1000,
-			Friday =			0b_0001_0000,
-			Saturday =			0b_0010_0000,
-			Sunday =			0b_0100_0000,
+			None = 0,
+			Monday = 0b_0000_0001,
+			Tuesday = 0b_0000_0010,
+			Wednesday = 0b_0000_0100,
+			Thursday = 0b_0000_1000,
+			Friday = 0b_0001_0000,
+			Saturday = 0b_0010_0000,
+			Sunday = 0b_0100_0000,
 			SaturdayAndSunday = 0b_0110_0000,
 			FridayAndSaturday = 0b_0011_0000
 		}

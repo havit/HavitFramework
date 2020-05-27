@@ -31,10 +31,13 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			BusinessLayerGenerator.Settings.GeneratorSettings.SqlServerName = GeneratorSettings.SqlServerName = commandLineArguments["sqlserver"];
 			GeneratorSettings.Username = commandLineArguments["username"];
 			GeneratorSettings.Password = commandLineArguments["password"];
-			BusinessLayerGenerator.Settings.GeneratorSettings.DatabaseName = GeneratorSettings.DatabaseName = commandLineArguments["database"];
-			BusinessLayerGenerator.Settings.GeneratorSettings.Strategy = GeneratorStrategy.HavitCodeFirst;
 			GeneratorSettings.SolutionPath = commandLineArguments["solutionpath"];
 			GeneratorSettings.Namespace = commandLineArguments["namespace"];
+			BusinessLayerGenerator.Settings.GeneratorSettings.DatabaseName = GeneratorSettings.DatabaseName = commandLineArguments["database"];
+			BusinessLayerGenerator.Settings.GeneratorSettings.Strategy = GeneratorStrategy.HavitCodeFirst;
+			BusinessLayerGenerator.Settings.GeneratorSettings.Username = GeneratorSettings.Username;
+			BusinessLayerGenerator.Settings.GeneratorSettings.Password = GeneratorSettings.Password;
+			BusinessLayerGenerator.Settings.GeneratorSettings.SqlServerName = GeneratorSettings.SqlServerName;
 
 			var csprojFileFactory = new CsprojFileFactory();
 			CsprojFile modelCsprojFile = csprojFileFactory.GetByFolder(System.IO.Path.Combine(GeneratorSettings.SolutionPath, "Model"), "HavitBusinessLayerToEntityFrameworkGenerator");

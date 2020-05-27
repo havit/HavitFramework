@@ -8,7 +8,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		public static SqlDataReader GetDataReader(SqlCommand command)
 		{
 			command.Connection = DatabaseHelper.Database.Parent.ConnectionContext.SqlConnectionObject;
-			return command.ExecuteReader(CommandBehavior.CloseConnection);
+			return command.ExecuteReader();
 		}
 	}
 }

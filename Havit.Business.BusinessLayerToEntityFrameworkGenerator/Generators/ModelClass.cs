@@ -60,7 +60,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             writer.WriteLine("using System.Text;");
             writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes;");
             writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;");
+            writer.WriteLine("using Havit.Data.EntityFrameworkCore.Metadata;");
             writer.WriteLine("using ReadOnlyAttribute = Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties.ReadOnlyAttribute;");
+            writer.WriteLine("using SuppressConventionAttribute = Havit.Data.EntityFrameworkCore.Attributes.SuppressConventionAttribute;");
 
             if (LocalizationHelper.IsLocalizationTable(modelClass.Table) || LocalizationHelper.IsLocalizedTable(modelClass.Table))
             {
@@ -428,6 +430,11 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                 }
 
                 string codeDefaultValue = GetCodeDefaultValue(column, type);
+
+				if (!string.IsNullOrEmpty(column.ComputedText))
+				{
+	                writer.WriteLine("[SuppressConvention(ConventionIdentifiers.StringPropertiesDefaultValueConvention)]");
+                }
 
                 if (!string.IsNullOrEmpty(codeDefaultValue))
                 {

@@ -67,7 +67,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                         computeSql += " PERSISTED";
                     }
                     writer.WriteLine(String.Format(".HasComputedColumnSql(\"{0}\")", computeSql));
-                    writer.WriteLine(".HasConventionSuppressed<StringPropertiesDefaultValueConvention>()");
 
                     writer.EndPreviousStatement();
                     writer.Unindent();

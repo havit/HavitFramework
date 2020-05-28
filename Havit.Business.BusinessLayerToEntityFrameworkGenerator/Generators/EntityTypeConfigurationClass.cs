@@ -182,7 +182,6 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 					if (cascadeActions.Contains(foreignKey))
 					{ 
 						writer.WriteLine(".OnDelete(DeleteBehavior.Cascade)");
-						writer.WriteLine(".HasConventionSuppressed<CascadeDeleteToRestrictConvention>()");
 					}
 
 					writer.EndPreviousStatement();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -204,15 +205,27 @@ namespace Havit.Services.Caching
 
 	    /// <summary>
 	    /// Vyčistí obsah cache.
-	    /// Není podporováno, vyhazuje NotSupportedException.
-	    /// V případě potřeby lze doimplementovat.
 	    /// </summary>
 	    public void Clear()
 	    {
-			// v případě potřeby můžeme implementovat pomocí CancellationTokenSource
-		    // https://stackoverflow.com/questions/34406737/how-to-remove-all-objects-reset-from-imemorycache-in-asp-net-core
-		    throw new NotSupportedException();
-	    }
+			// Nejvíce doporučené řešení s CancellationTokenSource na následujícím odkazu nemůžeme použít, protože do IMemoryCache se dostanou objekty i mimo naše metody.
+			// My chceme vyčistit všechno, ať už se dostalo do IMemoryCache jakkoliv, proto volíme řešení s reflexí (stabilitu ověříme/ochráníme unit testem).
+			// https://stackoverflow.com/questions/34406737/how-to-remove-all-objects-reset-from-imemorycache-in-asp-net-core
+
+			PropertyInfo entriesCollectionPropertyInfo = memoryCache.GetType().GetProperty("EntriesCollection", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public);
+			if (entriesCollectionPropertyInfo == null)
+			{
+				throw new NotSupportedException("IMemoryCache implementation does not have EntriesCollection property.");
+			}
+
+			object cacheEntriesCollection = entriesCollectionPropertyInfo.GetValue(memoryCache);
+			MethodInfo clearMethod = cacheEntriesCollection.GetType().GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
+			if (clearMethod == null)
+			{
+				throw new NotSupportedException("IMemoryCache.EntriesCollection does not have a Clear() method.");
+			}
+			clearMethod.Invoke(cacheEntriesCollection, null);
+		}
 
 		/// <summary>
 		/// Metoda je volána při vyhození jakékoliv položky z cache (je registrována pro každou položku).

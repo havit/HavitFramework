@@ -23,10 +23,13 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <!-- Pokud se tento řádek dostane do WebForms projektu, rozbije restorování nuget balíčků, bohužel nepomáhá ani jedno podmínění pomocí Condition.
+    <!-- Pokud se nuget balíček Microsoft.SourceLink.Vsts.Git (předchůdce současného Microsoft.SourceLink.AzureRepos.Git)
+         dostane do WebForms projektu, rozbije restorování nuget balíčků, bohužel nepomáhá ani jedno podmínění pomocí Condition.
          Proto nepoužíváme Directory.Build.targets,  který by se automaticky použil pro všechny projekty,
-         ale do projektů importujeme tento NuGet.targets. -->
-    <PackageReference Include="Microsoft.SourceLink.Vsts.Git" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
+         ale do projektů importujeme tento NuGet.targets.
+         Chování balíčku Microsoft.SourceLink.AzureRepos.Git neověřuji, předpokládám, že jde víceméně jen o přejmenování.
+    -->
+    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <!-- Publish NuGet -->

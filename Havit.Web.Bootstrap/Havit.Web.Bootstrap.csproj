@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
+  <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.3</PackageVersion>
+	<PackageVersion>2.0.4</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Installs Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) and other client-side Bootstrap dependencies.</Description>
 	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>
@@ -19,9 +19,9 @@
 
   <ItemGroup>
 	<PackageReference Include="bootstrap.less" Version="3.4.1" />
-	<PackageReference Include="jQuery" Version="1.11.0" />
+	<PackageReference Include="jQuery" Version="3.5.1" />
 	<PackageReference Include="Microsoft.AspNet.ScriptManager.WebForms" Version="5.0.0" />
-	<PackageReference Include="toastr" Version="2.0.1" />
+	<PackageReference Include="toastr" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

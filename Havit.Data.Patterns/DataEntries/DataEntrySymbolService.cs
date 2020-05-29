@@ -21,7 +21,6 @@ namespace Havit.Data.Patterns.DataEntries
 		/// <summary>
 		/// Konstructor.
 		/// </summary>
-		/// <param name="dataSourceFactory">Factory pro získání a uvolnění IDataSource.</param>
 		public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
 		{
 			PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");

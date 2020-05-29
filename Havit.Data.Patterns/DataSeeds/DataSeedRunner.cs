@@ -26,11 +26,12 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// </summary>
 		/// <param name="dataSeeds">Předpisy seedování objektů.</param>
 		/// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
-		/// <param name="dataSeedPersister">Persister seedovaných objektů.</param>
+		/// <param name="dataSeedPersisterFactory">Persister seedovaných objektů (factory).</param>
+		/// <param name="transactionWrapper">Transaction wraper zajišťující běh všech dataseedů v transakci.</param>
 		/// <remarks>
 		/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
 		/// DbDataSeedPersister je registrován jako transientní se závislostí DbContext, který je v tomto případě rovněž transientní.
-		/// Proto se v tomto případě factory IServiceFactory<IDataSeedPersister> popsaná issue netýká.
+		/// Proto se v tomto případě factory IServiceFactory&lt;IDataSeedPersister&gt; popsaná issue netýká.
 		/// </remarks>
 		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersisterFactory dataSeedPersisterFactory, ITransactionWrapper transactionWrapper)
 	    {

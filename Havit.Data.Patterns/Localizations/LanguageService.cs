@@ -24,8 +24,6 @@ namespace Havit.Data.Patterns.Localizations
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		/// <param name="languageRepositoryFactory">Služba pro získání repository jazyků.</param>
-		/// <param name="entityKeyAccessor">Služba pro získání identifikátoru entity.</param>
 		public LanguageService(IRepository<TLanguage> languageRepository, ILanguageByCultureService languageByCultureService)
 		{
 			this.languageRepository = languageRepository;

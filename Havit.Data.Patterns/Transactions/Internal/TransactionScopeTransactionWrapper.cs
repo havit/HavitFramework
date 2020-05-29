@@ -13,11 +13,17 @@ namespace Havit.Data.Patterns.Transactions.Internal
 		private readonly TransactionScopeOption transactionScopeOption;
 		private readonly IsolationLevel isolationLevel;
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public TransactionScopeTransactionWrapper() : this(TransactionScopeOption.Required, IsolationLevel.ReadCommitted)
 		{
 			// NOOP
 		}
 
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
 		public TransactionScopeTransactionWrapper(TransactionScopeOption transactionScopeOption, IsolationLevel isolationLevel)
 		{
 			this.transactionScopeOption = transactionScopeOption;

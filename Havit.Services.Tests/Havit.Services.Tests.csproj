@@ -5,13 +5,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Castle.Core" Version="4.4.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
 		<PackageReference Include="Moq" Version="4.13.1" />
 		<PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
 		<PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -49,6 +49,9 @@ namespace Havit.Data.Configuration.Git.Core
 			return ParseBranchName(line);
         }
 
+		/// <summary>
+		/// Return branch name from reference.
+		/// </summary>
         public static string ParseBranchName(string refFromHeadFile)
         {
             Match match = HeadRefRegex.Match(refFromHeadFile);

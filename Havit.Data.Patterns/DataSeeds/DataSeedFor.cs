@@ -233,7 +233,7 @@ namespace Havit.Data.Patterns.DataSeeds
 
 		/// <summary>
 		/// Konfiguruje seedování tak, že se při načítání z databáze použije konkrétní WHERE podmínka.
-		/// Použije se tam, kde se vyplatí použít jednodušší podmínku popisující seedovaná data, než sestavovat dotaz dle seedovaných dat (např. item => item.Id < 0).
+		/// Použije se tam, kde se vyplatí použít jednodušší podmínku popisující seedovaná data, než sestavovat dotaz dle seedovaných dat (např. item => item.Id &lt; 0).
 		/// </summary>
 		public IDataSeedFor<TEntity> CustomDatabaseCondition(Expression<Func<TEntity, bool>> predicate)
 		{

@@ -8,12 +8,12 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.1</PackageVersion>
+    <PackageVersion>2.0.2</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - ASP.NET MVC Extensions</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
   </ItemGroup>
 
   <ItemGroup>

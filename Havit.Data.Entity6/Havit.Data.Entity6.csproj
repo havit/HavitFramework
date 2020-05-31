@@ -10,13 +10,13 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.2.0</PackageVersion>
+	<PackageVersion>2.2.1</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
   </PropertyGroup>
   
   <ItemGroup>
 	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0" PrivateAssets="all" />
-	<PackageReference Include="EntityFramework" Version="6.4.0" />
+	<PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
 
   <ItemGroup>

@@ -28,6 +28,9 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
 			modelBuilder.Entity<IdWithPoorlyNamedForeignKey>().HasOne(item => item.ForeignKey).WithMany().HasForeignKey(item => item.ForeignKeyCode);
 
 			modelBuilder.Entity<KeylessClass>().HasNoKey(); // bez primárního klíče
+
+			modelBuilder.HasSequence<int>("EntrySequence");
+			modelBuilder.Entity<EntryWithSequencePrimaryKeyAndNoSymbol>().Property(e => e.Id).HasDefaultValueSql("NEXT VALUE FOR EntrySequence");
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

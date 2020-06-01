@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
@@ -118,17 +119,21 @@ namespace Havit.Business.BusinessLayerGenerator
 
 			// připojíme se k databázi
 			ServerConnection connection;
+			SqlConnection sqlConnection;
 			if (String.IsNullOrEmpty(GeneratorSettings.Username))
 			{
 				connection = new ServerConnection(GeneratorSettings.SqlServerName);
+				sqlConnection = new SqlConnection($"Data Source={GeneratorSettings.SqlServerName};Initial Catalog={GeneratorSettings.DatabaseName};Integrated Security=SSPI");
 			}
 			else
 			{
 				connection = new ServerConnection(GeneratorSettings.SqlServerName, GeneratorSettings.Username, GeneratorSettings.Password);
+				sqlConnection = new SqlConnection($"Data Source={GeneratorSettings.SqlServerName};Initial Catalog={GeneratorSettings.DatabaseName};User ID={GeneratorSettings.Username};Pwd={GeneratorSettings.Password}");
 			}
 			connection.AutoDisconnectMode = AutoDisconnectMode.NoAutoDisconnect;
 			connection.ApplicationName = "BusinessLayerGenerator";
 			connection.Connect();
+			sqlConnection.Open();
 
 			Server sqlServer = new Server(connection);
             // prefetch Table + Column -> 56 sec
@@ -150,6 +155,7 @@ namespace Havit.Business.BusinessLayerGenerator
             try
             {
 				DatabaseHelper.Database = database;
+				ConnectionHelper.SqlConnection = sqlConnection;
 
 				// vygenerujeme, co je potřeba
 				Generators.Generator.Generate(database, csprojFile);
@@ -164,6 +170,7 @@ namespace Havit.Business.BusinessLayerGenerator
 				ConsoleHelper.WriteLineError(e.ToString());
 			}
 
+			sqlConnection.Close();
 			connection.Disconnect();
 
 			if (csprojFile != null)

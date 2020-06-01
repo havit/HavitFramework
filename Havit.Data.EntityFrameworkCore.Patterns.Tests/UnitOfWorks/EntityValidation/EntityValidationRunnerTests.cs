@@ -25,8 +25,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.EntityValida
 			entityValidatorMock2.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<object>())).Returns(Enumerable.Empty<string>());
 
 			Mock<IEntityValidatorsFactory> entityValidatorsFactoryMock = new Mock<IEntityValidatorsFactory>(MockBehavior.Strict);
-			entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
 			entityValidatorsFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IEntityValidator<object>> { entityValidatorMock2.Object });
+			entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
 
 			EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
@@ -64,8 +64,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.EntityValida
 			entityValidatorMock.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(new List<string> { "Some validation error." });
 
 			Mock<IEntityValidatorsFactory> entityValidatorsFactoryMock = new Mock<IEntityValidatorsFactory>(MockBehavior.Strict);
-			entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
 			entityValidatorsFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IEntityValidator<object>> { });
+			entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
 
 			EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 

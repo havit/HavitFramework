@@ -130,7 +130,7 @@ namespace Havit.Business.BusinessLayerGenerator
 				connection = new ServerConnection(GeneratorSettings.SqlServerName, GeneratorSettings.Username, GeneratorSettings.Password);
 				sqlConnection = new SqlConnection($"Data Source={GeneratorSettings.SqlServerName};Initial Catalog={GeneratorSettings.DatabaseName};User ID={GeneratorSettings.Username};Pwd={GeneratorSettings.Password}");
 			}
-			connection.AutoDisconnectMode = AutoDisconnectMode.NoAutoDisconnect;
+			connection.AutoDisconnectMode = AutoDisconnectMode.NoAutoDisconnect;			
 			connection.ApplicationName = "BusinessLayerGenerator";
 			connection.Connect();
 			sqlConnection.Open();
@@ -138,9 +138,9 @@ namespace Havit.Business.BusinessLayerGenerator
 			Server sqlServer = new Server(connection);
             // prefetch Table + Column -> 56 sec
             // prefetch Column -> 29 sec
-            // žádný prefetch -> 36 sec
-		    sqlServer.SetDefaultInitFields(typeof(Column), true);
-
+            // žádný prefetch -> 36 sec		    
+			sqlServer.SetDefaultInitFields(typeof(Column), true);
+			
             Database database = sqlServer.Databases[GeneratorSettings.DatabaseName];
 
 			// pokud jsme databázi nenašli, oznámíme a konříme

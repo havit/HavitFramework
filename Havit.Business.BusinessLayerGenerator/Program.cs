@@ -140,6 +140,7 @@ namespace Havit.Business.BusinessLayerGenerator
             // prefetch Column -> 29 sec
             // žádný prefetch -> 36 sec		    
 			sqlServer.SetDefaultInitFields(typeof(Column), true);
+			sqlServer.SetDefaultInitFields(typeof(ForeignKey), true);
 			
             Database database = sqlServer.Databases[GeneratorSettings.DatabaseName];
 

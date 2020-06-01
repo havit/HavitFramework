@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Management.Smo;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -30,6 +31,15 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
             }
             return null;
         }
+
+        public static List<KeyValuePair<string, string>> GetTableExtendedProperties(Table table)
+		{
+            if (GetAllExtendedProperties().TryGetValue(ExtendedPropertiesKey.FromTable(table), out Dictionary<string, string> result))
+			{
+                return result.ToList();
+			}
+            return new List<KeyValuePair<string, string>>();
+		}
 
         private static Dictionary<ExtendedPropertiesKey, Dictionary<string, string>> GetAllExtendedProperties()
         {

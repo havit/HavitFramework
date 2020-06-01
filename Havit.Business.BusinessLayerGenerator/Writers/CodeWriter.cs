@@ -84,7 +84,7 @@ namespace Havit.Business.BusinessLayerGenerator.Writers
 				emtpyLinesBeforeClosingParenthesisCounter = 0;
 			}
 
-			if (line.StartsWith("#if ") || line.StartsWith("#endif") || line.StartsWith("#else") || line.StartsWith("#pragma warning"))
+			if ((line.Length > 0) && (line[0] == '#' /* perf optimization*/) && (line.StartsWith("#if ") || line.StartsWith("#endif") || line.StartsWith("#else") || line.StartsWith("#pragma warning")))
 			{
 				WriteRawLine(line);
 			}

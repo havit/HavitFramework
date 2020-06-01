@@ -152,11 +152,11 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			{
 				collectionColumns = new List<CollectionProperty>();
 
-				foreach (ExtendedProperty extendedProperty in table.ExtendedProperties)
+				foreach (KeyValuePair<string, string> extendedProperty in ExtendedPropertiesHelper.GetTableExtendedProperties(table))
 				{
-					if (extendedProperty.Name.StartsWith("Collection"))
+					if (extendedProperty.Key.StartsWith("Collection"))
 					{
-						string[] parsedName = extendedProperty.Name.Split(new string[] { "_", "." }, StringSplitOptions.None);
+						string[] parsedName = extendedProperty.Key.Split(new string[] { "_", "." }, StringSplitOptions.None);
 						if (parsedName.Length > 2) // ochrana pred Colection_XXXX_Description, apod.
 						{
 							continue;

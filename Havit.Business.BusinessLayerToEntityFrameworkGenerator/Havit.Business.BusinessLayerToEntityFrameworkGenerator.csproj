@@ -8,8 +8,6 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
 	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="150.18178.0" />
-	<PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
-	<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
   </ItemGroup>
 
   <ItemGroup>

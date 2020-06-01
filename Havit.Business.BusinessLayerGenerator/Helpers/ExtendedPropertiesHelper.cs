@@ -32,6 +32,9 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Vrátí všechny hodnoty extended properties tabulky.
+        /// </summary>
         public static List<KeyValuePair<string, string>> GetTableExtendedProperties(Table table)
 		{
             if (GetAllExtendedProperties().TryGetValue(ExtendedPropertiesKey.FromTable(table), out Dictionary<string, string> result))

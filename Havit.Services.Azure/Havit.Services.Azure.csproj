@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.6" />
-    <PackageReference Include="Microsoft.Azure.Storage.File" Version="11.1.6" />
+    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.7" />
+    <PackageReference Include="Microsoft.Azure.Storage.File" Version="11.1.7" />
   </ItemGroup>
 
   <ItemGroup>

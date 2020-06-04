@@ -9,8 +9,8 @@ using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Azure.Tests.FileStorage

@@ -36,16 +36,21 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static List<Table> GetWorkingTables()
 		{
-			List<Table> result = new List<Table>();
-			foreach (Table table in Database.Tables)
+			if (_workingTables == null)
 			{
-				if (!table.IsSystemObject && !TableHelper.IsIgnored(table))
+				List<Table> tables = new List<Table>();
+				foreach (Table table in Database.Tables)
 				{
-					result.Add(table);
+					if (!table.IsSystemObject && !TableHelper.IsIgnored(table))
+					{
+						tables.Add(table);
+					}
 				}
+				_workingTables = tables.OrderBy(item => item.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
 			}
-			return result.OrderBy(item => item.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
+			return _workingTables;
 		}
+		private static List<Table> _workingTables;
 
 		/// <summary>
 		/// Vrátí tabulku na základě jejího názvu a názvu schématu.

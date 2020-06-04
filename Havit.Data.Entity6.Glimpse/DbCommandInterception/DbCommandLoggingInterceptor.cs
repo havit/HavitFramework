@@ -16,6 +16,8 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 	/// </summary>
 	internal class DbCommandLoggingInterceptor : IDbCommandInterceptor
 	{
+		private const string InterceptorUserStateKey = nameof(DbCommandLoggingInterceptor);
+
 		private readonly IMessageBroker messageBroker;
 
 		public DbCommandLoggingInterceptor(IMessageBroker messageBroker)
@@ -66,7 +68,7 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 		/// </summary>
 		private void StoreUserData<T>(DbCommandInterceptionContext<T> interceptionContext)
 		{
-			interceptionContext.UserState = new InterceptionUserData { OriginalUserData = interceptionContext.UserState, Stopwatch = Stopwatch.StartNew() };
+			interceptionContext.SetUserState(InterceptorUserStateKey, new InterceptionUserData { Stopwatch = Stopwatch.StartNew() });
 		}
 
 		/// <summary>
@@ -74,10 +76,8 @@ namespace Havit.Data.Entity.Glimpse.DbCommandInterception
 		/// </summary>
 		private InterceptionUserData RestoreUserData<T>(DbCommandInterceptionContext<T> interceptionContext)
 		{
-			InterceptionUserData interceptionUserData = (InterceptionUserData)interceptionContext.UserState;
+			InterceptionUserData interceptionUserData = (InterceptionUserData)interceptionContext.FindUserState(InterceptorUserStateKey);
 			interceptionUserData.Stopwatch.Stop();
-
-			interceptionContext.UserState = interceptionUserData.OriginalUserData;
 
 			return interceptionUserData;
 		}

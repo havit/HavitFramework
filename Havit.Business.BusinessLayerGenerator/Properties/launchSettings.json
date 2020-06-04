@@ -1,17 +1,25 @@
 {
-  "profiles": {
-    "Havit.Business.BusinessLayerGenerator": {
-      "commandName": "Project",
-      "commandLineArgs": "-sqlserver:sqldev -database:HavitBusinessLayerTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest"
-    },
-    "003.GOR": {
-      "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\DEV\\003.GOR\\BusinessLayer -sqlserver:sqldev -database:Goran",
-      "workingDirectory": "D:\\Temp"
-    },
-    "021.DSV": {
-      "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Dev\\021.DSV\\BusinessLayer -sqlserver:sqldev -database:DsvCommerce"
+    "profiles": {
+        "Havit.Business.BusinessLayerGenerator": {
+            "commandName": "Project",
+            "commandLineArgs": "-sqlserver:sqldev -database:HavitBusinessLayerTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest"
+        },
+        "003.GOR": {
+            "commandName": "Project",
+            "commandLineArgs": "-outputpath:D:\\DEV\\003.GOR\\BusinessLayer -sqlserver:sqldev -database:Goran",
+            "workingDirectory": "D:\\Temp"
+        },
+        "021.DSV": {
+            "commandName": "Project",
+            "commandLineArgs": "-outputpath:D:\\Dev\\021.DSV\\BusinessLayer -sqlserver:sqldev -database:DsvCommerce"
+        },
+        "095.LPO": {
+            "commandName": "Project",
+            "commandLineArgs": "-outputpath:D:\\Dev\\095.LPO\\BusinessLayer -sqlserver:sqldev.havit.local -database:LachnitPohledavky -username:development -password:development"
+        },
+        "123.AEP": {
+            "commandName": "Project",
+            "commandLineArgs": "-outputpath:D:\\Dev\\123.AEP\\BusinessLayer -sqlserver:sqldev.havit.local -database:AccacePayroll_master -username:development -password:development -strategy HavitCodeFirst"
+        }
     }
-  }
 }

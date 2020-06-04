@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.Azure.Storage.Blob;
 using Havit.Text.RegularExpressions;
+using Microsoft.Azure.Storage.Blob;
+using Microsoft.Azure.Storage;
 
 namespace Havit.Services.Azure.FileStorage
 {

@@ -51,8 +51,8 @@
     <UseMerge>false</UseMerge>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AspNet.ScriptManager.jQuery, Version=2.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.2.2.4\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    <Reference Include="AspNet.ScriptManager.jQuery, Version=3.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.5.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="AspNet.ScriptManager.jQuery.UI.Combined, Version=1.12.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AspNet.ScriptManager.jQuery.UI.Combined.1.12.1\lib\net45\AspNet.ScriptManager.jQuery.UI.Combined.dll</HintPath>
@@ -88,10 +88,6 @@
     <Content Include="Content\site.min.css">
       <DependentUpon>site.css</DependentUpon>
     </Content>
-    <Content Include="Content\havit.web.bootstrap\validation.less" />
-    <Content Include="Content\havit.web.bootstrap\navbar.less" />
-    <Content Include="Content\havit.web.bootstrap\modals.less" />
-    <Content Include="Content\havit.web.bootstrap\havit-web-bootstrap.less" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -139,10 +135,6 @@
     <Content Include="Content\toastr.less" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\havit.web.bootstrap\CollapsiblePanel.js" />
-    <Content Include="Scripts\havit.web.bootstrap\ModalExtension.js" />
-    <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
-    <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -218,9 +210,19 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
-    <None Include="Scripts\jquery-2.2.4.intellisense.js" />
-    <Content Include="Scripts\jquery-2.2.4.js" />
-    <Content Include="Scripts\jquery-2.2.4.min.js" />
+    <Content Include="Content\havit.web.bootstrap\validation.less" />
+    <Content Include="Content\havit.web.bootstrap\navbar.less" />
+    <Content Include="Content\havit.web.bootstrap\modals.less" />
+    <Content Include="Content\havit.web.bootstrap\havit-web-bootstrap.less" />
+    <Content Include="Scripts\havit.web.bootstrap\CollapsiblePanel.js" />
+    <Content Include="Scripts\havit.web.bootstrap\ModalExtension.js" />
+    <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
+    <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
+    <None Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.5.1.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\toastr.js" />
@@ -275,7 +277,8 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Config\healthMonitoring.config" />
     <Content Include="Templates\Main.Master" />
-    <Content Include="Scripts\jquery-2.2.4.min.map" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.5.1.min.map" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

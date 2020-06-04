@@ -26,7 +26,11 @@ namespace Havit.ApplicationInsights.DependencyCollector
             if (IsAzureBlobRequest(dependencyTelemetry) && Is404Result(dependencyTelemetry))
             {
                 dependencyTelemetry.Success = true;
-                dependencyTelemetry.Context.Properties["AzureBlobStatusCode404AsSuccess"] = "true";
+
+                if (telemetry is ISupportProperties supportProperties)
+                {
+                    supportProperties.Properties["AzureBlobStatusCode404AsSuccess"] = "true";
+                }
             }
         }
 

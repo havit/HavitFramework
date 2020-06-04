@@ -148,113 +148,108 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static List<CollectionProperty> GetCollectionColumns(Table table)
 		{
-			List<CollectionProperty> result = new List<CollectionProperty>();
-
-			foreach (ExtendedProperty extendedProperty in table.ExtendedProperties)
+			if (!_getCollectionColumns.TryGetValue(table, out List<CollectionProperty> collectionColumns))
 			{
-				if (extendedProperty.Name.StartsWith("Collection"))
+				collectionColumns = new List<CollectionProperty>();
+
+				foreach (KeyValuePair<string, string> extendedProperty in ExtendedPropertiesHelper.GetTableExtendedProperties(table))
 				{
-					string[] parsedName = extendedProperty.Name.Split(new string[] { "_", "." }, StringSplitOptions.None);
-					if (parsedName.Length > 2) // ochrana pred Colection_XXXX_Description, apod.
+					if (extendedProperty.Key.StartsWith("Collection"))
 					{
-						continue;
+						string[] parsedName = extendedProperty.Key.Split(new string[] { "_", "." }, StringSplitOptions.None);
+						if (parsedName.Length > 2) // ochrana pred Colection_XXXX_Description, apod.
+						{
+							continue;
+						}
+
+						string collectionPropertyName = parsedName[1];
+						string extendedPropertyValue = (string)extendedProperty.Value;
+						string[] parsedValues = ((string)extendedProperty.Value).Split(new string[] { "." }, StringSplitOptions.None);
+						if ((parsedValues.Length < 2) || (parsedValues.Length > 3))
+						{
+							throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' se nepodařilo zpracovat hodnotu '{2}'.", collectionPropertyName, table.Name, extendedPropertyValue));
+						}
+
+						string collectionTableSchemaName = (parsedValues.Length == 3) ? parsedValues[0] : null;
+						string collectionTableName = parsedValues[parsedValues.Length - 2];
+						string collectionFieldName = parsedValues[parsedValues.Length - 1];
+
+						Table joinTable = null;
+						Table targetTable = (collectionTableSchemaName == null) ? DatabaseHelper.FindTable(collectionTableName, table.Schema, true) : DatabaseHelper.FindTable(collectionTableName, collectionTableSchemaName);
+						if (targetTable == null)
+						{
+							throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyla nalezena tabulka '{2}'.", collectionPropertyName, table.Name, collectionTableName));
+						}
+						else if (TableHelper.IsIgnored(targetTable))
+						{
+							throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byla nalezena tabulka '{2}', která je však ignorovaná.", collectionPropertyName, table.Name, collectionTableName));
+						}
+
+						Column referenceColumn = targetTable.Columns[collectionFieldName];
+						if (referenceColumn == null)
+						{
+							throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyl nalezen sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
+						}
+						if (ColumnHelper.IsIgnored(referenceColumn))
+						{
+							throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byl nalezen ignorovaný sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
+						}
+
+						if (TableHelper.IsJoinTable(targetTable))
+						{
+							joinTable = targetTable;
+							targetTable = TableHelper.GetSecondJoinEnd(targetTable, table);
+						}
+
+						string description = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_Description", collectionPropertyName));
+						bool? autoLoadAll = ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_LoadAll", collectionPropertyName), table.Name);
+						string sorting = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_Sorting", collectionPropertyName));
+						string propertyAccessModifier = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_PropertyAccessModifier", collectionPropertyName)) ?? ((TableHelper.GetAccessModifier(targetTable) == "internal") ? "internal" : "public");
+						bool includeDeleted = ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_IncludeDeleted", collectionPropertyName), table.Name) ?? false;
+						CollectionProperty resultItem = new CollectionProperty(table, collectionPropertyName, joinTable, targetTable, referenceColumn, description, autoLoadAll ?? false, propertyAccessModifier, sorting, includeDeleted);
+						collectionColumns.Add(resultItem);
+					}
+				}
+
+				// seřadíme kolekce dle atributů (v praxi se ukazuje, že jsou již seřazené)			
+				collectionColumns = collectionColumns.OrderBy(item => item.PropertyName, StringComparer.InvariantCultureIgnoreCase).ToList();
+
+				// abychom neměnili spoustu existujícího kódu, neměníme pořadí lokalizačních tabulek a necháváme je na konci
+				if (LocalizationHelper.IsLocalizedTable(table))
+				{
+					Table targetTable = LocalizationHelper.GetLocalizationTable(table);
+
+					string referenceColumnName;
+					if (LanguageHelper.IsLanguageTable(table))
+					{
+						referenceColumnName = "ParentLanguageID";
+					}
+					else
+					{
+						referenceColumnName = TableHelper.GetPrimaryKey(table).Name;
 					}
 
-					string collectionPropertyName = parsedName[1];
-					string extendedPropertyValue = (string)extendedProperty.Value;
-					string[] parsedValues = ((string)extendedProperty.Value).Split(new string[] { "." }, StringSplitOptions.None);
-					if ((parsedValues.Length < 2) || (parsedValues.Length > 3))
-					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' se nepodařilo zpracovat hodnotu '{2}'.", collectionPropertyName, table.Name, extendedPropertyValue));
-					}
-
-					string collectionTableSchemaName = (parsedValues.Length == 3) ? parsedValues[0] : null;
-					string collectionTableName = parsedValues[parsedValues.Length - 2];
-					string collectionFieldName = parsedValues[parsedValues.Length - 1];
-
-					Table joinTable = null;
-					Table targetTable = (collectionTableSchemaName == null) ? DatabaseHelper.FindTable(collectionTableName, table.Schema, true) : DatabaseHelper.FindTable(collectionTableName, collectionTableSchemaName);
-					if (targetTable == null)
-					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyla nalezena tabulka '{2}'.", collectionPropertyName, table.Name, collectionTableName));
-					}
-					else if (TableHelper.IsIgnored(targetTable))
-					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byla nalezena tabulka '{2}', která je však ignorovaná.", collectionPropertyName, table.Name, collectionTableName));
-					}
-
-					Column referenceColumn = targetTable.Columns[collectionFieldName];
+					Column referenceColumn = targetTable.Columns[referenceColumnName];
 					if (referenceColumn == null)
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyl nalezen sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
+						throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' nebyl nalezen sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumnName, targetTable.Name));
 					}
 					if (ColumnHelper.IsIgnored(referenceColumn))
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byl nalezen ignorovaný sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
+						throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' byl nalezen ignorovaný sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumnName, targetTable.Name));
 					}
 
-					if (TableHelper.IsJoinTable(targetTable))
-					{
-						joinTable = targetTable;
-						targetTable = TableHelper.GetSecondJoinEnd(targetTable, table);
-					}
+					string description = "Lokalizované hodnoty.";
 
-					string description = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_Description", collectionPropertyName));
-					bool? autoLoadAll = ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_LoadAll", collectionPropertyName), table.Name);
-					string sorting = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_Sorting", collectionPropertyName));
-					string propertyAccessModifier = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_PropertyAccessModifier", collectionPropertyName)) ?? ((TableHelper.GetAccessModifier(targetTable) == "internal") ? "internal" : "public");
-					bool includeDeleted = ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), String.Format("Collection_{0}_IncludeDeleted", collectionPropertyName), table.Name) ?? false;
-					CollectionProperty resultItem = new CollectionProperty(table, collectionPropertyName, joinTable, targetTable, referenceColumn, description, autoLoadAll ?? false, propertyAccessModifier, sorting, includeDeleted);
-					result.Add(resultItem);
+					CollectionProperty localizationProperty = new CollectionProperty(table, "Localizations", null, targetTable, referenceColumn, description, false, "public", null, false);
+					collectionColumns.Add(localizationProperty);
 				}
+
+				_getCollectionColumns.Add(table, collectionColumns);
 			}
-
-			// seřadíme kolekce dle atributů (v praxi se ukazuje, že jsou již seřazené)			
-			result = result.OrderBy(item => item.PropertyName, StringComparer.InvariantCultureIgnoreCase).ToList();
-
-			// abychom neměnili spoustu existujícího kódu, neměníme pořadí lokalizačních tabulek a necháváme je na konci
-			if (LocalizationHelper.IsLocalizedTable(table))
-			{
-				Table targetTable = LocalizationHelper.GetLocalizationTable(table);
-
-				string referenceColumnName;
-				if (LanguageHelper.IsLanguageTable(table))
-				{
-					referenceColumnName = "ParentLanguageID";
-				}
-				else
-				{
-					referenceColumnName = TableHelper.GetPrimaryKey(table).Name;
-				}
-
-				Column referenceColumn = targetTable.Columns[referenceColumnName];
-				if (referenceColumn == null)
-				{
-					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' nebyl nalezen sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumnName, targetTable.Name));
-				}
-				if (ColumnHelper.IsIgnored(referenceColumn))
-				{
-					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' byl nalezen ignorovaný sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumnName, targetTable.Name));
-				}
-
-				string description = "Lokalizované hodnoty.";
-
-				CollectionProperty localizationProperty = new CollectionProperty(table, "Localizations", null, targetTable, referenceColumn, description, false, "public", null, false);
-				result.Add(localizationProperty);
-			}
-
-			//if (!_getCollectionColumns_CheckedTables.Contains(table))
-			//{
-			//	_getCollectionColumns_CheckedTables.Add(table);
-
-			//	foreach (var item in result)
-			//	{
-
-			//	}
-			//}
-			return result;
+			return collectionColumns;
 		}
-		//private static List<Table> _getCollectionColumns_CheckedTables = new List<Table>();
+		private static Dictionary<Table, List<CollectionProperty>> _getCollectionColumns = new Dictionary<Table, List<CollectionProperty>>();
 
 		/// <summary>
 		/// Vrátí seznam vlastností typu kolekce, které mají v BusinessObjektu existovat.

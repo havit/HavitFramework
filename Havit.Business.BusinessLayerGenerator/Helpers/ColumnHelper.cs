@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
@@ -62,6 +63,11 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		/// </summary>
 		public static ForeignKey GetForeignKey(Column column)
 		{
+			if (_getForeignKeys.TryGetValue(column, out ForeignKey result))
+			{
+				return result;
+			}
+
 			if (!TypeHelper.IsBusinessObjectReference(column))
 			{
 				throw new ArgumentException(String.Format("Sloupec \"{0}\" v tabulce \"{1}\" není referencí.", column.Name, ((Table)column.Parent).Name));
@@ -73,12 +79,14 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 			{
 				if (foreignKey.Columns.Count == 1 && foreignKey.Columns[0].Name == column.Name)
 				{
+					_getForeignKeys.Add(column, foreignKey);
 					return foreignKey;
 				}
 			}
 
 			throw new ApplicationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
 		}
+		private static Dictionary<Column, ForeignKey> _getForeignKeys = new Dictionary<Column, ForeignKey>();
 
 		/// <summary>
 		/// Vrátí referencovaný stĺpec z cieľovej tabuľky.

@@ -194,9 +194,6 @@ var Havit;
                                     $('body').off('keypress.havit.web.bootstrap');
                                     ModalExtension.keypressListenerElementSelector = this.modalElementSelector;
                                     $('body').on('keypress.havit.web.bootstrap', function (keypressEvent) {
-                                        if (keypressEvent.which == 13) {
-                                            keypressEvent.preventDefault();
-                                        }
                                         if (_this.closeOnEscapeKey) {
                                             if (keypressEvent.which == 27) {
                                                 eval(_this.escapePostbackScript);
@@ -369,6 +366,9 @@ var Havit;
                             };
                             ModalExtension.suppressFireDefaultButton = function (event) {
                                 if (event.keyCode == 13) {
+                                    if (document.activeElement.nodeName.toLowerCase() == "textarea") {
+                                        return true;
+                                    }
                                     event.cancelBubble = true;
                                     if (event.stopPropagation) {
                                         event.stopPropagation();
@@ -378,7 +378,7 @@ var Havit;
                                 return true;
                             };
                             return ModalExtension;
-                        })();
+                        }());
                         ClientSide.ModalExtension = ModalExtension;
                         var ModalDialogState = (function () {
                             function ModalDialogState() {
@@ -389,7 +389,7 @@ var Havit;
                                 this.bodyMaxHeightPx = null;
                             }
                             return ModalDialogState;
-                        })();
+                        }());
                         var ModalDialogStatePersister = (function () {
                             function ModalDialogStatePersister(storageKey) {
                                 this.storageKey = storageKey;
@@ -427,14 +427,14 @@ var Havit;
                                 }
                             };
                             return ModalDialogStatePersister;
-                        })();
+                        }());
                         var Position = (function () {
                             function Position(left, top) {
                                 this.left = left;
                                 this.top = top;
                             }
                             return Position;
-                        })();
+                        }());
                     })(ClientSide = WebControls.ClientSide || (WebControls.ClientSide = {}));
                 })(WebControls = UI.WebControls || (UI.WebControls = {}));
             })(UI = Bootstrap.UI || (Bootstrap.UI = {}));

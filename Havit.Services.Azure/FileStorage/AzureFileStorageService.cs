@@ -1,8 +1,8 @@
 ﻿using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
 using Havit.Text.RegularExpressions;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.File;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.File;
 using System;
 using System.Collections.Generic;
 using System.Linq;

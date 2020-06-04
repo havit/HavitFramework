@@ -8,12 +8,12 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.1.5</PackageVersion>
+	<PackageVersion>2.1.6</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Installers for Castle Windsor</Description>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Castle.Windsor" Version="4.1.0" />
+    <PackageReference Include="Castle.Windsor" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>

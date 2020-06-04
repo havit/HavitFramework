@@ -180,13 +180,14 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IEntityType entityType)
 		{
 			bool hasEntryEnum = entityType.ClrType.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
+			bool primaryKeySequence = entityType.FindPrimaryKey().Properties.Single().GetDefaultValueSql()?.ToUpper().Contains("NEXT VALUE FOR") ?? false;
 
-			if (hasEntryEnum)
+			if (hasEntryEnum && !primaryKeySequence)
 			{
-				bool primaryKeyGenerated = entityType.FindPrimaryKey().Properties.Single().ValueGenerated == ValueGenerated.OnAdd;
+				bool primaryKeyGenerated = (entityType.FindPrimaryKey().Properties.Single().ValueGenerated == ValueGenerated.OnAdd);
 				bool symbolExists = entityType.GetProperties().Any(item => item.Name == "Symbol");
 
-				if (primaryKeyGenerated && !symbolExists)
+				if (primaryKeyGenerated && !symbolExists && !primaryKeySequence)
 				{
 					yield return $"Class {entityType.ClrType.Name} has Enum mapped to a table with primary key with identity and without column Symbol (unable to pair items).";
 				}

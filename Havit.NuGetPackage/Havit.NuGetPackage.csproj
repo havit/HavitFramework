@@ -7,6 +7,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <NuGetPublishFolder>PrivateNuGets</NuGetPublishFolder> <!-- Nutno uvést před importem, aby se v v nuget.targets použilo. -->
+	<CheckPackageIsNotEmpty>false</CheckPackageIsNotEmpty>
   </PropertyGroup>
   <Import Project="../NuGet.targets" />
   <PropertyGroup>

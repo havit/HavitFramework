@@ -39,4 +39,15 @@
   </PropertyGroup>
   <!-- /Publish NuGet -->
 
+	<Target Name="HavitCheckPackageIsNotEmpty" BeforeTargets="GenerateNuspec" AfterTargets="_CalculateInputsOutputsForPack" Condition=" $(GeneratePackageOnBuild) == 'true' ">
+		<!-- _BuildOutputInPackage - výstup buildu -->
+		<!-- _PackageFiles - content -->
+		<!-- Nereflektujeme zde _PackageFilesToExclude. -->
+		<!-- _PackageFiles obsahuje logo.png, proto je test na jedničku, nikoliv na nulu -->
+		<PropertyGroup>
+			<CheckPackageIsNotEmpty Condition=" $(CheckPackageIsNotEmpty) == '' ">true</CheckPackageIsNotEmpty>
+		</PropertyGroup>
+		<Error Text="Generated nuget package is empty." Condition="( ($(CheckPackageIsNotEmpty) == 'true') And @(_BuildOutputInPackage->Count()) == 0) And (@(_PackageFiles->Count()) &lt;= 1)" />
+	</Target>
+
 </Project>

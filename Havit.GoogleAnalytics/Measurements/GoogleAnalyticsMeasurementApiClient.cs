@@ -77,7 +77,7 @@ namespace Havit.GoogleAnalytics.Measurements
 			//Serialize
 			var transactionData = modelSerializer.SerializeModel(transactionModel);
 			// Post
-			await requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(transactionData));
+			await requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(transactionData)).ConfigureAwait(false);
 
 			List<Task> taskList = new List<Task>();
 			foreach (var itemVm in transactionItems)
@@ -90,10 +90,10 @@ namespace Havit.GoogleAnalytics.Measurements
 				// Serialize
 				var itemData = modelSerializer.SerializeModel(itemModel);
 				// Post
-				await requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(itemData));
+				taskList.Add(requestSender.PostAsync(configuration.MeasurementEndpointUrl, new FormUrlEncodedContent(itemData)));
 			}
 
-			await Task.WhenAll(taskList);
+			await Task.WhenAll(taskList).ConfigureAwait(false);
 		}
 	}
 }

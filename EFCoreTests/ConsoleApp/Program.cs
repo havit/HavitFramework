@@ -38,6 +38,7 @@ using System.Linq.Expressions;
 using Havit.Data.Patterns.Transactions.Internal;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.DataSources;
+using Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;
 
 namespace ConsoleApp1
 {
@@ -68,12 +69,12 @@ namespace ConsoleApp1
 				.AddEntityPatterns()
 				.AddLookupService<IUserLookupService, UserLookupService>();
 
-
 			services.AddSingleton<ITimeService, ServerTimeService>();
 			services.AddSingleton<ICacheService, MemoryCacheService>();
 			services.AddSingleton<IOptions<MemoryCacheOptions>, OptionsManager<MemoryCacheOptions>>();
 			services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
-			services.AddSingleton<IMemoryCache, MemoryCache>();
+			services.AddSingleton<IMemoryCache, MemoryCache>();			
+
 
 			return services.BuildServiceProvider();
 		}
@@ -90,35 +91,8 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			var uow = serviceProvider.GetRequiredService<IUnitOfWork>();
-			var userDataSource = serviceProvider.GetRequiredService<IUserDataSource>();
-			if (!userDataSource.Data.Any())
-			{
-				uow.AddForInsert(new User { Username = "user1" });
-				uow.AddForInsert(new User { Username = "user2" });
-				uow.AddForInsert(new User { Username = "user3" });
-				uow.Commit();
-			}
-
-			var userLookupService = serviceProvider.GetRequiredService<IUserLookupService>();
-			Console.WriteLine(userLookupService.GetUserByUsername("user3"));
-
-			uow.AddForInsert(new User { Username = "user5" });
-			uow.Commit();
-
-			Console.WriteLine(userLookupService.GetUserByUsername("user5"));
-
-			uow.AddRangeForDelete(userDataSource.Data.ToList());
-			uow.Commit();
-
-			try
-			{
-				Console.WriteLine(userLookupService.GetUserByUsername("user5"));
-			}
-			catch (ObjectNotFoundException)
-			{
-				Console.WriteLine("Not found.");
-			}
+			var dataSeedRunner = serviceProvider.GetRequiredService<IDataSeedRunner>();
+			dataSeedRunner.SeedData<ProtectedPropertiesProfile>();
 		}
 
 	}

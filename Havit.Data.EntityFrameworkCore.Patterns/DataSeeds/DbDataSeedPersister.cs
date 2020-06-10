@@ -290,10 +290,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			// we will set 
 			foreach (SeedDataPair<TEntity> pair in pairs)
 			{
+				Type dbEntityType = pair.DbEntity.GetType(); // očekáváme TEntity, snad jen v případě dědičnosti by mohl být potomek
 				foreach (IProperty property in (pair.IsNew ? propertiesForInserting : propertiesForUpdating))
 				{
 					object value = DataBinderExt.GetValue(pair.SeedEntity, property.Name);
-					DataBinderExt.SetValue(pair.DbEntity, property.Name, value);
+					dbEntityType.GetProperty(property.Name).SetValue(pair.DbEntity, value); // tímto umožníme nastavit i membery s protected settery, což DataBinderExt neumí
 				}
 			}
 		}

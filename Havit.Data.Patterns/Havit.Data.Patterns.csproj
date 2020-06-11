@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.1.7</PackageVersion>
+    <PackageVersion>2.1.8</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
   </PropertyGroup>
 
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net462'" />
+    <Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net472'" />
   </ItemGroup>
 
 </Project>

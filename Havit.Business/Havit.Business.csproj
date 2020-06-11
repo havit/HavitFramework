@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.7</PackageVersion>
+    <PackageVersion>2.0.8</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Business Class Library</Description>
   </PropertyGroup>
   <ItemGroup>

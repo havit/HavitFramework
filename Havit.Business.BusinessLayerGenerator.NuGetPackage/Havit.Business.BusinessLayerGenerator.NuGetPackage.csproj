@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <!-- BLG, přestože sám je implementován v .NET Frameworku 4.7.2 chceme umožnit nainstalovat i do projektů targetující starší frameworky. -->
-    <TargetFramework>net462</TargetFramework>
+  <PropertyGroup>    
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageId>Havit.Business.BLGenerator</PackageId>
-    <PackageVersion>2.0.8</PackageVersion>
+    <PackageVersion>2.0.9</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
     <!-- Publikujeme výstup buildu jiného projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>

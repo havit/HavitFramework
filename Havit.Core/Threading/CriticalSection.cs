@@ -76,10 +76,12 @@ namespace Havit.Threading
 		{
 			CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
 
-			await criticalSectionLock.Semaphore.WaitAsync();
+			await criticalSectionLock.Semaphore.WaitAsync().ConfigureAwait(false);
 			try
 			{
+#pragma warning disable CAC001 // ConfigureAwaitChecker
 				await criticalSection();
+#pragma warning restore CAC001 // ConfigureAwaitChecker
 			}
 			finally
 			{

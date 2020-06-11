@@ -35,7 +35,8 @@ namespace Havit.Web.UI.WebControls
 			HttpCookie msgCookie = new HttpCookie(CookieKey);
 			//přístup přes klientský skript netřeba, tj. pro security HttpOnly
 			msgCookie.HttpOnly = true;
-			
+			msgCookie.SameSite = SameSiteMode.Strict; // není důvod, proč by měly cookies přinášet hodnotu při příchodu odjinud
+
 			if (messages == null || messages.Count == 0)
 			{
 				msgCookie.Expires = DateTime.Now.AddYears(-1);

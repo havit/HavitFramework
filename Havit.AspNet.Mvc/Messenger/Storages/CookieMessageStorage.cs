@@ -79,7 +79,8 @@ namespace Havit.AspNet.Mvc.Messenger.Storages
 			HttpCookie messageCookie = new HttpCookie(StorageKey);
 			//přístup přes klientský skript netřeba, tj. pro security HttpOnly
 			messageCookie.HttpOnly = true;
-			
+			messageCookie.SameSite = SameSiteMode.Strict; // není důvod, proč by měly cookies přinášet hodnotu při příchodu odjinud
+
 			if ((messages == null) || (messages.Count == 0))
 			{
 				messageCookie.Expires = DateTime.Now.AddYears(-1);

@@ -188,6 +188,8 @@ namespace Havit.Web.Security
 			authCookie.HttpOnly = true;
 			authCookie.Path = cookiePath;
 			authCookie.Secure = FormsAuthentication.RequireSSL;
+			authCookie.SameSite = FormsAuthentication.CookieSameSite;
+
 			if (FormsAuthentication.CookieDomain != null)
 			{
 				authCookie.Domain = FormsAuthentication.CookieDomain;

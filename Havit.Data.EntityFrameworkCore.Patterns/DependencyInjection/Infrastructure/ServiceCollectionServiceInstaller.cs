@@ -13,7 +13,7 @@ using System.Text;
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure
 {
 	/// <summary>
-	/// Třída pro registraci služeb do dependency injection controlleru, kterým je ServiceCollection.
+	/// Třída pro registraci služeb do dependency injection containeru, kterým je ServiceCollection.
 	/// </summary>
 	internal class ServiceCollectionServiceInstaller : ServiceInstallerBase<ServiceLifetime>
 	{

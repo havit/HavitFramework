@@ -86,7 +86,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			// registrace druhého a dalšího interface
 			foreach (var serviceType in serviceTypes.Skip(1) /* až od druhého */)
 			{
-				services.AddSingleton(serviceType, sp => sp.GetRequiredService(firstServiceTypeToRegister));
+				services.AddTransient(serviceType, sp => sp.GetRequiredService(firstServiceTypeToRegister));
 			}
 		}
 

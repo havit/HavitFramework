@@ -190,6 +190,7 @@
     <Content Include="HavitWebTests\ControlsValuesPersisterTest.aspx" />
     <EmbeddedResource Include="SystemWebTests\b.js" />
     <Content Include="HavitWebTests\CheckBoxDropDownListTest.aspx" />
+    <Content Include="HavitWebTests\DateTimeBoxTest3.aspx" />
     <Content Include="HavitWebTests\DateTimeBoxTest2.aspx" />
     <Content Include="HavitWebTests\EditViewTest.aspx" />
     <Content Include="HavitWebTests\FilePageStatePersisterTest.aspx" />
@@ -532,6 +533,13 @@
     </Compile>
     <Compile Include="HavitWebTests\CheckBoxDropDownListTest.aspx.designer.cs">
       <DependentUpon>CheckBoxDropDownListTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HavitWebTests\DateTimeBoxTest3.aspx.cs">
+      <DependentUpon>DateTimeBoxTest3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HavitWebTests\DateTimeBoxTest3.aspx.designer.cs">
+      <DependentUpon>DateTimeBoxTest3.aspx</DependentUpon>
     </Compile>
     <Compile Include="HavitWebTests\DateTimeBoxTest2.aspx.cs">
       <DependentUpon>DateTimeBoxTest2.aspx</DependentUpon>

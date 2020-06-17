@@ -286,7 +286,7 @@ namespace Havit.Web.UI.WebControls
 		public DateTime? Value
 		{
 			get
-			{
+			{				
 				if (!IsValid)
 				{
 					throw new InvalidOperationException("Nelze číst Value, pokud IsValid je false.");
@@ -493,14 +493,17 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void OnInit(EventArgs e)
 		{			
-			base.OnInit(e);
+			base.OnInit(e);			
 			this.Page.PreLoad += new EventHandler(Page_PreLoad);
 			valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 			EnsureChildControls();
 		}
-
+		
 		private void Page_PreLoad(object sender, EventArgs e)
 		{
+			// Řeší, aby byla value dostupná v OnLoad.
+			// Průšvih je v situaci, kdy je control do stránky přidán později než v OnInit, pak již Page_PreLoad proběhlý a tato metoda se nezavolá.
+			// To zkoušíme alespoň částečně kompenzovat pomocí znovuzavolání metody SetValueFromNestedTextBox v ValueTextBox_TextChanged, čímž se snažíme přiblížit korektnímu použití 
 			if (ViewState["ValueMemento"] != null)
 			{
 				// pokud již alespoň jednou proběhl životní cyklus controlu (repeatery, gridy, databinding, apod.)
@@ -527,6 +530,13 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void SetValueFromNestedTextBox()
 		{
+			// ochrana před dvojím zavoláním metody v jednom requestu (které by však asi nevadilo, ale preventivně se chráníme)
+			if (_setValueFromNestedTextBoxAlreadyCalledInThisRequest)
+			{
+				return;
+			}
+			_setValueFromNestedTextBoxAlreadyCalledInThisRequest = true;
+
 			string text = valueTextBox.Text.Trim();
 			if (String.IsNullOrEmpty(text))
 			{
@@ -545,6 +555,7 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 		}
+		private bool _setValueFromNestedTextBoxAlreadyCalledInThisRequest = false;
 
 		/// <summary>
 		/// Nastaví hodnotu z Value do DateTimeBoxu.		
@@ -882,6 +893,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		private void ValueTextBox_TextChanged(object sender, EventArgs e)
 		{
+			SetValueFromNestedTextBox();
 			if (!Object.Equals(ViewState["ValueMemento"], GetValueMemento()))
 			{
 				OnValueChanged(EventArgs.Empty);

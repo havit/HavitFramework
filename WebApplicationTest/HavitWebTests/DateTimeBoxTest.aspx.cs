@@ -42,7 +42,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 		private void TestGV_DataBinding(object sender, EventArgs e)
 		{
-			Random r = new Random();
 			TestGV.DataSource = System.Linq.Enumerable.Range(1, 50);
 		}
 
@@ -67,10 +66,10 @@ namespace Havit.WebApplicationTest.HavitWebTests
 			AutoPostBackOnLoadValueLabel.Text = AutoPostBackDateTimeBox.Value.ToString();
 			ChangedLabel.Text = "no";
 			//TestGVField.Visible = false;
-			TestGV.SetRequiresDatabinding();
 
 			if (!Page.IsPostBack)
 			{
+				TestGV.SetRequiresDatabinding();
 				PrvniDTB.ContainerStyle.BorderColor = Color.Red;
 			}
 		}

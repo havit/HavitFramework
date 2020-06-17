@@ -35,7 +35,7 @@ namespace <#= Model.NamespaceName #>
 		private <#= Model.ModelClassFullName #> <#= entry.FieldName #>;
 
 <# } #>
-		public <#= Model.DbClassName #>(IRepository<<#= Model.ModelClassFullName #>> repository)
+		public <#= Model.DbClassName #>(<#= Model.RepositoryDependencyFullName #> repository)
 			: base(repository)
 		{
 		}

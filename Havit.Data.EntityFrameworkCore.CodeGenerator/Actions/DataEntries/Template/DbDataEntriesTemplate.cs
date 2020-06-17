@@ -159,14 +159,14 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write("(IRepository<");
+            this.Write("(");
             
             #line 38 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.RepositoryDependencyFullName));
             
             #line default
             #line hidden
-            this.Write("> repository)\r\n\t\t\t: base(repository)\r\n\t\t{\r\n\t\t}\r\n\t}\r\n}");
+            this.Write(" repository)\r\n\t\t\t: base(repository)\r\n\t\t{\r\n\t\t}\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

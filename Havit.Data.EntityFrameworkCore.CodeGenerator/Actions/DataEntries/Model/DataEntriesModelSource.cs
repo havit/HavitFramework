@@ -34,6 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 					DbClassName = registeredEntity.ClrType.Name + "Entries",
 					ModelClassFullName = registeredEntity.ClrType.FullName,
 					ModelEntriesEnumerationFullName = registeredEntity.ClrType.FullName + ".Entry",
+					RepositoryDependencyFullName = GetRepositoryDependencyFullName(registeredEntity.ClrType),
 					Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item).Select(item => new DataEntriesModel.Entry
 					{
 						PropertyName = item,
@@ -63,6 +64,18 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 			{
 				return namespaceName + ".DataSources";
 			}
+		}
+
+		private string GetRepositoryDependencyFullName(Type entityType)
+		{
+			string entityNamespaceName = entityType.Namespace;
+			string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+
+			string repositoryNamespace = entityNamespaceName.StartsWith(modelProjectNamespace)
+				? dataLayerProject.GetProjectRootNamespace() + ".Repositories" + entityNamespaceName.Substring(modelProjectNamespace.Length)
+				: entityNamespaceName + ".Repositories";
+			
+			return repositoryNamespace + ".I" + entityType.Name + "Repository";
 		}
 	}
 }

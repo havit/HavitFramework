@@ -9,7 +9,7 @@
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageId>Havit.Data.EntityFrameworkCore.CodeGenerator</PackageId>
-    <PackageVersion>2.1.6</PackageVersion>
+    <PackageVersion>2.1.7</PackageVersion>
     <!-- Publikujeme výstup buildu jiného projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
 	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->

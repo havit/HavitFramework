@@ -9,6 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 		public string DbClassName { get; set; }
 		public string ModelClassFullName { get; set; }
 		public string ModelEntriesEnumerationFullName { get; set; }
+		public string RepositoryDependencyFullName { get; set; }
 		public List<Entry> Entries { get; set; }
 
 		public class Entry

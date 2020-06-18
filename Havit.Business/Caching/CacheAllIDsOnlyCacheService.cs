@@ -11,6 +11,7 @@ namespace Havit.Business.Caching
 	/// <summary>
 	/// Služba zajišťující cachování pouze GetAllIDs business objektu. Ostatní nejsou cachovány.
 	/// Cache dependency není podporováno.
+	/// Necachuje ani data pro DbResources.
 	/// </summary>
 	/// <seealso cref="Havit.Business.Caching.IBusinessLayerCacheService" />
 	public class CacheAllIDsOnlyCacheService : IBusinessLayerCacheService

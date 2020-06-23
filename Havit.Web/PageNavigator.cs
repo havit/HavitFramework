@@ -84,8 +84,17 @@ namespace Havit.Web
 			}
 
 			// pokud máme hodnotu parametru , provedeme dekompresi a parse adres historie
-			byte[] buffer = HttpServerUtility.UrlTokenDecode(historyParameterValue);
-			if (buffer != null) // pokud je hodnota parametru poškozena, získáváme null (bohužel není v dokumentaci MSDN uvedeno)
+			byte[] buffer = null;
+			try
+			{
+				buffer = HttpServerUtility.UrlTokenDecode(historyParameterValue);
+			}
+			catch (FormatException)
+			{
+				// noop
+			}
+
+			if (buffer != null) // pokud je hodnota parametru poškozena, získáváme null
 			{
 				using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(buffer, false))
 				{

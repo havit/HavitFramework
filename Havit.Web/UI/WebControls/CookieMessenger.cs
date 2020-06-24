@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
+using System.Linq;
 using System.Web;
 
 namespace Havit.Web.UI.WebControls
@@ -18,7 +17,7 @@ namespace Havit.Web.UI.WebControls
 			List<MessengerMessage> messages = new List<MessengerMessage>();
 
 			HttpCookie msgCookie = GetCurrentContext().Request.Cookies[CookieKey];
-			if ((msgCookie != null) && (msgCookie.HasKeys))
+			if ((msgCookie != null) && msgCookie.HasKeys)
 			{
 				for (int i = 0; i < msgCookie.Values.Count; i++)
 				{
@@ -32,12 +31,15 @@ namespace Havit.Web.UI.WebControls
 
 		private void SaveMessagesToCookie(List<MessengerMessage> messages)
 		{
-			HttpCookie msgCookie = new HttpCookie(CookieKey);
-			//přístup přes klientský skript netřeba, tj. pro security HttpOnly
-			msgCookie.HttpOnly = true;
-			msgCookie.SameSite = SameSiteMode.Strict; // není důvod, proč by měly cookies přinášet hodnotu při příchodu odjinud
+			HttpContext currentContext = GetCurrentContext();
+			HttpCookie msgCookie = new HttpCookie(CookieKey)
+			{
+				HttpOnly = true, // přístup přes klientský skript netřeba, tj. pro security HttpOnly
+				SameSite = SameSiteMode.Strict, // není důvod, proč by měly cookies přinášet hodnotu při příchodu odjinud
+				Secure = currentContext.Request.IsSecureConnection // běží-li aplikace přes HTTPS, nechť jsou i tyto cookie nastaveny jako secure
+			};
 
-			if (messages == null || messages.Count == 0)
+			if (messages == null || !messages.Any())
 			{
 				msgCookie.Expires = DateTime.Now.AddYears(-1);
 				msgCookie.Value = String.Empty;
@@ -52,7 +54,7 @@ namespace Havit.Web.UI.WebControls
 					msgIndex++;
 				}
 			}
-			GetCurrentContext().Response.Cookies.Set(msgCookie);
+			currentContext.Response.Cookies.Set(msgCookie);
 		}
 
 		/// <summary>

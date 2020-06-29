@@ -119,7 +119,6 @@ namespace Havit.Data.Threading
             SqlParameter lockOwnerSqlParameter = new SqlParameter("@LockOwner", "Session");
             SqlParameter lockTimeoutSqlParameter = new SqlParameter("@LockTimeout", options.LockTimeoutMs);            
             resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
-
             {
                 Direction = ParameterDirection.Output
             };

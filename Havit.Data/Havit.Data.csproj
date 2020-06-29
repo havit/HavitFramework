@@ -12,6 +12,12 @@
     <Description>HAVIT .NET Framework Extensions - Data Class Library</Description>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
   </ItemGroup>
 

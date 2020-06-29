@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,7 @@ namespace Havit.Data.Threading
         {
             using (SqlConnection sqlConnection = new SqlConnection(options.ConnectionString))
             {
+                sqlConnection.Open();
                 GetLock(lockValue, sqlConnection);
 
                 switch (GetAppLockResultCode)
@@ -57,6 +59,7 @@ namespace Havit.Data.Threading
                 }
 
                 ReleaseLock(lockValue, sqlConnection);
+                sqlConnection.Close();
             }
         }
 
@@ -65,6 +68,7 @@ namespace Havit.Data.Threading
         {
             using (SqlConnection sqlConnection = new SqlConnection(options.ConnectionString))
             {
+                await sqlConnection.OpenAsync().ConfigureAwait(false);
                 await GetLockAsync(lockValue, sqlConnection).ConfigureAwait(false);
 
                 switch (GetAppLockResultCode)
@@ -86,113 +90,89 @@ namespace Havit.Data.Threading
                 }
 
                 await ReleaseLockAsync(lockValue, sqlConnection).ConfigureAwait(false);
+                sqlConnection.Close();
             }
         }
 
         private void GetLock(string lockValue, SqlConnection sqlConnection)
         {
-            SqlParameter lockedResourceSqlParameter = new SqlParameter("@Resource", lockValue);
-            SqlParameter lockModeSqlParameter = new SqlParameter("@LockMode", "Exclusive"); // Exclusive - Used for data-modification operations, such as INSERT, UPDATE, or DELETE. Ensures that multiple updates cannot be made to the same resource at the same time.
-            SqlParameter lockOwnerSqlParameter = new SqlParameter("@LockOwner", "Session");
-            SqlParameter lockTimeoutSqlParameter = new SqlParameter("@LockTimeout", options.LockTimeoutMs);
-            SqlParameter resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
+            using (var command = GetLock_PrepareCommand(lockValue, sqlConnection, out SqlParameter resultCodeSqlParameter))
             {
-                Direction = ParameterDirection.Output
-            };
-
-            sqlConnection.Open();
-            using (var command = sqlConnection.CreateCommand())
-            {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "EXEC @ResultCode = sp_getapplock @Resource, @LockMode, @LockOwner, @LockTimeout";
-                command.Parameters.Add(lockedResourceSqlParameter);
-                command.Parameters.Add(lockModeSqlParameter);
-                command.Parameters.Add(lockOwnerSqlParameter);
-                command.Parameters.Add(lockTimeoutSqlParameter);
-                command.Parameters.Add(resultCodeSqlParameter);
-                command.CommandTimeout = options.SqlCommandTimeoutSeconds;
-
                 command.ExecuteNonQuery();
-
                 GetAppLockResultCode = (SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value;
             }
         }
 
         private async Task GetLockAsync(string lockValue, SqlConnection sqlConnection)
         {
-            SqlParameter lockedResourceSqlParameter = new SqlParameter("@Resource", lockValue);
-            SqlParameter lockModeSqlParameter = new SqlParameter("@LockMode", "Exclusive"); // Exclusive - Used for data-modification operations, such as INSERT, UPDATE, or DELETE. Ensures that multiple updates cannot be made to the same resource at the same time.
-            SqlParameter lockOwnerSqlParameter = new SqlParameter("@LockOwner", "Session");
-            SqlParameter lockTimeoutSqlParameter = new SqlParameter("@LockTimeout", options.LockTimeoutMs);
-            SqlParameter resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
+            using (var command = GetLock_PrepareCommand(lockValue, sqlConnection, out SqlParameter resultCodeSqlParameter))
             {
-                Direction = ParameterDirection.Output
-            };
-
-            await sqlConnection.OpenAsync().ConfigureAwait(false);
-            using (var command = sqlConnection.CreateCommand())
-            {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "EXEC @ResultCode = sp_getapplock @Resource, @LockMode, @LockOwner, @LockTimeout";
-                command.Parameters.Add(lockedResourceSqlParameter);
-                command.Parameters.Add(lockModeSqlParameter);
-                command.Parameters.Add(lockOwnerSqlParameter);
-                command.Parameters.Add(lockTimeoutSqlParameter);
-                command.Parameters.Add(resultCodeSqlParameter);
-                command.CommandTimeout = options.SqlCommandTimeoutSeconds;
-
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
-
                 GetAppLockResultCode = (SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value;
             }
         }
 
-        private void ReleaseLock(string lockValue, SqlConnection sqlConnection)
+        private SqlCommand GetLock_PrepareCommand(string lockValue, SqlConnection sqlConnection, out SqlParameter resultCodeSqlParameter)
         {
-            SqlParameter lockedResourceSqlParameter = new SqlParameter("Resource", lockValue);
-            SqlParameter lockOwnerSqlParameter = new SqlParameter("LockOwner", "Session");
-            SqlParameter resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
+            SqlParameter lockedResourceSqlParameter = new SqlParameter("@Resource", lockValue);
+            SqlParameter lockModeSqlParameter = new SqlParameter("@LockMode", "Exclusive"); // Exclusive - Used for data-modification operations, such as INSERT, UPDATE, or DELETE. Ensures that multiple updates cannot be made to the same resource at the same time.
+            SqlParameter lockOwnerSqlParameter = new SqlParameter("@LockOwner", "Session");
+            SqlParameter lockTimeoutSqlParameter = new SqlParameter("@LockTimeout", options.LockTimeoutMs);            
+            resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
+
             {
                 Direction = ParameterDirection.Output
             };
 
-            using (var command = sqlConnection.CreateCommand())
+            SqlCommand command = sqlConnection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = "EXEC @ResultCode = sp_getapplock @Resource, @LockMode, @LockOwner, @LockTimeout";
+            command.Parameters.Add(lockedResourceSqlParameter);
+            command.Parameters.Add(lockModeSqlParameter);
+            command.Parameters.Add(lockOwnerSqlParameter);
+            command.Parameters.Add(lockTimeoutSqlParameter);
+            command.Parameters.Add(resultCodeSqlParameter);
+            command.CommandTimeout = options.SqlCommandTimeoutSeconds;
+
+            return command;
+        }
+
+        private void ReleaseLock(string lockValue, SqlConnection sqlConnection)
+        {
+            using (SqlCommand command = ReleaseLock_PrepareCommand(lockValue, sqlConnection, out SqlParameter resultCodeSqlParameter))
             {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "EXEC @ResultCode = sp_releaseapplock @Resource, @LockOwner";
-                command.Parameters.Add(lockedResourceSqlParameter);
-                command.Parameters.Add(lockOwnerSqlParameter);
-                command.Parameters.Add(resultCodeSqlParameter);
-                command.CommandTimeout = options.SqlCommandTimeoutSeconds;
-
                 command.ExecuteNonQuery();
-
                 ReleaseAppLockResultCode = (SpReleaseAppLockResultCode)(int)resultCodeSqlParameter.Value;
             }
         }
 
         private async Task ReleaseLockAsync(string lockValue, SqlConnection sqlConnection)
         {
+            using (SqlCommand command = ReleaseLock_PrepareCommand(lockValue, sqlConnection, out SqlParameter resultCodeSqlParameter))
+            { 
+                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                ReleaseAppLockResultCode = (SpReleaseAppLockResultCode)(int)resultCodeSqlParameter.Value;
+            }
+        }
+
+        private SqlCommand ReleaseLock_PrepareCommand(string lockValue, SqlConnection sqlConnection, out SqlParameter resultCodeSqlParameter)
+        {
             SqlParameter lockedResourceSqlParameter = new SqlParameter("Resource", lockValue);
             SqlParameter lockOwnerSqlParameter = new SqlParameter("LockOwner", "Session");
-            SqlParameter resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
+            resultCodeSqlParameter = new SqlParameter("@ResultCode", SqlDbType.Int)
             {
                 Direction = ParameterDirection.Output
             };
 
-            using (var command = sqlConnection.CreateCommand())
-            {
-                command.CommandType = CommandType.Text;
-                command.CommandText = "EXEC @ResultCode = sp_releaseapplock @Resource, @LockOwner";
-                command.Parameters.Add(lockedResourceSqlParameter);
-                command.Parameters.Add(lockOwnerSqlParameter);
-                command.Parameters.Add(resultCodeSqlParameter);
-                command.CommandTimeout = options.SqlCommandTimeoutSeconds;
+            SqlCommand command = sqlConnection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = "EXEC @ResultCode = sp_releaseapplock @Resource, @LockOwner";
+            command.Parameters.Add(lockedResourceSqlParameter);
+            command.Parameters.Add(lockOwnerSqlParameter);
+            command.Parameters.Add(resultCodeSqlParameter);
+            command.CommandTimeout = options.SqlCommandTimeoutSeconds;
 
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
-
-                ReleaseAppLockResultCode = (SpReleaseAppLockResultCode)(int)resultCodeSqlParameter.Value;
-            }
+            return command;
         }
 
         /// <summary>

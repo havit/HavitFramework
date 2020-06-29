@@ -28,7 +28,8 @@ namespace Havit.Data.Tests.Threading
 			DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 			// Act
-			criticalSection.ExecuteAction("FakeResource", () => {
+			criticalSection.ExecuteAction("FakeResource", () =>
+			{
 				// Assert
 				Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
 			});
@@ -126,7 +127,8 @@ namespace Havit.Data.Tests.Threading
 			{
 				// Assert
 				Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
-				criticalSection.ExecuteAction("FakeResourceB", () => {
+				criticalSection.ExecuteAction("FakeResourceB", () =>
+				{
 					Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
 				});
 

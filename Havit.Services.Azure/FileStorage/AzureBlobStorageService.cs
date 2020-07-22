@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using Havit.Services.FileStorage;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 using Havit.Diagnostics.Contracts;
-using Havit.Services.Azure.Storage.Blob;
 using Havit.Text.RegularExpressions;
-using Microsoft.Azure.Storage.Blob;
-using Microsoft.Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure;
+using Azure.Storage.Blobs.Models;
+using Microsoft.Extensions.Azure;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -30,7 +31,6 @@ namespace Havit.Services.Azure.FileStorage
 		private readonly string blobStorageConnectionString;
 		private readonly string containerName;
 
-		private readonly BlobEncryptionPolicy encryptionPolicy;
 		private readonly AzureBlobStorageServiceOptions options;
 
 		private volatile bool containerAlreadyCreated = false;
@@ -40,7 +40,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null, null, null)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null, null)
 		{
 		}
 
@@ -50,38 +50,17 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="options">Další nastavení.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options) : this(blobStorageConnectionString, containerName, options, null, null)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options) : this(blobStorageConnectionString, containerName, options, null)
 		{
-		}
-
-		/// <summary>
-		/// Konstruktor. Služba bude šifrovat obsah funkcionalitou vestavěnou v Azure Storage klientu.
-		/// </summary>
-		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
-		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		/// <param name="encryptionPolicy">Parametry šifrování.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, null, encryptionPolicy, null)
-		{
-		}
-
-		/// <summary>
-		/// Konstruktor. Služba bude šifrovat obsah funkcionalitou vestavěnou v Azure Storage klientu.
-		/// </summary>
-		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
-		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		/// <param name="encryptionPolicy">Parametry šifrování.</param>
-		/// <param name="options">Další nastavení.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, BlobEncryptionPolicy encryptionPolicy) : this(blobStorageConnectionString, containerName, options, encryptionPolicy, null)
-		{
-		}
-
+		}		
+		
 		/// <summary>
 		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, null, encryptionOptions)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
 		{			
 		}
 
@@ -92,21 +71,13 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
 		/// <param name="options">Další nastavení.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, options, null, encryptionOptions)
-		{
-		}
-
-		/// <summary>
-		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
-		/// </summary>
-		protected AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, BlobEncryptionPolicy encryptionPolicy, EncryptionOptions encryptionOptions) : base(encryptionOptions)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString), nameof(blobStorageConnectionString));
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName), nameof(containerName));
 
 			this.blobStorageConnectionString = blobStorageConnectionString;
 			this.containerName = containerName;
-			this.encryptionPolicy = encryptionPolicy;
 			this.options = options;
 		}
 
@@ -117,8 +88,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			return blob.Exists();
+			BlobClient blobClient = GetBlobClient(fileName);
+			return blobClient.Exists();
 		}
 
 		/// <summary>
@@ -128,8 +99,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			return await blob.ExistsAsync().ConfigureAwait(false);
+			BlobClient blobClient = GetBlobClient(fileName);
+			return await blobClient.ExistsAsync().ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -137,8 +108,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			blob.DownloadToStream(stream, options: GetBlobRequestOptions());
+			BlobClient blobClient = GetBlobClient(fileName);
+			blobClient.DownloadTo(stream);
 		}
 
 		/// <summary>
@@ -146,8 +117,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream)
 		{
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			await blob.DownloadToStreamAsync(stream, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null).ConfigureAwait(false);
+			BlobClient blobClient = GetBlobClient(fileName);
+			await blobClient.DownloadToAsync(stream).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -155,7 +126,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override Stream PerformRead(string fileName)
 		{
-			return GetBlobReference(fileName).OpenRead(options: GetBlobRequestOptions());
+			BlobClient blobClient = GetBlobClient(fileName);
+			BlobDownloadInfo downloadInfo = blobClient.Download();
+			return downloadInfo.Content;		
 		}
 
 		/// <summary>
@@ -163,7 +136,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task<Stream> PerformReadAsync(string fileName)
 		{
-			return await GetBlobReference(fileName).OpenReadAsync(options: GetBlobRequestOptions(), accessCondition: null, operationContext: null).ConfigureAwait(false);
+			BlobClient blobClient = GetBlobClient(fileName);
+			BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync().ConfigureAwait(false);
+			return downloadInfo.Content;
 		}
 
 		/// <summary>
@@ -173,10 +148,14 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			EnsureContainer();
 
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			blob.Properties.ContentType = contentType;
-			PerformSave_SetProperties(blob);
-			blob.UploadFromStream(fileContent, options: GetBlobRequestOptions());
+			BlobClient blobClient = GetBlobClient(fileName);
+
+			BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
+			blobHttpHeaders.ContentType = contentType;
+			PerformSave_SetProperties(blobHttpHeaders);
+
+			blobClient.Upload(fileContent, blobHttpHeaders);
+
 		}
 
 		/// <summary>
@@ -186,17 +165,20 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await EnsureContainerAsync().ConfigureAwait(false);
 
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			blob.Properties.ContentType = contentType;
-			PerformSave_SetProperties(blob);
-			await blob.UploadFromStreamAsync(fileContent, options: GetBlobRequestOptions(), accessCondition: null, operationContext: null).ConfigureAwait(false);
+			BlobClient blobClient = GetBlobClient(fileName);
+
+			BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
+			blobHttpHeaders.ContentType = contentType;
+			PerformSave_SetProperties(blobHttpHeaders);
+
+			await blobClient.UploadAsync(fileContent, blobHttpHeaders).ConfigureAwait(false);
 		}
 
-		private void PerformSave_SetProperties(CloudBlockBlob blob)
+		private void PerformSave_SetProperties(BlobHttpHeaders blobHttpHeaders)
 		{
 			if (!String.IsNullOrEmpty(options?.CacheControl))
 			{
-				blob.Properties.CacheControl = options.CacheControl;
+				blobHttpHeaders.CacheControl = options.CacheControl;
 			}
 		}
 
@@ -207,8 +189,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			blob.Delete();			
+			BlobClient blobClient = GetBlobClient(fileName);
+			blobClient.Delete();			
 		}
 
 		/// <summary>
@@ -218,8 +200,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudBlockBlob blob = GetBlobReference(fileName);
-			await blob.DeleteAsync().ConfigureAwait(false);
+			BlobClient blobClient = GetBlobClient(fileName);
+			await blobClient.DeleteAsync().ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -239,14 +221,14 @@ namespace Havit.Services.Azure.FileStorage
 			EnsureContainer();
 
 			// nacti soubory s danym prefixem - optimalizace na rychlost
-			IEnumerable<IListBlobItem> listBlobItems = GetContainerReference().ListBlobs(prefix, true);
+			Pageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobs(prefix: prefix);
 
 			// filtruj soubory podle masky
-			foreach (var listBlobItem in listBlobItems)
+			foreach (var blobItem in blobItems)
 			{
-				if (EnumerateFiles_FilterCloudBlob(listBlobItem, searchPattern))
+				if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
 				{
-					yield return EnumerateFiles_ProjectCloudBlob(listBlobItem);
+					yield return EnumerateFiles_ProjectCloudBlob(blobItem);
 				}
 			}
 		}
@@ -268,29 +250,21 @@ namespace Havit.Services.Azure.FileStorage
 			await EnsureContainerAsync().ConfigureAwait(false);
 
 			// nacti soubory s danym prefixem - optimalizace na rychlost
-			IAsyncEnumerable<IListBlobItem> listBlobItems = GetContainerReference().ListBlobsAsync(prefix, true);
+			AsyncPageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobsAsync(prefix: prefix);
 
-			await foreach (IListBlobItem listBlobItem in listBlobItems)
+			await foreach (BlobItem blobItem in blobItems.ConfigureAwait(false))
 			{
 				// filtruj soubory podle masky
-				if (EnumerateFiles_FilterCloudBlob(listBlobItem, searchPattern))
+				if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
 				{
-					yield return EnumerateFiles_ProjectCloudBlob(listBlobItem);
-
+					yield return EnumerateFiles_ProjectCloudBlob(blobItem);
 				}
 			}
 		}
 
-		private bool EnumerateFiles_FilterCloudBlob(IListBlobItem listBlobItem, string searchPattern)
+		private bool EnumerateFiles_FilterCloudBlob(BlobItem blobItem, string searchPattern)
 		{
-			CloudBlob cloudBlob = listBlobItem as CloudBlob;
-
-			if (cloudBlob == null)
-			{
-				return false;
-			}
-
-			if ((searchPattern != null) && !RegexPatterns.IsFileWildcardMatch(cloudBlob.Name, searchPattern))
+			if ((searchPattern != null) && !RegexPatterns.IsFileWildcardMatch(blobItem.Name, searchPattern))
 			{
 				return false;
 			}
@@ -298,16 +272,14 @@ namespace Havit.Services.Azure.FileStorage
 			return true;
 		}
 
-		private FileInfo EnumerateFiles_ProjectCloudBlob(IListBlobItem listBlobItem)
+		private FileInfo EnumerateFiles_ProjectCloudBlob(BlobItem blobItem)
 		{
-			CloudBlob cloudBlob = (CloudBlob)listBlobItem;
-
 			return new FileInfo
 			{
-				Name = cloudBlob.Name,
-				LastModifiedUtc = cloudBlob.Properties.LastModified?.UtcDateTime ?? default(DateTime),
-				Size = cloudBlob.Properties.Length,
-				ContentType = cloudBlob.Properties.ContentType
+				Name = blobItem.Name,
+				LastModifiedUtc = blobItem.Properties.LastModified?.UtcDateTime ?? default(DateTime),
+				Size = blobItem.Properties.ContentLength ?? -1,
+				ContentType = blobItem.Properties.ContentType
 			};
 		}
 
@@ -318,9 +290,9 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudBlobContainer container = GetContainerReference();
-			ICloudBlob blob = container.GetBlobReferenceFromServer(fileName);
-			return blob.Properties.LastModified?.UtcDateTime;
+			BlobClient blobClient = GetBlobClient(fileName);
+			BlobProperties properties = blobClient.GetProperties();
+			return properties.LastModified.UtcDateTime;
 		}
 
 		/// <summary>
@@ -330,30 +302,26 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudBlobContainer container =  GetContainerReference();
-			ICloudBlob blob = await container.GetBlobReferenceFromServerAsync(fileName).ConfigureAwait(false);
-			return blob.Properties.LastModified?.UtcDateTime;
+			BlobClient blobClient = GetBlobClient(fileName);
+			BlobProperties properties = await blobClient.GetPropertiesAsync().ConfigureAwait(false);
+			return properties.LastModified.UtcDateTime;
 		}
 
 		/// <summary>
-		/// Vrátí CloudBlockBlob pro daný blob v containeru používaného Azure Storage Accountu.
+		/// Vrátí BlobClient pro daný blob v containeru používaného Azure Storage Accountu.
 		/// </summary>
-		protected internal CloudBlockBlob GetBlobReference(string blobName)
+		protected internal BlobClient GetBlobClient(string blobName)
 		{
-			var container = GetContainerReference();
-			return container.GetBlockBlobReference(blobName);
+			BlobContainerClient blobContainerClient = GetBlobContainerClient();
+			return blobContainerClient.GetBlobClient(blobName);
 		}
 
 		/// <summary>
-		/// Vrátí používaný container (CloudBlobContainer) v Azure Storage Accountu.
+		/// Vrátí používaný container (BlobContainerClient) v Azure Storage Accountu.
 		/// </summary>
-		protected internal CloudBlobContainer GetContainerReference()
+		protected internal BlobContainerClient GetBlobContainerClient()
 		{
-			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blobStorageConnectionString);
-			CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-			CloudBlobContainer container = blobClient.GetContainerReference(containerName);
-			
-			return container;
+			return new BlobContainerClient(blobStorageConnectionString, containerName);
 		}
 
 		/// <summary>
@@ -363,7 +331,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!containerAlreadyCreated)
 			{
-				GetContainerReference().CreateIfNotExists(BlobContainerPublicAccessType.Off);
+				GetBlobContainerClient().CreateIfNotExists(PublicAccessType.None);
 				containerAlreadyCreated = true;
 			}
 		}
@@ -375,17 +343,9 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!containerAlreadyCreated)
 			{
-				await GetContainerReference().CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, options: null, operationContext: null).ConfigureAwait(false);
+				await GetBlobContainerClient().CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
 				containerAlreadyCreated = true;
 			}
-		}
-
-		/// <summary>
-		/// Vrátí BlobRequestOptions pro Azure Storage API.
-		/// </summary>
-		protected BlobRequestOptions GetBlobRequestOptions()
-		{
-			return (this.encryptionPolicy == null) ? null : new BlobRequestOptions { EncryptionPolicy = this.encryptionPolicy };
 		}
 	}
 }

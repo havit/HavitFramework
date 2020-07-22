@@ -32,7 +32,9 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[ClassCleanup]
 		public static void CleanUp()
 		{
-			GetAzureFileStorageService().GetFileShareReference().DeleteIfExists();
+#if !DEBUG
+			GetAzureFileStorageService().GetShareClient().DeleteIfExists();
+#endif
 		}
 
 		[TestMethod]

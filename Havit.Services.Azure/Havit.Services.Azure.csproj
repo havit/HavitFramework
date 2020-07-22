@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.4.4" />
+    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.2.3" />
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.7" />
-    <PackageReference Include="Microsoft.Azure.Storage.File" Version="11.1.7" />
   </ItemGroup>
 
   <ItemGroup>

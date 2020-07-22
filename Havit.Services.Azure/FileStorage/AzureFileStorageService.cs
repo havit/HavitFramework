@@ -1,8 +1,9 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿using Azure;
+using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Models;
+using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
 using Havit.Text.RegularExpressions;
-using Microsoft.Azure.Storage;
-using Microsoft.Azure.Storage.File;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,7 @@ namespace Havit.Services.Azure.FileStorage
 	/// Úložiště souborů jako Azure File Storage. Pro velmi specifické použití! V Azure je obvykle používán <see cref="AzureBlobStorageService" />.
 	/// Umožňuje jako svůj root použít specifickou složku ve FileShare.
 	/// 
-	/// Nepodporuje transparentní šifrování z předka, protože implementace Microsoft.Azure.Storage.File.CloudFile vyžaduje,
-	/// aby byl používaný stream seekovatelný, což InternalCryptoStream není.
-	/// Viz https://github.com/Azure/azure-storage-net/blob/master/Lib/ClassLibraryCommon/File/CloudFile.cs	
+	/// Nepodporuje transparentní šifrování z předka.
 	/// (Použití šifrování beztak postrádá smysl.)
 	/// </summary>
 	public class AzureFileStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
@@ -60,8 +59,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-			CloudFile file = GetFileReference(fileName);
-			return file.Exists();
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
+			return shareFileClient.Exists();
 		}
 
 		/// <summary>
@@ -71,8 +70,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-			CloudFile file = GetFileReference(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			return await file.ExistsAsync().ConfigureAwait(false);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+			return await shareFileClient.ExistsAsync().ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -80,8 +79,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 		{
-			CloudFile file = GetFileReference(fileName);
-			file.DownloadToStream(stream);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
+			ShareFileDownloadInfo downloadInfo = shareFileClient.Download();
+			downloadInfo.Content.CopyTo(stream);
 		}
 
 		/// <summary>
@@ -89,8 +89,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream)
 		{
-			CloudFile file = GetFileReference(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			await file.DownloadToStreamAsync(stream).ConfigureAwait(false);
+			ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+			ShareFileDownloadInfo downloadInfo = await file.DownloadAsync().ConfigureAwait(false);
+			await downloadInfo.Content.CopyToAsync(stream).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -98,8 +99,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override System.IO.Stream PerformRead(string fileName)
 		{
-			CloudFile file = GetFileReference(fileName);
-			return file.OpenRead();
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
+			ShareFileDownloadInfo downloadInfo = shareFileClient.Download();
+			return downloadInfo.Content;
 		}
 
 		/// <summary>
@@ -107,8 +109,9 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task<System.IO.Stream> PerformReadAsync(string fileName)
 		{
-			CloudFile file = GetFileReference(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			return await file.OpenReadAsync().ConfigureAwait(false);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+			ShareFileDownloadInfo downloadInfo = await shareFileClient.DownloadAsync().ConfigureAwait(false);
+			return downloadInfo.Content;
 		}
 
 		/// <summary>
@@ -118,8 +121,26 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			EnsureFileShare();
 
-			CloudFile file = GetFileReference(fileName, createDirectoryStructure: true);
-			file.UploadFromStream(fileContent);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: true);
+			shareFileClient.Create(fileContent.Length);
+			if (fileContent.Length > 0)
+			{
+				try
+				{
+					shareFileClient.Upload(fileContent);
+				}
+				catch
+				{
+					try
+					{
+						shareFileClient.Delete();
+					}
+					catch
+					{
+						// NOOP
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -129,8 +150,26 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await EnsureFileShareAsync().ConfigureAwait(false);
 
-			CloudFile file = await GetFileReferenceAsync(fileName, createDirectoryStructure: true).ConfigureAwait(false);
-			await file.UploadFromStreamAsync(fileContent).ConfigureAwait(false);
+			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: true).ConfigureAwait(false);
+			await shareFileClient.CreateAsync(fileContent.Length).ConfigureAwait(false);
+			if (fileContent.Length > 0)
+			{
+				try
+				{
+					await shareFileClient.UploadAsync(fileContent).ConfigureAwait(false);
+				}
+				catch
+				{
+					try
+					{
+						await shareFileClient.DeleteAsync().ConfigureAwait(false);
+					}
+					catch
+					{
+						// NOOP
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -140,8 +179,8 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudFile file = GetFileReference(fileName);
-			file.Delete();
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
+			shareFileClient.Delete();
 		}
 
 		/// <summary>
@@ -151,15 +190,15 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudFile file = GetFileReference(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			await file.DeleteAsync().ConfigureAwait(false);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+			await shareFileClient.DeleteAsync().ConfigureAwait(false);
 		}
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
 		/// <remarks>
-		/// Nepodporuje LastModified (ve výsledku není hodnota nastavena).
+		/// Nepodporuje LastModified a ContentType (ve výsledku nejsou hodnoty nastaveny).
 		/// Při používání složek je výkonově neefektivní (REST API neumí lepší variantu).
 		/// </remarks>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
@@ -175,7 +214,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			EnsureFileShare();
 
-			foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal(GetRootDirectoryReference(), "", prefix))
+			foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal(GetRootShareDirectoryClient(), "", prefix))
 			{
 				if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 				{
@@ -188,7 +227,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
 		/// <remarks>
-		/// Nepodporuje LastModified (ve výsledku není hodnota nastavena).
+		/// Nepodporuje LastModified a ContentType (ve výsledku nejsou hodnoty nastaveny).
 		/// Při používání složek je výkonově neefektivní (REST API neumí lepší variantu).
 		/// </remarks>
 		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null)
@@ -204,7 +243,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			EnsureFileShare();
 
-			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootDirectoryReference(), "", prefix))
+			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix))
 			{
 				if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 				{
@@ -213,7 +252,7 @@ namespace Havit.Services.Azure.FileStorage
 			}
 		}
 
-		private IEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(CloudFileDirectory directoryReference, string directoryPrefix, string searchPrefix)
+		private IEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix)
 		{
 			// speed up
 			if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
@@ -221,76 +260,76 @@ namespace Havit.Services.Azure.FileStorage
 				yield break;
 			}
 
-			FileContinuationToken token = null;
-			do
-			{
-				FileResultSegment resultSegment = directoryReference.ListFilesAndDirectoriesSegmented(token);
-				var directoryItems = resultSegment.Results;
+			Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories();
+			List<string> subdirectories = new List<string>();
 
-				foreach (CloudFile file in directoryItems.OfType<CloudFile>())
+			foreach (ShareFileItem item in directoryItems)
+			{
+				if (!item.IsDirectory)
 				{
 					yield return new FileInfo
 					{
-						Name = directoryPrefix + file.Name,
-						LastModifiedUtc = file.Properties.LastModified?.UtcDateTime ?? default(DateTime),
-						Size = file.Properties.Length,
-						ContentType = file.Properties.ContentType
+						Name = directoryPrefix + item.Name,
+						LastModifiedUtc = default(DateTime),
+						Size = item.FileSize ?? -1,
+						ContentType = null
 					};
 				}
-
-				foreach (CloudFileDirectory subdirectory in directoryItems.OfType<CloudFileDirectory>())
+				else
 				{
-					var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternal(directoryReference.GetDirectoryReference(subdirectory.Name), directoryPrefix + subdirectory.Name + '/', searchPrefix);
-
-					foreach (var subdirectoryItem in subdirectoryItems)
-					{
-						yield return subdirectoryItem;
-					}
+					subdirectories.Add(item.Name);
 				}
-
-				token = resultSegment.ContinuationToken;
 			}
-			while (token != null);
+
+			foreach (string subdirectory in subdirectories)
+			{
+				var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternal(shareDirectoryClient.GetSubdirectoryClient(subdirectory), directoryPrefix + subdirectory + '/', searchPrefix);
+
+				foreach (var subdirectoryItem in subdirectoryItems)
+				{
+					yield return subdirectoryItem;
+				}
+			}
 		}
 
-		private async IAsyncEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(CloudFileDirectory directoryReference, string directoryPrefix, string searchPrefix)
+		private async IAsyncEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix)
 		{
 			// speed up
 			if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
 			{
 				yield break;
 			}
-			
-			FileContinuationToken token = null;
-			do
-			{
-				FileResultSegment resultSegment = await directoryReference.ListFilesAndDirectoriesSegmentedAsync(token).ConfigureAwait(false);
-				var directoryItems = resultSegment.Results;
 
-				foreach (CloudFile file in directoryItems.OfType<CloudFile>())
+			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync();
+			List<string> subdirectories = new List<string>();
+
+			await foreach (ShareFileItem item in directoryItems.ConfigureAwait(false))
+			{
+				if (!item.IsDirectory)
 				{
 					yield return new FileInfo
 					{
-						Name = directoryPrefix + file.Name,
-						LastModifiedUtc = file.Properties.LastModified?.UtcDateTime ?? default(DateTime),
-						Size = file.Properties.Length,
-						ContentType = file.Properties.ContentType
+						Name = directoryPrefix + item.Name,
+						LastModifiedUtc = default(DateTime),
+						Size = item.FileSize ?? -1,
+						ContentType = null
 					};
 				}
-
-				foreach (CloudFileDirectory subdirectory in directoryItems.OfType<CloudFileDirectory>())
+				else
 				{
-					var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternal(directoryReference.GetDirectoryReference(subdirectory.Name), directoryPrefix + subdirectory.Name + '/', searchPrefix);
-
-					foreach (var subdirectoryItem in subdirectoryItems)
-					{
-						yield return subdirectoryItem;
-					}
+					subdirectories.Add(item.Name);
 				}
-
-				token = resultSegment.ContinuationToken;
 			}
-			while (token != null);
+
+			foreach (string subdirectory in subdirectories)
+			{
+				var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternalAsync(shareDirectoryClient.GetSubdirectoryClient(subdirectory), directoryPrefix + subdirectory + '/', searchPrefix);
+
+				await foreach (var subdirectoryItem in subdirectoryItems.ConfigureAwait(false))
+				{
+					yield return subdirectoryItem;
+				}
+			}
 		}
 
 		private bool EnumerateFiles_FilterFileInfo(FileInfo fileInfo, string searchPattern)
@@ -310,9 +349,9 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudFile file = GetFileReference(fileName);
-			file.FetchAttributes();
-			return file.Properties.LastModified?.UtcDateTime;
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);			
+			ShareFileProperties properties = shareFileClient.GetProperties();
+			return properties.LastModified.UtcDateTime;
 		}
 
 		/// <summary>
@@ -322,84 +361,81 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			CloudFile file = GetFileReference(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			await file.FetchAttributesAsync().ConfigureAwait(false);
-			return file.Properties.LastModified?.UtcDateTime;
+			ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+			ShareFileProperties properties = await file.GetPropertiesAsync().ConfigureAwait(false);
+			return properties.LastModified.UtcDateTime;
 		}
 
 		/// <summary>
-		/// Vrátí CloudFile pro daný soubor ve FileShare používaného Azure Storage Accountu.
+		/// Vrátí ShareFileClient pro daný soubor ve FileShare používaného Azure Storage Accountu.
 		/// </summary>
-		protected CloudFile GetFileReference(string fileName, bool createDirectoryStructure = false)
+		protected ShareFileClient GetShareFileClient(string fileName, bool createDirectoryStructure = false)
 		{
-			var directoryReference = GetRootDirectoryReference();
+			var shareDirectoryClient = GetRootShareDirectoryClient();
 
 			string[] segments = fileName.Replace("\\", "/").Split('/');
 			if (segments.Length > 1)
 			{
 				for (int i = 0; i < segments.Length - 1; i++)
 				{
-					directoryReference = directoryReference.GetDirectoryReference(segments[i]);
+					shareDirectoryClient = shareDirectoryClient.GetSubdirectoryClient(segments[i]);
 					if (createDirectoryStructure)
 					{
-						directoryReference.CreateIfNotExists();
+						shareDirectoryClient.CreateIfNotExists();
 					}
 				}
 			}
-			return directoryReference.GetFileReference(segments.Last());
+			return shareDirectoryClient.GetFileClient(segments.Last());
 		}
 
 		/// <summary>
-		/// Vrátí CloudFile pro daný soubor ve FileShare používaného Azure Storage Accountu.
+		/// Vrátí ShareFileClient pro daný soubor ve FileShare používaného Azure Storage Accountu.
 		/// </summary>
-		protected async Task<CloudFile> GetFileReferenceAsync(string fileName, bool createDirectoryStructure = false)
+		protected async Task<ShareFileClient> GetShareFileClientAsync(string fileName, bool createDirectoryStructure = false)
 		{
-			var directoryReference = GetRootDirectoryReference();
+			var shareDirectoryClient = GetRootShareDirectoryClient();
 
 			string[] segments = fileName.Replace("\\", "/").Split('/');
 			if (segments.Length > 1)
 			{
 				for (int i = 0; i < segments.Length - 1; i++)
 				{
-					directoryReference = directoryReference.GetDirectoryReference(segments[i]);
+					shareDirectoryClient = shareDirectoryClient.GetSubdirectoryClient(segments[i]);
 					if (createDirectoryStructure)
 					{
-						await directoryReference.CreateIfNotExistsAsync().ConfigureAwait(false);
+						await shareDirectoryClient.CreateIfNotExistsAsync().ConfigureAwait(false);
 					}
 				}
 			}
-			return directoryReference.GetFileReference(segments.Last());
+			return shareDirectoryClient.GetFileClient(segments.Last());
 		}
 
 		/// <summary>
-		/// Vrátí CloudFileDirectory reprezentující rootovou složku pro práci s Azure File Storage.
+		/// Vrátí ShareDirectoryClient reprezentující rootovou složku pro práci s Azure File Storage.
 		/// Pokud je požadována jiná root directory, je vracena tato složka.
 		/// </summary>
-		protected CloudFileDirectory GetRootDirectoryReference()
+		protected ShareDirectoryClient GetRootShareDirectoryClient()
 		{
-			var shareReference = GetFileShareReference();
-			var result = shareReference.GetRootDirectoryReference();
+			var shareReference = GetShareClient();
+			var result = shareReference.GetRootDirectoryClient();
 
 			if (rootDirectoryNameSegments.Length > 0)
 			{
 				for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 				{
-					result = result.GetDirectoryReference(rootDirectoryNameSegments[i]);
+					result = result.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
 				}
 			}
 
 			return result;
-
 		}
 
 		/// <summary>
-		/// Vrátí používaný CloudFileShare v Azure Storage Accountu.
+		/// Vrátí používaný ShareClient v Azure Storage Accountu.
 		/// </summary>
-		protected internal CloudFileShare GetFileShareReference()
+		protected internal ShareClient GetShareClient()
 		{
-			CloudStorageAccount storageAccount = CloudStorageAccount.Parse(fileStorageConnectionString);
-			CloudFileClient fileClient = storageAccount.CreateCloudFileClient();
-			return fileClient.GetShareReference(fileShareName);
+			return new ShareClient(fileStorageConnectionString, fileShareName);
 		}
 
 		/// <summary>
@@ -409,15 +445,15 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!fileShareAlreadyCreated)
 			{
-				var shareReference = GetFileShareReference();
-				shareReference.CreateIfNotExists();
+				var shareClient = GetShareClient();
+				shareClient.CreateIfNotExists();
 
-				var directory = shareReference.GetRootDirectoryReference();
+				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)
 				{
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
-						directory = directory.GetDirectoryReference(rootDirectoryNameSegments[i]);
+						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
 						directory.CreateIfNotExists();
 					}
 				}
@@ -433,15 +469,15 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!fileShareAlreadyCreated)
 			{
-				var shareReference = GetFileShareReference();
-				await shareReference.CreateIfNotExistsAsync().ConfigureAwait(false);
+				var shareClient = GetShareClient();
+				await shareClient.CreateIfNotExistsAsync().ConfigureAwait(false);
 
-				var directory = shareReference.GetRootDirectoryReference();
+				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)
 				{
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
-						directory = directory.GetDirectoryReference(rootDirectoryNameSegments[i]);
+						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
 						await directory.CreateIfNotExistsAsync().ConfigureAwait(false);
 					}
 				}

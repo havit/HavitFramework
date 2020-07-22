@@ -5,11 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
@@ -34,8 +35,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		[ClassCleanup]
 		public static void CleanUp()
-		{
-			GetAzureBlobStorageService().GetContainerReference().Delete();
+		{ 
+#if !DEBUG
+			GetAzureBlobStorageService().GetBlobContainerClient().Delete();
+#endif
 		}
 
 		[TestMethod]
@@ -258,9 +261,9 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			}
 
 			// Assert
-			CloudBlockBlob cloudBlockBlob = service.GetBlobReference("test.txt");
-			cloudBlockBlob.FetchAttributes();
-			Assert.AreEqual(cacheControlValue, cloudBlockBlob.Properties.CacheControl);
+			BlobClient blobClient = service.GetBlobClient("test.txt");
+			BlobProperties properties = blobClient.GetProperties();
+			Assert.AreEqual(cacheControlValue, properties.CacheControl);
 		}
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", AzureBlobStorageServiceOptions options = null, EncryptionOptions encryptionOptions = null)

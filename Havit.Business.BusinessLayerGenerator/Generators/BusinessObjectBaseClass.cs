@@ -108,7 +108,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				if (deletedColumn.DataType.SqlDataType == SqlDataType.Bit)
 				{
-					writer.WriteLine(String.Format("return !{0};", PropertyHelper.GetPropertyName(deletedColumn)));
+					writer.WriteLine(String.Format("return {0};", PropertyHelper.GetPropertyName(deletedColumn)));
 				}
 
 				if (TypeHelper.IsDateTime(deletedColumn))

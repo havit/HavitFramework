@@ -19,12 +19,7 @@ namespace Havit.Services.Azure.FileStorage
 {
 	/// <summary>
 	/// Úložiště souborů jako Azure Blob Storage.
-	/// Podporuje šifrování a to jak transparentní šifrování z předka (FileStorageServiceBase), 
-	/// tak šifrování vestavěné v Azure Storage klientu (https://azure.microsoft.com/en-us/documentation/articles/storage-client-side-encryption/).
-	/// 
-	/// Pro jednoduché šifrování se používá konstruktor s encryptionOptions (EncryptionOptions),
-	/// pro šifrování pomocí Azure Storage klienta se použije kontruktor s encyptionPolicy (BlobEnctyptionPolicy).
-	/// 	
+	/// Podporuje client-side šifrování (z předka FileStorageServiceBase).
 	/// </summary>
 	public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
 	{
@@ -36,7 +31,7 @@ namespace Havit.Services.Azure.FileStorage
 		private volatile bool containerAlreadyCreated = false;
 
 		/// <summary>
-		/// Konstruktor. Služba nebude šifrovat obsah.
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
@@ -45,7 +40,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Konstruktor. Služba nebude šifrovat obsah.
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
@@ -55,7 +50,7 @@ namespace Havit.Services.Azure.FileStorage
 		}		
 		
 		/// <summary>
-		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
@@ -65,7 +60,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Konstruktor. Služba bude šifrovat obsah vlastní implementací.
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>

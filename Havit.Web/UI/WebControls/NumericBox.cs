@@ -17,7 +17,6 @@ namespace Havit.Web.UI.WebControls
 	[ValidationProperty("NumberText")]
 	public class NumericBox : Control, INamingContainer
 	{
-		private const string clientScriptBlockName = "Havit.DsvCommerce.WebBase.UI.WebControls.NumericBox_Script";
 		private readonly Regex whitespaceremover = new Regex("\\s");
 		private const string InvalidMemento = "invalid";
 

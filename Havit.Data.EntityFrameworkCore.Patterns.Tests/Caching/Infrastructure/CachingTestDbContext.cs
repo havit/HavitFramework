@@ -30,7 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure
 
 			// 1:N
 			modelBuilder.Entity<Master>().Ignore(master => master.Children);
-			modelBuilder.Entity<Master>().HasMany(master => master.ChildrenWithDeleted).WithOne(child => child.Parent);
+			modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
 
 			// M:N
 			modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });

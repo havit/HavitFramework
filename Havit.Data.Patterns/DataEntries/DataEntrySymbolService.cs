@@ -82,7 +82,7 @@ namespace Havit.Data.Patterns.DataEntries
 				parameter);
 
 			Dictionary<string, int> result;
-			result = dataSource.DataWithDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
+			result = dataSource.DataIncludingDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
 
 			return result;
 		}

@@ -10,13 +10,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.M
 
 		public ICollection<Child> Children { get; set; }
 
-		public List<Child> ChildrenWithDeleted { get; } = new List<Child>();
+		public List<Child> ChildrenIncludingDeleted { get; } = new List<Child>();
 
 		public DateTime? Deleted { get; set; }
 
 		public Master()
 		{
-			Children = new FilteringCollection<Child>(ChildrenWithDeleted, child => child.Deleted == null);
+			Children = new FilteringCollection<Child>(ChildrenIncludingDeleted, child => child.Deleted == null);
 		}
 	}
 }

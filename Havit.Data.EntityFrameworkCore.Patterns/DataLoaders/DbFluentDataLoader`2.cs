@@ -10,8 +10,8 @@ namespace Havit.Data.Patterns.DataLoaders
 {
 	/// <summary>
 	/// Podpora Fluent API pro DbDataLoader.
-	/// Použit pro výsledek načtení kolekcí, zejména pro možnost implementace substituce (Xy -> XyWithDeleted).
-	/// Protože vlastnost Xy, která je zapsána v kódu, má jiný datový typ než XyWithDeleted, pro kterou se data načítají, máme zde 2 generické parametry:
+	/// Použit pro výsledek načtení kolekcí, zejména pro možnost implementace substituce (Xy -> XyIncludingDeleted).
+	/// Protože vlastnost Xy, která je zapsána v kódu, má jiný datový typ než XyIncludingDeleted, pro kterou se data načítají, máme zde 2 generické parametry:
 	/// - TContractEntity je typ vlastnosti Xy, použije se jen pro snadný zápis fluent API, jiný význam nemá.
 	/// - TItem je typ, který je prvkem kolekce Xy.
 	/// </summary>

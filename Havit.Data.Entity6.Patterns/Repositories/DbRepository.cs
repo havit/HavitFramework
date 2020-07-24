@@ -77,7 +77,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
 		/// </summary>
-		protected IQueryable<TEntity> DataWithDeleted => dataSource.DataWithDeleted;
+		protected IQueryable<TEntity> DataIncludingDeleted => dataSource.DataIncludingDeleted;
 
 		/// <summary>
 		/// SoftDeleteManager používaný repository.

@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
-			DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+			DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 
 			Child child = dbContext.Child.First();
 
@@ -46,7 +46,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
-			DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+			DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 
 			Child child = dbContext.Child.First();
 
@@ -72,7 +72,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsNull(loginAccount.Memberships, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
 
 			// Act
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 			dataLoader.Load(loginAccount, item => item.Memberships).ThenLoad(membership => membership.Role);
 
 			// Assert
@@ -94,7 +94,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsNull(loginAccount.Memberships, "Pro ověření DbDataLoaderu se předpokládá, že hodnota loginAccount.Roles je null.");
 
 			// Act
-			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+			DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 			await dataLoader.LoadAsync(loginAccount, item => item.Memberships).ThenLoadAsync(membership => membership.Role);
 
 			// Assert

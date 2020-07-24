@@ -10,17 +10,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Internal
 {
 	[TestClass]
-	public class PropertyLoadSequenceResolverWithDeletedFilteringSubstitutionTests
+	public class PropertyLoadSequenceResolverIncludingDeletedFilteringSubstitutionTests
 	{
 		[TestMethod]
-		public void PropertyLoadSequenceResolverWithDeletedFilteringSubstitutionTest_GetPropertiesToLoad_ReturnsPropertyPathsWithCollection()
+		public void PropertyLoadSequenceResolverIncludingDeletedFilteringSubstitutionTest_GetPropertiesToLoad_ReturnsPropertyPathsWithCollection()
 		{
-			PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution resolver = new PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution();
+			PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution resolver = new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution();
 			PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Master item) => item.Children.Select(child => child.Parent.Children));
 
 			Assert.AreEqual(3, propertiesToLoad.Length);
 
-			Assert.AreEqual(nameof(Master.ChildrenWithDeleted), propertiesToLoad[0].PropertyName);
+			Assert.AreEqual(nameof(Master.ChildrenIncludingDeleted), propertiesToLoad[0].PropertyName);
 			Assert.AreEqual(typeof(Master), propertiesToLoad[0].SourceType);
 			Assert.AreEqual(typeof(List<Child>), propertiesToLoad[0].TargetType);
 			Assert.AreEqual(typeof(Child), propertiesToLoad[0].CollectionItemType);
@@ -32,7 +32,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Internal
 			Assert.IsFalse(propertiesToLoad[1].IsCollection);
 			Assert.IsNull(propertiesToLoad[1].CollectionItemType);
 
-			Assert.AreEqual(nameof(Master.ChildrenWithDeleted), propertiesToLoad[2].PropertyName);
+			Assert.AreEqual(nameof(Master.ChildrenIncludingDeleted), propertiesToLoad[2].PropertyName);
 			Assert.AreEqual(typeof(Master), propertiesToLoad[2].SourceType);
 			Assert.AreEqual(typeof(List<Child>), propertiesToLoad[2].TargetType);
 			Assert.AreEqual(typeof(Child), propertiesToLoad[2].CollectionItemType);

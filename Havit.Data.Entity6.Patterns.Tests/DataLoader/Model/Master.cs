@@ -9,7 +9,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Model
 
 		public ICollection<Child> Children { get; set; }
 
-		public List<Child> ChildrenWithDeleted { get; set; }
+		public List<Child> ChildrenIncludingDeleted { get; set; }
 
 		public DateTime? Deleted { get; set; }
 	}

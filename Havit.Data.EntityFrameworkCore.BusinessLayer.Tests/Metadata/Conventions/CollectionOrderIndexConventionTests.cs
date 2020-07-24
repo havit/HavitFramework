@@ -59,7 +59,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
         }
 
         [TestMethod]
-        public void CollectionOrderIndexConvention_OrderPropertyWithDeletedColumn_IndexIsDefined()
+        public void CollectionOrderIndexConvention_OrderPropertyAndDeletedColumn_IndexIsDefined()
         {
             using (var dbContext = new TestDbContext<Master<ChildDeleted>>())
             {

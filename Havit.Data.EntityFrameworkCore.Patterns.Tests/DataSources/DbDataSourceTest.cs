@@ -31,7 +31,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources
 
 			// Act
 			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			List<ItemWithDeleted> result = dataSource.DataWithDeleted.ToList();			
+			List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();			
 
 			// Assert
 			Assert.AreEqual(2, result.Count);
@@ -149,8 +149,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources
 			int count1 = dataSource.Data.Count();
 			int count2 = dataSource.Data.Count();
 			int count3 = dataSource.Data.Count();
-			int count4 = dataSource.DataWithDeleted.Count();
-			int count5 = dataSource.DataWithDeleted.Count();
+			int count4 = dataSource.DataIncludingDeleted.Count();
+			int count5 = dataSource.DataIncludingDeleted.Count();
 
 			// Assert
 			Assert.AreEqual(1, count1);

@@ -29,7 +29,7 @@ namespace Havit.Data.Entity.Patterns.DataSources
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
 		/// </summary>
-		public virtual IQueryable<TEntity> DataWithDeleted
+		public virtual IQueryable<TEntity> DataIncludingDeleted
 		{
 			get
 			{

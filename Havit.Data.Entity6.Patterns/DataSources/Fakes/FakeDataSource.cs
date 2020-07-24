@@ -29,7 +29,7 @@ namespace Havit.Data.Entity.Patterns.DataSources.Fakes
 		/// <summary>
 		/// Data z datového zdroje jako IQueryable.
 		/// </summary>
-		public virtual IQueryable<TEntity> DataWithDeleted
+		public virtual IQueryable<TEntity> DataIncludingDeleted
 		{
 			get
 			{

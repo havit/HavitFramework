@@ -112,7 +112,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.AddServiceSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
 			installer.AddServiceSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
 			installer.AddServiceSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
-			installer.AddServiceSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution>();
+			installer.AddServiceSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
 			installer.AddServiceSingleton<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
 
 			installer.AddFactory(typeof(IBeforeCommitProcessorsFactory));

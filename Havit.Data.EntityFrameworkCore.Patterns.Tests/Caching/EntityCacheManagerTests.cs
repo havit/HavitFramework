@@ -186,8 +186,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             Master master = new Master { Id = 1 };
             Child child1 = new Child { Id = 100, ParentId = 1, Parent = master };
             Child child2 = new Child { Id = 101, ParentId = 1, Parent = master, Deleted = DateTime.Now };
-            master.ChildrenWithDeleted.Add(child1);
-            master.ChildrenWithDeleted.Add(child2);
+            master.ChildrenIncludingDeleted.Add(child1);
+            master.ChildrenIncludingDeleted.Add(child2);
             dbContext1.Attach(master);
 
             var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
@@ -199,17 +199,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
             var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
             // Act
-            entityCacheManager1.StoreCollection<Master, Child>(master, nameof(Master.ChildrenWithDeleted));
+            entityCacheManager1.StoreCollection<Master, Child>(master, nameof(Master.ChildrenIncludingDeleted));
             entityCacheManager1.StoreEntity(child1);
             entityCacheManager1.StoreEntity(child2);
-            bool success = entityCacheManager2.TryGetCollection<Master, Child>(masterResult, nameof(Master.ChildrenWithDeleted));
+            bool success = entityCacheManager2.TryGetCollection<Master, Child>(masterResult, nameof(Master.ChildrenIncludingDeleted));
 
             // Assert
             Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
-            Assert.AreEqual(master.ChildrenWithDeleted.Count, masterResult.ChildrenWithDeleted.Count);
-            Assert.IsTrue(masterResult.ChildrenWithDeleted.Any(child => child.Id == child1.Id));
-            Assert.IsTrue(masterResult.ChildrenWithDeleted.Any(child => child.Id == child2.Id));
-            Assert.AreEqual(4, master.ChildrenWithDeleted.Union(masterResult.ChildrenWithDeleted).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
+            Assert.AreEqual(master.ChildrenIncludingDeleted.Count, masterResult.ChildrenIncludingDeleted.Count);
+            Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child1.Id));
+            Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child2.Id));
+            Assert.AreEqual(4, master.ChildrenIncludingDeleted.Union(masterResult.ChildrenIncludingDeleted).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
         }
 
         [TestMethod]

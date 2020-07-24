@@ -163,7 +163,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 				Expression.Bind(typeof(EntityLookupPair<int, TLookupKey>).GetProperty(nameof(EntityLookupPair<int, TLookupKey>.LookupKey)), ExpressionExt.ReplaceParameter(lookupKeyExpression.Body, lookupKeyExpression.Parameters[0], expressionParameter))),
 				expressionParameter);
 
-			List<EntityLookupPair<int, TLookupKey>> pairs = (IncludeDeleted ? dataSource.DataWithDeleted : dataSource.Data)
+			List<EntityLookupPair<int, TLookupKey>> pairs = (IncludeDeleted ? dataSource.DataIncludingDeleted : dataSource.Data)
 				.WhereIf(Filter != null, Filter)
 				.Select(lambdaExpression)
 				.ToList();

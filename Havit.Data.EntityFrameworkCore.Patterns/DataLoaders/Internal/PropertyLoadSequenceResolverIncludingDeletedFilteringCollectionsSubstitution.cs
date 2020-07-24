@@ -7,9 +7,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 {
 	/// <summary>
 	/// Poskytuje seznam vlastností k načtení.
-	/// Pokud má být načtena vlastnost X, která je kolekcí, a zároveň existuje kolekce XWithDeleted, pak X substituuje touto XWithDeleted.
+	/// Pokud má být načtena vlastnost X, která je kolekcí, a zároveň existuje kolekce XIncludingDeleted, pak X substituuje touto XIncludingDeleted.
 	/// </summary>
-	public class PropertyLoadSequenceResolverWithDeletedFilteringCollectionsSubstitution : PropertyLoadSequenceResolver
+	public class PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution : PropertyLoadSequenceResolver
 	{
 		/// <summary>
 		/// Vrací z expression tree seznam vlastností, které mají být DataLoaderem načteny.
@@ -20,20 +20,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 			foreach (PropertyToLoad propertyToLoad in propertiesToLoad)
 			{
 				// pokud jde o kolekci
-				// a existuje vlastnost s pojmenováním "WithDeleted" na konci
+				// a existuje vlastnost s pojmenováním "IncludingDeleted" na konci
 				// která obsahuje prvky stejného typu
 				// pak provedeme substituci
 				if (propertyToLoad.IsCollection)
 				{
-					string propertyNameWithDeleted = propertyToLoad.PropertyName + "WithDeleted";
-					PropertyInfo propertyWithDeleted = propertyToLoad.SourceType.GetProperty(propertyNameWithDeleted);					
-					if (propertyWithDeleted != null)
+					string propertyNameIncludingDeleted = propertyToLoad.PropertyName + "IncludingDeleted";
+					PropertyInfo propertyIncludingDeleted = propertyToLoad.SourceType.GetProperty(propertyNameIncludingDeleted);					
+					if (propertyIncludingDeleted != null)
 					{
 						 Type enumerableType = typeof(IEnumerable<>).MakeGenericType(propertyToLoad.CollectionItemType);						
-						if (enumerableType.IsAssignableFrom(propertyWithDeleted.PropertyType))
+						if (enumerableType.IsAssignableFrom(propertyIncludingDeleted.PropertyType))
 						{
-							propertyToLoad.PropertyName = propertyNameWithDeleted;
-							propertyToLoad.TargetType = propertyWithDeleted.PropertyType;
+							propertyToLoad.PropertyName = propertyNameIncludingDeleted;
+							propertyToLoad.TargetType = propertyIncludingDeleted.PropertyType;
 						}
 					}
 				}

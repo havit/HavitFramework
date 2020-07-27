@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.6-preview1</PackageVersion>
+    <PackageVersion>2.0.6</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Azure Services</Description>
   </PropertyGroup>
 

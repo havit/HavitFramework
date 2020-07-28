@@ -60,7 +60,7 @@ namespace Havit.Web.UI.WebControls
 		/// pro získávání výchozích dat pro novou položku. Dále lze nastavit pozici pomocí <see cref="InsertRowPosition"/>.
 		/// </remarks>
 		[Browsable(true)]
-		[DefaultValue("true")]
+		[DefaultValue("false")]
 		[Category("Behavior")]
 		public bool AllowInserting
 		{

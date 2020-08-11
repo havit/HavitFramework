@@ -16,7 +16,7 @@ namespace Havit.Web.UI.WebControls
 	/// Sám se spojí s GridView, získá bidnovaná data a z nich získá distinct hodnoty pro filtrování. Sám (ve spojení s gridem) filtruje jeho bindované hodnoty.
 	/// Pro funkčnost je třeba controlu nastavit vlastnost DataFilterField a NoFilterText.
 	/// </summary>
-	public class AutoFilterDropDownList : DropDownListExt, IAutoFilterControl
+	public class AutoFilterDropDownList : DropDownListBaseExt, IAutoFilterControl
 	{
 		/// <summary>
 		/// Text pro řádek "nerozhoduje".

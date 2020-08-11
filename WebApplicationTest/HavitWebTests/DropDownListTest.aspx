@@ -45,6 +45,7 @@
 		    </Items>
 	    </havit:DropDownListExt>
 
+		<havit:DropDownListExt ID="RoleDDL" AutoSort="true" SortExpression="Symbol" DataTextField="Symbol" DataValueField="ID" runat="server" />
 
 		<havit:GridViewExt ID="TestGridView" runat="server">
 			<Columns>

@@ -80,52 +80,12 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-		/// Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
-		/// </summary>
-		public bool AutoSort
-		{
-			get { return (bool)(ViewState["AutoSort"] ?? true); }
-			set { ViewState["AutoSort"] = value; }
-		}
-
-		/// <summary>
 		/// Udává, zda je zapnuto automatické nabindování položek při prvním načtení stránky. Výchozí hodnota je false.
 		/// </summary>
 		public bool AutoDataBind
 		{
 			get { return (bool)(ViewState["AutoDataBind"] ?? false); }
 			set { ViewState["AutoDataBind"] = value; }
-		}
-
-		/// <summary>
-		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataSortField a SortDirection.
-		/// Může obsahovat více vlastností oddělených čárkou, směr řazení ASC/DESC. Má tedy význam podobný jako DefaultSortExpression u GridViewExt.
-		/// </summary>
-		public string SortExpression
-		{
-			get { return (string)(ViewState["SortExpression"] ?? ((DataOptionGroupField.Length > 0) ? DataOptionGroupField + ", " + DataTextField : DataTextField)); }
-			set { ViewState["SortExpression"] = value; }
-		}
-
-		/// <summary>
-		/// Určuje, podle jaké property jsou řazena. Pokud není žádná hodnota nastavena použije se hodnota vlastnosti DataTextField.
-		/// </summary>
-		[Obsolete("Nahrazeno SortExpression.")]
-		public string DataSortField
-		{
-			get { throw new NotSupportedException(); }
-			set { throw new NotSupportedException(); }
-		}
-
-		/// <summary>
-		/// Udává směr řazení položek.
-		/// Výchozí je vzestupné řazení (Ascending).
-		/// </summary>
-		[Obsolete("Nahrazeno SortExpression.")]
-		public Havit.Collections.SortDirection SortDirection
-		{
-			get { throw new NotSupportedException(); }
-			set { throw new NotSupportedException(); }
 		}
 
 		/// <summary>
@@ -268,6 +228,7 @@ namespace Havit.Web.UI.WebControls
 		public EnterpriseDropDownList()
 		{
 			DataValueField = "ID";
+			AutoSort = true;
 		}
 
 		/// <summary>
@@ -331,28 +292,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
 		{
-			if (String.IsNullOrEmpty(DataTextField))
-			{
-				throw new InvalidOperationException(String.Format("Není nastavena hodnota vlastnosti DataTextField controlu {0}.", ID));
-			}
-
-			if ((dataSource != null) && AutoSort)
-			{
-				if (String.IsNullOrEmpty(SortExpression))
-				{
-					throw new InvalidOperationException(String.Format("AutoSort je true, ale není nastavena hodnota vlastnosti SortExpression controlu {0}.", ID));
-				}
-
-				SortExpressions sortExpressions = new SortExpressions();
-				sortExpressions.AddSortExpression(SortExpression);
-				IEnumerable sortedData = SortHelper.PropertySort(dataSource, sortExpressions.SortItems);
-
-				base.PerformDataBinding(sortedData);
-			}
-			else
-			{
-				base.PerformDataBinding(dataSource);
-			}
+			base.PerformDataBinding(dataSource);
 
 			CheckNullableConsistency();
 			if (IsNullable)

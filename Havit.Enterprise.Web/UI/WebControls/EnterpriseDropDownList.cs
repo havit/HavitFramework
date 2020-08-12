@@ -292,6 +292,11 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected override void PerformDataBinding(System.Collections.IEnumerable dataSource)
 		{
+			if (String.IsNullOrEmpty(DataTextField))
+			{
+				throw new InvalidOperationException(String.Format("Není nastavena hodnota vlastnosti DataTextField controlu {0}.", ID));
+			}
+
 			base.PerformDataBinding(dataSource);
 
 			CheckNullableConsistency();

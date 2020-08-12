@@ -25,7 +25,7 @@ namespace Havit.Web.UI.WebControls
 	public class DropDownListExt : DropDownListBaseExt
 	{
 		/// <summary>
-		/// Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je true.
+		/// Udává, zda je zapnuto automatické řazení položek při databindingu. Výchozí hodnota je false pro DropDownListExt, true pro EnterpriseDropDownList.
 		/// </summary>
 		public bool AutoSort
 		{
@@ -49,11 +49,6 @@ namespace Havit.Web.UI.WebControls
 		/// <param name="dataSource">An <see cref="T:System.Collections.IEnumerable"/> that represents the data source.</param>
 		protected override void PerformDataBinding(IEnumerable dataSource)
 		{
-			if (String.IsNullOrEmpty(DataTextField))
-			{
-				throw new InvalidOperationException(String.Format("Není nastavena hodnota vlastnosti DataTextField controlu {0}.", ID));
-			}
-
 			if ((dataSource != null) && AutoSort)
 			{
 				if (String.IsNullOrEmpty(SortExpression))

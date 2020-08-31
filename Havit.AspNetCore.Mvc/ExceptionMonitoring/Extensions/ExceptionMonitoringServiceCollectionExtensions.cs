@@ -3,6 +3,7 @@ using Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // Správný namespace je Microsoft.Extensions.DependencyInjection!
 
@@ -19,9 +20,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddExceptionMonitoring(this IServiceCollection services, IConfiguration configurationRoot)
         {
             services.Configure<SmtpExceptionMonitoringOptions>(configurationRoot.GetSection("AppSettings:SmtpExceptionMonitoring"));
-            services.AddSingleton<IExceptionMonitoringService, ExceptionMonitoringService>();
-            services.AddSingleton<IExceptionMonitoringProcessor, SmtpExceptionMonitoringProcessor>();
-            services.AddSingleton<IExceptionFormatter, HttpRequestExceptionFormatter>();
+            services.TryAddSingleton<IExceptionMonitoringService, ExceptionMonitoringService>();
+            services.TryAddSingleton<IExceptionMonitoringProcessor, SmtpExceptionMonitoringProcessor>();
+            services.TryAddSingleton<IExceptionFormatter, HttpRequestExceptionFormatter>();
         }
     }
 }

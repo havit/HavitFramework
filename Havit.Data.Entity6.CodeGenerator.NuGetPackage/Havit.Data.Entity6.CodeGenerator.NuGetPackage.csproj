@@ -8,22 +8,21 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets"/>
   <PropertyGroup>
-	<PackageVersion>2.2.5</PackageVersion>
+	<PackageVersion>2.2.6</PackageVersion>
 	<PackageId>Havit.Data.Entity6.CodeGenerator</PackageId>
 	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Code Generator</Description>
 
 	<!-- Publikujeme výstup buildu jiného projektu. -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>
 	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
-	<NoWarn>$(NoWarn);NU5128</NoWarn>	  
+	<NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-	<Content Include="..\Havit.Data.Entity6.CodeGenerator\bin\$(Configuration)\net472\**">
+	<Content Include="..\Havit.Data.Entity6.CodeGenerator\bin\$(Configuration)\netcoreapp3.1\**" Visible="false">
 	  <Pack>true</Pack>
 	  <PackagePath>tools\CodeGenerator</PackagePath>
 	</Content>
-	<Content Include="Package\Content\RunCodeGenerator.ps1" PackagePath="content" />
   </ItemGroup>
 
 </Project>

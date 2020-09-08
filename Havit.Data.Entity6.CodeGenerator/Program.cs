@@ -35,7 +35,6 @@ namespace Havit.Data.Entity.CodeGenerator
 	{
 		internal static void Main(string[] args)
 		{
-			Stopwatch stopwatch = Stopwatch.StartNew();
 			IProject modelProject = null;
 			IProject dataLayerProject = null;
 			DbContext dbContext = null;
@@ -64,9 +63,14 @@ namespace Havit.Data.Entity.CodeGenerator
 
 			Type dbContextType;
 
+			Stopwatch dbContextTypeInitializationStopwatch = Stopwatch.StartNew();
+			Assembly assembly = Assembly.LoadFrom(file);
+#if DEBUG
+			DisplayTargetFramework(assembly);
+#endif
+
 			try
 			{
-				Assembly assembly = Assembly.LoadFrom(file);
 				dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
 			}
 			catch (ReflectionTypeLoadException exception)
@@ -104,6 +108,10 @@ namespace Havit.Data.Entity.CodeGenerator
 			ObjectContext objectContext = ((IObjectContextAdapter)dbContext).ObjectContext; // z nějakého důvodu je třeba, viz Bug 39328: CodeGenerator: Na 129.ECO nejde přegenerovat Data Layer
 			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
 
+			dbContextTypeInitializationStopwatch.Stop();
+			Console.WriteLine("DbContext initialization completed in {0} ms.", (int)dbContextTypeInitializationStopwatch.Elapsed.TotalMilliseconds);
+
+			Stopwatch codeGenerationStopwath = Stopwatch.StartNew();
 			Console.WriteLine($"Generating code...");
 			
 			var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
@@ -147,9 +155,35 @@ namespace Havit.Data.Entity.CodeGenerator
 				}
 			});
 
-			stopwatch.Stop();
-			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
+			codeGenerationStopwath.Stop();
+			Console.WriteLine("Code generation completed in {0} ms.", (int)codeGenerationStopwath.Elapsed.TotalMilliseconds);
 		}
+
+#if DEBUG
+		private static void DisplayTargetFramework(Assembly assembly)
+		{
+			try
+			{
+				if (assembly.CustomAttributes != null)
+				{
+					CustomAttributeData attribute = assembly.CustomAttributes.Where(customDataAttribute => typeof(System.Runtime.Versioning.TargetFrameworkAttribute).IsAssignableFrom(customDataAttribute.AttributeType)).SingleOrDefault();
+					CustomAttributeNamedArgument? namedArgument = attribute?.NamedArguments?.Where(na => na.MemberName == nameof(System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkDisplayName)).SingleOrDefault();
+					if (namedArgument != null)
+					{						
+						Console.WriteLine("Target framework: " + namedArgument.Value.TypedValue.ToString().Trim('\"'));
+						return;
+					}
+				}
+				Console.WriteLine("Target framework not identified.");
+				return;
+			}
+			catch
+			{
+				Console.WriteLine("An error has occured during target framework detection.");
+				// ignore exception, do not throw
+			}
+		}
+#endif
 
 		private static void GenerateMetadata(IProject modelProject, DbContext dbContext, ISourceControlClient sourceControlClient)
 		{

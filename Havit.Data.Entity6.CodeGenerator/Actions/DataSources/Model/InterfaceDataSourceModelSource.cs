@@ -11,11 +11,11 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 	public class InterfaceDataSourceModelSource : IModelSource<InterfaceDataSourceModel>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project modelProject;
-		private readonly Project dataLayerProject;
+		private readonly IProject modelProject;
+		private readonly IProject dataLayerProject;
 		private readonly ISoftDeleteManager softDeleteManager;
 
-		public InterfaceDataSourceModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject, ISoftDeleteManager softDeleteManager)
+		public InterfaceDataSourceModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, ISoftDeleteManager softDeleteManager)
 		{
 			this.dbContext = dbContext;
 			this.modelProject = modelProject;

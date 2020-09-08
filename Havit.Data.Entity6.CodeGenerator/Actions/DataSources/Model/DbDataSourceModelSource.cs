@@ -9,10 +9,10 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 	public class DbDataSourceModelSource : IModelSource<DbDataSourceModel>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project modelProject;
-		private readonly Project dataLayerProject;
+		private readonly IProject modelProject;
+		private readonly IProject dataLayerProject;
 
-		public DbDataSourceModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject)
+		public DbDataSourceModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject)
 		{
 			this.dbContext = dbContext;
 			this.modelProject = modelProject;

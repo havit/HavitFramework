@@ -10,11 +10,11 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 	public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project modelProject;
-		private readonly Project dataLayerProject;
+		private readonly IProject modelProject;
+		private readonly IProject dataLayerProject;
 		private readonly CammelCaseNamingStrategy cammelCaseNamingStrategy;
 
-		public DataEntriesModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
+		public DataEntriesModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
 		{
 			this.dbContext = dbContext;
 			this.modelProject = modelProject;

@@ -5,7 +5,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories
 {
 	public class DbRepositoryFileNamingService : DbRepositoryGeneratedFileNamingService
 	{
-		public DbRepositoryFileNamingService(Project project)
+		public DbRepositoryFileNamingService(IProject project)
 			: base(project)
 		{
 			

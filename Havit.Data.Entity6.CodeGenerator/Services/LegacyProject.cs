@@ -9,25 +9,19 @@ using Havit.Data.Entity.Patterns.SoftDeletes;
 namespace Havit.Data.Entity.CodeGenerator.Services
 {
 	[DebuggerDisplay("{Filename}")]
-	public class Project
+	public class LegacyProject : ProjectBase
 	{
 		private readonly XNamespace MSBuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
 		private const string CodeGeneratorIdentifier = "HavitEntityCodeGenerator";
 
 		private bool contentChanged = false;
-		private readonly XDocument content;
 		private readonly List<string> usedFilenames = new List<string>();
 
-		public string Filename
-		{
-			get;
-			private set;
-		}
+		private Dictionary<string, XElement> fileNamesWithElements;
 
-		public Project(string filename)
+		public LegacyProject(string filename, XDocument content)
+			: base(filename, content)
 		{
-			this.Filename = filename;
-			content = XDocument.Load(filename, LoadOptions.PreserveWhitespace);
 			content.Changed += Content_Changed;
 		}
 
@@ -36,7 +30,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			contentChanged = true;
 		}
 
-		public virtual void AddOrUpdate(string filename)
+		public override void AddOrUpdate(string filename)
 		{
 			filename = NormalizeForProject(filename);
 
@@ -49,11 +43,11 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 
 			if (fileNamesWithElements == null)
 			{
-				lock (content)
+				lock (Content)
 				{
 					if (fileNamesWithElements == null)
 					{
-						fileNamesWithElements = content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").ToDictionary(element => (string)element.Attributes("Include").Single(), element => element, StringComparer.InvariantCultureIgnoreCase);
+						fileNamesWithElements = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").ToDictionary(element => (string)element.Attributes("Include").Single(), element => element, StringComparer.InvariantCultureIgnoreCase);
 					}
 				}
 			}
@@ -72,10 +66,10 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 
 			if (itemElement == null)
 			{
-				lock (content)
+				lock (Content)
 				{
 					// najdeme první element ItemGroup obsahující sub-element Compile.
-					XElement itemgroup = content.Root.Elements(MSBuildNamespace + "ItemGroup").Where(element => element.Elements(MSBuildNamespace + "Compile").Count() > 0).FirstOrDefault();
+					XElement itemgroup = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Where(element => element.Elements(MSBuildNamespace + "Compile").Count() > 0).FirstOrDefault();
 
 					if (itemgroup != null)
 					{
@@ -97,7 +91,6 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 				}
 			}
 		}
-		private Dictionary<string, XElement> fileNamesWithElements;
 
 		//#region Remove
 		//public virtual void Remove(string filename)
@@ -108,12 +101,12 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 		//}
 		//#endregion
 
-		public void RemoveUnusedGeneratedFiles()
+		public override void RemoveUnusedGeneratedFiles()
 		{
-			lock (content)
+			lock (Content)
 			{
 				GetUnusedGeneratedFilesElements().ForEach(element =>
-				{	
+				{
 					this.RemoveWithNextWhitespace(element);
 				});
 			}
@@ -124,7 +117,7 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			lock (usedFilenames)
 			{
 				// najdeme všechny elementy Compile v ItemGroup, které mají sub-element dle CodeGeneratorIdentifier, ale nejsou v seznamu generovaných souborů
-				return content.Root
+				return Content.Root
 					.Elements(MSBuildNamespace + "ItemGroup")
 					.Elements(MSBuildNamespace + "Compile")
 					.Where(element =>
@@ -134,19 +127,19 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			}
 		}
 
-		public string[] GetUnusedGeneratedFiles()
+		public override string[] GetUnusedGeneratedFiles()
 		{
-			lock (content)
+			lock (Content)
 			{
 				return GetUnusedGeneratedFilesElements().Select(item => Path.Combine(GetProjectRootPath(), item.Attribute("Include").Value)).ToArray();
 			}
 		}
 
-		public virtual void SaveChanges()
+		public override void SaveChanges()
 		{
 			if (contentChanged)
 			{
-				content.Save(Filename);
+				Content.Save(Filename);
 			}
 		}
 
@@ -183,29 +176,21 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 			element.Remove();
 		}
 
-		public string GetProjectRootNamespace()
+		public override string GetProjectRootNamespace()
 		{
 			if (_projectRootNamespace == null)
 			{
-				lock (content)
+				lock (Content)
 				{
 					if (_projectRootNamespace == null)
 					{
-						_projectRootNamespace = (string)content.Root
-							.Elements(MSBuildNamespace + "PropertyGroup")
-							.Elements(MSBuildNamespace + "RootNamespace")
-							.First();
+						_projectRootNamespace = GetProjectRootNamespaceCore(MSBuildNamespace);
 					}
 				}
 			}
 			return _projectRootNamespace;
 		}
 		private string _projectRootNamespace = null;
-
-		public string GetProjectRootPath()
-		{
-			return System.IO.Path.GetDirectoryName(Filename);
-		}
 
 		private string NormalizeForProject(string filename)
 		{
@@ -219,16 +204,5 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 				return filename;
 			}
 		}
-
-		public static Project GetByFolder(string folder)
-		{
-			var files = System.IO.Directory.GetFiles(folder, "*.csproj");
-			if (files.Length == 1)
-			{
-				return new Project(files[0]);
-			}
-			return null;
-		}
-
 	}
 }

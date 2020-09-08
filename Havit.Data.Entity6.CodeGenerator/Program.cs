@@ -36,8 +36,8 @@ namespace Havit.Data.Entity.CodeGenerator
 		internal static void Main(string[] args)
 		{
 			Stopwatch stopwatch = Stopwatch.StartNew();
-			Project modelProject = null;
-			Project dataLayerProject = null;
+			IProject modelProject = null;
+			IProject dataLayerProject = null;
 			DbContext dbContext = null;
 			ISourceControlClient sourceControlClient = new NullSourceControlClient();
 
@@ -62,8 +62,22 @@ namespace Havit.Data.Entity.CodeGenerator
 			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
 			Console.WriteLine($"Using metadata from assembly {file}.");
 
-			Assembly assembly = Assembly.LoadFrom(file);
-			Type dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
+			Type dbContextType;
+
+			try
+			{
+				Assembly assembly = Assembly.LoadFrom(file);
+				dbContextType = assembly.GetTypes().SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(Havit.Data.Entity.IDbContext)));
+			}
+			catch (ReflectionTypeLoadException exception)
+			{
+				foreach (var message in exception.LoaderExceptions.Select(item => item.ToString()).Distinct())
+				{
+					Console.WriteLine(message);
+				}
+				return;
+			}
+
 			if (dbContextType == null)
 			{
 				Console.WriteLine("No IDbContext implementation was found.");
@@ -82,8 +96,8 @@ namespace Havit.Data.Entity.CodeGenerator
 					MethodInfo setInitializerMethod = typeof(System.Data.Entity.Database).GetMethod("SetInitializer", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(dbContextType);
 					setInitializerMethod.Invoke(null, new object[] { nullDatabaseInitializer });
 				},
-				() => modelProject = new Project(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
-				() => dataLayerProject = new Project(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj"))
+				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
+				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj"))
 			);
 
 			Console.WriteLine($"Initializing DbContext...");
@@ -137,7 +151,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
 		}
 
-		private static void GenerateMetadata(Project modelProject, DbContext dbContext, ISourceControlClient sourceControlClient)
+		private static void GenerateMetadata(IProject modelProject, DbContext dbContext, ISourceControlClient sourceControlClient)
 		{
 			CodeWriter codeWriter = new CodeWriter(modelProject, sourceControlClient);
 			MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(modelProject);
@@ -147,7 +161,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			metadataGenerator.Generate();
 		}
 
-		private static void GenerateDataSources(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, DbContext dbContext)
+		private static void GenerateDataSources(IProject dataLayerProject, ISourceControlClient sourceControlClient, IProject modelProject, DbContext dbContext)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
@@ -162,7 +176,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			fakeDataSourceGenerator.Generate();
 		}
 
-		private static void GenerateDataEntries(Project dataLayerProject, ISourceControlClient sourceControlClient, Project modelProject, DbContext dbContext, DataEntriesModelSource dataEntriesModelSource)
+		private static void GenerateDataEntries(IProject dataLayerProject, ISourceControlClient sourceControlClient, IProject modelProject, DbContext dbContext, DataEntriesModelSource dataEntriesModelSource)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			var interfaceDataEntriesGenerator = new GenericGenerator<DataEntriesModel>(dataEntriesModelSource, new InterfaceDataEntriesTemplateFactory(), new InterfaceDataEntriesFileNamingService(dataLayerProject), codeWriter);
@@ -171,7 +185,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			dbDataEntriesGenerator.Generate();
 		}
 
-		private static void GenerateRepositories(Project dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext, Project modelProject, DataEntriesModelSource dataEntriesModelSource)
+		private static void GenerateRepositories(IProject dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext, IProject modelProject, DataEntriesModelSource dataEntriesModelSource)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			var dbRepositoryModelSource = new RepositoryModelSource(dbContext, modelProject, dataLayerProject, dataEntriesModelSource);
@@ -187,7 +201,7 @@ namespace Havit.Data.Entity.CodeGenerator
 			dbRepositoryGenerator.Generate();
 		}
 
-		private static void GenerateQueryExtensions(Project dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext)
+		private static void GenerateQueryExtensions(IProject dataLayerProject, ISourceControlClient sourceControlClient, DbContext dbContext)
 		{
 			CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 			var queryableExtensionsModelSource = new QueryableExtensionsModelSource(dbContext, dataLayerProject);

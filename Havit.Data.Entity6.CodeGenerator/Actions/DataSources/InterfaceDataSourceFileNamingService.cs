@@ -5,7 +5,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources
 {
 	public class InterfaceDataSourceFileNamingService : FileNamingServiceBase<InterfaceDataSourceModel>
 	{
-		public InterfaceDataSourceFileNamingService(Project project)
+		public InterfaceDataSourceFileNamingService(IProject project)
 			: base(project)
 		{
 			

@@ -11,10 +11,10 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 	/// </summary>
 	public class CodeWriter
 	{
-		private readonly Project project;
+		private readonly IProject project;
 		private readonly ISourceControlClient sourceControlClient;
 
-		public CodeWriter(Project project, ISourceControlClient sourceControlClient)
+		public CodeWriter(IProject project, ISourceControlClient sourceControlClient)
 		{
 			this.project = project;
 			this.sourceControlClient = sourceControlClient;

@@ -203,16 +203,5 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 				return filename;
 			}
 		}
-
-		public static IProject GetByFolder(string folder)
-		{
-			var files = System.IO.Directory.GetFiles(folder, "*.csproj");
-			if (files.Length == 1)
-			{
-				return new LegacyProject(files[0], XDocument.Load(files[0], LoadOptions.PreserveWhitespace));
-			}
-			return null;
-		}
-
 	}
 }

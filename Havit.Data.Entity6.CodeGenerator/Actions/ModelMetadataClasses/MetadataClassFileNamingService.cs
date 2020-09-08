@@ -5,7 +5,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses
 {
 	public class MetadataClassFileNamingService : FileNamingServiceBase<MetadataClass>
 	{
-		public MetadataClassFileNamingService(Project project)
+		public MetadataClassFileNamingService(IProject project)
 			: base(project)
 		{
 			

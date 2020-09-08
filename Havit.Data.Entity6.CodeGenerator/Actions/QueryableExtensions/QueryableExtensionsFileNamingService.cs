@@ -6,7 +6,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions
 {
 	public class QueryableExtensionsFileNamingService : FileNamingServiceBase<QueryableExtensionsModel>
 	{
-		public QueryableExtensionsFileNamingService(Project project)
+		public QueryableExtensionsFileNamingService(IProject project)
 			: base(project)
 		{
 			

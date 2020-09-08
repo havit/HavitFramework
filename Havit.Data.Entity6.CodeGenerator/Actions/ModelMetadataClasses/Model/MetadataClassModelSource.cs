@@ -10,9 +10,9 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
 	public class MetadataClassModelSource : IModelSource<MetadataClass>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project project;
+		private readonly IProject project;
 
-		public MetadataClassModelSource(DbContext dbContext, Project project)
+		public MetadataClassModelSource(DbContext dbContext, IProject project)
 		{
 			this.dbContext = dbContext;
 			this.project = project;

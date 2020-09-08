@@ -10,11 +10,11 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model
 	public class RepositoryModelSource : IModelSource<RepositoryModel>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project modelProject;
-		private readonly Project dataLayerProject;
+		private readonly IProject modelProject;
+		private readonly IProject dataLayerProject;
 	    private readonly DataEntriesModelSource dataEntriesModelSource;
 
-		public RepositoryModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject, DataEntriesModelSource dataEntriesModelSource)
+		public RepositoryModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, DataEntriesModelSource dataEntriesModelSource)
 		{
 			this.dbContext = dbContext;
 			this.modelProject = modelProject;

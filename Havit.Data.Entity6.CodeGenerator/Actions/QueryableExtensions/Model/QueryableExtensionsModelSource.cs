@@ -11,9 +11,9 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model
 	public class QueryableExtensionsModelSource : IModelSource<QueryableExtensionsModel>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project dataLayerProject;
+		private readonly IProject dataLayerProject;
 
-		public QueryableExtensionsModelSource(DbContext dbContext, Project dataLayerProject)
+		public QueryableExtensionsModelSource(DbContext dbContext, IProject dataLayerProject)
 		{
 			this.dbContext = dbContext;
 			this.dataLayerProject = dataLayerProject;

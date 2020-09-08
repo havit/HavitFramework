@@ -5,7 +5,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries
 {
 	public class DbDataEntriesFileNamingService : FileNamingServiceBase<DataEntriesModel>
 	{
-		public DbDataEntriesFileNamingService(Project project)
+		public DbDataEntriesFileNamingService(IProject project)
 			: base(project)
 		{
 			

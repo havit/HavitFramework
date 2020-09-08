@@ -4,9 +4,9 @@ namespace Havit.Data.Entity.CodeGenerator.Services
 {
 	public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 	{
-		private readonly Project project;
+		private readonly IProject project;
 
-		protected FileNamingServiceBase(Project project)
+		protected FileNamingServiceBase(IProject project)
 		{
 			this.project = project;
 		}

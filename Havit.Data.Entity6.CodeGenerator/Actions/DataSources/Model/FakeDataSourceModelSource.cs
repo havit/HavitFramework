@@ -9,10 +9,10 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model
 	public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 	{
 		private readonly DbContext dbContext;
-		private readonly Project modelProject;
-		private readonly Project dataLayerProject;
+		private readonly IProject modelProject;
+		private readonly IProject dataLayerProject;
 
-		public FakeDataSourceModelSource(DbContext dbContext, Project modelProject, Project dataLayerProject)
+		public FakeDataSourceModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject)
 		{
 			this.dbContext = dbContext;
 			this.modelProject = modelProject;

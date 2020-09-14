@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -48,7 +49,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		{
 			return !entityType.IsKeyless()
 				&& !entityType.IsOwned()
-				&& !entityType.IsSystemType();
+				&& !entityType.IsSystemType()
+				// Pokud není k dispozici anotace IsApplicationEntity, pak považujeme entitu za aplikační entitu (bool? != false),
+				// pokud je anotace k dispozici, vezmeme její hodnotu.
+				// Cílem je umožnit aplikačně vyjmout některé entity, které sdílejí stejný DbContext (např. entity IdentityServeru).
+				// Anotace nepřebíjí ostatní podmínky kladené na aplikační entity (viz výše - IsKeyLess, atp.).
+				&& ((bool?)entityType.FindAnnotation(ApplicationEntityAnnotationConstants.IsApplicationEntityAnnotationName)?.Value != false); // lze zapsat .GetValueOrDefault(true), ale nechávám záměrně s != false
 		}
 
 		/// <summary>

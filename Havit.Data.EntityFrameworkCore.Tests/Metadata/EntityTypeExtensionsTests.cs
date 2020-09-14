@@ -3,6 +3,8 @@ using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Havit.Data.EntityFrameworkCore.Tests.Metadata.Infrastructure.Entity;
+using Havit.Data.EntityFrameworkCore.Tests.Metadata.Infrastructure.Model;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Metadata
 {
@@ -44,6 +46,37 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Metadata
 			Assert.IsFalse(modelValidatingDbContext.Model.FindEntityType(typeof(Group)).IsKeyless(), typeof(Group).Name);
 			Assert.IsTrue(modelValidatingDbContext.Model.FindEntityType(typeof(KeylessClass)).IsKeyless(), typeof(KeylessClass).Name);
 		}
+
+		[TestMethod]
+		public void EntityTypeExtensions_IsApplicationEntity_WhenNotExplicitlySet()
+		{
+			// Arrange
+			ApplicationEntityTestDbContext applicationEntityTestDbContext = new ApplicationEntityTestDbContext();
+			
+			// Act + Assert
+			Assert.IsTrue(applicationEntityTestDbContext.Model.FindEntityType(typeof(DefaultApplicationEntity)).IsApplicationEntity());
+		}
+
+		[TestMethod]
+		public void EntityTypeExtensions_IsApplicationEntity_WhenExplicitlySetToTrue()
+		{
+			// Arrange
+			ApplicationEntityTestDbContext applicationEntityTestDbContext = new ApplicationEntityTestDbContext();
+
+			// Act + Assert
+			Assert.IsTrue(applicationEntityTestDbContext.Model.FindEntityType(typeof(ExplicitApplicationEntity)).IsApplicationEntity());
+		}
+
+		[TestMethod]
+		public void EntityTypeExtensions_IsApplicationEntity_WhenExplicitlySetToFalse()
+		{
+			// Arrange
+			ApplicationEntityTestDbContext applicationEntityTestDbContext = new ApplicationEntityTestDbContext();
+
+			// Act + Assert
+			Assert.IsFalse(applicationEntityTestDbContext.Model.FindEntityType(typeof(NotApplicationEntity)).IsApplicationEntity());
+		}
+
 	}
 }
 

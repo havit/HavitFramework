@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers;
 using Havit.Services.TestHelpers.FileStorage;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
@@ -250,6 +251,23 @@ namespace Havit.Services.Tests.FileStorage
 			fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
 
 			// Assert by method attribute
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_DependencyInjectionContainerIntegration()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+			services.AddSingleton<IFileStorageService, FileSystemStorageService>();
+			services.AddSingleton(new FileSystemStorageServiceOptions { StoragePath = System.IO.Path.GetTempPath() });
+			var provider = services.BuildServiceProvider();
+			
+			// Act
+			var service = provider.GetService<IFileStorageService>();
+
+			// Assert
+			Assert.IsNotNull(service);
+
 		}
 
 		private static FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)

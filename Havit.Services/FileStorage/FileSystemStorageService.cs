@@ -24,6 +24,7 @@ namespace Havit.Services.FileStorage
 		/// <param name="storagePath">Cesta k "rootu" použitého úložiště ve file systému.</param>
 		public FileSystemStorageService(string storagePath) : this(storagePath, null)
 		{
+			// NOOP
 		}
 
 		/// <summary>
@@ -35,6 +36,16 @@ namespace Havit.Services.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath));
 			this.storagePath = storagePath;
+		}
+
+		/// <summary>
+		/// Konstruktor.
+		/// Bez šifrování.
+		/// Bez použití IOptions&lt;&gt;, volitelně v případě potřeby doplníme.
+		/// </summary>
+		public FileSystemStorageService(FileSystemStorageServiceOptions options) : this(options.StoragePath, null)
+		{
+			// NOOP
 		}
 
 		/// <summary>

@@ -11,6 +11,7 @@ using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
@@ -252,7 +253,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		{
 			// Arrange
 			string cacheControlValue = "public, maxage=3600";
-			AzureBlobStorageService service = GetAzureBlobStorageService(options: new AzureBlobStorageServiceOptions { CacheControl = cacheControlValue });
+			AzureBlobStorageService service = GetAzureBlobStorageService(cacheControl: cacheControlValue);
 
 			// Act
 			using (MemoryStream ms = new MemoryStream())
@@ -266,11 +267,35 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			Assert.AreEqual(cacheControlValue, properties.CacheControl);
 		}
 
-		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", AzureBlobStorageServiceOptions options = null, EncryptionOptions encryptionOptions = null)
+		[TestMethod]
+		public void FileSystemStorageService_DependencyInjectionContainerIntegration()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+			services.AddSingleton<IFileStorageService, AzureBlobStorageService>();
+			services.AddSingleton(new AzureBlobStorageServiceOptions { BlobStorageConnectionString = "fake", ContainerName = "fake" });
+			var provider = services.BuildServiceProvider();
+
+			// Act
+			var service = provider.GetService<IFileStorageService>();
+
+			// Assert
+			Assert.IsNotNull(service);
+
+		}
+
+		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", string cacheControl = "", EncryptionOptions encryptionOptions = null)
 		{
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			// use your own Azure Storage account if you do not have access to this file
-			return new AzureBlobStorageService(File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"), container, options, (EncryptionOptions)encryptionOptions);
+			return new AzureBlobStorageService(
+				new AzureBlobStorageServiceOptions
+				{
+					BlobStorageConnectionString = File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
+					ContainerName = container,
+					CacheControl = cacheControl,
+					EncryptionOptions = encryptionOptions
+				});
 		}
 	}
 }

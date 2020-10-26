@@ -14,6 +14,7 @@ using Azure.Storage.Blobs;
 using Azure;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Azure;
+using Azure.Core;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -24,9 +25,10 @@ namespace Havit.Services.Azure.FileStorage
 	public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
 	{
 		private readonly string blobStorageConnectionString;
+		private readonly string blobStorageAccountName;
 		private readonly string containerName;
-
-		private readonly AzureBlobStorageServiceOptions options;
+		private readonly TokenCredential tokenCredential;
+		private readonly string cacheControl;
 
 		private volatile bool containerAlreadyCreated = false;
 
@@ -35,45 +37,66 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null, null)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, null, containerName, null, null, null)
 		{
 		}
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
-		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-		/// <param name="options">Další nastavení.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options) : this(blobStorageConnectionString, containerName, options, null)
-		{
-		}		
-		
+	
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, containerName, null, encryptionOptions)
+		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(blobStorageConnectionString, null, containerName, null, null, encryptionOptions)
 		{			
 		}
 
 		/// <summary>
 		/// Konstruktor.
+		/// Bez šifrování.
+		/// Bez použití IOptions&lt;&gt;, volitelně v případě potřeby doplníme.
+		/// </summary>
+		/// <param name="options">Konfigurace služby.</param>
+		public AzureBlobStorageService(AzureBlobStorageServiceOptions options) : this(
+			options.BlobStorageConnectionString,
+			options.BlobStorageAccountName,
+			options.ContainerName,
+			options.TokenCredential,
+			options.CacheControl,
+			options.EncryptionOptions)
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Konstruktor.
 		/// </summary>
 		/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 		/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
 		/// <param name="options">Další nastavení.</param>
-		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, AzureBlobStorageServiceOptions options, EncryptionOptions encryptionOptions) : base(encryptionOptions)
+		protected AzureBlobStorageService(string blobStorageConnectionString, string blobStorageAccountName, string containerName, TokenCredential tokenCredential, string cacheControl, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString), nameof(blobStorageConnectionString));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(blobStorageConnectionString) || !String.IsNullOrEmpty(blobStorageAccountName), $"{nameof(blobStorageConnectionString)} or {nameof(blobStorageAccountName)} must be specified.");
+			Contract.Requires<ArgumentException>(String.IsNullOrEmpty(blobStorageConnectionString) || String.IsNullOrEmpty(blobStorageAccountName), $"Cannot specify both {nameof(blobStorageConnectionString)} or {nameof(blobStorageAccountName)}.");
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(containerName), nameof(containerName));
 
+			// contracts v této podobě se obtížně čtou, proto alternativně
+			if (String.IsNullOrEmpty(blobStorageAccountName) && (tokenCredential != null))
+			{
+				throw new InvalidOperationException($"{nameof(tokenCredential)} can be used only when ${nameof(blobStorageAccountName)} is specified.");
+			}
+
+			if (!String.IsNullOrEmpty(blobStorageAccountName) && (tokenCredential == null))
+			{
+				throw new InvalidOperationException($"When ${nameof(blobStorageAccountName)} is specified there must be specified also {nameof(tokenCredential)}");
+			}
+
 			this.blobStorageConnectionString = blobStorageConnectionString;
+			this.blobStorageAccountName = blobStorageAccountName;
 			this.containerName = containerName;
-			this.options = options;
+			this.tokenCredential = tokenCredential;
+			this.cacheControl = cacheControl;
 		}
 
 		/// <summary>
@@ -171,9 +194,9 @@ namespace Havit.Services.Azure.FileStorage
 
 		private void PerformSave_SetProperties(BlobHttpHeaders blobHttpHeaders)
 		{
-			if (!String.IsNullOrEmpty(options?.CacheControl))
+			if (!String.IsNullOrEmpty(cacheControl))
 			{
-				blobHttpHeaders.CacheControl = options.CacheControl;
+				blobHttpHeaders.CacheControl = cacheControl;
 			}
 		}
 
@@ -316,7 +339,16 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected internal BlobContainerClient GetBlobContainerClient()
 		{
-			return new BlobContainerClient(blobStorageConnectionString, containerName);
+			if (!String.IsNullOrEmpty(blobStorageConnectionString))
+			{
+				return new BlobContainerClient(blobStorageConnectionString, containerName);
+			}
+			else
+			{
+				// pro podporu Managed Identity
+				string containerEndpoint = $"https://{blobStorageAccountName}.blob.core.windows.net/{containerName}";
+				return new BlobContainerClient(new Uri(containerEndpoint), tokenCredential);
+			}
 		}
 
 		/// <summary>

@@ -1,6 +1,8 @@
 ﻿using Havit.Services.Caching;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.Caching;
+using Havit.Services.Tests.FileStorage.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -140,5 +142,21 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageServiceMock.Verify(m => m.Exists("abc.txt"), Times.Exactly(2)); // dvakrát voláme Exists, ale mezi ním delete, což invaliduje záznam v cache, proto druhý Exists nemá hodnotu v cache
 		}
 
+
+		[TestMethod]
+		public void FileSystemStorageService_DependencyInjectionContainerIntegration()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+			services.AddFileStorageCachingProxy<TestFileStorage, TestUnderlyingFileStorage>();
+			services.AddFileSystemStorageService<TestUnderlyingFileStorage>(System.IO.Path.GetTempPath());
+			var provider = services.BuildServiceProvider();
+
+			// Act
+			var service = provider.GetService<IFileStorageService<TestFileStorage>>();
+
+			// Assert
+			Assert.IsNotNull(service);
+		}
 	}
 }

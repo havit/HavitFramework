@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers;
 using Havit.Services.TestHelpers.FileStorage;
+using Havit.Services.Tests.FileStorage.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
@@ -258,16 +259,14 @@ namespace Havit.Services.Tests.FileStorage
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
-			services.AddSingleton<IFileStorageService, FileSystemStorageService>();
-			services.AddSingleton(new FileSystemStorageServiceOptions { StoragePath = System.IO.Path.GetTempPath() });
+			services.AddFileSystemStorageService<TestFileStorage>(System.IO.Path.GetTempPath());
 			var provider = services.BuildServiceProvider();
 			
 			// Act
-			var service = provider.GetService<IFileStorageService>();
+			var service = provider.GetService<IFileStorageService<TestFileStorage>>();
 
 			// Assert
 			Assert.IsNotNull(service);
-
 		}
 
 		private static FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)

@@ -15,7 +15,7 @@ namespace Havit.Services.FileStorage
 	/// Abstraktní předek pro implementaci úložiště souborů. 
 	/// Podporuje šifrování. Šifrování souborů je transparentní operací při čtení a zápisu.
 	/// </summary>
-	public abstract class FileStorageServiceBase : IFileStorageService, IFileStorageServiceAsync
+	public abstract class FileStorageServiceBase : IFileStorageService
 	{
 		/// <summary>
 		/// Nastavení šifrování.

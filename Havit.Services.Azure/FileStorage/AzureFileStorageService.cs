@@ -19,7 +19,7 @@ namespace Havit.Services.Azure.FileStorage
 	/// Nepodporuje transparentní šifrování z předka.
 	/// (Použití šifrování beztak postrádá smysl.)
 	/// </summary>
-	public class AzureFileStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
+	public class AzureFileStorageService : FileStorageServiceBase, IFileStorageService
 	{
 		private readonly string fileStorageConnectionString;
 		private readonly string fileShareName;

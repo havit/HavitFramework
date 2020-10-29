@@ -19,14 +19,29 @@ namespace Havit.Services.FileStorage
 		bool Exists(string fileName);
 
 		/// <summary>
+		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
+		/// </summary>
+		Task<bool> ExistsAsync(string fileName);
+
+		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
 		/// </summary>
 		Stream Read(string fileName);
-		
+
+		/// <summary>
+		/// Vrátí stream s obsahem souboru z úložiště.
+		/// </summary>
+		Task<Stream> ReadAsync(string fileName);
+
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
 		void ReadToStream(string fileName, Stream stream);
+
+		/// <summary>
+		/// Zapíše obsah souboru z úložiště do streamu.
+		/// </summary>
+		Task ReadToStreamAsync(string fileName, Stream stream);
 
 		/// <summary>
 		/// Uloží stream do úložiště.
@@ -34,9 +49,19 @@ namespace Havit.Services.FileStorage
 		void Save(string fileName, Stream fileContent, string contentType);
 
 		/// <summary>
+		/// Uloží stream do úložiště.
+		/// </summary>
+		Task SaveAsync(string fileName, Stream fileContent, string contentType);
+
+		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
 		void Delete(string fileName);
+
+		/// <summary>
+		/// Smaže soubor v úložišti.
+		/// </summary>
+		Task DeleteAsync(string fileName);
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
@@ -44,8 +69,18 @@ namespace Havit.Services.FileStorage
 		IEnumerable<FileInfo> EnumerateFiles(string pattern = null);
 
 		/// <summary>
+		/// Vylistuje seznam souborů v úložišti.
+		/// </summary>
+		IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null);
+
+		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone
 		/// </summary>
 		DateTime? GetLastModifiedTimeUtc(string fileName);
+
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone
+		/// </summary>
+		Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName);
 	}
 }

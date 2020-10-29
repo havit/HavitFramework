@@ -14,7 +14,7 @@ namespace Havit.Services.FileStorage
 	/// IFileStorageService a IFileStorageServiceAsync s file systémem pro datové úložiště.
 	/// Některé asynchronní metody pod pokličkou nejsou asynchronní, viz dokumentace jednotlivých metod (jejichž název končí Async).
 	/// </summary>
-	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
+	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService
 	{
 		private readonly string storagePath;
 

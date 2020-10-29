@@ -53,6 +53,15 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
+		public async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null)
+		{
+			await foreach (FileInfo fileInfo in EnumerateFilesAsync(pattern))
+			{
+				yield return fileInfo;
+			}
+		}
+
+		/// <inheritdoc />
 		public bool Exists(string fileName)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.Exists, fileName);
@@ -69,6 +78,22 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
+		public async Task<bool> ExistsAsync(string fileName)
+		{
+			string cacheKey = GetCacheKey(CachedStorageOperation.Exists, fileName);
+
+			if (cacheService.TryGet(cacheKey, out object cacheValue))
+			{
+				return (bool)cacheValue;
+			}
+
+			bool result = await fileStorageService.ExistsAsync(fileName).ConfigureAwait(false);
+			cacheService.Add(cacheKey, result, GetCacheOptions(CachedStorageOperation.Exists, fileName));
+
+			return result;
+		}
+
+		/// <inheritdoc />
 		public DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.GetLastModifiedTimeUtc, fileName);
@@ -79,6 +104,22 @@ namespace Havit.Services.FileStorage
 			}
 
 			DateTime? result = fileStorageService.GetLastModifiedTimeUtc(fileName);
+			cacheService.Add(cacheKey, result, GetCacheOptions(CachedStorageOperation.GetLastModifiedTimeUtc, fileName));
+
+			return result;
+		}
+
+		/// <inheritdoc />
+		public async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		{
+			string cacheKey = GetCacheKey(CachedStorageOperation.GetLastModifiedTimeUtc, fileName);
+
+			if (cacheService.TryGet(cacheKey, out object cacheValue))
+			{
+				return (DateTime?)cacheValue;
+			}
+
+			DateTime? result = await fileStorageService.GetLastModifiedTimeUtcAsync(fileName).ConfigureAwait(false);
 			cacheService.Add(cacheKey, result, GetCacheOptions(CachedStorageOperation.GetLastModifiedTimeUtc, fileName));
 
 			return result;
@@ -118,11 +159,53 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
+		public async Task<Stream> ReadAsync(string fileName)
+		{
+			string cacheKey = GetCacheKey(CachedStorageOperation.Read, fileName);
+
+			if (cacheService.TryGet(cacheKey, out object cacheValue))
+			{
+				return new MemoryStream((byte[])cacheValue);
+			}
+
+			byte[] bytes;
+			using (Stream dataStream = fileStorageService.Read(fileName))
+			{
+				if (dataStream is MemoryStream ms1)
+				{
+					bytes = ms1.ToArray();
+				}
+				else
+				{
+					using (MemoryStream ms2 = new MemoryStream())
+					{
+						await dataStream.CopyToAsync(ms2).ConfigureAwait(false);
+						bytes = ms2.ToArray();
+					}
+				}
+			}
+			var cacheOptions = GetCacheOptions(CachedStorageOperation.Read, fileName) ?? new CacheOptions();
+			cacheOptions.Size = bytes.Length;
+
+			cacheService.Add(cacheKey, bytes, cacheOptions);
+			return new MemoryStream(bytes);
+		}
+
+		/// <inheritdoc />
 		public void ReadToStream(string fileName, Stream stream)
 		{
 			using (MemoryStream dataStream = (MemoryStream)Read(fileName))
 			{
 				stream.CopyTo(stream);
+			}
+		}
+
+		/// <inheritdoc />
+		public async Task ReadToStreamAsync(string fileName, Stream stream)
+		{
+			using (MemoryStream dataStream = (MemoryStream)await ReadAsync(fileName).ConfigureAwait(false))
+			{
+				await stream.CopyToAsync(stream).ConfigureAwait(false);
 			}
 		}
 
@@ -134,9 +217,23 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
+		public async Task SaveAsync(string fileName, Stream fileContent, string contentType)
+		{
+			await fileStorageService.SaveAsync(fileName, fileContent, contentType).ConfigureAwait(false);
+			InvalidateCacheByFileName(fileName);
+		}
+
+		/// <inheritdoc />
 		public void Delete(string fileName)
 		{
 			fileStorageService.Delete(fileName);
+			InvalidateCacheByFileName(fileName);
+		}
+
+		/// <inheritdoc />
+		public async Task DeleteAsync(string fileName)
+		{
+			await fileStorageService.DeleteAsync(fileName).ConfigureAwait(false);
 			InvalidateCacheByFileName(fileName);
 		}
 

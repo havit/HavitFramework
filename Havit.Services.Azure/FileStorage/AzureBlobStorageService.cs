@@ -22,7 +22,7 @@ namespace Havit.Services.Azure.FileStorage
 	/// Úložiště souborů jako Azure Blob Storage.
 	/// Podporuje client-side šifrování (z předka FileStorageServiceBase).
 	/// </summary>
-	public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageService, IFileStorageServiceAsync
+	public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageService
 	{
 		private readonly string blobStorageConnectionString;
 		private readonly string blobStorageAccountName;

@@ -150,6 +150,8 @@ namespace Havit.Services.Tests.FileStorage
 			ServiceCollection services = new ServiceCollection();
 			services.AddFileStorageCachingProxy<TestFileStorage, TestUnderlyingFileStorage>();
 			services.AddFileSystemStorageService<TestUnderlyingFileStorage>(System.IO.Path.GetTempPath());
+			services.AddSingleton<ICacheService, MemoryCacheService>();
+			services.AddMemoryCache();
 			var provider = services.BuildServiceProvider();
 
 			// Act

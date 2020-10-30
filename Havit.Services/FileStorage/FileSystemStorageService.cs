@@ -11,9 +11,12 @@ using Havit.Text.RegularExpressions;
 namespace Havit.Services.FileStorage
 {
 	/// <summary>
-	/// IFileStorageService a IFileStorageServiceAsync s file systémem pro datové úložiště.
+	/// IFileStorageService s file systémem pro datové úložiště.
 	/// Některé asynchronní metody pod pokličkou nejsou asynchronní, viz dokumentace jednotlivých metod (jejichž název končí Async).
 	/// </summary>
+	/// <remarks>
+	/// Negenerickou třídu držíme pro zpětnou kompatibilitu.
+	/// </remarks>
 	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService
 	{
 		private readonly string storagePath;
@@ -36,16 +39,6 @@ namespace Havit.Services.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath));
 			this.storagePath = storagePath;
-		}
-
-		/// <summary>
-		/// Konstruktor.
-		/// Bez šifrování.
-		/// Bez použití IOptions&lt;&gt;, volitelně v případě potřeby doplníme.
-		/// </summary>
-		public FileSystemStorageService(FileSystemStorageServiceOptions options) : this(options.StoragePath, null)
-		{
-			// NOOP
 		}
 
 		/// <summary>

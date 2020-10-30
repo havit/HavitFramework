@@ -7,8 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
+using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Azure.Tests.FileStorage
@@ -190,6 +192,22 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			//Šifrování není podporováno.
 			//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 			await Task.CompletedTask;
+		}
+
+		[TestMethod]
+		public void AzureFileStorageService_DependencyInjectionContainerIntegration()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+			services.AddAzureFileStorageService<TestFileStorage>("fake", "fake");
+			var provider = services.BuildServiceProvider();
+
+			// Act
+			var service = provider.GetService<IFileStorageService<TestFileStorage>>();
+
+			// Assert
+			Assert.IsNotNull(service);
+			Assert.IsInstanceOfType(service, typeof(AzureFileStorageService<TestFileStorage>));
 		}
 
 		private static AzureFileStorageService GetAzureFileStorageService(string fileShareName = "tests")

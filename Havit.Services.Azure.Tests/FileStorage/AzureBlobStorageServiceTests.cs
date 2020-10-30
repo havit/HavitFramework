@@ -9,6 +9,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
+using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
@@ -281,7 +282,22 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 			// Assert
 			Assert.IsNotNull(service);
+		}
 
+		[TestMethod]
+		public void AzureBlobStorageService_DependencyInjectionContainerIntegration()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+			services.AddAzureBlobStorageService<TestFileStorage>("fake", "fake");
+			var provider = services.BuildServiceProvider();
+
+			// Act
+			var service = provider.GetService<IFileStorageService<TestFileStorage>>();
+
+			// Assert
+			Assert.IsNotNull(service);
+			Assert.IsInstanceOfType(service, typeof(AzureBlobStorageService<TestFileStorage>));
 		}
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", string cacheControl = "", EncryptionOptions encryptionOptions = null)

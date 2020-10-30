@@ -142,7 +142,6 @@ namespace Havit.Services.Tests.FileStorage
 			fileStorageServiceMock.Verify(m => m.Exists("abc.txt"), Times.Exactly(2)); // dvakrát voláme Exists, ale mezi ním delete, což invaliduje záznam v cache, proto druhý Exists nemá hodnotu v cache
 		}
 
-
 		[TestMethod]
 		public void FileSystemStorageService_DependencyInjectionContainerIntegration()
 		{
@@ -159,6 +158,7 @@ namespace Havit.Services.Tests.FileStorage
 
 			// Assert
 			Assert.IsNotNull(service);
+			Assert.IsInstanceOfType(service, typeof(FileStorageServiceCachingProxy<TestFileStorage, TestUnderlyingFileStorage>));
 		}
 	}
 }

@@ -267,6 +267,7 @@ namespace Havit.Services.Tests.FileStorage
 
 			// Assert
 			Assert.IsNotNull(service);
+			Assert.IsInstanceOfType(service, typeof(FileSystemStorageService<TestFileStorage>));
 		}
 
 		private static FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)

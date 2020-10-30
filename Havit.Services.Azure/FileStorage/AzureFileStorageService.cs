@@ -19,12 +19,13 @@ namespace Havit.Services.Azure.FileStorage
 	/// Nepodporuje transparentní šifrování z předka.
 	/// (Použití šifrování beztak postrádá smysl.)
 	/// </summary>
+	/// <remarks>
+	/// Negenerickou třídu držíme pro zpětnou kompatibilitu.
+	/// </remarks>
 	public class AzureFileStorageService : FileStorageServiceBase, IFileStorageService
 	{
-		private readonly string fileStorageConnectionString;
-		private readonly string fileShareName;
+		private readonly AzureFileStorageServiceOptions options;
 		private readonly string[] rootDirectoryNameSegments;
-
 		private volatile bool fileShareAlreadyCreated = false;
 
 		/// <summary>
@@ -34,6 +35,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="fileShareName">File Share ve File Storage pro práci se soubory.</param>
 		public AzureFileStorageService(string fileStorageConnectionString, string fileShareName) : this(fileStorageConnectionString, fileShareName, null)
 		{
+			// NOOP
 		}
 
 		/// <summary>
@@ -42,14 +44,27 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="fileStorageConnectionString">Connection string pro připojení k Azure File Storage.</param>
 		/// <param name="fileShareName">File Share ve File Storage pro práci se soubory.</param>
 		/// <param name="rootDirectoryName">Název složky, která bude rootem pro použití.</param>
-		public AzureFileStorageService(string fileStorageConnectionString, string fileShareName, string rootDirectoryName) : base()
+		public AzureFileStorageService(string fileStorageConnectionString, string fileShareName, string rootDirectoryName) : this(new AzureFileStorageServiceOptions
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileStorageConnectionString), nameof(fileStorageConnectionString));
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileShareName), nameof(fileShareName));
+			FileStorageConnectionString = fileStorageConnectionString,
+			FileShareName = fileShareName,
+			RootDirectoryName = rootDirectoryName
+		})
+		{
+			// NOOP
+		}
 
-			this.fileStorageConnectionString = fileStorageConnectionString;
-			this.fileShareName = fileShareName;
-			this.rootDirectoryNameSegments = rootDirectoryName?.Replace("\\", "/").Split('/').Where(item => !String.IsNullOrEmpty(item)).ToArray() ?? new string[0];
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public AzureFileStorageService(AzureFileStorageServiceOptions options) : base()
+		{
+			Contract.Requires<ArgumentNullException>(options != null, nameof(options));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.FileStorageConnectionString), nameof(options.FileStorageConnectionString));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.FileShareName), nameof(options.FileShareName));
+
+			this.options = options;
+			this.rootDirectoryNameSegments = options.RootDirectoryName?.Replace("\\", "/").Split('/').Where(item => !String.IsNullOrEmpty(item)).ToArray() ?? new string[0];
 		}
 
 		/// <summary>
@@ -435,7 +450,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected internal ShareClient GetShareClient()
 		{
-			return new ShareClient(fileStorageConnectionString, fileShareName);
+			return new ShareClient(options.FileStorageConnectionString, options.FileShareName);			
 		}
 
 		/// <summary>

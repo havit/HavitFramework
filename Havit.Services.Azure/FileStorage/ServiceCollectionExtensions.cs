@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,9 +22,11 @@ namespace Havit.Services.Azure.FileStorage
 		public static void AddAzureBlobStorageService<TFileStorageContext>(this IServiceCollection services, string blobStorageConnectionString, string containerName)
 			where TFileStorageContext : FileStorageContext
 		{
+			Contract.Requires(blobStorageConnectionString.Contains(';'), $"{nameof(blobStorageConnectionString)} must contain a semicolon (;).");
+
 			var options = new AzureBlobStorageServiceOptions<TFileStorageContext>
 			{
-				BlobStorageConnectionString = blobStorageConnectionString,
+				BlobStorage = blobStorageConnectionString,
 				ContainerName = containerName,
 			};
 		
@@ -34,12 +37,16 @@ namespace Havit.Services.Azure.FileStorage
 		/// Zaregistruje úložiště souborů ve Azure Blob Storage.
 		/// Určeno pro použití s managed identity.
 		/// </summary>
-		public static void AddAzureBlobStorageService<TFileStorageContext>(this IServiceCollection services, string blobStorageAccountName, string containerName, TokenCredential tokenCredential)
+		/// <param name="services">Services where to register.</param>
+		/// <param name="blobStorage">Blob storage connection string (contains ;) or blob storage account name (does not contain ;).</param>
+		/// <param name="containerName">Container name.</param>
+		/// <param name="tokenCredential">Token credential. Used only when blobStorage contains storage account name (not connection string).</param>
+		public static void AddAzureBlobStorageService<TFileStorageContext>(this IServiceCollection services, string blobStorage, string containerName, TokenCredential tokenCredential)
 			where TFileStorageContext : FileStorageContext
 		{
 			var options = new AzureBlobStorageServiceOptions<TFileStorageContext>
 			{
-				BlobStorageAccountName = blobStorageAccountName,
+				BlobStorage = blobStorage,
 				ContainerName = containerName,
 				TokenCredential = tokenCredential
 			};

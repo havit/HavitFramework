@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Core;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Castle.Core.Internal;
@@ -14,6 +15,7 @@ using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Azure.Tests.FileStorage
@@ -269,27 +271,27 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_DependencyInjectionContainerIntegration()
-		{
-			// Arrange
-			ServiceCollection services = new ServiceCollection();
-			services.AddSingleton<IFileStorageService, AzureBlobStorageService>();
-			services.AddSingleton(new AzureBlobStorageServiceOptions { BlobStorageConnectionString = "fake", ContainerName = "fake" });
-			var provider = services.BuildServiceProvider();
-
-			// Act
-			var service = provider.GetService<IFileStorageService>();
-
-			// Assert
-			Assert.IsNotNull(service);
-		}
-
-		[TestMethod]
 		public void AzureBlobStorageService_DependencyInjectionContainerIntegration()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
-			services.AddAzureBlobStorageService<TestFileStorage>("fake", "fake");
+			services.AddAzureBlobStorageService<TestFileStorage>("DefaultEndpointsProtocol=https;AccountName=fake;AccountKey=fake", "fake");
+			var provider = services.BuildServiceProvider();
+
+			// Act
+			var service = provider.GetService<IFileStorageService<TestFileStorage>>();
+
+			// Assert
+			Assert.IsNotNull(service);
+			Assert.IsInstanceOfType(service, typeof(AzureBlobStorageService<TestFileStorage>));
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_DependencyInjectionContainerIntegration_WithTokenCredential()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+			services.AddAzureBlobStorageService<TestFileStorage>("fake", "fake", new Mock<TokenCredential>().Object);
 			var provider = services.BuildServiceProvider();
 
 			// Act
@@ -307,7 +309,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			return new AzureBlobStorageService(
 				new AzureBlobStorageServiceOptions
 				{
-					BlobStorageConnectionString = File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
+					BlobStorage = File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
 					ContainerName = container,
 					CacheControl = cacheControl,
 					EncryptionOptions = encryptionOptions

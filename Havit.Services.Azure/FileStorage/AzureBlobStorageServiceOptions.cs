@@ -14,16 +14,11 @@ namespace Havit.Services.Azure.FileStorage
 	public class AzureBlobStorageServiceOptions
 	{
 		/// <summary>
-		/// Connection string pro přístup k blob storage.
-		/// Nelze použít společně s BlobStorageName a TokenCredential.
+		/// Connection string nebo název storage pro přístup k blob storage.
+		/// Zda jde o connection string nebo název storage se rozpoznává existencí středníku - pokud je obsažen, považuje se hodnota za connection string, pokud není obsažen, považuje se za název storage.
+		/// Pokud je zadán název storage, vyžaduje se TokenCredential (pro connection string je ignorován).
 		/// </summary>
-		public string BlobStorageConnectionString { get; set; }
-
-		/// <summary>
-		/// Název storage, ke kterému se přistupuje.
-		/// Nelze použít s BlobStorageConnectionString. Vyžaduje nastavený TokenCredential.
-		/// </summary>
-		public string BlobStorageAccountName { get; set; }
+		public string BlobStorage { get; set; }
 
 		/// <summary>
 		/// Název containeru, ke kterému se přistupuje.

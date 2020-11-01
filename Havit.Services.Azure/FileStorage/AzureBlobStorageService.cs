@@ -48,7 +48,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <param name="encryptionOptions">Parametry šifrování.</param>
 		public AzureBlobStorageService(string blobStorageConnectionString, string containerName, EncryptionOptions encryptionOptions) : this(new AzureBlobStorageServiceOptions
 		{
-			BlobStorageConnectionString = blobStorageConnectionString,
+			BlobStorage = blobStorageConnectionString,
 			ContainerName = containerName,
 			EncryptionOptions = encryptionOptions
 		})
@@ -65,19 +65,13 @@ namespace Havit.Services.Azure.FileStorage
 		public AzureBlobStorageService(AzureBlobStorageServiceOptions options) : base(options?.EncryptionOptions)
 		{
 			Contract.Requires<ArgumentNullException>(options != null, nameof(options));
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.BlobStorageConnectionString) || !String.IsNullOrEmpty(options.BlobStorageAccountName), $"{nameof(options.BlobStorageConnectionString)} or {nameof(options.BlobStorageAccountName)} must be specified.");
-			Contract.Requires<ArgumentException>(String.IsNullOrEmpty(options.BlobStorageConnectionString) || String.IsNullOrEmpty(options.BlobStorageAccountName), $"Cannot specify both {nameof(options.BlobStorageConnectionString)} or {nameof(options.BlobStorageAccountName)}.");
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.BlobStorage), nameof(options.BlobStorage));
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.ContainerName), nameof(options.ContainerName));
 
 			// contracts v této podobě se obtížně čtou, proto alternativně
-			if (String.IsNullOrEmpty(options.BlobStorageAccountName) && (options.TokenCredential != null))
+			if (!options.BlobStorage.Contains(';') && (options.TokenCredential == null))
 			{
-				throw new InvalidOperationException($"{nameof(options.TokenCredential)} can be used only when ${nameof(options.BlobStorageAccountName)} is specified.");
-			}
-
-			if (!String.IsNullOrEmpty(options.BlobStorageAccountName) && (options.TokenCredential == null))
-			{
-				throw new InvalidOperationException($"When ${nameof(options.BlobStorageAccountName)} is specified there must be specified also {nameof(options.TokenCredential)}");
+				throw new InvalidOperationException($"When {nameof(options.BlobStorage)} contains storage name (not connection string) then {nameof(options.TokenCredential)} must be set.");
 			}
 
 			this.options = options;
@@ -323,14 +317,15 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected internal BlobContainerClient GetBlobContainerClient()
 		{
-			if (!String.IsNullOrEmpty(options.BlobStorageConnectionString))
+			if (options.BlobStorage.Contains(';'))
 			{
-				return new BlobContainerClient(options.BlobStorageConnectionString, options.ContainerName);
+				// máme connection string
+				return new BlobContainerClient(options.BlobStorage, options.ContainerName);
 			}
 			else
 			{
-				// pro podporu Managed Identity
-				string containerEndpoint = $"https://{options.BlobStorageAccountName}.blob.core.windows.net/{options.ContainerName}";
+				// máme název blob storage -> pak použijeme TokenCredential (zamýšleno pro Managed Identity)
+				string containerEndpoint = $"https://{options.BlobStorage}.blob.core.windows.net/{options.ContainerName}";
 				return new BlobContainerClient(new Uri(containerEndpoint), options.TokenCredential);
 			}
 		}

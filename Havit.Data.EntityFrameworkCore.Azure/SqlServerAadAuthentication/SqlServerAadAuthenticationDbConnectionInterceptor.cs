@@ -24,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.Azure.SqlServerAadAuthentication
 		{
 			if (ShouldUseAadAuthnetication(connection))
 			{
-				((SqlConnection)connection).AccessToken = SqlConnectionFactory.GetAzureSqlAccessToken();
+				((SqlConnection)connection).AccessToken = Havit.Data.SqlClient.Azure.SqlServerAadAuthentication.SqlConnectionFactory.GetAzureSqlAccessToken();
 			}
 
 			return base.ConnectionOpening(connection, eventData, result);
@@ -39,7 +39,7 @@ namespace Havit.Data.EntityFrameworkCore.Azure.SqlServerAadAuthentication
 		{
 			if (ShouldUseAadAuthnetication(connection))
 			{
-				((SqlConnection)connection).AccessToken = await SqlConnectionFactory.GetAzureSqlAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+				((SqlConnection)connection).AccessToken = await Havit.Data.SqlClient.Azure.SqlServerAadAuthentication.SqlConnectionFactory.GetAzureSqlAccessTokenAsync(cancellationToken).ConfigureAwait(false);
 			}
 
 			return await base.ConnectionOpeningAsync(connection, eventData, result, cancellationToken).ConfigureAwait(false);
@@ -55,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Azure.SqlServerAadAuthentication
 					{
 						if (connection is SqlConnection sqlConnection)
 						{
-							_shouldUseAadAuthentication = AadAuthenticationSupportDecision.ShouldUseAadAuthentication(sqlConnection.ConnectionString);
+							_shouldUseAadAuthentication = Havit.Data.SqlClient.Azure.SqlServerAadAuthentication.AadAuthenticationSupportDecision.ShouldUseAadAuthentication(sqlConnection.ConnectionString);
 						}
 						else
 						{

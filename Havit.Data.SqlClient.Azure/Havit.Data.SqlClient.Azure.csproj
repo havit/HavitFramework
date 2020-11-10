@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.0</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - SqlClient with AAD Authentication support</Description>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Azure.Identity" Version="1.2.3" />
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+	</ItemGroup>
+
+</Project>

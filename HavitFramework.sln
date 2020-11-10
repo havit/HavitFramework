@@ -221,7 +221,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.GoogleAnalytics", "Ha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.GoogleAnalytics.Tests", "Havit.GoogleAnalytics.Tests\Havit.GoogleAnalytics.Tests.csproj", "{28023CD4-0C81-466A-9EF4-E7937D9644AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.Azure", "Havit.Data.EntityFrameworkCore.Azure\Havit.Data.EntityFrameworkCore.Azure.csproj", "{574620C3-E1E0-425A-8AAD-7952AE44B469}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Azure", "Havit.Data.EntityFrameworkCore.Azure\Havit.Data.EntityFrameworkCore.Azure.csproj", "{574620C3-E1E0-425A-8AAD-7952AE44B469}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.SqlClient.Azure", "Havit.Data.SqlClient.Azure\Havit.Data.SqlClient.Azure.csproj", "{D5D11773-73CC-4921-B149-1BDA08D14516}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.SqlClient.Azure.Tests", "Havit.Data.SqlClient.Azure.Tests\Havit.Data.SqlClient.Azure.Tests.csproj", "{30F5F30B-EA09-4F4A-B496-D63195ED2931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -561,6 +565,14 @@ Global
 		{574620C3-E1E0-425A-8AAD-7952AE44B469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{574620C3-E1E0-425A-8AAD-7952AE44B469}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{574620C3-E1E0-425A-8AAD-7952AE44B469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D11773-73CC-4921-B149-1BDA08D14516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D11773-73CC-4921-B149-1BDA08D14516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D11773-73CC-4921-B149-1BDA08D14516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D11773-73CC-4921-B149-1BDA08D14516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30F5F30B-EA09-4F4A-B496-D63195ED2931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F5F30B-EA09-4F4A-B496-D63195ED2931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F5F30B-EA09-4F4A-B496-D63195ED2931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F5F30B-EA09-4F4A-B496-D63195ED2931}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -659,6 +671,8 @@ Global
 		{CA4C4867-34E6-4C43-B4D4-0762BB46C2A0} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{28023CD4-0C81-466A-9EF4-E7937D9644AC} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{574620C3-E1E0-425A-8AAD-7952AE44B469} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
+		{D5D11773-73CC-4921-B149-1BDA08D14516} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
+		{30F5F30B-EA09-4F4A-B496-D63195ED2931} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

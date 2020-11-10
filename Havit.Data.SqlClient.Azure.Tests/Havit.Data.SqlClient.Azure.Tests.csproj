@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<RootNamespace>Havit.Tests</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+		<PackageReference Include="Moq" Version="4.14.7" />
+		<PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Havit.Data.SqlClient.Azure\Havit.Data.SqlClient.Azure.csproj" />
+	</ItemGroup>
+	
+</Project>

@@ -8,7 +8,7 @@ namespace Havit.Data.Configuration.Git.Tests
     public class BranchConnectionStringTransformerTests
     {
         [TestMethod]
-        public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_ConnectionStringDoesNotContainPlaceholder_ConnectionStringIsUnchanged()
+        public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_ConnectionStringDoesNotContainPlaceholder_ConnectionStringIsUnchanged()
         {
             var transformer = CreateTransformer(currentBranchName: "master");
 
@@ -20,7 +20,7 @@ namespace Havit.Data.Configuration.Git.Tests
         }
 
         [TestMethod]
-        public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_BranchIsMaster_ConnectionStringContainsMasterSuffix()
+        public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_BranchIsMaster_ConnectionStringContainsMasterSuffix()
         {
             var transformer = CreateTransformer(currentBranchName: "master");
 
@@ -30,7 +30,7 @@ namespace Havit.Data.Configuration.Git.Tests
         }
 
         [TestMethod]
-        public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_UnknownBranchNull_ConnectionStringIsUnchanged()
+        public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_UnknownBranchNull_ConnectionStringIsUnchanged()
         {
             var transformer = CreateTransformer(currentBranchName: null);
 
@@ -42,7 +42,7 @@ namespace Havit.Data.Configuration.Git.Tests
         }
 
         [TestMethod]
-        public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_UnknownBranchEmptyString_ConnectionStringIsUnchanged()
+        public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_UnknownBranchEmptyString_ConnectionStringIsUnchanged()
         {
             var transformer = CreateTransformer(currentBranchName: "");
 
@@ -54,7 +54,7 @@ namespace Havit.Data.Configuration.Git.Tests
         }
 
         [TestMethod]
-        public void BranchConnectionStringConfigurationBuilder_TransformConnectionString_BranchIsTest_ConnectionStringContainsNewDbName()
+        public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_BranchIsTest_ConnectionStringContainsNewDbName()
         {
             var transformer = CreateTransformer(currentBranchName: "test");
 

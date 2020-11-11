@@ -162,7 +162,7 @@ namespace Havit.Business.Tests
 			}
 		}
 
-		// BugRepro 27250
+		// BugRepro 27250 - BusinessObjectBaseExtensions.SetProperty() - nelze použít pro přiřazení hodnoty do Nullable<> property
 		[TestMethod]
 		public void BusinessObject_SetPropertyExtensionMethod_NullableProperty_SetsPropertyValue()
 		{

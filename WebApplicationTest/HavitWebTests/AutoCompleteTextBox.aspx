@@ -32,8 +32,44 @@
 				</Scripts>
 			</asp:ScriptManager>
 
+			<asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+				<ContentTemplate>
+					<havit:AutoCompleteTextBox
+						ID="TesterACTB"
+						ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
+						UseClientCache="false"
+						Orientation="Auto"
+						Context="lorem ipsum dolor sit amet"
+						AllowInvalidSelection="true"
+						Nullable="true"
+						ShowNoSuggestionNotice="True"
+						PlaceHolderText="Sem napište text"
+						NoSuggestionNotice="Nejsou data!"
+						AutoPostBack="true"
+						runat="server" />
+
+					<%--OnClientSelectScript="test();"--%>
+					<script type="text/javascript">
+						function test() {
+							var element = $("#test");
+							var date = new Date();
+							element.text(element.text() + date.getSeconds() + "*");
+						}
+					</script>
+
+					<span id="test"></span>
+
+					<asp:Button ID="ConfimBt" Text="Potvrdit" runat="server" />
+					<asp:Label ID="PostbackValueLabel" runat="server" /><br />
+					<asp:Label ID="PostbackTextLabel" runat="server" /><br />
+					<asp:TextBox runat="server" /><br />
+					<asp:Button ID="HideBt" Text="Skrýt" runat="server" />
+					<asp:Button ID="ShowBt" Text="Zobrazit" runat="server" />
+				</ContentTemplate>
+			</asp:UpdatePanel>
+			<br />
 			<havit:AutoCompleteTextBox
-				ID="TesterACTB"
+				ID="AutoCompleteTextBox1"
 				ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
 				UseClientCache="false"
 				Orientation="Auto"
@@ -45,24 +81,6 @@
 				NoSuggestionNotice="Nejsou data!"
 				AutoPostBack="true"
 				runat="server" />
-
-			<%--OnClientSelectScript="test();"--%>
-			<script type="text/javascript">
-				function test() {
-					var element = $("#test");
-					var date = new Date();
-					element.text(element.text() + date.getSeconds() + "*");
-				}
-			</script>
-			
-			<span id="test"></span>
-
-			<asp:Button ID="ConfimBt" Text="Potvrdit" runat="server"/>
-			<asp:Label id="PostbackValueLabel" runat="server"/><br />
-			<asp:Label id="PostbackTextLabel" runat="server"/><br />
-			<asp:TextBox runat="server"/><br/>
-			<asp:Button id="HideBt" Text="Skrýt" runat="server"/>
-			<asp:Button id="ShowBt" Text="Zobrazit" runat="server"/>
 		</div>
 	</form>
 </body>

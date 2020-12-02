@@ -7,72 +7,92 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Havit.WebApplicationTest.HavitWebTests {
-    
-    
-    public partial class AutoCompleteTextBox {
-        
-        /// <summary>
-        /// MainForm control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm MainForm;
-        
-        /// <summary>
-        /// TesterACTB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox TesterACTB;
-        
-        /// <summary>
-        /// ConfimBt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ConfimBt;
-        
-        /// <summary>
-        /// PostbackValueLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PostbackValueLabel;
-        
-        /// <summary>
-        /// PostbackTextLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PostbackTextLabel;
-        
-        /// <summary>
-        /// HideBt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button HideBt;
-        
-        /// <summary>
-        /// ShowBt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ShowBt;
-    }
+namespace Havit.WebApplicationTest.HavitWebTests
+{
+
+
+	public partial class AutoCompleteTextBox
+	{
+
+		/// <summary>
+		/// MainForm control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlForm MainForm;
+
+		/// <summary>
+		/// UpdatePanel1 control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+
+		/// <summary>
+		/// TesterACTB control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox TesterACTB;
+
+		/// <summary>
+		/// ConfimBt control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button ConfimBt;
+
+		/// <summary>
+		/// PostbackValueLabel control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Label PostbackValueLabel;
+
+		/// <summary>
+		/// PostbackTextLabel control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Label PostbackTextLabel;
+
+		/// <summary>
+		/// HideBt control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button HideBt;
+
+		/// <summary>
+		/// ShowBt control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button ShowBt;
+
+		/// <summary>
+		/// AutoCompleteTextBox1 control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox AutoCompleteTextBox1;
+	}
 }

@@ -500,7 +500,10 @@ namespace Havit.Web.UI.WebControls
 			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 			ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", true);
 			// řeší problém dlouhého držení vybrané položky myší
-			ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "longClick", @"$(document).on('mousedown', '.autocomplete-suggestion', e => { $(e.target).click(); });", true);
+			if (!this.Page.ClientScript.IsStartupScriptRegistered(typeof(AutoCompleteTextBox), "longClick"))
+			{
+				ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "longClick", @"$(document).on('mousedown', '.autocomplete-suggestion', e => { $(e.target).click(); });", true);
+			}
 			if (AutoRegisterStyleSheets)
             {
                 RegisterStylesheets(this.Page);

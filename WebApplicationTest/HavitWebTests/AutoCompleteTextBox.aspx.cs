@@ -33,6 +33,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 			if (!IsPostBack)
 			{
+				TesterACTB.Visible = false;
 				TesterACTB.SelectedValue = "15";
 			}
 		}
@@ -67,11 +68,13 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		private void ShowBt_Click(object sender, EventArgs e)
 		{
 			TesterACTB.Visible = true;
+			UpdatePanel1.Update();
 		}
 
 		private void HideBt_Click(object sender, EventArgs e)
 		{
 			TesterACTB.Visible = false;
+			UpdatePanel1.Update();
 		}
 	}
 }

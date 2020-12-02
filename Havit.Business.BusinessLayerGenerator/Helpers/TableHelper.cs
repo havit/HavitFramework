@@ -35,6 +35,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
 		{
 			return ((GeneratorSettings.Strategy == GeneratorStrategy.Exec) && table.Name.StartsWith("_"))
 				|| ((GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst) && table.Name.StartsWith("__")) // __DataSeed, __EFMigrationsHistory
+				|| (((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst)) && table.Schema.Equals("HangFire", StringComparison.OrdinalIgnoreCase))
 				|| (GetBoolExtendedProperty(table, "Ignored") ?? DatabaseHelper.GetDefaultIgnoredOnTables());
 		}
 

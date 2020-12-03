@@ -47,6 +47,12 @@ namespace Havit.Data.Entity
 		public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel) => dbContext.Database.BeginTransaction(isolationLevel);
 
 		/// <inheritdoc />
+		public void Initialize(bool force = false)
+		{
+			dbContext.Database.Initialize(force);
+		}
+
+		/// <inheritdoc />
 		public int ExecuteSqlCommand(string sql, params object[] parameters) => dbContext.Database.ExecuteSqlCommand(sql, parameters);
 
 		/// <inheritdoc />

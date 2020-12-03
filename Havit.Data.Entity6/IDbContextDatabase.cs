@@ -39,6 +39,19 @@ namespace Havit.Data.Entity
 		DbContextTransaction BeginTransaction(IsolationLevel isolationLevel);
 
 		/// <summary>
+		///  Runs the registered System.Data.Entity.IDatabaseInitializer`1 on this context.
+		///  If "force" is set to true, then the initializer is run regardless of whether
+		///  or not it has been run before. This can be useful if a database is deleted while
+		///  an app is running and needs to be reinitialized. If "force" is set to false,
+		///  then the initializer is only run if it has not already been run for this context,
+		///  model, and connection in this app domain. This method is typically used when
+		///  it is necessary to ensure that the database has been created and seeded before
+		///  starting some operation where doing so lazily will cause issues, such as when
+		///  the operation is part of a transaction.
+		/// </summary>
+		void Initialize(bool force = false);
+
+		/// <summary>
 		/// Executes the given DDL/DML command against the database. As with any API that
 		/// accepts SQL it is important to parameterize any user input to protect against
 		/// a SQL injection attack. You can include parameter place holders in the SQL query

@@ -81,6 +81,39 @@
 				NoSuggestionNotice="Nejsou data!"
 				AutoPostBack="true"
 				runat="server" />
+			<br />
+			<br />
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+				Modal dialog test
+			</button>
+		</div>
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Modal test</h4>
+					</div>
+					<div class="modal-body">
+						<havit:AutoCompleteTextBox
+							ID="AutoCompleteTextBox2"
+							ServiceUrl="~/Services/AutoCompleteTextBoxService.svc/GetSuggestionsContext"
+							UseClientCache="false"
+							Orientation="Auto"
+							Context="lorem ipsum dolor sit amet"
+							AllowInvalidSelection="true"
+							Nullable="true"
+							ShowNoSuggestionNotice="True"
+							PlaceHolderText="Sem napište text"
+							NoSuggestionNotice="Nejsou data!"
+							runat="server" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</form>
 </body>

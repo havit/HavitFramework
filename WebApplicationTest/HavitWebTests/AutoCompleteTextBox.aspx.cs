@@ -33,7 +33,6 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 			if (!IsPostBack)
 			{
-				TesterACTB.Visible = false;
 				TesterACTB.SelectedValue = "15";
 			}
 		}

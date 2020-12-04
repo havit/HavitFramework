@@ -94,5 +94,14 @@ namespace Havit.WebApplicationTest.HavitWebTests
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
 		protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox AutoCompleteTextBox1;
+
+		/// <summary>
+		/// AutoCompleteTextBox2 control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::Havit.Web.UI.WebControls.AutoCompleteTextBox AutoCompleteTextBox2;
 	}
 }

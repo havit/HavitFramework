@@ -397,10 +397,11 @@ var havitAutoCompleteTextBoxExtensions = {
                 $clearTextLink.show();
             }
         });
-		// řeší problém dlouhého držení vybrané položky myší
-		// div class='.autocomplete-suggestion' se vytváří na formuláři mimo oblast span[data-autocompletetextbox], takže nelze tyto prvky propojit
-		// pokud někdo nepoužije tento styl chybně, pak by nemělo docházet k problémům
-		$(document).on('mousedown', '.autocomplete-suggestion', e => {
+        // řeší problém dlouhého držení vybrané položky myší
+        // div class='.autocomplete-suggestion' se vytváří na formuláři mimo oblast span[data-autocompletetextbox], takže nelze tyto prvky propojit
+        // pokud někdo nepoužije tento styl chybně, pak by nemělo docházet k problémům
+        $(document).off('mousedown', '.autocomplete-suggestion');
+        $(document).on('mousedown', '.autocomplete-suggestion', e => {
             $(e.target).click();
         });
     },

@@ -26,6 +26,8 @@ namespace Havit.Services.Azure.FileStorage
 	{
 		private readonly AzureFileStorageServiceOptions options;
 		private readonly string[] rootDirectoryNameSegments;
+
+		private readonly Lazy<ShareClient> shareClientLazy;
 		private volatile bool fileShareAlreadyCreated = false;
 
 		/// <summary>
@@ -65,6 +67,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			this.options = options;
 			this.rootDirectoryNameSegments = options.RootDirectoryName?.Replace("\\", "/").Split('/').Where(item => !String.IsNullOrEmpty(item)).ToArray() ?? new string[0];
+			this.shareClientLazy = new Lazy<ShareClient>(CreateShareClient, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 		/// <summary>
@@ -450,7 +453,15 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected internal ShareClient GetShareClient()
 		{
-			return new ShareClient(options.FileStorageConnectionString, options.FileShareName);			
+			return shareClientLazy.Value;
+		}
+
+		/// <summary>
+		/// Vytvoří používaný ShareClient v Azure Storage Accountu.
+		/// </summary>
+		private ShareClient CreateShareClient()
+		{
+			return new ShareClient(options.FileStorageConnectionString, options.FileShareName);
 		}
 
 		/// <summary>
@@ -474,7 +485,7 @@ namespace Havit.Services.Azure.FileStorage
 				}
 
 				fileShareAlreadyCreated = true;
-			}			
+			}
 		}
 
 		/// <summary>

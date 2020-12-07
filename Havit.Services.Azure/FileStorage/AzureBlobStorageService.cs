@@ -15,6 +15,7 @@ using Azure;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Azure;
 using Azure.Core;
+using Havit.Threading;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -30,6 +31,8 @@ namespace Havit.Services.Azure.FileStorage
 		private readonly AzureBlobStorageServiceOptions options;
 
 		private volatile bool containerAlreadyCreated = false;
+		private readonly CriticalSection<int> ensureContainerCriticalSection = new CriticalSection<int>();		
+		private readonly Lazy<BlobContainerClient> blobContainerClientLazy;
 
 		/// <summary>
 		/// Konstruktor.
@@ -75,6 +78,7 @@ namespace Havit.Services.Azure.FileStorage
 			}
 
 			this.options = options;
+			this.blobContainerClientLazy = new Lazy<BlobContainerClient>(CreateBlobContainerClient, LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 		/// <summary>
@@ -317,6 +321,14 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected internal BlobContainerClient GetBlobContainerClient()
 		{
+			return blobContainerClientLazy.Value;
+		}
+
+		/// <summary>
+		/// Vytvoří používaný container (BlobContainerClient) v Azure Storage Accountu.
+		/// </summary>
+		private BlobContainerClient CreateBlobContainerClient()
+		{
 			if (options.BlobStorage.Contains(';'))
 			{
 				// máme connection string
@@ -337,8 +349,14 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!containerAlreadyCreated)
 			{
-				GetBlobContainerClient().CreateIfNotExists(PublicAccessType.None);
-				containerAlreadyCreated = true;
+				ensureContainerCriticalSection.ExecuteAction(0, () =>
+				{
+					if (!containerAlreadyCreated)
+					{
+						GetBlobContainerClient().CreateIfNotExists(PublicAccessType.None);
+						containerAlreadyCreated = true;
+					}
+				});
 			}
 		}
 
@@ -349,8 +367,14 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!containerAlreadyCreated)
 			{
-				await GetBlobContainerClient().CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
-				containerAlreadyCreated = true;
+				await ensureContainerCriticalSection.ExecuteActionAsync(0, async () =>
+				{
+					if (!containerAlreadyCreated)
+					{
+						await GetBlobContainerClient().CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
+						containerAlreadyCreated = true;
+					}
+				}).ConfigureAwait(false);
 			}
 		}
 	}

@@ -46,12 +46,12 @@ namespace Havit.Web.Management
 			this._currentHttpContext = currentHttpContext;
             if (currentHttpContext != null)
             {
-                _requestInfo_HttpMethod = GetValueWithExceptionHandling(() => currentHttpContext.Request.HttpMethod);
-                _requestInfo_UrlReferrer = GetValueWithExceptionHandling(() => currentHttpContext.Request.UrlReferrer?.ToString() ?? String.Empty);
-                _requestInfo_UserAgent = GetValueWithExceptionHandling(() => currentHttpContext.Request.UserAgent ?? String.Empty);
-                _userInfo_IdentityName = GetValueWithExceptionHandling(() => currentHttpContext.User.Identity.Name ?? String.Empty);
-                _userInfo_IsAuthenticated = GetValueWithExceptionHandling(() => currentHttpContext.User.Identity.IsAuthenticated.ToString() ?? String.Empty);
-                _userInfo_AuthenticationType = GetValueWithExceptionHandling(() => currentHttpContext.User.Identity.AuthenticationType ?? String.Empty);
+                _requestInfo_HttpMethod = GetValueWithExceptionHandling(() => currentHttpContext.Request?.HttpMethod ?? String.Empty);
+                _requestInfo_UrlReferrer = GetValueWithExceptionHandling(() => currentHttpContext.Request?.UrlReferrer?.ToString() ?? String.Empty);
+                _requestInfo_UserAgent = GetValueWithExceptionHandling(() => currentHttpContext.Request?.UserAgent ?? String.Empty);
+                _userInfo_IdentityName = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.Name ?? String.Empty);
+                _userInfo_IsAuthenticated = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.IsAuthenticated.ToString() ?? String.Empty);
+                _userInfo_AuthenticationType = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.AuthenticationType ?? String.Empty);
 
                 if (currentHttpContext.ApplicationInstance != null)
 			    {
@@ -133,6 +133,7 @@ namespace Havit.Web.Management
 		{
 			sb.AppendLine("    Process ID: " + processInformation.ProcessID.ToString(CultureInfo.InstalledUICulture));
 			sb.AppendLine("    Process name: " + processInformation.ProcessName);
+			sb.AppendLine("    Machine name: " + System.Environment.MachineName);
 			sb.AppendLine("    Account name: " + processInformation.AccountName);
 		}
 
@@ -179,9 +180,6 @@ namespace Havit.Web.Management
 		/// </summary>
 		private void FormatThreadInformation(StringBuilder sb, WebThreadInformation threadInformation)
 		{
-			sb.AppendLine("    Thread ID: " + threadInformation.ThreadID);
-			sb.AppendLine("    Thread account name: " + threadInformation.ThreadAccountName);
-			sb.AppendLine("    Is impersonating: " + threadInformation.IsImpersonating);
 			sb.AppendLine("    Culture: " + _currentCulture.Name);
 			sb.AppendLine("    UI Culture: " + _currentUiCulture.Name);
 		}

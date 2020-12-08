@@ -78,7 +78,7 @@ namespace Havit.Services.Azure.FileStorage
 			}
 
 			this.options = options;
-			this.blobContainerClientLazy = new Lazy<BlobContainerClient>(CreateBlobContainerClient, LazyThreadSafetyMode.ExecutionAndPublication);
+			this.blobContainerClientLazy = new Lazy<BlobContainerClient>(() => CreateBlobContainerClient(this.options), LazyThreadSafetyMode.ExecutionAndPublication);
 		}
 
 		/// <summary>
@@ -327,7 +327,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vytvoří používaný container (BlobContainerClient) v Azure Storage Accountu.
 		/// </summary>
-		private BlobContainerClient CreateBlobContainerClient()
+		public static BlobContainerClient CreateBlobContainerClient(AzureBlobStorageServiceOptions options)
 		{
 			if (options.BlobStorage.Contains(';'))
 			{

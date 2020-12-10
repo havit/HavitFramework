@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Web" />
   </ItemGroup>
 

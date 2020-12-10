@@ -98,6 +98,24 @@ namespace Havit.Web.Management
 			base.Initialize(name, config);
 
 			ProviderUtil.CheckUnrecognizedAttributes(config, name);
+
+			if (String.IsNullOrEmpty(_smtpServer))
+			{
+				if (!String.IsNullOrEmpty(_smtpUsername) || !String.IsNullOrEmpty(_smtpPassword))
+				{
+					throw new ConfigurationErrorsException("Credentials can be set only when smtp server (host) is specified.");
+				}
+
+				if (_smtpPort != null)
+				{
+					throw new ConfigurationErrorsException("Smtp port can be set only when smtp server (host) is specified.");
+				}
+
+				if (_smtpEnableSsl != false)
+				{
+					throw new ConfigurationErrorsException("Smtp ssl settings can be set only when smtp server (host) is specified.");
+				}
+			}
 		}
 
 		/// <summary>
@@ -123,25 +141,23 @@ namespace Havit.Web.Management
 		/// <summary>
 		/// Vrací kompletně nakonfigurovanou instanci SmtpClient pro odeslání emailu.
 		/// </summary>
-		protected virtual SmtpClient GetSmtpClient()
+		protected internal virtual SmtpClient GetSmtpClient()
 		{
 			SmtpClient smtpClient = new SmtpClient();
 			if (!String.IsNullOrEmpty(_smtpServer))
 			{
 				smtpClient.Host = _smtpServer;
+
+				smtpClient.Credentials = (!String.IsNullOrEmpty(_smtpUsername))
+					? new NetworkCredential(_smtpUsername, _smtpPassword)
+					: new NetworkCredential("", "");
+
+				smtpClient.Port = _smtpPort.GetValueOrDefault(25);
+				smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
+
+				smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 			}
 
-			if (_smtpPort != null)
-			{
-				smtpClient.Port = _smtpPort.Value;
-			}
-
-			if (!String.IsNullOrEmpty(_smtpUsername))
-			{
-				smtpClient.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
-			}
-
-			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
 			return smtpClient;
 		}
 

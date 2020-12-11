@@ -216,14 +216,5 @@ namespace Havit.Data.Patterns.DataSeeds
 		{
 			this.SeedData<TDataSeedProfile>();
 		}
-
-	    /// <summary>
-	    /// Provede seedování dat.
-	    /// </summary>
-	    void IDataSeedRunner.SeedData(Type dataSeedProfileType)
-	    {
-	        this.SeedData(dataSeedProfileType);
-	    }
-
     }
 }

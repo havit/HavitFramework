@@ -17,7 +17,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	    /// <summary>
 	    /// Provede seedování dat.
 	    /// </summary>
-	    void SeedData(Type dataSeedProfileType);
+	    void SeedData(Type dataSeedProfileType, bool forceRun = false);
 
 	}
 }

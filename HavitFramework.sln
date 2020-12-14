@@ -227,7 +227,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.SqlClient.Azure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.SqlClient.Azure.Tests", "Havit.Data.SqlClient.Azure.Tests\Havit.Data.SqlClient.Azure.Tests.csproj", "{30F5F30B-EA09-4F4A-B496-D63195ED2931}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.Entity6.Azure", "Havit.Data.Entity6.Azure\Havit.Data.Entity6.Azure.csproj", "{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.Azure", "Havit.Data.Entity6.Azure\Havit.Data.Entity6.Azure.csproj", "{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Hangfire.Extensions", "Havit.Hangfire.Extensions\Havit.Hangfire.Extensions.csproj", "{017E59EF-5FA0-4124-A30D-534ED592963F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -579,6 +581,10 @@ Global
 		{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{017E59EF-5FA0-4124-A30D-534ED592963F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{017E59EF-5FA0-4124-A30D-534ED592963F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{017E59EF-5FA0-4124-A30D-534ED592963F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{017E59EF-5FA0-4124-A30D-534ED592963F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -680,6 +686,7 @@ Global
 		{D5D11773-73CC-4921-B149-1BDA08D14516} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{30F5F30B-EA09-4F4A-B496-D63195ED2931} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9} = {2C3C8291-8C00-49AC-A914-BC4B74D3DACE}
+		{017E59EF-5FA0-4124-A30D-534ED592963F} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

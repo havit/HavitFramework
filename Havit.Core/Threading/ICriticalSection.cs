@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Threading
@@ -31,6 +32,6 @@ namespace Havit.Threading
 		/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
 		/// </param>
 		/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
-		Task ExecuteActionAsync(TKey lockValue, Func<Task> criticalSection);
+		Task ExecuteActionAsync(TKey lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default);
 	}
 }

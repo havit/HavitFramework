@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Threading
@@ -43,6 +44,7 @@ namespace Havit.Data.Threading
                 sqlConnection.Open();
                 GetLock(lockValue, sqlConnection);
 
+                // try catch logiku neřešíme, uzavřením spojení se uvolní zámek
                 switch (GetAppLockResultCode)
                 {
                     case SpGetAppLockResultCode.Locked:
@@ -64,13 +66,14 @@ namespace Havit.Data.Threading
         }
 
         /// <inheritdoc />
-        public async Task ExecuteActionAsync(string lockValue, Func<Task> criticalSection)
+        public async Task ExecuteActionAsync(string lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default)
         {
             using (SqlConnection sqlConnection = new SqlConnection(options.ConnectionString))
             {
-                await sqlConnection.OpenAsync().ConfigureAwait(false);
-                await GetLockAsync(lockValue, sqlConnection).ConfigureAwait(false);
+                await sqlConnection.OpenAsync(cancellationToken).ConfigureAwait(false);
+                await GetLockAsync(lockValue, sqlConnection, cancellationToken).ConfigureAwait(false);
 
+                // try catch logiku neřešíme, uzavřením spojení se uvolní zámek
                 switch (GetAppLockResultCode)
                 {
                     case SpGetAppLockResultCode.Locked:
@@ -89,7 +92,8 @@ namespace Havit.Data.Threading
                         throw new ApplicationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}");
                 }
 
-                await ReleaseLockAsync(lockValue, sqlConnection).ConfigureAwait(false);
+                // cancellationToken - můžeme si dovolit nečekat na uvolnění zámku - zámek je uvolněn zavřením spojení
+                await ReleaseLockAsync(lockValue, sqlConnection, cancellationToken).ConfigureAwait(false); // no cancellation token
                 sqlConnection.Close();
             }
         }
@@ -103,11 +107,11 @@ namespace Havit.Data.Threading
             }
         }
 
-        private async Task GetLockAsync(string lockValue, SqlConnection sqlConnection)
+        private async Task GetLockAsync(string lockValue, SqlConnection sqlConnection, CancellationToken cancellationToken)
         {
             using (var command = GetLock_PrepareCommand(lockValue, sqlConnection, out SqlParameter resultCodeSqlParameter))
             {
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false); // no cancellation token
                 GetAppLockResultCode = (SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value;
             }
         }
@@ -145,11 +149,11 @@ namespace Havit.Data.Threading
             }
         }
 
-        private async Task ReleaseLockAsync(string lockValue, SqlConnection sqlConnection)
+        private async Task ReleaseLockAsync(string lockValue, SqlConnection sqlConnection, CancellationToken cancellationToken)
         {
             using (SqlCommand command = ReleaseLock_PrepareCommand(lockValue, sqlConnection, out SqlParameter resultCodeSqlParameter))
             { 
-                await command.ExecuteNonQueryAsync().ConfigureAwait(false);
+                await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false); // no cancellation token
                 ReleaseAppLockResultCode = (SpReleaseAppLockResultCode)(int)resultCodeSqlParameter.Value;
             }
         }

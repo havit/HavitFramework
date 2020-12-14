@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Services.FileStorage
@@ -21,7 +22,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
-		Task<bool> ExistsAsync(string fileName);
+		Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
@@ -31,7 +32,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
 		/// </summary>
-		Task<Stream> ReadAsync(string fileName);
+		Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
@@ -41,7 +42,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		Task ReadToStreamAsync(string fileName, Stream stream);
+		Task ReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Uloží stream do úložiště.
@@ -51,7 +52,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		Task SaveAsync(string fileName, Stream fileContent, string contentType);
+		Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Smaže soubor v úložišti.
@@ -61,7 +62,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
-		Task DeleteAsync(string fileName);
+		Task DeleteAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
@@ -71,7 +72,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null);
+		IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone
@@ -81,6 +82,6 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone
 		/// </summary>
-		Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName);
+		Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default);
 	}
 }

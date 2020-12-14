@@ -7,7 +7,9 @@ using Havit.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Services.Azure.FileStorage
@@ -84,12 +86,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
-		public override async Task<bool> ExistsAsync(string fileName)
+		public override async Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			return await shareFileClient.ExistsAsync().ConfigureAwait(false);
+			return await shareFileClient.ExistsAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -105,11 +107,11 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream)
+		protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
 		{
 			ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			ShareFileDownloadInfo downloadInfo = await file.DownloadAsync().ConfigureAwait(false);
-			await downloadInfo.Content.CopyToAsync(stream).ConfigureAwait(false);
+			ShareFileDownloadInfo downloadInfo = await file.DownloadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+			await downloadInfo.Content.CopyToAsync(stream, 81920 /* default*/, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -125,10 +127,10 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override async Task<System.IO.Stream> PerformReadAsync(string fileName)
+		protected override async Task<System.IO.Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			ShareFileDownloadInfo downloadInfo = await shareFileClient.DownloadAsync().ConfigureAwait(false);
+			ShareFileDownloadInfo downloadInfo = await shareFileClient.DownloadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 			return downloadInfo.Content;
 		}
 
@@ -164,23 +166,23 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		protected override async Task PerformSaveAsync(string fileName, System.IO.Stream fileContent, string contentType)
+		protected override async Task PerformSaveAsync(string fileName, System.IO.Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{
-			await EnsureFileShareAsync().ConfigureAwait(false);
+			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: true).ConfigureAwait(false);
-			await shareFileClient.CreateAsync(fileContent.Length).ConfigureAwait(false);
+			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+			await shareFileClient.CreateAsync(fileContent.Length, cancellationToken: cancellationToken).ConfigureAwait(false);
 			if (fileContent.Length > 0)
 			{
 				try
 				{
-					await shareFileClient.UploadAsync(fileContent).ConfigureAwait(false);
+					await shareFileClient.UploadAsync(fileContent, cancellationToken: cancellationToken).ConfigureAwait(false);
 				}
 				catch
 				{
 					try
 					{
-						await shareFileClient.DeleteAsync().ConfigureAwait(false);
+						await shareFileClient.DeleteAsync(cancellationToken).ConfigureAwait(false);
 					}
 					catch
 					{
@@ -204,12 +206,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
-		public override async Task DeleteAsync(string fileName)
+		public override async Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			await shareFileClient.DeleteAsync().ConfigureAwait(false);
+			await shareFileClient.DeleteAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -248,7 +250,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// Nepodporuje LastModified a ContentType (ve výsledku nejsou hodnoty nastaveny).
 		/// Při používání složek je výkonově neefektivní (REST API neumí lepší variantu).
 		/// </remarks>
-		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null)
+		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			if (!String.IsNullOrWhiteSpace(searchPattern))
 			{
@@ -259,9 +261,9 @@ namespace Havit.Services.Azure.FileStorage
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
 			string prefix = FileStorageServiceBase.EnumerableFilesGetPrefix(searchPattern);
 
-			EnsureFileShare();
+			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix))
+			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix, cancellationToken))
 			{
 				if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 				{
@@ -310,7 +312,7 @@ namespace Havit.Services.Azure.FileStorage
 			}
 		}
 
-		private async IAsyncEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix)
+		private async IAsyncEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			// speed up
 			if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
@@ -318,7 +320,7 @@ namespace Havit.Services.Azure.FileStorage
 				yield break;
 			}
 
-			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync();
+			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(cancellationToken: cancellationToken);
 			List<string> subdirectories = new List<string>();
 
 			await foreach (ShareFileItem item in directoryItems.ConfigureAwait(false))
@@ -341,7 +343,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			foreach (string subdirectory in subdirectories)
 			{
-				var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternalAsync(shareDirectoryClient.GetSubdirectoryClient(subdirectory), directoryPrefix + subdirectory + '/', searchPrefix);
+				var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternalAsync(shareDirectoryClient.GetSubdirectoryClient(subdirectory), directoryPrefix + subdirectory + '/', searchPrefix, cancellationToken);
 
 				await foreach (var subdirectoryItem in subdirectoryItems.ConfigureAwait(false))
 				{
@@ -375,12 +377,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
-		public override async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		public override async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			ShareFileProperties properties = await file.GetPropertiesAsync().ConfigureAwait(false);
+			ShareFileProperties properties = await file.GetPropertiesAsync(cancellationToken).ConfigureAwait(false);
 			return properties.LastModified.UtcDateTime;
 		}
 
@@ -409,7 +411,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí ShareFileClient pro daný soubor ve FileShare používaného Azure Storage Accountu.
 		/// </summary>
-		protected async Task<ShareFileClient> GetShareFileClientAsync(string fileName, bool createDirectoryStructure = false)
+		protected async Task<ShareFileClient> GetShareFileClientAsync(string fileName, bool createDirectoryStructure = false, CancellationToken cancellationToken = default)
 		{
 			var shareDirectoryClient = GetRootShareDirectoryClient();
 
@@ -421,7 +423,7 @@ namespace Havit.Services.Azure.FileStorage
 					shareDirectoryClient = shareDirectoryClient.GetSubdirectoryClient(segments[i]);
 					if (createDirectoryStructure)
 					{
-						await shareDirectoryClient.CreateIfNotExistsAsync().ConfigureAwait(false);
+						await shareDirectoryClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 					}
 				}
 			}
@@ -491,12 +493,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje.
 		/// </summary>
-		protected async Task EnsureFileShareAsync()
+		protected async Task EnsureFileShareAsync(CancellationToken cancellationToken = default)
 		{
 			if (!fileShareAlreadyCreated)
 			{
 				var shareClient = GetShareClient();
-				await shareClient.CreateIfNotExistsAsync().ConfigureAwait(false);
+				await shareClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
 				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)
@@ -504,7 +506,7 @@ namespace Havit.Services.Azure.FileStorage
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
 						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
-						await directory.CreateIfNotExistsAsync().ConfigureAwait(false);
+						await directory.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 					}
 				}
 

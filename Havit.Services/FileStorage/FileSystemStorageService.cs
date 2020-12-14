@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
 using Havit.Text.RegularExpressions;
@@ -54,7 +56,7 @@ namespace Havit.Services.FileStorage
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// Nemá asynchronní implementaci, spouští synchronní Exists.
 		/// </summary>
-		public override Task<bool> ExistsAsync(string fileName)
+		public override Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			return Task.FromResult(Exists(fileName));
 		}
@@ -71,7 +73,7 @@ namespace Havit.Services.FileStorage
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Nemá asynchronní implementaci, spouští synchronní PerformRead.
 		/// </summary>
-		protected override Task<Stream> PerformReadAsync(string fileName)
+		protected override Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{			
 			return Task.FromResult(PerformRead(fileName));
 		}
@@ -90,11 +92,11 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream)
+		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
 			using (Stream fileStream = PerformRead(fileName))
 			{
-				await fileStream.CopyToAsync(stream).ConfigureAwait(false);
+				await fileStream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
@@ -114,13 +116,13 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType)
+		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{		
 			PerformSave_EnsureDirectory(fileName);
 
 			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
 			{
-				await fileContent.CopyToAsync(fileStream).ConfigureAwait(false);
+				await fileContent.CopyToAsync(fileStream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
@@ -149,7 +151,7 @@ namespace Havit.Services.FileStorage
 		/// Smaže soubor v úložišti.
 		/// Nemá asynchronní implementaci, spouští synchronní Exists.
 		/// </summary>
-		public override Task DeleteAsync(string fileName)
+		public override Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Delete(fileName);
 			return Task.CompletedTask;
@@ -197,13 +199,14 @@ namespace Havit.Services.FileStorage
 		/// Nemá asynchronní implementaci, spouští synchronní EnumerateFiles.
 		/// </summary>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null)
+		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 		{
 			// no await here
 			// použijeme synchronní variantu, asynchronní nemáme
 			foreach (FileInfo fileInfo in EnumerateFiles(pattern))
 			{
+				cancellationToken.ThrowIfCancellationRequested();
 				yield return fileInfo;
 			}
 		}
@@ -222,7 +225,7 @@ namespace Havit.Services.FileStorage
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// Nemá asynchronní implementaci, spouští synchronní GetLastModifiedTimeUtc.
 		/// </summary>
-		public override Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		public override Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			return Task.FromResult(GetLastModifiedTimeUtc(fileName));
 		}

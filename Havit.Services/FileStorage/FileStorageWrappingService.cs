@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Services.FileStorage
@@ -31,9 +32,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Task DeleteAsync(string fileName)
+		public Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.DeleteAsync(fileName);
+			return fileStorageService.DeleteAsync(fileName, cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -43,9 +44,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null)
+		public IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.EnumerateFilesAsync(pattern);
+			return fileStorageService.EnumerateFilesAsync(pattern, cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -55,9 +56,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Task<bool> ExistsAsync(string fileName)
+		public Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.ExistsAsync(fileName);
+			return fileStorageService.ExistsAsync(fileName, cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -67,9 +68,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		public Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.GetLastModifiedTimeUtcAsync(fileName);
+			return fileStorageService.GetLastModifiedTimeUtcAsync(fileName, cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -79,9 +80,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Task<Stream> ReadAsync(string fileName)
+		public Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.ReadAsync(fileName);
+			return fileStorageService.ReadAsync(fileName, cancellationToken);
 		}
 		
 		/// <inheritdoc />
@@ -91,9 +92,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Task ReadToStreamAsync(string fileName, Stream stream)
+		public Task ReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.ReadToStreamAsync(fileName, stream);
+			return fileStorageService.ReadToStreamAsync(fileName, stream, cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -103,9 +104,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Task SaveAsync(string fileName, Stream fileContent, string contentType)
+		public Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.SaveAsync(fileName, fileContent, contentType);
+			return fileStorageService.SaveAsync(fileName, fileContent, contentType, cancellationToken);
 		}
 	}
 }

@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Services.FileStorage
@@ -53,9 +55,9 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null)
+		public async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			await foreach (FileInfo fileInfo in EnumerateFilesAsync(pattern))
+			await foreach (FileInfo fileInfo in EnumerateFilesAsync(pattern, cancellationToken))
 			{
 				yield return fileInfo;
 			}
@@ -78,7 +80,7 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task<bool> ExistsAsync(string fileName)
+		public async Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.Exists, fileName);
 
@@ -87,7 +89,7 @@ namespace Havit.Services.FileStorage
 				return (bool)cacheValue;
 			}
 
-			bool result = await fileStorageService.ExistsAsync(fileName).ConfigureAwait(false);
+			bool result = await fileStorageService.ExistsAsync(fileName, cancellationToken).ConfigureAwait(false);
 			cacheService.Add(cacheKey, result, GetCacheOptions(CachedStorageOperation.Exists, fileName));
 
 			return result;
@@ -110,7 +112,7 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		public async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.GetLastModifiedTimeUtc, fileName);
 
@@ -119,7 +121,7 @@ namespace Havit.Services.FileStorage
 				return (DateTime?)cacheValue;
 			}
 
-			DateTime? result = await fileStorageService.GetLastModifiedTimeUtcAsync(fileName).ConfigureAwait(false);
+			DateTime? result = await fileStorageService.GetLastModifiedTimeUtcAsync(fileName, cancellationToken).ConfigureAwait(false);
 			cacheService.Add(cacheKey, result, GetCacheOptions(CachedStorageOperation.GetLastModifiedTimeUtc, fileName));
 
 			return result;
@@ -159,7 +161,7 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task<Stream> ReadAsync(string fileName)
+		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.Read, fileName);
 
@@ -179,7 +181,7 @@ namespace Havit.Services.FileStorage
 				{
 					using (MemoryStream ms2 = new MemoryStream())
 					{
-						await dataStream.CopyToAsync(ms2).ConfigureAwait(false);
+						await dataStream.CopyToAsync(ms2, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 						bytes = ms2.ToArray();
 					}
 				}
@@ -201,11 +203,11 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task ReadToStreamAsync(string fileName, Stream stream)
+		public async Task ReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
-			using (MemoryStream dataStream = (MemoryStream)await ReadAsync(fileName).ConfigureAwait(false))
+			using (MemoryStream dataStream = (MemoryStream)await ReadAsync(fileName, cancellationToken).ConfigureAwait(false))
 			{
-				await stream.CopyToAsync(stream).ConfigureAwait(false);
+				await stream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
@@ -217,10 +219,16 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task SaveAsync(string fileName, Stream fileContent, string contentType)
+		public async Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{
-			await fileStorageService.SaveAsync(fileName, fileContent, contentType).ConfigureAwait(false);
-			InvalidateCacheByFileName(fileName);
+			try
+			{
+				await fileStorageService.SaveAsync(fileName, fileContent, contentType, cancellationToken).ConfigureAwait(false);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(fileName);
+			}
 		}
 
 		/// <inheritdoc />
@@ -231,10 +239,16 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task DeleteAsync(string fileName)
+		public async Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			await fileStorageService.DeleteAsync(fileName).ConfigureAwait(false);
-			InvalidateCacheByFileName(fileName);
+			try
+			{
+				await fileStorageService.DeleteAsync(fileName, cancellationToken).ConfigureAwait(false);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(fileName);
+			}
 		}
 
 		/// <summary>

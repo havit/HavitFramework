@@ -16,6 +16,7 @@ using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Azure;
 using Azure.Core;
 using Havit.Threading;
+using System.Runtime.CompilerServices;
 
 namespace Havit.Services.Azure.FileStorage
 {
@@ -95,12 +96,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
-		public override async Task<bool> ExistsAsync(string fileName)
+		public override async Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			BlobClient blobClient = GetBlobClient(fileName);
-			return await blobClient.ExistsAsync().ConfigureAwait(false);
+			return await blobClient.ExistsAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -115,10 +116,10 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream)
+		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
 			BlobClient blobClient = GetBlobClient(fileName);
-			await blobClient.DownloadToAsync(stream).ConfigureAwait(false);
+			await blobClient.DownloadToAsync(stream, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -134,10 +135,10 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override async Task<Stream> PerformReadAsync(string fileName)
+		protected override async Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			BlobClient blobClient = GetBlobClient(fileName);
-			BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync().ConfigureAwait(false);
+			BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync(cancellationToken).ConfigureAwait(false);
 			return downloadInfo.Content;
 		}
 
@@ -155,15 +156,14 @@ namespace Havit.Services.Azure.FileStorage
 			PerformSave_SetProperties(blobHttpHeaders);
 
 			blobClient.Upload(fileContent, blobHttpHeaders);
-
 		}
 
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType)
+		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{
-			await EnsureContainerAsync().ConfigureAwait(false);
+			await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
 
 			BlobClient blobClient = GetBlobClient(fileName);
 
@@ -171,7 +171,7 @@ namespace Havit.Services.Azure.FileStorage
 			blobHttpHeaders.ContentType = contentType;
 			PerformSave_SetProperties(blobHttpHeaders);
 
-			await blobClient.UploadAsync(fileContent, blobHttpHeaders).ConfigureAwait(false);
+			await blobClient.UploadAsync(fileContent, httpHeaders: blobHttpHeaders, cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 
 		private void PerformSave_SetProperties(BlobHttpHeaders blobHttpHeaders)
@@ -196,12 +196,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
-		public override async Task DeleteAsync(string fileName)
+		public override async Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			BlobClient blobClient = GetBlobClient(fileName);
-			await blobClient.DeleteAsync().ConfigureAwait(false);
+			await blobClient.DeleteAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -236,7 +236,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null)
+		public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			if (!String.IsNullOrWhiteSpace(searchPattern))
 			{
@@ -247,10 +247,10 @@ namespace Havit.Services.Azure.FileStorage
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
 			string prefix = FileStorageServiceBase.EnumerableFilesGetPrefix(searchPattern);
 
-			await EnsureContainerAsync().ConfigureAwait(false);
+			await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
 
 			// nacti soubory s danym prefixem - optimalizace na rychlost
-			AsyncPageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobsAsync(prefix: prefix);
+			AsyncPageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
 
 			await foreach (BlobItem blobItem in blobItems.ConfigureAwait(false))
 			{
@@ -298,12 +298,12 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
-		public override async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName)
+		public override async Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			BlobClient blobClient = GetBlobClient(fileName);
-			BlobProperties properties = await blobClient.GetPropertiesAsync().ConfigureAwait(false);
+			BlobProperties properties = await blobClient.GetPropertiesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 			return properties.LastModified.UtcDateTime;
 		}
 
@@ -363,7 +363,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vytvoří kontejner, pokud ještě neexistuje.
 		/// </summary>
-		protected async Task EnsureContainerAsync()
+		protected async Task EnsureContainerAsync(CancellationToken cancellationToken = default)
 		{
 			if (!containerAlreadyCreated)
 			{
@@ -371,10 +371,10 @@ namespace Havit.Services.Azure.FileStorage
 				{
 					if (!containerAlreadyCreated)
 					{
-						await GetBlobContainerClient().CreateIfNotExistsAsync(PublicAccessType.None).ConfigureAwait(false);
+						await GetBlobContainerClient().CreateIfNotExistsAsync(PublicAccessType.None, cancellationToken: cancellationToken).ConfigureAwait(false);
 						containerAlreadyCreated = true;
 					}
-				}).ConfigureAwait(false);
+				}, cancellationToken).ConfigureAwait(false);
 			}
 		}
 	}

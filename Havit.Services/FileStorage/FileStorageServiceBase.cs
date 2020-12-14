@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage.Infrastructure;
@@ -50,7 +51,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
-		public abstract Task<bool> ExistsAsync(string fileName);
+		public abstract Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
@@ -68,11 +69,11 @@ namespace Havit.Services.FileStorage
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Pokud je zapnuto, provádí transparentní (de)šifrování.
 		/// </summary>
-		public async Task<Stream> ReadAsync(string fileName)
+		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-			Stream s = await PerformReadAsync(fileName).ConfigureAwait(false);
+			Stream s = await PerformReadAsync(fileName, cancellationToken).ConfigureAwait(false);
 			return Read_EnsureDecryption(s);
 		}
 
@@ -115,13 +116,13 @@ namespace Havit.Services.FileStorage
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// Pokud je zapnuto, provádí transparentní (de)šifrování, tj. do streamu jsou zapsána již dešifrovaná data.
 		/// </summary>
-		public async Task ReadToStreamAsync(string fileName, Stream stream)
+		public async Task ReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
 			if (!SupportsBasicEncryption)
 			{
-				await PerformReadToStreamAsync(fileName, stream).ConfigureAwait(false);
+				await PerformReadToStreamAsync(fileName, stream, cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
@@ -129,7 +130,7 @@ namespace Havit.Services.FileStorage
 				using (Stream notClosingWrappingStream = new NonClosingWrappingStream(stream))
 				using (CryptoStream decryptingStream = new InternalCryptoStream(notClosingWrappingStream, new InternalCryptoTransform(EncryptionOptions.CreateDecryptor()), CryptoStreamMode.Write))
 				{
-					await PerformReadToStreamAsync(fileName, decryptingStream).ConfigureAwait(false);
+					await PerformReadToStreamAsync(fileName, decryptingStream, cancellationToken).ConfigureAwait(false);
 				}
 			}
 		}
@@ -160,20 +161,20 @@ namespace Havit.Services.FileStorage
 		/// Uloží stream do úložiště.
 		/// Pokud je zapnuto, provádí transparentní šifrování, tj. streamu (fileContent) jsou zašifrována.
 		/// </summary>
-		public async Task SaveAsync(string fileName, Stream fileContent, string contentType)
+		public async Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 			Contract.Requires<InvalidOperationException>(!fileContent.CanSeek || fileContent.Position == 0, "Actual position in the stream is not at the beginning.");
 
 			if (!SupportsBasicEncryption)
 			{
-				await PerformSaveAsync(fileName, fileContent, contentType).ConfigureAwait(false);
+				await PerformSaveAsync(fileName, fileContent, contentType, cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
 				using (CryptoStream encryptingStream = new CryptoStream(fileContent, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read))
 				{
-					await PerformSaveAsync(fileName, encryptingStream, contentType).ConfigureAwait(false);
+					await PerformSaveAsync(fileName, encryptingStream, contentType, cancellationToken).ConfigureAwait(false);
 				}
 			}
 		}
@@ -220,7 +221,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
-		public abstract Task DeleteAsync(string fileName);
+		public abstract Task DeleteAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
@@ -230,7 +231,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vylistuje seznam souborů v úložišti.
 		/// </summary>
-		public abstract IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null);
+		public abstract IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, CancellationToken cancellationToken = default);
 
 			/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
@@ -240,7 +241,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
-		public abstract Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName);
+		public abstract Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
@@ -250,7 +251,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected abstract Task<Stream> PerformReadAsync(string fileName);
+		protected abstract Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
@@ -260,7 +261,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
-		protected abstract Task PerformReadToStreamAsync(string fileName, Stream stream);
+		protected abstract Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Uloží stream do úložiště.
@@ -270,6 +271,6 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Uloží stream do úložiště.
 		/// </summary>
-		protected abstract Task PerformSaveAsync(string fileName, Stream fileContent, string contentType);
+		protected abstract Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
 	}
 }

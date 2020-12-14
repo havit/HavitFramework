@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.1.10</PackageVersion>
+    <PackageVersion>2.1.11</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
   </PropertyGroup>
 

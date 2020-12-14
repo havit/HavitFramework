@@ -11,7 +11,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	    /// <summary>
 	    /// Provede seedování dat.
 	    /// </summary>
-	    void SeedData<TDataSeedProfile>()
+	    void SeedData<TDataSeedProfile>(bool forceRun = false)
 	        where TDataSeedProfile : IDataSeedProfile, new();
 
 	    /// <summary>

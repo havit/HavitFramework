@@ -208,13 +208,5 @@ namespace Havit.Data.Patterns.DataSeeds
 				dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
 			}
 		}
-
-		/// <summary>
-		/// Provede seedování dat.
-		/// </summary>
-		void IDataSeedRunner.SeedData<TDataSeedProfile>()            
-		{
-			this.SeedData<TDataSeedProfile>();
-		}
     }
 }

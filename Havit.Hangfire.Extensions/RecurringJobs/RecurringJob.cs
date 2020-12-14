@@ -10,7 +10,6 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 	/// <summary>
 	/// Recurring job to schedule.
 	/// </summary>
-	/// <typeparam name="TJob"></typeparam>
 	public class RecurringJob<TJob> : IRecurringJob
 	{
 		/// <summary>
@@ -29,7 +28,6 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// <summary>
 		/// Returns the jobs.
 		/// </summary>
-		/// <returns></returns>
 		public Expression<Func<TJob, Task>> MethodCall { get; }
 
 		/// <summary>

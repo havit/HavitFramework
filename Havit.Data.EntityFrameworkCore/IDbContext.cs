@@ -56,7 +56,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// <summary>
 		/// Uloží změny.
 		/// </summary>
-		Task SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
+		Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.

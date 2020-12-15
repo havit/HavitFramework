@@ -8,6 +8,7 @@ using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
 using Havit.Data.Entity.Model;
@@ -220,9 +221,9 @@ namespace Havit.Data.Entity
 		/// <summary>
 		/// Uloží evidované změny.
 		/// </summary>
-		Task IDbContext.SaveChangesAsync()
+		Task IDbContext.SaveChangesAsync(CancellationToken cancellationToken) // = default --> The default value specified for parameter 'cancellationToken' will have no effect because it applies to a member that is used in contexts that do not allow optional arguments...
 		{
-			return this.SaveChangesAsync();
+			return this.SaveChangesAsync(cancellationToken);
 		}
 
 		/// <summary>

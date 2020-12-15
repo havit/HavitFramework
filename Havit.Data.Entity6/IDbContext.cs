@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Entity
@@ -44,7 +45,7 @@ namespace Havit.Data.Entity
 		/// <summary>
 		/// Uloží změny.
 		/// </summary>
-		Task SaveChangesAsync();
+		Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.

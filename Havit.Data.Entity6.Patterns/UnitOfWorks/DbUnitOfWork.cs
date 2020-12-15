@@ -5,6 +5,7 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
@@ -69,12 +70,14 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 		/// <summary>
 		/// Asynchronně uloží změny registrované v Unit of Work.
 		/// </summary>
-		public async Task CommitAsync()
+		public async Task CommitAsync(CancellationToken cancellationToken = default)
 		{
 			BeforeCommit();
 			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
+			cancellationToken.ThrowIfCancellationRequested();
+
 			entityValidationRunner.Validate(GetAllKnownChanges()); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
-			await DbContext.SaveChangesAsync().ConfigureAwait(false);
+			await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 			ClearRegistrationHashSets();
 			AfterCommit();
 		}

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
@@ -35,7 +36,7 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 
 			// Assert
 			mockDbContext.Verify(m => m.SaveChanges(), Times.Once);
-			mockDbContext.Verify(m => m.SaveChangesAsync(), Times.Never);
+			mockDbContext.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Never);
 		}
 
 		[TestMethod]
@@ -54,7 +55,7 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 
 			// Assert
 			mockDbContext.Verify(m => m.SaveChanges(), Times.Never);
-			mockDbContext.Verify(m => m.SaveChangesAsync(), Times.Once);
+			mockDbContext.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
 		}
 
 		[TestMethod]
@@ -190,7 +191,7 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 			Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 			mockDbUnitOfWork.CallBase = true;
 
-			mockDbContext.Setup(m => m.SaveChangesAsync())
+			mockDbContext.Setup(m => m.SaveChangesAsync(CancellationToken.None))
 				.Callback(() =>
 				{
 					mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
@@ -203,7 +204,7 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 
 			// Assert
 			mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
-			mockDbContext.Verify(m => m.SaveChangesAsync(), Times.Once);
+			mockDbContext.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
 			mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Once);
 		}
 

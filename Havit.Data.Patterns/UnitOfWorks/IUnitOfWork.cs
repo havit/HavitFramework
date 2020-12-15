@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Patterns.UnitOfWorks
@@ -17,7 +18,7 @@ namespace Havit.Data.Patterns.UnitOfWorks
 		/// <summary>
 		/// Asynchronně uloží změny registrované v Unit of Work.
 		/// </summary>
-		Task CommitAsync();
+		Task CommitAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).

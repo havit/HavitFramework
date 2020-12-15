@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
@@ -86,15 +87,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		/// <summary>
 		/// Asynchronně uloží změny registrované v Unit of Work.
 		/// </summary>
-		public async Task CommitAsync()
+		public async Task CommitAsync(CancellationToken cancellationToken = default)
 		{
 			BeforeCommit();
 			beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
+			cancellationToken.ThrowIfCancellationRequested();
 
 			Changes allKnownChanges = GetAllKnownChanges(); // ptáme se na změny znovu, runnery mohli seznam objektů k uložení změnit
 			entityValidationRunner.Validate(allKnownChanges);
-			await DbContext.SaveChangesAsync().ConfigureAwait(false);
 
+			await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 			ClearRegistrationHashSets();
 			InvalidateEntityCache(allKnownChanges);
 			lookupDataInvalidationRunner.Invalidate(allKnownChanges);

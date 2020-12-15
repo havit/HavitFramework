@@ -120,7 +120,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// Objekt má načtené vlastnosti definované v metodě GetLoadReferences. 
 		/// </summary>
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-		public async Task<TEntity> GetObjectAsync(int id)
+		public async Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(id != default(int));
 
@@ -135,7 +135,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				result = await DbSet.FindAsync(id).ConfigureAwait(false);
+				result = await DbSet.FindAsync(id, cancellationToken).ConfigureAwait(false);
 				if (result != null)
 				{
 					// načtený objekt uložíme do cache
@@ -148,7 +148,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				ThrowObjectNotFoundException(id);					
 			}
 
-			await LoadReferencesAsync(new TEntity[] { result }).ConfigureAwait(false);
+			await LoadReferencesAsync(new TEntity[] { result }, cancellationToken).ConfigureAwait(false);
 			return result;
 		}
 
@@ -217,7 +217,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 		/// </summary>
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
-		public async Task<List<TEntity>> GetObjectsAsync(params int[] ids)
+		public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires(ids != null);
 
@@ -250,7 +250,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			if (idsToLoad.Count > 0)
 			{
 				var query = GetInQuery(idsToLoad.ToArray());
-				var loadedObjects = await query.ToListAsync().ConfigureAwait(false);
+				var loadedObjects = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
@@ -267,7 +267,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				result.AddRange(loadedObjects);
 			}
 
-			await LoadReferencesAsync(result.ToArray()).ConfigureAwait(false);
+			await LoadReferencesAsync(result.ToArray(), cancellationToken).ConfigureAwait(false);
 			return result;
 		}
 
@@ -317,7 +317,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// Dotaz na seznam objektů provede jednou, při opakovaném volání vrací data z paměti.
 		/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 		/// </summary>
-		public async Task<List<TEntity>> GetAllAsync()
+		public async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
 			if (_all == null)
 			{
@@ -325,15 +325,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 				{
 					// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-					_all = GetObjects((int[])keys).ToArray();
+					_all = (await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false)).ToArray();
 				}
 				else
 				{
 					// pokd ne, načtene data a uložíme klíče do cache
-					_all = await Data.ToArrayAsync().ConfigureAwait(false);
+					_all = await Data.ToArrayAsync(cancellationToken).ConfigureAwait(false);
 					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				}
-				await LoadReferencesAsync(_all).ConfigureAwait(false);
+				await LoadReferencesAsync(_all, cancellationToken).ConfigureAwait(false);
 
 				if (!_allInitialized)
 				{
@@ -395,14 +395,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 		/// </summary>
-		protected async Task LoadReferencesAsync(params TEntity[] entities)
+		protected async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
 		{	
 			Contract.Requires(entities != null);
 
 			var loadReferences = GetLoadReferences().ToArray();
 			if (loadReferences.Any())
 			{
-				await dataLoader.LoadAllAsync(entities, loadReferences).ConfigureAwait(false);
+				await dataLoader.LoadAllAsync(entities, loadReferences, cancellationToken).ConfigureAwait(false);
 			}
 		}
 

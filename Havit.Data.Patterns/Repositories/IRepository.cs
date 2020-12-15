@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Data.Patterns.Repositories
@@ -19,7 +20,7 @@ namespace Havit.Data.Patterns.Repositories
 		/// Vrací instanci objektu dle Id.
 		/// </summary>
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-		Task<TEntity> GetObjectAsync(int id);
+		Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrací instance objektů dle Id.
@@ -29,7 +30,7 @@ namespace Havit.Data.Patterns.Repositories
 		/// <summary>
 		/// Vrací instance objektů dle Id.
 		/// </summary>
-		Task<List<TEntity>> GetObjectsAsync(params int[] ids);
+		Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrací seznam všech (příznakem nesmazaných) objektů typu TEntity.
@@ -39,6 +40,6 @@ namespace Havit.Data.Patterns.Repositories
 		/// <summary>
 		/// Vrací seznam všech (příznakem nesmazaných) objektů typu TEntity.
 		/// </summary>
-		Task<List<TEntity>> GetAllAsync();
+		Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 	}
 }

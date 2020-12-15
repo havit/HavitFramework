@@ -180,7 +180,7 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			Contract.Requires<ArgumentException>(id != default, nameof(id));
 
-			TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(id, cancellationToken)).ConfigureAwait(false);
+			TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(cancellationToken, new object[] { id })).ConfigureAwait(false);
 			if (result == null)
 			{
 				ThrowObjectNotFoundException(id);					

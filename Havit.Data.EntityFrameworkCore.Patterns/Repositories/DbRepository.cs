@@ -135,7 +135,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				result = await DbSet.FindAsync(id, cancellationToken).ConfigureAwait(false);
+				result = await DbSet.FindAsync(new object[] { id }, cancellationToken).ConfigureAwait(false);
 				if (result != null)
 				{
 					// načtený objekt uložíme do cache

@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Havit.Data.Patterns.DataLoaders
 {
@@ -32,7 +33,8 @@ namespace Havit.Data.Patterns.DataLoaders
 		/// <param name="propertyPath">
 		/// Vlastnost, která má být načtena.
 		/// </param>
-		Task<IFluentDataLoader<TProperty>> LoadAsync<TProperty>(Expression propertyPath)
+		/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+		Task<IFluentDataLoader<TProperty>> LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken = default)
 			where TProperty : class;
 
 		/// <summary>

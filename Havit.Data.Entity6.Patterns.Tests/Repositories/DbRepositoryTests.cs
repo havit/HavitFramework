@@ -343,7 +343,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
-			await repository.GetObjectsAsync(maxId + 1, maxId + 2);
+			await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 });
 
 			// Assert by method attribute
 		}
@@ -387,7 +387,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
-			List<ItemWithDeleted> entities = await repository.GetObjectsAsync(id, id, id); // duplicitní id (triplicitní)
+			List<ItemWithDeleted> entities = await repository.GetObjectsAsync(new int[] { id, id, id }); // duplicitní id (triplicitní)
 
 			// Assert
 			// no exception was thrown
@@ -479,7 +479,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 			// Act
-			ItemWithDeleted entity = (await repository.GetObjectsAsync(id)).Single(); // duplicitní id (triplicitní)
+			ItemWithDeleted entity = (await repository.GetObjectsAsync(new int[] { id })).Single();
 
 			// Assert
 			// no exception was thrown

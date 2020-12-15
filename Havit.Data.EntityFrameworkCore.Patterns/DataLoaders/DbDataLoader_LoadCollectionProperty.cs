@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
@@ -44,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 		/// </summary>
-		private async Task<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities)
+		private async Task<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TPropertyCollection : class
 			where TPropertyItem : class
@@ -52,7 +53,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out var entitiesToLoadQuery);
 			if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-                List<TPropertyItem> loadedProperties = await LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName).ToListAsync().ConfigureAwait(false);
+                List<TPropertyItem> loadedProperties = await LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName).ToListAsync(cancellationToken).ConfigureAwait(false);
                 LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
                 LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
             }

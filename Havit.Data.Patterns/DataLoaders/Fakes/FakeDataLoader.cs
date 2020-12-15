@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace Havit.Data.Patterns.DataLoaders.Fakes
 {
@@ -61,7 +62,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	    /// Implementace: Nic nedělá.
 	    /// </summary>
-	    public Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+	    public Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		    where TEntity : class
 		    where TProperty : class
 	    {
@@ -72,7 +73,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	    /// Implementace: Nic nedělá.
 	    /// </summary>
-	    public Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
+	    public Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		    where TEntity : class
 	    {
 		    return Task.CompletedTask;            
@@ -82,7 +83,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
 	    /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	    /// Implementace: Nic nedělá.
 	    /// </summary>
-	    public Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+	    public Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		    where TEntity : class
 		    where TProperty : class
 	    {
@@ -93,7 +94,7 @@ namespace Havit.Data.Patterns.DataLoaders.Fakes
         /// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
         /// Implementace: Nic nedělá.
         /// </summary>
-        public Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
+        public Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
             where TEntity : class
         {
             return Task.CompletedTask;

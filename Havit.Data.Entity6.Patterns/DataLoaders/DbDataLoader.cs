@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Infrastructure;
@@ -106,13 +107,14 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, který má být načtena.</param>
-		public async Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath)
+		/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+		public async Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 			where TEntity : class
 			where TProperty : class
 		{
 			Contract.Requires<ArgumentNullException>(propertyPath != null, nameof(propertyPath));
 
-			await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
+			await LoadInternalAsync(new TEntity[] { entity }, propertyPath, cancellationToken).ConfigureAwait(false);
 			return new NotSuportedFluentDataLoader<TProperty>();
 		}
 
@@ -121,14 +123,15 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 		/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
-		public async Task LoadAsync<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
+		/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+		public async Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 			where TEntity : class
 		{
 			Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
-				await LoadInternalAsync(new TEntity[] { entity }, propertyPath).ConfigureAwait(false);
+				await LoadInternalAsync(new TEntity[] { entity }, propertyPath, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
@@ -137,13 +140,14 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 		/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-		public async Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath)
+		/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+		public async Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 			where TEntity : class
 			where TProperty : class
 		{
 			Contract.Requires<ArgumentNullException>(propertyPath != null, nameof(propertyPath));
 
-			await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
+			await LoadInternalAsync(entities, propertyPath, cancellationToken).ConfigureAwait(false);
 
 			return new NotSuportedFluentDataLoader<TProperty>();
 		}
@@ -153,14 +157,15 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// </summary>
 		/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 		/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
-		public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
+		/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+		public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 			where TEntity : class
 		{
 			Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
 
 			foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 			{
-				await LoadInternalAsync(entities, propertyPath).ConfigureAwait(false);
+				await LoadInternalAsync(entities, propertyPath, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
@@ -231,7 +236,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 		/// </summary>
-		private async Task LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
+		private async Task LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -259,7 +264,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 								.MakeGenericMethod(
 									propertyToLoad.SourceType,
 									propertyToLoad.TargetType)
-								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities, cancellationToken });
 						}
 						catch (TargetInvocationException targetInvocationException)
 						{
@@ -276,7 +281,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 									propertyToLoad.SourceType,
 									propertyToLoad.TargetType,
 									propertyToLoad.CollectionItemType)
-								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+								.Invoke(this, new object[] { propertyToLoad.PropertyName, entities, cancellationToken });
 						}
 						catch (TargetInvocationException targetInvocationException)
 						{
@@ -317,7 +322,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 		/// </summary>
-		private async Task<TProperty[]> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities)
+		private async Task<TProperty[]> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -328,7 +333,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			if (ids.Count > 0)
 			{
 				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
-				await loadQuery.LoadAsync().ConfigureAwait(false);
+				await loadQuery.LoadAsync(cancellationToken).ConfigureAwait(false);
 			}
 
 			return entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
@@ -360,7 +365,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
         /// <summary>
         /// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
         /// </summary>
-        private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities)
+        private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 					where TEntity : class
 					where TPropertyCollection : class
 					where TPropertyItem : class
@@ -374,7 +379,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 			if (ids.Count > 0)
 			{
 				IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
-				await loadQuery.LoadAsync().ConfigureAwait(false);
+				await loadQuery.LoadAsync(cancellationToken).ConfigureAwait(false);
 			}
 
 			TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();

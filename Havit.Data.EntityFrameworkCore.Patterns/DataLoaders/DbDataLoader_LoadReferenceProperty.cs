@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
@@ -33,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 		/// </summary>
-		private async Task<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities)
+		private async Task<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TProperty : class
 		{
@@ -41,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad).ToListAsync().ConfigureAwait(false);
+				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad).ToListAsync(cancellationToken).ConfigureAwait(false);
 				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 

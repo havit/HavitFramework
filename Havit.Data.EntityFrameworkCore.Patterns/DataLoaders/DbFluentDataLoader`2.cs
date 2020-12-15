@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
@@ -38,9 +39,9 @@ namespace Havit.Data.Patterns.DataLoaders
 		}
 
 		/// <inheritdoc />
-		async Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TContractEntity>.LoadAsync<TProperty>(Expression propertyPath)
+		async Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TContractEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no default */)
 		{
-			return await Loader.LoadAllAsync(Data, (Expression<Func<TItem, TProperty>>)propertyPath).ConfigureAwait(false);
+			return await Loader.LoadAllAsync(Data, (Expression<Func<TItem, TProperty>>)propertyPath, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <inheritdoc />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.Patterns.DataLoaders;
 
@@ -22,7 +23,7 @@ namespace Havit.Data.Entity.Patterns.DataLoaders
 		/// <summary>
 		/// Vyhazuje výjimku NotSupportedException.
 		/// </summary>
-		Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath)
+		Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no  default */)
 		{
 			throw CreateNotSupportedException();
 		}

@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 		/// </summary>
-		private async Task<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+		private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TProperty : class
 		{

@@ -45,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 		/// </summary>
-		private async Task<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+		private async ValueTask<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TPropertyCollection : class
 			where TPropertyItem : class

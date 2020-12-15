@@ -201,7 +201,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 			{
-				LoadPropertyInternalResult loadPropertyInternalResult = null;
+				LoadPropertyInternalResult loadPropertyInternalResult = default;
 
 				if (!propertyToLoad.IsCollection)
 				{
@@ -276,12 +276,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 			{
-				Task task = null;
+				ValueTask<LoadPropertyInternalResult> task = default;
 				if (!propertyToLoad.IsCollection)
 				{
 					try
 					{
-						task = (Task)typeof(DbDataLoader)
+						task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -297,7 +297,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				{
 					try
 					{
-						task = (Task)typeof(DbDataLoader)
+						task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -310,8 +310,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
-				await task.ConfigureAwait(false);
-				LoadPropertyInternalResult loadPropertyInternalResult = (LoadPropertyInternalResult)((dynamic)task).Result; // task je již dokončen
+				
+				LoadPropertyInternalResult loadPropertyInternalResult = await task.ConfigureAwait(false);
 
 				entities = loadPropertyInternalResult.Entities;
 				fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;

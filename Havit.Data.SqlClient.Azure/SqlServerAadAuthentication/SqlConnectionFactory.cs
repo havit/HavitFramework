@@ -33,12 +33,12 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 		/// <summary>
 		/// Returns SqlConnection with optional AAD authentication support.
 		/// </summary>
-		public static async ValueTask<SqlConnection> CreateSqlConnectionWithAadAuthenticationSupportAsync(string connectionString)
+		public static async ValueTask<SqlConnection> CreateSqlConnectionWithAadAuthenticationSupportAsync(string connectionString, CancellationToken cancellationToken = default)
 		{
 			var sqlConnection = new SqlConnection(connectionString);
 			if (AadAuthenticationSupportDecision.ShouldUseAadAuthentication(connectionString))
 			{
-				sqlConnection.AccessToken = await GetAzureSqlAccessTokenAsync().ConfigureAwait(false);
+				sqlConnection.AccessToken = await GetAzureSqlAccessTokenAsync(cancellationToken).ConfigureAwait(false);
 			}
 			return sqlConnection;
 		}
@@ -56,7 +56,7 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 		/// </summary>
 		public static async ValueTask<string> GetAzureSqlAccessTokenAsync(CancellationToken cancellationToken = default)
 		{
-			return await (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/").ConfigureAwait(false);
+			return await (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/", cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 	}
 }

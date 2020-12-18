@@ -229,8 +229,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.Azure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Hangfire.Extensions", "Havit.Hangfire.Extensions\Havit.Hangfire.Extensions.csproj", "{017E59EF-5FA0-4124-A30D-534ED592963F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{BC53B33E-3CC5-4CF7-B82A-8226E1CB07FE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -581,10 +579,6 @@ Global
 		{017E59EF-5FA0-4124-A30D-534ED592963F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{017E59EF-5FA0-4124-A30D-534ED592963F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{017E59EF-5FA0-4124-A30D-534ED592963F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC53B33E-3CC5-4CF7-B82A-8226E1CB07FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC53B33E-3CC5-4CF7-B82A-8226E1CB07FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC53B33E-3CC5-4CF7-B82A-8226E1CB07FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC53B33E-3CC5-4CF7-B82A-8226E1CB07FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

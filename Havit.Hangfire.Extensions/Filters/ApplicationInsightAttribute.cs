@@ -9,7 +9,7 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace Havit.UverovaPlatforma.Utility.Hangfire
+namespace Havit.Hangfire.Extensions.Filters
 {
 	/// <summary>
 	/// Logs Hangfire jobs as requests to Application Insights.

@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
@@ -11,7 +9,12 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 {
 	/// <summary>
 	/// SqlConnection factory for instances (optionally) supporting AAD authentication.
+	/// Use for ASP.NET Core applications with System.Data.SqlClient (like EF 6 on ASP.NET Core).
+	/// For ASP.NET Framework application see https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-connect-msi#modify-aspnet
 	/// </summary>
+	/// <remarks>
+	/// https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-connect-msi
+	/// </remarks>
 	public class SqlConnectionFactory
 	{
 		/// <summary>
@@ -45,11 +48,7 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 		/// </summary>
 		public static string GetAzureSqlAccessToken()
 		{
-			// See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities#azure-sql
-			var tokenRequestContext = new TokenRequestContext(new[] { "https://database.windows.net//.default" });
-			var tokenRequestResult = new DefaultAzureCredential().GetTokenAsync(tokenRequestContext).ConfigureAwait(false).GetAwaiter().GetResult();
-
-			return tokenRequestResult.Token;
+			return (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/").ConfigureAwait(false).GetAwaiter().GetResult();
 		}
 
 		/// <summary>
@@ -57,10 +56,7 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 		/// </summary>
 		public static async ValueTask<string> GetAzureSqlAccessTokenAsync(CancellationToken cancellationToken = default)
 		{
-			var tokenRequestContext = new TokenRequestContext(new[] { "https://database.windows.net//.default" });
-			var tokenRequestResult = await new DefaultAzureCredential().GetTokenAsync(tokenRequestContext, cancellationToken).ConfigureAwait(false);
-
-			return tokenRequestResult.Token;
+			return await (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/").ConfigureAwait(false);
 		}
 	}
 }

@@ -9,16 +9,17 @@
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.0.0</PackageVersion>
-		<Description>HAVIT .NET Framework Extensions - SqlClient with AAD Authentication support</Description>
+		<Description>HAVIT .NET Framework Extensions - Support Azure Managed Identity Authentication for System.Data.SqlClient</Description>
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Azure.Identity" Version="1.2.3" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="4.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
 	</ItemGroup>
 
 </Project>

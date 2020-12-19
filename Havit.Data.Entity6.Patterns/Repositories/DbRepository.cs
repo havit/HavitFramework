@@ -293,17 +293,14 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			if (_all == null)
 			{
-				_all = Data.ToArray();
-				LoadReferences(_all);
+				TEntity[] allData = Data.ToArray();
+				LoadReferences(allData);
 
-				if (!_allInitialized)
+				_all = allData;
+				dbContext.RegisterAfterSaveChangesAction(() =>
 				{
-					dbContext.RegisterAfterSaveChangesAction(() =>
-					{
-						_all = null;
-					});
-					_allInitialized = true;
-				}
+					_all = null;
+				});
 			}
 			return new List<TEntity>(_all);
 		}
@@ -317,23 +314,19 @@ namespace Havit.Data.Entity.Patterns.Repositories
 		{
 			if (_all == null)
 			{
-				_all = await Data.ToArrayAsync(cancellationToken).ConfigureAwait(false);
-				await LoadReferencesAsync(_all, cancellationToken).ConfigureAwait(false);
+				TEntity[] allData = await Data.ToArrayAsync(cancellationToken).ConfigureAwait(false);
+				await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 
-				if (!_allInitialized)
+				_all = allData;
+				dbContext.RegisterAfterSaveChangesAction(() =>
 				{
-					dbContext.RegisterAfterSaveChangesAction(() =>
-					{
-						_all = null;
-					});
-					_allInitialized = true;
-				}
+					_all = null;
+				});
 			}
 			return new List<TEntity>(_all);
 		}
 
 		private TEntity[] _all;
-		private bool _allInitialized;
 
 		/// <summary>
 		/// Vrací dotaz pro GetObjects/GetObjectsAsync.

@@ -280,34 +280,33 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			if (_all == null)
 			{
+				TEntity[] allData;
+
 				// máme v cache klíče, která chceme načítat?
 				if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 				{
 					// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-					_all = GetObjects((int[])keys).ToArray();
+					allData = GetObjects((int[])keys).ToArray();
 				}
 				else
 				{
 					// pokud ne, načtene data a uložíme data a klíče do cache
-					_all = Data.ToArray();
+					allData = Data.ToArray();
 
-					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());										
-					foreach (var entity in _all) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+					EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());										
+					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
 					{						
 						EntityCacheManager.StoreEntity<TEntity>(entity);
 					}
 				}
 
-				LoadReferences(_all);
+				LoadReferences(allData);
 
-				if (!_allInitialized)
+				_all = allData;
+				dbContext.RegisterAfterSaveChangesAction(() =>
 				{
-					dbContext.RegisterAfterSaveChangesAction(() =>
-					{
-						_all = null;
-					});
-					_allInitialized = true;
-				}
+					_all = null;
+				});
 			}
 			return new List<TEntity>(_all);
 		}
@@ -321,34 +320,32 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		{
 			if (_all == null)
 			{
+				TEntity[] allData;
+
 				// máme v cache klíče, která chceme načítat?
 				if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 				{
 					// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-					_all = (await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false)).ToArray();
+					allData = (await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false)).ToArray();
 				}
 				else
 				{
 					// pokd ne, načtene data a uložíme klíče do cache
-					_all = await Data.ToArrayAsync(cancellationToken).ConfigureAwait(false);
-					EntityCacheManager.StoreAllKeys<TEntity>(_all.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+					allData = await Data.ToArrayAsync(cancellationToken).ConfigureAwait(false);
+					EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				}
-				await LoadReferencesAsync(_all, cancellationToken).ConfigureAwait(false);
+				await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 
-				if (!_allInitialized)
+				_all = allData;
+				dbContext.RegisterAfterSaveChangesAction(() =>
 				{
-					dbContext.RegisterAfterSaveChangesAction(() =>
-					{
-						_all = null;
-					});
-					_allInitialized = true;
-				}
+					_all = null;
+				});
 			}
 			return new List<TEntity>(_all);
 		}
 
 		private TEntity[] _all;
-		private bool _allInitialized;
 
 		/// <summary>
 		/// Vrací dotaz pro GetObjects/GetObjectsAsync.

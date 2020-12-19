@@ -156,8 +156,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			List<ItemWithDeleted> result2 = repository.GetAll();
 
+			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
+			testDbContext.SaveChanges();
+
+			List<ItemWithDeleted> result3 = repository.GetAll();
+
 			// Assert
 			Assert.AreEqual(1, result2.Count);
+			Assert.AreEqual(2, result3.Count);
 		}
 
 		[TestMethod]
@@ -177,12 +183,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			Assert.AreEqual(0, result1.Count);
 			
 			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
-			testDbContext.SaveChanges();
+			await testDbContext.SaveChangesAsync();
 
 			List<ItemWithDeleted> result2 = await repository.GetAllAsync();
 
+			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
+			await testDbContext.SaveChangesAsync();
+
+			List<ItemWithDeleted> result3 = await repository.GetAllAsync();
+
 			// Assert
 			Assert.AreEqual(1, result2.Count);
+			Assert.AreEqual(2, result3.Count);
 		}
 
 		[TestMethod]

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Services.Tests.FileStorage
@@ -140,6 +141,47 @@ namespace Havit.Services.Tests.FileStorage
 
 			// Assert
 			fileStorageServiceMock.Verify(m => m.Exists("abc.txt"), Times.Exactly(2)); // dvakrát voláme Exists, ale mezi ním delete, což invaliduje záznam v cache, proto druhý Exists nemá hodnotu v cache
+		}
+
+		[TestMethod]
+		public void FileStorageServiceCachingProxy_Enumerate_UsesWrappedStorageService()
+		{
+			// Arrange
+			Mock<IFileStorageService> fileStorageServiceMock = new Mock<IFileStorageService>(MockBehavior.Strict);
+
+			fileStorageServiceMock.Setup(m => m.EnumerateFiles(It.IsAny<string>())).Returns(new List<Services.FileStorage.FileInfo>());
+			var cachingServiceProxy = new FileStorageServiceCachingProxy(fileStorageServiceMock.Object, new DictionaryCacheService());
+
+			// Act
+			cachingServiceProxy.EnumerateFiles().ToList();
+
+			// Assert	
+			fileStorageServiceMock.Verify(m => m.EnumerateFiles(null), Times.Once);
+		}
+
+		[TestMethod]
+		public async Task FileStorageServiceCachingProxy_EnumerateAsync_UsesWrappedStorageService()
+		{
+			// Arrange
+			Mock<IFileStorageService> fileStorageServiceMock = new Mock<IFileStorageService>(MockBehavior.Strict);
+
+			async IAsyncEnumerable<Services.FileStorage.FileInfo> GetMockFileInfos()
+			{
+				yield return new Services.FileStorage.FileInfo();
+				await Task.CompletedTask; // to make the compiler warning go away
+			}
+
+			fileStorageServiceMock.Setup(m => m.EnumerateFilesAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(GetMockFileInfos());
+			var cachingServiceProxy = new FileStorageServiceCachingProxy(fileStorageServiceMock.Object, new DictionaryCacheService());
+
+			// Act
+			await foreach (var file in cachingServiceProxy.EnumerateFilesAsync(null))
+			{
+				// NOOP
+			}
+
+			// Assert	
+			fileStorageServiceMock.Verify(m => m.EnumerateFilesAsync(null, It.IsAny<CancellationToken>()), Times.Once);
 		}
 
 		[TestMethod]

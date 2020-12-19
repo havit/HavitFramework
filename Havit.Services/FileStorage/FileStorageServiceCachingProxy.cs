@@ -57,7 +57,7 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		public async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
-			await foreach (FileInfo fileInfo in EnumerateFilesAsync(pattern, cancellationToken))
+			await foreach (FileInfo fileInfo in fileStorageService.EnumerateFilesAsync(pattern, cancellationToken))
 			{
 				yield return fileInfo;
 			}

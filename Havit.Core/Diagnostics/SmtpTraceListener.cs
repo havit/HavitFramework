@@ -9,6 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Web;
+using System.Configuration;
 
 namespace Havit.Diagnostics
 {
@@ -63,7 +64,7 @@ namespace Havit.Diagnostics
 		private readonly string _smtpUsername;
 		private readonly string _smtpPassword;
 		private readonly bool? _smtpEnableSsl = false;
-
+		
 		/// <summary>
 		/// Constructor, který je volán při použití TraceListerneru z app.configu a předává se do něj hodnota atributu initializeData.
 		/// </summary>
@@ -109,8 +110,26 @@ namespace Havit.Diagnostics
 							_smtpEnableSsl = Boolean.Parse(parameterValue);
 							break;
 						default:
-							throw new InvalidOperationException(String.Format("Neznámý parametr '{0}' konfigurace SmtpTraceListeneru v initializeData.", paramValue[0]/* nedávám paramenterName, protože jej chci zobrazit bez provedeného Trim a ToLower */));
+							throw new ConfigurationErrorsException(String.Format("Neznámý parametr '{0}' konfigurace SmtpTraceListeneru v initializeData.", paramValue[0]/* nedávám paramenterName, protože jej chci zobrazit bez provedeného Trim a ToLower */));
 					}
+				}
+			}
+
+			if (String.IsNullOrEmpty(_smtpServer))
+			{
+				if (!String.IsNullOrEmpty(_smtpUsername) || !String.IsNullOrEmpty(_smtpPassword))
+				{
+					throw new ConfigurationErrorsException("Credentials can be set only when smtp server (host) is specified.");
+				}
+
+				if (_smtpPort != null)
+				{
+					throw new ConfigurationErrorsException("Smtp port can be set only when smtp server (host) is specified.");
+				}
+
+				if (_smtpEnableSsl != false)
+				{
+					throw new ConfigurationErrorsException("Smtp ssl settings can be set only when smtp server (host) is specified.");
 				}
 			}
 		}
@@ -151,25 +170,23 @@ namespace Havit.Diagnostics
 		/// <summary>
 		/// Vrací kompletně nakonfigurovanou instanci SmtpClient pro odeslání emailu.
 		/// </summary>
-		protected virtual SmtpClient GetSmtpClient()
+		protected internal virtual SmtpClient GetSmtpClient()
 		{
 			SmtpClient smtpClient = new SmtpClient();
 			if (!String.IsNullOrEmpty(_smtpServer))
 			{
 				smtpClient.Host = _smtpServer;
+
+				smtpClient.Credentials = (!String.IsNullOrEmpty(_smtpUsername))
+					? new NetworkCredential(_smtpUsername, _smtpPassword)
+					: new NetworkCredential("", "");
+
+				smtpClient.Port = _smtpPort.GetValueOrDefault(25);
+				smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
+
+				smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 			}
 
-			if (_smtpPort != null)
-			{
-				smtpClient.Port = _smtpPort.Value;
-			}
-
-			if (!String.IsNullOrEmpty(_smtpUsername))
-			{
-				smtpClient.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
-			}
-
-			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
 			return smtpClient;
 		}
 

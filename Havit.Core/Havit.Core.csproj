@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.11</PackageVersion>
+    <PackageVersion>2.0.12</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
   </PropertyGroup>
   <ItemGroup>
@@ -17,9 +17,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.Configuration" Pack="false" Condition="'$(TargetFramework)' == 'net472'"/>
     <Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
     <Reference Include="System.Windows.Forms" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
   </ItemGroup>

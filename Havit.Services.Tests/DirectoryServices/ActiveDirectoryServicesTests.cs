@@ -1,5 +1,6 @@
 ﻿using Havit.Services.DirectoryServices.ActiveDirectory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Havit.Services.Tests.DirectoryServices
 {
@@ -9,10 +10,7 @@ namespace Havit.Services.Tests.DirectoryServices
 		[TestMethod]
 		public void ActiveDirectoryServices_GetUserInfo_SearchByDomain()
 		{
-			if (System.Environment.UserDomainName != "HAVIT")
-			{
-				Assert.Inconclusive("Test can successfully run only on machine in HAVIT domain.");
-			}
+			VerifyTestEnvironment();
 
 			ActiveDirectoryServices services = new ActiveDirectoryServices();
 			Assert.IsNotNull(services.GetUserInfo("kanda"), "User 'kanda' not found.");
@@ -24,10 +22,7 @@ namespace Havit.Services.Tests.DirectoryServices
 		[TestMethod]
 		public void ActiveDirectoryServices_GetUserInfo_DetailData()
 		{
-			if (System.Environment.UserDomainName != "HAVIT")
-			{
-				Assert.Inconclusive("Test can successfully run only on machine in HAVIT domain.");
-			}
+			VerifyTestEnvironment();
 
 			ActiveDirectoryServices services = new ActiveDirectoryServices();
 			UserInfo userInfo = services.GetUserInfo(@"HAVIT\kanda");
@@ -40,5 +35,19 @@ namespace Havit.Services.Tests.DirectoryServices
 			Assert.IsNotNull(userInfo.LastName, "LastName is null.");
 		}
 
+		private static void VerifyTestEnvironment()
+		{
+			try
+			{
+				if (Domain.GetComputerDomain().Name != "HAVIT")
+				{
+					Assert.Inconclusive("Test can successfully run only on machine in HAVIT on-prem domain.");
+				}
+			}
+			catch (ActiveDirectoryObjectNotFoundException)
+			{
+				Assert.Inconclusive("Test can successfully run only on machine in HAVIT on-prem domain.");
+			}
+		}
 	}
 }

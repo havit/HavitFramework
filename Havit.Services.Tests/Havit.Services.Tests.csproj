@@ -21,4 +21,8 @@
 	  <Folder Include="Properties\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="System.DirectoryServices" />
+	</ItemGroup>
+
 </Project>

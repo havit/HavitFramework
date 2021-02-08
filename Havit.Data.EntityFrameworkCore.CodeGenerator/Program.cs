@@ -52,7 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 				return;
 			}
 
-			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
+			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll") && !item.Contains("ref\\")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
 			Console.WriteLine($"Using metadata from assembly {file}.");
 			
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly(System.IO.Path.GetDirectoryName(file));

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
+using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 

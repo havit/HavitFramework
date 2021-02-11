@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
+using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.ExceptionHandlers
+namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers
 {
     internal class UnobservedTaskExceptionHandler
     {

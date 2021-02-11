@@ -1,7 +1,7 @@
-﻿using Havit.AspNetCore.Mvc.ExceptionMonitoring;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
+﻿using Havit.AspNetCore.ExceptionMonitoring;
+using Havit.AspNetCore.ExceptionMonitoring.Formatters;
+using Havit.AspNetCore.ExceptionMonitoring.Processors;
+using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.ExceptionHandlers;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Middlewares;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
+using Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
+using Havit.AspNetCore.ExceptionMonitoring.Middlewares;
+using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 

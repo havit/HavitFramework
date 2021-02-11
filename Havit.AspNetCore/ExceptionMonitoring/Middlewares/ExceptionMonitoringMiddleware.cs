@@ -1,4 +1,4 @@
-﻿using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Middlewares
+namespace Havit.AspNetCore.ExceptionMonitoring.Middlewares
 {
 	/// <summary>
 	/// Middleware to report failed requests.

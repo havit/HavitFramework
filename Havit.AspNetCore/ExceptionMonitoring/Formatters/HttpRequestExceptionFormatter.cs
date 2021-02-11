@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters
+namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
 {
 	/// <summary>
 	/// Formatter výjimky s popisem prostředí http serveru.

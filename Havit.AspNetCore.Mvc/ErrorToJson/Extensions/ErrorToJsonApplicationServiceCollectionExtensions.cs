@@ -1,11 +1,11 @@
-﻿using Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
+﻿using System;
+using Havit.AspNetCore.ExceptionMonitoring.Formatters;
+using Havit.AspNetCore.ExceptionMonitoring.Processors;
+using Havit.AspNetCore.ExceptionMonitoring.Services;
+using Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
 using Havit.AspNetCore.Mvc.ErrorToJson.Services;
 using Havit.AspNetCore.Mvc.ExceptionMonitoring;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Services;
 using Microsoft.Extensions.Configuration;
-using System;
 
 // Správný namespace je Microsoft.Extensions.DependencyInjection!
 

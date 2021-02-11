@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
+namespace Havit.AspNetCore.ExceptionMonitoring.Processors
 {
 	/// <summary>
 	/// Exception Monitoring Processor.

@@ -1,5 +1,5 @@
-﻿using Havit.AspNetCore.Mvc.ErrorToJson.Middlewares;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Middlewares;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Middlewares;
+using Havit.AspNetCore.Mvc.ErrorToJson.Middlewares;
 using Havit.Diagnostics.Contracts;
 using Microsoft.AspNetCore.Builder;
 using System;

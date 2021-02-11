@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Formatters;
+using Havit.AspNetCore.ExceptionMonitoring.Formatters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors
+namespace Havit.AspNetCore.ExceptionMonitoring.Processors
 {
 	/// <summary>
 	/// Exception procesor zasílající výjimku na email.

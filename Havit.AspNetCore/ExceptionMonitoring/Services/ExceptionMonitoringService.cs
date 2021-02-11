@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters;
-using Havit.AspNetCore.Mvc.ExceptionMonitoring.Processors;
+using Havit.AspNetCore.ExceptionMonitoring.Processors;
 using Microsoft.Extensions.Logging;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
+namespace Havit.AspNetCore.ExceptionMonitoring.Services
 {
 	/// <summary>
 	/// Exception monitoring.
@@ -14,12 +13,12 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
     public class ExceptionMonitoringService : IExceptionMonitoringService
     {
         private readonly IExceptionMonitoringProcessor[] exceptionMonitoringProcessors;
-        private readonly ILogger<ErrorMonitoringFilter> logger;
+        private readonly ILogger<ExceptionMonitoringService> logger;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public ExceptionMonitoringService(IEnumerable<IExceptionMonitoringProcessor> exceptionMonitoringProcessors, ILogger<ErrorMonitoringFilter> logger)
+        public ExceptionMonitoringService(IEnumerable<IExceptionMonitoringProcessor> exceptionMonitoringProcessors, ILogger<ExceptionMonitoringService> logger)
         {
             this.exceptionMonitoringProcessors = exceptionMonitoringProcessors.ToArray();
             this.logger = logger;

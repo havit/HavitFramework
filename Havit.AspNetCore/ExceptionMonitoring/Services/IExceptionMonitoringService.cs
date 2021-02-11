@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Services
+namespace Havit.AspNetCore.ExceptionMonitoring.Services
 {
 	/// <summary>
 	/// Exception Monitoring.

@@ -1,14 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
-    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.2.0</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
+	</PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.11">
-      <PrivateAssets>all</PrivateAssets>
+      <!--<PrivateAssets>all</PrivateAssets>-->
 	  <!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerovaný řádek. -->
       <!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
     </PackageReference>
@@ -142,6 +148,8 @@
     <None Update="Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>InterfaceRepositoryTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Havit.Data.EntityFrameworkCore.CodeGenerator.props" Pack="true" PackagePath="build\netstandard2.0">        
     </None>
   </ItemGroup>
 

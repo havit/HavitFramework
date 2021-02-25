@@ -229,7 +229,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.Azure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Hangfire.Extensions", "Havit.Hangfire.Extensions\Havit.Hangfire.Extensions.csproj", "{017E59EF-5FA0-4124-A30D-534ED592963F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.AspNetCore", "Havit.AspNetCore\Havit.AspNetCore.csproj", "{9931A336-C78B-4F58-888C-73D96E8ED775}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNetCore", "Havit.AspNetCore\Havit.AspNetCore.csproj", "{9931A336-C78B-4F58-888C-73D96E8ED775}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool", "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool\Havit.Data.EntityFrameworkCore.CodeGenerator.Tool.csproj", "{D29CF3C3-421E-4157-8EEE-6B17963138CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -585,6 +587,10 @@ Global
 		{9931A336-C78B-4F58-888C-73D96E8ED775}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9931A336-C78B-4F58-888C-73D96E8ED775}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9931A336-C78B-4F58-888C-73D96E8ED775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -687,6 +693,7 @@ Global
 		{39988442-B3C9-4ECE-84EE-7BAD90D9D3D9} = {2C3C8291-8C00-49AC-A914-BC4B74D3DACE}
 		{017E59EF-5FA0-4124-A30D-534ED592963F} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 		{9931A336-C78B-4F58-888C-73D96E8ED775} = {97109FED-C671-49FA-8614-C63D8E5935B9}
+		{D29CF3C3-421E-4157-8EEE-6B17963138CD} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

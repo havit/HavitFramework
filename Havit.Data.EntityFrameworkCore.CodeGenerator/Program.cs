@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
@@ -24,9 +23,12 @@ using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 {
-	internal static class Program
+	public static class Program
 	{
-		internal static void Main(string[] args)
+		// This is not a true entry point - it is not a console, but a class library (netstandard 2.x).
+		// Method is used in CodeGenerator.Tool via reflection!
+		// Environment is preconfigured by CodeGenerator.Tool (mainly AppDomain.CurrentDomain.AssemblyResolve).
+		public static void Main(string[] args)
 		{
 			Stopwatch stopwatch = Stopwatch.StartNew();
 			IProject modelProject = null;
@@ -34,29 +36,10 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			DbContext dbContext = null;
 			ISourceControlClient sourceControlClient = null;
 
-			DirectoryInfo solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
-			
-			while (System.IO.Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
-			{
-				if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
-				{
-					throw new InvalidOperationException("Solution file was not found.");
-				}
-				solutionDirectory = solutionDirectory.Parent;
-			}
+			string solutionDirectory = System.Environment.CurrentDirectory;
+			string entityAssemblyName = args.Single();
 
-			string[] files = System.IO.Directory.GetFiles(Path.Combine(solutionDirectory.FullName, @"Entity\bin"), "*.Entity.dll", SearchOption.AllDirectories);
-			if (files.Length == 0)
-			{
-				Console.WriteLine("Assembly *.Entity.dll was not found.");
-				return;
-			}
-
-			string file = files.Where(item => !item.EndsWith("Havit.Entity.dll") && !item.Contains("ref\\")).OrderByDescending(item => System.IO.File.GetLastAccessTime(item)).First();
-			Console.WriteLine($"Using metadata from assembly {file}.");
-			
-			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly(System.IO.Path.GetDirectoryName(file));
-			Assembly assembly = Assembly.Load(new AssemblyName { Name = System.IO.Path.GetFileNameWithoutExtension(file) });
+			Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
 			
 			Type[] assemblyTypes = null;
 			try
@@ -66,7 +49,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			catch (ReflectionTypeLoadException reflectionTypeLoadException)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"There was an error during loading types from {file}.");
+				Console.WriteLine($"There was an error during loading types from {entityAssemblyName}.");
 				if (reflectionTypeLoadException.LoaderExceptions.All(exception => exception is FileLoadException))
 				{
 					reflectionTypeLoadException.LoaderExceptions
@@ -103,8 +86,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 				{
 					dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
 				},
-				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
-				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj"))
+				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, @"Model\Model.csproj")),
+				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, @"DataLayer\DataLayer.csproj"))
 			);
 
 			Console.WriteLine($"Initializing DbContext...");
@@ -205,31 +188,5 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			dbRepositoryGeneratedGenerator.Generate();
 			dbRepositoryGenerator.Generate();
 		}
-
-		private static ResolveEventHandler ResolveAssembly(string appBasePath)
-		{
-			return (object sender, ResolveEventArgs args) =>
-			{
-				var assemblyName = new AssemblyName(args.Name);
-
-				foreach (var extension in new[] { ".dll", ".exe" })
-				{
-					var path = Path.Combine(appBasePath, assemblyName.Name + extension);
-					if (File.Exists(path))
-					{
-						try
-						{
-							return Assembly.LoadFrom(path);
-						}
-						catch 
-						{
-							// NOOP
-						}
-					}
-				}
-				return null;
-			};
-		}
-
 	}
 }

@@ -4,9 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Havit.EFCoreTests.DataLayer</AssemblyName>
     <RootNamespace>Havit.EFCoreTests.DataLayer</RootNamespace>
+	<CopyLocalLockFileAssemblies>True</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.CodeGenerator\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj" />
     <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
     <ProjectReference Include="..\Entity\Entity.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />

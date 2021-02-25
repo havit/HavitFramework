@@ -163,11 +163,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Business.BusinessLaye
 		{D5B7B479-45B7-4D1F-9C72-63FBC4D21114} = {D5B7B479-45B7-4D1F-9C72-63FBC4D21114}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage", "Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage\Havit.Data.EntityFrameworkCore.CodeGenerator.NuGetPackage.csproj", "{96DE4420-4CB5-4316-886B-C6C90A25FDEF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9D793564-5C33-401F-8897-A68F698FD0B3} = {9D793564-5C33-401F-8897-A68F698FD0B3}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.Entity6.CodeGenerator.NuGetPackage", "Havit.Data.Entity6.CodeGenerator.NuGetPackage\Havit.Data.Entity6.CodeGenerator.NuGetPackage.csproj", "{72537877-F968-4889-90F6-920975E0632B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1DAACB7D-93B2-41D2-9B97-37DA3D38A89B} = {1DAACB7D-93B2-41D2-9B97-37DA3D38A89B}
@@ -231,7 +226,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Hangfire.Extensions",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNetCore", "Havit.AspNetCore\Havit.AspNetCore.csproj", "{9931A336-C78B-4F58-888C-73D96E8ED775}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool", "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool\Havit.Data.EntityFrameworkCore.CodeGenerator.Tool.csproj", "{D29CF3C3-421E-4157-8EEE-6B17963138CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool", "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool\Havit.Data.EntityFrameworkCore.CodeGenerator.Tool.csproj", "{D29CF3C3-421E-4157-8EEE-6B17963138CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -471,10 +466,6 @@ Global
 		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96DE4420-4CB5-4316-886B-C6C90A25FDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96DE4420-4CB5-4316-886B-C6C90A25FDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96DE4420-4CB5-4316-886B-C6C90A25FDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96DE4420-4CB5-4316-886B-C6C90A25FDEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72537877-F968-4889-90F6-920975E0632B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72537877-F968-4889-90F6-920975E0632B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72537877-F968-4889-90F6-920975E0632B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -663,7 +654,6 @@ Global
 		{B18482B7-73D8-4943-A05B-C2E9DD366A70} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{4BC8EF13-57B4-4805-95A9-D4DDB691B4D7} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{E3B66D72-4E10-47F4-B8DF-DD8189438D7E} = {8B4383E1-89EA-46F4-A379-F728CA71A124}
-		{96DE4420-4CB5-4316-886B-C6C90A25FDEF} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
 		{72537877-F968-4889-90F6-920975E0632B} = {2C3C8291-8C00-49AC-A914-BC4B74D3DACE}
 		{9ED7C3F5-09E5-444A-AAFC-A90FD84D50AD} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 		{AB4F5DC5-9AD8-4F35-A914-F0AF2C8843B6} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}

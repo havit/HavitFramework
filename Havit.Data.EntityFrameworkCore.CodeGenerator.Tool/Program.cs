@@ -64,7 +64,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			}
 
 			Console.WriteLine("Starting codegenerator...");
-			main.Invoke(null, new object[] { new string[] { System.IO.Path.GetFileNameWithoutExtension(applicationEntityAssembly) } });
+			main.Invoke(null, new object[] { new string[] { solutionDirectory.FullName, System.IO.Path.GetFileNameWithoutExtension(applicationEntityAssembly) } });
 		}
 
 		private static ResolveEventHandler ResolveAssembly(string appBasePath)

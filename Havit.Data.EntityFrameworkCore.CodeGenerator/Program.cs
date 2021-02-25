@@ -36,8 +36,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			DbContext dbContext = null;
 			ISourceControlClient sourceControlClient = null;
 
-			string solutionDirectory = System.Environment.CurrentDirectory;
-			string entityAssemblyName = args.Single();
+			string solutionDirectory = args[0];
+			string entityAssemblyName = args[1];
 
 			Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
 			

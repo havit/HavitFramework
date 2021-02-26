@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.2.1</PackageVersion>
+		<PackageVersion>2.2.2</PackageVersion>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>efcodegenerator</ToolCommandName>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator (dotnet tool)</Description>

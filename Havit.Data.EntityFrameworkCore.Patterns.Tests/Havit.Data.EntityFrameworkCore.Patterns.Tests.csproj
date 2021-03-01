@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
+	<TargetFramework>net50</TargetFramework>
 	<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
 	<NoWarn>($NoWarn);EF1001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.11" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.11" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.11" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.3" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
 	<PackageReference Include="Moq" Version="4.14.7" />
 	<PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />

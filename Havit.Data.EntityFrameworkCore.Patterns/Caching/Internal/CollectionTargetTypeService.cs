@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal
                     {
                         collectionTargetTypeStorage.Value = dbContext.Model.GetApplicationEntityTypes()
                         .SelectMany(entityType => entityType.GetNavigations())
-                        .Where(navigation => navigation.IsCollection())
+                        .Where(navigation => navigation.IsCollection)
                         .ToDictionary(
                             navigation => new TypePropertyName(navigation.DeclaringEntityType.ClrType, navigation.Name),
                             navigation => navigation.GetTargetType().ClrType);

@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	public class ManyToManyEntityKeyDiscoveryConvention : IForeignKeyAddedConvention
 	{
 		/// <inheritdoc />
-		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
 			// Systémové tabulky nechceme změnit.
 			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())

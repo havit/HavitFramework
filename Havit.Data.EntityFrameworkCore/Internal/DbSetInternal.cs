@@ -29,7 +29,9 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 			this.dbContext = dbContext;
 			this.dbSet = dbContext.Set<TEntity>(); // zde můžeme bez Lazy - veškerá použití třídy jsou schovaná za lazy
 			this.primaryKeyLazy = new Lazy<IKey>(() => dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey(), LazyThreadSafetyMode.None);
+#pragma warning disable EF1001 // Internal EF Core API usage.
 			this.stateManagerLazy = new Lazy<IStateManager>(() => dbContext.GetService<IStateManager>(), LazyThreadSafetyMode.None);
+#pragma warning restore EF1001 // Internal EF Core API usage.
 		}
 
 		/// <summary>

@@ -40,7 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 		}
 
         /// <inheritdoc />
-        protected override IEnumerable<MigrationOperation> Diff(IModel source, IModel target, DiffContext diffContext)
+        protected override IEnumerable<MigrationOperation> Diff(IRelationalModel source, IRelationalModel target, DiffContext diffContext)
 		{
 			foreach (MigrationOperation migrationOperation in base.Diff(source, target, diffContext))
 			{
@@ -82,7 +82,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
                 IsRowVersion = originalOperation.IsRowVersion,
                 IsUnicode = originalOperation.IsUnicode,
                 MaxLength = originalOperation.MaxLength,
-                OldColumn = new ColumnOperation
+                OldColumn = new AlterColumnOperation // TODO: EF5: Zvalidovat typ ColumnOperation
                 {
                     ClrType = originalOperation.OldColumn.ClrType,
                     ComputedColumnSql = originalOperation.OldColumn.ComputedColumnSql,

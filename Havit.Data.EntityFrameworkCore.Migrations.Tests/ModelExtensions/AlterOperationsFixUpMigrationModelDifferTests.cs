@@ -368,19 +368,19 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             {
             }
 
-            public override IEnumerable<IAnnotation> For(IProperty property)
+            public override IEnumerable<IAnnotation> ForRemove(IColumn column)
             {
-                return property.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
+                return column.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
-            public override IEnumerable<IAnnotation> For(IEntityType entityType)
+            public override IEnumerable<IAnnotation> ForRemove(ITable table)
             {
-                return entityType.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
+                return table.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
-            public override IEnumerable<IAnnotation> For(IModel model)
+            public override IEnumerable<IAnnotation> ForRemove(IRelationalModel relationalModel)
             {
-                return model.GetAnnotations();
+                return relationalModel.GetAnnotations();
             }
         }
     }

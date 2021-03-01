@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
+	<TargetFramework>net5.0</TargetFramework>
 	<OutputType>Exe</OutputType>
+	<UserSecretsId>afdc463c-2564-4b13-b5b6-8cec471e5a59</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.11" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
 	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="160.2004021.0" />
   </ItemGroup>
 

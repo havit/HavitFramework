@@ -57,7 +57,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 		public IReadOnlyList<MigrationOperation> Diff(DbContext target)
 		{
 			var differ = this.GetService<IMigrationsModelDiffer>();
-			return differ.GetDifferences(Model, target.Model);
+			return differ.GetDifferences(Model.GetRelationalModel(), target.Model.GetRelationalModel());
 		}
 
 		public IReadOnlyList<MigrationCommand> Migrate(DbContext target)

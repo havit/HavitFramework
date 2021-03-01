@@ -12,17 +12,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			: base(dependencies)
 		{ }
 
-		public override IEnumerable<IAnnotation> For(IProperty property)
+		public override IEnumerable<IAnnotation> ForRemove(IColumn column)
 		{
-			return Handle(property);
+			return Handle(column);
 		}
 
-		public override IEnumerable<IAnnotation> For(IEntityType entityType)
+		public override IEnumerable<IAnnotation> ForRemove(ITable table)
 		{
-			return Handle(entityType);
+			return Handle(table);
 		}
 
-		public override IEnumerable<IAnnotation> For(IModel model)
+		public override IEnumerable<IAnnotation> ForRemove(IRelationalModel model)
 		{
 			return Handle(model);
 		}

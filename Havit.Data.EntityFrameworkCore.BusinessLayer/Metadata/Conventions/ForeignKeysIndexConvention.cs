@@ -19,23 +19,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
         IPropertyAnnotationChangedConvention,
         IEntityTypeAnnotationChangedConvention
 	{
-		public void ProcessForeignKeyAdded(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
-			CreateIndex(relationshipBuilder);
+			CreateIndex(foreignKeyBuilder);
 		}
 
-        public void ProcessForeignKeyPropertiesChanged(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IReadOnlyList<IConventionProperty> oldDependentProperties,
-            IConventionKey oldPrincipalKey,
-            IConventionContext<IConventionRelationshipBuilder> context)
+        public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
 		{
 			// řeší podporu pro shadow property
 			// JK: Nevím úplně proč, ale funguje to. Implementace vychází z ForeignKeyIndexConvention v EF Core 3.0.
-			RemoveIndex(relationshipBuilder.Metadata.DeclaringEntityType.Builder, oldDependentProperties);
-			CreateIndex(relationshipBuilder);
+			RemoveIndex(foreignKeyBuilder.Metadata.DeclaringEntityType.Builder, oldDependentProperties);
+			CreateIndex(foreignKeyBuilder);
 		}
 
         public void ProcessForeignKeyRemoved(
@@ -72,27 +66,27 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			}
 		}
 
-		private void CreateIndex(IConventionRelationshipBuilder relationshipBuilder)
+		private void CreateIndex(IConventionForeignKeyBuilder foreignKeyBuilder)
 		{
 			// Systémové tabulky nechceme změnit.
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())
+			if (foreignKeyBuilder.Metadata.DeclaringEntityType.IsSystemType())
 			{
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysIndexConvention))
+			if (foreignKeyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysIndexConvention))
 			{
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.Properties.Count == 1)
+			if (foreignKeyBuilder.Metadata.Properties.Count == 1)
 			{
-				IConventionProperty fkProperty = relationshipBuilder.Metadata.Properties.Single();
-				IConventionProperty deletedProperty = (IConventionProperty)relationshipBuilder.Metadata.DeclaringEntityType.GetBusinessLayerDeletedProperty();
+				IConventionProperty fkProperty = foreignKeyBuilder.Metadata.Properties.Single();
+				IConventionProperty deletedProperty = (IConventionProperty)foreignKeyBuilder.Metadata.DeclaringEntityType.GetBusinessLayerDeletedProperty();
 
 				// pro shadow property se udělá index vesměs chybně
 				// nicméně dále je zpracován pomocí ProcessForeignKeyPropertiesChanged 
-				var index = relationshipBuilder.Metadata.DeclaringEntityType.Builder.HasIndex(
+				var index = foreignKeyBuilder.Metadata.DeclaringEntityType.Builder.HasIndex(
 					(deletedProperty != null)
 						? new List<IConventionProperty> { fkProperty, deletedProperty }.AsReadOnly()
 						: new List<IConventionProperty> { fkProperty }.AsReadOnly(),

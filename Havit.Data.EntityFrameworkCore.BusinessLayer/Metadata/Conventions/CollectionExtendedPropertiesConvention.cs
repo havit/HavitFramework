@@ -15,25 +15,22 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
     public class CollectionExtendedPropertiesConvention : INavigationAddedConvention
 	{
 		/// <inheritdoc />
-		public void ProcessNavigationAdded(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IConventionNavigation navigation,
-            IConventionContext<IConventionNavigation> context)
+		public void ProcessNavigationAdded(IConventionNavigationBuilder navigationBuilder, IConventionContext<IConventionNavigationBuilder> context)
 		{
 			// Systémové tabulky nechceme změnit.
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())
+			if (navigationBuilder.Metadata.DeclaringEntityType.IsSystemType())
 			{
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.CollectionExtendedPropertiesConvention))
+			if (navigationBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.CollectionExtendedPropertiesConvention))
 			{
 				return;
 			}
 
-			if (navigation.IsCollection())
+			if (navigationBuilder.Metadata.IsCollection)
 			{
-				if ((navigation.Name == "Localizations") && navigation.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
+				if ((navigationBuilder.Metadata.Name == "Localizations") && navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
 				{
 					// Localizations property cannot have Collection extended property defined
 					return;
@@ -41,10 +38,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 				var extendedProperties = new Dictionary<string, string>
 					{
-						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.DeclaringEntityType.GetTableName() + "." + navigation.ForeignKey.Properties[0].GetColumnName() }
+						{ $"Collection_{navigationBuilder.Metadata.PropertyInfo.Name}", navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.GetTableName() + "." + navigationBuilder.Metadata.ForeignKey.Properties[0].GetColumnName() }
 					};
 
-				relationshipBuilder.Metadata.PrincipalToDependent.DeclaringEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
+				navigationBuilder.Metadata.TargetEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

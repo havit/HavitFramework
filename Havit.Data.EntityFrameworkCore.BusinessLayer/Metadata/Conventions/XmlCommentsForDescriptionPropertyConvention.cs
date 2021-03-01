@@ -25,14 +25,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	{
 		internal const string MsDescriptionExtendedProperty = "MS_Description";
 		
-		public void ProcessModelFinalized(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
+		public IModel ProcessModelFinalized(IModel model)
 		{
 			// suppress neřešíme
 			// systémové tabulky řešeny v GetApplicationEntityTypes()
 
 			var xmlCommentParser = new XmlCommentParser();
 
-			var groupedByAssemblies = modelBuilder.Metadata
+			var groupedByAssemblies = model
 				.GetApplicationEntityTypes()
 				.Cast<IConventionEntityType>()
 				.GroupBy(entityType => entityType.ClrType.Assembly);
@@ -50,6 +50,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 				CreateDescriptionExtendedProperties(xmlCommentFile, assemblyEntities);
 			}
+			
+			// TODO EF5: Ověřit funkčnost
+			return model;
 		}
 
 		private static string GetXmlCommentsFileFromAssembly(Assembly assembly)

@@ -32,12 +32,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
             ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(propertyBuilder.Metadata, propertyBuilder.Metadata.PropertyInfo, fromDataAnnotation: false);
         }
 
-        public void ProcessNavigationAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionNavigation navigation, IConventionContext<IConventionNavigation> context)
+        public void ProcessNavigationAdded(IConventionNavigationBuilder navigationBuilder, IConventionContext<IConventionNavigationBuilder> context)
         {
             // Systémové tabulky - nemá cenu řešit, jejich vlastnosti nebudou mít attribut.
             // Podpora pro suppress - nemá význam, stačí nepoužít attribut.
 
-            ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(navigation.DeclaringEntityType, navigation.PropertyInfo, false);
+            ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(navigationBuilder.Metadata.DeclaringEntityType, navigationBuilder.Metadata.PropertyInfo, false);
         }
     }
 }

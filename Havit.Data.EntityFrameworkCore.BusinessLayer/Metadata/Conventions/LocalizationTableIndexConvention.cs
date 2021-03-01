@@ -19,25 +19,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 		private Dictionary<IConventionEntityType, IConventionIndex> createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
 
-		public void ProcessForeignKeyAdded(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
-			EnsureIndex(relationshipBuilder);
+			EnsureIndex(foreignKeyBuilder);
 		}
 
-		public void ProcessForeignKeyPropertiesChanged(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IReadOnlyList<IConventionProperty> oldDependentProperties,
-            IConventionKey oldPrincipalKey,
-            IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
 		{
-			EnsureIndex(relationshipBuilder);
+			EnsureIndex(foreignKeyBuilder);
 		}
 
-		private void EnsureIndex(IConventionRelationshipBuilder relationshipBuilder)
+		private void EnsureIndex(IConventionForeignKeyBuilder foreignKeyBuilder)
 		{
-			var entityType = relationshipBuilder.Metadata.DeclaringEntityType;
+			var entityType = foreignKeyBuilder.Metadata.DeclaringEntityType;
 
 			if (entityType.IsBusinessLayerLocalizationEntity()) // jsme v lokalizační tabulce?
 			{

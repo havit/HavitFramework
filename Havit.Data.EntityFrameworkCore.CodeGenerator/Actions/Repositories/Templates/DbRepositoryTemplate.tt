@@ -19,6 +19,6 @@ namespace <#= Model.NamespaceName #>
 {
 	public partial class <#= Model.DbRepositoryName #> : <#= Model.InterfaceRepositoryName #>
 	{
-		
+
 	}
 }

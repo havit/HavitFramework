@@ -12,9 +12,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
     public class ModelExtensionsAssembly : IModelExtensionsAssembly
     {
         private IReadOnlyCollection<TypeInfo> modelExtenders;
-
+        
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         public ModelExtensionsAssembly(
             ICurrentDbContext currentDbContext,

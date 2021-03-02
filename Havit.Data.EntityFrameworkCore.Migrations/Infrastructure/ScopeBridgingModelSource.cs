@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+﻿using System;
+using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -31,9 +32,30 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <param name="context"> The context the model is being produced for. </param>
         /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
         /// <returns> The model to be used. </returns>
+        [Obsolete("Use the overload with ModelDependencies")]
         protected override IModel CreateModel(DbContext context, IConventionSetBuilder conventionSetBuilder)
         {
             return context.GetService<IScopedModelSource>().GetModel(context, conventionSetBuilder);
+        }
+
+        /// <summary>
+        ///     Creates model using <see cref="IScopedModelSource"/>, which is scoped per <see cref="DbContext"/>.
+        ///
+        ///     Caching is not affected, i.e. it is still active by original implementation in <see cref="ModelSource.GetModel"/>.
+        /// </summary>
+        /// <remarks>
+        ///     This is necessary, if <see cref="IModelSource"/> (or one of its dependencies) needs to access <see cref="IDbContextOptions"/>.
+        /// </remarks>
+        /// <param name="context"> The context the model is being produced for. </param>
+        /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
+        /// <param name="modelDependencies"> The dependencies object for the model. </param>
+        /// <returns> The model to be used. </returns>
+        protected override IModel CreateModel(
+			DbContext context,
+			IConventionSetBuilder conventionSetBuilder,
+			ModelDependencies modelDependencies)
+        {
+	        return context.GetService<IScopedModelSource>().GetModel(context, conventionSetBuilder, modelDependencies);
         }
     }
 }

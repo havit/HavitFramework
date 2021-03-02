@@ -4,22 +4,19 @@ using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Diagnostics.Contracts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions
 {
-    /// <summary>
-    /// Internal convention of Model Extensions feature. Discovers available <see cref="IModelExtender"/>s in configured assembly (see <see cref="IModelExtensionsAssembly"/>).
-    /// </summary>
-    /// <remarks>
-    /// Not intended to be used by application code.
-    /// </remarks>
-    public class ModelExtensionRegistrationConvention : IModelFinalizedConvention
+	/// <summary>
+	/// Internal convention of Model Extensions feature. Discovers available <see cref="IModelExtender"/>s in configured assembly (see <see cref="IModelExtensionsAssembly"/>).
+	/// </summary>
+	/// <remarks>
+	/// Not intended to be used by application code.
+	/// </remarks>
+	public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
     {
         private readonly IModelExtensionsAssembly modelExtensionsAssembly;
         private readonly IModelExtensionAnnotationProvider modelExtensionAnnotationProvider;
@@ -38,10 +35,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions
         }
 
         /// <inheritdoc />
-        public IModel ProcessModelFinalized(IModel model)
+        public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
         {
-            var databaseModel = new RelationalModel(model);
-
             foreach (TypeInfo modelExtenderClass in modelExtensionsAssembly.ModelExtenders)
             {
                 IModelExtender extender = modelExtensionsAssembly.CreateModelExtender(modelExtenderClass);
@@ -52,13 +47,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions
                 foreach (MethodInfo method in publicMethods)
                 {
                     var modelExtension = (IModelExtension)method.Invoke(extender, new object[0]);
-                    
+
                     List<IAnnotation> annotations = modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
-                    
-                    annotations.ForEach(a => databaseModel.AddAnnotation(a.Name, a.Value));
+
+                    annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, false));
                 }
             }
-            return model;
         }
     }
 }

@@ -3,6 +3,7 @@ using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Migrations.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
@@ -26,6 +27,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
                 optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
                 ?? new CompositeMigrationsAnnotationProviderExtension().WithAnnotationProvider<SqlServerMigrationsAnnotationProvider>();
             builder.AddOrUpdateExtension(compositeMigrationsAnnotationProviderExtension);
+
+            var compositeRelationalAnnotationProviderExtension =
+	            optionsBuilder.Options.FindExtension<CompositeRelationalAnnotationProviderExtension>()
+	            ?? new CompositeRelationalAnnotationProviderExtension().WithAnnotationProvider<SqlServerAnnotationProvider>();
+            builder.AddOrUpdateExtension(compositeRelationalAnnotationProviderExtension);
 
             var compositeMigrationsSqlGeneratorExtension =
                 optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()

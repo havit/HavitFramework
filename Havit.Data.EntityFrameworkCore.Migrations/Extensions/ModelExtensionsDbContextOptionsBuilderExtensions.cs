@@ -24,7 +24,9 @@ namespace Microsoft.EntityFrameworkCore
         /// <summary>
         /// Registruje služby používané podporou pre Model Extensions. Pomocou <paramref name="setupAction"/> je možné aktivovať rôzne funkčnosti Model Extensions.
         /// </summary>
-        public static DbContextOptionsBuilder UseModelExtensions(this DbContextOptionsBuilder optionsBuilder, Action<ModelExtensionsExtensionBuilder> setupAction)
+        public static DbContextOptionsBuilder UseModelExtensions(
+			this DbContextOptionsBuilder optionsBuilder,
+			Action<ModelExtensionsExtensionBuilder> setupAction)
         {
             Contract.Requires<ArgumentNullException>(optionsBuilder != null);
             Contract.Requires<ArgumentNullException>(setupAction != null);
@@ -33,13 +35,21 @@ namespace Microsoft.EntityFrameworkCore
 
             IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
-            var annotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>();
-            if (annotationProviderExtension == null)
+            var migrationsAnnotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>();
+            if (migrationsAnnotationProviderExtension == null)
             {
                 throw new InvalidOperationException("Necessary extension (CompositeMigrationsAnnotationProviderExtension) not found, please make sure infrastructure has been registered into DbContextOptionsBuilder (extension method UseCodeMigrationsInfrastructure on this object is called)");
             }
 
-            builder.AddOrUpdateExtension(annotationProviderExtension.WithAnnotationProvider<ModelExtensionsMigrationsAnnotationProvider>());
+            builder.AddOrUpdateExtension(migrationsAnnotationProviderExtension.WithAnnotationProvider<ModelExtensionsMigrationsAnnotationProvider>());
+
+            var relationalAnnotationProviderExtension = optionsBuilder.Options.FindExtension<CompositeRelationalAnnotationProviderExtension>();
+            if (relationalAnnotationProviderExtension == null)
+            {
+	            throw new InvalidOperationException("Necessary extension (CompositeRelationalAnnotationProviderExtension) not found, please make sure infrastructure has been registered into DbContextOptionsBuilder (extension method UseCodeMigrationsInfrastructure on this object is called)");
+            }
+
+            builder.AddOrUpdateExtension(relationalAnnotationProviderExtension.WithAnnotationProvider<ModelExtensionsRelationalAnnotationProvider>());
 
             var sqlGeneratorExtension = optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>();
             if (sqlGeneratorExtension == null)

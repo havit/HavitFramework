@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -402,6 +403,76 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks
 
 			dbUnitOfWork.Commit();
 			Assert.AreEqual(1, counter); // nedošlo k zavolání zaregistrované akce, registrace byla zrušena
+		}
+
+		[TestMethod]
+		public void DbUnitOfWork_AddRangeForInsert_SetsEntitiesToAddedState()
+		{
+			// Arrange
+			ParentEntity parent = new ParentEntity { Id = 100 };
+			ChildEntity child1 = new ChildEntity
+			{
+				Parent = parent
+			};
+
+			ChildEntity child2 = new ChildEntity
+			{
+				Parent = parent
+			};
+
+			parent.Children.Add(child1);
+			parent.Children.Add(child2);
+
+			TestDbContext dbContext = new TestDbContext();
+			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+
+			// Act
+			dbUnitOfWork.AddRangeForInsert(new ChildEntity[] { child1, child2 });
+
+			// Assert
+			Assert.AreEqual(EntityState.Added, ((IDbContext)dbContext).GetEntityState(child1));
+			Assert.AreEqual(EntityState.Added, ((IDbContext)dbContext).GetEntityState(child2));
+		}
+
+		[TestMethod]
+		public void DbUnitOfWork_AddRangeForUpdate_SetsEntitiesToModifiedState()
+		{
+			// Arrange
+			ParentEntity parent = new ParentEntity { Id = 100 };
+			ChildEntity child1 = new ChildEntity
+			{
+				Id = 1,
+				Parent = parent
+			};
+
+			ChildEntity child2 = new ChildEntity
+			{
+				Id = 2,
+				Parent = parent
+			};
+
+			parent.Children.Add(child1);
+			parent.Children.Add(child2);
+
+			TestDbContext dbContext = new TestDbContext();
+			var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+
+			Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+			Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+
+			var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
+
+			// Act
+			dbUnitOfWork.AddRangeForUpdate(new ChildEntity[] { child1, child2 });
+
+			// Assert
+			Assert.AreEqual(EntityState.Modified, ((IDbContext)dbContext).GetEntityState(child1));
+			Assert.AreEqual(EntityState.Modified, ((IDbContext)dbContext).GetEntityState(child2));
 		}
 	}
 }

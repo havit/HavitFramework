@@ -225,12 +225,14 @@ namespace Havit.Data.Entity.Patterns.UnitOfWorks
 			where TEntity : class
 		{
 			// z výkonových důvodů se očekává, že volané metody GetEntityState+SetEntityState nevolají change tracker
-			foreach (var entity in entities)
+
+			// Z důvodu možnosti existence stromu grafu si nejprve zjistíme všechny entity, které chceme trackovat.
+			// Pokud bychom zjišťovali stav entitu po entitě v cyklu, může se nám nějaká entita, kterou máme v kolekci, 
+			// změnit z Detached na Unchanged před tím než na ni v cyklu přijde řada.
+			TEntity[] entitiesToSetModified = entities.Where(entity => DbContext.GetEntityState(entity) == EntityState.Detached).ToArray();
+			foreach (var entity in entitiesToSetModified)
 			{
-				if (DbContext.GetEntityState(entity) == EntityState.Detached)
-				{					
-					DbContext.SetEntityState(entity, EntityState.Modified);
-				}
+				DbContext.SetEntityState(entity, EntityState.Modified);
 			}
 			updateRegistrations.UnionWith(entities);
 		}

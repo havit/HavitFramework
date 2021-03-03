@@ -92,7 +92,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 						: new List<IConventionProperty> { fkProperty }.AsReadOnly(),
 					fromDataAnnotation: false /* Convention */);
 
-				index.HasName(GetIndexName(index.Metadata), fromDataAnnotation: false /* Convention */);
+				index.HasDatabaseName(GetIndexName(index.Metadata), fromDataAnnotation: false /* Convention */);
 			}
 		}
 
@@ -100,12 +100,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 		{
 			foreach (var index in indexes)
 			{
-				if (index.GetName().StartsWith("FKX_")) // jen naše indexy
+				if (index.GetDatabaseName().StartsWith("FKX_")) // jen naše indexy
 				{
 					string newName = GetIndexName(index);
-					if (newName != index.GetName())
+					if (newName != index.GetDatabaseName())
 					{
-						index.SetName(GetIndexName(index), fromDataAnnotation: false /* Convention */);
+						index.SetDatabaseName(GetIndexName(index), fromDataAnnotation: false /* Convention */);
 					}
 				}
 			}
@@ -121,7 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					? new List<IConventionProperty> { properties.Single(), deletedProperty }.AsReadOnly()
 					: new List<IConventionProperty> { properties.Single() }.AsReadOnly());
 
-				if ((index != null) && index.GetName().StartsWith("FKX_"))
+				if ((index != null) && index.GetDatabaseName().StartsWith("FKX_"))
 				{
 					entityTypeBuilder.HasNoIndex(index);
 				}
@@ -130,7 +130,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 		internal static string GetIndexName(IConventionIndex index)
 		{
-			string indexName = index.GetDefaultName();
+			string indexName = index.GetDefaultDatabaseName();
 			if (indexName.StartsWith("IX_")) // vždy
 			{
 				indexName = "FKX_" + indexName.Substring(3);

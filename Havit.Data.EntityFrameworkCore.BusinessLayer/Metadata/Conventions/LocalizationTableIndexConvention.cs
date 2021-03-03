@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 		// systémové tabulky neřešíme, nebudou IsBusinessLayerLocalizationEntity
 		// suppress nemusíme řešit, vyřeší se odstraněním konvence
 
-		private Dictionary<IConventionEntityType, IConventionIndex> createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
+		private readonly Dictionary<IConventionEntityType, IConventionIndex> createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
 
 		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				{
 					// vytvoříme unikátní index
 					IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentLocalizationProperty, languageProperty }.AsReadOnly(), fromDataAnnotation: false);
-					indexBuilder.HasName(ForeignKeysIndexConvention.GetIndexName(indexBuilder.Metadata));
+					indexBuilder.HasDatabaseName(ForeignKeysIndexConvention.GetIndexName(indexBuilder.Metadata));
 					indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
 					createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
 				}

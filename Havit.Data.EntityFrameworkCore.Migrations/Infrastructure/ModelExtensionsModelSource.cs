@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
+﻿using System;
+using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -35,17 +36,18 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
             this.conventionPlugin = conventionPlugin;
         }
 
-        /// <summary>
-        ///     Creates the model with Model Extensions annotations. Caching is not implemented,
-        ///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
-        /// </summary>
-        /// <param name="context"> The context the model is being produced for. </param>
-        /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
-        /// <remarks>
-        ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
-        /// </remarks>
-        /// <returns> The model to be used. </returns>
-        public override IModel GetModel(DbContext context, IConventionSetBuilder conventionSetBuilder)
+		/// <summary>
+		///     Creates the model with Model Extensions annotations. Caching is not implemented,
+		///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
+		/// </summary>
+		/// <param name="context"> The context the model is being produced for. </param>
+		/// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
+		/// <remarks>
+		///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
+		/// </remarks>
+		/// <returns> The model to be used. </returns>
+		[Obsolete]
+		public override IModel GetModel(DbContext context, IConventionSetBuilder conventionSetBuilder)
         {
             ConventionSet conventionSet = conventionPlugin.ModifyConventions(conventionSetBuilder.CreateConventionSet());
 
@@ -57,6 +59,17 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
             return model;
         }
 
+        /// <summary>
+        ///     Creates the model with Model Extensions annotations. Caching is not implemented,
+        ///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
+        /// </summary>
+        /// <param name="context"> The context the model is being produced for. </param>
+        /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
+        /// <param name="modelDependencies"> The dependencies object for the model. </param>
+        /// <remarks>
+        ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
+        /// </remarks>
+        /// <returns> The model to be used. </returns>
         public override IModel GetModel(DbContext context, IConventionSetBuilder conventionSetBuilder, ModelDependencies modelDependencies)
         {
 	        ConventionSet conventionSet = conventionPlugin.ModifyConventions(conventionSetBuilder.CreateConventionSet());

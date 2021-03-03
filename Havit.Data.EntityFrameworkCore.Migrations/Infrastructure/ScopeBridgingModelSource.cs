@@ -27,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <summary>
         ///     Creates model using <see cref="IScopedModelSource"/>, which is scoped per <see cref="DbContext"/>.
         ///
-        ///     Caching is not affected, i.e. it is still active by original implementation in <see cref="ModelSource.GetModel"/>.
+        ///     Caching is not affected, i.e. it is still active by original implementation in <see cref="ModelSource.GetModel(DbContext,IConventionSetBuilder)"/>.
         /// </summary>
         /// <param name="context"> The context the model is being produced for. </param>
         /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
@@ -41,7 +41,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <summary>
         ///     Creates model using <see cref="IScopedModelSource"/>, which is scoped per <see cref="DbContext"/>.
         ///
-        ///     Caching is not affected, i.e. it is still active by original implementation in <see cref="ModelSource.GetModel"/>.
+        ///     Caching is not affected, i.e. it is still active by original implementation in <see cref="ModelSource.GetModel(DbContext,IConventionSetBuilder,ModelDependencies)"/>.
         /// </summary>
         /// <remarks>
         ///     This is necessary, if <see cref="IModelSource"/> (or one of its dependencies) needs to access <see cref="IDbContextOptions"/>.

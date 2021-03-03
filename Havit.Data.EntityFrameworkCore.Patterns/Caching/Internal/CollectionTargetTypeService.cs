@@ -37,7 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal
                         .Where(navigation => navigation.IsCollection)
                         .ToDictionary(
                             navigation => new TypePropertyName(navigation.DeclaringEntityType.ClrType, navigation.Name),
-                            navigation => navigation.GetTargetType().ClrType);
+                            navigation => navigation.TargetEntityType.ClrType);
                     }
                 }
             }

@@ -19,12 +19,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
     /// <remarks>
     /// Implementation as <see cref="IModelFinalizedConvention"/> is necessary, because there's no convention for changing annotation of <see cref="INavigation"/>.
     /// </remarks>
-    public class CollectionOrderIndexConvention : IModelFinalizedConvention
+    public class CollectionOrderIndexConvention : IModelFinalizingConvention
     {
         /// <inheritdoc />
-        public IModel ProcessModelFinalized(IModel model)
-        {            
-            foreach (var navigation in model
+        public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
+        {
+            foreach (var navigation in modelBuilder.Metadata
                 .GetApplicationEntityTypes()
                 .SelectMany(e => e.GetNavigations()))
             {
@@ -32,9 +32,6 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
                 CreateIndex(conventionNavigation);
             }
-
-			// TODO EF5: Ověřit funkčnost
-            return model;
         }
 
         private static void CreateIndex(IConventionNavigation navigation)

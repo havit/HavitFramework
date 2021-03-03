@@ -36,9 +36,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					return;
 				}
 
+				IConventionProperty fkProperty = navigationBuilder.Metadata.ForeignKey.Properties[0];
+				var fkColumn = fkProperty.GetColumnName(
+					StoreObjectIdentifier.Create(fkProperty.DeclaringEntityType, StoreObjectType.Table)!.Value);
 				var extendedProperties = new Dictionary<string, string>
 					{
-						{ $"Collection_{navigationBuilder.Metadata.PropertyInfo.Name}", navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.GetTableName() + "." + navigationBuilder.Metadata.ForeignKey.Properties[0].GetColumnName() }
+						{ $"Collection_{navigationBuilder.Metadata.PropertyInfo.Name}", navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.GetTableName() + "." + fkColumn }
 					};
 
 				navigationBuilder.Metadata.TargetEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);

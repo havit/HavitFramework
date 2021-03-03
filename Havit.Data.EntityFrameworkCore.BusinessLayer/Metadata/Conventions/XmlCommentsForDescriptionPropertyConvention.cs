@@ -100,7 +100,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					}
 				}
 
-				foreach (INavigation collection in entityType.GetNavigations().Where(n => n.IsCollection()))
+				foreach (INavigation collection in entityType.GetNavigations().Where(n => n.IsCollection))
 				{
 					if (collection.Name == "Localizations" && collection.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
 					{

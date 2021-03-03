@@ -44,7 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					continue;
 				}
 
-				var columnName = property.GetColumnName();
+				var columnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
 				if (columnName.EndsWith("Id"))
 				{
 					string newColumnName = columnName.Left(columnName.Length - 2 /* "Id".Length */) + "ID";

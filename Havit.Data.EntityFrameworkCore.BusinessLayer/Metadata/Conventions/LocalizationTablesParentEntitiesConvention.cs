@@ -41,7 +41,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				var parentIdProperty = foreignKeyBuilder.Metadata.Properties.Single();
 
 				IConventionEntityType principalEntityType = foreignKeyBuilder.Metadata.PrincipalEntityType;
-				string pkColumnName = principalEntityType.FindPrimaryKey().Properties.First().GetColumnName();
+				IConventionProperty property = principalEntityType.FindPrimaryKey().Properties.First();
+				string pkColumnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
 				parentIdProperty.SetColumnName(pkColumnName, fromDataAnnotation: false /* Convention */);
 			}
 		}

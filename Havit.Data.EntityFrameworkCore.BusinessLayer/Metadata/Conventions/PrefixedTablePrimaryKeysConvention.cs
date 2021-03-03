@@ -30,7 +30,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 
 			// pro entitní tabulky očekáváme jednu hodnotu
 			// pro vazební tabulky neočekáváme žádnou hodnotu
-			var primaryKeysEndingId = keyBuilder.Metadata.Properties.Where(property => property.GetColumnName() == "Id").ToArray();			
+			var primaryKeysEndingId = keyBuilder.Metadata.Properties
+				.Where(property => property
+					.GetColumnName(StoreObjectIdentifier.Create(
+						property.DeclaringEntityType, StoreObjectType.Table)!.Value) == "Id")
+				.ToArray();
 			if (primaryKeysEndingId.Length == 1)
 			{
 				primaryKeysEndingId[0].SetColumnName(keyBuilder.Metadata.DeclaringEntityType.ShortName() + "ID", fromDataAnnotation: false /* Convention */);

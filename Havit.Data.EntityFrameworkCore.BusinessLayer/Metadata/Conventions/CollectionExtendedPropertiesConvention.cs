@@ -44,7 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 						{ $"Collection_{navigationBuilder.Metadata.PropertyInfo.Name}", navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.GetTableName() + "." + fkColumn }
 					};
 
-				navigationBuilder.Metadata.TargetEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
+				navigationBuilder.Metadata.DeclaringEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

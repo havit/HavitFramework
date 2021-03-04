@@ -46,7 +46,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			base.OnConfiguring(optionsBuilder);
 
 			optionsBuilder.UseModelExtensions(builder => builder
-                .ModelExtensionsAssembly(Settings.ModelExtensionsAssembly)
+						 .ModelExtensionsAssembly(Settings.ModelExtensionsAssembly)
 				.UseStoredProcedures()
 				.UseExtendedProperties()
 				.UseBusinessLayerStoredProcedures()

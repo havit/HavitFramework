@@ -110,9 +110,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
 			return dbContext.Set<TProperty>()
 				.AsQueryable()
-				// workaround: Bez následujícího řádku může při vykonávání dotazu dojít System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
-				// Chráněno testy DbDataLoader_Load_Collection_SupportsNullableForeignKeysInMemory a DbDataLoader_Load_Collection_SupportsNullableForeignKeysInDatabase (pokud odebereme následující řádek, budou tyto testy failovat).
-				.WhereIf(foreignKeyProperty.ClrType == typeof(int?), item => null != EF.Property<int?>(item, foreignKeyProperty.Name))
+
+				// V EF Core 2.x a 3.x bez následujícího řádku mohlo při vykonávání dotazu dojít k System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
+				// V EF Core 5.x opraveno, již není třeba.
+				// Chování chráněno testy DbDataLoader_Load_Collection_SupportsNullableForeignKeysInMemory a DbDataLoader_Load_Collection_SupportsNullableForeignKeysInDatabase.
+				//.WhereIf(foreignKeyProperty.ClrType == typeof(int?), item => null != EF.Property<int?>(item, foreignKeyProperty.Name))
 				// Nyní musíme ověřit, zda pracujeme s int nebo Nullable<int>, přičemž pro Nullable<int> potřebujeme zvláštní péči:
 				// Zkompilovat a spustit jde pro oba případy jen varianta s int, avšak v runtime způsobí client-side evaluation (podmínka se nedostane do dotazu, ale je vyhodnocena entity frameworkem), což z výkonových důvodů opravdu nechceme.
 				// Proto doplníme variantu pro int?, která tento problém vyřeší.

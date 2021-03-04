@@ -24,7 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		// Podpora pro suppress - není, kdo nechce restrict, nastaví si vlastní hodnotu.
 
 		/// <inheritdoc />
-		public override void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public override void ProcessForeignKeyAdded(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
 			// Systémové tabulky nechceme změnit (byť zde ani nemá cenu řešit)
 			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())
@@ -36,7 +36,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		}
 
 		/// <inheritdoc />
-		public override void ProcessForeignKeyRequirednessChanged(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public override void ProcessForeignKeyRequirednessChanged(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext<bool?> context)
 		{
 			// Systémové tabulky nechceme změnit (byť zde ani nemá cenu řešit)
 			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())

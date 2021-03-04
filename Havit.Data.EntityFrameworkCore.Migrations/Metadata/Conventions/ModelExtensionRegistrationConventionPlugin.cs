@@ -26,10 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions
         /// <inheritdoc />
         public ConventionSet ModifyConventions(ConventionSet conventionSet)
         {
-            // insert before ValidatingConvention, which marks model as readonly (and thus it won't be possible to modify model anymore)
-            ConventionSet.AddBefore(conventionSet.ModelFinalizedConventions,
-                new ModelExtensionRegistrationConvention(modelExtensionsAssembly, modelExtensionAnnotationProvider),
-                typeof(ValidatingConvention));
+            conventionSet.ModelFinalizingConventions.Add(new ModelExtensionRegistrationConvention(modelExtensionsAssembly, modelExtensionAnnotationProvider));
 
             return conventionSet;
         }

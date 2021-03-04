@@ -13,10 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{			
-			// přidíváme se na začátek, protože vestavěná konvence převádí model na readonly
-			// pokud se přidáme na konec, je již model readonly a my se dozvíme výjimku NullReferenceException v OnAnnotationSet
-			// (bohužel není vyhozena smyslupná výjimka o readonly modelu).
-			conventionSet.ModelFinalizedConventions.Insert(0, new XmlCommentsForDescriptionPropertyConvention());
+			conventionSet.ModelFinalizingConventions.Add(new XmlCommentsForDescriptionPropertyConvention());
 			return conventionSet;
 		}
 	}

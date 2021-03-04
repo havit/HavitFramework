@@ -14,9 +14,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	public class LocalizationTablesParentEntitiesConvention : IForeignKeyAddedConvention
 	{
 		/// <inheritdoc />
-		public void ProcessForeignKeyAdded(IConventionRelationshipBuilder relationshipBuilder, IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
-			var entityType = relationshipBuilder.Metadata.DeclaringEntityType;
+			var entityType = foreignKeyBuilder.Metadata.DeclaringEntityType;
 
 			// Systémové tabulky nechceme změnit.
 			if (entityType.IsSystemType())
@@ -35,13 +35,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if ((relationshipBuilder.Metadata.Properties.Count == 1) && (relationshipBuilder.Metadata.Properties.Single().Name == "ParentId"))
+			if ((foreignKeyBuilder.Metadata.Properties.Count == 1) && (foreignKeyBuilder.Metadata.Properties.Single().Name == "ParentId"))
 			{
 				// cizí klíč s názvem vlastnosti ParentId
-				var parentIdProperty = relationshipBuilder.Metadata.Properties.Single();
+				var parentIdProperty = foreignKeyBuilder.Metadata.Properties.Single();
 
-				IConventionEntityType principalEntityType = relationshipBuilder.Metadata.PrincipalEntityType;
-				string pkColumnName = principalEntityType.FindPrimaryKey().Properties.First().GetColumnName();
+				IConventionEntityType principalEntityType = foreignKeyBuilder.Metadata.PrincipalEntityType;
+				IConventionProperty property = principalEntityType.FindPrimaryKey().Properties.First();
+				string pkColumnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
 				parentIdProperty.SetColumnName(pkColumnName, fromDataAnnotation: false /* Convention */);
 			}
 		}

@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 		{
 			base.OnConfiguring(optionsBuilder);
 			optionsBuilder.ReplaceService<IModelCacheKeyFactory, NoCacheModelCacheKeyFactory>();
-			optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
+			optionsBuilder.UseSqlServer("Database=Dummy");
 			optionsBuilder.EnableServiceProviderCaching(false);
 		}
     }

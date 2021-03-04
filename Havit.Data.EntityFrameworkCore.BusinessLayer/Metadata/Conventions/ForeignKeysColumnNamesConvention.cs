@@ -13,44 +13,38 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
     /// </summary>
     public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
     {
-		public void ProcessForeignKeyAdded(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
-			SetColumnName(relationshipBuilder);
+			SetColumnName(foreignKeyBuilder);
 		}
 
-		public void ProcessForeignKeyPropertiesChanged(
-            IConventionRelationshipBuilder relationshipBuilder,
-            IReadOnlyList<IConventionProperty> oldDependentProperties,
-            IConventionKey oldPrincipalKey,
-            IConventionContext<IConventionRelationshipBuilder> context)
+		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
 		{
 
-			SetColumnName(relationshipBuilder);
+			SetColumnName(foreignKeyBuilder);
 		}
 
-		private static void SetColumnName(IConventionRelationshipBuilder relationshipBuilder)
+		private static void SetColumnName(IConventionForeignKeyBuilder foreignKeyBuilder)
 		{
 			// Systémové tabulky nechceme změnit.
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())
+			if (foreignKeyBuilder.Metadata.DeclaringEntityType.IsSystemType())
 			{
 				return;
 			}
 
-			if (relationshipBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysColumnNamesConvention))
+			if (foreignKeyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysColumnNamesConvention))
 			{
 				return;
 			}
 
-			foreach (var property in relationshipBuilder.Metadata.Properties)
+			foreach (var property in foreignKeyBuilder.Metadata.Properties)
 			{
 				if (property.IsConventionSuppressed(ConventionIdentifiers.ForeignKeysColumnNamesConvention))
 				{
 					continue;
 				}
 
-				var columnName = property.GetColumnName();
+				var columnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
 				if (columnName.EndsWith("Id"))
 				{
 					string newColumnName = columnName.Left(columnName.Length - 2 /* "Id".Length */) + "ID";

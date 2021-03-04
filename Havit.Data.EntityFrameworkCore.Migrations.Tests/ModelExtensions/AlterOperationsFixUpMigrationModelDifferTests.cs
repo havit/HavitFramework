@@ -7,13 +7,12 @@ using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 {
-    public class AlterOperationsFixUpMigrationModelDifferTests
+	public class AlterOperationsFixUpMigrationModelDifferTests
     {
         private const string TestAnnotationPrefix = "TestAnnotations:";
 
@@ -168,7 +167,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
                         .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
                         .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
                 var operations = source.Diff(target);
-
+                
                 Assert.AreEqual(1, operations.Count);
                 Assert.IsInstanceOfType(operations[0], typeof(AlterColumnOperation));
             }
@@ -203,10 +202,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
                 Assert.AreEqual("TargetColumn", operation.Name);
                 Assert.AreEqual("Dummy", operation.Table);
                 Assert.AreEqual(typeof(string), operation.ClrType);
-                Assert.AreEqual(null, operation.ColumnType);
+                Assert.AreEqual("nvarchar(max)", operation.ColumnType); // EF Core 5.x change: Differ does not leave ColumnType null
                 Assert.AreEqual(true, operation.IsNullable);
                 Assert.AreEqual(typeof(string), operation.OldColumn.ClrType);
-                Assert.AreEqual(null, operation.OldColumn.ColumnType);
+                Assert.AreEqual("nvarchar(max)", operation.OldColumn.ColumnType); // EF Core 5.x change: Differ does not leave ColumnType null
                 Assert.AreEqual(true, operation.OldColumn.IsNullable);
                 Assert.IsNull(operation.Schema);
             }
@@ -266,9 +265,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             public void AlterOperationsFixUpMigrationModelDiffer_AlterDatabase_NoChange_NoMigration()
             {
                 var source = new MigrationsEndToEndTestDbContext<DummySource>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA"));
+                    builder.HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
                 var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA"));
+                    builder.HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
                 var operations = source.Diff(target);
 
                 Assert.AreEqual(0, operations.Count);
@@ -278,9 +277,13 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             public void AlterOperationsFixUpMigrationModelDiffer_AlterDatabase_TwoAnnotationsOneChanged_OneOperation()
             {
                 var source = new MigrationsEndToEndTestDbContext<DummySource>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
                 var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB_amended"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
                 var operations = source.Diff(target);
 
                 Assert.AreEqual(1, operations.Count);
@@ -291,18 +294,22 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             public void AlterOperationsFixUpMigrationModelDiffer_AlterDatabase_TwoAnnotationsOneChanged_OneOperationWithOnlyOneCurrentAnnotation()
             {
                 var source = new MigrationsEndToEndTestDbContext<DummySource>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
                 var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB_amended"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
                 var operations = source.Diff(target);
 
                 Assert.AreEqual(1, operations.Count);
 
                 var operation = (AlterDatabaseOperation)operations[0];
                 Assert.AreEqual(1, operation.GetAnnotations().Count());
-                Assert.AreEqual("Annotation2", operation.GetAnnotations().First().Name);
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.GetAnnotations().First().Name);
                 Assert.AreEqual("ValueB_amended", operation.GetAnnotations().First().Value);
-                Assert.AreEqual("Annotation2", operation.OldDatabase.GetAnnotations().First().Name);
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldDatabase.GetAnnotations().First().Name);
                 Assert.AreEqual("ValueB", operation.OldDatabase.GetAnnotations().First().Value);
             }
 
@@ -310,9 +317,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             public void AlterOperationsFixUpMigrationModelDiffer_AlterDatabase_TwoAnnotationsOneDeleted_OneOperationWithOnlyOneOldAnnotation()
             {
                 var source = new MigrationsEndToEndTestDbContext<DummySource>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
                 var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
                 var operations = source.Diff(target);
 
                 Assert.AreEqual(1, operations.Count);
@@ -320,7 +330,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
                 var operation = (AlterDatabaseOperation)operations[0];
                 Assert.AreEqual(0, operation.GetAnnotations().Count());
                 Assert.AreEqual(1, operation.OldDatabase.GetAnnotations().Count());
-                Assert.AreEqual("Annotation2", operation.OldDatabase.GetAnnotations().First().Name);
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldDatabase.GetAnnotations().First().Name);
                 Assert.AreEqual("ValueB", operation.OldDatabase.GetAnnotations().First().Value);
             }
 
@@ -328,9 +338,14 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             public void AlterOperationsFixUpMigrationModelDiffer_AlterDatabase_TwoAnnotationsOneAdded_OneOperationWithOnlyOneCurrentAnnotation()
             {
                 var source = new MigrationsEndToEndTestDbContext<DummySource>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB"));
+                    builder
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+	                    .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB"));
                 var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder =>
-                    builder.HasAnnotation("Annotation1", "ValueA").HasAnnotation("Annotation2", "ValueB").HasAnnotation("Annotation3", "Something"));
+	                builder
+		                .HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA")
+		                .HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB")
+		                .HasAnnotation($"{TestAnnotationPrefix}Annotation3", "Something"));
                 var operations = source.Diff(target);
 
                 Assert.AreEqual(1, operations.Count);
@@ -338,7 +353,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
                 var operation = (AlterDatabaseOperation)operations[0];
                 Assert.AreEqual(1, operation.GetAnnotations().Count());
                 Assert.AreEqual(0, operation.OldDatabase.GetAnnotations().Count());
-                Assert.AreEqual("Annotation3", operation.GetAnnotations().First().Name);
+                Assert.AreEqual($"{TestAnnotationPrefix}Annotation3", operation.GetAnnotations().First().Name);
                 Assert.AreEqual("Something", operation.GetAnnotations().First().Value);
             }
         }
@@ -356,31 +371,41 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 
                 IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
-                builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
-                    .WithAnnotationProvider<TestAnnotationsMigrationsAnnotationProvider>());
-                builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<ModelExtensionsExtension>().WithConsolidateStatementsForMigrationsAnnotationsForModel(true));
+                builder.AddOrUpdateExtension(optionsBuilder.Options
+	                .FindExtension<CompositeRelationalAnnotationProviderExtension>()
+                    .WithAnnotationProvider<TestAnnotationsRelationalAnnotationProvider>());
+                builder.AddOrUpdateExtension(optionsBuilder.Options
+	                .FindExtension<ModelExtensionsExtension>().WithConsolidateStatementsForMigrationsAnnotationsForModel(true));
             }
         }
 
-        private class TestAnnotationsMigrationsAnnotationProvider : MigrationsAnnotationProvider
+        // ReSharper disable once ClassNeverInstantiated.Local (instantiated by EF Core)
+        private class TestAnnotationsRelationalAnnotationProvider : RelationalAnnotationProvider
         {
-            public TestAnnotationsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies) : base(dependencies)
+	        public TestAnnotationsRelationalAnnotationProvider(RelationalAnnotationProviderDependencies dependencies)
+		        : base(dependencies)
+	        {
+	        }
+
+	        public override IEnumerable<IAnnotation> For(IColumn column)
             {
+                return column.PropertyMappings.First().Property
+	                .GetAnnotations()
+	                .Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
-            public override IEnumerable<IAnnotation> For(IProperty property)
+            public override IEnumerable<IAnnotation> For(ITable table)
             {
-                return property.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
+	            return table.EntityTypeMappings.First().EntityType
+		            .GetAnnotations()
+		            .Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
-            public override IEnumerable<IAnnotation> For(IEntityType entityType)
+            public override IEnumerable<IAnnotation> For(IRelationalModel relationalModel)
             {
-                return entityType.GetAnnotations().Where(a => a.Name.StartsWith(TestAnnotationPrefix));
-            }
-
-            public override IEnumerable<IAnnotation> For(IModel model)
-            {
-                return model.GetAnnotations();
+	            return relationalModel.Model
+		            .GetAnnotations()
+		            .Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
         }
     }

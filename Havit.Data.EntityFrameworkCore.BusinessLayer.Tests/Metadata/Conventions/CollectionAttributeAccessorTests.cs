@@ -103,7 +103,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
             {
                 base.OnConfiguring(optionsBuilder);
 
-                optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
+                optionsBuilder.UseSqlServer("Database=Dummy");
                 optionsBuilder.EnableServiceProviderCaching(false);
             }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
@@ -21,11 +20,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// 
 	/// <remarks>U properties pre cudzie kľúče sa vezme XML komentár z navigačnej property (ak existuje a na property pre cudzí kľúč nebol už definovaný komentár).</remarks>
 	/// </summary>
-	public class XmlCommentsForDescriptionPropertyConvention : IModelFinalizedConvention
+	public class XmlCommentsForDescriptionPropertyConvention : IModelFinalizingConvention
 	{
 		internal const string MsDescriptionExtendedProperty = "MS_Description";
-		
-		public void ProcessModelFinalized(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
+
+		public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
 		{
 			// suppress neřešíme
 			// systémové tabulky řešeny v GetApplicationEntityTypes()
@@ -101,7 +100,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					}
 				}
 
-				foreach (INavigation collection in entityType.GetNavigations().Where(n => n.IsCollection()))
+				foreach (INavigation collection in entityType.GetNavigations().Where(n => n.IsCollection))
 				{
 					if (collection.Name == "Localizations" && collection.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
 					{

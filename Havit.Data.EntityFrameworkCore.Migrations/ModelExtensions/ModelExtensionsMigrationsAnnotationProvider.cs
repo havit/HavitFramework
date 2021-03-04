@@ -25,9 +25,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
         }
 
         /// <inheritdoc />
-        public override IEnumerable<IAnnotation> For(IModel model)
+        public override IEnumerable<IAnnotation> ForRemove(IRelationalModel relationalModel)
         {
-            return model.GetAnnotations().Where(IsModelExtension);
+            return relationalModel.GetAnnotations().Where(IsModelExtension);
         }
 
         private bool IsModelExtension(IAnnotation annotation)

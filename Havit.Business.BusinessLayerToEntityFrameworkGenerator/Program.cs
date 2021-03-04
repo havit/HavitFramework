@@ -20,6 +20,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator
 			// zjistíme parametry příkazové řádky
 			Arguments commandLineArguments = new Arguments(args);
 
+			ConsoleHelper.WriteLineWarning(@"Generates code for EF Core 2.x or 3.x. Support for latest version 5.x could be added on demand later.");
+			ConsoleHelper.WriteLineWarning(@"The most important change is support for M:N collections without association classes in EF Core 5.x.");
+
 			// pokud jsou parametry špatně, oznámíme a končíme
 			if (commandLineArguments["sqlserver"] == null || commandLineArguments["database"] == null || commandLineArguments["solutionpath"] == null)
 			{

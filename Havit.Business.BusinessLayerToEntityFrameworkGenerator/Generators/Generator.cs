@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
@@ -12,7 +13,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 		public static void Generate(Database database, CsprojFile modelCsprojFile, CsprojFile entityCsprojFile)
 		{
 			// nalezneme tabulky, na jejichž základě se budou generovat třídy
-			Console.BufferHeight = Int16.MaxValue - 1;
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				Console.BufferHeight = Int16.MaxValue - 1;
+			}
 
 			var modelClassSource = new ModelClassSource();
 			var modelClasses = modelClassSource.GetModelClasses(DatabaseHelper.Database);

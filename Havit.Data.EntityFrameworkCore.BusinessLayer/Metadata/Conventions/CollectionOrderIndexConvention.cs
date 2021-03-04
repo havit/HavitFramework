@@ -19,10 +19,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
     /// <remarks>
     /// Implementation as <see cref="IModelFinalizedConvention"/> is necessary, because there's no convention for changing annotation of <see cref="INavigation"/>.
     /// </remarks>
-    public class CollectionOrderIndexConvention : IModelFinalizedConvention
+    public class CollectionOrderIndexConvention : IModelFinalizingConvention
     {
         /// <inheritdoc />
-        public void ProcessModelFinalized(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
+        public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
         {
             foreach (var navigation in modelBuilder.Metadata
                 .GetApplicationEntityTypes()

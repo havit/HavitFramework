@@ -18,15 +18,15 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 		/// </summary>
 		public CompositeMigrationsSqlGenerator(
 		    MigrationsSqlGeneratorDependencies dependencies,
-		    IMigrationsAnnotationProvider migrationsAnnotations,
+			IRelationalAnnotationProvider migrationsAnnotations,
 		    IEnumerable<IMigrationOperationSqlGenerator> operationGenerators) 
 		    : base(dependencies, migrationsAnnotations)
 	    {
 		    this.operationGenerators = operationGenerators;
 	    }
 
-        /// <inheritdoc />
-        protected override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder, bool terminate = true)
+		/// <inheritdoc />
+		protected override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder, bool terminate = true)
 	    {
 		    base.Generate(operation, model, builder, terminate);
 

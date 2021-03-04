@@ -20,6 +20,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
 				.WithAnnotationProvider<ExtendedPropertiesMigrationsAnnotationProvider>());
+			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeRelationalAnnotationProviderExtension>()
+				.WithAnnotationProvider<ExtendedPropertiesRelationalAnnotationProvider>());
 			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
 				.WithGeneratorType<ExtendedPropertiesMigrationOperationSqlGenerator>());
 		}

@@ -10,7 +10,7 @@ namespace Havit.Collections
 	public enum SortDirection
 	{
 		/// <summary>
-		/// Vyestupné.
+		/// Vzestupné.
 		/// </summary>
 		Ascending,
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 {
@@ -11,18 +12,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 	/// Předepisuje metody Query k implementaci, která má vracet dotaz postavený nad datovým zdrojem.
 	/// Poskytuje (protected) metody pro použití v potomcích pro snadnou implementaci.
 	/// </summary>
-	/// <typeparam name="TQueryResult">Typ, který je vracen Query.</typeparam>
-	public abstract class QueryBase<TQueryResult>
+	/// <typeparam name="TQueryResultItem">Typ záznamů, které vrací Query.</typeparam>
+	public abstract class QueryBase<TQueryResultItem>
 	{
 		/// <summary>
 		/// Definuje Query.
 		/// </summary>
-		protected abstract IQueryable<TQueryResult> Query();
+		protected abstract IQueryable<TQueryResultItem> Query();
 		
 		/// <summary>
 		/// Vrátí všechny objekty dle Query.
 		/// </summary>
-		protected List<TQueryResult> Select()
+		protected List<TQueryResultItem> Select()
 		{
 			return Query().ToList();
 		}
@@ -30,15 +31,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <summary>
 		/// Vrátí všechny objekty dle Query.
 		/// </summary>
-		protected Task<List<TQueryResult>> SelectAsync()
+		protected Task<List<TQueryResultItem>> SelectAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().ToListAsync();
+			return Query().ToListAsync(cancellationToken);
 		}
 
 		/// <summary>
 		/// Vrátí danou stránku dané velikosti dle Query.
 		/// </summary>
-		protected List<TQueryResult> SelectPage(int pageIndex, int pageSize)
+		protected List<TQueryResultItem> SelectPage(int pageIndex, int pageSize)
 		{
 			return Query().Skip(pageIndex * pageSize).Take(pageSize).ToList();
 		}
@@ -46,9 +47,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <summary>
 		/// Vrátí danou stránku dané velikosti dle Query.
 		/// </summary>
-		protected Task<List<TQueryResult>> SelectPageAsync(int pageIndex, int pageSize)
+		protected Task<List<TQueryResultItem>> SelectPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
 		{
-			return Query().Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
+			return Query().Skip(pageIndex * pageSize).Take(pageSize).ToListAsync(cancellationToken);
 		}
 
 		/// <summary>
@@ -62,9 +63,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <summary>
 		/// Vrátí počet objektů odpovídajících Query.
 		/// </summary>
-		protected Task<int> CountAsync()
+		protected Task<int> CountAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().CountAsync();
+			return Query().CountAsync(cancellationToken);
 		}
 
 		/// <summary>
@@ -74,7 +75,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <exception cref="InvalidOperationException">
 		/// Žádný objekt neodpovídá Query.
 		/// </exception>
-		protected TQueryResult First()
+		protected TQueryResultItem First()
 		{
 			return Query().First();
 		}
@@ -86,16 +87,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <exception cref="InvalidOperationException">
 		/// Žádný objekt neodpovídá Query.
 		/// </exception>
-		protected Task<TQueryResult> FirstAsync()
+		protected Task<TQueryResultItem> FirstAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().FirstAsync();
+			return Query().FirstAsync(cancellationToken);
 		}
 
 		/// <summary>
 		/// Vrátí první objekt odpovídající Query. Neodpovídá-li Query žádný objekt, vrací null.
 		/// Doporučeno je, aby Query definovalo pořadí.
 		/// </summary>
-		protected TQueryResult FirstOrDefault()
+		protected TQueryResultItem FirstOrDefault()
 		{
 			return Query().FirstOrDefault();
 		}
@@ -104,9 +105,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// Vrátí první objekt odpovídající Query. Neodpovídá-li Query žádný objekt, vrací null.
 		/// Doporučeno je, aby Query definovalo pořadí.
 		/// </summary>
-		protected Task<TQueryResult> FirstOrDefaultAsync()
+		protected Task<TQueryResultItem> FirstOrDefaultAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().FirstOrDefaultAsync();
+			return Query().FirstOrDefaultAsync(cancellationToken);
 		}
 
 		/// <summary>
@@ -115,7 +116,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <exception cref="InvalidOperationException">
 		/// Žádný objekt neodpovídá Query nebo jich odpovídá více.
 		/// </exception>
-		protected TQueryResult Single()
+		protected TQueryResultItem Single()
 		{
 			return Query().Single();
 		}
@@ -126,9 +127,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <exception cref="InvalidOperationException">
 		/// Žádný objekt neodpovídá Query nebo jich odpovídá více.
 		/// </exception>
-		protected Task<TQueryResult> SingleAsync()
+		protected Task<TQueryResultItem> SingleAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().SingleAsync();
+			return Query().SingleAsync(cancellationToken);
 		}
 
 		/// <summary>
@@ -137,7 +138,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <exception cref="InvalidOperationException">
 		/// Query odpovídá více objektů.
 		/// </exception>
-		protected TQueryResult SingleOrDefault()
+		protected TQueryResultItem SingleOrDefault()
 		{
 			return Query().SingleOrDefault();
 		}
@@ -148,9 +149,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <exception cref="InvalidOperationException">
 		/// Query odpovídá více objektů.
 		/// </exception>
-		protected Task<TQueryResult> SingleOrDefaultAsync()
+		protected Task<TQueryResultItem> SingleOrDefaultAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().SingleOrDefaultAsync();
+			return Query().SingleOrDefaultAsync(cancellationToken);
 		}
 
 		/// <summary>
@@ -164,9 +165,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <summary>
 		/// Vrací true, pokud alespoň jeden objekt odpovídá Query, v opačném případě vrací false.
 		/// </summary>
-		protected Task<bool> AnyAsync()
+		protected Task<bool> AnyAsync(CancellationToken cancellationToken = default)
 		{
-			return Query().AnyAsync();
+			return Query().AnyAsync(cancellationToken);
 		}
 	}
 }

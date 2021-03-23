@@ -11,6 +11,7 @@ namespace Havit.Data.Patterns.Localizations.Internal
 {
 	/// <summary>
 	/// Služba vrací na základě culture (např. "en-US", "cs-CZ", "sk", "") ID jazyka.
+	/// Hledá se dle <see cref="ILanguage.UiCulture"/>.
 	/// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 	/// Jazyky jsou načteny do lokální proměné a nejsou nikdy invalidovány.
 	/// </summary>
@@ -68,7 +69,7 @@ namespace Havit.Data.Patterns.Localizations.Internal
 		}
 
 		/// <summary>
-		/// Zajistí načtení jazyků do poměti pro opakované použití.
+		/// Zajistí načtení jazyků do paměti pro opakované použití.
 		/// </summary>
 		private Dictionary<string, int> GetLanguagesByCulture()
 		{

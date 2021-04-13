@@ -33,15 +33,19 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			// dokud je mazán, oznamují chybu 409 Confict s popisem "The specified container is being deleted."
 			// Proto raději smažeme jen bloby.
 
-			var service = GetAzureBlobStorageService();
+			AzureBlobStorageService service = GetAzureBlobStorageService();
+			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+
+			service = GetAzureBlobStorageService(secondary: true);
 			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
 		}
 
 		[ClassCleanup]
 		public static void CleanUp()
-		{ 
+		{
 #if !DEBUG
 			GetAzureBlobStorageService().GetBlobContainerClient().Delete();
+			GetAzureBlobStorageService(secondary: true).GetBlobContainerClient().Delete();
 #endif
 		}
 
@@ -192,6 +196,30 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureBlobStorageService_Copy()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_CopyAsync()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_Move()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_MoveAsync()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
 		public void AzureBlobStorageService_EncryptAndDecryptAllFiles()
 		{
 			// Arrange
@@ -302,7 +330,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			Assert.IsInstanceOfType(service, typeof(AzureBlobStorageService<TestFileStorage>));
 		}
 
-		private static AzureBlobStorageService GetAzureBlobStorageService(string container = "tests", string cacheControl = "", EncryptionOptions encryptionOptions = null)
+		private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
 		{
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			// use your own Azure Storage account if you do not have access to this file
@@ -310,7 +338,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 				new AzureBlobStorageServiceOptions
 				{
 					BlobStorage = File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
-					ContainerName = container,
+					ContainerName = secondary ? "secondarytests" : "primarytests",
 					CacheControl = cacheControl,
 					EncryptionOptions = encryptionOptions
 				});

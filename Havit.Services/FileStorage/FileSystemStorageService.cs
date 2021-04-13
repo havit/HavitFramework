@@ -138,6 +138,44 @@ namespace Havit.Services.FileStorage
 			}
 		}
 
+		public override void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
+			{
+				File.Copy(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
+			}
+			else
+			{
+				base.Copy(sourceFileName, targetFileStorageService, targetFileName);
+			}
+		}
+
+		public override void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
+			{
+				File.Move(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
+			}
+			else
+			{
+				base.Move(sourceFileName, targetFileStorageService, targetFileName);
+			}
+		}
+
+		public override async Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
+			{
+				// předpokládáme, že přejmenovat (přesunout soubor) v rámci jednoho FileSystemStorageService neasynchronně, je efektivnější,
+				// než přesun souboru přes streamy v bázové třídě asynchronně.
+				File.Move(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
+			}
+			else
+			{
+				await base.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+			}
+		}
+
 		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
@@ -259,5 +297,16 @@ namespace Havit.Services.FileStorage
 
 			return IsPathInsideFolder(filePath.Parent, storageDirectory);
 		}
+
+		protected override string GetContentType(string fileName)
+		{
+			return null; // FileSystem nepoužívá content types
+		}
+
+		protected override ValueTask<string> GetContentTypeAsync(string fileName, CancellationToken cancellationToken)
+		{
+			return new ValueTask<string>((string)null); // FileSystem nepoužívá content types
+		}
+
 	}
 }

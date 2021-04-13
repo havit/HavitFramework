@@ -12,7 +12,7 @@ namespace Havit.Services.FileStorage
 	/// Třída jen wrapuje jinou službu file storage.
 	/// Cílem této třídy je poskytnout pohodlný způsob implementace (např.) IApplicationFileStorage do aplikací.
 	/// </summary>
-	public abstract class FileStorageWrappingService<TUnderlyingFileStorageContext> : IFileStorageService<TUnderlyingFileStorageContext>
+	public abstract class FileStorageWrappingService<TUnderlyingFileStorageContext> : IFileStorageService<TUnderlyingFileStorageContext>, IFileStorageWrappingService
 		where TUnderlyingFileStorageContext : FileStorageContext
 	{
 		private readonly IFileStorageService<TUnderlyingFileStorageContext> fileStorageService;
@@ -23,6 +23,18 @@ namespace Havit.Services.FileStorage
 		protected FileStorageWrappingService(IFileStorageService<TUnderlyingFileStorageContext> fileStorageService)
 		{
 			this.fileStorageService = fileStorageService;
+		}
+
+		/// <inheritdoc />
+		public void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			fileStorageService.Copy(sourceFileName, targetFileStorageService, targetFileName);
+		}
+
+		/// <inheritdoc />
+		public Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			return fileStorageService.CopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken);
 		}
 
 		/// <inheritdoc />
@@ -71,6 +83,24 @@ namespace Havit.Services.FileStorage
 		public Task<DateTime?> GetLastModifiedTimeUtcAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			return fileStorageService.GetLastModifiedTimeUtcAsync(fileName, cancellationToken);
+		}
+
+		/// <inheritdoc />
+		public IFileStorageService GetWrappedFileStorageService()
+		{
+			return fileStorageService;
+		}
+
+		/// <inheritdoc />
+		public void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			fileStorageService.Move(sourceFileName, targetFileStorageService, targetFileName);
+		}
+
+		/// <inheritdoc />
+		public Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			return fileStorageService.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken);
 		}
 
 		/// <inheritdoc />

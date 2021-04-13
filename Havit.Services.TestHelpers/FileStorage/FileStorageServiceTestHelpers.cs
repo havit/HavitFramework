@@ -585,5 +585,100 @@ namespace Havit.Services.TestHelpers.FileStorage
 		{
 			return (await fileStorageService.EnumerateFilesAsync(searchPattern).ToListAsync()).Any(fileInfo => String.Equals(fileInfo.Name, testFilename, StringComparison.InvariantCultureIgnoreCase));
 		}
+
+		public static void FileStorageService_Copy(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string filename = "file.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService1.Save(filename, stream, "text/plain");
+			}
+			Assert.IsTrue(fileStorageService1.Exists(filename));
+			Assert.IsFalse(fileStorageService2.Exists(filename));
+
+			// Act
+			fileStorageService1.Copy(filename, fileStorageService2, filename);
+			
+			// Assert
+			Assert.IsTrue(fileStorageService1.Exists(filename));
+			Assert.IsTrue(fileStorageService2.Exists(filename));
+
+			// Clean up
+			fileStorageService1.Delete(filename);
+			fileStorageService2.Delete(filename);
+		}
+
+		public static async Task FileStorageService_CopyAsync(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string filename = "file.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				await fileStorageService1.SaveAsync(filename, stream, "text/plain");
+			}
+			Assert.IsTrue(await fileStorageService1.ExistsAsync(filename));
+			Assert.IsFalse(await fileStorageService2.ExistsAsync(filename));
+
+			// Act
+			await fileStorageService1.CopyAsync(filename, fileStorageService2, filename);
+
+			// Assert
+			Assert.IsTrue(await fileStorageService1.ExistsAsync(filename));
+			Assert.IsTrue(await fileStorageService2.ExistsAsync(filename));
+
+			// Clean up
+			await fileStorageService1.DeleteAsync(filename);
+			await fileStorageService2.DeleteAsync(filename);
+		}
+
+		public static void FileStorageService_Move(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string filename = "file.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService1.Save(filename, stream, "text/plain");
+			}
+			Assert.IsTrue(fileStorageService1.Exists(filename));
+			Assert.IsFalse(fileStorageService2.Exists(filename));
+
+			// Act
+			fileStorageService1.Move(filename, fileStorageService2, filename);
+
+			// Assert
+			Assert.IsFalse(fileStorageService1.Exists(filename));
+			Assert.IsTrue(fileStorageService2.Exists(filename));
+
+			// Clean up
+			fileStorageService2.Delete(filename);
+		}
+
+		public static async Task FileStorageService_MoveAsync(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string filename = "file.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				await fileStorageService1.SaveAsync(filename, stream, "text/plain");
+			}
+			Assert.IsTrue(await fileStorageService1.ExistsAsync(filename));
+			Assert.IsFalse(await fileStorageService2.ExistsAsync(filename));
+
+			// Act
+			await fileStorageService1.MoveAsync(filename, fileStorageService2, filename);
+
+			// Assert
+			Assert.IsFalse(await fileStorageService1.ExistsAsync(filename));
+			Assert.IsTrue(await fileStorageService2.ExistsAsync(filename));
+
+			// Clean up
+			await fileStorageService2.DeleteAsync(filename);
+		}
+
 	}
 }

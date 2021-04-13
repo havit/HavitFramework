@@ -55,6 +55,40 @@ namespace Havit.Services.FileStorage
 		Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
+		/// Zkopíruje soubor do dalšího úložiště.
+		/// </summary>
+		/// <param name="sourceFileName">Soubor ke zkopírování.</param>
+		/// <param name="targetFileStorageService">Cílová file storage.</param>
+		/// <param name="targetFileName">Název souboru v cílovém file storage (pokud je null, použije se sourceFileName).</param>
+		void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName);
+
+		/// <summary>
+		/// Zkopíruje soubor do dalšího úložiště.
+		/// </summary>
+		/// <param name="sourceFileName">Soubor ke zkopírování.</param>
+		/// <param name="targetFileStorageService">Cílová file storage.</param>
+		/// <param name="targetFileName">Název souboru v cílovém file storage (pokud je null, použije se sourceFileName).</param>
+		/// <param name="cancellationToken">Cancellation token.</param>
+		Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Přesune soubor do jiného úložiště.
+		/// </summary>
+		/// <param name="sourceFileName">Soubor k přesunu.</param>
+		/// <param name="targetFileStorageService">Cílová file storage.</param>
+		/// <param name="targetFileName">Název souboru v cílovém file storage (pokud je null, použije se sourceFileName).</param>
+		void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName);
+
+		/// <summary>
+		/// Přesune soubor do jiného úložiště.
+		/// </summary>
+		/// <param name="sourceFileName">Soubor k přesunu.</param>
+		/// <param name="targetFileStorageService">Cílová file storage.</param>
+		/// <param name="targetFileName">Název souboru v cílovém file storage (pokud je null, použije se sourceFileName).</param>
+		/// <param name="cancellationToken">Cancellation token.</param>
+		Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default);
+
+		/// <summary>
 		/// Smaže soubor v úložišti.
 		/// </summary>
 		void Delete(string fileName);

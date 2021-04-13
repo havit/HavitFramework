@@ -285,6 +285,30 @@ namespace Havit.Services.FileStorage
 			cacheService.Remove(GetCacheKey(CachedStorageOperation.Read, fileName));
 		}
 
+		/// <inheritdoc />
+		public void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			fileStorageService.Copy(sourceFileName, targetFileStorageService, targetFileName);
+		}
+
+		/// <inheritdoc />
+		public Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			return fileStorageService.CopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken);
+		}
+
+		/// <inheritdoc />
+		public void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			fileStorageService.Move(sourceFileName, targetFileStorageService, targetFileName);
+		}
+
+		/// <inheritdoc />
+		public Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			return fileStorageService.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken);
+		}
+
 		/// <summary>
 		/// Seznam operací pro účely sestavení klíče do cache.
 		/// </summary>

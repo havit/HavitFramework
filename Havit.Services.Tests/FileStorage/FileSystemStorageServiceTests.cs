@@ -25,12 +25,19 @@ namespace Havit.Services.Tests.FileStorage
 			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
 			CleanUp();
 			Directory.CreateDirectory(GetStoragePath());
+			Directory.CreateDirectory(GetStoragePath(secondary: true));
 		}
 
 		[ClassCleanup]
 		public static void CleanUp()
 		{
 			string path = GetStoragePath();
+			if (Directory.Exists(path))
+			{
+				Directory.Delete(path, true);
+			}
+
+			path = GetStoragePath(secondary: true);
 			if (Directory.Exists(path))
 			{
 				Directory.Delete(path, true);
@@ -229,6 +236,31 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_Copy()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Copy(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_CopyAsync()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_Move()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_MoveAsync()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+
+		[TestMethod]
 		public void FileSystemStorageService_GetFullPath_DoesNotThrowExceptionForCorrectPaths()
 		{
 			// Arrange
@@ -270,14 +302,14 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsInstanceOfType(service, typeof(FileSystemStorageService<TestFileStorage>));
 		}
 
-		private static FileSystemStorageService GetFileSystemStorageService(EncryptionOptions encryptionOptions = null)
+		private static FileSystemStorageService GetFileSystemStorageService(bool secondary = false, EncryptionOptions encryptionOptions = null)
 		{
-			return new FileSystemStorageService(GetStoragePath(), encryptionOptions);
+			return new FileSystemStorageService(GetStoragePath(secondary), encryptionOptions);
 		}
 
-		private static string GetStoragePath()
+		private static string GetStoragePath(bool secondary = false)
 		{
-			return Path.Combine(System.IO.Path.GetTempPath(), "hfwtests");
+			return Path.Combine(System.IO.Path.GetTempPath(), secondary ? "hfwtests_secondary" : "hfwtests_primary");
 		}
 	}
 }

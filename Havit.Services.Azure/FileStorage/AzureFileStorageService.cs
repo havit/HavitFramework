@@ -513,5 +513,17 @@ namespace Havit.Services.Azure.FileStorage
 				fileShareAlreadyCreated = true;
 			}
 		}
+		
+		/// <inheritdoc />
+		protected override string GetContentType(string sourceFileName)
+		{
+			return GetShareFileClient(sourceFileName).GetProperties().Value.ContentType;
+		}
+
+		/// <inheritdoc />
+		protected override async ValueTask<string> GetContentTypeAsync(string sourceFileName, CancellationToken cancellationToken)
+		{
+			return (await GetShareFileClient(sourceFileName).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
+		}
 	}
 }

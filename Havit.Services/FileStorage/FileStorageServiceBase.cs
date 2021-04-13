@@ -272,5 +272,80 @@ namespace Havit.Services.FileStorage
 		/// Uloží stream do úložiště.
 		/// </summary>
 		protected abstract Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Vrátí content type k souboru.
+		/// </summary>
+		protected abstract string GetContentType(string fileName);
+
+		/// <summary>
+		/// Vrátí content type k souboru.
+		/// </summary>
+		protected abstract ValueTask<string> GetContentTypeAsync(string fileName, CancellationToken cancellationToken);
+
+		/// <summary>
+		/// Zkopíruje soubor do dalšího úložiště.
+		/// </summary>
+		public virtual void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			if (targetFileStorageService is IFileStorageWrappingService fileStorageWrappingService)
+			{
+				Copy(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName);
+				return;
+			}
+			
+			using (var stream = Read(sourceFileName))
+			{
+				targetFileStorageService.Save(targetFileName, stream, GetContentType(sourceFileName));
+			}
+		}
+
+		/// <summary>
+		/// Zkopíruje soubor do dalšího úložiště.
+		/// </summary>
+		public virtual async Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			if (targetFileStorageService is IFileStorageWrappingService fileStorageWrappingService)
+			{
+				await CopyAsync(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName, cancellationToken).ConfigureAwait(false);
+				return;
+			}
+
+			using (var stream = await ReadAsync(sourceFileName, cancellationToken).ConfigureAwait(false))
+			{
+				string contentType = await GetContentTypeAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
+				await targetFileStorageService.SaveAsync(sourceFileName, stream, contentType, cancellationToken).ConfigureAwait(false);
+			}
+		}
+
+		/// <summary>
+		/// Přesune soubor do jiného úložiště.
+		/// </summary>
+		public virtual void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			if (targetFileStorageService is IFileStorageWrappingService fileStorageWrappingService)
+			{
+				Move(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName);
+				return;
+			}
+
+			Copy(sourceFileName, targetFileStorageService, targetFileName);
+			Delete(sourceFileName);
+		}
+
+		/// <summary>
+		/// Přesune soubor do jiného úložiště.
+		/// </summary>
+		public virtual async Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			if (targetFileStorageService is IFileStorageWrappingService fileStorageWrappingService)
+			{
+				await MoveAsync(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName, cancellationToken).ConfigureAwait(false);
+				return;
+			}
+
+			await CopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+			await DeleteAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
+		}
 	}
 }

@@ -59,7 +59,7 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// <inheritdoc />
 		public void Schedule()
 		{
-			RecurringJob.AddOrUpdate<TJob>(JobId, MethodCall, CronExpression, TimeZone);
+			RecurringJob.AddOrUpdate<TJob>(JobId, MethodCall, CronExpression, TimeZone, Queue);
 		}
 	}
 }

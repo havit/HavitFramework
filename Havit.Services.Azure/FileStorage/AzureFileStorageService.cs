@@ -263,7 +263,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix, cancellationToken))
+			await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix, cancellationToken).ConfigureAwait(false))
 			{
 				if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 				{

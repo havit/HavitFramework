@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.14</PackageVersion>
+	<PackageVersion>2.0.15</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
 	<LangVersion>default</LangVersion>
 	<Copyright>Copyright HAVIT, s.r.o., 2020</Copyright>
@@ -19,7 +19,7 @@
 	<Reference Include="System.DirectoryServices" Pack="false" />
 	<Reference Include="System.Runtime.Caching" Pack="false" />
 	<Reference Include="System.Web" Pack="false" />
-	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.11" />
+	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -29,8 +29,10 @@
 
   <ItemGroup>
 	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-	<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.11" />
+	<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+	<PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

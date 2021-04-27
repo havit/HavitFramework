@@ -168,17 +168,17 @@
     <Content Include="Content\havit.web.bootstrap\navbar.less" />
     <Content Include="Content\havit.web.bootstrap\modals.less" />
     <Content Include="Content\havit.web.bootstrap\havit-web-bootstrap.less" />
-    <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\havit.web.bootstrap\CollapsiblePanel.js" />
     <Content Include="Scripts\havit.web.bootstrap\ModalExtension.js" />
     <Content Include="Scripts\havit.web.bootstrap\TabPanelExtension.js" />
     <Content Include="Scripts\havit.web.bootstrap\WebUIValidationExtension.js" />
-    <Content Include="Scripts\jquery-3.5.1.js" />
-    <Content Include="Scripts\jquery-3.5.1.min.js" />
-    <Content Include="Scripts\jquery-3.5.1.slim.js" />
-    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
-    <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.5.1.min.map" />
+    <None Include="Scripts\jquery-3.6.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.6.0.js" />
+    <Content Include="Scripts\jquery-3.6.0.min.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.6.0.min.map" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

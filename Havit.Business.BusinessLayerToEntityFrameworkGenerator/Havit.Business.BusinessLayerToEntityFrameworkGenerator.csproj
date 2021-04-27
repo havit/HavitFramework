@@ -8,8 +8,8 @@
   <ItemGroup>
 	<!-- Vzhledem k potřebě Havit.Business.BusinessLayerGenerator (net472) a EntityFrameworkCore (od verze 5.0 jen net5.0) a obtížnosti při	součinnosti obou projektů,
 	nechávám použitou verzi 3.x, která funguje pro net472. Z EFCore je potřeba naprosto minimální kus implementace. -->
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.11" />
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="160.2004021.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.14" />
+	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46367.54" />
   </ItemGroup>
 
   <ItemGroup>

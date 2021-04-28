@@ -19,12 +19,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
         IPropertyAnnotationChangedConvention,
         IEntityTypeAnnotationChangedConvention
 	{
-		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
+		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder,
+			IConventionContext<IConventionForeignKeyBuilder> context)
 		{
 			CreateIndex(foreignKeyBuilder);
 		}
 
-        public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
+        public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder,
+			IReadOnlyList<IConventionProperty> oldDependentProperties,
+			IConventionKey oldPrincipalKey,
+			IConventionContext<IReadOnlyList<IConventionProperty>> context)
 		{
 			// řeší podporu pro shadow property
 			// JK: Nevím úplně proč, ale funguje to. Implementace vychází z ForeignKeyIndexConvention v EF Core 3.0.

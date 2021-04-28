@@ -44,32 +44,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
 
 			_ = dbContext.Model;
 		}
-
-		// TODO: refactor, consolidate test DbContexts again
-		private class TestDbContext : BusinessLayerDbContext
+		
+		private class TestDbContext : Tests.TestDbContext
 		{
-			private readonly Action<ModelBuilder> onModelCreating;
-
 			public TestDbContext(Action<ModelBuilder> onModelCreating = default)
+				: base(onModelCreating)
 			{
-				this.onModelCreating = onModelCreating;
-
-				Settings.UseDefaultValueAttributeConvention = true;
 				Settings.UseForeignKeysIndexConvention = true;
-			}
-
-			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-			{
-				base.OnConfiguring(optionsBuilder);
-
-				optionsBuilder.UseSqlServer("Database=Dummy");
-				optionsBuilder.EnableServiceProviderCaching(false);
-			}
-
-			protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-			{
-				base.CustomizeModelCreating(modelBuilder);
-				onModelCreating?.Invoke(modelBuilder);
 			}
 		}
 	}

@@ -1,106 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Conventions
 {
-    /// <summary>
-    /// Integration tests of conventions focused on testing <see cref="CollectionOrderIndexConvention"/>.
-    /// </summary>
-    [TestClass]
-    public class CollectionOrderIndexConventionTests
-    {
-        private class Master<T>
-        {
-            public int Id { get; set; }
+	/// <summary>
+	/// Integration tests of conventions focused on testing <see cref="CollectionOrderIndexConvention"/>.
+	/// </summary>
+	[TestClass]
+	public class CollectionOrderIndexConventionTests
+	{
+		private class Master<T>
+		{
+			public int Id { get; set; }
 
-            [Collection(Sorting = "[Order]")]
-            public List<T> Children { get; set; } = new List<T>();
-        }
+			[Collection(Sorting = "[Order]")]
+			public List<T> Children { get; set; } = new List<T>();
+		}
 
-        private class ChildNoDeleted
-        {
-            public int Id { get; set; }
+		private class ChildNoDeleted
+		{
+			public int Id { get; set; }
 
-            public Master<ChildNoDeleted> Parent { get; set; }
-            public int ParentId { get; set; }
+			public Master<ChildNoDeleted> Parent { get; set; }
 
-            public int Order { get; set; }
-        }
+			public int ParentId { get; set; }
 
-        private class ChildDeleted
-        {
-            public int Id { get; set; }
+			public int Order { get; set; }
+		}
 
-            public Master<ChildDeleted> Parent { get; set; }
-            public int ParentId { get; set; }
+		private class ChildDeleted
+		{
+			public int Id { get; set; }
 
-            public int Order { get; set; }
+			public Master<ChildDeleted> Parent { get; set; }
 
-            public bool Deleted { get; set; }
-        }
+			public int ParentId { get; set; }
 
-        [TestMethod]
-        public void CollectionOrderIndexConvention_OrderPropertyWithoutDeletedColumn_IndexIsDefined()
-        {
-            using (var dbContext = new TestDbContext<Master<ChildNoDeleted>>())
-            {
-                var entity = dbContext.Model.FindEntityType(typeof(ChildNoDeleted));
+			public int Order { get; set; }
 
-                IIndex index = entity.FindIndex(new[] { entity.FindProperty(nameof(ChildNoDeleted.ParentId)), entity.FindProperty(nameof(ChildNoDeleted.Order)) });
+			public bool Deleted { get; set; }
+		}
 
-                Assert.IsNotNull(index);
-            }
-        }
+		[TestMethod]
+		public void CollectionOrderIndexConvention_OrderPropertyWithoutDeletedColumn_IndexIsDefined()
+		{
+			using (var dbContext = new TestDbContext<Master<ChildNoDeleted>>())
+			{
+				var entity = dbContext.Model.FindEntityType(typeof(ChildNoDeleted));
 
-        [TestMethod]
-        public void CollectionOrderIndexConvention_OrderPropertyAndDeletedColumn_IndexIsDefined()
-        {
-            using (var dbContext = new TestDbContext<Master<ChildDeleted>>())
-            {
-                var entity = dbContext.Model.FindEntityType(typeof(ChildDeleted));
+				IIndex index = entity.FindIndex(new[] { entity.FindProperty(nameof(ChildNoDeleted.ParentId)), entity.FindProperty(nameof(ChildNoDeleted.Order)) });
 
-                IIndex index = entity.FindIndex(new[] { entity.FindProperty(nameof(ChildDeleted.ParentId)), entity.FindProperty(nameof(ChildDeleted.Order)), entity.FindProperty(nameof(ChildDeleted.Deleted)) });
+				Assert.IsNotNull(index);
+			}
+		}
 
-                Assert.IsNotNull(index);
-            }
-        }
+		[TestMethod]
+		public void CollectionOrderIndexConvention_OrderPropertyAndDeletedColumn_IndexIsDefined()
+		{
+			using (var dbContext = new TestDbContext<Master<ChildDeleted>>())
+			{
+				var entity = dbContext.Model.FindEntityType(typeof(ChildDeleted));
 
-        private class TestDbContext<T> : BusinessLayerDbContext
-            where T : class
-        {
-            private readonly Action<ModelBuilder> onModelCreating;
+				IIndex index = entity.FindIndex(new[] { entity.FindProperty(nameof(ChildDeleted.ParentId)), entity.FindProperty(nameof(ChildDeleted.Order)), entity.FindProperty(nameof(ChildDeleted.Deleted)) });
 
-            public TestDbContext(Action<ModelBuilder> onModelCreating = default)
-            {
-                this.onModelCreating = onModelCreating;
-            }
+				Assert.IsNotNull(index);
+			}
+		}
 
-            protected override DbContextSettings CreateDbContextSettings()
-            {
-                var settings = (BusinessLayerDbContextSettings)base.CreateDbContextSettings();
-                settings.UseCollectionOrderIndexConvention = true;
-                return settings;
-            }
-
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            {
-                base.OnConfiguring(optionsBuilder);
-                optionsBuilder.ReplaceService<IModelCacheKeyFactory, NoCacheModelCacheKeyFactory>();
-                optionsBuilder.UseSqlServer("Database=Dummy");
-                optionsBuilder.EnableServiceProviderCaching(false);
-            }
-
-            protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-            {
-                modelBuilder.Entity<T>();
-                onModelCreating?.Invoke(modelBuilder);
-            }
-        }
-    }
+		private class TestDbContext<T> : Tests.TestDbContext<T>
+			where T : class
+		{
+			protected override DbContextSettings CreateDbContextSettings()
+			{
+				var settings = (BusinessLayerDbContextSettings)base.CreateDbContextSettings();
+				settings.UseCollectionOrderIndexConvention = true;
+				return settings;
+			}
+		}
+	}
 }

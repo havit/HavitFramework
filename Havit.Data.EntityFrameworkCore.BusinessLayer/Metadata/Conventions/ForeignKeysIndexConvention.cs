@@ -47,7 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
             IConventionAnnotation oldAnnotation,
             IConventionContext<IConventionAnnotation> context)
 		{
-			if (annotation.Name == RelationalAnnotationNames.ColumnName)
+			if (annotation?.Name == RelationalAnnotationNames.ColumnName)
 			{
 				RenameIndexes(propertyBuilder.Metadata.GetContainingIndexes());
 			}
@@ -60,7 +60,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
             IConventionAnnotation oldAnnotation,
             IConventionContext<IConventionAnnotation> context)
 		{
-			if (annotation.Name == RelationalAnnotationNames.TableName)
+			if (annotation?.Name == RelationalAnnotationNames.TableName)
 			{
 				RenameIndexes(entityTypeBuilder.Metadata.GetDeclaredIndexes());
 			}

@@ -33,7 +33,7 @@ namespace Havit.Linq
 		/// <param name="newItemCreateFunc">funkce pro založení nového prvku cílové kolekce (pokud bude funkce <c>null</c>, chybějící prvky ignorujeme a do <c>ItemsAdding</c> se nic nepřidá)</param>
 		/// <param name="updateItemAction">akce pro aktualizaci spárovaného prvku cílové kolekce z hodnot prvku aplikované kolekce (pokud bude akce <c>null</c>, spárované prvky neaktualizujeme a do <c>ItemsUpdating</c> se nic nepřidá)</param>
 		/// <param name="removeItemAction">akce pro odebrání prvku z aktualizované kolekce, který nebyl nalezen v aplikované kolekci (pokud bude akce <c>null</c>, přebývající prvky neodebíráme a do <c>ItemsRemoving</c> se nic nepřidá) </param>
-		/// <param name="removeItemFromCollection">indikuje, zdali má být přebývající prvek z kolekce odebrán (default <c>true</c>, pro podporu soft-deletes je možno zadat <c>false</c>)</param>
+		/// <param name="removeItemFromCollection">indikuje, zdali má být přebývající prvek z kolekce odebrán (default <c>true</c>, pro podporu soft-deletes je možno zadat <c>false</c>). Má smysl, pouze pokud není <c>removeItemAction</c> null, jinak se ignoruje.</param>
 		public static UpdateFromResult<TTarget> UpdateFrom<TSource, TTarget, TKey>(
 			this ICollection<TTarget> target,
 			IEnumerable<TSource> source,
@@ -49,7 +49,6 @@ namespace Havit.Linq
 			Contract.Requires<ArgumentNullException>(source != null, nameof(source));
 			Contract.Requires<ArgumentNullException>(sourceKeySelector != null, nameof(sourceKeySelector));
 			Contract.Requires<ArgumentNullException>(targetKeySelector != null, nameof(targetKeySelector));
-			Contract.Requires<InvalidOperationException>(removeItemFromCollection || (removeItemAction != null), $"{nameof(removeItemFromCollection)} || ({nameof(removeItemAction)} != null)");
 
 			var joinedCollections = target.FullOuterJoin(
 				rightSource: source,

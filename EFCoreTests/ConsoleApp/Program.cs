@@ -91,8 +91,55 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			var dataSeedRunner = serviceProvider.GetRequiredService<IDataSeedRunner>();
-			dataSeedRunner.SeedData<ProtectedPropertiesProfile>();
+			//var dataSeedRunner = serviceProvider.GetRequiredService<IDataSeedRunner>();
+			//dataSeedRunner.SeedData<ProtectedPropertiesProfile>();
+
+			using var scope1 = serviceProvider.CreateScope();
+			var dbContext1 = scope1.ServiceProvider.GetRequiredService<IDbContext>();
+			var uow1 = scope1.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+			using var scope2 = serviceProvider.CreateScope();
+			var dbContext2 = scope2.ServiceProvider.GetRequiredService<IDbContext>();
+			var uow2 = scope2.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+			var entity1 = dbContext1.Set<CheckedEntity>().AsQueryable().Where(item => item.Id == 1).SingleOrDefault();			
+			if (entity1 == null)
+			{
+				entity1 = new CheckedEntity { Value = "", Version = 0 };
+				dbContext1.Set<CheckedEntity>().Add(entity1);
+				dbContext1.SaveChanges();
+			}
+			
+			var entity2 = dbContext2.Set<CheckedEntity>().AsQueryable().Where(item => item.Id == 1).Single();
+
+			entity1.Value = Guid.NewGuid().ToString("N");
+			entity1.Version += 1;
+			entity1.Address = new Address();
+			uow1.AddForUpdate(entity1);
+
+			entity2.Value = Guid.NewGuid().ToString("N");
+			entity2.Version += 1;
+			entity2.Address = new Address();
+			uow2.AddForUpdate(entity2);
+
+			uow1.Commit();
+			try
+			{
+				uow2.Commit();
+			}
+			catch (DbUpdateException e) when (e.InnerException is DbUpdateConcurrencyException ce)
+			{
+				Console.WriteLine("catch");
+				foreach (var entry in ce.Entries)
+				{
+					if (entry.Entity is CheckedEntity checkedEntity)
+					{
+						entry.CurrentValues.SetValues(entry.OriginalValues);
+						entry.State = EntityState.Unchanged;
+					}
+				}
+				uow2.Commit();				
+			}
 		}
 
 	}

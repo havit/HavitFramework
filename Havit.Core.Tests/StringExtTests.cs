@@ -7,12 +7,16 @@ namespace Havit.Tests
 	public class StringExtTests
 	{		
 		[TestMethod]
-		public void StringExt_NormalizeForUrl()
+		public void StringExt_NormalizeForUrl_BasicScenario()
 		{
+			// arrange
 			string text = "Ahoj Máňo, jak se máš?";
 			string expected = "ahoj-mano-jak-se-mas";
-			string actual;
-			actual = StringExt.NormalizeForUrl(text);
+
+			// act
+			var actual = StringExt.NormalizeForUrl(text);
+
+			// assert
 			Assert.AreEqual(expected, actual);
 		}
 	}

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Havit.Collections;
+using Havit.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Havit.Collections;
-using Havit.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Linq
 {
@@ -40,18 +40,16 @@ namespace Havit.Tests.Linq
 
 			// Act
 			List<int> result1 = numbers.OrderBy(sortItems1, sortExpression => sortExpression switch
-				{
-					"A" => i => i, // use nameof(...) instead of string literal
-					_ => throw new InvalidOperationException(sortExpression)
-				})
-				.ToList();
+			{
+				"A" => i => i, // use nameof(...) instead of string literal
+				_ => throw new InvalidOperationException(sortExpression)
+			}).ToList();
 
 			List<int> result2 = numbers.OrderBy(sortItems2, sortExpression => sortExpression switch
 			{
 				"A" => i => i, // use nameof(...) instead of string literal
 				_ => throw new InvalidOperationException(sortExpression)
-			})
-				.ToList();
+			}).ToList();
 
 
 			// Assert
@@ -78,7 +76,7 @@ namespace Havit.Tests.Linq
 		}
 
 		[TestMethod]
-		public void QueryableExt_OrderBy_WithMappingFunctionForMultipleExpressions()
+		public void QueryableExt_OrderByMultiple_WithMappingFunctionForMultipleExpressions()
 		{
 			// Arrange
 			IQueryable<int> numbers = (new[] { 2, 3, 1 }).AsQueryable();
@@ -88,8 +86,16 @@ namespace Havit.Tests.Linq
 			SortItem[] sortItems2 = new[] { new SortItem { Expression = "A", Direction = SortDirection.Descending }, new SortItem { Expression = "A", Direction = SortDirection.Ascending } }; // use nameof(...) instead of string literal
 
 			// Act
-			List<int> result1 = numbers.OrderBy(sortItems1, QueryableExt_OrderBy_WithMappingFunctionForMultipleExpressions_MappingFunction).ToList();
-			List<int> result2 = numbers.OrderBy(sortItems2, QueryableExt_OrderBy_WithMappingFunctionForMultipleExpressions_MappingFunction).ToList();
+			List<int> result1 = numbers.OrderByMultiple(sortItems1, sortExpression => sortExpression switch
+			{
+				"A" => new() { i => i, i => i }, // use nameof(...) instead of string literal
+				_ => throw new InvalidOperationException(sortExpression)
+			}).ToList();
+			List<int> result2 = numbers.OrderByMultiple(sortItems2, sortExpression => sortExpression switch
+			{
+				"A" => new() { i => i, i => i }, // use nameof(...) instead of string literal
+				_ => throw new InvalidOperationException(sortExpression)
+			}).ToList();
 
 			// Assert
 			Assert.AreEqual(1, result1[0]);
@@ -108,25 +114,10 @@ namespace Havit.Tests.Linq
 			IQueryable<int> numbers = (new[] { 2, 3, 1 }).AsQueryable();
 
 			// Act
-			List<int> result = numbers.OrderBy(null, (Func<string, IEnumerable<Expression<Func<int, object>>>>)(sortExpression => throw new InvalidOperationException(sortExpression))).ToList();
+			List<int> result = numbers.OrderByMultiple(null, (Func<string, List<Expression<Func<int, object>>>>)(sortExpression => throw new InvalidOperationException(sortExpression))).ToList();
 
 			// Assert (order is not changed)
 			CollectionAssert.AreEqual(numbers.ToList(), result);
 		}
-
-		private IEnumerable<Expression<Func<int, object>>> QueryableExt_OrderBy_WithMappingFunctionForMultipleExpressions_MappingFunction(string sortExpression)
-		{
-			// we need to extract the method here because yield return statement is not allowed in anonymous methods (&lambdas)
-			switch (sortExpression)
-			{
-				case /*nameof(...)*/ "A":
-					yield return i => i;
-					yield return i => i; // example how to yield multiple sort expressions for one sortExpression
-					yield break;
-
-				default: throw new InvalidOperationException(sortExpression);
-			}
-		}
-
 	}
 }

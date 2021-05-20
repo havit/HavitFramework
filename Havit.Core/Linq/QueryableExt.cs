@@ -102,15 +102,15 @@ namespace Havit.Linq
 
 		/// <summary>
 		/// Sorts the elements of a sequence in ascending/descending order according to the sort items.
-		/// Sort items expressions are mapped to expressions via a mapping functions.
+		/// Sort items expressions are mapped to expressions via a mapping function.
 		/// When sortItems is null or empty, the method returns unchanged sequence.
 		/// </summary>
 		/// <typeparam name="TSource">The type of the elements of source.</typeparam>
 		/// <param name="source">A sequence of values to order.</param>
 		/// <param name="sortItems">Sorting items to apply on the source sequence.</param>
-		/// <param name="mappingFunc">Mapping function from sort item expression to an expression tree.</param>
+		/// <param name="mappingFunc">Mapping function from sort item expression to a list of expression trees (<code>OrderBy</code> + <code>ThenBy</code>s).</param>
 		/// <returns> An System.Linq.IQueryable`1 whose elements are sorted according to the sortItems.</returns>
-		public static IQueryable<TSource> OrderBy<TSource>(this IQueryable<TSource> source, IEnumerable<SortItem> sortItems, Func<string, IEnumerable<Expression<Func<TSource, object>>>> mappingFunc)
+		public static IQueryable<TSource> OrderByMultiple<TSource>(this IQueryable<TSource> source, IEnumerable<SortItem> sortItems, Func<string, List<Expression<Func<TSource, object>>>> mappingFunc)
 		{
 			Contract.Requires<ArgumentNullException>(source != null, nameof(source));
 			Contract.Requires<ArgumentNullException>(mappingFunc != null, nameof(mappingFunc));

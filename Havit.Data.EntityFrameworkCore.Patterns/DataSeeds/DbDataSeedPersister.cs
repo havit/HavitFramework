@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
@@ -52,7 +53,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
 			foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
 			{
-				unpairedSeedDataPair.DbEntity = (TEntity)Activator.CreateInstance(typeof(TEntity));
+				unpairedSeedDataPair.DbEntity = EntityActivator.CreateInstance<TEntity>();
 				unpairedSeedDataPair.IsNew = true;
 			}
 

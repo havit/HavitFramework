@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
@@ -64,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				if (cacheService.TryGet(cacheKey, out object cacheValues))
 				{
 					// pokud je entita v cache, materializujeme ji a vrátíme ji
-					TEntity result = Activator.CreateInstance<TEntity>();
+					TEntity result = EntityActivator.CreateInstance<TEntity>();
 
 					var entry = dbContext.GetEntry(result, suppressDetectChanges: true);
 					entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
@@ -153,7 +154,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 						{
 							if (dbSet.FindTracked(entityPropertyMemberKey) == null) // už je načtený, nemůžeme volat TryGetEntity
 							{
-								TPropertyItem instance = Activator.CreateInstance<TPropertyItem>();
+								TPropertyItem instance = EntityActivator.CreateInstance<TPropertyItem>();
 								for (int i = 0; i < propertyNames.Length; i++)
 								{
 									typeof(TPropertyItem).GetProperty(propertyNames[i]).SetValue(instance, entityPropertyMemberKey[i]);

@@ -11,7 +11,6 @@
 	<PackageVersion>2.0.16</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
 	<LangVersion>default</LangVersion>
-	<Copyright>Copyright HAVIT, s.r.o., 2020</Copyright>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 

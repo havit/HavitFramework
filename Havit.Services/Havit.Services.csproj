@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.15</PackageVersion>
+	<PackageVersion>2.0.16</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Services</Description>
 	<LangVersion>default</LangVersion>
 	<Copyright>Copyright HAVIT, s.r.o., 2020</Copyright>

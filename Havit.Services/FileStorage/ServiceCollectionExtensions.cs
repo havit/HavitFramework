@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,6 +45,20 @@ namespace Havit.Services.FileStorage
 			where TFileStorageContext : FileStorageContext
 		{
 			services.AddSingleton<TService, TImplementation>();
+		}
+
+		/// <summary>
+		/// Zaregistruje úložiště souborů z embdedded resources.
+		/// </summary>
+		public static void AddEmbeddedResourcesStorageService<TFileStorageContext>(this IServiceCollection services, Assembly resourceAssembly, string rootNamespace)
+			where TFileStorageContext : FileStorageContext
+		{
+			services.AddSingleton<IFileStorageService<TFileStorageContext>, EmbeddedResourceStorageService<TFileStorageContext>>();
+			services.AddSingleton<EmbeddedResourceStorageOptions<TFileStorageContext>>(new EmbeddedResourceStorageOptions<TFileStorageContext>
+			{
+				ResourceAssembly = resourceAssembly,
+				RootNamespace = rootNamespace
+			});
 		}
 	}
 }

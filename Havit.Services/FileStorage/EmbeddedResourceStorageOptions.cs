@@ -1,5 +1,4 @@
-﻿
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Services.FileStorage;
 
 namespace Havit.Services.FileStorage

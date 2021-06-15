@@ -13,7 +13,7 @@ namespace Havit.Extensions.DependencyInjection.Tests
 	public class ServiceCollectionExtensionsTests
 	{
 		[TestMethod]
-		public void ServiceCollectionExtensions_AddByServiceAttribute_AddsOneClassWithOneInterfaces()
+		public void ServiceCollectionExtensions_AddByServiceAttribute_ServiceWithOneDefaultInterface()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
@@ -27,7 +27,7 @@ namespace Havit.Extensions.DependencyInjection.Tests
 		}
 
 		[TestMethod]
-		public void ServiceCollectionExtensions_AddByServiceAttribute_AddsOneClassWithTwoInterfaces()
+		public void ServiceCollectionExtensions_AddByServiceAttribute_ServiceWithTwoDefaultInterfaces()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
@@ -43,13 +43,46 @@ namespace Havit.Extensions.DependencyInjection.Tests
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
-		public void ServiceCollectionExtensions_AddByServiceAttribute_DoesNotAddsClassWithNoInterface()
+		public void ServiceCollectionExtensions_AddByServiceAttribute_DoesNotAddsServiceWithNoInterface()
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
 
 			// Act
 			services.AddByServiceAttribute(typeof(NoInterfaceService).Assembly, nameof(NoInterfaceService));
+
+			// Assert
+			// assert: exception was thrown
+		}
+
+		[TestMethod]
+		public void ServiceCollectionExtensions_AddByServiceAttribute_ClassWithExplicitServiceTypes()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+
+			// Act
+			services.AddByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
+			ServiceProvider serviceProvider = services.BuildServiceProvider();
+			IService firstService = serviceProvider.GetRequiredService<IFirstService>();
+			IService secondService = serviceProvider.GetRequiredService<ISecondService>();
+
+			// Assert
+			// assert: no exception was thrown
+			Assert.AreSame(firstService, secondService);
+		}
+
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
+		public void ServiceCollectionExtensions_AddByServiceAttribute_ClassWithExplicitServiceTypeDoesNotRegisterBaseInterfaces()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+
+			// Act
+			services.AddByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
+			services.BuildServiceProvider().GetRequiredService<IService>();
 
 			// Assert
 			// assert: exception was thrown

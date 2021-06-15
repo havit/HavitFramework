@@ -63,39 +63,39 @@ namespace Havit.Extensions.DependencyInjection
 			Contract.Requires<ArgumentNullException>(serviceCollection != null, nameof(serviceCollection));
 			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));
 
-			var itemsToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
-			foreach (var itemToRegister in itemsToRegister)
+			TypeServiceAttributeInfo[] servicesToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
+			foreach (TypeServiceAttributeInfo serviceToRegister in servicesToRegister)
 			{
-				var interfacesToRegister = TypeInterfacesExtractor.GetInterfacesToRegister(itemToRegister.Type);
+				Type[] serviceTypes = serviceToRegister.ServiceAttribute.GetServiceTypes() ?? TypeInterfacesExtractor.GetInterfacesToRegister(serviceToRegister.Type);
 
-				if (interfacesToRegister.Length == 0)
+				if (serviceTypes.Length == 0)
 				{ 
-					throw new InvalidOperationException(String.Format("Type {0} implements no interface to register.", itemToRegister.Type.FullName));
+					throw new InvalidOperationException(String.Format("Type {0} implements no interface to register.", serviceToRegister.Type.FullName));
 				}
 
-				if (interfacesToRegister.Length == 1)
+				if (serviceTypes.Length == 1)
 				{
-					serviceCollection.Add(new ServiceDescriptor(interfacesToRegister.Single(), itemToRegister.Type, itemToRegister.Lifetime));
+					serviceCollection.Add(new ServiceDescriptor(serviceTypes.Single(), serviceToRegister.Type, serviceToRegister.ServiceAttribute.Lifetime));
 					continue;
 				}
 
-				if ((itemToRegister.Lifetime == ServiceLifetime.Transient))
+				if ((serviceToRegister.ServiceAttribute.Lifetime == ServiceLifetime.Transient))
 				{
-					foreach (var interfaceToRegister in interfacesToRegister)
+					foreach (var interfaceToRegister in serviceTypes)
 					{
-						serviceCollection.Add(new ServiceDescriptor(interfaceToRegister, itemToRegister.Type, itemToRegister.Lifetime /* =Transient */));
+						serviceCollection.Add(new ServiceDescriptor(interfaceToRegister, serviceToRegister.Type, serviceToRegister.ServiceAttribute.Lifetime /* =Transient */));
 					}
 				}
 				else
 				{
 					// je Scoped nebo Singleton a zároveň máme více interfaces
-					var firstInterfaceToRegister = interfacesToRegister.First();
+					var firstInterfaceToRegister = serviceTypes.First();
 					
 					// registrace prvního interface
-					serviceCollection.Add(new ServiceDescriptor(firstInterfaceToRegister, itemToRegister.Type, itemToRegister.Lifetime /* Scoped nebo Singleton */));
+					serviceCollection.Add(new ServiceDescriptor(firstInterfaceToRegister, serviceToRegister.Type, serviceToRegister.ServiceAttribute.Lifetime /* Scoped nebo Singleton */));
 
 					// registrace druhého a dalšího interface
-					foreach (var interfaceToRegister in interfacesToRegister.Skip(1) /* až od druhého */)
+					foreach (var interfaceToRegister in serviceTypes.Skip(1) /* až od druhého */)
 					{
 						serviceCollection.AddSingleton(interfaceToRegister, sp => sp.GetRequiredService(firstInterfaceToRegister));
 					}

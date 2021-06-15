@@ -15,12 +15,12 @@ namespace Havit.Extensions.DependencyInjection.Scanners
 		/// <summary>
 		/// Scans assembly for classes with ServiceAttribute and the given profile.
 		/// </summary>
-		public static TypeAttributeInfo[] GetTypesWithServiceAttribute(Assembly assembly, string profile)
+		public static TypeServiceAttributeInfo[] GetTypesWithServiceAttribute(Assembly assembly, string profile)
 		{
 			return (from type in assembly.GetTypes()
 					from serviceAttribute in type.GetCustomAttributes(typeof(ServiceAttribute), false).Cast<ServiceAttribute>()
 					where (serviceAttribute.Profile == profile)
-					select new TypeAttributeInfo { Type = type, Lifetime = serviceAttribute.Lifetime })
+					select new TypeServiceAttributeInfo { Type = type, ServiceAttribute = serviceAttribute })
 					.ToArray();
 		}
 	}

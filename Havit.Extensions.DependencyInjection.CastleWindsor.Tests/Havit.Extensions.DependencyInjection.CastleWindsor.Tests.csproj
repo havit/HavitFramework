@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
 		<LangVersion>latest</LangVersion>
-
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -18,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Havit.Extensions.DependencyInjection\Havit.Extensions.DependencyInjection.csproj" />
+		<ProjectReference Include="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
+		<ProjectReference Include="..\Havit.Extensions.DependencyInjection.CastleWindsor\Havit.Extensions.DependencyInjection.CastleWindsor.csproj" />
 	</ItemGroup>
 </Project>

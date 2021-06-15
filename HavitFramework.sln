@@ -228,6 +228,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNetCore", "Havit.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool", "Havit.Data.EntityFrameworkCore.CodeGenerator.Tool\Havit.Data.EntityFrameworkCore.CodeGenerator.Tool.csproj", "{D29CF3C3-421E-4157-8EEE-6B17963138CD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.DependencyInjection.CastleWindsor.Tests", "Havit.Extensions.DependencyInjection.CastleWindsor.Tests\Havit.Extensions.DependencyInjection.CastleWindsor.Tests.csproj", "{7284E2E9-D8C4-4DF4-9F44-F98644DB9AAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Extensions.DependencyInjection.Abstractions.Tests", "Havit.Extensions.DependencyInjection.Abstractions.Tests\Havit.Extensions.DependencyInjection.Abstractions.Tests.csproj", "{E5255E5D-AD59-41D8-804B-F662A20BF113}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -582,6 +586,14 @@ Global
 		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29CF3C3-421E-4157-8EEE-6B17963138CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7284E2E9-D8C4-4DF4-9F44-F98644DB9AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7284E2E9-D8C4-4DF4-9F44-F98644DB9AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7284E2E9-D8C4-4DF4-9F44-F98644DB9AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7284E2E9-D8C4-4DF4-9F44-F98644DB9AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5255E5D-AD59-41D8-804B-F662A20BF113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5255E5D-AD59-41D8-804B-F662A20BF113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5255E5D-AD59-41D8-804B-F662A20BF113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5255E5D-AD59-41D8-804B-F662A20BF113}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -684,6 +696,8 @@ Global
 		{017E59EF-5FA0-4124-A30D-534ED592963F} = {3D976DB4-23C7-4B7B-8646-C53DAFB813EE}
 		{9931A336-C78B-4F58-888C-73D96E8ED775} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{D29CF3C3-421E-4157-8EEE-6B17963138CD} = {E30EB2C7-ECF5-4A27-A7F0-8AE37284A60C}
+		{7284E2E9-D8C4-4DF4-9F44-F98644DB9AAB} = {AF3363A0-2BB8-4372-8937-21BDADB8FD9E}
+		{E5255E5D-AD59-41D8-804B-F662A20BF113} = {AF3363A0-2BB8-4372-8937-21BDADB8FD9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

@@ -28,9 +28,10 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="scopedLifetimeConfigurer">(Volitelné.) LifeStyle, který je použit pro ServiceLifetime.Scoped. Pokud není uveden, použije se LifestyleScoped().
         /// Pro scope per ASP.NET Core web request má hodnotu lf => lf.PerAspNetCoreWebRequest().
         /// </param>
-        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
+        /// <param name="componentRegistrationConfigurer">(Volitelné.) Custom configurace pro registrované služby.</param>
+        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null, Action<ComponentRegistration> componentRegistrationConfigurer = null)
         {
-            InstallByServiceAttribute(container, assembly, ServiceAttribute.DefaultProfile, scopedLifetimeConfigurer);
+            InstallByServiceAttribute(container, assembly, ServiceAttribute.DefaultProfile, scopedLifetimeConfigurer, componentRegistrationConfigurer);
         }
 
         /// <summary>
@@ -44,13 +45,14 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="scopedLifetimeConfigurer">(Volitelné.) LifeStyle, který je použit pro ServiceLifetime.Scoped. Pokud není uveden, použije se LifestyleScoped().
         /// Pro scope per ASP.NET Core web request má hodnotu lf => lf.PerAspNetCoreWebRequest().
         /// </param>
-        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
+        /// <param name="componentRegistrationConfigurer">(Volitelné.) Custom configurace pro registrované služby.</param>
+        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null, Action<ComponentRegistration> componentRegistrationConfigurer = null)
         {
 			Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
 
             foreach (string profile in profiles)
             {
-                InstallByServiceAttribute(container, assembly, profile, scopedLifetimeConfigurer);
+                InstallByServiceAttribute(container, assembly, profile, scopedLifetimeConfigurer, componentRegistrationConfigurer);
             }
         }
 
@@ -65,16 +67,31 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="scopedLifetimeConfigurer">(Volitelné.) LifeStyle, který je použit pro ServiceLifetime.Scoped. Pokud není uveden, použije se LifestyleScoped().
         /// Pro scope per ASP.NET Core web request má hodnotu lf => lf.PerAspNetCoreWebRequest().
         /// </param>
-        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string profile, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null)
+        /// <param name="componentRegistrationConfigurer">(Volitelné.) Custom configurace pro registrované služby.</param>
+        public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string profile, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null, Action<ComponentRegistration> componentRegistrationConfigurer = null)
         {
 			Contract.Requires<ArgumentNullException>(container != null, nameof(container));
 			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));
 
-            var itemsToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
+			TypeServiceAttributeInfo[] servicesToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
 
-            foreach (var itemToRegister in itemsToRegister)
+            foreach (var serviceToRegister in servicesToRegister)
             {
-                BasedOnDescriptor descriptor = Classes.From(itemToRegister.Type).Pick().WithServiceDefaultInterfaces().ApplyLifestyle(itemToRegister.Lifetime, scopedLifetimeConfigurer);
+                Type[] serviceTypes = serviceToRegister.ServiceAttribute.GetServiceTypes();
+                BasedOnDescriptor descriptor = Classes.From(serviceToRegister.Type).Pick();
+                if (serviceTypes == null)
+                {
+                    descriptor = descriptor.WithServiceDefaultInterfaces();
+                }
+                else
+				{
+                    descriptor = descriptor.WithServices(serviceTypes);
+                }
+                descriptor = descriptor.ApplyLifestyle(serviceToRegister.ServiceAttribute.Lifetime, scopedLifetimeConfigurer);
+                if (componentRegistrationConfigurer != null)
+				{
+                    descriptor = descriptor.Configure(componentRegistrationConfigurer);
+                }
                 container.Register(descriptor);
             }
         }

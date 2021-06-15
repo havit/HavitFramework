@@ -50,12 +50,15 @@ namespace Havit.Extensions.DependencyInjection.Abstractions
         /// </summary>
         public Type[] ServiceTypes
         {
-            get { return _serviceTypes; }
+            get
+            {
+                return _serviceTypes;
+            }
             set
             {
                 if ((value != null) && (value.Length == 0))
                 {
-                    throw new ArgumentException($"Cannot set an empty array to {ServiceTypes} property.");
+                    throw new ArgumentException($"Cannot set an empty array to {nameof(ServiceTypes)} property.");
                 }
 
                 _serviceTypes = value;
@@ -68,7 +71,7 @@ namespace Havit.Extensions.DependencyInjection.Abstractions
 		{
             if ((_serviceType != null) && (_serviceTypes != null))
 			{
-                throw new InvalidOperationException($"Properties { nameof(ServiceType) } and { nameof(ServiceTypes) } are mutual exclusive. Use { nameof(ServiceType) } or { nameof(ServiceTypes) }, not both.");
+                throw new InvalidOperationException($"Properties {nameof(ServiceType)} and {nameof(ServiceTypes)} are mutual exclusive. Use {nameof(ServiceType)} or {nameof(ServiceTypes)}, not both.");
 			}
 		}
 
@@ -88,7 +91,7 @@ namespace Havit.Extensions.DependencyInjection.Abstractions
         /// <inheritdoc />
 		public override string ToString()
 		{
-            return $"{ nameof(Profile) } = \"{Profile}\", ServiceTypes = {{ {String.Join(", ", GetServiceTypes().Select(type => type.FullName)) } }}, Lifetime = { Lifetime.ToString() }";
+            return $"{nameof(Profile)} = \"{Profile}\", ServiceTypes = {{ {String.Join(", ", GetServiceTypes().Select(type => type.FullName))} }}, Lifetime = {Lifetime}";
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
     public interface IExceptionMonitoringProcessor
     {
 		/// <summary>
-		/// Zpravuje výjimku zaslanou do exception monitoringu.
+		/// Zpracuje výjimku zaslanou do exception monitoringu.
 		/// </summary>
         void ProcessException(Exception exception);
     }

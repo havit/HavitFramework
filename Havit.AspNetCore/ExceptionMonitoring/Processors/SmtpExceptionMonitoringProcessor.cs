@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Formatters;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
-using Havit.AspNetCore.ExceptionMonitoring.Formatters;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.Processors
 {
-	/// <summary>
-	/// Exception procesor zasílající výjimku na email.
-	/// </summary>
+    /// <summary>
+    /// Exception procesor zasílající výjimku na email.
+    /// </summary>
     public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
     {
         private readonly IExceptionFormatter exceptionFormatter;
@@ -31,7 +31,7 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
         }
 
 		/// <summary>
-		/// Zpravuje výjimku zaslanou do exception monitoringu.
+		/// Zpracuje výjimku zaslanou do exception monitoringu.
 		/// Odesílá výjimku na email.
 		/// </summary>
         public void ProcessException(Exception exception)
@@ -42,32 +42,41 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
 
 			if (enabled)
             {
-                MailMessage mailMessage = PrepareMailMessage(exception);
-
-                using (SmtpClient smtpClient = new SmtpClient())
-                {                    
-                    smtpClient.Host = options.SmtpServer;
-	                if (options.SmtpPort != null)
-	                {
-		                smtpClient.Port = options.SmtpPort.Value;
-	                }
-					smtpClient.EnableSsl = options.UseSsl;
-                    if (options.HasCredentials())
-                    {
-                       smtpClient.Credentials = new NetworkCredential(options.SmtpUsername, options.SmtpPassword);
-                    }
-
-					logger.LogTrace("Sending message.");
-					smtpClient.Send(mailMessage);
-					logger.LogInformation("Message sent.");
-
-				}
-			}
+                ProcessExceptionCore(exception);
+            }
         }
 
-		/// <summary>
-		/// Vrací mail message k odeslání.
-		/// </summary>
+        /// <summary>
+		/// Zpracuje výjimku zaslanou do exception monitoringu.
+		/// Odesílá výjimku na email.
+        /// </summary>
+        protected virtual void ProcessExceptionCore(Exception exception)
+        {
+            MailMessage mailMessage = PrepareMailMessage(exception);
+
+            using (SmtpClient smtpClient = new SmtpClient())
+            {
+                smtpClient.Host = options.SmtpServer;
+                if (options.SmtpPort != null)
+                {
+                    smtpClient.Port = options.SmtpPort.Value;
+                }
+                smtpClient.EnableSsl = options.UseSsl;
+                if (options.HasCredentials())
+                {
+                    smtpClient.Credentials = new NetworkCredential(options.SmtpUsername, options.SmtpPassword);
+                }
+
+                logger.LogTrace("Sending message.");
+                smtpClient.Send(mailMessage);
+                logger.LogInformation("Message sent.");
+
+            }
+        }
+
+        /// <summary>
+        /// Vrací mail message k odeslání.
+        /// </summary>
         protected virtual MailMessage PrepareMailMessage(Exception exception)
         {
             MailMessage mailMessage = new MailMessage();

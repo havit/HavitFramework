@@ -116,7 +116,7 @@ namespace Havit.Finance
 		}
 
 		/// <summary>
-		/// 
+		/// Returns a value specifying the present value of an annuity based on periodic, fixed payments to be paid in the future and a fixed interest rate.
 		/// </summary>
 		/// <param name="interestRate">The interest rate per period. For example, if you get a car loan at an annual percentage rate (APR) of 10 percent and make monthly payments, the rate per period is 0.1/12, or 0.0083.</param>
 		/// <param name="numberOfPeriods"> The total number of payment periods in the annuity. For example, if you make monthly payments on a four-year car loan, your loan has a total of 4 x 12 (or 48) payment periods.</param>

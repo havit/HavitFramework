@@ -114,5 +114,27 @@ namespace Havit.Finance
 			double num2 = Math.Pow(1.0 + interestRate, numberOfPeriods);
 			return (0.0 - presentValue) * num2 - paymentAmount / interestRate * num * (num2 - 1.0);
 		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="interestRate">The interest rate per period. For example, if you get a car loan at an annual percentage rate (APR) of 10 percent and make monthly payments, the rate per period is 0.1/12, or 0.0083.</param>
+		/// <param name="numberOfPeriods"> The total number of payment periods in the annuity. For example, if you make monthly payments on a four-year car loan, your loan has a total of 4 x 12 (or 48) payment periods.</param>
+		/// <param name="paymentAmount">The payment to be made each period. Payments usually contain principal and interest that doesn't change over the life of the annuity.</param>
+		/// <param name="futureValue">The future value or cash balance you want after you make the final payment. For example, the future value of a loan is $0 because that is its value after the final payment. However, if you want to save $50,000 over 18 years for your child's education, then $50,000 is the future value. If omitted, 0 is assumed.</param>
+		/// <param name="due">Object of type <see cref="DueDate"/> that specifies when payments are due. This argument must be either DueDate.EndOfPeriod if payments are due at the end of the payment period, or DueDate.BegOfPeriod if payments are due at the beginning of the period. If omitted, DueDate.EndOfPeriod is assumed.</param>
+		/// <remarks>
+		/// https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.financial.pv?view=netframework-4.7.2
+		/// </remarks>
+		public static double PV(double interestRate, double numberOfPeriods, double paymentAmount, double futureValue = 0.0, DueDate due = DueDate.EndOfPeriod)
+		{
+			if (interestRate == 0.0)
+			{
+				return 0.0 - futureValue - paymentAmount * numberOfPeriods;
+			}
+			double num = ((due == DueDate.EndOfPeriod) ? 1.0 : (1.0 + interestRate));
+			double num2 = Math.Pow(1.0 + interestRate, numberOfPeriods);
+			return (-(futureValue + paymentAmount * num * ((num2 - 1.0) / interestRate)) / num2);
+		}
 	}
 }

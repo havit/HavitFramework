@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.18</PackageVersion>
+    <PackageVersion>2.0.19</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
   </PropertyGroup>
   <ItemGroup>

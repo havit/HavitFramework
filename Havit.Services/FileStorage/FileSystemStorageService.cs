@@ -21,7 +21,7 @@ namespace Havit.Services.FileStorage
 	/// </remarks>
 	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService
 	{
-		private readonly string storagePath;
+		internal string StoragePath { get; init; }
 
 		/// <summary>
 		/// Konstruktor.
@@ -40,7 +40,7 @@ namespace Havit.Services.FileStorage
 		public FileSystemStorageService(string storagePath, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath));
-			this.storagePath = storagePath;
+			this.StoragePath = storagePath?.Replace("%TEMP%", Path.GetTempPath().TrimEnd('\\'));
 		}
 
 		/// <summary>
@@ -211,20 +211,20 @@ namespace Havit.Services.FileStorage
 
 			// nacti soubory z oblasti dane storagePath a prefixem
 			IEnumerable<System.IO.FileInfo> filesEnumerable = 
-				new System.IO.DirectoryInfo(Path.Combine(storagePath, prefix ?? String.Empty))
+				new System.IO.DirectoryInfo(Path.Combine(StoragePath, prefix ?? String.Empty))
 				.EnumerateFiles("*", SearchOption.AllDirectories);
 
 			if (searchPattern != null)
 			{
 				// vyfiltruj validni soubory podle souboroveho wildcards
-				filesEnumerable = filesEnumerable.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(storagePath.Length + 1), searchPattern));
+				filesEnumerable = filesEnumerable.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(StoragePath.Length + 1), searchPattern));
 			}
 
 			return filesEnumerable.Select(fileInfo => new FileInfo
 			{
 				// Zamen souborova '\\' za azure blobova '/'. Toto je dohoda, ze interface IFileStorageService.EnumerateFiles vraci vzdy cestu s '/' a ne s '\\'.
 				// Odmaz storage path - misto, kde jsou soubory ulozeny fyzicky na disku. To je soucasti storagePath z konstruktoru.
-				Name = fileInfo.FullName.Substring(storagePath.Length + 1).Replace("\\", "/"),
+				Name = fileInfo.FullName.Substring(StoragePath.Length + 1).Replace("\\", "/"),
 				LastModifiedUtc = fileInfo.LastWriteTimeUtc,
 				Size = fileInfo.Length,
 				ContentType = null
@@ -270,9 +270,9 @@ namespace Havit.Services.FileStorage
 
 		internal string GetFullPath(String fileNamePath)
 		{
-			String fileNameFullPath = Path.Combine(storagePath, fileNamePath);
+			String fileNameFullPath = Path.Combine(StoragePath, fileNamePath);
 
-			DirectoryInfo storagePathDirectoryInfo = new System.IO.DirectoryInfo(storagePath);
+			DirectoryInfo storagePathDirectoryInfo = new System.IO.DirectoryInfo(StoragePath);
 			DirectoryInfo fileNameDirectoryInfo = (new System.IO.FileInfo(fileNameFullPath)).Directory;
 
 			if (!IsPathInsideFolder(fileNameDirectoryInfo, storagePathDirectoryInfo))

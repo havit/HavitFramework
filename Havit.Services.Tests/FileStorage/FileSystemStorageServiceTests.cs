@@ -45,6 +45,20 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_Constructor_ReplacesTEMP()
+		{
+			// Arrange
+			// noop
+
+			// Act
+			var fileSystemStorageService = new FileSystemStorageService(@"%TEMP%\SomeFolder");
+
+			// Assert
+			Assert.IsFalse(fileSystemStorageService.StoragePath.Contains("%TEMP%"));
+			Assert.IsFalse(fileSystemStorageService.StoragePath.Contains(@"\\")); // neobsahuje dvě zpětná lomítka za sebou
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_Exists_ReturnsFalseWhenNotFound()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetFileSystemStorageService());

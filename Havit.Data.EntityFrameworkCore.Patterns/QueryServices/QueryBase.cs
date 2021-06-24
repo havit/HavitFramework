@@ -62,7 +62,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <summary>
 		/// Vrátí fragment dat dle Query.
 		/// </summary>
-		protected List<TQueryResultItem> SelectFragment(int startIndex, int? count)
+		protected List<TQueryResultItem> SelectDataFragment(int startIndex, int? count)
 		{
 			Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0, nameof(startIndex));
 			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count > 0), nameof(count));
@@ -83,7 +83,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// <summary>
 		/// Vrátí fragment dat dle Query.
 		/// </summary>
-		protected Task<List<TQueryResultItem>> SelectFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
+		protected Task<List<TQueryResultItem>> SelectDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0, nameof(startIndex));
 			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count > 0), nameof(count));

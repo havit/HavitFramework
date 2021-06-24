@@ -1,29 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.1.13</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
-  </PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.Patterns.Tests" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.1.13</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net472'" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net472'" />
+	</ItemGroup>
 
 </Project>

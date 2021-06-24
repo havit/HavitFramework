@@ -1,25 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.2.8</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.Entity6.Patterns.Tests" />
+		<InternalsVisibleTo Include="Havit.Data.Entity6.Patterns.Windsor" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
-    <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.2.8</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
+		<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
+	</ItemGroup>
 </Project>

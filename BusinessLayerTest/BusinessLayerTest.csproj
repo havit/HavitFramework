@@ -1,15 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Business.Tests" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Web" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Web" />
+	</ItemGroup>
 
 </Project>

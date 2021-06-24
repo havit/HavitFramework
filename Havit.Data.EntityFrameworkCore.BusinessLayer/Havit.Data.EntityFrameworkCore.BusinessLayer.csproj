@@ -1,28 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>($NoWarn);1701;1702;1591;EF1001</NoWarn>	  
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>($NoWarn);1701;1702;1591;EF1001</NoWarn>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.3.2</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer</Description>
-  </PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.BusinessLayer.Tests" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[5.0.5,6)" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.3.2</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[5.0.5,6)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,40 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-	<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	<PackageVersion>2.0.17</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Services</Description>
-	<LangVersion>default</LangVersion>
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
-	<Reference Include="System.DirectoryServices" Pack="false" />
-	<Reference Include="System.Runtime.Caching" Pack="false" />
-	<Reference Include="System.Web" Pack="false" />
-	<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Services.Tests" />
+		<InternalsVisibleTo Include="Havit.Services.Azure.Tests" />
+	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.11" />
-	  <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.17</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Services</Description>
+		<LangVersion>default</LangVersion>
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-	<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
-	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-	<PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<Reference Include="System.DirectoryServices" Pack="false" />
+		<Reference Include="System.Runtime.Caching" Pack="false" />
+		<Reference Include="System.Web" Pack="false" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.11" />
+		<PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+	</ItemGroup>
+	
 </Project>

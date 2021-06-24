@@ -1,26 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<RootNamespace>Havit.Data.Entity</RootNamespace>
-	<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>Havit.Data.Entity</RootNamespace>
+		<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	<PackageVersion>2.2.7</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
-  </PropertyGroup>
-  
-  <ItemGroup>
-	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-	<PackageReference Include="EntityFramework" Version="6.4.4" />
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.Entity6.Tests" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
-    <ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.2.7</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
+		<PackageReference Include="EntityFramework" Version="6.4.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+		<ProjectReference Include="..\Havit.Model\Havit.Model.csproj" />
+	</ItemGroup>
 </Project>

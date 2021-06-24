@@ -1,116 +1,120 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	<PackageVersion>2.0.13</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
-  </PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Web.Tests" />
+	</ItemGroup>
 
-  <ItemGroup>
-	<Reference Include="System.Configuration" Pack="false" />
-	<Reference Include="System.ServiceModel" Pack="false" />
-	<Reference Include="System.Web" Pack="false" />
-	<Reference Include="System.Web.Extensions" Pack="false" />
-	<Reference Include="System.Web.Services" Pack="false" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.13</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter-IE6.css" />
-	<EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.css" />
-	<EmbeddedResource Include="UI\Adapters\CssAdapters\CssAdaptersUtils.js" />
-	<EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.js" />
-	<EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
-	<EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-win.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-setup_stripped.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar_stripped.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue.css" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue2.css" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-brown.css" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-green.css" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-system.css" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-af.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-al.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-bg.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-br.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ca.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-da.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-de.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-du.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-el.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-en.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-es.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-fi.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-fr.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-he.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hr.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-it.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-jp.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ko.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-lt.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-lv.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-nl.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-no.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-pl.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-pt.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ro.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ru.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-si.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sk.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sp.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sv.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-tr.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-zh.js" />
-	<EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerDisabled.gif" />
-	<EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerEnabled.gif" />
-	<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.css" />
-	<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.js" />
-	<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuItem.js" />
-	<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Blank.html" />
-	<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Events.js" />
-	<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\XUtils.js" />
-	<EmbeddedResource Include="UI\WebControls\AutoCompleteTextBox.css" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-utf8.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sl.js" />
-	<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
-	<EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />
-	<EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.js" />
-  </ItemGroup>
-  <ItemGroup>
-	<None Include="Bootstrap\Content\less\havit-web-bootstrap.less" />
-	<None Include="Bootstrap\Content\less\modals.less" />
-	<None Include="Bootstrap\Content\less\navbar.less" />
-	<None Include="Bootstrap\Content\less\validation.less" />
-	<None Include="Bootstrap\Diagrams\Dialogs.cd" />
-	<None Include="Bootstrap\Content\js\CollapsiblePanel.js" />
-	<None Include="Bootstrap\Content\js\ModalExtension.js" />
-	<None Include="Content\styles\checkbox-dropdown-list.less" />
-	<None Include="UI\Scriptlets\Scriptlet.cd" />
-	<None Include="Content\js\HavitFrameworkClientScript.js" />
-	<None Include="Bootstrap\Content\description.txt" />
-	<None Include="Bootstrap\Content\js\TabPanelExtension.js" />
-	<None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
-	<None Include="Content\js\jquery.autocomplete.min.js" />
-	<None Include="Content\js\jquery.multiple.select.js" />
-	<None Include="Content\styles\autocompletetextbox.css" />
-	<None Include="Content\styles\checkbox-dropdown-list-chevron-down.png" />
-	<None Include="UI\Scriptlets\IControlExtender.xml" />
-	<None Include="UI\Scriptlets\IScriptletParameter.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-	<TypeScriptCompile Include="Bootstrap\Content\js\ModalExtension.ts" />
-	<TypeScriptCompile Include="Scripts\typings\bootstrap\index.d.ts" />
-	<TypeScriptCompile Include="Scripts\typings\jqueryui\jqueryui.d.ts" />
-	<TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Configuration" Pack="false" />
+		<Reference Include="System.ServiceModel" Pack="false" />
+		<Reference Include="System.Web" Pack="false" />
+		<Reference Include="System.Web.Extensions" Pack="false" />
+		<Reference Include="System.Web.Services" Pack="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter-IE6.css" />
+		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.css" />
+		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssAdaptersUtils.js" />
+		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssMenuAdapter.js" />
+		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
+		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-win.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-setup_stripped.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar_stripped.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue.css" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue2.css" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-brown.css" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-green.css" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-system.css" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-af.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-al.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-bg.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-br.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ca.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-da.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-de.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-du.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-el.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-en.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-es.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-fi.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-fr.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-he.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hr.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-it.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-jp.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ko.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-lt.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-lv.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-nl.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-no.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-pl.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-pt.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ro.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-ru.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-si.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sk.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sp.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sv.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-tr.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-zh.js" />
+		<EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerDisabled.gif" />
+		<EmbeddedResource Include="UI\WebControls\DateTimeBox_DateTimePickerEnabled.gif" />
+		<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.css" />
+		<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenu.js" />
+		<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\AutoSuggestMenuItem.js" />
+		<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Blank.html" />
+		<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\Events.js" />
+		<EmbeddedResource Include="UI\WebControls\AutoSuggestMenu\XUtils.js" />
+		<EmbeddedResource Include="UI\WebControls\AutoCompleteTextBox.css" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-utf8.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-sl.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-hu.js" />
+		<EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.css" />
+		<EmbeddedResource Include="UI\WebControls\SingleSubmitProtection.js" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Bootstrap\Content\less\havit-web-bootstrap.less" />
+		<None Include="Bootstrap\Content\less\modals.less" />
+		<None Include="Bootstrap\Content\less\navbar.less" />
+		<None Include="Bootstrap\Content\less\validation.less" />
+		<None Include="Bootstrap\Diagrams\Dialogs.cd" />
+		<None Include="Bootstrap\Content\js\CollapsiblePanel.js" />
+		<None Include="Bootstrap\Content\js\ModalExtension.js" />
+		<None Include="Content\styles\checkbox-dropdown-list.less" />
+		<None Include="UI\Scriptlets\Scriptlet.cd" />
+		<None Include="Content\js\HavitFrameworkClientScript.js" />
+		<None Include="Bootstrap\Content\description.txt" />
+		<None Include="Bootstrap\Content\js\TabPanelExtension.js" />
+		<None Include="Bootstrap\Content\js\WebUIValidationExtension.js" />
+		<None Include="Content\js\jquery.autocomplete.min.js" />
+		<None Include="Content\js\jquery.multiple.select.js" />
+		<None Include="Content\styles\autocompletetextbox.css" />
+		<None Include="Content\styles\checkbox-dropdown-list-chevron-down.png" />
+		<None Include="UI\Scriptlets\IControlExtender.xml" />
+		<None Include="UI\Scriptlets\IScriptletParameter.xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<TypeScriptCompile Include="Bootstrap\Content\js\ModalExtension.ts" />
+		<TypeScriptCompile Include="Scripts\typings\bootstrap\index.d.ts" />
+		<TypeScriptCompile Include="Scripts\typings\jqueryui\jqueryui.d.ts" />
+		<TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+	</ItemGroup>
 </Project>

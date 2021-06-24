@@ -6,6 +6,11 @@
 	<NoWarn>($NoWarn);EF1001</NoWarn>
   </PropertyGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.BusinessLayer.Tests" />
+		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Migrations.Tests" />
+	</ItemGroup>
+	
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>

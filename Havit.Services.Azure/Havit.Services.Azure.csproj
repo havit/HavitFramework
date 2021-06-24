@@ -5,6 +5,10 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Services.Azure.Tests" />
+	</ItemGroup>
+	
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>

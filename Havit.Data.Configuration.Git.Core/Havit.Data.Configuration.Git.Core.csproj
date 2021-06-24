@@ -1,14 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets"/>
-  <PropertyGroup>
-    <PackageVersion>2.0.4</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Retrieves current git working tree branch and sets it into connection strings (not intended to be used in projects directly)</Description>
-  </PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.Configuration.Git.Tests" />
+	</ItemGroup>
+
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets"/>
+	<PropertyGroup>
+		<PackageVersion>2.0.4</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Retrieves current git working tree branch and sets it into connection strings (not intended to be used in projects directly)</Description>
+	</PropertyGroup>
+
 </Project>

@@ -1,29 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Havit</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>Havit</RootNamespace>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.0.19</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Core.Tests" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Configuration" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
-    <Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
-    <Reference Include="System.Windows.Forms" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.19</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Configuration" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
+		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
+		<Reference Include="System.Windows.Forms" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
+	</ItemGroup>
 
 </Project>

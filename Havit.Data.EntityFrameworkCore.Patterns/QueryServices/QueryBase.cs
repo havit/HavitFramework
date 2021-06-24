@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 {
@@ -41,6 +42,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// </summary>
 		protected List<TQueryResultItem> SelectPage(int pageIndex, int pageSize)
 		{
+			Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0, nameof(pageIndex));
+			Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0, nameof(pageSize));
+
 			return Query().Skip(pageIndex * pageSize).Take(pageSize).ToList();
 		}
 
@@ -49,7 +53,52 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// </summary>
 		protected Task<List<TQueryResultItem>> SelectPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
 		{
+			Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0, nameof(pageIndex));
+			Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0, nameof(pageSize));
+
 			return Query().Skip(pageIndex * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+		}
+		
+		/// <summary>
+		/// Vrátí fragment dat dle Query.
+		/// </summary>
+		protected List<TQueryResultItem> SelectFragment(int startIndex, int? count)
+		{
+			Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0, nameof(startIndex));
+			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count > 0), nameof(count));
+
+			IQueryable<TQueryResultItem> query = Query();
+			if (startIndex > 0)
+			{
+				query = query.Skip(startIndex);
+			}
+			if (count != null)
+			{
+				query = query.Take(count.Value);
+			}
+
+			return query.ToList();
+		}
+
+		/// <summary>
+		/// Vrátí fragment dat dle Query.
+		/// </summary>
+		protected Task<List<TQueryResultItem>> SelectFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
+		{
+			Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0, nameof(startIndex));
+			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count > 0), nameof(count));
+
+			IQueryable<TQueryResultItem> query = Query();
+			if (startIndex > 0)
+			{
+				query = query.Skip(startIndex);
+			}
+			if (count != null)
+			{
+				query = query.Take(count.Value);
+			}
+
+			return query.ToListAsync(cancellationToken);
 		}
 
 		/// <summary>

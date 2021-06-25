@@ -25,6 +25,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		private readonly IDbContext dbContext;
 		private readonly IDataSource<TEntity> dataSource;
 		private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
+
+		/// <summary>
+		/// DataLoader pro případné využití v implementaci potomků.
+		/// </summary>
+		/// <remarks>
+		/// Bohužel používáme generovaný constructor v partial třídě, takže není úplně jednoduché si v potomkovi dataLoader odklonit pro vlastní použití.
+		/// </remarks>
+		protected IDataLoader DataLoader => dataLoader;
 		private readonly IDataLoader dataLoader;
 		
 		/// <summary>

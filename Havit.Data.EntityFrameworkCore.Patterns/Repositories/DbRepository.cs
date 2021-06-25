@@ -378,7 +378,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 		/// </summary>
-		protected void LoadReferences(params TEntity[] entities)
+		/// <remarks>
+		/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
+		/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
+		/// </remarks>
+		protected virtual void LoadReferences(params TEntity[] entities)
 		{
 			Contract.Requires(entities != null);
 
@@ -392,7 +396,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 		/// </summary>
-		protected async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
+		/// <remarks>
+		/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
+		/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
+		/// </remarks>
+		protected virtual async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
 		{	
 			Contract.Requires(entities != null);
 

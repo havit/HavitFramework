@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public HttpRequestExceptionFormatter(IHttpContextAccessor httpContextAccessor)
+        public HttpRequestExceptionFormatter(IHttpContextAccessor httpContextAccessor = null)
         {
             this.httpContextAccessor = httpContextAccessor;
         }
@@ -26,13 +27,18 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
 		/// </summary>
         public string FormatException(Exception exception)
         {
-            HttpContext httpContext = httpContextAccessor.HttpContext;
-
             StringBuilder sb = new StringBuilder();
 
             AppendExceptionInformation(sb, exception);
-            AppendRequestInformation(sb, httpContext);
+
+            if (httpContextAccessor != null)
+            {
+                HttpContext httpContext = httpContextAccessor.HttpContext;
+                AppendRequestInformation(sb, httpContext);
+            }
+
             AppendExceptionDetails(sb, exception);
+            AppendExceptionDemistified(sb, exception);
             AppendApplicationInformation(sb);
             AppendEventInformation(sb);
 
@@ -80,22 +86,48 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
             }
         }
 
+        private void AppendExceptionDemistified(StringBuilder sb, Exception exception)
+        {
+            if (exception != null)
+            {
+                string demistifiedException;
+
+                try
+                {
+                    demistifiedException = exception.Demystify().ToString();
+                }
+                catch
+                {
+                    return;
+                }
+
+                sb.AppendLine("Exception details (with Ben.Demystifier)");
+                sb.AppendLine(demistifiedException);
+                sb.AppendLine();
+            }
+        }
+
         private void AppendApplicationInformation(StringBuilder sb)
         {
             Assembly assembly = Assembly.GetEntryAssembly();
 
-            sb.AppendLine("Application information");
-            AppendValueLine(sb, "Assembly", () => assembly.GetName().Name);
-            AppendValueLine(sb, "Assembly Version", () => assembly.GetName().Version.ToString());
-            AppendValueLine(sb, "Product Version", () => System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion);
-            sb.AppendLine();
+            if (assembly != null)
+            {
+                sb.AppendLine("Application information");
+                AppendValueLine(sb, "Assembly", () => assembly.GetName().Name);
+                AppendValueLine(sb, "Assembly Version", () => assembly.GetName().Version.ToString());
+                AppendValueLine(sb, "Product Version", () => System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion);
+                sb.AppendLine();
+            }
         }
 
         private void AppendEventInformation(StringBuilder sb)
         {
+            DateTimeOffset now = DateTimeOffset.Now;
+
             sb.AppendLine("Event information");
-            AppendValueLine(sb, "Event time", () => DateTime.Now.ToString(CultureInfo.InstalledUICulture));
-            AppendValueLine(sb, "Event UTC time", () => DateTime.UtcNow.ToString(CultureInfo.InstalledUICulture));
+            AppendValueLine(sb, "Event time", () => now.ToString(CultureInfo.InstalledUICulture));
+            AppendValueLine(sb, "Event UTC time", () => now.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
             sb.AppendLine();
         }
 

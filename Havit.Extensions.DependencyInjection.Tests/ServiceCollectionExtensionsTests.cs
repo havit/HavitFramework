@@ -34,9 +34,11 @@ namespace Havit.Extensions.DependencyInjection.Tests
 
 			// Act
 			services.AddByServiceAttribute(typeof(MyFirstService).Assembly, nameof(MyFirstService));
-			services.BuildServiceProvider().GetRequiredService<IService>();
-			services.BuildServiceProvider().GetRequiredService<IFirstService>();
-
+			using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+			{
+				serviceProvider.GetRequiredService<IService>();
+				serviceProvider.GetRequiredService<IFirstService>();
+			}
 			// Assert
 			// assert: no exception was thrown
 		}
@@ -60,18 +62,20 @@ namespace Havit.Extensions.DependencyInjection.Tests
 		{
 			// Arrange
 			ServiceCollection services = new ServiceCollection();
-
+			IService firstService;
+			IService secondService;
 			// Act
 			services.AddByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
-			ServiceProvider serviceProvider = services.BuildServiceProvider();
-			IService firstService = serviceProvider.GetRequiredService<IFirstService>();
-			IService secondService = serviceProvider.GetRequiredService<ISecondService>();
+			using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+			{
+				firstService = serviceProvider.GetRequiredService<IFirstService>();
+				secondService = serviceProvider.GetRequiredService<ISecondService>();
+			}
 
 			// Assert
 			// assert: no exception was thrown
 			Assert.AreSame(firstService, secondService);
 		}
-
 
 		[TestMethod]
 		[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
@@ -83,6 +87,59 @@ namespace Havit.Extensions.DependencyInjection.Tests
 			// Act
 			services.AddByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
 			services.BuildServiceProvider().GetRequiredService<IService>();
+
+			// Assert
+			// assert: exception was thrown
+		}
+
+		[TestMethod]
+		public void ServiceCollectionExtensions_AddByServiceAttribute_RegistersAndResolvesOpenGenericTypes()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+
+			// Act
+			services.AddByServiceAttribute(typeof(MyGenericService<object, object>).Assembly, nameof(MyGenericService<object, object>)); // <object, object> nemá žádnou souvislost s registrací!
+			using (var serviceProvider = services.BuildServiceProvider())
+			{
+				serviceProvider.GetRequiredService<IGenericService<object, object>>();
+				serviceProvider.GetRequiredService<IGenericService<string, string>>();
+				serviceProvider.GetRequiredService<IGenericService<object, string>>();
+			}
+			// Assert
+			// assert: exception was thrown
+		}
+
+		[TestMethod]
+		public void ServiceCollectionExtensions_AddByServiceAttribute_RegistersAndResolvesOpenGenericTypesFromServiceType()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+
+			// Act
+			services.AddByServiceAttribute(typeof(AttributedGenericService<object, object>).Assembly, nameof(AttributedGenericService<object, object>)); // <object, object> nemá žádnou souvislost s registrací!
+			using (var serviceProvider = services.BuildServiceProvider())
+			{
+				serviceProvider.GetRequiredService<IGenericService<object, object>>();
+				serviceProvider.GetRequiredService<IGenericService<string, string>>();
+				serviceProvider.GetRequiredService<IGenericService<object, string>>();
+			}
+
+			// Assert
+			// assert: exception was thrown
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
+		public void ServiceCollectionExtensions_AddByServiceAttribute_DoesNotRegisterCloseGenericServices()
+		{
+
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+
+			// Act
+			// StringService is an interface implementing IGenericService<string>
+			services.AddByServiceAttribute(typeof(MyStringService<object>).Assembly, nameof(MyStringService<object>));
 
 			// Assert
 			// assert: exception was thrown

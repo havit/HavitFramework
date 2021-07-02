@@ -103,5 +103,58 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.Tests
 			// Assert
 			// assert: exception was thrown
 		}
+
+		[TestMethod]
+		public void WindsorContainerExtensions_BehaviorVerification_RegisteringAndResolvingOpenGenericServices()
+		{
+			// Tento test má za cíl jen ukázat chování, jak jsou služby zaregistrovány a co lze použít s Castle Windsor.
+			// Nejde o předpis chování, které bychom potřebovali zachovat a ověřit.
+			// Upozornění: Chování Castle Windsor se liší od chování ServiceProvideru!
+
+			// Arrange
+			WindsorContainer container = new WindsorContainer();
+
+			// Act
+
+			// MyGenericService<> is a generic type implementing generic interface IGenericService<>.
+			container.InstallByServiceAttribute(typeof(MyGenericService<,>).Assembly, nameof(MyGenericService<object,object>)); 
+
+			// Assert
+			container.Resolve<IGenericService<string, string>>();
+			container.Resolve<IGenericService<object, object>>();
+			container.Resolve<IGenericService<object, string>>();
+			// assert: exception was thrown
+		}
+
+		[TestMethod]
+		public void WindsorContainerExtensions_BehaviorVerification_RegisteringAndResolvingCloseGenericServices()
+		{
+			// Tento test má za cíl jen ukázat chování, jak jsou služby zaregistrovány a co lze použít s Castle Windsor.
+			// Nejde o předpis chování, které bychom potřebovali zachovat a ověřit.			
+			// Upozornění: Chování Castle Windsor se liší od chování ServiceProvideru!
+			
+			// Arrange
+			WindsorContainer container = new WindsorContainer();
+
+			// Act
+
+			// StringGenericService is a generic interface implementing IGenericService<string>, StringGenericService generic type is not used with IGenericService<>
+			container.InstallByServiceAttribute(typeof(StringGenericService<>).Assembly, nameof(StringGenericService<object>));
+
+			// Assert
+			container.Resolve<IStringGenericService<string>>();
+
+			try
+			{
+				container.Resolve<IStringGenericService<object>>();
+				Assert.Fail();
+			}
+			catch (ComponentNotFoundException)
+			{
+				// NOOP
+			}
+
+			// assert: exception was thrown
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Havit.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,12 +19,31 @@ namespace Havit.Extensions.DependencyInjection
 		/// </summary>
 		public static Type[] GetInterfacesToRegister(Type implementationType)
 		{
+			if (implementationType.IsConstructedGenericType)
+			{
+				throw new InvalidOperationException("Close generic types are not supported.");
+			}
+
+			// MyService can be registered as IService, IMyService
+			// MyService<T> can be registered as IService<T>, IMyService<T>
+			// MyService<T1, T2> can be registered as IService<T1, T2>, IMyService<T1, T2>
 			return implementationType
 				.GetInterfaces()
+				// MyService cannot be registered as IService<T>
+				.WhereIf(!implementationType.IsGenericTypeDefinition, interfaceType => !interfaceType.IsGenericTypeDefinition)
+				// MyService<T> cannot be registered as IService
+				// MyService<T1> cannot be registered as IService<T1, T2>
+				// MyService<T1> cannot be registered as IService<T, string>
+				.WhereIf(implementationType.IsGenericTypeDefinition, interfaceType => interfaceType.IsConstructedGenericType
+					&& Enumerable.SequenceEqual(
+						implementationType.GetGenericArguments() /* closed generic type or the type parameters of a generic type definition */, 
+						interfaceType.GenericTypeArguments /* generic type (generic class) arguments, arguments are of generic type (property IsGenericParameter is true */))
 				.Where(interfaceType => implementationType.Name.Contains(GetInterfaceName(interfaceType)))
+				// Generic types from Type.GetInterfaces have false IsGenericTypeDefinition!!!
+				// Generic types from Type.GetInterfaces IsConstructedGenericType with generic type parameters!
+				.Select(interfaceType => interfaceType.IsConstructedGenericType ? interfaceType.GetGenericTypeDefinition() : interfaceType)
 				.ToArray();
 		}
-
 
 		/// <summary>
 		/// Returns the name of the interface without leading I.

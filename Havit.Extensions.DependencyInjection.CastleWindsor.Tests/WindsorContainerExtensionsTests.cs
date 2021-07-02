@@ -117,7 +117,7 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.Tests
 			// Act
 
 			// MyGenericService<> is a generic type implementing generic interface IGenericService<>.
-			container.InstallByServiceAttribute(typeof(MyGenericService<,>).Assembly, nameof(MyGenericService<object,object>)); 
+			container.InstallByServiceAttribute(typeof(MyGenericService<,>).Assembly, nameof(MyGenericService<object, object>)); 
 
 			// Assert
 			container.Resolve<IGenericService<string, string>>();

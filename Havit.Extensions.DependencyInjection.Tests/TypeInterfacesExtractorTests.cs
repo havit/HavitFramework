@@ -21,7 +21,7 @@ namespace Havit.Extensions.DependencyInjection.Tests
 			Assert.IsTrue(interfacesToRegister1.Contains(typeof(IService)), nameof(IService));
 			Assert.IsTrue(interfacesToRegister1.Contains(typeof(IFirstService)), nameof(IFirstService));
 			Assert.IsFalse(interfacesToRegister1.Contains(typeof(ISecondService)), nameof(ISecondService));
-			Assert.IsTrue(interfacesToRegister2.Contains(typeof(IGenericService<,>)), nameof(IGenericService<object,object>));
+			Assert.IsTrue(interfacesToRegister2.Contains(typeof(IGenericService<,>)), nameof(IGenericService<object, object>));
 			Assert.IsFalse(interfacesToRegister3.Any(), nameof(MyStringService<object>));
 		}
 	}

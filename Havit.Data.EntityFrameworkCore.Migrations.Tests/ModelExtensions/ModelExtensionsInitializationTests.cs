@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
@@ -48,8 +49,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
             using (var dbContext = new TestDbContext(DefineModelExtenders(typeof(DummyStoredProcedures))))
             {
                 var actualCreateScript = dbContext.GetService<IHistoryRepository>().GetCreateScript();
-                
-                Assert.IsFalse(actualCreateScript.Contains(createStatement),
+
+                StringAssert.DoesNotMatch(actualCreateScript, new Regex(createStatement),
                     "Create script for __EFMigrationsHistory should not contain statements for Model Extensions");
             }
         }

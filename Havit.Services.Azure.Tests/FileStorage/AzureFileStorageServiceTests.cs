@@ -27,7 +27,12 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			// nemůžeme smazat celý FileShare, protože pokud metoda je ukončena před skutečným smazáním. Další operace nad FileSharem,
 			// dokud je mazán, oznamují chybu 409 Confict s popisem "The specified share is being deleted."
 			// Proto raději smažeme jen soubory.
-			var service = GetAzureFileStorageService();
+			AzureFileStorageService service;
+
+			service = GetAzureFileStorageService();
+			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+
+			service = GetAzureFileStorageService(secondary: true);
 			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
 		}
 
@@ -195,6 +200,30 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_Copy()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_CopyAsync()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public void AzureFileStorageService_Move()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_MoveAsync()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
 		public void AzureFileStorageService_DependencyInjectionContainerIntegration()
 		{
 			// Arrange
@@ -210,11 +239,14 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			Assert.IsInstanceOfType(service, typeof(AzureFileStorageService<TestFileStorage>));
 		}
 
-		private static AzureFileStorageService GetAzureFileStorageService(string fileShareName = "tests")
+		private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 		{
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			// use your own Azure Storage account if you do not have access to this file
-			return new AzureFileStorageService(File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"), fileShareName, "root1\\root2");
+			return new AzureFileStorageService(
+				fileStorageConnectionString: File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
+				fileShareName: "tests",
+				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
 		}
 	}
 }

@@ -99,9 +99,11 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 		{
-			ShareFileClient shareFileClient = GetShareFileClient(fileName);
-			ShareFileDownloadInfo downloadInfo = shareFileClient.Download();
-			downloadInfo.Content.CopyTo(stream);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);			
+			using (System.IO.Stream azureFileStream = shareFileClient.OpenRead())
+			{
+				azureFileStream.CopyTo(stream);
+			}
 		}
 
 		/// <summary>
@@ -109,9 +111,11 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
 		{
-			ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			ShareFileDownloadInfo downloadInfo = await file.DownloadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-			await downloadInfo.Content.CopyToAsync(stream, 81920 /* default*/, cancellationToken).ConfigureAwait(false);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+			using (System.IO.Stream azureFileStream = await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false))
+			{
+				await azureFileStream.CopyToAsync(stream, 81920 /* default*/, cancellationToken).ConfigureAwait(false);
+			}
 		}
 
 		/// <summary>
@@ -120,8 +124,7 @@ namespace Havit.Services.Azure.FileStorage
 		protected override System.IO.Stream PerformRead(string fileName)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName);
-			ShareFileDownloadInfo downloadInfo = shareFileClient.Download();
-			return downloadInfo.Content;
+			return shareFileClient.OpenRead();
 		}
 
 		/// <summary>
@@ -130,8 +133,7 @@ namespace Havit.Services.Azure.FileStorage
 		protected override async Task<System.IO.Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-			ShareFileDownloadInfo downloadInfo = await shareFileClient.DownloadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-			return downloadInfo.Content;
+			return await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -142,23 +144,52 @@ namespace Havit.Services.Azure.FileStorage
 			EnsureFileShare();
 
 			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: true);
-			shareFileClient.Create(fileContent.Length);
-			if (fileContent.Length > 0)
+
+			System.IO.Stream seekableFileContent;
+			bool seekableFileContentNeedsDispose;
+
+			if (fileContent.CanSeek)
 			{
-				try
-				{
-					shareFileClient.Upload(fileContent);
-				}
-				catch
+				seekableFileContent = fileContent;
+				seekableFileContentNeedsDispose = false;
+			}
+			else
+			{
+				seekableFileContent = new System.IO.MemoryStream();
+				fileContent.CopyTo(seekableFileContent);
+				seekableFileContentNeedsDispose = true;
+			}
+
+			try // jen pro finally + Dispose
+			{
+				long fileContentLength = seekableFileContent.Length; // zde nastavujeme velikost souboru, abychom mohli přečíst vlastnost Length, potřebujeme seekovatelný stream...
+				shareFileClient.Create(fileContentLength); // zde nastavujeme velikost souboru (ačkoliv se to jmenuje maxsize)
+				if (fileContentLength > 0) // upload contentu nemůžeme provádět pro prázdný stream
 				{
 					try
 					{
-						shareFileClient.Delete();
+						shareFileClient.Upload(seekableFileContent);
 					}
 					catch
 					{
-						// NOOP
+						try
+						{
+							shareFileClient.Delete(); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
+						}
+						catch
+						{
+							// NOOP
+						}
+
+						throw;
 					}
+				}
+			}
+			finally
+			{
+				if (seekableFileContentNeedsDispose)
+				{
+					seekableFileContent.Dispose();
 				}
 			}
 		}
@@ -171,23 +202,53 @@ namespace Havit.Services.Azure.FileStorage
 			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
 			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: true, cancellationToken: cancellationToken).ConfigureAwait(false);
-			await shareFileClient.CreateAsync(fileContent.Length, cancellationToken: cancellationToken).ConfigureAwait(false);
-			if (fileContent.Length > 0)
+
+			System.IO.Stream seekableFileContent;
+			bool seekableFileContentNeedsDispose;
+
+			if (fileContent.CanSeek)
 			{
-				try
-				{
-					await shareFileClient.UploadAsync(fileContent, cancellationToken: cancellationToken).ConfigureAwait(false);
-				}
-				catch
+				seekableFileContent = fileContent;
+				seekableFileContentNeedsDispose = false;
+			}
+			else
+			{
+				seekableFileContent = new System.IO.MemoryStream();
+				await fileContent.CopyToAsync(seekableFileContent, 81920 /* default */, cancellationToken).ConfigureAwait(false);
+				seekableFileContentNeedsDispose = true;
+			}
+
+			try // jen pro finally + Dispose
+			{
+				long fileContentLength = seekableFileContent.Length; // zde nastavujeme velikost souboru, abychom mohli přečíst vlastnost Length, potřebujeme seekovatelný stream...
+
+				await shareFileClient.CreateAsync(fileContentLength, cancellationToken: cancellationToken).ConfigureAwait(false);
+				if (fileContentLength > 0)
 				{
 					try
 					{
-						await shareFileClient.DeleteAsync(cancellationToken).ConfigureAwait(false);
+						await shareFileClient.UploadAsync(seekableFileContent, cancellationToken: cancellationToken).ConfigureAwait(false);
 					}
 					catch
 					{
-						// NOOP
+						try
+						{
+							await shareFileClient.DeleteAsync(cancellationToken).ConfigureAwait(false);
+						}
+						catch
+						{
+							// NOOP
+						}
+
+						throw;
 					}
+				}
+			}
+			finally
+			{
+				if (seekableFileContentNeedsDispose)
+				{
+					seekableFileContent.Dispose();
 				}
 			}
 		}

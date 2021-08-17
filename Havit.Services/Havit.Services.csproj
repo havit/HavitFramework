@@ -13,7 +13,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.17</PackageVersion>
+		<PackageVersion>2.0.18</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Services</Description>
 		<LangVersion>default</LangVersion>
 		<NoWarn>1701;1702;1591</NoWarn>

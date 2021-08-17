@@ -314,7 +314,7 @@ namespace Havit.Services.FileStorage
 			using (var stream = await ReadAsync(sourceFileName, cancellationToken).ConfigureAwait(false))
 			{
 				string contentType = await GetContentTypeAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
-				await targetFileStorageService.SaveAsync(sourceFileName, stream, contentType, cancellationToken).ConfigureAwait(false);
+				await targetFileStorageService.SaveAsync(targetFileName, stream, contentType, cancellationToken).ConfigureAwait(false);
 			}
 		}
 

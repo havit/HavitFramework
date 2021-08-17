@@ -128,8 +128,7 @@ namespace Havit.Services.Azure.FileStorage
 		protected override Stream PerformRead(string fileName)
 		{
 			BlobClient blobClient = GetBlobClient(fileName);
-			BlobDownloadInfo downloadInfo = blobClient.Download();
-			return downloadInfo.Content;		
+			return blobClient.OpenRead();
 		}
 
 		/// <summary>
@@ -138,8 +137,7 @@ namespace Havit.Services.Azure.FileStorage
 		protected override async Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			BlobClient blobClient = GetBlobClient(fileName);
-			BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync(cancellationToken).ConfigureAwait(false);
-			return downloadInfo.Content;
+			return await blobClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>

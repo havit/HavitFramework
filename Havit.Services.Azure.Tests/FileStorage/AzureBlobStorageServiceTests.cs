@@ -330,6 +330,56 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			Assert.IsInstanceOfType(service, typeof(AzureBlobStorageService<TestFileStorage>));
 		}
 
+		[TestMethod]
+		public void AzureBlobStorageService_GenerateSasUri()
+		{
+			// Arrange
+			string filename = "file.txt";
+			string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
+
+			var azureBlobStorageService = GetAzureBlobStorageService();			
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+				{
+					sw.Write(content);
+				}
+				ms.Seek(0, SeekOrigin.Begin);
+
+				azureBlobStorageService.Save(filename, ms, "text/plain");
+			}
+
+			// Act
+			Uri uri = azureBlobStorageService.GenerateSasUri(filename, global::Azure.Storage.Sas.BlobSasPermissions.Read, TimeSpan.FromMinutes(1));
+
+			// Assert
+			string readContent = new System.Net.WebClient().DownloadString(uri);
+			Assert.AreEqual(content, readContent);
+
+			// Clean up
+			azureBlobStorageService.Delete(filename);
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_GenerateSasUri_ExpiredToken()
+		{
+			// Act
+			var azureBlobStorageService = GetAzureBlobStorageService();			
+			Uri uri = azureBlobStorageService.GenerateSasUri("abc", global::Azure.Storage.Sas.BlobSasPermissions.Read, TimeSpan.FromMinutes(-1)); // -1 = expired token
+
+			// Assert
+			try
+			{
+				new System.Net.WebClient().DownloadString(uri);
+			}
+			catch (System.Net.WebException webExpcetion) when ((webExpcetion.Response is System.Net.HttpWebResponse httpWebResponse) && (httpWebResponse.StatusCode == System.Net.HttpStatusCode.Forbidden))
+			{
+				return; // test je úspěšný, pokud je odpověď 403 Forbidden
+			}
+
+			Assert.Fail();
+		}
+
 		private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
 		{
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible

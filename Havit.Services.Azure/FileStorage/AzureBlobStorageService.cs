@@ -341,6 +341,20 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
+		/// Vrací Uri se SAS tokenem s danými oprávněními a danou expirací.
+		/// Nelze použít při přístupu k storage pomocí Managed Identity, je třeba použít AccessKey.
+		/// </summary>
+		/// <remarks>
+		/// Vzhledem k tomu, že je potřeba použít DateTimeOffset.UtcNow, nikoliv DateTimeOffset.Now
+		/// a že si dovedu představit, jak do téhle pasti spadne úplně každý,
+		/// raději volím do parametru datový typ TimeSpan s dobou platnosti. Použití správného UtcNow nechám zde v implementaci.
+		/// </remarks>
+		public Uri GenerateSasUri(string fileName, global::Azure.Storage.Sas.BlobSasPermissions permissions, TimeSpan expiration)
+		{
+			return GetBlobClient(fileName).GenerateSasUri(permissions, DateTimeOffset.UtcNow.Add(expiration));
+		}
+
+		/// <summary>
 		/// Vytvoří kontejner, pokud ještě neexistuje.
 		/// </summary>
 		protected void EnsureContainer()

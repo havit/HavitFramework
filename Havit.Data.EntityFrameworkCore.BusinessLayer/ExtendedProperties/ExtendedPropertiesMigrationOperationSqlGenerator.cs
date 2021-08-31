@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -127,11 +128,31 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void AddExtendedPropertyLevel1WithType(string name, string value, string schemaName, string level1Type, string level1Name, MigrationCommandListBuilder builder)
 		{
+			string valueVariable = null;
+			string propertyValue = GenerateSqlLiteral(value);
+			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			{
+				valueVariable = $"@{schemaName}_{level1Name}_{name}_value";
+
+				builder
+					.AppendLine($"DECLARE {valueVariable} NVARCHAR(4000) = {propertyValue};");
+			}
+
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @value=")
-				.Append(GenerateSqlLiteral(value))
+				.Append(", @value=");
+
+			if (!string.IsNullOrEmpty(valueVariable))
+			{
+				builder.Append(valueVariable);
+			}
+			else
+			{
+				builder.Append(propertyValue);
+			}
+
+			builder
 				.Append(", @level0type=N'SCHEMA', @level0name=")
 				.Append(GenerateSqlLiteral(schemaName))
 				.Append(", @level1type=N'")
@@ -148,11 +169,31 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void UpdateExtendedPropertyLevel1WithType(string name, string value, string schemaName, string level1Type, string level1Name, MigrationCommandListBuilder builder)
 		{
+			string valueVariable = null;
+			string propertyValue = GenerateSqlLiteral(value);
+			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			{
+				valueVariable = $"@{schemaName}_{level1Name}_{name}_value";
+
+				builder
+					.AppendLine($"DECLARE {valueVariable} NVARCHAR(4000) = {propertyValue};");
+			}
+
 			builder
 				.Append("EXEC sys.sp_updateextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @value=")
-				.Append(GenerateSqlLiteral(value))
+				.Append(", @value=");
+
+			if (!string.IsNullOrEmpty(valueVariable))
+			{
+				builder.Append(valueVariable);
+			}
+			else
+			{
+				builder.Append(propertyValue);
+			}
+
+			builder
 				.Append(", @level0type=N'SCHEMA', @level0name=")
 				.Append(GenerateSqlLiteral(schemaName))
 				.Append(", @level1type=N'")
@@ -199,11 +240,31 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void AddExtendedPropertyLevel2(string name, string value, string schemaName, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
+			string valueVariable = null;
+			string propertyValue = GenerateSqlLiteral(value);
+			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			{
+				valueVariable = $"@{schemaName}_{tableName}_{columnName}_{name}_value";
+
+				builder
+					.AppendLine($"DECLARE {valueVariable} NVARCHAR(4000) = {propertyValue};");
+			}
+
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @value=")
-				.Append(GenerateSqlLiteral(value))
+				.Append(", @value=");
+
+			if (!string.IsNullOrEmpty(valueVariable))
+			{
+				builder.Append(valueVariable);
+			}
+			else
+			{
+				builder.Append(propertyValue);
+			}
+
+			builder
 				.Append(", @level0type=N'SCHEMA', @level0name=")
 				.Append(GenerateSqlLiteral(schemaName))
 				.Append(", @level1type=N'TABLE', @level1name=")
@@ -216,11 +277,31 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void UpdateExtendedPropertyLevel2(string name, string value, string schemaName, string tableName, string columnName, MigrationCommandListBuilder builder)
 		{
+			string valueVariable = null;
+			string propertyValue = GenerateSqlLiteral(value);
+			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			{
+				valueVariable = $"@{schemaName}_{tableName}_{columnName}_{name}_value";
+
+				builder
+					.AppendLine($"DECLARE {valueVariable} NVARCHAR(4000) = {propertyValue};");
+			}
+
 			builder
 				.Append("EXEC sys.sp_updateextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @value=")
-				.Append(GenerateSqlLiteral(value))
+				.Append(", @value=");
+
+			if (!string.IsNullOrEmpty(valueVariable))
+			{
+				builder.Append(valueVariable);
+			}
+			else
+			{
+				builder.Append(propertyValue);
+			}
+
+			builder
 				.Append(", @level0type=N'SCHEMA', @level0name=")
 				.Append(GenerateSqlLiteral(schemaName))
 				.Append(", @level1type=N'TABLE', @level1name=")

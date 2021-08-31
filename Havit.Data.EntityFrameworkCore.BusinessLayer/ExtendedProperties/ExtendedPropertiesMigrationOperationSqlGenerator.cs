@@ -130,7 +130,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 		{
 			string valueVariable = null;
 			string propertyValue = GenerateSqlLiteral(value);
-			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			if (ShouldMakeTemporaryVariable(propertyValue))
 			{
 				valueVariable = $"@{schemaName}_{level1Name}_{name}_value";
 
@@ -171,7 +171,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 		{
 			string valueVariable = null;
 			string propertyValue = GenerateSqlLiteral(value);
-			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			if (ShouldMakeTemporaryVariable(propertyValue))
 			{
 				valueVariable = $"@{schemaName}_{level1Name}_{name}_value";
 
@@ -203,6 +203,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.AppendLine(";")
 				.EndCommand();
 		}
+
 		private void UpdateExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			UpdateExtendedPropertyLevel1WithType(name, value, schemaName, TableLevel1Type, tableName, builder);
@@ -242,7 +243,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 		{
 			string valueVariable = null;
 			string propertyValue = GenerateSqlLiteral(value);
-			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			if (ShouldMakeTemporaryVariable(propertyValue))
 			{
 				valueVariable = $"@{schemaName}_{tableName}_{columnName}_{name}_value";
 
@@ -279,7 +280,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 		{
 			string valueVariable = null;
 			string propertyValue = GenerateSqlLiteral(value);
-			if (Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			if (ShouldMakeTemporaryVariable(propertyValue))
 			{
 				valueVariable = $"@{schemaName}_{tableName}_{columnName}_{name}_value";
 
@@ -357,6 +358,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.AppendLine(";")
 				.EndCommand();
 		}
+
+		private static bool ShouldMakeTemporaryVariable(string propertyValue) 
+			=> Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 		private string GenerateSqlLiteral(string s) => typeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
 

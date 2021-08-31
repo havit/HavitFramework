@@ -36,7 +36,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
+",
 					migrations[0].CommandText);
 			}
         }
@@ -65,7 +66,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
-                    "EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table'",
+                    @"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
+",
                     migrations[0].CommandText);
             }
         }
@@ -97,7 +99,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -128,7 +131,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Table]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 END
 ", migrations[0].CommandText);
 			}
@@ -160,7 +163,7 @@ END
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[custom_schema].[Table]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
 END
 ", migrations[0].CommandText);
             }
@@ -192,7 +195,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -223,7 +227,8 @@ END
 
                 Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(
-                    "EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table'",
+                    @"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
+",
                     migrations[0].CommandText);
             }
         }
@@ -253,7 +258,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -287,7 +293,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -335,7 +342,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -365,7 +373,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Val''ue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Val''ue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -395,7 +404,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -444,7 +454,7 @@ END
 				Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[T_Masters]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Test_Details_FooBar', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'
+    EXEC sys.sp_dropextendedproperty @name=N'Test_Details_FooBar', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
 END
 ", migrations[0].CommandText);
 			}
@@ -476,7 +486,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -525,7 +536,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -556,7 +568,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Column'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Column';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -622,7 +635,8 @@ END
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -681,7 +695,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -725,7 +740,8 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -757,7 +773,8 @@ END
 
 				Assert.AreEqual(4, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -801,10 +818,12 @@ END
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri1', @value=N'ValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri1', @value=N'ValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri2', @value=N'ValueB', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri2', @value=N'ValueB', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[2].CommandText);
 			}
 		}
@@ -835,10 +854,12 @@ END
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri2', @value=N'NewValueB', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri2', @value=N'NewValueB', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[2].CommandText);
 			}
 		}
@@ -869,10 +890,12 @@ END
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_dropextendedproperty @name=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_dropextendedproperty @name=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[1].CommandText);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
+",
 					migrations[2].CommandText);
 			}
 		}
@@ -904,7 +927,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -940,10 +964,12 @@ END
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model';
+",
 					migrations[0].CommandText);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Scott', @value=N'Hanselman'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Scott', @value=N'Hanselman';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -978,7 +1004,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1010,7 +1037,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_dropextendedproperty @name=N'Jiri'",
+					@"EXEC sys.sp_dropextendedproperty @name=N'Jiri';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1033,7 +1061,8 @@ END
 
 				Assert.AreEqual(3, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model';
+",
 					migrations[2].CommandText);
 			}
 		}
@@ -1076,7 +1105,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1105,7 +1135,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1129,7 +1160,7 @@ END
 				Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
 END
 ", migrations[0].CommandText);
 			}
@@ -1160,11 +1191,12 @@ END
 				Assert.AreEqual(2, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[OldName]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'OldName'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'OldName';
 END
 ", migrations[0].CommandText);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'NewName'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'NewName';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -1194,11 +1226,12 @@ END
 				Assert.AreEqual(2, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'OLD_TYPE', @level1name=N'Name'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'OLD_TYPE', @level1name=N'Name';
 END
 ", migrations[0].CommandText);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'NEW_TYPE', @level1name=N'Name'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'NEW_TYPE', @level1name=N'Name';
+",
 					migrations[1].CommandText);
 			}
 		}
@@ -1221,7 +1254,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1250,7 +1284,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1274,7 +1309,7 @@ END
 				Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ProcedureName]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
 END
 ", migrations[0].CommandText);
 			}
@@ -1298,7 +1333,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1327,7 +1363,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1351,7 +1388,7 @@ END
 				Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ViewName]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
 END
 ", migrations[0].CommandText);
 			}
@@ -1375,7 +1412,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName'",
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1404,7 +1442,8 @@ END
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName'",
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';
+",
 					migrations[0].CommandText);
 			}
 		}
@@ -1428,7 +1467,7 @@ END
 				Assert.AreEqual(1, migrations.Count);
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[FunctionName]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName'
+    EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';
 END
 ", migrations[0].CommandText);
 			}

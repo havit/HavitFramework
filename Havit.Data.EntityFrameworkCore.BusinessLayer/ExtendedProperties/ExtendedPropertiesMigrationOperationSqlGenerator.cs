@@ -138,7 +138,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(level1Type)
 				.Append("', @level1name=")
 				.Append(GenerateSqlLiteral(level1Name))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 		private void AddExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
@@ -159,7 +159,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(level1Type)
 				.Append("', @level1name=")
 				.Append(GenerateSqlLiteral(level1Name))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 		private void UpdateExtendedPropertyLevel1(string name, string value, string schemaName, string tableName, MigrationCommandListBuilder builder)
@@ -186,7 +186,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
                     .Append(level1Type)
                     .Append("', @level1name=")
                     .Append(GenerateSqlLiteral(level1Name))
-                    .AppendLine("");
+                    .AppendLine(";");
             }
 
             builder.AppendLine("END")
@@ -210,7 +210,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 
@@ -227,7 +227,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 
@@ -242,7 +242,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(GenerateSqlLiteral(tableName))
 				.Append(", @level2type=N'COLUMN', @level2name=")
 				.Append(GenerateSqlLiteral(columnName))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 
@@ -253,7 +253,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 
@@ -264,7 +264,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.Append(GenerateSqlLiteral(name))
 				.Append(", @value=")
 				.Append(GenerateSqlLiteral(value))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 
@@ -273,7 +273,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			builder
 				.Append("EXEC sys.sp_dropextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append("")
+				.AppendLine(";")
 				.EndCommand();
 		}
 

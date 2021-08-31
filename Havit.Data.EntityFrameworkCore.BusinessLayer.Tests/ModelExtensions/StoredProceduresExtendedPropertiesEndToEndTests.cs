@@ -92,7 +92,8 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 				Assert.AreNotEqual(0, commands.Count);
 
 			    var addExtendedPropertyCommands = commands.Where(c => c.CommandText.StartsWith("EXEC sys.sp_addextendedproperty @name=N'MS_Description'"));
-			    var command = addExtendedPropertyCommands.FirstOrDefault(c => c.CommandText.EndsWith($"@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'{nameof(InvoiceStoredProcedures.TotalAmount)}'"));
+			    var command = addExtendedPropertyCommands.FirstOrDefault(c => c.CommandText.EndsWith(@$"@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'{nameof(InvoiceStoredProcedures.TotalAmount)}';
+"));
 
 				Assert.IsNotNull(command, $"MS_Description extended property for stored procedure '{nameof(InvoiceStoredProcedures.TotalAmount)}' is missing.");
 				Assert.AreEqual("Calculates total amount.", Regex.Match(command.CommandText, "@value=N'(.*?)'", RegexOptions.Singleline).Groups[1].Value.Trim('\r', '\n', ' '));
@@ -140,7 +141,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 
                 Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[TotalAmount]') IS NOT NULL
 BEGIN
-    EXEC sys.sp_dropextendedproperty @name=N'MS_Description', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'TotalAmount'
+    EXEC sys.sp_dropextendedproperty @name=N'MS_Description', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'TotalAmount';
 END
 ", dropExtendedPropertyCommand.CommandText);
             }

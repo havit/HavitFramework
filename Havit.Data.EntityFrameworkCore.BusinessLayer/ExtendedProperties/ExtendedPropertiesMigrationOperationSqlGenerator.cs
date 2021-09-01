@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -131,31 +132,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void AddExtendedPropertyLevel1WithType(string name, string value, string schemaName, string level1Type, string level1Name, MigrationCommandListBuilder builder)
 		{
-			string valueVariable = null;
-			string propertyValue = GenerateSqlLiteral(value);
-			if (ShouldMakeTemporaryVariable(propertyValue))
-			{
-				valueVariable = $"@{schemaName}_{level1Name}_{name}_value";
-
-				builder
-					.AppendLine($"DECLARE {valueVariable} NVARCHAR(4000) = {propertyValue};");
-			}
+			string parameterValue = GenerateSqlLiteralForParameter(builder, value, $"@{schemaName}_{level1Name}_{name}_value");
 
 			builder
 				.Append("EXEC sys.sp_addextendedproperty @name=")
 				.Append(GenerateSqlLiteral(name))
-				.Append(", @value=");
-
-			if (!string.IsNullOrEmpty(valueVariable))
-			{
-				builder.Append(valueVariable);
-			}
-			else
-			{
-				builder.Append(propertyValue);
-			}
-
-			builder
+				.Append(", @value=")
+				.Append(parameterValue)
 				.Append(", @level0type=N'SCHEMA', @level0name=")
 				.Append(GenerateSqlLiteral(schemaName))
 				.Append(", @level1type=N'")
@@ -362,11 +345,35 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.EndCommand();
 		}
 
+
 		/// <summary>
-		/// Determines, when a temporary variable should be made for parameter value of SP.
+		/// Generates SQL literal for value (to be used as parameter). If necessary, creates temporary variable to store generated literal.
+		///
+		/// This is necessary, because EF Core (SqlServerStringTypeMapping) generates CONCAT and/or CAST to properly encode string values
+		/// (e.g. new lines, apostrophes etc.). See SqlServerStringTypeMapping class for more detail:
 		///
 		/// https://github.com/dotnet/efcore/blob/release/5.0/src/EFCore.SqlServer/Storage/Internal/SqlServerStringTypeMapping.cs#L159
+		///
+		/// Fixes bug #56361.
 		/// </summary>
+		private string GenerateSqlLiteralForParameter(MigrationCommandListBuilder builder, string value, string valueVariable)
+		{
+			string propertyValue = GenerateSqlLiteral(value);
+			if (!ShouldMakeTemporaryVariable(propertyValue))
+			{
+				return propertyValue;
+			}
+
+			// Maximum size of extended property value is 7500 bytes (stored as sql_variant). Since we use NVARCHAR for passing
+			// the property value, we cannot use MAX as size (so we limit size of temporary variable).
+			// https://docs.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-addextendedproperty-transact-sql?view=sql-server-ver15#arguments
+
+			builder.AppendLine($"DECLARE {valueVariable} NVARCHAR(4000) = {propertyValue};");
+
+			return valueVariable;
+
+		}
+
 		private static bool ShouldMakeTemporaryVariable(string propertyValue) 
 			=> Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 

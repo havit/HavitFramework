@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.TestHelpers
 	{
 		public static EntityTypeBuilder AddExtendedProperty(this EntityTypeBuilder entityTypeBuilder, string name, string value)
 		{
-			entityTypeBuilder.Metadata.AddExtendedProperties(new Dictionary<string, string> { { name, value} });
+			entityTypeBuilder.Metadata.AddExtendedProperties(new Dictionary<string, string> { { name, value } });
 			return entityTypeBuilder;
 		}
 

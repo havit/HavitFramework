@@ -16,16 +16,19 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 	{
 	    private const string DefaultSchemaName = "dbo";
 	    private const string TableLevel1Type = "TABLE";
-
-	    private readonly IRelationalTypeMappingSource typeMappingSource;
+		
         private readonly ISqlGenerationHelper sqlGenerationHelper;
+        private readonly Lazy<RelationalTypeMapping> stringTypeMappingLazy;
+
+        private RelationalTypeMapping StringTypeMapping => stringTypeMappingLazy.Value;
 
         public ExtendedPropertiesMigrationOperationSqlGenerator(
             IRelationalTypeMappingSource typeMappingSource,
             ISqlGenerationHelper sqlGenerationHelper)
         {
-            this.typeMappingSource = typeMappingSource;
             this.sqlGenerationHelper = sqlGenerationHelper;
+
+            stringTypeMappingLazy = new Lazy<RelationalTypeMapping>(() => typeMappingSource.FindMapping(typeof(string)));
         }
 
         public override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
@@ -359,10 +362,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 				.EndCommand();
 		}
 
+		/// <summary>
+		/// Determines, when a temporary variable should be made for parameter value of SP.
+		///
+		/// https://github.com/dotnet/efcore/blob/release/5.0/src/EFCore.SqlServer/Storage/Internal/SqlServerStringTypeMapping.cs#L159
+		/// </summary>
 		private static bool ShouldMakeTemporaryVariable(string propertyValue) 
 			=> Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-		private string GenerateSqlLiteral(string s) => typeMappingSource.GetMapping(typeof(string)).GenerateSqlLiteral(s);
+		private string GenerateSqlLiteral(string s) => StringTypeMapping.GenerateSqlLiteral(s);
 
 		private static string GetSchema(string operationSchema, IModel model) => operationSchema ?? model.GetDefaultSchema() ?? DefaultSchemaName;
 

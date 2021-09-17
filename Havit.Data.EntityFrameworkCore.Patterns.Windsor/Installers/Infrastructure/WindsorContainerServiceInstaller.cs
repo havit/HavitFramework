@@ -57,10 +57,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers.Infrastruct
 		}
 
 		/// <inheritdoc />
-		public override void AddFactory(Type factoryType)
+		public override void TryAddService(Type serviceType, Type implementationType, Func<LifestyleGroup<object>, ComponentRegistration<object>> lifetime)
 		{
-			container.Register(Component.For(factoryType).AsFactory());
+			if (!container.Kernel.HasComponent(serviceType))
+			{
+				AddService(serviceType, implementationType, lifetime);
+			}
 		}
 
-	}
+		/// <inheritdoc />
+		public override void TryAddFactory(Type factoryType)
+		{
+			if (!container.Kernel.HasComponent(factoryType))
+			{
+				container.Register(Component.For(factoryType).AsFactory());
+			}
+		}
+    }
 }

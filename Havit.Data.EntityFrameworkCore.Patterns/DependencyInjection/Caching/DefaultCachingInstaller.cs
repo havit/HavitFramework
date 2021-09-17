@@ -14,7 +14,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// <inheritdoc />
 		public void Install(IServiceInstaller<TLifetime> installer)
 		{
-			installer.AddServiceTransient<IEntityCacheManager, EntityCacheManager>(); // kvůli https://github.com/volosoft/castle-windsor-ms-adapter/issues/32 nemůžeme být singleton, protože potřebujeme AKTUÁLNÍ DbContext, ale přes factory dostáváme vždy nový
+			installer.TryAddServiceTransient<IEntityCacheManager, EntityCacheManager>(); // kvůli https://github.com/volosoft/castle-windsor-ms-adapter/issues/32 nemůžeme být singleton, protože potřebujeme AKTUÁLNÍ DbContext, ale přes factory dostáváme vždy nový
 			RegisterEntityCacheOptionsGenerator(installer);
 			RegisterEntityCacheKeyGenerator(installer);
 			RegisterEntityCacheSupportDecision(installer);
@@ -25,8 +25,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// </summary>
 		protected virtual void RegisterEntityCacheOptionsGenerator(IServiceInstaller<TLifetime> installer)
 		{
-			installer.AddServiceTransient<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
-			installer.AddServiceSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
+			installer.TryAddServiceTransient<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
+			installer.TryAddServiceSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
 		}
 
 		/// <summary>
@@ -34,8 +34,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// </summary>
 		protected virtual void RegisterEntityCacheKeyGenerator(IServiceInstaller<TLifetime> installer)
 		{
-			installer.AddServiceTransient<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
-			installer.AddServiceSingleton<IEntityCacheKeyGeneratorStorage, EntityCacheKeyGeneratorStorage>();
+			installer.TryAddServiceTransient<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
+			installer.TryAddServiceSingleton<IEntityCacheKeyGeneratorStorage, EntityCacheKeyGeneratorStorage>();
 		}
 
 		/// <summary>
@@ -43,8 +43,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// </summary>
 		protected virtual void RegisterEntityCacheSupportDecision(IServiceInstaller<TLifetime> installer)
 		{
-			installer.AddServiceTransient<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
-			installer.AddServiceSingleton<IAnnotationsEntityCacheSupportDecisionStorage, AnnotationsEntityCacheSupportDecisionStorage>();
+			installer.TryAddServiceTransient<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
+			installer.TryAddServiceSingleton<IAnnotationsEntityCacheSupportDecisionStorage, AnnotationsEntityCacheSupportDecisionStorage>();
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,19 +34,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			this.services = services;
 		}
 
-		public override void AddFactory(Type factoryType)
+		public override void TryAddFactory(Type factoryType)
 		{
 			if (factoryType == typeof(IDataSeedPersisterFactory))
 			{
-				services.AddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
+				services.TryAddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 			}
 			else if (factoryType == typeof(IBeforeCommitProcessorsFactory))
 			{
-				services.AddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
+				services.TryAddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
 			}
 			else if (factoryType == typeof(IEntityValidatorsFactory))
 			{
-				services.AddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
+				services.TryAddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
 			}
 			else
 			{
@@ -90,5 +91,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			}
 		}
 
-	}
+		/// <inheritdoc/>
+		public override void TryAddService(Type serviceType, Type implementationType, ServiceLifetime lifetime)
+        {
+			services.TryAdd(new ServiceDescriptor(serviceType, implementationType, lifetime));
+		}
+    }
 }

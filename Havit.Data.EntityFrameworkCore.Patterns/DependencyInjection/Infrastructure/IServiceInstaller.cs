@@ -12,10 +12,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 	/// </summary>
 	public interface IServiceInstaller<TLifetime>
 	{
-		/// <summary>
-		/// Přidá transientní službu s implementací do DI containeru.
-		/// </summary>
-		void AddServiceTransient<TService, TImplementation>();
+        #region AddService...
+        /// <summary>
+        /// Přidá transientní službu s implementací do DI containeru.
+        /// </summary>
+        void AddServiceTransient<TService, TImplementation>();
 
 		/// <summary>
 		/// Přidá transientní službu s implementací do DI containeru.
@@ -58,11 +59,44 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// Implementace je zaregistrována pod všechny uvedené interfaces.
 		/// </summary>
 		void AddServicesTransient(Type[] type, Type dataSourceType);
+		#endregion
+
+		#region TryAddService...
 
 		/// <summary>
-		/// Zaregistruje factory.
+		/// Přidá transientní službu s implementací do DI containeru, pokud ještě není registrována.
 		/// </summary>
-		void AddFactory(Type factoryType);
+		void TryAddServiceTransient<TService, TImplementation>();
 
+		/// <summary>
+		/// Přidá transientní službu s implementací do DI containeru, pokud ještě není registrována.
+		/// </summary>
+		void TryAddServiceTransient(Type serviceType, Type implementationType);
+
+		/// <summary>
+		/// Přidá službu s implementací do DI containeru jako singleton, pokud ještě není registrována.
+		/// </summary>
+		void TryAddServiceSingleton<TService, TImplementation>();
+
+		/// <summary>
+		/// Přidá službu s implementací do DI containeru jako singleton, pokud ještě není registrována.
+		/// </summary>
+		void TryAddServiceSingleton(Type serviceType, Type implementationType);
+
+		/// <summary>
+		/// Přidá službu s implementací do DI containeru s uvedeným lifetime, pokud ještě není registrována.
+		/// </summary>
+		void TryAddService<TService, TImplementation>(TLifetime lifetime);
+
+		/// <summary>
+		/// Přidá službu s implementací do DI containeru s uvedeným lifetime, pokud ještě není registrována.
+		/// </summary>
+		void TryAddService(Type serviceType, Type implementationType, TLifetime lifetime);
+		#endregion
+
+		/// <summary>
+		/// Zaregistruje factory do DI containeru, pokud ještě není registrována.
+		/// </summary>
+		void TryAddFactory(Type factoryType);
 	}
 }

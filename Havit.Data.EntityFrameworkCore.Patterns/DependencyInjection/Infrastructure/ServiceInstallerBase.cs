@@ -22,10 +22,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		protected abstract TLifetime TransientLifetime { get; }
 
 		/// <inheritdoc />
-		public abstract void AddFactory(Type factoryType);
+		public abstract void TryAddFactory(Type factoryType);
 
-		/// <inheritdoc />
-		public void AddService<TService, TImplementation>(TLifetime lifetime)
+        #region AddService...
+        /// <inheritdoc />
+        public void AddService<TService, TImplementation>(TLifetime lifetime)
 		{
 			AddService(typeof(TService), typeof(TImplementation), lifetime);
 		}
@@ -89,5 +90,41 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		{
 			AddServices(serviceTypes, implementationType, this.TransientLifetime);
 		}
+        #endregion
+
+        #region TryAddSevice
+        /// <inheritdoc />
+        public void TryAddServiceTransient<TService, TImplementation>()
+        {
+			TryAddService<TService, TImplementation>(this.TransientLifetime);
+        }
+
+		/// <inheritdoc />
+		public void TryAddServiceTransient(Type serviceType, Type implementationType)
+        {
+			TryAddService(serviceType, implementationType, this.TransientLifetime);            
+        }
+
+		/// <inheritdoc />
+		public void TryAddServiceSingleton<TService, TImplementation>()
+        {
+			TryAddService<TService, TImplementation>(this.SingletonLifetime);
+        }
+
+		/// <inheritdoc />
+		public void TryAddServiceSingleton(Type serviceType, Type implementationType)
+        {
+			TryAddService(serviceType, implementationType, this.SingletonLifetime);
+		}
+
+		/// <inheritdoc />
+		public void TryAddService<TService, TImplementation>(TLifetime lifetime)
+        {
+			TryAddService(typeof(TService), typeof(TImplementation), lifetime);
+		}
+
+		/// <inheritdoc />
+		public abstract void TryAddService(Type serviceType, Type implementationType, TLifetime lifetime);
+		#endregion
 	}
 }

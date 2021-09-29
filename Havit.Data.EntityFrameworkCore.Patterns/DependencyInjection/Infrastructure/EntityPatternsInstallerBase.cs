@@ -81,10 +81,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
 			Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
 
-			installer.AddService(typeof(ILanguageService), currentLanguageServiceType, componentRegistrationOptions.GeneralLifestyle);
-			installer.AddServiceTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
-			installer.AddServiceSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
-			installer.AddServiceTransient<ILocalizationService, LocalizationService>();
+			installer.TryAddService(typeof(ILanguageService), currentLanguageServiceType, componentRegistrationOptions.GeneralLifestyle);
+			installer.TryAddServiceTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
+			installer.TryAddServiceSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
+			installer.TryAddServiceTransient<ILocalizationService, LocalizationService>();
 
 			return this;
 		}
@@ -96,40 +96,40 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		{
 			componentRegistrationOptions.CachingInstaller.Install(installer);
 
-			installer.AddServiceSingleton<ISoftDeleteManager, SoftDeleteManager>();
-			installer.AddServiceSingleton<ICurrentCultureService, CurrentCultureService>();
-			installer.AddServiceTransient<IDataSeedRunner, DataSeedRunner>();
-			installer.AddServiceTransient<ITransactionWrapper, TransactionScopeTransactionWrapper>();
-			installer.AddServiceTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
-			installer.AddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
-			installer.AddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
-			installer.AddFactory(typeof(IDataSeedPersisterFactory));
+			installer.TryAddServiceSingleton<ISoftDeleteManager, SoftDeleteManager>();
+			installer.TryAddServiceSingleton<ICurrentCultureService, CurrentCultureService>();
+			installer.TryAddServiceTransient<IDataSeedRunner, DataSeedRunner>();
+			installer.TryAddServiceTransient<ITransactionWrapper, TransactionScopeTransactionWrapper>();
+			installer.TryAddServiceTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
+			installer.TryAddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
+			installer.TryAddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
+			installer.TryAddFactory(typeof(IDataSeedPersisterFactory));
 
-			installer.AddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
-			installer.AddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);
-			installer.AddServiceTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
+			installer.TryAddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
+			installer.TryAddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);
+			installer.TryAddServiceTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
 
-			installer.AddServiceSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
-			installer.AddServiceSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
-			installer.AddServiceSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
-			installer.AddServiceSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
-			installer.AddServiceSingleton<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
+			installer.TryAddServiceSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
+			installer.TryAddServiceSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
+			installer.TryAddServiceSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
+			installer.TryAddServiceSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
+			installer.TryAddServiceSingleton<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
 
-			installer.AddFactory(typeof(IBeforeCommitProcessorsFactory));
+			installer.TryAddFactory(typeof(IBeforeCommitProcessorsFactory));
 
-			installer.AddServiceSingleton<IBeforeCommitProcessor<object>, SetCreatedToInsertingEntitiesBeforeCommitProcessor>();
-			installer.AddServiceSingleton<IEntityValidationRunner, EntityValidationRunner>();
+			installer.TryAddServiceSingleton<IBeforeCommitProcessor<object>, SetCreatedToInsertingEntitiesBeforeCommitProcessor>();
+			installer.TryAddServiceSingleton<IEntityValidationRunner, EntityValidationRunner>();
 
-			installer.AddFactory(typeof(IEntityValidatorsFactory));
+			installer.TryAddFactory(typeof(IEntityValidatorsFactory));
 
-			installer.AddServiceTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
-			installer.AddServiceSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
-			installer.AddServiceTransient<IReferencingCollectionsService, ReferencingCollectionsService>();
-			installer.AddServiceSingleton<IReferencingCollectionsStorage, ReferencingCollectionsStorage>();
-			installer.AddServiceTransient<ICollectionTargetTypeService, CollectionTargetTypeService>();
-			installer.AddServiceSingleton<ICollectionTargetTypeStorage, CollectionTargetTypeStorage>();
-			installer.AddServiceSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
-			installer.AddServiceTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
+			installer.TryAddServiceTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
+			installer.TryAddServiceSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
+			installer.TryAddServiceTransient<IReferencingCollectionsService, ReferencingCollectionsService>();
+			installer.TryAddServiceSingleton<IReferencingCollectionsStorage, ReferencingCollectionsStorage>();
+			installer.TryAddServiceTransient<ICollectionTargetTypeService, CollectionTargetTypeService>();
+			installer.TryAddServiceSingleton<ICollectionTargetTypeStorage, CollectionTargetTypeStorage>();
+			installer.TryAddServiceSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
+			installer.TryAddServiceTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 
 			return this;
 		}
@@ -146,7 +146,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			foreach (Type dataSeedType in dataSeedTypes)
 			{
-				installer.AddServiceTransient(typeof(IDataSeed), dataSeedType);
+				installer.AddServiceTransient(typeof(IDataSeed), dataSeedType); // nesmí být *TryAdd*, ale musí být Add, jinak se nám přidá jen první dataSeedType!
 			}
 
 			// Registrace přes IDataSource<T> nestačí, protože při pokusu získání instance dostaneme chybu
@@ -184,7 +184,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			foreach (Type dataEntryType in dataEntryTypes)
 			{
-				Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypDataSource
+				Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypEntries
 
 				installer.AddService(dataEntryInterface, dataEntryType, componentRegistrationOptions.DataEntriesLifestyle);
 
@@ -196,8 +196,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 				{					
 					Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
 
-					installer.AddServiceTransient(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType), typeof(DataEntrySymbolService<>).MakeGenericType(entityType));
-					installer.AddServiceSingleton(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType), typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType));
+					installer.TryAddServiceTransient(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType), typeof(DataEntrySymbolService<>).MakeGenericType(entityType));
+					installer.TryAddServiceSingleton(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType), typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType));
 				}
 			}
 
@@ -216,7 +216,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 					Type interfaceType = typeof(IEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> IEntityKeyAccessor<TEntity, int>
 					Type implementationType = typeof(DbEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> DbEntityKeyAccessor<TEntity, int>
 
-					installer.AddServiceTransient(interfaceType, implementationType);
+					installer.TryAddServiceTransient(interfaceType, implementationType);
 				});
 
 			return this;
@@ -240,16 +240,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			where TImplementation : class, TService
 			where TLookupDataInvalidationService : ILookupDataInvalidationService
 		{
-			if (!lookupServicesAdded)
-			{
-				installer.AddServiceSingleton<IEntityLookupDataStorage, EntityLookupDataStorage>();
-				lookupServicesAdded = true;
-			}
+			installer.TryAddServiceSingleton<IEntityLookupDataStorage, EntityLookupDataStorage>();
 			installer.AddServicesTransient(new Type[] { typeof(TService), typeof(ILookupDataInvalidationService) }, typeof(TLookupDataInvalidationService));
 
 			return this;
 		}
-		private bool lookupServicesAdded = false;
 
 		/// <summary>
 		/// Vrací true, pokud NEJDE o abstraktní typ.

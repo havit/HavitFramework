@@ -23,9 +23,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 		/// </summary>
-		private LoadPropertyInternalResult LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities)
+		private LoadPropertyInternalResult LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities)
 			where TEntity : class
 			where TPropertyCollection : class
+			where TOriginalPropertyCollection : class
 			where TPropertyItem : class
 		{
 			LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out var entitiesToLoadQuery);
@@ -39,7 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
 			LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 
-			return LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(entities, originalPropertyName);
+			return LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(entities, originalPropertyName);
 		}
 
 		/// <summary>
@@ -192,9 +193,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			}
 		}
 
-		private LoadPropertyInternalResult LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, string originalPropertyName)
+		private LoadPropertyInternalResult LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(TEntity[] entities, string originalPropertyName)
 			where TEntity : class
-			where TPropertyCollection : class
+			where TOriginalPropertyCollection : class
 			where TPropertyItem : class
 		{
 			var originalPropertyLambda = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(originalPropertyName).LambdaCompiled;
@@ -202,7 +203,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			return new LoadPropertyInternalResult
 			{
 				Entities = entities.SelectMany(item => (IEnumerable<TPropertyItem>)originalPropertyLambda(item)).ToArray(),
-				FluentDataLoader = new DbFluentDataLoader<TPropertyCollection, TPropertyItem>(this, entities.SelectMany(item => originalPropertyLambda(item)).ToArray())
+				FluentDataLoader = new DbFluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, entities.SelectMany(item => originalPropertyLambda(item)).ToArray())
 			};
 		}
 	}

@@ -5,6 +5,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Model.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -264,7 +265,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Master master = dbContext.Master.First();
 
 			// Act
-			DbFluentDataLoader<ICollection<Child>> fluentDataLoader = (DbFluentDataLoader<ICollection<Child>>)dataLoader.Load(master, m => m.Children);
+			DbFluentDataLoader<FilteringCollection<Child>> fluentDataLoader = (DbFluentDataLoader<FilteringCollection<Child>>)dataLoader.Load(master, m => m.Children);
 
 			// Assert
 			Assert.AreEqual(0, fluentDataLoader.Data.Count(), "Jsou vybráni smazané Child k načítání závislostí.");

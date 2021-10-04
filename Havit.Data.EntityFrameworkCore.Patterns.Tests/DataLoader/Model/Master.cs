@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
 	{
 		public int Id { get; set; }
 
-		public ICollection<Child> Children { get; set; }
+		public FilteringCollection<Child> Children { get; set; }
 
 		public List<Child> ChildrenIncludingDeleted { get; } = new List<Child>();
 

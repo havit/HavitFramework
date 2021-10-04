@@ -23,8 +23,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 		public Type SourceType { get; set; }
 
 		/// <summary>
+		/// Typ načítané vlastnosti (před případnou substitucí).
+		/// </summary>
+		public Type OriginalTargetType { get; set; }
+
+		/// <summary>
 		/// Typ načítané vlastnosti (po případné substituci).
-		/// V případě kolekcí jde o kolekci prvků (např. pro LoginAccount.Roles bude obsahovat List&lt;Role&gt;.
+		/// V případě kolekcí jde o kolekci prvků (např. pro LoginAccount.Roles bude obsahovat List&lt;Role&gt;).
 		/// </summary>
 		public Type TargetType { get; set; }
 

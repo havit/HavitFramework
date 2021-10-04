@@ -60,6 +60,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 						PropertyName = node.Member.Name,
 						OriginalPropertyName = node.Member.Name,
 						TargetType = ((PropertyInfo)node.Member).PropertyType,
+						OriginalTargetType = ((PropertyInfo)node.Member).PropertyType,
 						CollectionItemType = enumerableInterfaceType.GetGenericArguments()[0]
 					});
 
@@ -69,9 +70,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 					propertiesToLoad.Add(new PropertyToLoad
 					{
 						SourceType = node.Member.DeclaringType,
-						TargetType = ((PropertyInfo)node.Member).PropertyType,
 						PropertyName = node.Member.Name,
-						OriginalPropertyName = node.Member.Name
+						OriginalPropertyName = node.Member.Name,
+						TargetType = ((PropertyInfo)node.Member).PropertyType,
+						OriginalTargetType = ((PropertyInfo)node.Member).PropertyType
 					});
 				}
 			}

@@ -228,6 +228,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
 								propertyToLoad.TargetType,
+								propertyToLoad.OriginalTargetType,
 								propertyToLoad.CollectionItemType)
 							.Invoke(this, new object[] { propertyToLoad.PropertyName, propertyToLoad.OriginalPropertyName, entities });
 					}

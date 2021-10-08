@@ -12,7 +12,7 @@ namespace TracingTest
 	{
 		private static void Main(string[] args)
 		{
-			ExceptionTracer.Default.SubscribeToUnhandledExceptions(false);
+			ExceptionTracer.Default.SubscribeToUnhandledExceptions();
 
 			throw new ApplicationException("Test na Havit.Diagnostics.ExceptionTracer a Havit.Diagnostics.SmtpTraceListener.");
 		}

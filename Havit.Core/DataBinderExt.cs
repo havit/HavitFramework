@@ -68,12 +68,7 @@ namespace Havit
 				}
 				else
 				{
-#if NET472
-					// tohle se snad nikde nepoužívá, proto neoptimalizuji
-					currentDataItem = System.Web.UI.DataBinder.GetIndexedPropertyValue(currentDataItem, expression);
-#else
 					throw new InvalidOperationException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expression));
-#endif
 				}
 			}
 

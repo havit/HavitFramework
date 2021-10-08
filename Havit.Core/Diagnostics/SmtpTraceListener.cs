@@ -110,7 +110,7 @@ namespace Havit.Diagnostics
 							_smtpEnableSsl = Boolean.Parse(parameterValue);
 							break;
 						default:
-							throw new ConfigurationErrorsException(String.Format("Neznámý parametr '{0}' konfigurace SmtpTraceListeneru v initializeData.", paramValue[0]/* nedávám paramenterName, protože jej chci zobrazit bez provedeného Trim a ToLower */));
+							throw new ArgumentException(String.Format("Neznámý parametr '{0}' konfigurace SmtpTraceListeneru v initializeData.", paramValue[0]/* nedávám paramenterName, protože jej chci zobrazit bez provedeného Trim a ToLower */));
 					}
 				}
 			}
@@ -119,17 +119,17 @@ namespace Havit.Diagnostics
 			{
 				if (!String.IsNullOrEmpty(_smtpUsername) || !String.IsNullOrEmpty(_smtpPassword))
 				{
-					throw new ConfigurationErrorsException("Credentials can be set only when smtp server (host) is specified.");
+					throw new ArgumentException("Credentials can be set only when smtp server (host) is specified.");
 				}
 
 				if (_smtpPort != null)
 				{
-					throw new ConfigurationErrorsException("Smtp port can be set only when smtp server (host) is specified.");
+					throw new ArgumentException("Smtp port can be set only when smtp server (host) is specified.");
 				}
 
 				if (_smtpEnableSsl != false)
 				{
-					throw new ConfigurationErrorsException("Smtp ssl settings can be set only when smtp server (host) is specified.");
+					throw new ArgumentException("Smtp ssl settings can be set only when smtp server (host) is specified.");
 				}
 			}
 		}
@@ -252,15 +252,37 @@ namespace Havit.Diagnostics
 			// pro konzolovky, ve webových aplikacích vrací null
 			// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 			Assembly assembly = Assembly.GetEntryAssembly();
-#if NET472
-			// pro requesty webových aplikací, v asynchronním tasku/threadu vrací HttpContext.Current null
-			if ((assembly == null) && (HttpContext.Current != null))
+
+			// JK: IMHO zbytečný kód.
+			// V běžném requestu máme health monitoring, netřeba se obvykle zabývat SMTP trace listenerem.
+			// Nepokrýváme asychronní kód, tasky, thready - ty nemají HttpContext.Current.
+			// V konzolovce, atp., máme assembly.
+
+			if (assembly == null)
 			{
-				// příklad: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
-				// v precompiled aplikaci bude, co čekáme
-				assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;
+				// Implementace vychází z https://stackoverflow.com/a/6754205/4202832
+				// Abychom nemuseli být závislí (dependency) na System.Web, nepoužijeme závislost na System.Web a proto musíme typ dohledat dynamicky.
+				// A pracovat s ním reflexí.
+
+				// Implementujeme "HttpContext.Current != null" reflexí
+				Type httpContextType = Type.GetType("System.Web.HttpContext, System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", throwOnError: false);
+				if (httpContextType != null)
+				{
+					PropertyInfo httpContextCurrentMember = httpContextType.GetProperty("Current", BindingFlags.Public | BindingFlags.Static);
+					object httpContextCurrent = httpContextCurrentMember.GetValue(null /* static */);
+
+					// pro requesty webových aplikací, v asynchronním tasku/threadu vrací HttpContext.Current null
+					if (httpContextCurrent != null)
+					{
+						// příklad: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+						// v precompiled aplikaci bude, co čekáme
+
+						// Ve druhé části implementujeme "assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;".
+						object applicationInstance = httpContextType.GetProperty("ApplicationInstance", BindingFlags.Public | BindingFlags.Instance).GetValue(httpContextCurrent);
+						assembly = applicationInstance.GetType().Assembly;
+					}
+				}
 			}
-#endif
 
 			// pro asynchronní tasky/thready webových aplikací nevíme, jak získat assembly
 

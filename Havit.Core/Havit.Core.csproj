@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Havit</RootNamespace>
 	</PropertyGroup>
@@ -13,7 +13,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.19</PackageVersion>
+		<PackageVersion>2.0.20</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
 	</PropertyGroup>
 	<ItemGroup>
@@ -21,13 +21,6 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Configuration" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
-		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
-		<Reference Include="System.Windows.Forms" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
 	</ItemGroup>
 
 </Project>

@@ -1,9 +1,7 @@
-﻿#if NET472
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using System.Windows.Forms;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Diagnostics
@@ -128,15 +126,20 @@ namespace Havit.Diagnostics
 
 		/// <summary>
 		/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek (event AppDomain.CurrentDomain.UnhandledException).
+		/// Obsolete, use method with no arguments.
 		/// </summary>
+		[Obsolete("Use SubscribeToUnhandledExceptions() with no parameters.", error: true)]
 		public void SubscribeToUnhandledExceptions(bool includeWindowsFormsThreadExceptions)
 		{
-			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+			throw new NotSupportedException();
+		}
 
-			if (includeWindowsFormsThreadExceptions)
-			{
-				SubscribeToWindowsFormsThreadExceptions();
-			}
+		/// <summary>
+		/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek (event AppDomain.CurrentDomain.UnhandledException).
+		/// </summary>
+		public void SubscribeToUnhandledExceptions()
+		{
+			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 		}
 
 		/// <summary>
@@ -149,34 +152,6 @@ namespace Havit.Diagnostics
 			if (e.ExceptionObject is Exception)
 			{
 				TraceException((Exception)e.ExceptionObject, TraceEventType.Critical);
-			}
-		}
-
-		/// <summary>
-		/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek WinForm (event Application.ThreadException).
-		/// </summary>
-		public void SubscribeToWindowsFormsThreadExceptions()
-		{
-			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-		}
-
-		/// <summary>
-		/// Obsluha události Application.ThreadException.
-		/// </summary>
-		/// <param name="sender">The source of the event.</param>
-		/// <param name="e">The <see cref="System.Threading.ThreadExceptionEventArgs"/> instance containing the event data.</param>
-		private void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-		{
-			TraceException(e.Exception, TraceEventType.Critical);
-
-			// původní implementace obsluhy výjimky
-			using (ThreadExceptionDialog excptDlg = new ThreadExceptionDialog(e.Exception))
-			{
-				DialogResult result = excptDlg.ShowDialog();
-				if (result == DialogResult.Abort)
-				{
-					Application.Exit();
-				}
 			}
 		}
 
@@ -243,4 +218,3 @@ namespace Havit.Diagnostics
 		}
 	}
 }
-#endif

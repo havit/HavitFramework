@@ -29,7 +29,7 @@ namespace Havit.Tests.Diagnostics
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(ArgumentException))]
 		public void SmtpTraceListener_ConstructorThrowsExceptionForUnknownValue()
 		{
 			// Act
@@ -39,7 +39,7 @@ namespace Havit.Tests.Diagnostics
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ConfigurationErrorsException))]
+		[ExpectedException(typeof(ArgumentException))]
 		public void SmtpTraceListener_ConstructorThrowsExceptionWhenSmtpPortIsConfiguredButNoSmtpServerSet()
 		{
 			// Act

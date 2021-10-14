@@ -24,9 +24,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		private readonly ILookupDataInvalidationRunner lookupDataInvalidationRunner;
 		private List<Action> afterCommits = null;
 
-		private readonly HashSet<object> insertRegistrations = new HashSet<object>();
 		private readonly HashSet<object> updateRegistrations = new HashSet<object>();
-		private readonly HashSet<object> deleteRegistrations = new HashSet<object>();
 
 		/// <summary>
 		/// DbContext, nad kterým stojí Unit of Work.
@@ -114,9 +112,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 
 		private void ClearRegistrationHashSets()
 		{
-			insertRegistrations.Clear();
 			updateRegistrations.Clear();
-			deleteRegistrations.Clear();
 		}
 
 		/// <summary>
@@ -150,9 +146,22 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		/// </summary>
 		protected internal Changes GetAllKnownChanges()
 		{
-			var inserts = DbContext.GetObjectsInState(EntityState.Added, suppressDetectChanges: false).Union(insertRegistrations).ToArray();
-			var updates = DbContext.GetObjectsInState(EntityState.Modified, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */).Union(updateRegistrations).ToArray();
-			var deletes = DbContext.GetObjectsInState(EntityState.Deleted, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */).Union(deleteRegistrations).ToArray();
+			// Dříve jsme používali insertRegistrations a deleteRegistrations. Nyní je již nepoužíváme a spoléháme se plně na change tracker.
+			// Umožníme tak klientskému programátorovi změnit stav entity, např. pro kompenzaci konfliktu při ukládání entity (DbConcurencyUpdateException).
+			// Avšak stále používáme updateRegistrations, protože PerformAddForUpdate z výkonových důvodů nemění stav trackovaných entit (viz komentář v PerformAddForUpdate).
+
+			var inserts = DbContext.GetObjectsInState(EntityState.Added, suppressDetectChanges: false);
+			var deletes = DbContext.GetObjectsInState(EntityState.Deleted, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */);
+
+			// Pro získání updates v následujícím kódu je podstatné, že proběhl changetracker.
+			// Konkrétně, že reálně změněné entity jsou ve stavu Modified a nikoliv Unchanged, jak je nechává PerformAddForUpdate.
+
+			// Abychom umožnili kompenzaci konfliktu na entitě ve stavu Modified, potřebujeme také aby entita zmizela z kolekce updateRegistrations.
+			// Tím se pro ni přestanou volat BeforeCommitProcessory.
+
+			var modified = DbContext.GetObjectsInState(EntityState.Modified, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */);
+			updateRegistrations.ExceptWith(modified); // Entity, o kterých již víme, že jsou ve stavu Modified, odebereme z kolekce updateRegistrations, protože víme, že se nám v běžném kódu budou stále vracet z changetrackeru dle předchozího řádku.
+			var updates = modified.Concat(updateRegistrations).ToArray(); // díky ExceptWith na předchozím řádku nemají kolekce žádný průnik a tak můžeme použít Concat a ne výkonově dražší Union.
 
 			return new Changes
 			{
@@ -227,7 +236,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 			if (entities.Length > 0)
 			{
 				DbContext.Set<TEntity>().AddRange(entities);
-				insertRegistrations.UnionWith(entities);
 			}
 		}
 
@@ -270,7 +278,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 				else
 				{
 					DbContext.Set<TEntity>().RemoveRange(entities);
-					deleteRegistrations.UnionWith(entities);
 				}
 			}
 		}

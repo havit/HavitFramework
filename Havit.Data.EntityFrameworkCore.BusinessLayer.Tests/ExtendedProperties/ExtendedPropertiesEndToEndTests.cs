@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -825,6 +826,28 @@ END
 					@"EXEC sys.sp_addextendedproperty @name=N'Jiri2', @value=N'ValueB', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
 					migrations[2].CommandText);
+			}
+		}
+
+		[TestClass]
+		public class DroppingTableWithPropertyOnTable
+		{
+			[TestExtendedProperties("Jiri", "Value")]
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
+
+			[TestMethod]
+			public void ExtendedPropertiesDbMigrations_EndToEnd_CreatingTableWithPropertyOnTable()
+			{
+				var source = new EndToEndTestDbContext<SourceEntity>();
+				var target = new EndToEndTestDbContext();
+				var migrations = source.Migrate(target);
+
+				Assert.AreEqual(1, migrations.Count);
+				StringAssert.DoesNotMatch(migrations[0].CommandText, new Regex("EXEC sys.sp_dropextendedproperty"));
 			}
 		}
 

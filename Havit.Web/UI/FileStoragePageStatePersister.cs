@@ -39,7 +39,7 @@ namespace Havit.Web.UI
 		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
 		/// <param name="fileStorageService">Služba pro prácu s úložištěm, do nějž se ukládá (a z nějž se načítá) viewstate.</param>
 		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů.</param>
-		/// <param name="pageStatePersisterSerializationStrategy">Strategie pro pojmenování souborů.</param>
+		/// <param name="pageStatePersisterSerializationStrategy">Volí způsob serializace/deserializace viewstate.</param>
 		public FileStoragePageStatePersister(Page page, IFileStorageService fileStorageService, FilePageStatePersister.IFileNamingStrategy fileNamingStrategy, FileStoragePageStatePersisterSerializationStrategy pageStatePersisterSerializationStrategy) : base(page)
 		{
 			this.page = page;

@@ -21,17 +21,40 @@ namespace Havit.Web.UI
 		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
 		/// <param name="root">Složka, do které se ukládá viewstate.</param>
 		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů.</param>
-		public FilePageStatePersister(Page page, string root, IFileNamingStrategy fileNamingStrategy) : base(page, new FileSystemStorageService(root), fileNamingStrategy)
+		/// <param name="pageStatePersisterSerializationStrategy">Volí způsob serializace/deserializace viewstate.</param>
+		public FilePageStatePersister(Page page, string root, IFileNamingStrategy fileNamingStrategy, FileStoragePageStatePersisterSerializationStrategy pageStatePersisterSerializationStrategy) : base(page, new FileSystemStorageService(root), fileNamingStrategy, pageStatePersisterSerializationStrategy)
 		{
 		}
 
 		/// <summary>
-		/// Konstruktor. Použije strategii PerUserNamingStrategy.
+		/// Konstruktor.
+		/// </summary>
+		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
+		/// <param name="root">Složka, do které se ukládá viewstate.</param>
+		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů.</param>
+		public FilePageStatePersister(Page page, string root, IFileNamingStrategy fileNamingStrategy)
+			: this(page, root, fileNamingStrategy, FileStoragePageStatePersisterSerializationStrategy.LosFormatter)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Použije strategii PerUserNamingStrategy, použije LosFormatter.
+		/// </summary>
+		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
+		/// <param name="root">Složka, do které se ukládá viewstate.</param>
+		/// <param name="pageStatePersisterSerializationStrategy">Volí způsob serializace/deserializace viewstate.</param>
+		public FilePageStatePersister(Page page, string root, FileStoragePageStatePersisterSerializationStrategy pageStatePersisterSerializationStrategy)
+			: this(page, root, new PerUserNamingStrategy(), pageStatePersisterSerializationStrategy)
+		{
+		}
+
+		/// <summary>
+		/// Konstruktor. Použije strategii PerUserNamingStrategy, použije LosFormatter.
 		/// </summary>
 		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
 		/// <param name="root">Složka, do které se ukládá viewstate.</param>
 		public FilePageStatePersister(Page page, string root)
-			: this(page, root, new PerUserNamingStrategy())
+			: this(page, root, FileStoragePageStatePersisterSerializationStrategy.LosFormatter)
 		{
 		}
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Web.UI;
@@ -18,6 +19,7 @@ namespace Havit.Web.UI
 		private readonly Page page;
 		private readonly IFileStorageService fileStorageService;
 		private readonly FilePageStatePersister.IFileNamingStrategy fileNamingStrategy;
+		private readonly FileStoragePageStatePersisterSerializationStrategy pageStatePersisterSerializationStrategy;
 		private readonly FilePageStatePersisterLogService logService;
 
 		/// <summary>
@@ -26,11 +28,24 @@ namespace Havit.Web.UI
 		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
 		/// <param name="fileStorageService">Služba pro prácu s úložištěm, do nějž se ukládá (a z nějž se načítá) viewstate.</param>
 		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů.</param>
-		public FileStoragePageStatePersister(Page page, IFileStorageService fileStorageService, FilePageStatePersister.IFileNamingStrategy fileNamingStrategy) : base(page)
+		public FileStoragePageStatePersister(Page page, IFileStorageService fileStorageService, FilePageStatePersister.IFileNamingStrategy fileNamingStrategy) : this(page, fileStorageService, fileNamingStrategy, FileStoragePageStatePersisterSerializationStrategy.LosFormatter)
+		{
+			// NOOP
+		}
+
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		/// <param name="page">Stránka, jejíž viewstate se ukládá či načítá.</param>
+		/// <param name="fileStorageService">Služba pro prácu s úložištěm, do nějž se ukládá (a z nějž se načítá) viewstate.</param>
+		/// <param name="fileNamingStrategy">Strategie pro pojmenování souborů.</param>
+		/// <param name="pageStatePersisterSerializationStrategy">Strategie pro pojmenování souborů.</param>
+		public FileStoragePageStatePersister(Page page, IFileStorageService fileStorageService, FilePageStatePersister.IFileNamingStrategy fileNamingStrategy, FileStoragePageStatePersisterSerializationStrategy pageStatePersisterSerializationStrategy) : base(page)
 		{
 			this.page = page;
 			this.fileStorageService = fileStorageService;
 			this.fileNamingStrategy = fileNamingStrategy;
+			this.pageStatePersisterSerializationStrategy = pageStatePersisterSerializationStrategy;
 			this.logService = new FilePageStatePersisterLogService();
 		}
 
@@ -42,10 +57,11 @@ namespace Havit.Web.UI
 			string storageSymbol = fileNamingStrategy.GetStorageSymbol(); // získáme symbol, ten si dále zapamatujeme "do stránky"
 			string storageFilename = fileNamingStrategy.GetFilename(storageSymbol); // ze symbolu získáme celou cestu
 
-			using (var memoryStream = new MemoryStream(4096))
+			using (var memoryStream = new MemoryStream(8192))
 			{
-				BinaryFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(memoryStream, new Pair(this.ViewState, this.ControlState));
+				Pair dataToSerialize = new Pair(this.ViewState, this.ControlState);
+				SerializeToStream(memoryStream, dataToSerialize);
+
 				memoryStream.Seek(0, SeekOrigin.Begin);
 
 				try
@@ -82,24 +98,7 @@ namespace Havit.Web.UI
 			{
 				using (System.IO.Stream stream = fileStorageService.Read(storageFilename))
 				{
-					Pair pair;
-					try
-					{
-						BinaryFormatter formatter = new BinaryFormatter();
-						pair = (Pair)formatter.Deserialize(stream);
-					}
-					catch (System.Runtime.Serialization.SerializationException) when (stream.CanSeek)
-					{
-						logService.Log(String.Format("{0}\tDeserialization failed, trying LosFormatter", storageFilename), System.Diagnostics.TraceEventType.Warning);
-
-						// Zpětná kompatibilita - má význam jen pro tu chvíli, než uživatelé přestanou používat viewstaty, které měly vytvořeny před deploymentem.
-						// Musíme načíst data znovu, proto seek na začátek, což můžeme jen tehdy, pokud je stream seekovatelný (viz podmínka v catch).
-						// Není-li stream seekovatelný, nemáme jak pomoci.
-						stream.Seek(0, SeekOrigin.Begin);
-
-						LosFormatter formatter = new LosFormatter();
-						pair = (Pair)formatter.Deserialize(stream);
-					}
+					Pair pair = (Pair)DeserializeFromStream(stream, storageFilename);
 
 					ViewState = pair.First;
 					ControlState = pair.Second;
@@ -110,6 +109,65 @@ namespace Havit.Web.UI
 			{
 				logService.Log(String.Format("{0}\tLoad failed", storageFilename), System.Diagnostics.TraceEventType.Error);
 				throw new ViewStateLoadFailedException("Nepodařilo se načíst viewstate.", e);
+			}
+		}
+
+		private void SerializeToStream(Stream outputStream, object dataToSerialize)
+		{
+			switch (pageStatePersisterSerializationStrategy)
+			{
+				case FileStoragePageStatePersisterSerializationStrategy.LosFormatter:
+					new LosFormatter().Serialize(outputStream, dataToSerialize);
+					return;
+
+				case FileStoragePageStatePersisterSerializationStrategy.BinaryFormatter:
+					new BinaryFormatter().Serialize(outputStream, dataToSerialize);
+					return;
+
+				default:
+					throw new InvalidOperationException(pageStatePersisterSerializationStrategy.ToString());
+			}
+		}
+
+		private object DeserializeFromStream(Stream inputStream, string storageFilename)
+		{
+			switch (pageStatePersisterSerializationStrategy)
+			{
+				case FileStoragePageStatePersisterSerializationStrategy.LosFormatter:
+
+					try
+					{
+						return new LosFormatter().Deserialize(inputStream);
+					}
+					catch (FormatException) when (inputStream.CanSeek) // ačkoliv v dokumentaci je zmíněna HttpException, reálně je vyhozena System.FormatException.
+					{
+						// Zpětná kompatibilita - má význam jen pro tu chvíli, než uživatelé přestanou používat viewstaty, které měly vytvořeny před deploymentem.
+						// Musíme načíst data znovu, proto seek na začátek, což můžeme jen tehdy, pokud je stream seekovatelný (viz podmínka v catch).
+						// Není-li stream seekovatelný, nemáme jak pomoci.
+						logService.Log(String.Format("{0}\tDeserialization failed, trying fallback formatter.", storageFilename), System.Diagnostics.TraceEventType.Warning);
+
+						inputStream.Seek(0, SeekOrigin.Begin);
+						return new BinaryFormatter().Deserialize(inputStream);
+					}
+
+				case FileStoragePageStatePersisterSerializationStrategy.BinaryFormatter:
+					try
+					{
+						return new BinaryFormatter().Deserialize(inputStream);
+					}
+					catch (System.Runtime.Serialization.SerializationException) when (inputStream.CanSeek)
+					{
+						// Zpětná kompatibilita - má význam jen pro tu chvíli, než uživatelé přestanou používat viewstaty, které měly vytvořeny před deploymentem.
+						// Musíme načíst data znovu, proto seek na začátek, což můžeme jen tehdy, pokud je stream seekovatelný (viz podmínka v catch).
+						// Není-li stream seekovatelný, nemáme jak pomoci.
+						logService.Log(String.Format("{0}\tDeserialization failed, trying fallback formatter.", storageFilename), System.Diagnostics.TraceEventType.Warning);
+
+						inputStream.Seek(0, SeekOrigin.Begin);
+						return new LosFormatter().Deserialize(inputStream);
+					}
+
+				default:
+					throw new InvalidOperationException(pageStatePersisterSerializationStrategy.ToString());
 			}
 		}
 	}

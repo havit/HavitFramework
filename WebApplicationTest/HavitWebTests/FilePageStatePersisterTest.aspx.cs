@@ -17,7 +17,7 @@ namespace Havit.WebApplicationTest.HavitWebTests
 
 		public FilePageStatePersisterTest()
 		{
-			pageStatePersister = new Web.UI.FilePageStatePersister(this, ViewStateStorage);
+			pageStatePersister = new Web.UI.FilePageStatePersister(this, ViewStateStorage, FileStoragePageStatePersisterSerializationStrategy.LosFormatter);
 		}
 
 		protected override void OnInit(EventArgs e)

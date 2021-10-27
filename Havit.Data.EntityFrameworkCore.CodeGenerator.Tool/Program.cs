@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 				solutionDirectory = solutionDirectory.Parent;
 			}
 
-			var dataLayerBinDirectory = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, @"DataLayer\bin"));
+			var dataLayerBinDirectory = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "DataLayer", "bin"));
 			if (!dataLayerBinDirectory.Exists)
 			{
 				Console.WriteLine($"Bin directory for project DataLayer not found: {dataLayerBinDirectory}");
@@ -36,7 +36,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			FileInfo[] files = dataLayerBinDirectory
 				.GetFiles("*.Entity.dll", SearchOption.AllDirectories)
 				.Where(file => !file.Name.EndsWith("Havit.Entity.dll"))
-				.Where(file => !file.Name.Contains(@"ref\"))
+				.Where(file => !file.Name.Contains("ref"))
 				.OrderByDescending(item => item.LastAccessTime)
 				.ToArray();
 

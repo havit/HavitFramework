@@ -66,7 +66,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override Stream PerformRead(string fileName)
 		{
-			return File.OpenRead(GetFullPath(fileName));
+			return new FileStream(GetFullPath(fileName), FileMode.Open, FileAccess.Read, FileShare.Read, 81920, FileOptions.RandomAccess);
 		}
 
 		/// <summary>
@@ -107,7 +107,7 @@ namespace Havit.Services.FileStorage
 		{
 			PerformSave_EnsureDirectory(fileName);
 
-			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
+			using (FileStream fileStream = new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920))
 			{
 				fileContent.CopyTo(fileStream);
 			}
@@ -120,7 +120,7 @@ namespace Havit.Services.FileStorage
 		{		
 			PerformSave_EnsureDirectory(fileName);
 
-			using (FileStream fileStream = File.Create(GetFullPath(fileName)))
+			using (FileStream fileStream = new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920))
 			{
 				await fileContent.CopyToAsync(fileStream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}

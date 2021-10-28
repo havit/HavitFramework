@@ -86,8 +86,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 				{
 					dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
 				},
-				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, @"Model\Model.csproj")),
-				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, @"DataLayer\DataLayer.csproj"))
+				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "Model", "Model.csproj")),
+				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj"))
 			);
 
 			Console.WriteLine($"Initializing DbContext...");

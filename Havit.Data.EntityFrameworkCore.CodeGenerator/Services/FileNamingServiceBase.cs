@@ -31,11 +31,11 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 			string namespaceFolder;
 			if (namespaceName.StartsWith(projectRootNamespace))
 			{
-				namespaceFolder = namespaceName.Substring(projectRootNamespace.Length).Trim('.').Replace(".", @"\");
+				namespaceFolder = namespaceName.Substring(projectRootNamespace.Length).Trim('.').Replace('.', Path.DirectorySeparatorChar);
 			}
 			else
 			{
-				namespaceFolder = namespaceName.Replace(".", @"\");
+				namespaceFolder = namespaceName.Replace('.', Path.DirectorySeparatorChar);
 			}
 
 			string classFilename = className + ".cs";

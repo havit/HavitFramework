@@ -196,7 +196,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 			string projectRootPath = GetProjectRootPath();
 			if (filename.StartsWith(projectRootPath))
 			{
-				return filename.Substring(projectRootPath.Length).TrimStart('\\');
+				return filename.Substring(projectRootPath.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 			}
 			else
 			{

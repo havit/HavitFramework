@@ -68,6 +68,7 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
 				AppendValueLine(sb, "Username", () => context.User.Identity.Name);
 				AppendValueLine(sb, "IsAuthenticated", () => context.User.Identity.IsAuthenticated.ToString());
 				AppendValueLine(sb, "AuthenticationType", () => context.User.Identity.AuthenticationType);
+				AppendValueLine(sb, "Client URI", () => context.Request.Headers["hx-client-uri"], skipIfNullOrEmpty: true);
 				AppendValueLine(sb, "Referer", () => context.Request.Headers["Referer"]);
 				AppendValueLine(sb, "User agent", () => context.Request.Headers["User-Agent"]);
 			}
@@ -131,7 +132,7 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
             sb.AppendLine();
         }
 
-        private void AppendValueLine(StringBuilder sb, string key, Func<string> getValueFunc)
+        private void AppendValueLine(StringBuilder sb, string key, Func<string> getValueFunc, bool skipIfNullOrEmpty = false)
         {
             string value;
             try
@@ -142,6 +143,10 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
             {
                 value = "(exception)";
             }
+			if (skipIfNullOrEmpty && String.IsNullOrEmpty(value))
+			{
+				return;
+			}
             sb.AppendLine("    " + key + ": " + value);
         }
     }

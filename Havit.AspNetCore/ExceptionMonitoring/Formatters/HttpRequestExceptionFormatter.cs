@@ -68,7 +68,7 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
 				AppendValueLine(sb, "Username", () => context.User.Identity.Name);
 				AppendValueLine(sb, "IsAuthenticated", () => context.User.Identity.IsAuthenticated.ToString());
 				AppendValueLine(sb, "AuthenticationType", () => context.User.Identity.AuthenticationType);
-				AppendValueLine(sb, "Referrer", () => context.Request.Headers["Referrer"]);
+				AppendValueLine(sb, "Referer", () => context.Request.Headers["Referer"]);
 				AppendValueLine(sb, "User agent", () => context.Request.Headers["User-Agent"]);
 			}
             //AppendValueLine(sb, "Culture", () => context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name);

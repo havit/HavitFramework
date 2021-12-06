@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			return new DataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
+			return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper(), dbContext);
         }
 
         [TestClass]

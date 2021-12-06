@@ -98,7 +98,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 
 			installer.TryAddServiceSingleton<ISoftDeleteManager, SoftDeleteManager>();
 			installer.TryAddServiceSingleton<ICurrentCultureService, CurrentCultureService>();
-			installer.TryAddServiceTransient<IDataSeedRunner, DataSeedRunner>();
+			installer.TryAddServiceTransient<IDataSeedRunner, DbDataSeedRunner>();
 			installer.TryAddServiceTransient<ITransactionWrapper, TransactionScopeTransactionWrapper>();
 			installer.TryAddServiceTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
 			installer.TryAddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();

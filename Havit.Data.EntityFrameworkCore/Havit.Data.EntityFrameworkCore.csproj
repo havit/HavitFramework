@@ -12,13 +12,13 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.3.1</PackageVersion>
+		<PackageVersion>2.3.2</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[5.0.5,6)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[5.0.5,6)" />
 	</ItemGroup>
 
 	<ItemGroup>

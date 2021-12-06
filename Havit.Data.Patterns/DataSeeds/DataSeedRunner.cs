@@ -12,7 +12,7 @@ using Havit.Services;
 namespace Havit.Data.Patterns.DataSeeds
 {
 	/// <summary>
-	/// Předpis služby pro provedení seedování dat.
+	/// Zajišťuje spuštění seedování databáze.
 	/// </summary>
 	public class DataSeedRunner : IDataSeedRunner
 	{
@@ -55,7 +55,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	    /// <summary>
 		/// Provede seedování dat daného profilu.
 		/// </summary>
-		public void SeedData<TDataSeedProfile>(bool forceRun = false)
+		public virtual void SeedData<TDataSeedProfile>(bool forceRun = false)
             where TDataSeedProfile : IDataSeedProfile, new()
 	    {
             SeedData(typeof(TDataSeedProfile), forceRun);
@@ -64,7 +64,7 @@ namespace Havit.Data.Patterns.DataSeeds
         /// <summary>
         /// Provede seedování dat daného profilu.
         /// </summary>
-	    public void SeedData(Type dataSeedProfileType, bool forceRun = false)
+	    public virtual void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	    {
 			transactionWrapper.ExecuteWithTransaction(() =>
 			{

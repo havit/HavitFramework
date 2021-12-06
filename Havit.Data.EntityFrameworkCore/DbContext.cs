@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 
 namespace Havit.Data.EntityFrameworkCore
 {
@@ -59,12 +61,20 @@ namespace Havit.Data.EntityFrameworkCore
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-
+			
 			optionsBuilder.ConditionalyUseConventionSetPlugin<CacheAttributeToAnnotationConventionPlugin>(() => Settings.UseCacheAttributeToAnnotationConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<CascadeDeleteToRestrictConventionPlugin>(() => Settings.UseCascadeDeleteToRestrictConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<DataTypeAttributeConventionPlugin>(() => Settings.UseDataTypeAttributeConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<ManyToManyEntityKeyDiscoveryConventionPlugin>(() => Settings.UseManyToManyEntityKeyDiscoveryConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<StringPropertiesDefaultValueConventionPlugin>(() => Settings.UseStringPropertiesDefaultValueConvention);
+
+#pragma warning disable EF1001 // Internal EF Core API usage.
+			if (optionsBuilder.Options.FindExtension<SqlServerOptionsExtension>() != null)
+			{
+				optionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Migrations.IMigrator, Migrator, Migrations.Internal.DbMigrator>();
+			}
+#pragma warning restore EF1001 // Internal EF Core API usage.
+
 		}
 
 		/// <inheritdoc />

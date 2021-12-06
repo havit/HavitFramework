@@ -39,6 +39,7 @@ using Havit.Data.Patterns.Transactions.Internal;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;
+using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -48,7 +49,7 @@ namespace ConsoleApp1
 		{
 			IServiceProvider serviceProvider = CreateServiceProvider();
 			UpdateDatabase(serviceProvider);
-			Debug(serviceProvider);
+			//Debug(serviceProvider);
 		}
 
 		private static IServiceProvider CreateServiceProvider()
@@ -81,11 +82,24 @@ namespace ConsoleApp1
 
 		private static void UpdateDatabase(IServiceProvider serviceProvider)
 		{
-			using (serviceProvider.CreateScope())
+
+			using (var scope0 = serviceProvider.CreateScope())
 			{
-				var dbContext = serviceProvider.GetRequiredService<IDbContext>();
-				dbContext.Database.EnsureDeleted();
-				dbContext.Database.Migrate();
+				scope0.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
+				scope0.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
+			}
+
+			for (int i = 0; i < 100; i++)
+			{
+				Console.WriteLine(i);
+				Parallel.For(0, 100, _ =>
+				{
+					using (var scope1 = serviceProvider.CreateScope())
+					{
+						//scope1.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
+						scope1.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<DefaultProfile>();
+					}
+				});
 			}
 		}
 

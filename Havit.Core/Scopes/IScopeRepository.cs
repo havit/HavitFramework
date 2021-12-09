@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Havit.Scopes
 {
 	/// <summary>
-	/// Interface pro třídy implementující scope repository - repository umožňující uložit a načítst hodnotu do scope.
+	/// Interface pro třídy implementující scope repository - repository umožňující uložit a načíst hodnotu do scope.
 	/// </summary>
 	/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
 	public interface IScopeRepository<T>

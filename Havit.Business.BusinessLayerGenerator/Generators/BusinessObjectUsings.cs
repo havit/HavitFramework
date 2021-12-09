@@ -24,8 +24,6 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("using System.Linq;");
 			writer.WriteLine("using System.Text;");
 			writer.WriteLine("using System.Threading;");
-			writer.WriteLine("using System.Web;");
-			writer.WriteLine("using System.Web.Caching;");
 			writer.WriteLine("using System.Xml;");
 			writer.WriteLine("using Havit.Business;");
 			writer.WriteLine("using Havit.Business.Query;");

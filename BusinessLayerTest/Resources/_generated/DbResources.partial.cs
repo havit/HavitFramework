@@ -16,8 +16,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Web;
-using System.Web.Caching;
 using System.Xml;
 using Havit.Business;
 using Havit.Business.Query;

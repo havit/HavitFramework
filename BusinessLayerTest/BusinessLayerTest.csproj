@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net472</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -10,10 +10,6 @@
 	
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Web" />
 	</ItemGroup>
 
 </Project>

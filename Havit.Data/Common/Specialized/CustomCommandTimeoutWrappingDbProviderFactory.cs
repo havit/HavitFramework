@@ -81,10 +81,12 @@ namespace Havit.Data.Common.Specialized
 			return wrappedDbProviderFactory.CreateParameter();
 		}
 
+#if NETFRAMEWORK
 		/// <inheritdoc />
 		public override CodeAccessPermission CreatePermission(PermissionState state)
 		{
 			return wrappedDbProviderFactory.CreatePermission(state);
 		}
+#endif
 	}
 }

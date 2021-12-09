@@ -79,6 +79,7 @@ namespace Havit.Data
 			this._providerFactory = providerFactory;
 		}
 
+#if NETFRAMEWORK
 		/// <summary>
 		/// Inicializuje instanci třídy <see cref="DbConnector"/>.
 		/// </summary>
@@ -112,6 +113,7 @@ namespace Havit.Data
 				this._providerFactory = DbProviderFactories.GetFactory(connectionStringSettings.ProviderName);
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Vytvoří DbCommand dle zadaných parametrů. Nenastavuje spojení ani jiné vlastnosti.
@@ -821,7 +823,7 @@ namespace Havit.Data
 			ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["DefaultConnectionString"];
 			if (connectionStringSettings != null)
 			{
-				return new DbConnector(connectionStringSettings);
+				return new DbConnector(connectionStringSettings.ConnectionString, System.Data.SqlClient.SqlClientFactory.Instance);
 			}
 			else
 			{
@@ -830,7 +832,7 @@ namespace Havit.Data
 				{
 					throw new InvalidOperationException("Z konfiguračního souboru se nepodařilo načíst defaultní parametry připojení k databázi.");
 				}
-				return new DbConnector(appSettingsConnectionString, "System.Data.SqlClient");
+				return new DbConnector(appSettingsConnectionString, System.Data.SqlClient.SqlClientFactory.Instance);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -87,3 +88,4 @@ namespace Havit.Business
 		protected abstract string GetString(string resourceKey, CultureInfo culture);
 	}
 }
+#endif

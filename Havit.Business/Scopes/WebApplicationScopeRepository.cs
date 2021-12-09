@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace Havit.Business.Scopes
 		/// Úložiště scopes k HttpContextům.
 		/// </summary>
 		private readonly ConcurrentDictionary<HttpContext, Scope<T>> _data = new ConcurrentDictionary<HttpContext, Scope<T>>();
-		
+
 		/// <summary>
 		/// ThreadScopeRepository pro případy scopes mimo HttpContext.
-		/// </summary>
+		/// </summary>		
 		private readonly ThreadScopeRepository<T> threadScopeRepository = new ThreadScopeRepository<T>();
 
 		/// <summary>
@@ -85,3 +86,4 @@ namespace Havit.Business.Scopes
 		}
 	}
 }
+#endif

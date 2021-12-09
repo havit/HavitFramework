@@ -29,7 +29,11 @@ namespace Havit.Business
 				// zpětná kompatibilita
 				if (_defaultBusinessLayerCacheService == null)
 				{
+#if NETFRAMEWORK
 					_defaultBusinessLayerCacheService = new DefaultBusinessLayerCacheService(new HttpRuntimeCacheService());
+#else
+					_defaultBusinessLayerCacheService = new DefaultBusinessLayerCacheService(new ObjectCacheService(System.Runtime.Caching.MemoryCache.Default));
+#endif
 				}
 
 				return _defaultBusinessLayerCacheService;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Havit.Business.Scopes;
 using Havit.Scopes;
 
 namespace Havit.Business
@@ -13,9 +12,14 @@ namespace Havit.Business
 	{
 		/// <summary>
 		/// Repository pro uložení scopů IdentityMap.
-		/// Implementováno jako WebApplicationScopeRepository, prozatím bez možnosti nastavení.
+		/// Implementováno jako WebApplicationScopeRepository pro .NET Framework a jako AsyncLocalScopeRepository pro .NET Core. Prozatím bez možnosti nastavení.
 		/// </summary>
-		private static readonly IScopeRepository<IdentityMap> repository = new WebApplicationScopeRepository<IdentityMap>();
+#if NETFRAMEWORK
+		private static readonly IScopeRepository<IdentityMap> repository = new Havit.Business.Scopes.WebApplicationScopeRepository<IdentityMap>();
+#endif
+#if NETSTANDARD
+		private static readonly IScopeRepository<IdentityMap> repository = new AsyncLocalScopeRepository<IdentityMap>();
+#endif
 
 		/// <summary>
 		/// Vrátí IdentityMapu pro aktuální scope.

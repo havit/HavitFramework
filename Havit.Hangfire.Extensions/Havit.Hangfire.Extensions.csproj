@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -8,12 +8,15 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.3</PackageVersion>
+		<PackageVersion>2.0.4</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire extensions</Description>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="Hangfire.Core" Version="1.7.22" />
 	  <PackageReference Include="Microsoft.ApplicationInsights" Version="2.17.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 	</ItemGroup>
 
 </Project>

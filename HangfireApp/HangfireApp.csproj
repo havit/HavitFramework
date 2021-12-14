@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+	  <AssemblyName>Havit.HangfireApp</AssemblyName>
+	  <RootNamespace>Havit.HangfireApp</RootNamespace>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.HangfireApp.Development.json" />
+    <None Remove="appsettings.HangfireApp.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.HangfireApp.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.HangfireApp.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.27" />
+    <PackageReference Include="Hangfire.Console" Version="1.4.2" />
+    <PackageReference Include="Hangfire.InMemory" Version="0.3.4" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.27" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.30" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Havit.AspNetCore\Havit.AspNetCore.csproj" />
+    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+    <ProjectReference Include="..\Havit.Hangfire.Extensions\Havit.Hangfire.Extensions.csproj" />
+  </ItemGroup>
+
+</Project>

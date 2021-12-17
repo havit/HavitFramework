@@ -152,8 +152,6 @@ namespace Havit.HangfireApp
 						// running outside of Azure
 						Console.WriteLine("Hangfire Server started. Press Enter to exit...");
 						RecurringJob.Trigger("JobOne");
-						RecurringJob.Trigger("JobTwo");
-						RecurringJob.Trigger("JobThree");
 						Console.ReadLine();
 					}
 				}
@@ -168,7 +166,7 @@ namespace Havit.HangfireApp
 			IServiceCollection services = new ServiceCollection();
 
 			services.AddLogging();
-			services.AddTransient<IJobOne, JobOne>();
+			services.AddHttpClient<IJobOne, JobOne>(c => c.BaseAddress = new Uri("https://www.havit.cz"));
 			services.AddTransient<IJobTwo, JobTwo>();
 			services.AddTransient<IJobThree, JobThree>();
 

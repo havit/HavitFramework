@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Havit.HangfireApp.Jobs
 {
-    [DisableConcurrentExecutionInJobGroup("MainGroup")]
     public interface IJobTwo : IRunnableJob
     {
     }

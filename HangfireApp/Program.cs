@@ -169,6 +169,7 @@ namespace Havit.HangfireApp
 			services.AddHttpClient<IJobOne, JobOne>(c => c.BaseAddress = new Uri("https://www.havit.cz"));
 			services.AddTransient<IJobTwo, JobTwo>();
 			services.AddTransient<IJobThree, JobThree>();
+			services.AddApplicationInsightsTelemetryWorkerService(configuration);
 
 			using (ServiceProvider serviceProvider = services.BuildServiceProvider())
 			{

@@ -32,7 +32,7 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs
 		public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string[] queues)
 		{
 			services.TryAddSingleton<IBackgroundJobHelperService, BackgroundJobHelperService>();
-			services.AddSingleton<IHostedService>(sp => new EnqueuedJobsCleanupOnApplicationStartup(sp.GetRequiredService<IBackgroundJobHelperService>(), queues));
+			services.AddHostedService(sp => new EnqueuedJobsCleanupOnApplicationStartup(sp.GetRequiredService<IBackgroundJobHelperService>(), queues));
 		}
 	}
 }

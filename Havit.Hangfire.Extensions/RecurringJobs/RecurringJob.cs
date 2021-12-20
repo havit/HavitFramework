@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Hangfire;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs
 {
@@ -57,9 +56,21 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		}
 
 		/// <inheritdoc />
-		public void Schedule()
+		public void ScheduleAsRecurringJob(IRecurringJobManager recurringJobManager)
 		{
-			RecurringJob.AddOrUpdate<TJob>(JobId, MethodCall, CronExpression, TimeZone, Queue);
+			recurringJobManager.AddOrUpdate<TJob>(JobId, MethodCall, CronExpression, TimeZone, Queue);
 		}
+
+		/// <inheritdoc />
+		public async Task RunAsync(IServiceProvider serviceProvider)
+		{
+            var job = serviceProvider.GetRequiredService<TJob>();
+			var result = MethodCall.Compile().Invoke(job);
+			if (result is Task jobTask)
+            {
+				await jobTask;
+            }
+		}
+
 	}
 }

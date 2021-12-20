@@ -18,19 +18,9 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs
 		/// </summary>
 		public static void DeleteEnqueuedJobs(string queue = "default")
 		{
-			// remove enqueued jobs
-			List<string> toDelete = new List<string>();
-			IMonitoringApi monitor = JobStorage.Current.GetMonitoringApi();
-			if (monitor.Queues().Any())
-			{
-				QueueWithTopEnqueuedJobsDto queueWithTopEnqueuedJobs = monitor.Queues().Single(q => q.Name == queue); // get the single queue by name
-
-				Enumerable.Range(0, (int)Math.Ceiling(queue.Length / 1000d)) // lets batch items by 1000
-					.SelectMany(batchIndex => monitor.EnqueuedJobs(queueWithTopEnqueuedJobs.Name, 1000 * batchIndex, 1000)) // select jobs in a batch by batchIndex
-					.Select(jobEntry => jobEntry.Key) // select JobId (key is a JobId)
-					.ToList() // process all pages to memory
-					.ForEach(jobId => BackgroundJob.Delete(jobId)); // remove the job
-			}
+			var backgroundJobHelperService = new BackgroundJobHelperService(new BackgroundJobClient(), JobStorage.Current);
+			backgroundJobHelperService.DeleteEnqueuedJobs(queue);
 		}
-	}
+
+    }
 }

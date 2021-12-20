@@ -1,0 +1,45 @@
+﻿using Hangfire;
+using Hangfire.Storage;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Havit.Hangfire.Extensions.RecurringJobs
+{
+    /// <inheritdoc />
+    public class RecurringJobsHelperService : IRecurringJobsHelperService
+    {
+        private readonly IRecurringJobManager recurringJobManager;
+        private readonly JobStorage jobStorage;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public RecurringJobsHelperService(IRecurringJobManager recurringJobManager, JobStorage jobStorage)
+        {
+            this.recurringJobManager = recurringJobManager;
+            this.jobStorage = jobStorage;
+        }
+
+        /// <inheritdoc />
+        public void SetSchedule(params IRecurringJob[] recurringJobsToSchedule)
+        {
+            // schedule recurring jobs
+            foreach (IRecurringJob job in recurringJobsToSchedule)
+            {
+                job.ScheduleAsRecurringJob(recurringJobManager);
+            }
+
+            // Clear previous plan
+            using (var connection = jobStorage.GetConnection())
+            {
+                string[] jobsToRemove = connection.GetRecurringJobs().Select(item => item.Id).Except(recurringJobsToSchedule.Select(item => item.JobId)).ToArray();
+                foreach (string jobId in jobsToRemove)
+                {
+                    recurringJobManager.RemoveIfExists(jobId);
+                }
+            }
+        }
+    }
+}

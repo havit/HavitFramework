@@ -17,21 +17,9 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// </summary>
 		public static void SetSchedule(params IRecurringJob[] recurringJobsToSchedule)
 		{
-			// schedule recurring jobs
-			foreach (IRecurringJob job in recurringJobsToSchedule)
-			{
-				job.Schedule();
-			}
-
-			// Clear previous plan
-			using (var connection = JobStorage.Current.GetConnection())
-			{
-				string[] jobsToRemove = connection.GetRecurringJobs().Select(item => item.Id).Except(recurringJobsToSchedule.Select(item => item.JobId)).ToArray();
-				foreach (string jobId in jobsToRemove)
-				{
-					RecurringJob.RemoveIfExists(jobId);
-				}
-			}
+			var recurringJobsHelperService = new RecurringJobsHelperService(new RecurringJobManager(JobStorage.Current), JobStorage.Current);
+			recurringJobsHelperService.SetSchedule(recurringJobsToSchedule);
 		}
 	}
 }
+

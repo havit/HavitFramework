@@ -11,6 +11,7 @@ using Havit.HangfireApp.Jobs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -24,68 +25,120 @@ namespace Havit.HangfireApp
 	{
 		public static async Task Main(string[] args)
 		{
-			if (args.Length > 0)
-			{
-				string command = args[0];
+			bool useHangfire = args.Length == 0;
 
-				Console.WriteLine($"Command: {command}");
+			IHostBuilder hostBuidler = Host.CreateDefaultBuilder();
 
-				bool successfullyCompleted =
-					await TryDoCommand<IJobOne>(command, "JobOne")
-					|| await TryDoCommand<IJobTwo>(command, "JobTwo")
-					|| await TryDoCommand<IJobThree>(command, "JobThree");
-
-				if (!successfullyCompleted)
+			hostBuidler.ConfigureAppConfiguration((hostContext, config) =>
 				{
-					Console.WriteLine("Nepodařilo se zpracovat příkaz: {0}", command);
-					Console.WriteLine();
+					config
+						.AddJsonFile(@"appsettings.HangfireApp.json", optional: false)
+						.AddJsonFile($"appsettings.HangfireApp.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true)
+						.AddEnvironmentVariables();
+				})
+				.ConfigureServices((hostContext, services) =>
+				{
+					services.AddHttpClient<IJobOne, JobOne>(c => c.BaseAddress = new Uri("https://www.havit.cz"));
+					services.AddTransient<IJobTwo, JobTwo>();
+					services.AddTransient<IJobThree, JobThree>();
 
-					ShowCommandsHelp();
-				}
+					services.AddApplicationInsightsTelemetryWorkerService();
+					services.AddExceptionMonitoring(hostContext.Configuration);
+
+					if (useHangfire)
+					{
+						services.AddHangfire((serviceProvider, configuration) => configuration
+							.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+							.UseSimpleAssemblyNameTypeSerializer()
+							.UseRecommendedSerializerSettings()
+							.UseSqlServerStorage(() => new Microsoft.Data.SqlClient.SqlConnection(hostContext.Configuration.GetConnectionString("Database")), new SqlServerStorageOptions
+							{
+								CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+								SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+								QueuePollInterval = TimeSpan.Zero,
+								UseRecommendedIsolationLevel = true,
+								DisableGlobalLocks = true,
+							})
+							.WithJobExpirationTimeout(TimeSpan.FromDays(30)) // historie hangfire
+							// TODO: Application Insights...
+							.UseFilter(new AutomaticRetryAttribute { Attempts = 0 }) // do not retry failed jobs
+							.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně
+							.UseFilter(new ExceptionMonitoringAttribute(serviceProvider.GetRequiredService<IExceptionMonitoringService>())) // zajistíme hlášení chyby v případě selhání jobu
+							.UseConsole()
+						);
+
+#if DEBUG
+						services.AddHangfireEnqueuedJobsCleanupOnApplicationStartup();
+#endif
+						services.AddHangfireRecurringJobsSchedulerOnApplicationStartup(GetRecurringJobsToSchedule().ToArray());
+
+						// Add the processing server as IHostedService
+						services.AddHangfireServer(o => o.WorkerCount = 1);
+					}
+				});
+
+			// V případě registrace více lifetimes je použit poslední zaregistrovaný.
+			if (useHangfire)
+			{
+				hostBuidler.UseWebJobLifetime(); // aplikaci lze ukončit pomocí WebJob graceful shutdownu
 			}
 			else
 			{
-				await RunHangfireServer();
+				hostBuidler.UseConsoleLifetime(); // aplikaci lze ukončit pomocí Ctrl+C
+			}
+
+			// TODO: Zkusit CommandLineHostService?
+
+			IHost host = hostBuidler.Build();
+
+			if (useHangfire)
+			{
+				await host.RunAsync();
+			}
+			else
+			{
+				// Run with command line
+				if ((args.Length > 1) || (!await TryRunCommandAsync(host.Services, args[0])))
+				{
+					ShowCommandsHelp();
+				}
 			}
 		}
 
 		private static void ShowCommandsHelp()
 		{
-			Console.WriteLine("Podporované příkazy jsou:");
-			Console.WriteLine("  JobOne");
-			Console.WriteLine("  JobTwo");
-			Console.WriteLine("  JobThree");
+			Console.WriteLine("Supported commands:");
+			foreach (var job in GetRecurringJobsToSchedule().OrderBy(job => job.JobId).ToList())
+            {
+				Console.WriteLine("  " + job.JobId);
+			}
 		}
 
-		private static async Task<bool> TryDoCommand<TJob>(string command, string commandPattern)
-			where TJob : class, IRunnableJob
+		private static async Task<bool> TryRunCommandAsync(IServiceProvider serviceProvider, string command)
 		{
+			Contract.Requires<ArgumentNullException>(serviceProvider != null, nameof(serviceProvider));
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(command));
-			Contract.Requires<ArgumentNullException>(commandPattern != null);
 
-			if (!String.Equals(command, commandPattern, StringComparison.OrdinalIgnoreCase))
+			var job = GetRecurringJobsToSchedule().SingleOrDefault(job => String.Equals(job.JobId, command, StringComparison.CurrentCultureIgnoreCase));
+			if (job == null)
 			{
 				return false;
 			}
 
-			await ExecuteWithServiceProvider(async serviceProvider =>
+			try
 			{
-				try
+				using (var scopeService = serviceProvider.CreateScope())
 				{
-					using (var scopeService = serviceProvider.CreateScope())
-					{
-						TJob job = scopeService.ServiceProvider.GetRequiredService<TJob>();
-						await job.ExecuteAsync(CancellationToken.None);
-					}
+					await job.RunAsync(scopeService.ServiceProvider);
 				}
-				catch (Exception ex)
-				{
-					var service = serviceProvider.GetRequiredService<IExceptionMonitoringService>();
-					service.HandleException(ex);
+			}
+			catch (Exception ex)
+			{
+				var service = serviceProvider.GetRequiredService<IExceptionMonitoringService>();
+				service.HandleException(ex);
 
-					throw;
-				}
-			});
+				throw;
+			}
 
 			return true;
 		}
@@ -98,96 +151,68 @@ namespace Havit.HangfireApp
 			yield return new RecurringJob<IJobTwo>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
 			yield return new RecurringJob<IJobThree>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
 		}
+	}
 
-		private static async Task RunHangfireServer()
+	// TODO: Nová knihovna v HFW?
+	// TODO: Nejprvne vyzkoušet
+		public class WebJobLifetime : IHostLifetime, IDisposable
 		{
-			string connectionString = Configuration.Value.GetConnectionString("Database");
+			private readonly IHostApplicationLifetime applicationLifetime;
+			private readonly ILogger logger;
 
-			await ExecuteWithServiceProvider(async (serviceProvider) =>
+			private WebJobsShutdownWatcher webJobsShutdownWatcher;
+			private CancellationTokenRegistration applicationStartedRegistration;
+
+			public WebJobLifetime(IHostApplicationLifetime applicationLifetime, ILogger<WebJobLifetime> logger)
 			{
-				GlobalConfiguration.Configuration
-					.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-					.UseSimpleAssemblyNameTypeSerializer()
-					.UseFilter(new AutomaticRetryAttribute { Attempts = 0 }) // do not retry failed jobs
-					.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter())
-					.UseActivator(new AspNetCoreJobActivator(serviceProvider.GetRequiredService<IServiceScopeFactory>()))
-					.UseInMemoryStorage()
-					//.UseSqlServerStorage(() => new Microsoft.Data.SqlClient.SqlConnection(connectionString), new SqlServerStorageOptions
-					//{
-					//	CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-					//	SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-					//	QueuePollInterval = TimeSpan.FromSeconds(5),
-					//	UseRecommendedIsolationLevel = true,
-					//	DisableGlobalLocks = true // Migration to Schema 7 is required
-					//	})
-					.UseLogProvider(new AspNetCoreLogProvider(serviceProvider.GetRequiredService<ILoggerFactory>())) // enables .NET Core logging for hangfire server (not jobs!) https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/
-					.UseConsole(); // enables logging jobs progress to hangfire dashboard (only using a PerformContext class; for ILogger<> support add services.AddHangfireConsoleExtensions())
-					JobStorage.Current.JobExpirationTimeout = TimeSpan.FromDays(30); // keep history
+				this.applicationLifetime = applicationLifetime;
+				this.logger = logger;
+			}
 
-#if DEBUG
-					BackgroundJobHelper.DeleteEnqueuedJobs();
-#endif
-
-					// schedule recurring jobs
-					RecurringJobsHelper.SetSchedule(GetRecurringJobsToSchedule().ToArray());
-
-				var options = new BackgroundJobServerOptions
+			public Task WaitForStartAsync(CancellationToken cancellationToken)
+			{
+				webJobsShutdownWatcher = new WebJobsShutdownWatcher();
+				if (webJobsShutdownWatcher.Token != CancellationToken.None)
 				{
-					WorkerCount = 4
-				};
+					// Pattern from ConsoleLifetime
+					applicationStartedRegistration = applicationLifetime.ApplicationStarted.Register(state =>
+					{
+						((WebJobLifetime)state).OnApplicationStarted();
+					}, this);
 
-				using (var server = new BackgroundJobServer(options))
-				{
-					if (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")))
+					webJobsShutdownWatcher.Token.Register(() =>
 					{
-							// running in Azure
-							Console.WriteLine("Hangfire Server started. Waiting for shutdown signal...");
-						using (WebJobsShutdownWatcher webJobsShutdownWatcher = new WebJobsShutdownWatcher())
-						{
-							await server.WaitForShutdownAsync(webJobsShutdownWatcher.Token);
-						}
-					}
-					else
-					{
-						// running outside of Azure
-						Console.WriteLine("Hangfire Server started. Press Enter to exit...");
-						RecurringJob.Trigger("JobOne");
-						Console.ReadLine();
-					}
+						applicationLifetime.StopApplication();
+					});
 				}
-			});
-		}
 
-		private static async Task ExecuteWithServiceProvider(Func<IServiceProvider, Task> action)
-		{
-			IConfiguration configuration = Configuration.Value;
+				//  Applications start immediately.
+				return Task.CompletedTask;
+			}
 
-			// Setup ServiceCollection
-			IServiceCollection services = new ServiceCollection();
-
-			services.AddLogging();
-			services.AddHttpClient<IJobOne, JobOne>(c => c.BaseAddress = new Uri("https://www.havit.cz"));
-			services.AddTransient<IJobTwo, JobTwo>();
-			services.AddTransient<IJobThree, JobThree>();
-			services.AddApplicationInsightsTelemetryWorkerService(configuration);
-
-			using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+			private void OnApplicationStarted()
 			{
-				await action(serviceProvider);
+				logger.LogInformation("Waiting for WebJob shutdown signal.");
+			}
+
+			public Task StopAsync(CancellationToken cancellationToken)
+			{
+				// There's nothing to do here
+				return Task.CompletedTask;
+			}
+
+			public void Dispose()
+			{
+				applicationStartedRegistration.Dispose();
+				webJobsShutdownWatcher?.Dispose();
 			}
 		}
 
-		private static Lazy<IConfiguration> Configuration = new Lazy<IConfiguration>(() =>
+		public static class Extensions
 		{
-			var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
-
-			var configurationBuilder = new ConfigurationBuilder()
-				.AddJsonFile(@"appsettings.HangfireApp.json", optional: false)
-				.AddJsonFile($"appsettings.HangfireApp.{environmentName}.json", optional: true)
-				.AddEnvironmentVariables();
-
-			return configurationBuilder.Build();
-		});
+			public static IHostBuilder UseWebJobLifetime(this IHostBuilder hostBuilder)
+			{
+				return hostBuilder.ConfigureServices(services => services.AddSingleton<IHostLifetime, WebJobLifetime>());
+			}
+		}
 	}
-}
-

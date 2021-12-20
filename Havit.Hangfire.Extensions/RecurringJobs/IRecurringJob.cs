@@ -1,5 +1,10 @@
-﻿namespace Havit.Hangfire.Extensions.RecurringJobs
+﻿using Hangfire;
+using System;
+using System.Threading.Tasks;
+
+namespace Havit.Hangfire.Extensions.RecurringJobs
 {
+	// TODO: Zpětná kompatibilita? K čemu? Vlastní službu na spouštění?
 	/// <summary>
 	/// Recurrying job to schedule.
 	/// </summary>
@@ -13,6 +18,11 @@
 		/// <summary>
 		/// Schedules the job.
 		/// </summary>
-		void Schedule();
+		void ScheduleAsRecurringJob(IRecurringJobManager recurringJobManager);
+
+		/// <summary>
+		/// Runs the job immediately.
+		/// </summary>
+		Task RunAsync(IServiceProvider serviceProvider);
 	}
 }

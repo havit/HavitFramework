@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs
@@ -23,6 +24,6 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// <summary>
 		/// Runs the job immediately.
 		/// </summary>
-		Task RunAsync(IServiceProvider serviceProvider);
+		Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken);
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,14 +64,12 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		}
 
 		/// <inheritdoc />
-		public async Task RunAsync(IServiceProvider serviceProvider)
+		public async Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 		{
             var job = serviceProvider.GetRequiredService<TJob>();
-			var result = MethodCall.Compile().Invoke(job);
-			if (result is Task jobTask)
-            {
-				await jobTask;
-            }
+			SetCancellationTokenVisitor setCancellationTokenVisitor = new SetCancellationTokenVisitor(cancellationToken);
+            var methodCall = (Expression<Func<TJob, Task>>)setCancellationTokenVisitor.Visit(MethodCall);
+            await methodCall.Compile().Invoke(job);
 		}
 
 	}

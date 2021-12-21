@@ -124,7 +124,6 @@ namespace Havit.HangfireApp
 				{
 					await job.RunAsync(scopeService.ServiceProvider, CancellationToken.None);
 				}
-
 				catch (Exception ex)
 				{
 					exceptionMonitoringService.HandleException(ex);

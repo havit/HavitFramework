@@ -66,7 +66,9 @@ namespace HangfireWeb
                     DisplayStorageConnectionString = false,
                     DashboardTitle = "NewProjectTemplate - Jobs",
                     StatsPollingInterval = 60_000, // once a minute
-                    DisplayNameFunc = Havit.HangfireApp.Infrastructure.Hangfire.HangfireJobDisplayHelper.GetJobDisplayName
+                    DisplayNameFunc = (_, job) => Havit.Hangfire.Extensions.Helpers.JobNameHelper.TryGetSimpleNameFromInterfaceName(job.Type, out string simpleName) 
+                        ? simpleName
+                        : job.ToString()
                 });
                 //.RequireAuthorization(PolicyNames.HangfireDashboardAcccessPolicy);
 

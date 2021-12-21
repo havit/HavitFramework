@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Hangfire;
 using Hangfire.Client;
 using Hangfire.Common;
 using Hangfire.Server;
@@ -19,6 +20,11 @@ namespace Havit.Hangfire.Extensions.Filters
 		private readonly TelemetryClient telemetryClient;
 
 		/// <summary>
+		/// Gets the custom name of the job.
+		/// </summary>
+		public Func<BackgroundJob, string> JobNameFunc { get; set; }
+
+		/// <summary>
 		/// Constructor.
 		/// </summary>
 		public ApplicationInsightAttribute(TelemetryClient telemetryClient)
@@ -29,16 +35,14 @@ namespace Havit.Hangfire.Extensions.Filters
 		/// <inheritdoc />
 		public void OnPerforming(PerformingContext context)
 		{
-			RequestTelemetry requestTelemetry = new RequestTelemetry
+			RequestTelemetry requestTelemetry = new RequestTelemetry()
 			{
-				Name = $"JOB {context.BackgroundJob.Job.Type.Name}.{context.BackgroundJob.Job.Method.Name}",
+				Name = "JOB " + GetJobName(context.BackgroundJob)
 			};
 
 			// Track Hangfire Job as a Request (operation) in AI
 			IOperationHolder<RequestTelemetry> operation = telemetryClient.StartOperation(requestTelemetry);
-
-			requestTelemetry.Properties.Add("JobId", context.BackgroundJob.Id);			
-			requestTelemetry.Properties.Add("JobCreatedAt", context.BackgroundJob.CreatedAt.ToString("O"));
+			requestTelemetry.Properties.Add("JobId", context.BackgroundJob.Id);
 
 			context.Items["ApplicationInsightsOperation"] = operation;
 		}
@@ -50,23 +54,39 @@ namespace Havit.Hangfire.Extensions.Filters
 
 			if (operation != null)
 			{
-				if ((context.Exception != null) && !context.ExceptionHandled)
+				if (((context.Exception == null) || context.ExceptionHandled))
+				{
+					operation.Telemetry.Success = true;
+					operation.Telemetry.ResponseCode = "Success";
+				}
+				else
 				{
 					operation.Telemetry.Success = false;
 					operation.Telemetry.ResponseCode = "Failed";
 
-					telemetryClient.TrackException(context.Exception.InnerException ?? context.Exception);
-				}
-				else
-				{
-					operation.Telemetry.Success = true;
-					operation.Telemetry.ResponseCode = "Success";
+					string operationId = operation.Telemetry.Context.Operation.Id;
+
+					var exceptionTelemetry = new ExceptionTelemetry(context.Exception);
+					// See https://docs.microsoft.com/en-us/azure/azure-monitor/app/correlation
+					exceptionTelemetry.Context.Operation.Id = operationId;
+					exceptionTelemetry.Context.Operation.ParentId = operationId;
+
+					telemetryClient.TrackException(exceptionTelemetry);
 				}
 
 				telemetryClient.StopOperation(operation);
 			}
 		}
 
-	}
+		private string GetJobName(BackgroundJob backgroundJob)
+		{
+			if (JobNameFunc != null)
+			{
+				return JobNameFunc.Invoke(backgroundJob);
+			}
 
+			return backgroundJob.Job.ToString();
+		}
+
+	}
 }

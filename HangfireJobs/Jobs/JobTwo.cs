@@ -9,13 +9,14 @@ namespace Havit.HangfireJobs.Jobs
 {
     public class JobTwo : IJobTwo
     {
-        public async Task ExecuteAsync(CancellationToken cancellationToken)
+        public Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            for (int i = 0; i < 5; i++)
-            {
-                Console.WriteLine(this.GetType().Name + ": " + i);
-                await Task.Delay(1000, cancellationToken);
-            }
+            throw new InvalidOperationException("Úloha se nezdařila :-).");            
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    Console.WriteLine(this.GetType().Name + ": " + i);
+            //    await Task.Delay(1000, cancellationToken);
+            //}
         }
     }
 }

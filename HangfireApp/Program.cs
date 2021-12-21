@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.AspNetCore;
 using Hangfire.Console;
+using Hangfire.Console.Extensions;
 using Hangfire.SqlServer;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
@@ -65,6 +66,8 @@ namespace Havit.HangfireApp
 							.UseFilter(new ExceptionMonitoringAttribute(serviceProvider.GetRequiredService<IExceptionMonitoringService>())) // zajistíme hlášení chyby v případě selhání jobu
 							.UseConsole()
 						);
+
+						services.AddHangfireConsoleExtensions(); // adds support for Hangfire jobs logging  to a dashboard using ILogger<T> (.UseConsole() in hangfire configuration is required!)
 
 #if DEBUG
 						services.AddHangfireEnqueuedJobsCleanupOnApplicationStartup();

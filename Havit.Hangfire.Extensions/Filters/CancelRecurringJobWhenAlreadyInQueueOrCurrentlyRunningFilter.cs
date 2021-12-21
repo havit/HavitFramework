@@ -48,7 +48,9 @@ namespace Havit.Hangfire.Extensions.Filters
 			string runningServerId = connection.GetValueFromHash($"recurring-job:{recurringJobId}", RunningServerIdHashName);
 			if (!String.IsNullOrEmpty(runningServerId))
 			{
-				if (JobStorage.Current.GetMonitoringApi().Servers().Any(server => server.Name == runningServerId))
+				if (JobStorage.Current.GetMonitoringApi().Servers().Any(server => server.Name == runningServerId // job is running o a server
+					&& (server.Heartbeat != null) // which heart is beating or was beating
+					&& (server.Heartbeat.Value > DateTime.UtcNow.AddMinutes(-5)))) // do not block queing when "running on a dead servers" (constant -5 was copied from Hangfire sources (see "possiblyAbortedThreshold"))
 				{
 					// cancelling - already running on a live server
 					context.Canceled = true;

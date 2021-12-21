@@ -8,18 +8,16 @@ using System.Text;
 
 namespace Havit.Hangfire.Extensions.BackgroundJobs
 {
-    // TODO: Naming
-
     /// <inheritdoc />
-    public class BackgroundJobHelperService : IBackgroundJobHelperService
+    public class BackgroundJobManager : IBackgroundJobManager
     {
-        private readonly IBackgroundJobClient backgroundJobClient;
+        private readonly IBackgroundJobClient backgroundJobClient;        
         private readonly JobStorage jobStorage;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public BackgroundJobHelperService(IBackgroundJobClient backgroundJobClient, JobStorage jobStorage)
+        public BackgroundJobManager(IBackgroundJobClient backgroundJobClient, JobStorage jobStorage)
         {            
             this.backgroundJobClient = backgroundJobClient;
             this.jobStorage = jobStorage;

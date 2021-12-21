@@ -21,7 +21,7 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// </summary>
 		public static void AddHangfireRecurringJobsSchedulerOnApplicationStartup(this IServiceCollection services, IRecurringJob[] recurringJobs)
 		{
-			services.TryAddSingleton<IRecurringJobsHelperService, RecurringJobsHelperService>();
+			services.TryAddSingleton<IRecurringJobsScheduler, RecurringJobsScheduler>();
 			services.AddHostedService<RecurringJobsSchedulerOnApplicationStartup>();
 			services.PostConfigure<RecurringJobsSchedulerOnApplicationStartupOptions>(options => options.RecurringJobs.AddRange(recurringJobs));
 		}

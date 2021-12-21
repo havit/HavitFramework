@@ -3,7 +3,7 @@
     /// <summary>
     /// Contains methods to schedule recurring jobs.
     /// </summary>
-    public interface IRecurringJobsHelperService
+    public interface IRecurringJobsScheduler
     {
         /// <summary>
         /// Schedules the recurring jobs and clears any additional already scheudled recurring jobs.

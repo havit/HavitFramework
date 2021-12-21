@@ -8,7 +8,7 @@ using System.Text;
 namespace Havit.Hangfire.Extensions.RecurringJobs
 {
     /// <inheritdoc />
-    public class RecurringJobsHelperService : IRecurringJobsHelperService
+    public class RecurringJobsScheduler : IRecurringJobsScheduler
     {
         private readonly IRecurringJobManager recurringJobManager;
         private readonly JobStorage jobStorage;
@@ -16,7 +16,7 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
         /// <summary>
         /// Constructor.
         /// </summary>
-        public RecurringJobsHelperService(IRecurringJobManager recurringJobManager, JobStorage jobStorage)
+        public RecurringJobsScheduler(IRecurringJobManager recurringJobManager, JobStorage jobStorage)
         {
             this.recurringJobManager = recurringJobManager;
             this.jobStorage = jobStorage;

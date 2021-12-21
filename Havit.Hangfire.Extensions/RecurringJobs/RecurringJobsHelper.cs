@@ -17,7 +17,7 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// </summary>
 		public static void SetSchedule(params IRecurringJob[] recurringJobsToSchedule)
 		{
-			var recurringJobsHelperService = new RecurringJobsHelperService(new RecurringJobManager(JobStorage.Current), JobStorage.Current);
+			var recurringJobsHelperService = new RecurringJobsScheduler(new RecurringJobManager(JobStorage.Current), JobStorage.Current);
 			recurringJobsHelperService.SetSchedule(recurringJobsToSchedule);
 		}
 	}

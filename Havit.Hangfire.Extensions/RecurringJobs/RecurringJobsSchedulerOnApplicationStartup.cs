@@ -17,21 +17,21 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 	/// </summary>
 	internal class RecurringJobsSchedulerOnApplicationStartup : IHostedService
 	{
-        private readonly IRecurringJobsHelperService recurringJobsHelperService;
+        private readonly IRecurringJobsScheduler recurringJobsScheduler;
         private readonly RecurringJobsSchedulerOnApplicationStartupOptions options;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public RecurringJobsSchedulerOnApplicationStartup(IRecurringJobsHelperService recurringJobsHelperService, IOptions<RecurringJobsSchedulerOnApplicationStartupOptions> options)
+        public RecurringJobsSchedulerOnApplicationStartup(IRecurringJobsScheduler recurringJobsHelperService, IOptions<RecurringJobsSchedulerOnApplicationStartupOptions> options)
         {
-            this.recurringJobsHelperService = recurringJobsHelperService;
+            this.recurringJobsScheduler = recurringJobsHelperService;
             this.options = options.Value;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            recurringJobsHelperService.SetSchedule(options.RecurringJobs.ToArray());
+            recurringJobsScheduler.SetSchedule(options.RecurringJobs.ToArray());
             return Task.CompletedTask;
         }
 

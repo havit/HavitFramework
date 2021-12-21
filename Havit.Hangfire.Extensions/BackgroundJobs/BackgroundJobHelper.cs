@@ -18,8 +18,8 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs
 		/// </summary>
 		public static void DeleteEnqueuedJobs(string queue = "default")
 		{
-			var backgroundJobHelperService = new BackgroundJobHelperService(new BackgroundJobClient(), JobStorage.Current);
-			backgroundJobHelperService.DeleteEnqueuedJobs(queue);
+			var backgroundJobManager = new BackgroundJobManager(new BackgroundJobClient(), JobStorage.Current);
+			backgroundJobManager.DeleteEnqueuedJobs(queue);
 		}
 
     }

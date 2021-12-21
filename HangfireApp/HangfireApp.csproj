@@ -23,10 +23,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.27" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.28" />
 		<PackageReference Include="Hangfire.Console" Version="1.4.2" />
 		<PackageReference Include="Hangfire.Console.Extensions" Version="1.0.5" />
-		<PackageReference Include="Hangfire.SqlServer" Version="1.7.27" />
+		<PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0" />
 		<PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.30" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="4.0.0" />

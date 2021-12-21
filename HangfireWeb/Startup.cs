@@ -65,7 +65,8 @@ namespace HangfireWeb
                     Authorization = new List<IDashboardAuthorizationFilter>() { }, // see https://sahansera.dev/securing-hangfire-dashboard-with-endpoint-routing-auth-policy-aspnetcore/
                     DisplayStorageConnectionString = false,
                     DashboardTitle = "NewProjectTemplate - Jobs",
-                    StatsPollingInterval = 60_000 // once a minute
+                    StatsPollingInterval = 60_000, // once a minute
+                    DisplayNameFunc = Havit.HangfireApp.Infrastructure.Hangfire.HangfireJobDisplayHelper.GetJobDisplayName
                 });
                 //.RequireAuthorization(PolicyNames.HangfireDashboardAcccessPolicy);
 

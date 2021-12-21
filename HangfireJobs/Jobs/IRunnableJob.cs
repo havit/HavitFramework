@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.HangfireApp.Jobs
+namespace Havit.HangfireJobs.Jobs
 {
 	/// <summary>
 	/// Základní bezparametrický job, který lze spouštět z konzolovky a hangfire.

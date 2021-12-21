@@ -1,14 +1,13 @@
-﻿using Havit.Hangfire.Extensions.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.HangfireApp.Jobs
+namespace Havit.HangfireJobs.Jobs
 {
-    public class JobTwo : IJobTwo
+    public class JobThree : IJobThree
     {
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {

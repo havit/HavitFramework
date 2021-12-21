@@ -64,7 +64,6 @@ namespace Havit.HangfireApp
 								DisableGlobalLocks = true,
 							})
 							.WithJobExpirationTimeout(TimeSpan.FromDays(30)) // historie hangfire
-							// TODO: Application Insights...
 							.UseFilter(new AutomaticRetryAttribute { Attempts = 0 }) // do not retry failed jobs
 							.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně
 							.UseFilter(new ExceptionMonitoringAttribute(serviceProvider.GetRequiredService<IExceptionMonitoringService>())) // zajistíme hlášení chyby v případě selhání jobu

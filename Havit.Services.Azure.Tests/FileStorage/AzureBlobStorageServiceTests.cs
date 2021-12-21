@@ -13,6 +13,7 @@ using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -382,12 +383,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
 		{
+			var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
+				.AddUserSecrets<AzureFileStorageServiceTests>()
+				.Build();
+
+			string connectionString = config["AzureFileStorageServiceConnectionString"];
+
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			// use your own Azure Storage account if you do not have access to this file
 			return new AzureBlobStorageService(
 				new AzureBlobStorageServiceOptions
 				{
-					BlobStorage = File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
+					BlobStorage = connectionString,
 					ContainerName = secondary ? "secondarytests" : "primarytests",
 					CacheControl = cacheControl,
 					EncryptionOptions = encryptionOptions

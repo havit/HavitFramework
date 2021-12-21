@@ -12,6 +12,7 @@ using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Configuration;
 
 namespace Havit.Services.Azure.Tests.FileStorage
 {
@@ -241,10 +242,16 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 		{
+			var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
+				.AddUserSecrets<AzureFileStorageServiceTests>()
+				.Build();
+
+			string connectionString = config["AzureFileStorageServiceConnectionString"];
+
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			// use your own Azure Storage account if you do not have access to this file
 			return new AzureFileStorageService(
-				fileStorageConnectionString: File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
+				fileStorageConnectionString: connectionString,
 				fileShareName: "tests",
 				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
 		}

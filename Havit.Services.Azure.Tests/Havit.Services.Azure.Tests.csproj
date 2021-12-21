@@ -2,9 +2,13 @@
 
   <PropertyGroup>
 	<TargetFramework>net472</TargetFramework>
+    <UserSecretsId>59fd0979-e990-4072-a04e-7c172a05795a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 	<PackageReference Include="Moq" Version="4.16.1" />

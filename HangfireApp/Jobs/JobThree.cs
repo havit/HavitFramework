@@ -15,7 +15,7 @@ namespace Havit.HangfireApp.Jobs
             for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine(this.GetType().Name + ": " + i);
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
             }
         }
     }

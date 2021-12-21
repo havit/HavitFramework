@@ -21,9 +21,9 @@ namespace Havit.HangfireApp.Jobs
         }
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
-                await httpClient.GetAsync("/");
+                await httpClient.GetAsync("/", cancellationToken);
                 using (var connection = new SqlConnection("Data Source=sqldev.havit.local;Initial Catalog=HavitBusinessLayerTest;User Id=development;Password=development;"))
                 {
                     connection.Open();
@@ -37,7 +37,7 @@ namespace Havit.HangfireApp.Jobs
                         }
                     }
                 }
-                await Task.Delay(1000);
+                await Task.Delay(1000, cancellationToken);
             }
         }
     }

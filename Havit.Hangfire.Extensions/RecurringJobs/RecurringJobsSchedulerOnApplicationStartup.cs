@@ -2,6 +2,7 @@
 using Hangfire.Storage;
 using Hangfire.Storage.Monitoring;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +18,20 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 	internal class RecurringJobsSchedulerOnApplicationStartup : IHostedService
 	{
         private readonly IRecurringJobsHelperService recurringJobsHelperService;
-        private readonly IRecurringJob[] recurringJobs;
+        private readonly RecurringJobsSchedulerOnApplicationStartupOptions options;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public RecurringJobsSchedulerOnApplicationStartup(IRecurringJobsHelperService recurringJobsHelperService, IRecurringJob[] recurringJobs)
+        public RecurringJobsSchedulerOnApplicationStartup(IRecurringJobsHelperService recurringJobsHelperService, IOptions<RecurringJobsSchedulerOnApplicationStartupOptions> options)
         {
             this.recurringJobsHelperService = recurringJobsHelperService;
-            this.recurringJobs = recurringJobs;
+            this.options = options.Value;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            recurringJobsHelperService.SetSchedule(recurringJobs);
+            recurringJobsHelperService.SetSchedule(options.RecurringJobs.ToArray());
             return Task.CompletedTask;
         }
 

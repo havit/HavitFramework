@@ -23,7 +23,6 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs
 		public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string queue = "default")
 		{
 			AddHangfireEnqueuedJobsCleanupOnApplicationStartup(services, new string[] { queue });
-
 		}
 
 		/// <summary>
@@ -32,7 +31,8 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs
 		public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string[] queues)
 		{
 			services.TryAddSingleton<IBackgroundJobHelperService, BackgroundJobHelperService>();
-			services.AddHostedService(sp => new EnqueuedJobsCleanupOnApplicationStartup(sp.GetRequiredService<IBackgroundJobHelperService>(), queues));
+			services.AddHostedService<EnqueuedJobsCleanupOnApplicationStartup>();
+			services.PostConfigure<EnqueuedJobsCleanupOnApplicationStartupOptions>(options => options.Queues.AddRange(queues));
 		}
 	}
 }

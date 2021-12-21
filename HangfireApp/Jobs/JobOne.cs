@@ -1,5 +1,6 @@
 ﻿using Havit.Hangfire.Extensions.Filters;
 using Microsoft.ApplicationInsights;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -14,15 +15,19 @@ namespace Havit.HangfireApp.Jobs
     public class JobOne : IJobOne
     {
         private readonly HttpClient httpClient;
+        private readonly ILogger<JobOne> logger;
 
-        public JobOne(HttpClient httpClient)
+        public JobOne(HttpClient httpClient, ILogger<JobOne> logger)
         {
             this.httpClient = httpClient;
+            this.logger = logger;
         }
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
+                logger.LogInformation(this.GetType().Name + ": " + i);
+                //Console.WriteLine(this.GetType().Name + ": " + i);
                 await httpClient.GetAsync("/", cancellationToken);
                 using (var connection = new SqlConnection("Data Source=sqldev.havit.local;Initial Catalog=HavitBusinessLayerTest;User Id=development;Password=development;"))
                 {

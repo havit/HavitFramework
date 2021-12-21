@@ -28,7 +28,6 @@ namespace Havit.HangfireApp
 			bool useHangfire = args.Length == 0;
 
 			IHostBuilder hostBuidler = Host.CreateDefaultBuilder();
-
 			hostBuidler.ConfigureAppConfiguration((hostContext, config) =>
 				{
 					config
@@ -77,23 +76,15 @@ namespace Havit.HangfireApp
 					}
 				});
 
-			// V případě registrace více lifetimes je použit poslední zaregistrovaný.
-			if (useHangfire)
-			{
-				hostBuidler.UseWebJobLifetime(); // aplikaci lze ukončit pomocí WebJob graceful shutdownu
-			}
-			else
-			{
-				hostBuidler.UseConsoleLifetime(); // aplikaci lze ukončit pomocí Ctrl+C
-			}
-
-			// TODO: Zkusit CommandLineHostService?
-
 			IHost host = hostBuidler.Build();
 
 			if (useHangfire)
 			{
-				await host.RunAsync();
+				// Run with Hangfire
+				using (WebJobsShutdownWatcher webJobsShutdownWatcher = new WebJobsShutdownWatcher())
+				{
+					await host.RunAsync(webJobsShutdownWatcher.Token);
+				}
 			}
 			else
 			{
@@ -105,13 +96,13 @@ namespace Havit.HangfireApp
 			}
 		}
 
-		private static void ShowCommandsHelp()
+		private static IEnumerable<IRecurringJob> GetRecurringJobsToSchedule()
 		{
-			Console.WriteLine("Supported commands:");
-			foreach (var job in GetRecurringJobsToSchedule().OrderBy(job => job.JobId).ToList())
-            {
-				Console.WriteLine("  " + job.JobId);
-			}
+			TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+			yield return new RecurringJob<IJobOne>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
+			yield return new RecurringJob<IJobTwo>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
+			yield return new RecurringJob<IJobThree>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
 		}
 
 		private static async Task<bool> TryRunCommandAsync(IServiceProvider serviceProvider, string command)
@@ -125,94 +116,33 @@ namespace Havit.HangfireApp
 				return false;
 			}
 
-			try
+			using (var scopeService = serviceProvider.CreateScope())
 			{
-				using (var scopeService = serviceProvider.CreateScope())
+				IExceptionMonitoringService exceptionMonitoringService = serviceProvider.GetRequiredService<IExceptionMonitoringService>();
+				try
 				{
-					await job.RunAsync(scopeService.ServiceProvider);
+					await job.RunAsync(scopeService.ServiceProvider, CancellationToken.None);
 				}
-			}
-			catch (Exception ex)
-			{
-				var service = serviceProvider.GetRequiredService<IExceptionMonitoringService>();
-				service.HandleException(ex);
 
-				throw;
+				catch (Exception ex)
+				{
+					exceptionMonitoringService.HandleException(ex);
+
+					throw;
+				}
 			}
 
 			return true;
 		}
 
-		private static IEnumerable<IRecurringJob> GetRecurringJobsToSchedule()
+		private static void ShowCommandsHelp()
 		{
-			TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-
-			yield return new RecurringJob<IJobOne>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
-			yield return new RecurringJob<IJobTwo>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
-			yield return new RecurringJob<IJobThree>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
+			Console.WriteLine("Supported commands:");
+			foreach (var job in GetRecurringJobsToSchedule().OrderBy(job => job.JobId).ToList())
+			{
+				Console.WriteLine("  " + job.JobId);
+			}
 		}
 	}
 
-	// TODO: Nová knihovna v HFW?
-	// TODO: Nejprvne vyzkoušet
-		public class WebJobLifetime : IHostLifetime, IDisposable
-		{
-			private readonly IHostApplicationLifetime applicationLifetime;
-			private readonly ILogger logger;
-
-			private WebJobsShutdownWatcher webJobsShutdownWatcher;
-			private CancellationTokenRegistration applicationStartedRegistration;
-
-			public WebJobLifetime(IHostApplicationLifetime applicationLifetime, ILogger<WebJobLifetime> logger)
-			{
-				this.applicationLifetime = applicationLifetime;
-				this.logger = logger;
-			}
-
-			public Task WaitForStartAsync(CancellationToken cancellationToken)
-			{
-				webJobsShutdownWatcher = new WebJobsShutdownWatcher();
-				if (webJobsShutdownWatcher.Token != CancellationToken.None)
-				{
-					// Pattern from ConsoleLifetime
-					applicationStartedRegistration = applicationLifetime.ApplicationStarted.Register(state =>
-					{
-						((WebJobLifetime)state).OnApplicationStarted();
-					}, this);
-
-					webJobsShutdownWatcher.Token.Register(() =>
-					{
-						applicationLifetime.StopApplication();
-					});
-				}
-
-				//  Applications start immediately.
-				return Task.CompletedTask;
-			}
-
-			private void OnApplicationStarted()
-			{
-				logger.LogInformation("Waiting for WebJob shutdown signal.");
-			}
-
-			public Task StopAsync(CancellationToken cancellationToken)
-			{
-				// There's nothing to do here
-				return Task.CompletedTask;
-			}
-
-			public void Dispose()
-			{
-				applicationStartedRegistration.Dispose();
-				webJobsShutdownWatcher?.Dispose();
-			}
-		}
-
-		public static class Extensions
-		{
-			public static IHostBuilder UseWebJobLifetime(this IHostBuilder hostBuilder)
-			{
-				return hostBuilder.ConfigureServices(services => services.AddSingleton<IHostLifetime, WebJobLifetime>());
-			}
-		}
 	}

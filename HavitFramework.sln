@@ -234,7 +234,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Extensions.Dependency
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.AspNetCore.Tests", "Havit.AspNetCore.Tests\Havit.AspNetCore.Tests.csproj", "{42A4FC40-67F2-4E99-BDB9-D45EFB4CD272}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangfireApp", "HangfireApp\HangfireApp.csproj", "{9E01D7C0-199F-44B7-967A-15CE76FC10B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangfireApp", "HangfireApp\HangfireApp.csproj", "{9E01D7C0-199F-44B7-967A-15CE76FC10B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangfireWeb", "HangfireWeb\HangfireWeb.csproj", "{9F7C91A3-A91C-4CDA-8407-432B2229C1BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -606,6 +608,10 @@ Global
 		{9E01D7C0-199F-44B7-967A-15CE76FC10B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E01D7C0-199F-44B7-967A-15CE76FC10B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E01D7C0-199F-44B7-967A-15CE76FC10B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F7C91A3-A91C-4CDA-8407-432B2229C1BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7C91A3-A91C-4CDA-8407-432B2229C1BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7C91A3-A91C-4CDA-8407-432B2229C1BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7C91A3-A91C-4CDA-8407-432B2229C1BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -712,6 +718,7 @@ Global
 		{E5255E5D-AD59-41D8-804B-F662A20BF113} = {AF3363A0-2BB8-4372-8937-21BDADB8FD9E}
 		{42A4FC40-67F2-4E99-BDB9-D45EFB4CD272} = {AF3363A0-2BB8-4372-8937-21BDADB8FD9E}
 		{9E01D7C0-199F-44B7-967A-15CE76FC10B2} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
+		{9F7C91A3-A91C-4CDA-8407-432B2229C1BE} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

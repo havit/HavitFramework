@@ -59,7 +59,7 @@ namespace Havit.HangfireApp
 							{
 								CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
 								SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-								QueuePollInterval = TimeSpan.Zero,
+								QueuePollInterval = TimeSpan.FromSeconds(5),
 								UseRecommendedIsolationLevel = true,
 								DisableGlobalLocks = true,
 							})

@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 namespace Havit.Services.Azure.Tests.FileStorage
 {
@@ -241,10 +238,27 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 		{
+			var config = new ConfigurationBuilder()
+				.AddEnvironmentVariables()
+				.Build();
+			string connectionString = config.GetConnectionString("AzureStorage");
+			
+			if (connectionString is null)
+            {
+				config = new ConfigurationBuilder()
+					.AddAzureKeyVault("https://HavitFrameworkConfigKV.vault.azure.net", new DefaultKeyVaultSecretManager())
+					.Build();
+				connectionString = config.GetConnectionString("AzureStorage");
+			}
+
+			if (connectionString is null)
+			{
+				throw new InvalidOperationException("Couldn't find Azure storage connection string in configuration.");
+			}
+
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
-			// use your own Azure Storage account if you do not have access to this file
 			return new AzureFileStorageService(
-				fileStorageConnectionString: File.ReadAllText(@"\\topol.havit.local\Workspace\002.HFW\Havit.Services.Azure.Tests.HfwTestsStorage.connectionString.txt"),
+				fileStorageConnectionString: connectionString,
 				fileShareName: "tests",
 				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
 		}

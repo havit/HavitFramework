@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,16 +6,15 @@ using System.Threading.Tasks;
 using Azure.Core;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Castle.Core.Internal;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Azure.Tests.FileStorage
 {
@@ -383,14 +380,25 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
 		{
-			var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
-				.AddUserSecrets<AzureFileStorageServiceTests>()
+			var config = new ConfigurationBuilder()
+				.AddEnvironmentVariables()
 				.Build();
+			string connectionString = config.GetConnectionString("AzureStorage");
 
-			string connectionString = config["AzureFileStorageServiceConnectionString"];
+			if (connectionString is null)
+			{
+				config = new ConfigurationBuilder()
+					.AddAzureKeyVault("https://HavitFrameworkConfigKV.vault.azure.net", new DefaultKeyVaultSecretManager())
+					.Build();
+				connectionString = config.GetConnectionString("AzureStorage");
+			}
+
+			if (connectionString is null)
+			{
+				throw new InvalidOperationException("Couldn't find Azure storage connection string in configuration.");
+			}
 
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
-			// use your own Azure Storage account if you do not have access to this file
 			return new AzureBlobStorageService(
 				new AzureBlobStorageServiceOptions
 				{

@@ -22,6 +22,9 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 			// Assert
 			FileStorageDataSeedRunDecisionStatePersister persister2 = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
 			Assert.AreEqual(state, persister2.ReadCurrentState(profile.ProfileName));
+
+			// Clean up
+			persister1.DeleteCurrentStateFile(profile.ProfileName);
 		}
 
 		[TestMethod]
@@ -37,6 +40,9 @@ namespace Havit.Data.Patterns.Tests.DataSeeds
 
 			// Assert
 			Assert.AreEqual("A", persister.ReadCurrentState(profile.ProfileName));
+
+			// Clean up
+			persister.DeleteCurrentStateFile(profile.ProfileName);
 		}
 
 	}

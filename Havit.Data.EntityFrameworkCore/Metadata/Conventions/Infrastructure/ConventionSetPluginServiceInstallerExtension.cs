@@ -41,12 +41,17 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 
 			public override string LogFragment => _logFragment ??= "using convention " + Extension.ConventionType.FullName;
 
-			public override long GetServiceProviderHashCode() => Extension.ConventionType.GetHashCode();
+			public override int GetServiceProviderHashCode() => Extension.ConventionType.GetHashCode();
 
 			public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
 			{
 				debugInfo["ConventionType:" + nameof(Extension.ConventionType)] = (Extension.ConventionType.GetHashCode()).ToString(CultureInfo.InvariantCulture);
 			}
-		}
+
+            public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
+            {
+				return (other is ExtensionInfo otherExtensionInfo) && (this.Extension.ConventionType == otherExtensionInfo.Extension.ConventionType);
+            }
+        }
 	}
 }

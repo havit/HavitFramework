@@ -31,11 +31,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
             IRelationalConnection connection,
             ISqlGenerationHelper sqlGenerationHelper,
             ICurrentDbContext currentContext,
-            IConventionSetBuilder conventionSetBuilder,
+            IModelRuntimeInitializer modelRuntimeInitializer,
             IDiagnosticsLogger<DbLoggerCategory.Migrations> logger,
-            IDiagnosticsLogger<DbLoggerCategory.Database.Command> commandLogger,
+            IRelationalCommandDiagnosticsLogger commandLogger,
             IDatabaseProvider databaseProvider)
-                : base(migrationsAssembly, historyRepository, databaseCreator, migrationsSqlGenerator, rawSqlCommandBuilder, migrationCommandExecutor, connection, sqlGenerationHelper, currentContext, conventionSetBuilder, logger, commandLogger, databaseProvider)
+                : base(migrationsAssembly, historyRepository, databaseCreator, migrationsSqlGenerator, rawSqlCommandBuilder, migrationCommandExecutor, connection, sqlGenerationHelper, currentContext, modelRuntimeInitializer, logger, commandLogger, databaseProvider)
         {
             this.databaseCreator = databaseCreator;
             this.connection = connection;

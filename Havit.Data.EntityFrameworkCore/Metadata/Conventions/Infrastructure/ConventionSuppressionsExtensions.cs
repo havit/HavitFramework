@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 		/// <summary>
 		/// Vrací true, pokud je konvence na daném objektu modelu potlačena.
 		/// </summary>
-		public static bool IsConventionSuppressed(this IEntityType entityType, string conventionIdentifier)
+		public static bool IsConventionSuppressed(this IReadOnlyEntityType entityType, string conventionIdentifier)
 		{
 			return entityType.ClrType.IsConventionSuppressed(conventionIdentifier);
 		}
@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
 		/// <summary>
 		/// Vrací true, pokud je konvence na dané vlastnosti modelu potlačena.
 		/// </summary>
-		public static bool IsConventionSuppressed(this IProperty property, string conventionIdentifier)
+		public static bool IsConventionSuppressed(this IReadOnlyProperty property, string conventionIdentifier)
 		{
 			return !property.IsShadowProperty() && property.PropertyInfo.IsConventionSuppressed(conventionIdentifier);
 		}

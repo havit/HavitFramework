@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// <summary>
 		/// Vrací entity, které nejsou systémové, nejsou Owned a nejsou QueryType.
 		/// </summary>
-		public static IEnumerable<IEntityType> GetApplicationEntityTypes(this IModel model, bool includeManyToManyEntities = true)
+		public static IEnumerable<IReadOnlyEntityType> GetApplicationEntityTypes(this IReadOnlyModel model, bool includeManyToManyEntities = true)
 		{
 			return model.GetEntityTypes()
 				.Where(entityType => entityType.IsApplicationEntity())

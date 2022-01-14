@@ -16,13 +16,13 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 	    /// <summary>
 	    /// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou EF automaticky.
 	    /// </summary>
-	    public static bool IsSystemType(this IEntityType entityType)
+	    public static bool IsSystemType(this IReadOnlyEntityType entityType)
 	    {
 			return (entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion))
 				|| (entityType.ClrType == typeof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow));
 		}
 
-		internal static bool HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(this IEntityType entityType)
+		internal static bool HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(this IReadOnlyEntityType entityType)
 		{
 			return (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
 				&& (entityType.GetProperties().All(item => !item.IsNullable))
@@ -33,7 +33,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// <summary>
 		/// Vrací true, pokud je entita vztahovou entitou M:N vztahu.
 		/// </summary>
-		public static bool IsManyToManyEntity(this IEntityType entityType)
+		public static bool IsManyToManyEntity(this IReadOnlyEntityType entityType)
 	    {
 			// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
 			return !entityType.IsOwned()
@@ -45,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// <summary>
 		/// Vrací true, pokud jde o aplikační entitu - není systémová, nejde o QueryType a není Owned.
 		/// </summary>
-		internal static bool IsApplicationEntity(this IEntityType entityType)
+		internal static bool IsApplicationEntity(this IReadOnlyEntityType entityType)
 		{
 			return !entityType.IsKeyless()
 				&& !entityType.IsOwned()
@@ -61,15 +61,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// Vrací true, pokud jde o keyless type (dříve QueryType).
 		/// IsQueryType (&lt; EF Core 3.0) bylo publikováno v interface IEntityType, IsKeyless se v interface nenachází a je pouze v implementaci EntityType;
 		/// </summary>
-		public static bool IsKeyless(this IEntityType entityType)
+		internal static bool IsKeyless(this IReadOnlyEntityType entityType)
 		{
-			if (entityType is Microsoft.EntityFrameworkCore.Metadata.Internal.EntityType entityTypeCasted)
-			{
-#pragma warning disable EF1001 // Internal EF Core API usage.
-				return entityTypeCasted.IsKeyless;
-#pragma warning restore EF1001 // Internal EF Core API usage.
-			}
-			return false;
+			// https://docs.microsoft.com/en-us/ef/core/modeling/keyless-entity-types
+			// Cannot have a key defined.
+			// Považujme to za "good enough".
+			return entityType.FindPrimaryKey() == null;
 		}
 	}
 }

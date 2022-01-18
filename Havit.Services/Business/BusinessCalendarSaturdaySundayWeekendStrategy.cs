@@ -2,7 +2,7 @@
 
 namespace Havit.Business
 {
-	internal class BusinessCalendarSaturdaySundayWeekendStrategy : IIsWeekendStrategy
+    public class BusinessCalendarSaturdaySundayWeekendStrategy : IIsWeekendStrategy
 	{
 		public bool IsWeekend(DateTime date)
 		{

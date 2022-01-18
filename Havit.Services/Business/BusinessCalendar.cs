@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections;
+﻿using Havit.Services.TimeServices;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business
 {
-	/// <summary>
-	/// Třída poskytující funkčnost pro práci s pracovním kalendářem,
-	/// pracovními dny, svátky, atp.
-	/// </summary>
-	/// <remarks>
-	/// Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
-	/// Třída se instancializuje se sadou významných dnů (zpravidla svátků), nebo bez svátků (pracovním
-	/// dnem je pak den, který není sobotou ani nedělí).<br/>
-	/// Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
-	/// <br/>
-	/// Jednou vytvořenou instanci třídy lze s výhodou opakovaně používat.
-	/// </remarks>
-	public class BusinessCalendar
+    /// <summary>
+    /// Třída poskytující funkčnost pro práci s pracovním kalendářem,
+    /// pracovními dny, svátky, atp.
+    /// </summary>
+    /// <remarks>
+    /// Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
+    /// Třída se instancializuje se sadou významných dnů (zpravidla svátků), nebo bez svátků (pracovním
+    /// dnem je pak den, který není sobotou ani nedělí).<br/>
+    /// Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
+    /// <br/>
+    /// Jednou vytvořenou instanci třídy lze s výhodou opakovaně používat.
+    /// </remarks>
+    public class BusinessCalendar
 	{
 		/// <summary>
 		/// Interní seznam významných dnů, tj. dnů, které se liší od běžného pracovního dne (např. svátků, atp.).<br/>

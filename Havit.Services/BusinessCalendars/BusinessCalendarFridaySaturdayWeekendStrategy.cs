@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Havit.Business
+namespace Havit.Services.BusinessCalendars
 {
     public class BusinessCalendarFridaySaturdayWeekendStrategy : IIsWeekendStrategy
 	{

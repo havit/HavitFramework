@@ -1,8 +1,8 @@
-﻿using Havit.Business;
+﻿using Havit.Services.BusinessCalendars;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Havit.Services.Tests.Business
+namespace Havit.Services.Tests.BusinessCalendars
 {
     /// <summary>
     /// Testy třídy BusinessCalendar.

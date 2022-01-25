@@ -1,4 +1,4 @@
-﻿namespace Havit.Business
+﻿namespace Havit.Services.BusinessCalendars
 {
     /// <summary>
     /// Options pro volání metody <see cref="BusinessCalendar.CountBusinessDays"/>.

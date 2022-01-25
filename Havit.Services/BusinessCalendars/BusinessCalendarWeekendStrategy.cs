@@ -1,4 +1,4 @@
-﻿namespace Havit.Business
+﻿namespace Havit.Services.BusinessCalendars
 {
     /// <summary>
     /// Třída vracející strategii pro určení, které dny jsou víkendem.

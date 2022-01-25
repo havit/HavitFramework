@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Havit.Business
+namespace Havit.Services.BusinessCalendars
 {
     /// <summary>
     /// Třída poskytující funkčnost pro práci s pracovním kalendářem,

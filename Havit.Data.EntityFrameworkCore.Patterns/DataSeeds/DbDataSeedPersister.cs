@@ -352,7 +352,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		}
 
 		/// <summary>
-		/// Vrátí seznam vlasností, které můžeme vložit.
+		/// Vrátí seznam vlastností, které můžeme vložit.
 		/// </summary>		
 		/// <remarks>
 		/// Nelze se spolehnout na ValueGenerated.OnAdd, protože podle https://github.com/aspnet/EntityFrameworkCore/issues/5366 platí:
@@ -395,13 +395,22 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			return result;
 		}
 
-		internal bool PropertyIsIdentity(IProperty property)
+		private bool PropertyIsIdentity(IProperty property)
 		{
-			return property.ClrType == typeof(Int32) // identitu uvažujeme jen pro Int32
-				&& property.IsPrimaryKey() // byť to není správné, uvažujeme identitu jen na primárním klíči
-				&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // pokud má nastaveno OnAdd, může mít použito autoincrement
-				&& (property.GetDefaultValue() == null) // ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu výrazem (třeba prázdný řetězec)
-				&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // a ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu (třeba sekvenci)
+			// Mohli bychom použít (a funguje spolehlivě) https://github.com/dotnet/efcore/blob/786798e80b518f1af450152359c081d1d7c93d59/src/EFCore.SqlServer/Migrations/SqlServerMigrationsSqlGenerator.cs#L2184
+
+			// Jenže jiné providery než SQL Server nemusí mít Identity či obdobu.
+			// Takže by bylo technicky správné, aby tato metoda vrátila false.
+			// Jenže, to by nám fungovaly unit testy se seedováním dat v každém provideru trochu jinak.
+			// Uděláme zde tedy předpoklad, že:
+			// * Identity definujeme jen na primárním klíči
+			// * Identity definujeme jen na typu Int32
+			// * Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL. 
+
+			return property.ClrType == typeof(Int32) // Identity definujeme jen na typu Int32
+				&& property.IsPrimaryKey() // Identity definujeme jen na primárním klíči
+				&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
+				&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
 		}
 	}
 }

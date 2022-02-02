@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc />
-		protected override CacheOptions GetCacheOptions(IEntityType entityType)
+		protected override CacheOptions GetCacheOptions(IReadOnlyEntityType entityType)
 		{
 			CacheOptions result = base.GetCacheOptions(entityType);
 			

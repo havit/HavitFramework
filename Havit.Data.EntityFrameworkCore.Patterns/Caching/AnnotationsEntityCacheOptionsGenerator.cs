@@ -86,7 +86,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		/// Vrací cache options pro danou entitu.
 		/// Neočekává se sdílená instance přes různé typy. CacheOptions jsou následně uzamčeny pro změnu.
 		/// </summary>
-		protected virtual CacheOptions GetCacheOptions(IEntityType entityType)
+		protected virtual CacheOptions GetCacheOptions(IReadOnlyEntityType entityType)
 		{
 			int? absoluteExpiration = (int?)entityType.FindAnnotation(CacheAttributeToAnnotationConvention.AbsoluteExpirationAnnotationName)?.Value;
 			int? slidingExpiration = (int?)entityType.FindAnnotation(CacheAttributeToAnnotationConvention.SlidingExpirationAnnotationName)?.Value;

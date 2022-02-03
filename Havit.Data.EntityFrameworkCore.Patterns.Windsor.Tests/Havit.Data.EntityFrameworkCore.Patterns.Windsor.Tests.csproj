@@ -1,7 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.2.14">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+	<!-- Projekt je Obsolete, nové verze již nekompilujeme, nepublikujeme. -->
+  
+	<PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

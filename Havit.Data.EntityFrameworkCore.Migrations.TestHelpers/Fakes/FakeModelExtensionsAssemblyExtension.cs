@@ -50,7 +50,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes
 
             public override string LogFragment => logFragment ??= "using fake ModelExtensionsAssembly ";
 
-            public override long GetServiceProviderHashCode() => Extension.modelExtenders.Aggregate(0, (value, type) => (value * 397) ^ type.GetHashCode());
+            public override int GetServiceProviderHashCode() => Extension.modelExtenders.Aggregate(0, (value, type) => (value * 397) ^ type.GetHashCode());
+            
+            public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other) => other is ExtensionInfo;
 
             public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
             {

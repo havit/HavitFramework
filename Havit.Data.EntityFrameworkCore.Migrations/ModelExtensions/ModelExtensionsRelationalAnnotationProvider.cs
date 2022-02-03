@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
         }
 
         /// <inheritdoc />
-        public override IEnumerable<IAnnotation> For(IRelationalModel relationalModel)
+        public override IEnumerable<IAnnotation> For(IRelationalModel relationalModel, bool designTime)
         {
             // This is crucial: Model Extensions are defined on IModel (not IRelationalModel) as annotations.
             // IRelationalModel is created from IModel as a "wrapper" around IModel.

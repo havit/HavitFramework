@@ -184,10 +184,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			{
 			}
 
-			public override long GetServiceProviderHashCode()
-			{
-				return 0xE436;
-			}
+			public override int GetServiceProviderHashCode() => 0xE436;
+			
+			public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other) => other is ExtensionInfo;
 
 			public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
 			{

@@ -39,14 +39,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vrací resources pro aktuální culture info.
 		/// </summary>
-		public static DbResources Current
-		{
-			get
-			{
-				return _current;
-			}
-		}
-		private static DbResources _current;
+		public static DbResources Current { get; set; }
 		#endregion
 		
 		#region Constructor (static)
@@ -55,7 +48,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// </summary>
 		static DbResources()
 		{
-			_current = new DbResources(() => System.Globalization.CultureInfo.CurrentUICulture);
+			Current = new DbResources(() => System.Globalization.CultureInfo.CurrentUICulture);
 		}
 		#endregion
 		
@@ -90,12 +83,12 @@ namespace Havit.BusinessLayerTest.Resources
 		/// <summary>
 		/// Vrátí resource string.
 		/// </summary>
-		public static string GetString(string resourceClass, string resourceKey, CultureInfo cultureInfo)
+		public virtual string GetString(string resourceClass, string resourceKey, CultureInfo cultureInfo)
 		{
 			return GetStringInternal(resourceClass, resourceKey, cultureInfo, false);
 		}
 		
-		private static string GetStringInternal(string resourceClass, string resourceKey, CultureInfo cultureInfo, bool isRecursion)
+		private string GetStringInternal(string resourceClass, string resourceKey, CultureInfo cultureInfo, bool isRecursion)
 		{
 			Dictionary<string, Dictionary<string, string>> resourceClassesData = (Dictionary<string, Dictionary<string, string>>)GetDbResourcesDataFromCache(cultureInfo);
 			Dictionary<string, string> resourceKeysData;
@@ -136,14 +129,14 @@ namespace Havit.BusinessLayerTest.Resources
 			
 			return result;
 		}
-		private static object _getStringLock = new object();
+		private object _getStringLock = new object();
 		#endregion
 		
 		#region GetResourceClassesData
 		/// <summary>
 		/// Načte hodnoty lokalizací pro jeden jazyk (resp. cultureInfo).
 		/// </summary>
-		private static Dictionary<string, Dictionary<string, string>> GetResourceClassesData(CultureInfo cultureInfo)
+		private Dictionary<string, Dictionary<string, string>> GetResourceClassesData(CultureInfo cultureInfo)
 		{
 			Havit.BusinessLayerTest.Language language = Havit.BusinessLayerTest.Language.GetByUICulture(cultureInfo);
 			
@@ -177,6 +170,13 @@ namespace Havit.BusinessLayerTest.Resources
 		}
 		#endregion
 		
+		#region GetCultureInfo
+		private System.Globalization.CultureInfo GetCultureInfo()
+		{
+			return getCultureInfoMethod();
+		}
+		#endregion
+		
 		#region MainResourceClass
 		public ResourceClasses.MainResourceClass MainResourceClass
 		{
@@ -184,7 +184,7 @@ namespace Havit.BusinessLayerTest.Resources
 			{
 				if (_mainResourceClass == null)
 				{
-					_mainResourceClass = new ResourceClasses.MainResourceClass(getCultureInfoMethod);
+					_mainResourceClass = new ResourceClasses.MainResourceClass(this);
 				}
 				return _mainResourceClass;
 			}
@@ -202,13 +202,13 @@ namespace Havit.BusinessLayerTest.Resources
 			public partial class MainResourceClass
 			{
 				#region Private fields
-				private Func<System.Globalization.CultureInfo> getCultureInfoMethod;
+				private DbResources dbResources;
 				#endregion
 				
 				#region Constructor (internal)
-				internal MainResourceClass(Func<System.Globalization.CultureInfo> getCultureInfoMethod)
+				internal MainResourceClass(DbResources dbResources)
 				{
-					this.getCultureInfoMethod = getCultureInfoMethod;
+					this.dbResources = dbResources;
 				}
 				#endregion
 				
@@ -220,7 +220,7 @@ namespace Havit.BusinessLayerTest.Resources
 				{
 					get
 					{
-						return DbResources.GetString("MainResourceClass", "MainResourceKey", getCultureInfoMethod());
+						return dbResources.GetString("MainResourceClass", "MainResourceKey", dbResources.GetCultureInfo());
 					}
 				}
 				
@@ -237,7 +237,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Vrátí název klíče pro resources.
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		private static string GetDbResourcesDataCacheKey(CultureInfo cultureInfo)
+		private string GetDbResourcesDataCacheKey(CultureInfo cultureInfo)
 		{
 			return "DbResources|culture=" + cultureInfo.Name;
 		}
@@ -246,7 +246,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Přidá resources do cache.
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		private static void AddDbResourcesDataToCache(CultureInfo cultureInfo, object resources)
+		private void AddDbResourcesDataToCache(CultureInfo cultureInfo, object resources)
 		{
 			if (!Havit.Business.BusinessLayerContext.BusinessLayerCacheService.SupportsCacheDependencies)
 			{
@@ -265,7 +265,7 @@ namespace Havit.BusinessLayerTest.Resources
 		/// Vyhledá v cache resources object pro daný cultureinfo a vrátí jej. Nejsou-li v cache nalezeny, vrací null.
 		/// </summary>
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-		private static object GetDbResourcesDataFromCache(CultureInfo cultureInfo)
+		private object GetDbResourcesDataFromCache(CultureInfo cultureInfo)
 		{
 			return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetDbResourcesDataFromCache(GetDbResourcesDataCacheKey(cultureInfo));
 		}

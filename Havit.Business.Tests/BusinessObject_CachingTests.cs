@@ -309,13 +309,13 @@ namespace Havit.Business.Tests
 		{
 			// Arrange
 			CultureInfo cultureInfo = CultureInfo.GetCultureInfo("cs-CZ");
-			string cacheKey = (string)(typeof(DbResources).GetMethod("GetDbResourcesDataCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { cultureInfo }));
+			string cacheKey = (string)(typeof(DbResources).GetMethod("GetDbResourcesDataCacheKey", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(DbResources.Current, new object[] { cultureInfo }));
 
 			// Precondition
 			Assert.IsFalse(cacheService.Contains(cacheKey));
 
 			// Act
-			DbResources.GetString("MainResourceClass", "MainResourceKey", cultureInfo);
+			DbResources.Current.GetString("MainResourceClass", "MainResourceKey", cultureInfo);
 
 			// Assert
 			Assert.IsTrue(cacheService.Contains(cacheKey));

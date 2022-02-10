@@ -21,7 +21,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public FileSystemStorageService(FileSystemStorageServiceOptions<TFileStorageContext> options) : base(options.StoragePath, options.EncryptionOptions)
+		public FileSystemStorageService(FileSystemStorageServiceOptions<TFileStorageContext> options) : base(options.StoragePath, options.UseFullyQualifiedPathNames, options.EncryptionOptions)
 		{
 			// NOOP
 		}

@@ -15,8 +15,15 @@ namespace Havit.Services.FileStorage
 	{
 		/// <summary>
 		/// Cesta k "rootu" použitého úložiště ve file systému.
+		/// Nelze kombinovat s UseFullyQualifiedPathNames.
 		/// </summary>
 		public string StoragePath { get; set; }
+
+		/// <summary>
+		/// Cesta k "rootu" použitého úložiště nebude použita a veškerá volání služby použijí plně kvalifikovaný název souboru.
+		/// Nelze kombinovat s StoragePath.
+		/// </summary>
+		public bool UseFullyQualifiedPathNames { get; set; }
 
 		/// <summary>
 		/// Parametry šifrování.

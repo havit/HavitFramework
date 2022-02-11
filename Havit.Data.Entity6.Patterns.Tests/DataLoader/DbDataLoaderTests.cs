@@ -16,6 +16,17 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 	[TestClass]
 	public class DbDataLoaderTests
 	{
+		[ClassInitialize]
+		public static void Initialize(TestContext testContext)
+		{
+			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+			dbContext.Database.Initialize(true);
+
+			SeedOneToManyTestData();
+			SeedManyToManyTestData();
+			SeedHierarchyTestData();
+		}
+
 		[ClassCleanup]
 		public static void CleanUp()
 		{
@@ -26,10 +37,8 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_LoadsNotLoadedEntities()
 		{
 			// Arrange
-			SeedOneToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Child child = dbContext.Child.First();
+			Child child = dbContext.Child.First(child => child.ParentId != null);
 
 			Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
 			Assert.AreNotEqual(0, child.ParentId, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.ParentId není nula.");
@@ -46,10 +55,8 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_DoesNotLoadExcessEntities()
 		{
 			// Arrange
-			SeedOneToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Child child = dbContext.Child.First();
+			Child child = dbContext.Child.First(child => child.ParentId != null);
 
 			Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
 			Assert.AreNotEqual(0, child.ParentId, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.ParentId není nula.");
@@ -67,10 +74,8 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_IncludesDeleted()
 		{
 			// Arrange
-			SeedOneToManyTestData(true);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			Child child = dbContext.Child.First();
+			Child child = dbContext.Child.First(child => (child.ParentId != null) && (child.Deleted != null));
 
 			Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
 			Assert.AreNotEqual(0, child.ParentId, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.ParentId není nula.");
@@ -87,8 +92,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithList_OneToMany_LoadsPartiallyInitializedCollections()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			Master master = dbContext.Master.First();
 			Child child = dbContext.Child.Where(item => item.ParentId == master.Id).First();
@@ -108,8 +111,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithList_OneToMany_LoadsNotLoadedCollections()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			Master master = dbContext.Master.First();
 
@@ -128,8 +129,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithList_ManyToMany_LoadsNotLoadedCollections()
 		{
 			// Arrange
-			SeedManyToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			LoginAccount loginAccount = dbContext.LoginAccount.First();
 
@@ -148,8 +147,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithObject_OneToMany_LoadsNotLoadedCollections()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			Master master = dbContext.Master.First();
 
@@ -169,8 +166,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithObject_ManyToMany_LoadsNotLoadedCollections()
 		{
 			// Arrange
-			SeedManyToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			LoginAccount loginAccount = dbContext.LoginAccount.First();
 
@@ -189,8 +184,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithList_OneToMany_DoesNotLoadExcessEntities()
 		{
 			// Arrange
-			SeedOneToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			Master master = dbContext.Master.First();
 
@@ -209,8 +202,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_WithList_ManyToMany_DoesNotLoadExcessEntities()
 		{
 			// Arrange
-			SeedManyToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			LoginAccount loginAccount = dbContext.LoginAccount.First();
 
@@ -229,16 +220,14 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_DoesNotLoadAlreadyLoaded()
 		{
 			// Arrange
-			SeedOneToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			Child child = dbContext.Child
+				.Where(child => child.ParentId != null)
 				.Include(c => c.Parent)
 				.First();
 
 			Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
 			mockDbContext.Setup(m => m.IsEntityReferenceLoaded<Child>(It.IsAny<Child>(), It.IsAny<string>())).Returns<Child, string>((entity, propertyName) => ((IDbContext)dbContext).IsEntityReferenceLoaded(entity, propertyName));
-			//mockDbContext.Setup(m => m.GetEntityState(child)).Returns(EntityState.Unchanged);
 
 			// Act
 			IDataLoader dataLoader = new DbDataLoader(mockDbContext.Object, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
@@ -255,8 +244,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_OneToMany_DoesNotLoadAlreadyLoaded()
 		{
 			// Arrange
-			SeedManyToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			LoginAccount loginAccount = dbContext.LoginAccount.First();
 
@@ -286,8 +273,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_LoadCollection_ManyToMany_DoesNotLoadAlreadyLoaded()
 		{
 			// Arrange
-			SeedOneToManyTestData(false);
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			Master master = dbContext.Master.First();
 
@@ -319,12 +304,10 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_LoadsChains()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			DataLoaders.DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-			Child child = dbContext.Child.First();
+			Child child = dbContext.Child.First(child => child.ParentId != null);
 
 			// Act
 			dbDataLoader.Load(child, c => c.Parent.Children.Select(item => item.Parent));
@@ -339,8 +322,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_LoadsHierarchy()
 		{
 			// Arrange
-			SeedHierarchyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			DataLoaders.DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
@@ -360,12 +341,10 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public async Task DbDataLoader_LoadAsync_LoadsChains()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			DataLoaders.DbDataLoader dbDataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-			Child child = await dbContext.Child.FirstAsync();
+			Child child = await dbContext.Child.FirstAsync(child => child.ParentId != null);
 
 			// Act
 			await dbDataLoader.LoadAsync(child, c => c.Parent.Children.Select(item => item.Parent));
@@ -380,8 +359,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_LoadWithManyAreReentrant()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
@@ -402,8 +379,6 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_SkipsNull()
 		{
 			// Arrange
-			SeedOneToManyTestData();
-
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
@@ -418,22 +393,8 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 		public void DbDataLoader_Load_SupportsNullValuesInData()
 		{
 			// Arrange
-			DataLoaderTestDbContext dbContext1 = new DataLoaderTestDbContext();
-			dbContext1.Database.Initialize(true);
-
-			Child child1 = new Child();
-			Child child2 = new Child();
-			Master master = new Master();
-			child1.Parent = master;
-
-			dbContext1.Set<Child>().Add(child1);
-			dbContext1.Set<Child>().Add(child2);
-			dbContext1.Set<Master>().Add(master);
-
-			dbContext1.SaveChanges();
-
 			DataLoaderTestDbContext dbContext2 = new DataLoaderTestDbContext();
-			List<Child> childs = dbContext2.Set<Child>().ToList();
+			List<Child> childs = dbContext2.Child.Where(child => child.ParentId == null).ToList();
 
 			// Act
 			IDataLoader dataLoader = new DbDataLoader(dbContext2, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
@@ -603,55 +564,42 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			// Assert by method attribute 
 		}
 
-		private void SeedOneToManyTestData(bool deleted = false)
+		private static void SeedOneToManyTestData()
 		{
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			dbContext.Database.Initialize(true);
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				Master master = new Master();
-				if (deleted)
-				{
-					master.Deleted = DateTime.Now;
-				}
+				master.Deleted = i >= 5 ? DateTime.Now : null;
 
 				for (int j = 0; j < 5; j++)
 				{
 					Child child = new Child();
 					child.Parent = master;
-					if (deleted)
-					{
-						child.Deleted = DateTime.Now;
-					}
-
+					child.Deleted = i >= 5 ? DateTime.Now : null;
+					
 					dbContext.Master.Add(master);
 					dbContext.Child.Add(child);
 				}
 			}
+			
+			dbContext.Child.Add(new Child());
+			dbContext.Child.Add(new Child());
 
 			dbContext.SaveChanges();
 		}
 
-		private void SeedManyToManyTestData(bool deleted = false)
+		private static void SeedManyToManyTestData()
 		{
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			dbContext.Database.Initialize(true);
 
 			for (int i = 0; i < 5; i++)
 			{
 				Role role = new Role();
-				if (deleted)
-				{
-					role.Deleted = DateTime.Now;
-				}
 
 				LoginAccount loginAccount = new LoginAccount();
 				loginAccount.Roles = new List<Role> { role };
-				if (deleted)
-				{
-					loginAccount.Deleted = DateTime.Now;
-				}
 
 				dbContext.LoginAccount.Add(loginAccount);
 				dbContext.Role.Add(role);
@@ -660,10 +608,9 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			dbContext.SaveChanges();
 		}
 
-		private void SeedHierarchyTestData()
+		private static void SeedHierarchyTestData()
 		{
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-			dbContext.Database.Initialize(true);
 
 			HiearchyItem root = new HiearchyItem();
 			SeedHierarchyTestData_CreateItems(root, 0);
@@ -672,7 +619,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader
 			dbContext.SaveChanges();
 		}
 
-		private void SeedHierarchyTestData_CreateItems(HiearchyItem root, int level)
+		private static void SeedHierarchyTestData_CreateItems(HiearchyItem root, int level)
 		{
 			if (level > 2)
 			{

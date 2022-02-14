@@ -138,9 +138,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions", "Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj", "{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor", "Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj", "{1A82E2E8-407D-482A-91D4-0155D877CA6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor[IGNORED]", "Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor[IGNORED].csproj", "{1A82E2E8-407D-482A-91D4-0155D877CA6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests", "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.csproj", "{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests[IGNORED]", "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests[IGNORED].csproj", "{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCoreTests", "EFCoreTests", "{CF4BD356-B8EB-4375-B017-5C5BF2835911}"
 EndProject

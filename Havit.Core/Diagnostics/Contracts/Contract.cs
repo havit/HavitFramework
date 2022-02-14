@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace Havit.Diagnostics.Contracts
 {
@@ -20,13 +20,13 @@ namespace Havit.Diagnostics.Contracts
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
 		[DebuggerStepThrough]
-		[ContractAnnotation("condition:false => halt")]
 #if NET6_0_OR_GREATER
-		public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+		public static void Requires([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-		public static void Requires(bool condition, string userMessage = null)
+		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+		public static void Requires( bool condition, string userMessage = null)
 #endif
-		{
+		{			
 			if (!condition)
 			{
 				ThrowException<ContractException>(ConstructMessage(userMessage));
@@ -38,10 +38,10 @@ namespace Havit.Diagnostics.Contracts
 		/// </summary>
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
-		[ContractAnnotation("condition:false => halt")]
 #if NET6_0_OR_GREATER
-		public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+		public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
+		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 		public static void Requires<TException>(bool condition, string userMessage = null)
 #endif
 			where TException : Exception
@@ -56,10 +56,10 @@ namespace Havit.Diagnostics.Contracts
 		/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
 		/// </summary>
 		[DebuggerStepThrough]
-		[ContractAnnotation("condition:false => halt")]
 #if NET6_0_OR_GREATER
-		public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+		public static void Assert([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
+		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 		public static void Assert(bool condition, string userMessage = null)
 #endif
 		{
@@ -83,10 +83,10 @@ namespace Havit.Diagnostics.Contracts
 		/// </remarks>
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
-		[ContractAnnotation("condition:false => halt")]
 #if NET6_0_OR_GREATER
-		public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+		public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
+		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 		public static void Assert<TException>(bool condition, string userMessage = null)
 #endif
 			where TException : Exception

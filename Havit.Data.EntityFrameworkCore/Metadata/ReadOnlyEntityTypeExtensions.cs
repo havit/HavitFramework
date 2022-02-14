@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace Havit.Data.EntityFrameworkCore.Metadata
 {
 	/// <summary>
-	/// Extension metody k IEntityType.
+	/// Extension metody k IReadOnlyEntityType.
 	/// </summary>
-    public static class EntityTypeExtensions
+	public static class ReadOnlyEntityTypeExtensions
     {
 	    /// <summary>
 	    /// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou EF automaticky.

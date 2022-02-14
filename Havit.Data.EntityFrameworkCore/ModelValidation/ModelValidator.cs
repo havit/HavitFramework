@@ -230,7 +230,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
         /// <summary>
         /// Kontroluje, zda není registrován žádný Owned Type.
         /// </summary>
-        internal IEnumerable<string> CheckNoOwnedIsRegistered(IEntityType entityType)
+        internal IEnumerable<string> CheckNoOwnedIsRegistered(IReadOnlyEntityType entityType)
         {
             if (entityType.IsOwned())
             {

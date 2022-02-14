@@ -21,7 +21,11 @@ namespace Havit.Diagnostics.Contracts
 		/// </summary>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
+#if NET6_0_OR_GREATER
+		public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+#else
 		public static void Requires(bool condition, string userMessage = null)
+#endif
 		{
 			if (!condition)
 			{
@@ -35,7 +39,11 @@ namespace Havit.Diagnostics.Contracts
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
+#if NET6_0_OR_GREATER
+		public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+#else
 		public static void Requires<TException>(bool condition, string userMessage = null)
+#endif
 			where TException : Exception
 		{
 			if (!condition)
@@ -49,7 +57,11 @@ namespace Havit.Diagnostics.Contracts
 		/// </summary>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
+#if NET6_0_OR_GREATER
+		public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+#else
 		public static void Assert(bool condition, string userMessage = null)
+#endif
 		{
 			if (!condition)
 			{
@@ -72,7 +84,11 @@ namespace Havit.Diagnostics.Contracts
 		/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
 		[DebuggerStepThrough]
 		[ContractAnnotation("condition:false => halt")]
+#if NET6_0_OR_GREATER
+		public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+#else
 		public static void Assert<TException>(bool condition, string userMessage = null)
+#endif
 			where TException : Exception
 		{
 			if (!condition)

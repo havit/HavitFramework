@@ -43,8 +43,8 @@ namespace Havit.Security
 		public static string ComputeSHA512HashString(string plainTextPassword, string salt = "")
 		{
 			string value = salt + plainTextPassword;
-
-			SHA512Managed sha = new SHA512Managed();
+			
+			SHA512 sha = SHA512.Create();
 			var hash = sha.ComputeHash(Encoding.Unicode.GetBytes(value));
 			return String.Join("", hash.Select(x => x.ToString("X2")));
 		}

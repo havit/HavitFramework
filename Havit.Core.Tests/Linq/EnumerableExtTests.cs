@@ -65,6 +65,7 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(22, joinedData2.Count); // 5ka je v obou kolekcích
 		}
 
+#if !NET6_0_OR_GREATER
 		[TestMethod]
 		public void EnumerableExt_SkipLast()
 		{
@@ -100,6 +101,7 @@ namespace Havit.Tests.Linq
 			Assert.AreEqual(1, first);
 			Assert.AreEqual(2, last);
 		}
+#endif
 
 		[TestMethod]
 		public void EnumerableExt_SkipLastWhile()

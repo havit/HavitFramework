@@ -19,6 +19,7 @@ using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastruct
 using Havit.Services.Caching;
 using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 {
@@ -26,16 +27,64 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 	public class ServiceCollectionEntityPatternsInstallerTests
 	{
 		[TestMethod]
+		public void ServiceCollectionEntityPatternsInstaller_DbContextIsScoped()
+		{
+			// Arrange
+			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
+
+			// Act
+			IDbContext dbContext1a;
+			IDbContext dbContext1b;
+			IDbContext dbContext2;
+
+			using (var scope = serviceProvider.CreateScope())
+			{
+				dbContext1a = scope.ServiceProvider.GetRequiredService<IDbContext>();
+				dbContext1b = scope.ServiceProvider.GetRequiredService<IDbContext>();
+			}
+
+			using (var scope = serviceProvider.CreateScope())
+			{
+				dbContext2 = scope.ServiceProvider.GetRequiredService<IDbContext>();
+			}
+
+			// Assert			
+			Assert.AreSame(dbContext1a, dbContext1b);
+			Assert.AreNotSame(dbContext1a, dbContext2);
+			Assert.AreNotSame(dbContext1b, dbContext2);
+		}
+
+		[TestMethod]
+		public void ServiceCollectionEntityPatternsInstallerShouldRegisterDbContextTransientAsTransient()
+		{
+			// Arrange
+			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
+
+			// Act
+			IDbContextTransient dbContext1;
+			IDbContextTransient dbContext2;
+
+			using (var scope = serviceProvider.CreateScope())
+			{
+				dbContext1 = scope.ServiceProvider.GetRequiredService<IDbContextTransient>();
+				dbContext2 = scope.ServiceProvider.GetRequiredService<IDbContextTransient>();
+			}
+
+			// Assert
+			Assert.AreNotSame(dbContext1, dbContext2);
+		}
+
+		[TestMethod]
 		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<ILanguageService>();
-				serviceProvider.GetRequiredService<ILocalizationService>();
+				scope.ServiceProvider.GetRequiredService<ILanguageService>();
+				scope.ServiceProvider.GetRequiredService<ILocalizationService>();
 			}
 
 			// Assert			
@@ -49,10 +98,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<ILanguageDataSource>();
-				serviceProvider.GetRequiredService<IDataSource<Language>>();
+				scope.ServiceProvider.GetRequiredService<ILanguageDataSource>();
+				scope.ServiceProvider.GetRequiredService<IDataSource<Language>>();
 			}
 
 			// Assert			
@@ -66,10 +115,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<ILanguageRepository>();
-				serviceProvider.GetRequiredService<IRepository<Language>>();
+				scope.ServiceProvider.GetRequiredService<ILanguageRepository>();
+				scope.ServiceProvider.GetRequiredService<IRepository<Language>>();
 			}
 
 			// Assert			
@@ -83,9 +132,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<IDataLoader>();
+				scope.ServiceProvider.GetRequiredService<IDataLoader>();
 			}
 			// Assert
 			// no exception was thrown
@@ -98,9 +147,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<IUnitOfWork>();
+				scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 			}
 
 			// Assert
@@ -114,9 +163,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<IEntityCacheManager>();
+				scope.ServiceProvider.GetRequiredService<IEntityCacheManager>();
 			}
 
 			// Assert
@@ -146,9 +195,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			using (serviceProvider.CreateScope())
+			using (var scope = serviceProvider.CreateScope())
 			{
-				serviceProvider.GetRequiredService<IDataSeedRunner>();
+				scope.ServiceProvider.GetRequiredService<IDataSeedRunner>();
 			}
 
 			// Assert
@@ -162,8 +211,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
 
 			// Act
-			var dataSeedPersister1 = serviceProvider.GetRequiredService<IDataSeedPersister>();
-			var dataSeedPersister2 = serviceProvider.GetRequiredService<IDataSeedPersister>();
+			IDataSeedPersister dataSeedPersister1;
+			IDataSeedPersister dataSeedPersister2;
+
+			using (var scope = serviceProvider.CreateScope())
+			{
+                dataSeedPersister1 = scope.ServiceProvider.GetRequiredService<IDataSeedPersister>();
+				dataSeedPersister2 = scope.ServiceProvider.GetRequiredService<IDataSeedPersister>();
+			}
 
 			// Assert
 			Assert.IsInstanceOfType(dataSeedPersister1, typeof(DbDataSeedPersister));
@@ -184,7 +239,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			services.AddSingleton<ITimeService, ServerTimeService>();
 			services.AddSingleton<ICacheService, NullCacheService>();
 
-			return services.BuildServiceProvider();
+			return services.BuildServiceProvider(true);
 		}
 	}
 }

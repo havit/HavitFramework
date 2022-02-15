@@ -1,4 +1,7 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
+using Havit.Diagnostics.Contracts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -9,14 +12,29 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// <summary>
 	/// Implementace <see cref="IEntityPatternsInstaller"/>u pro IServiceCollection.
 	/// </summary>
-	internal class ServiceCollectionEntityPatternsInstaller : EntityPatternsInstallerBase<ServiceLifetime>
+	public class ServiceCollectionEntityPatternsInstaller : EntityPatternsInstallerBase<ServiceLifetime, ServiceCollectionEntityPatternsInstaller>
 	{
+        private readonly IServiceCollection services;
+        private readonly ServiceCollectionComponentRegistrationOptions componentRegistrationOptions;
+
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller(IServiceCollection serviceCollection, ServiceCollectionComponentRegistrationOptions componentRegistrationOptions) : base(new ServiceCollectionServiceInstaller(serviceCollection), componentRegistrationOptions)
+		public ServiceCollectionEntityPatternsInstaller(IServiceCollection services, ServiceCollectionComponentRegistrationOptions componentRegistrationOptions) : base(new ServiceCollectionServiceInstaller(services), componentRegistrationOptions)
 		{
-			// NOOP
+            this.services = services;
+            this.componentRegistrationOptions = componentRegistrationOptions;
+        }
+
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
+		public ServiceCollectionEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+		{
+			services.AddDbContext<IDbContext, TDbContext>(optionsAction, componentRegistrationOptions.DbContextLifestyle, componentRegistrationOptions.DbContextLifestyle);
+			services.AddTransient(typeof(IDbContextTransient), typeof(TDbContext));
+			return this;
 		}
 	}
 }

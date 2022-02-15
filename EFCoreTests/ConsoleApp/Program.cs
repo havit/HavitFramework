@@ -50,16 +50,14 @@ namespace ConsoleApp1
 			var loggerFactory = new LoggerFactory();
 			//loggerFactory.AddConsole((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name));
 
-			var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-				.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
-				//.UseInMemoryDatabase("ConsoleApp")
-				.UseLoggerFactory(loggerFactory)
-				.Options;
-
 			IServiceCollection services = new ServiceCollection();
 			services.WithEntityPatternsInstaller()
 				.AddDataLayer(typeof(IPersonRepository).Assembly)
-				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(options)
+				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
+					optionsBuilder
+						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
+						//.UseInMemoryDatabase("ConsoleApp")
+						.UseLoggerFactory(loggerFactory))
 				.AddEntityPatterns()
 				.AddLookupService<IUserLookupService, UserLookupService>();
 

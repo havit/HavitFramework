@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// </summary>
 		/// <param name="services">ServiceCollection.</param>
 		/// <param name="componentRegistrationAction">Konfigurace registrace komponent.</param>
-		public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IServiceCollection services, Action<ServiceCollectionComponentRegistrationOptions> componentRegistrationAction = null)
+		public static ServiceCollectionEntityPatternsInstaller WithEntityPatternsInstaller(this IServiceCollection services, Action<ServiceCollectionComponentRegistrationOptions> componentRegistrationAction = null)
 		{
 			ServiceCollectionComponentRegistrationOptions componentRegistrationOptions = new ServiceCollectionComponentRegistrationOptions();
 			componentRegistrationAction?.Invoke(componentRegistrationOptions);

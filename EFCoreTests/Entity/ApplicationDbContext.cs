@@ -10,15 +10,6 @@ namespace Havit.EFCoreTests.Entity
 	{
 		/// <summary>
 		/// Konstruktor.
-		/// Pro použití v unit testech, jiné použití nemá.
-		/// </summary>
-		internal ApplicationDbContext()
-		{
-			// NOOP
-		}
-
-		/// <summary>
-		/// Konstruktor.
 		/// </summary>
 		public ApplicationDbContext(DbContextOptions options) : base(options)
 		{

@@ -36,46 +36,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 	/// Bázová implementace <see cref="IEntityPatternsInstaller"/>u.
 	/// Pro použití pro jednotlivé DI kontejnery. Chce se, aby pro každý kontejner byla práce minimální, de facto jen implementace IServiceInstaller&lt;TLifetime&gt;.
 	/// </summary>
-	public class EntityPatternsInstallerBase<TLifetime> : IEntityPatternsInstaller
+	public abstract class EntityPatternsInstallerBase<TLifetime, TEntityPatternsInstaller> 
+		where TEntityPatternsInstaller : EntityPatternsInstallerBase<TLifetime, TEntityPatternsInstaller>
 	{
 		private readonly IServiceInstaller<TLifetime> installer;
 		private readonly ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		/// <param name="installer">Installer, kterým budou provedeny registrace.</param>
-		/// <param name="componentRegistrationOptions">Nastavení registrací.</param>
-		public EntityPatternsInstallerBase(IServiceInstaller<TLifetime> installer, ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions)
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <param name="installer">Installer, kterým budou provedeny registrace.</param>
+        /// <param name="componentRegistrationOptions">Nastavení registrací.</param>
+        protected EntityPatternsInstallerBase(IServiceInstaller<TLifetime> installer, ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions)
 		{
 			Contract.Requires<ArgumentNullException>(installer != null);
 			Contract.Requires<ArgumentNullException>(componentRegistrationOptions != null);
 
 			this.installer = installer;
 			this.componentRegistrationOptions = componentRegistrationOptions;
-		}
+        }
 
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller AddDbContext<TDbContext>(DbContextOptions dbContextOptions = null)
-			where TDbContext : class, IDbContext
-		{
-			installer.AddService(typeof(IDbContext), typeof(TDbContext), componentRegistrationOptions.DbContextLifestyle);
-			installer.AddServiceTransient(typeof(IDbContextTransient), typeof(TDbContext));
-
-			if (dbContextOptions != null)
-			{
-				installer.AddServiceSingletonInstance(typeof(DbContextOptions), dbContextOptions);
-			}
-
-			return this;
-		}
-
-		/// <summary>
-		/// Viz <see cref="IEntityPatternsInstaller"/>
-		/// </summary>
-		public IEntityPatternsInstaller AddLocalizationServices<TLanguage>()
+		public TEntityPatternsInstaller AddLocalizationServices<TLanguage>()
 			where TLanguage : class, ILanguage
 		{
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
@@ -86,13 +70,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.TryAddServiceSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
 			installer.TryAddServiceTransient<ILocalizationService, LocalizationService>();
 
-			return this;
+			return (TEntityPatternsInstaller)this;
 		}
 
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller AddEntityPatterns()
+		public TEntityPatternsInstaller AddEntityPatterns()
 		{
 			componentRegistrationOptions.CachingInstaller.Install(installer);
 
@@ -131,13 +115,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.TryAddServiceSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
 			installer.TryAddServiceTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 
-			return this;
+			return (TEntityPatternsInstaller)this;
 		}
 
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
+		public TEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
 		{
 			Type[] dataLayerDependencyInjectionEnabledTypes = dataLayerAssembly.GetTypes().Where(type => type.IsClass && type.IsPublic).Where(IsNotAbstract).Where(DoesNotHaveFakeAttribute).ToArray();
 
@@ -219,13 +203,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 					installer.TryAddServiceTransient(interfaceType, implementationType);
 				});
 
-			return this;
+			return (TEntityPatternsInstaller)this;
 		}
 
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller AddLookupService<TService, TImplementation>()
+		public TEntityPatternsInstaller AddLookupService<TService, TImplementation>()
 			where TService : class
 			where TImplementation : class, TService, ILookupDataInvalidationService
 		{
@@ -235,7 +219,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
+		public TEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
 			where TService : class
 			where TImplementation : class, TService
 			where TLookupDataInvalidationService : ILookupDataInvalidationService
@@ -243,7 +227,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.TryAddServiceSingleton<IEntityLookupDataStorage, EntityLookupDataStorage>();
 			installer.AddServicesTransient(new Type[] { typeof(TService), typeof(ILookupDataInvalidationService) }, typeof(TLookupDataInvalidationService));
 
-			return this;
+			return (TEntityPatternsInstaller)this;
 		}
 
 		/// <summary>

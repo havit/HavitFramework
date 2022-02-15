@@ -3,13 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Castle.Facilities.TypedFactory;
-using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.Resolvers.SpecializedResolvers;
-using Castle.Windsor;
 using Havit.Data.EntityFrameworkCore;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor;
-using Havit.Data.EntityFrameworkCore.Patterns.Windsor.Installers;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.EFCoreTests.Entity;
 using Havit.Services;
@@ -19,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Castle.MicroKernel.Lifestyle;
 using Microsoft.Extensions.Options;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.EFCoreTests.Model;
@@ -49,7 +42,7 @@ namespace ConsoleApp1
 		{
 			IServiceProvider serviceProvider = CreateServiceProvider();
 			UpdateDatabase(serviceProvider);
-			//Debug(serviceProvider);
+			Debug(serviceProvider);
 		}
 
 		private static IServiceProvider CreateServiceProvider()
@@ -88,25 +81,12 @@ namespace ConsoleApp1
 				scope0.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
 				scope0.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
 			}
-
-			for (int i = 0; i < 100; i++)
-			{
-				Console.WriteLine(i);
-				Parallel.For(0, 100, _ =>
-				{
-					using (var scope1 = serviceProvider.CreateScope())
-					{
-						//scope1.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
-						scope1.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<DefaultProfile>();
-					}
-				});
-			}
 		}
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			//var dataSeedRunner = serviceProvider.GetRequiredService<IDataSeedRunner>();
-			//dataSeedRunner.SeedData<ProtectedPropertiesProfile>();
+			var dataSeedRunner = serviceProvider.GetRequiredService<IDataSeedRunner>();
+			dataSeedRunner.SeedData<ProtectedPropertiesProfile>();
 
 			using var scope1 = serviceProvider.CreateScope();
 			var dbContext1 = scope1.ServiceProvider.GetRequiredService<IDbContext>();

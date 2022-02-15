@@ -65,7 +65,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		protected List<TQueryResultItem> SelectDataFragment(int startIndex, int? count)
 		{
 			Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0, nameof(startIndex));
-			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count > 0), nameof(count));
+			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0), nameof(count));
 
 			IQueryable<TQueryResultItem> query = Query();
 			if (startIndex > 0)
@@ -86,7 +86,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		protected Task<List<TQueryResultItem>> SelectDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0, nameof(startIndex));
-			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count > 0), nameof(count));
+			Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0), nameof(count));
 
 			IQueryable<TQueryResultItem> query = Query();
 			if (startIndex > 0)

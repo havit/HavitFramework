@@ -1,15 +1,13 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Havit.Business;
+﻿using Havit.Services.BusinessCalendars;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
-namespace Havit.Business.Tests
+namespace Havit.Services.Tests.BusinessCalendars
 {
-	/// <summary>
-	/// Testy třídy BusinessCalendar.
-	/// </summary>
-	[TestClass]
+    /// <summary>
+    /// Testy třídy BusinessCalendar.
+    /// </summary>
+    [TestClass]
 	public class BusinessCalendarTests
 	{
 		[TestMethod]

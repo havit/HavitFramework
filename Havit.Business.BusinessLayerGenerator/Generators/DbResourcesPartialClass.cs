@@ -36,6 +36,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 			WriteGetString(writer);			
 			WriteGetResourceClassLanguageData(writer, table);
+			WriteGetCultureInfo(writer);
 
 			WriteResourceProperties(writer, table);
 			WriteResourceClassesDefinition(writer, table);
@@ -45,7 +46,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.Save();
 		}
 
-		private static void WritePrivateFields(CodeWriter writer)
+        private static void WritePrivateFields(CodeWriter writer)
 		{
 			writer.WriteOpenRegion("Private fields");
 			writer.WriteLine("private Func<System.Globalization.CultureInfo> getCultureInfoMethod;");
@@ -56,14 +57,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		{
 			writer.WriteOpenRegion("Current");
 			writer.WriteCommentSummary("Vrací resources pro aktuální culture info.");
-			writer.WriteLine("public static DbResources Current");
-			writer.WriteLine("{");
-			writer.WriteLine("get");
-			writer.WriteLine("{");
-			writer.WriteLine("return _current;");
-			writer.WriteLine("}");
-			writer.WriteLine("}");
-			writer.WriteLine("private static DbResources _current;");
+			writer.WriteLine("public static DbResources Current { get; set; }");
 			writer.WriteCloseRegion();
 		}
 
@@ -73,7 +67,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteCommentSummary("Statický konstruktor. Inicializuje hodnotu pro vlastnost Current.");
 			writer.WriteLine("static DbResources()");
 			writer.WriteLine("{");
-			writer.WriteLine("_current = new DbResources(() => System.Globalization.CultureInfo.CurrentUICulture);");
+			writer.WriteLine("Current = new DbResources(() => System.Globalization.CultureInfo.CurrentUICulture);");
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 			writer.WriteOpenRegion("Constructors");
@@ -104,12 +98,12 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 		{
 			writer.WriteOpenRegion("GetString");
 			writer.WriteCommentSummary("Vrátí resource string.");
-			writer.WriteLine("public static string GetString(string resourceClass, string resourceKey, CultureInfo cultureInfo)");
+			writer.WriteLine("public virtual string GetString(string resourceClass, string resourceKey, CultureInfo cultureInfo)");
 			writer.WriteLine("{");
 			writer.WriteLine("return GetStringInternal(resourceClass, resourceKey, cultureInfo, false);");
 			writer.WriteLine("}");
 			writer.WriteLine("");
-			writer.WriteLine("private static string GetStringInternal(string resourceClass, string resourceKey, CultureInfo cultureInfo, bool isRecursion)");
+			writer.WriteLine("private string GetStringInternal(string resourceClass, string resourceKey, CultureInfo cultureInfo, bool isRecursion)");
 			writer.WriteLine("{");
 			writer.WriteLine("Dictionary<string, Dictionary<string, string>> resourceClassesData = (Dictionary<string, Dictionary<string, string>>)GetDbResourcesDataFromCache(cultureInfo);");
 			writer.WriteLine("Dictionary<string, string> resourceKeysData;");
@@ -151,7 +145,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine();
 			writer.WriteLine("return result;");
 			writer.WriteLine("}");
-			writer.WriteLine("private static object _getStringLock = new object();");
+			writer.WriteLine("private object _getStringLock = new object();");
 			writer.WriteCloseRegion();
 		}
 
@@ -186,7 +180,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				
 			writer.WriteOpenRegion("GetResourceClassesData");
 			writer.WriteCommentSummary("Načte hodnoty lokalizací pro jeden jazyk (resp. cultureInfo).");
-			writer.WriteLine("private static Dictionary<string, Dictionary<string, string>> GetResourceClassesData(CultureInfo cultureInfo)");
+			writer.WriteLine("private Dictionary<string, Dictionary<string, string>> GetResourceClassesData(CultureInfo cultureInfo)");
 			writer.WriteLine("{");
 			writer.WriteLine(String.Format("{0} language = {0}.GetByUICulture(cultureInfo);", ClassHelper.GetClassFullName(LanguageHelper.GetLanguageTable())));
 			writer.WriteLine();
@@ -224,6 +218,16 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 		}
 
+		private static void WriteGetCultureInfo(CodeWriter writer)
+		{
+			writer.WriteOpenRegion("GetCultureInfo");
+			writer.WriteLine("private System.Globalization.CultureInfo GetCultureInfo()");
+			writer.WriteLine("{");
+			writer.WriteLine("return getCultureInfoMethod();");
+			writer.WriteLine("}");
+			writer.WriteCloseRegion();
+		}
+
 		public static void WriteResourceProperties(CodeWriter writer, Table resourceClassTable)
 		{
 			foreach (ResourceClass resourceClass in ResourceHelper.GetResourceClasses(resourceClassTable))
@@ -250,7 +254,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("{");
 			writer.WriteLine(String.Format("if ({0} == null)", fieldName));
 			writer.WriteLine("{");
-			writer.WriteLine(String.Format("{0} = new ResourceClasses.{1}(getCultureInfoMethod);", fieldName, resourceClass.ClassName));
+			writer.WriteLine(String.Format("{0} = new ResourceClasses.{1}(this);", fieldName, resourceClass.ClassName));
 			writer.WriteLine("}"); // if
 			writer.WriteLine(String.Format("return {0};", fieldName));
 			writer.WriteLine("}"); // getter
@@ -291,13 +295,13 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 			writer.WriteLine("{");
 
 			writer.WriteOpenRegion("Private fields");
-			writer.WriteLine("private Func<System.Globalization.CultureInfo> getCultureInfoMethod;");
+			writer.WriteLine("private DbResources dbResources;");
 			writer.WriteCloseRegion();
 	
 			writer.WriteOpenRegion("Constructor (internal)");
-			writer.WriteLine(String.Format("internal {0}(Func<System.Globalization.CultureInfo> getCultureInfoMethod)", className));
+			writer.WriteLine(String.Format("internal {0}(DbResources dbResources)", className));
 			writer.WriteLine("{");
-			writer.WriteLine("this.getCultureInfoMethod = getCultureInfoMethod;");
+			writer.WriteLine("this.dbResources = dbResources;");
 			writer.WriteLine("}");
 			writer.WriteCloseRegion();
 
@@ -319,7 +323,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					writer.WriteLine("{");
 					writer.WriteLine("get");
 					writer.WriteLine("{");
-					writer.WriteLine(String.Format("return DbResources.GetString(\"{0}\", \"{1}\", getCultureInfoMethod());", resourceClass.ClassName, resourceItem.Name));
+					writer.WriteLine(String.Format("return dbResources.GetString(\"{0}\", \"{1}\", dbResources.GetCultureInfo());", resourceClass.ClassName, resourceItem.Name));
 					writer.WriteLine("}");
 					writer.WriteLine("}");
 					writer.WriteLine();
@@ -350,7 +354,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				writer.WriteCommentSummary("Vrátí název klíče pro resources.");
 				writer.WriteLine("[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]");
-				writer.WriteLine("private static string GetDbResourcesDataCacheKey(CultureInfo cultureInfo)");
+				writer.WriteLine("private string GetDbResourcesDataCacheKey(CultureInfo cultureInfo)");
 				writer.WriteLine("{");
 				writer.WriteLine("return \"DbResources|culture=\" + cultureInfo.Name;");
 				writer.WriteLine("}");
@@ -358,7 +362,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				writer.WriteCommentSummary("Přidá resources do cache.");
 				writer.WriteLine("[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]");
-				writer.WriteLine("private static void AddDbResourcesDataToCache(CultureInfo cultureInfo, object resources)");
+				writer.WriteLine("private void AddDbResourcesDataToCache(CultureInfo cultureInfo, object resources)");
 				writer.WriteLine("{");
 
 				if (useCacheDependencies)
@@ -385,7 +389,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 
 				writer.WriteCommentSummary("Vyhledá v cache resources object pro daný cultureinfo a vrátí jej. Nejsou-li v cache nalezeny, vrací null.");
 				writer.WriteLine("[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]");
-				writer.WriteLine("private static object GetDbResourcesDataFromCache(CultureInfo cultureInfo)");
+				writer.WriteLine("private object GetDbResourcesDataFromCache(CultureInfo cultureInfo)");
 				writer.WriteLine("{");
 				writer.WriteLine("return Havit.Business.BusinessLayerContext.BusinessLayerCacheService.GetDbResourcesDataFromCache(GetDbResourcesDataCacheKey(cultureInfo));");
 				writer.WriteLine("}");

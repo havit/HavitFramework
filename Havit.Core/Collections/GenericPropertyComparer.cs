@@ -18,17 +18,6 @@ namespace Havit.Collections
 		/// <summary>
 		/// Vytvoří instanci compareru pro řazení dle dané property.
 		/// </summary>
-		/// <param name="sortPropertyName">název property, podle které se má řadit</param>
-		/// <param name="ascending">true, má-li se řadit vzestupně, false, pokud sestupně</param>
-		[Obsolete]
-		public GenericPropertyComparer(String sortPropertyName, bool ascending)
-			: this(new SortItem(sortPropertyName, ascending ? SortDirection.Ascending : SortDirection.Descending))
-		{			
-		}
-
-		/// <summary>
-		/// Vytvoří instanci compareru pro řazení dle dané property.
-		/// </summary>
 		/// <param name="sortItem">Určuje parametr řazení.</param>
 		public GenericPropertyComparer(SortItem sortItem) : this(new SortItem[] { sortItem })
 		{

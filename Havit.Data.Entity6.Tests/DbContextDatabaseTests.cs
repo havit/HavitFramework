@@ -27,8 +27,6 @@ namespace Havit.Data.Entity.Tests
 			// Arrange
 			using (MasterChildDbContext dbContext = new MasterChildDbContext())
 			{
-				dbContext.Database.Initialize(true);
-
 				// Act
 				DbRawSqlQuery<int> query = ((IDbContext)dbContext).Database.SqlQueryRaw<int>("SELECT Count(MasterId) FROM dbo.Master WHERE MasterId < @p0", -5 /* nemá funkční význam, jen ukázka parametrizace */);
 				int count = query.Single();
@@ -44,8 +42,6 @@ namespace Havit.Data.Entity.Tests
 			// Arrange
 			using (MasterChildDbContext dbContext = new MasterChildDbContext())
 			{
-				dbContext.Database.Initialize(true);
-
 				Master master1 = new Master();
 				dbContext.Set<Master>().Add(master1);
 				dbContext.SaveChanges();

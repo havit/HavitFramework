@@ -39,6 +39,7 @@ namespace Havit.BusinessLayerTest
 	/// 	[Aktivni] [bit] NOT NULL,
 	/// 	[EditacePovolena] [bit] NOT NULL,
 	/// 	[Poradi] [int] NOT NULL,
+	/// 	[Symbol] [nvarchar](50) COLLATE Czech_CI_AS NOT NULL,
 	///  CONSTRAINT [PK_Language] PRIMARY KEY CLUSTERED 
 	/// (
 	/// 	[LanguageID] ASC
@@ -50,6 +51,7 @@ namespace Havit.BusinessLayerTest
 	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Aktivni]  DEFAULT ((1)) FOR [Aktivni]
 	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_EditacePovolena]  DEFAULT ((1)) FOR [EditacePovolena]
 	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Poradi]  DEFAULT ((0)) FOR [Poradi]
+	/// ALTER TABLE [dbo].[Language] ADD  CONSTRAINT [DF_Language_Symbol]  DEFAULT (N'') FOR [Symbol]
 	/// </code>
 	/// </remarks>
 	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
@@ -266,6 +268,35 @@ namespace Havit.BusinessLayerTest
 		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
 		protected PropertyHolder<int> _PoradiPropertyHolder;
 		
+		/// <summary>
+		/// Symbol. [nvarchar(50), not-null, default N'']
+		/// </summary>
+		public virtual string Symbol
+		{
+			get
+			{
+				EnsureLoaded();
+				return _SymbolPropertyHolder.Value;
+			}
+			private set
+			{
+				EnsureLoaded();
+				
+				string newValue = value ?? String.Empty;
+				if (!Object.Equals(_SymbolPropertyHolder.Value, newValue))
+				{
+					string oldValue = _SymbolPropertyHolder.Value;
+					_SymbolPropertyHolder.Value = newValue;
+					OnPropertyChanged(new PropertyChangedEventArgs(nameof(Symbol), oldValue, newValue));
+				}
+			}
+		}
+		/// <summary>
+		/// PropertyHolder pro vlastnost Symbol.
+		/// </summary>
+		[System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+		protected PropertyHolder<string> _SymbolPropertyHolder;
+		
 		#endregion
 		
 		#region Init
@@ -280,6 +311,7 @@ namespace Havit.BusinessLayerTest
 			_AktivniPropertyHolder = new PropertyHolder<bool>(this);
 			_EditacePovolenaPropertyHolder = new PropertyHolder<bool>(this);
 			_PoradiPropertyHolder = new PropertyHolder<int>(this);
+			_SymbolPropertyHolder = new PropertyHolder<string>(this);
 			
 			if (IsNew || IsDisconnected)
 			{
@@ -289,6 +321,7 @@ namespace Havit.BusinessLayerTest
 				_AktivniPropertyHolder.Value = true;
 				_EditacePovolenaPropertyHolder.Value = true;
 				_PoradiPropertyHolder.Value = 0;
+				_SymbolPropertyHolder.Value = String.Empty;
 			}
 			
 			base.Init();
@@ -309,6 +342,7 @@ namespace Havit.BusinessLayerTest
 			_AktivniPropertyHolder.IsDirty = false;
 			_EditacePovolenaPropertyHolder.IsDirty = false;
 			_PoradiPropertyHolder.IsDirty = false;
+			_SymbolPropertyHolder.IsDirty = false;
 		}
 		#endregion
 		
@@ -338,6 +372,11 @@ namespace Havit.BusinessLayerTest
 				throw new ConstraintViolationException(this, "Vlastnost \"Name\" - řetězec přesáhl maximální délku 50 znaků.");
 			}
 			
+			if (_SymbolPropertyHolder.IsDirty && (_SymbolPropertyHolder.Value != null) && (_SymbolPropertyHolder.Value.Length > 50))
+			{
+				throw new ConstraintViolationException(this, "Vlastnost \"Symbol\" - řetězec přesáhl maximální délku 50 znaků.");
+			}
+			
 		}
 		#endregion
 		
@@ -353,7 +392,7 @@ namespace Havit.BusinessLayerTest
 			DataRecord result;
 			
 			DbCommand dbCommand = DbConnector.Default.ProviderFactory.CreateCommand();
-			dbCommand.CommandText = "SELECT [LanguageID], [UICulture], [Culture], [Name], [Aktivni], [EditacePovolena], [Poradi] FROM [dbo].[Language] WHERE [LanguageID] = @LanguageID";
+			dbCommand.CommandText = "SELECT [LanguageID], [UICulture], [Culture], [Name], [Aktivni], [EditacePovolena], [Poradi], [Symbol] FROM [dbo].[Language] WHERE [LanguageID] = @LanguageID";
 			dbCommand.Transaction = transaction;
 			
 			DbParameter dbParameterLanguageID = DbConnector.Default.ProviderFactory.CreateParameter();
@@ -411,6 +450,12 @@ namespace Havit.BusinessLayerTest
 			if (record.TryGet<int>("Poradi", out _tempPoradi))
 			{
 				_PoradiPropertyHolder.Value = _tempPoradi;
+			}
+			
+			string _tempSymbol;
+			if (record.TryGet<string>("Symbol", out _tempSymbol))
+			{
+				_SymbolPropertyHolder.Value = _tempSymbol ?? String.Empty;
 			}
 			
 		}
@@ -551,6 +596,66 @@ namespace Havit.BusinessLayerTest
 			Havit.Business.BusinessLayerContext.BusinessLayerCacheService.AddAllIDsToCache(typeof(Language), GetAllIDsCacheKey(), ids);
 		}
 		
+		#endregion
+		
+		#region Enum members
+		/// <summary>
+		/// Czech [1]
+		/// </summary>
+		public static Language Czech
+		{
+			get
+			{
+				return Language.GetObject(EnumIDs.Czech);
+			}
+		}
+		
+		/// <summary>
+		/// English [2]
+		/// </summary>
+		public static Language English
+		{
+			get
+			{
+				return Language.GetObject(EnumIDs.English);
+			}
+		}
+		
+		/// <summary>
+		/// Spanish [3]
+		/// </summary>
+		public static Language Spanish
+		{
+			get
+			{
+				return Language.GetObject(EnumIDs.Spanish);
+			}
+		}
+		
+		#endregion
+		
+		#region EnumIDs (class)
+		/// <summary>
+		/// Konstanty ID objektů EnumClass.
+		/// </summary>
+		public static class EnumIDs
+		{
+			/// <summary>
+			/// Czech [1]
+			/// </summary>
+			public const int Czech = 1;
+			
+			/// <summary>
+			/// English [2]
+			/// </summary>
+			public const int English = 2;
+			
+			/// <summary>
+			/// Spanish [3]
+			/// </summary>
+			public const int Spanish = 3;
+			
+		}
 		#endregion
 		
 		#region GetFirst, GetList, GetAll
@@ -785,6 +890,13 @@ namespace Havit.BusinessLayerTest
 		/// </summary>
 		public override string ToString()
 		{
+			switch (this.ID)
+			{
+				case EnumIDs.Czech: return "Language.Czech";
+				case EnumIDs.English: return "Language.English";
+				case EnumIDs.Spanish: return "Language.Spanish";
+			}
+			
 			return String.Format("Language(ID={0})", this.ID);
 		}
 		#endregion

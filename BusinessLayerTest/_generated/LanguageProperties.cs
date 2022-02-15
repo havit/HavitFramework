@@ -44,7 +44,8 @@ namespace Havit.BusinessLayerTest
 			_aktivni = new FieldPropertyInfo();
 			_editacePovolena = new FieldPropertyInfo();
 			_poradi = new FieldPropertyInfo();
-			_all = new PropertyInfoCollection(_id, _uICulture, _culture, _name, _aktivni, _editacePovolena, _poradi);
+			_symbol = new FieldPropertyInfo();
+			_all = new PropertyInfoCollection(_id, _uICulture, _culture, _name, _aktivni, _editacePovolena, _poradi, _symbol);
 		}
 		
 		/// <summary>
@@ -59,6 +60,7 @@ namespace Havit.BusinessLayerTest
 			_aktivni.Initialize(objectInfo, "Aktivni", "Aktivni", false, SqlDbType.Bit, false, 1);
 			_editacePovolena.Initialize(objectInfo, "EditacePovolena", "EditacePovolena", false, SqlDbType.Bit, false, 1);
 			_poradi.Initialize(objectInfo, "Poradi", "Poradi", false, SqlDbType.Int, false, 4);
+			_symbol.Initialize(objectInfo, "Symbol", "Symbol", false, SqlDbType.NVarChar, false, 50);
 		}
 		
 		/// <summary>
@@ -144,6 +146,18 @@ namespace Havit.BusinessLayerTest
 			}
 		}
 		private FieldPropertyInfo _poradi;
+		
+		/// <summary>
+		/// Symbol.
+		/// </summary>
+		public FieldPropertyInfo Symbol
+		{
+			get
+			{
+				return _symbol;
+			}
+		}
+		private FieldPropertyInfo _symbol;
 		
 		/// <summary>
 		/// Všechny sloupečky typu Language.

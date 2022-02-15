@@ -359,11 +359,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
+  <!--<Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
     <ItemGroup>
       <FilesToCopy Include="obj\Release\Package\PackageTmp\**\*.*" />
       <FilesToCopy Remove="obj\Release\Package\PackageTmp\Config\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(PublishDirectory)\Havit.Web.Bootstrap.Tutorial\%(RecursiveDir)%(Filename)%(Extension)')" />
-  </Target>
+  </Target>-->
 </Project>

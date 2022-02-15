@@ -22,12 +22,13 @@ namespace Havit.Services.FileStorage
 	public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService
 	{
 		internal string StoragePath { get; init; }
+		private bool useFullyQualifiedPathNames;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="storagePath">Cesta k "rootu" použitého úložiště ve file systému.</param>
-		public FileSystemStorageService(string storagePath) : this(storagePath, null)
+		public FileSystemStorageService(string storagePath) : this(storagePath, false, null)
 		{
 			// NOOP
 		}
@@ -36,13 +37,16 @@ namespace Havit.Services.FileStorage
 		/// Konstruktor.
 		/// </summary>
 		/// <param name="storagePath">Cesta k "rootu" použitého úložiště ve file systému.</param>
+		/// <param name="useFullyQualifiedPathNames">Cestar k "rootu" nebude použita a veškerá volání budou kvalifikována plnou cestou.</param>
 		/// <param name="encryptionOptions">Parametry pro šifrování storage. Nepovinné.</param>
-		public FileSystemStorageService(string storagePath, EncryptionOptions encryptionOptions) : base(encryptionOptions)
+		/// <exception cref="ArgumentException">StoragePath is not empty and UseFullPath is true.</exception>
+		/// <exception cref="ArgumentException">StoragePath is empty and UseFullPath is false.</exception>
+		public FileSystemStorageService(string storagePath, bool useFullyQualifiedPathNames, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 		{
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath));
+			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath) ^ useFullyQualifiedPathNames, "Je nutno zadat buď cestu k úložišti anebo zvolit použití plně kvalifikovaných názvu souborů, přičemž nelze obojí současně.");
 			this.StoragePath = storagePath?.Replace("%TEMP%", Path.GetTempPath().TrimEnd('\\'));
+			this.useFullyQualifiedPathNames = useFullyQualifiedPathNames;
 		}
-
 		/// <summary>
 		/// Vrátí true, pokud uložený soubor v úložišti existuje. Jinak false.
 		/// </summary>
@@ -270,17 +274,36 @@ namespace Havit.Services.FileStorage
 
 		internal string GetFullPath(String fileNamePath)
 		{
-			String fileNameFullPath = Path.Combine(StoragePath, fileNamePath);
-
-			DirectoryInfo storagePathDirectoryInfo = new System.IO.DirectoryInfo(StoragePath);
-			DirectoryInfo fileNameDirectoryInfo = (new System.IO.FileInfo(fileNameFullPath)).Directory;
-
-			if (!IsPathInsideFolder(fileNameDirectoryInfo, storagePathDirectoryInfo))
+			if (useFullyQualifiedPathNames)
 			{
-				throw new InvalidOperationException("Cesta k soubor vede mimo složku úložiště.");
-			}
+				// Path.IsPathFullyQualified není součástí .NET Frameworku ani .NET Standard 2.0 (je v .NET Standard 2.1)
 
-			return fileNameFullPath;
+				// https://stackoverflow.com/questions/5565029/check-if-full-path-given
+				bool pathIsFullyQualifies = !String.IsNullOrWhiteSpace(fileNamePath)
+				   && fileNamePath.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
+				   && Path.IsPathRooted(fileNamePath)
+				   && !Path.GetPathRoot(fileNamePath).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+
+				if (!pathIsFullyQualifies)
+                {
+					throw new InvalidOperationException("Cesta k souboru musí být zadána jako plně kvalifikovaná (vč. disku, od rootu).");
+				}
+				return fileNamePath;
+			}
+			else
+			{
+				String fileNameFullPath = Path.Combine(StoragePath, fileNamePath);
+
+				DirectoryInfo storagePathDirectoryInfo = new System.IO.DirectoryInfo(StoragePath);
+				DirectoryInfo fileNameDirectoryInfo = (new System.IO.FileInfo(fileNameFullPath)).Directory;
+
+				if (!IsPathInsideFolder(fileNameDirectoryInfo, storagePathDirectoryInfo))
+				{
+					throw new InvalidOperationException("Cesta k souboru vede mimo složku úložiště.");
+				}
+
+				return fileNameFullPath;
+			}
 		}
 
 		private bool IsPathInsideFolder(DirectoryInfo filePath, DirectoryInfo storageDirectory)

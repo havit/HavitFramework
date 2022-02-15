@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Havit.Business
+namespace Havit.Services.BusinessCalendars
 {
-	internal class BusinessCalendarSaturdaySundayWeekendStrategy : IIsWeekendStrategy
+    public class BusinessCalendarSaturdaySundayWeekendStrategy : IIsWeekendStrategy
 	{
 		public bool IsWeekend(DateTime date)
 		{

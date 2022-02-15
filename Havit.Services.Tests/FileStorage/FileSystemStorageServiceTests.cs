@@ -59,6 +59,45 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void FileSystemStorageService_Constructor_NeedsStoragePathWhenNotUsingFullyQualifiedPathNames()
+		{
+			// Arrange
+			// noop
+
+			// Act
+			new FileSystemStorageService(String.Empty);
+
+			// Assert by method attribute
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_Constructor_DoesNotNeedStoragePathWhenUsingFullyQualifiedPathNames()
+		{
+			// Arrange
+			// noop
+
+			// Act
+			new FileSystemStorageService(String.Empty, useFullyQualifiedPathNames: true, encryptionOptions: null);
+
+			// Assert
+			// no exception is throws
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void FileSystemStorageService_Constructor_CannotUseFullyQualifiedPathNamesWithStoragePath()
+		{
+			// Arrange
+			// noop
+
+			// Act
+			new FileSystemStorageService(@"D:\", useFullyQualifiedPathNames: true, encryptionOptions: null);
+
+			// Assert by method attribute
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_Exists_ReturnsFalseWhenNotFound()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetFileSystemStorageService());
@@ -275,16 +314,19 @@ namespace Havit.Services.Tests.FileStorage
 
 
 		[TestMethod]
-		public void FileSystemStorageService_GetFullPath_DoesNotThrowExceptionForCorrectPaths()
+		public void FileSystemStorageService_GetFullPath()
 		{
 			// Arrange
+			FileSystemStorageService fileSystemStorageService;
 
-			// Act
-			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\");
-			fileSystemStorageService.GetFullPath(@"abc.txt");
-			fileSystemStorageService.GetFullPath(@"A\abc.txt");
+			// Act + Assert
+			fileSystemStorageService = new FileSystemStorageService(@"C:\Data", useFullyQualifiedPathNames: false, encryptionOptions: null);
+			Assert.AreEqual(@"C:\Data\abc.txt", fileSystemStorageService.GetFullPath(@"abc.txt"));
+			Assert.AreEqual(@"C:\Data\A\abc.txt", fileSystemStorageService.GetFullPath(@"A\abc.txt"));
 
-			// Assert - no exception was thrown
+			fileSystemStorageService = new FileSystemStorageService(String.Empty, useFullyQualifiedPathNames: true, encryptionOptions: null);
+			Assert.AreEqual(@"D:\abc.txt", fileSystemStorageService.GetFullPath(@"D:\abc.txt"));
+			Assert.AreEqual(@"C:\Program Files\Microsoft Visual Studio\abc.txt", fileSystemStorageService.GetFullPath(@"C:\Program Files\Microsoft Visual Studio\abc.txt"));
 		}
 
 		[TestMethod]
@@ -296,6 +338,20 @@ namespace Havit.Services.Tests.FileStorage
 			// Act
 			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\A");
 			fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
+
+			// Assert by method attribute
+		}
+
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void FileSystemStorageService_GetFullPath_ThrowsExceptionForNonQualifiedPathNamesWhenUsingFullyQualifiedPathNames()
+		{
+			// Arrange
+			FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(null, useFullyQualifiedPathNames: true, encryptionOptions: null);
+
+			// Act
+			fileSystemStorageService.GetFullPath(@"\file.txt");
 
 			// Assert by method attribute
 		}
@@ -318,7 +374,7 @@ namespace Havit.Services.Tests.FileStorage
 
 		private static FileSystemStorageService GetFileSystemStorageService(bool secondary = false, EncryptionOptions encryptionOptions = null)
 		{
-			return new FileSystemStorageService(GetStoragePath(secondary), encryptionOptions);
+			return new FileSystemStorageService(GetStoragePath(secondary), false, encryptionOptions);
 		}
 
 		private static string GetStoragePath(bool secondary = false)

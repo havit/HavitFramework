@@ -8,5 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model
 
 		[MaxLength(100)]
 		public string Name { get; set; }
+
+		public OwnedClass OwnedClass { get; set; }
 	}
 }

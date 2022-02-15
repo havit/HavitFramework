@@ -110,8 +110,6 @@ namespace Havit.Security
 			this.AllowRepeatingCharacters = true;
 			this.PasswordCharacterSet = PasswordCharacterSet.LettersAndDigits;
 			this.Exclusions = null;
-
-			rng = new RNGCryptoServiceProvider();
 		}
 
 		/// <summary>
@@ -162,7 +160,7 @@ namespace Havit.Security
 
 			do
 			{
-				rng.GetBytes(rndnum);
+				randomNumberGenerator.GetBytes(rndnum);
 				urndnum = System.BitConverter.ToUInt32(rndnum, 0);
 			}
 			while (urndnum >= xcludeRndBase);
@@ -282,7 +280,11 @@ namespace Havit.Security
 			}
 		}
 
-		private readonly RNGCryptoServiceProvider rng;
+#if NET6_0_OR_GREATER
+		private readonly RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+#else
+		private readonly RNGCryptoServiceProvider randomNumberGenerator = new RNGCryptoServiceProvider();
+#endif
 		private readonly char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?".ToCharArray();
 
 		/// <summary>

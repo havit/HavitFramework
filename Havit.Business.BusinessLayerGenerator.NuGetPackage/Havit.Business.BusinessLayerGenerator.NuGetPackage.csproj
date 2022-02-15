@@ -8,7 +8,7 @@
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageId>Havit.Business.BLGenerator</PackageId>
-    <PackageVersion>2.0.13</PackageVersion>
+    <PackageVersion>2.0.14</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
     <!-- Publikujeme výstup buildu jiného projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>

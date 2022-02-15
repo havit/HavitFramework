@@ -90,6 +90,7 @@ namespace Havit.Linq
 			return result.ToList();
 		}
 
+#if !NET6_0_OR_GREATER
 		/// <summary>
 		/// Skip last items.
 		/// </summary>
@@ -139,6 +140,7 @@ namespace Havit.Linq
 				}
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Skip last items.

@@ -37,11 +37,11 @@ namespace Havit.Data.EntityFrameworkCore
 			    {
 				    // NOOP
 			    }
-			    else if (assemblyType.GetCustomAttributes<OwnedAttribute>().Any())
-			    {
-				    // NOOP
-			    }
-			    else
+				else if (assemblyType.GetCustomAttributes<OwnedAttribute>().Any())
+				{
+					// NOOP
+				}
+				else
 			    {
 				    modelBuilder.Entity(assemblyType);
 			    }				

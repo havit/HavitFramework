@@ -6,9 +6,9 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity
 	{
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseSqlServer("fake");
-
 			base.OnConfiguring(optionsBuilder);
+
+			optionsBuilder.UseSqlServer("fake");
 		}
 	}
 }

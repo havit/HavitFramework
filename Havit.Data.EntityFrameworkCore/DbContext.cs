@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Internal;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Migrations.Internal;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -13,6 +14,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore
 {
@@ -68,13 +71,7 @@ namespace Havit.Data.EntityFrameworkCore
 			optionsBuilder.ConditionalyUseConventionSetPlugin<ManyToManyEntityKeyDiscoveryConventionPlugin>(() => Settings.UseManyToManyEntityKeyDiscoveryConvention);
 			optionsBuilder.ConditionalyUseConventionSetPlugin<StringPropertiesDefaultValueConventionPlugin>(() => Settings.UseStringPropertiesDefaultValueConvention);
 
-#pragma warning disable EF1001 // Internal EF Core API usage.
-			if (optionsBuilder.Options.FindExtension<SqlServerOptionsExtension>() != null)
-			{
-				optionsBuilder.ReplaceService<Microsoft.EntityFrameworkCore.Migrations.IMigrator, Migrator, Migrations.Internal.DbMigrator>();
-			}
-#pragma warning restore EF1001 // Internal EF Core API usage.
-
+			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new DbMigratorInstallerExtension());
 		}
 
 		/// <inheritdoc />

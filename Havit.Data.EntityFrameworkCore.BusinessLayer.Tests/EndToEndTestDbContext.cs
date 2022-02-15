@@ -7,6 +7,7 @@ using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
 using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
@@ -57,7 +58,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 		public IReadOnlyList<MigrationOperation> Diff(DbContext target)
 		{
 			var differ = this.GetService<IMigrationsModelDiffer>();
-			return differ.GetDifferences(Model.GetRelationalModel(), target.Model.GetRelationalModel());
+			return differ.GetDifferences(this.GetService<IDesignTimeModel>().Model.GetRelationalModel(), target.GetService<IDesignTimeModel>().Model.GetRelationalModel());
 		}
 
 		public IReadOnlyList<MigrationCommand> Migrate(DbContext target)

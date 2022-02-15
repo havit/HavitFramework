@@ -43,7 +43,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				}
 
 				// najdeme sloupec s odkazem na parent tabulku
-				IEntityType parentEntity = entityType.GetBusinessLayerLocalizationParentEntityType();
+				IReadOnlyEntityType parentEntity = entityType.GetBusinessLayerLocalizationParentEntityType();
 				IConventionProperty parentLocalizationProperty = entityType.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType == parentEntity)?.Properties?[0];
 
 				// najdeme sloupec s odkazem jazyk

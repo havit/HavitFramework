@@ -23,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Vrací true, pokud jde o lokalizační (nikoliv lokalizovanou) tabulku.
 		/// </summary>
-        public static bool IsBusinessLayerLocalizationEntity(this IEntityType entityType)
+        public static bool IsBusinessLayerLocalizationEntity(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// pro lokalizační tabulku vrací jí lokalizovanou tabulku.
 		/// </summary>
-        public static IEntityType GetBusinessLayerLocalizationParentEntityType(this IEntityType localizationEntity)
+        public static IReadOnlyEntityType GetBusinessLayerLocalizationParentEntityType(this IReadOnlyEntityType localizationEntity)
         {
             Contract.Requires<ArgumentNullException>(localizationEntity != null);
 
@@ -45,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
                 if (localizationEntityName.EndsWith(localizationEntityNameSuffix))
                 {
                     string parentName = localizationEntityName.Substring(0, localizationEntityName.Length - localizationEntityNameSuffix.Length);
-                    IEntityType result = localizationEntity.Model.FindEntityType(parentName);
+                    IReadOnlyEntityType result = localizationEntity.Model.FindEntityType(parentName);
                     if (result != null)
                     {
                         return result;
@@ -58,7 +58,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Vrací sloupec definující jazyk lokalizace.
 		/// </summary>
-        public static IProperty GetBusinessLayerLanguageProperty(this IEntityType entityType)
+        public static IReadOnlyProperty GetBusinessLayerLanguageProperty(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 

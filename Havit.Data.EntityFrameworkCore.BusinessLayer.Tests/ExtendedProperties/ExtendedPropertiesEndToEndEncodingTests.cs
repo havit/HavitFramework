@@ -38,7 +38,7 @@ World")]
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(N'Hello', NCHAR(13), NCHAR(10), N'World');
+					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_addextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'{nameof(TargetEntity.Property)}';
 ", migrations[1].CommandText);
 			}
@@ -83,7 +83,7 @@ World"));
 
 				Assert.AreEqual(2, migrations.Count);
 				Assert.AreEqual(
-					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(N'Hello', NCHAR(13), NCHAR(10), N'World');
+					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_updateextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'{nameof(TargetEntity.Property)}';
 ", migrations[1].CommandText);
 			}
@@ -116,10 +116,10 @@ World")]
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
-
+				
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(N'Hello', NCHAR(13), NCHAR(10), N'World');
+					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_addextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 ", migrations[0].CommandText);
 			}
@@ -156,7 +156,7 @@ World")]
 
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
-					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(N'Hello', NCHAR(13), NCHAR(10), N'World');
+					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_updateextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 ", migrations[0].CommandText);
 			}

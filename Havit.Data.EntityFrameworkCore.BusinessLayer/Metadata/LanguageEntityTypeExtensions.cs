@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Indikuje, zda jde o tabulku s jazyky (se seznamem jazyků).
 		/// </summary>
-        public static bool IsBusinessLayerLanguageEntity(this IEntityType entityType)
+        public static bool IsBusinessLayerLanguageEntity(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
@@ -27,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Indikuje, zda jde o sloupec UiCulture v tabulce jazyků.
 		/// </summary>
-        public static IProperty GetBusinessLayerUICultureProperty(this IEntityType entityType)
+        public static IReadOnlyProperty GetBusinessLayerUICultureProperty(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 

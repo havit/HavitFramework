@@ -50,7 +50,13 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
 			public TestDbContext(Action<ModelBuilder> onModelCreating = default)
 				: base(onModelCreating)
 			{
-				Settings.UseForeignKeysIndexConvention = true;
+			}
+
+            protected override BusinessLayerDbContextSettings CreateDbContextSettings()
+            {
+                var settings = base.CreateDbContextSettings();
+				settings.UseForeignKeysIndexConvention = true;
+				return settings;
 			}
 		}
 	}

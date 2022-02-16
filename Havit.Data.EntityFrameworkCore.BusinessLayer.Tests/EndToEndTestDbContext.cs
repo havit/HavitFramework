@@ -20,29 +20,39 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 		public EndToEndTestDbContext(Action<ModelBuilder> onModelCreating = default)
 		{
 			this.onModelCreating = onModelCreating;
+		}
 
-			Settings.UseCacheAttributeToAnnotationConvention = false;
-			Settings.UseCascadeDeleteToRestrictConvention = false;
-			Settings.UseCharColumnTypeForCharPropertyConvention = false;
-			Settings.UseCollectionExtendedPropertiesConvention = false;
-			Settings.UseDataTypeAttributeConvention = false;
-			Settings.UseDefaultValueAttributeConvention = false;
-			Settings.UseDefaultValueSqlAttributeConvention = false;
-			Settings.UseForeignKeysColumnNamesConvention = false;
-			Settings.UseForeignKeysIndexConvention = false;
-			Settings.UseLanguageUiCultureIndexConvention = false;
-			Settings.LocalizationTableIndexConvention = false;
-			Settings.UseLocalizationTablesParentEntitiesConvention = false;
-			Settings.UseManyToManyEntityKeyDiscoveryConvention = false;
-			Settings.UseNamespaceExtendedPropertyConvention = false;
-			Settings.UsePrefixedTablePrimaryKeysConvention = false;
-			Settings.UseStringPropertiesDefaultValueConvention = false;
-			Settings.UseXmlCommentsForDescriptionPropertyConvention = false;
+        protected override BusinessLayerDbContextSettings CreateDbContextSettings()
+        {
+            var settings = base.CreateDbContextSettings();
+
+			settings.UseCharColumnTypeForCharPropertyConvention = false;
+			settings.UseCollectionExtendedPropertiesConvention = false;
+			settings.UseDefaultValueAttributeConvention = false;
+			settings.UseDefaultValueSqlAttributeConvention = false;
+			settings.UseForeignKeysColumnNamesConvention = false;
+			settings.UseForeignKeysIndexConvention = false;
+			settings.UseLanguageUiCultureIndexConvention = false;
+			settings.LocalizationTableIndexConvention = false;
+			settings.UseLocalizationTablesParentEntitiesConvention = false;
+			settings.UseNamespaceExtendedPropertyConvention = false;
+			settings.UsePrefixedTablePrimaryKeysConvention = false;
+			settings.UseXmlCommentsForDescriptionPropertyConvention = false;
+
+			return settings;
 		}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+
+			optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions
+				.UseCacheAttributeToAnnotationConvention(false)
+				.UseCascadeDeleteToRestrictConvention(false)
+				.UseDataTypeAttributeConvention(false)
+				.UseManyToManyEntityKeyDiscoveryConvention(false)
+				.UseStringPropertiesDefaultValueConvention(false)
+			);
 
             // stub out Model Extender types, so all extenders in test assembly don't interfere with tests.
             // Tests should setup their own types when necessary.

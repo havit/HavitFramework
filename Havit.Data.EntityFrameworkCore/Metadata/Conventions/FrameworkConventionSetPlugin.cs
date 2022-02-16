@@ -27,12 +27,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
         {
 			var extension = options.FindExtension<FrameworkConventionSetOptionsExtension>();
 
-			if (extension.UseCacheAttributeToAnnotationConvention)
+			if (extension.CacheAttributeToAnnotationConventionEnabled)
             {
 				conventionSet.EntityTypeAddedConventions.Add(new CacheAttributeToAnnotationConvention(conventionSetBuilderDependencies));
 			}
 
-			if (extension.UseCascadeDeleteToRestrictConvention)
+			if (extension.CascadeDeleteToRestrictConventionEnabled)
             {
 				CascadeDeleteToRestrictConvention convention = new CascadeDeleteToRestrictConvention(conventionSetBuilderDependencies);
 
@@ -49,17 +49,17 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				}
 			}
 
-			if (extension.UseDataTypeAttributeConvention)
+			if (extension.DataTypeAttributeConventionEnabled)
             {
 				conventionSet.PropertyAddedConventions.Add(new DataTypeAttributeConvention(conventionSetBuilderDependencies));
 			}
 
-			if (extension.UseManyToManyEntityKeyDiscoveryConvention)
+			if (extension.ManyToManyEntityKeyDiscoveryConventionEnabled)
             {
 				conventionSet.ForeignKeyAddedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
 			}
 
-			if (extension.UseStringPropertiesDefaultValueConvention)
+			if (extension.StringPropertiesDefaultValueConventionEnabled)
             {
 				conventionSet.PropertyAddedConventions.Add(new StringPropertiesDefaultValueConvention());
 			}

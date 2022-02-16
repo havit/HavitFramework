@@ -16,9 +16,11 @@ namespace Havit.Data.EntityFrameworkCore
 		/// <summary>
 		/// Zajistí použití frameworkových konvencí.
 		/// </summary>
-		public static DbContextOptionsBuilder UseFrameworkConventions(this DbContextOptionsBuilder optionsBuilder)
-		{
-			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FrameworkConventionSetOptionsExtension());
+		public static DbContextOptionsBuilder UseFrameworkConventions(this DbContextOptionsBuilder optionsBuilder, Action<FrameworkConventionSetOptionsBuilder> frameworkConventionSetOptionsBuilder = null)
+			{
+			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(optionsBuilder.Options.FindExtension<FrameworkConventionSetOptionsExtension>() ?? new FrameworkConventionSetOptionsExtension());
+
+			frameworkConventionSetOptionsBuilder?.Invoke(new FrameworkConventionSetOptionsBuilder(optionsBuilder));
 
 			return optionsBuilder;
 		}

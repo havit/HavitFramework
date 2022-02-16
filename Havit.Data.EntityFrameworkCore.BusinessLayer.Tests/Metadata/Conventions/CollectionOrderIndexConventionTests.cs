@@ -74,9 +74,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
 		private class TestDbContext<T> : Tests.TestDbContext<T>
 			where T : class
 		{
-			protected override DbContextSettings CreateDbContextSettings()
+			protected override BusinessLayerDbContextSettings CreateDbContextSettings()
 			{
-				var settings = (BusinessLayerDbContextSettings)base.CreateDbContextSettings();
+				var settings = base.CreateDbContextSettings();
 				settings.UseCollectionOrderIndexConvention = true;
 				return settings;
 			}

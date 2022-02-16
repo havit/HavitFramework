@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions.Infrastructure
 {
 	/// <summary>
 	/// Installer IConventionSetPlugin do service collection.

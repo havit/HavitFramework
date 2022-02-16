@@ -4,23 +4,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Internal;
-using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Migrations.Internal;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore
 {
-	/// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext" />
-	public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext, IDbContextTransient
+    /// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext" />
+    public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext, IDbContextTransient
     {
 	    /// <summary>
 	    /// Registr akcí k provedení po uložení změn.
@@ -28,51 +25,19 @@ namespace Havit.Data.EntityFrameworkCore
 	    private List<Action> afterSaveChangesActions;
 
 		/// <summary>
-		/// Nastavení DbContextu.
-		/// </summary>
-		protected virtual DbContextSettings Settings { get; private set; }
-
-		/// <summary>
 		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
 		/// </summary>
-		protected DbContext()
+		protected DbContext() : this(new DbContextOptions<DbContext>())
 		{
-			Settings = CreateDbContextSettings();
+			
 		}
 
 		/// <summary>
 		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext(DbContextOptions)"/>.
 		/// </summary>
-		protected DbContext(DbContextOptions options) : base(options)
+		protected DbContext(DbContextOptions options) : base(EnsureCustomExtensions(options))
 	    {
-			Settings = CreateDbContextSettings();
 	    }
-
-		/// <summary>
-		/// Vytváří objekt pro nastavení DbContextu.
-		/// </summary>
-		/// <remarks>
-		/// Implementovat velmi opatrně - virtuální metoda je volána z konstruktoru!
-		/// Viz např. https://stackoverflow.com/questions/119506/virtual-member-call-in-a-constructor
-		/// </remarks>
-		protected virtual DbContextSettings CreateDbContextSettings()
-		{
-			return new DbContextSettings();
-		}
-
-		/// <inheritdoc />
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
-			
-			optionsBuilder.ConditionalyUseConventionSetPlugin<CacheAttributeToAnnotationConventionPlugin>(() => Settings.UseCacheAttributeToAnnotationConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<CascadeDeleteToRestrictConventionPlugin>(() => Settings.UseCascadeDeleteToRestrictConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<DataTypeAttributeConventionPlugin>(() => Settings.UseDataTypeAttributeConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<ManyToManyEntityKeyDiscoveryConventionPlugin>(() => Settings.UseManyToManyEntityKeyDiscoveryConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<StringPropertiesDefaultValueConventionPlugin>(() => Settings.UseStringPropertiesDefaultValueConvention);
-
-			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new DbMigratorInstallerExtension());
-		}
 
 		/// <inheritdoc />
 		protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
@@ -276,6 +241,15 @@ namespace Havit.Data.EntityFrameworkCore
 		    return SaveChangesAsync(cancellationToken);			
 	    }
 
-    }
-
+		/// <summary>
+		/// Zajistí, aby byly v options použity frameworkové koncence a DbLockedMigrator.
+		/// </summary>
+		private static DbContextOptions EnsureCustomExtensions(DbContextOptions options)
+		{
+			DbContextOptionsBuilder builder = new DbContextOptionsBuilder(options);
+			builder.UseFrameworkConventions();
+			builder.UseDbLockedMigrator();
+			return builder.Options;
+		}
+	}
 }

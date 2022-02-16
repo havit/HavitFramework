@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
+using Havit.Data.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore
 {
@@ -14,35 +14,23 @@ namespace Havit.Data.EntityFrameworkCore
 	public static class DbContextOptionsBuilderExtensions
 	{
 		/// <summary>
-		/// Zajistí použití dané implementace IConventionSetPlugin.
+		/// Zajistí použití frameworkových konvencí.
 		/// </summary>
-		/// <remarks>
-		/// Jak to funguje:
-		/// - Pro instalaci konvencí potřebujeme do service collection dostat třídu implementující IConventionSetPlugin, tato třída bude nastavovat ConventionSet.
-		/// - Jinými slovy, jednotlivé konvence nejsou v service collection, avšak jsou tam třídy, které konvence instalují do ConventionSetu.
-		/// 
-		/// - DbContext v OnConfiguring získává DbContextOptionsBuilder.
-		/// - Tento DbContextOptionsBuilder (bohužel explicitně) implementuje interface IDbContextOptionsBuilderInfrastructure.
-		/// - Tento interface poskytuje metodu pro zaregistrování extension - třídy, službičky, která má možnost ovlivnit ServiceCollection DbContextu.
-		/// - ConventionSetPluginServiceInstallerExtension registrujeme pod IConventionSetPlugin do service collection.
-		/// </remarks>
-		public static void UseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder)
-			where TConventionSetPlugin : class, IConventionSetPlugin
+		public static DbContextOptionsBuilder UseFrameworkConventions(this DbContextOptionsBuilder optionsBuilder)
 		{
-			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new ConventionSetPluginServiceInstallerExtension<TConventionSetPlugin>());
+			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FrameworkConventionSetOptionsExtension());
+
+			return optionsBuilder;
 		}
 
 		/// <summary>
-		/// Zajistí podmíněné použití dané implementace IConventionSetPlugin.
-		/// Pro více informací viz UseConventionSetPlugin.
+		/// Zajistí použití migrátoru chráněného databázovým zámkem před paralelním spuštěním.
 		/// </summary>
-		public static void ConditionalyUseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder, Func<bool> predicate)
-			where TConventionSetPlugin : class, IConventionSetPlugin
+		public static DbContextOptionsBuilder UseDbLockedMigrator(this DbContextOptionsBuilder optionsBuilder)
 		{
-			if (predicate())
-			{
-				optionsBuilder.UseConventionSetPlugin<TConventionSetPlugin>();
-			}
+			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(optionsBuilder.Options.FindExtension<DbLockedMigratorInstallerExtension>() ?? new DbLockedMigratorInstallerExtension());
+			return optionsBuilder;
 		}
 	}
 }
+

@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
 {
-	internal class DbMigratorInstallerExtension : IDbContextOptionsExtension
+	/// <summary>
+	/// Zajistí použití DbLockedMigratoru pro provedení migrace schématu databáze pod databázovým zámkem, čímž zajistíme thread safe běh databázových migrací.
+	/// </summary>
+	public class DbLockedMigratorInstallerExtension : IDbContextOptionsExtension
 	{
 		private DbContextOptionsExtensionInfo _info;
 
@@ -19,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
 		/// <inheritdoc />
 		public void ApplyServices(IServiceCollection services)
 		{
-			services.Replace(ServiceDescriptor.Transient<Microsoft.EntityFrameworkCore.Migrations.IMigrator, Migrations.Internal.DbMigrator>());
+			services.Replace(ServiceDescriptor.Transient<Microsoft.EntityFrameworkCore.Migrations.IMigrator, Migrations.Internal.DbLockedMigrator>());
 		}
 
 		/// <inheritdoc />
@@ -28,7 +31,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
 			// NOOP
 		}
 
-		protected class ExtensionInfo : DbContextOptionsExtensionInfo
+		private class ExtensionInfo : DbContextOptionsExtensionInfo
 		{
 			private string _logFragment;
 
@@ -39,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
 
 			public override bool IsDatabaseProvider => false;
 
-			public override string LogFragment => _logFragment ??= "using " + typeof(DbMigrator).FullName;
+			public override string LogFragment => _logFragment ??= "using " + typeof(DbLockedMigrator).FullName;
 
 			public override int GetServiceProviderHashCode() => 0x648;
 

@@ -15,14 +15,20 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
 {
-    internal class DbMigrator : Migrator
+    /// <summary>
+    /// Migrator databáze rozšířený o použití databázového zámku. Zajišťuje "thread safe" migrace databázového schématu v případě paralelního běhu (např. start aplikace v clusteru, případně z více různých aplikací).
+    /// </summary>
+    public class DbLockedMigrator : Migrator
     {
         private const string EfCoreMigrationsLockValue = "EF_Core_Migrations";
 
         private readonly IDatabaseCreator databaseCreator;
         private readonly IRelationalConnection connection;
 
-        public DbMigrator(IMigrationsAssembly migrationsAssembly,
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        public DbLockedMigrator(IMigrationsAssembly migrationsAssembly,
             IHistoryRepository historyRepository,
             IDatabaseCreator databaseCreator,
             IMigrationsSqlGenerator migrationsSqlGenerator,
@@ -41,6 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
             this.connection = connection;
         }
 
+        /// <inheritdoc />
         public override void Migrate(string targetMigration = null)
         {
             // Databáze ještě nemusí ani existovat, pak se nám nepodaří připojit pomocí connection stringu s názvem databáze.
@@ -67,6 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Internal
             });
         }
 
+        /// <inheritdoc />
         public override async Task MigrateAsync(string targetMigration = null, CancellationToken cancellationToken = default)
         {
             IRelationalDatabaseCreator relationalDatabaseCreator = (IRelationalDatabaseCreator)databaseCreator;

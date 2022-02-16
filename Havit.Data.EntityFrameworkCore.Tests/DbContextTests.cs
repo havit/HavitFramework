@@ -102,7 +102,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 		}
 
 		[TestMethod]
-		public void DbContext_UsesDbMigrator()
+		public void DbContext_UsesDbLockedMigrator()
 		{
 			// Arrange
 			EmptyDbContext dbContext = new EmptyDbContext();
@@ -111,7 +111,9 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 			var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
 
 			// Assert
-			Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbMigrator));
+			#pragma warning disable EF1001 // Internal EF Core API usage.
+			Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
+			#pragma warning restore EF1001 // Internal EF Core API usage.
 		}
 	}
 }

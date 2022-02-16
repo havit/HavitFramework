@@ -27,12 +27,25 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
         }
 
 		/// <summary>
-		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// Registruje do DI containeru DbContext a IDbContextTransient.
 		/// </summary>
 		public ServiceCollectionEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
 			services.AddDbContext<IDbContext, TDbContext>(optionsAction, componentRegistrationOptions.DbContextLifestyle, componentRegistrationOptions.DbContextLifestyle);
+			services.AddTransient(typeof(IDbContextTransient), typeof(TDbContext));
+			return this;
+		}
+
+		/// <summary>
+		/// Registruje do DI containeru DbContext s DbContext poolingem. Dále registruje IDbContextTransient.
+		/// </summary>
+		public ServiceCollectionEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+		{
+			Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
+
+			services.AddDbContextPool<IDbContext, TDbContext>(optionsAction, poolSize);
 			services.AddTransient(typeof(IDbContextTransient), typeof(TDbContext));
 			return this;
 		}

@@ -55,6 +55,51 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
+		public void ServiceCollectionEntityPatternsInstaller_PooledDbContextIsScoped()
+		{
+			// Arrange
+			IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
+
+			// Act
+
+			// scopes jsou paralelně žijící vedle sebe
+			using var scope1 = serviceProvider.CreateScope();
+			using var scope2 = serviceProvider.CreateScope();
+
+			IDbContext dbContext1 = scope1.ServiceProvider.GetRequiredService<IDbContext>();
+			IDbContext dbContext2 = scope2.ServiceProvider.GetRequiredService<IDbContext>();
+
+			// Assert			
+			Assert.AreNotSame(dbContext1, dbContext2);
+		}
+
+		[TestMethod]
+		public void ServiceCollectionEntityPatternsInstaller_PooledDbContextIsReused()
+		{
+			// Arrange
+			IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
+
+			// Act
+			IDbContext dbContext1;
+			IDbContext dbContext2;
+
+			// scopes jsou za sebou jdoucí
+
+			using (var scope = serviceProvider.CreateScope())
+			{
+				dbContext1 = scope.ServiceProvider.GetRequiredService<IDbContext>();
+			}
+
+			using (var scope = serviceProvider.CreateScope())
+			{
+				dbContext2 = scope.ServiceProvider.GetRequiredService<IDbContext>();
+			}
+
+			// Assert			
+			Assert.AreSame(dbContext1, dbContext2);
+		}
+
+		[TestMethod]
 		public void ServiceCollectionEntityPatternsInstallerShouldRegisterDbContextTransientAsTransient()
 		{
 			// Arrange
@@ -226,13 +271,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			Assert.AreNotSame(((DbDataSeedPersister)dataSeedPersister1).DbContext, ((DbDataSeedPersister)dataSeedPersister2).DbContext);
 		}
 
-		internal static IServiceProvider CreateAndSetupServiceProvider()
+		internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false)
 		{
 			IServiceCollection services = new ServiceCollection();
 
-			services.WithEntityPatternsInstaller()
-				.AddEntityPatterns()
-				.AddDbContext<TestDbContext>()
+			var installer = services.WithEntityPatternsInstaller();
+			if (pooling)
+			{
+				installer = installer.AddDbContextPool<TestDbContext>(options => options.UseInMemoryDatabase(nameof(TestDbContext)));
+			}
+			else
+			{
+				installer = installer.AddDbContext<TestDbContext>();
+			}
+
+			installer.AddEntityPatterns()
 				.AddLocalizationServices<Language>()
 				.AddDataLayer(typeof(ILanguageDataSource).Assembly);
 

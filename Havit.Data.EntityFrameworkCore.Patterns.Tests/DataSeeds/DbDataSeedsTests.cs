@@ -7,7 +7,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 {
     public class DbDataSeedsTests
     {
-        private static DataSeedRunner GetDefaultDataSeedRunner(IDbContextFactory dbContextFactory, params IDataSeed[] dataSeedsParams)
+        private static DbDataSeedRunner GetDefaultDataSeedRunner(IDbContextFactory dbContextFactory, params IDataSeed[] dataSeedsParams)
         {
             IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
             IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
@@ -43,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 }
 
                 // Act
-                DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithNullablePropertySeed());
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithNullablePropertySeed());
                 dataSeedRunner.SeedData<DefaultProfile>();
 
                 // Assert
@@ -80,7 +79,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 }
 
                 // Act
-                DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
                 dataSeedRunner.SeedData<DefaultProfile>();
 
                 // Assert
@@ -123,7 +122,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 }
 
                 // Act
-                DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
                 dataSeedRunner.SeedData<DefaultProfile>();
 
                 // Assert that item is NOT updated, because of ExcludeUpdateExpressions
@@ -164,7 +163,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 }
 
                 // Act
-                DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
                 dataSeedRunner.SeedData<DefaultProfile>();
 
 
@@ -206,7 +205,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 }
 
                 // Act
-                DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
                 dataSeedRunner.SeedData<DefaultProfile>();
 
                 // Assert that ALL items ARE paired and updated
@@ -251,7 +250,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
                 }
 
                 // Act
-                DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
                 dataSeedRunner.SeedData<DefaultProfile>();
 
 

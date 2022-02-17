@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Patterns.Transactions.Internal
+namespace Havit.Data.Entity.Patterns.Transactions.Internal
 {
 	/// <summary>
 	/// Zajišťuje spuštění předaného kódu v transakci.

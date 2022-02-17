@@ -24,7 +24,6 @@ using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;

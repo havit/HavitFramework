@@ -6,12 +6,12 @@ using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Havit.Data.Patterns.Transactions.Internal;
+using Havit.Data.Entity.Patterns.Transactions.Internal;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
 {
 	[TestClass]
-	public class DataSeedRunnerTests
+	public class DbDataSeedRunnerTests
 	{
 		[ClassCleanup]
 		public static void CleanUp()
@@ -23,16 +23,18 @@ namespace Havit.Data.Entity.Patterns.Tests.DataSeeds
 		/// Reprodukce bugu #35740
 		/// </summary>
 		[TestMethod]
-		public void DataSeedRunner_SeedData_SupportsPairingByNullableProperties()
+		public void DbDataSeedRunner_SeedData_SupportsPairingByNullableProperties()
 		{
 			// Arrange
+			new TestDbContext().Database.Initialize(false); // DROP&CREATE nelze udělat uvnitř transaction scope - viz použití TransactionScopeTransactionWrapper
+
 			DbDataSeedPersister dataSeedPersister = new DbDataSeedPersister(new TestDbContext());
 
 			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			DataSeedRunner dataSeedRunner = new DataSeedRunner(new IDataSeed[] { new ItemWithNullablePropertySeed() }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper());
+			DbDataSeedRunner dataSeedRunner = new DbDataSeedRunner(new IDataSeed[] { new ItemWithNullablePropertySeed() }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object, new TransactionScopeTransactionWrapper());
 
 			// Act
 			dataSeedRunner.SeedData<DefaultProfile>();

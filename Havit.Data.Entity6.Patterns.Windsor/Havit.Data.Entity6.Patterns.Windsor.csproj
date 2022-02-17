@@ -9,7 +9,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.2.7</PackageVersion>
+    <PackageVersion>2.2.9</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Installers for Castle Windsor</Description>
   </PropertyGroup>
 

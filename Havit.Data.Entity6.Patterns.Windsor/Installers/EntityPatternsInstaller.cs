@@ -12,6 +12,7 @@ using Havit.Data.Entity.Patterns.DataSources;
 using Havit.Data.Entity.Patterns.Infrastructure;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
+using Havit.Data.Entity.Patterns.Transactions.Internal;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
@@ -24,7 +25,6 @@ using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
@@ -91,7 +91,7 @@ namespace Havit.Data.Entity.Patterns.Windsor.Installers
 			container.Register(
 				Component.For<ISoftDeleteManager>().ImplementedBy<SoftDeleteManager>().LifestyleSingleton(),
 				Component.For<ICurrentCultureService>().ImplementedBy<CurrentCultureService>().LifestyleSingleton(),
-				Component.For<IDataSeedRunner>().ImplementedBy<DataSeedRunner>().LifestyleTransient(),
+				Component.For<IDataSeedRunner>().ImplementedBy<DbDataSeedRunner>().LifestyleTransient(),
 				Component.For<ITransactionWrapper>().ImplementedBy<TransactionScopeTransactionWrapper>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecision>().ImplementedBy<OncePerVersionDataSeedRunDecision>().LifestyleTransient(),
 				Component.For<IDataSeedRunDecisionStatePersister>().ImplementedBy<DbDataSeedRunDecisionStatePersister>().LifestyleTransient(),

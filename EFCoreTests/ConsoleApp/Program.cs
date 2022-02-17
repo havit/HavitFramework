@@ -28,7 +28,6 @@ using System.Data.SqlClient;
 using Havit.Data.Patterns.Exceptions;
 using Havit.EFCoreTests.DataLayer.Repositories;
 using System.Linq.Expressions;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;

@@ -1,7 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Threading.Internal;
 using Havit.Data.Patterns.DataSeeds;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Diagnostics.Contracts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             IDataSeedPersisterFactory dataSeedPersisterFactory,           
             IDbContextFactory dbContextFactory,
             IDbDataSeedTransactionContext dbDataSeedTransactionContext) 
-            : base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory, new NullTransactionWrapper())
+            : base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory)
         {
             this.dbContextFactory = dbContextFactory;
             this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;

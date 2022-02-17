@@ -250,8 +250,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			services.AddSingleton<ITimeService, ServerTimeService>();
 			services.AddSingleton<ICacheService, NullCacheService>();
 
-			// TODO EF Core 6: Validovat?
-			return services.BuildServiceProvider(true);
+			return services.BuildServiceProvider(new ServiceProviderOptions
+			{
+				ValidateOnBuild = true,
+				ValidateScopes = true
+			});
 		}
 	}
 }

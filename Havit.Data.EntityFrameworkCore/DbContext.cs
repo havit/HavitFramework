@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Havit.Data.EntityFrameworkCore
 {
     /// <inheritdoc cref="Microsoft.EntityFrameworkCore.DbContext" />
-    public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext, IDbContextTransient
+    public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
     {
 	    /// <summary>
 	    /// Registr akcí k provedení po uložení změn.

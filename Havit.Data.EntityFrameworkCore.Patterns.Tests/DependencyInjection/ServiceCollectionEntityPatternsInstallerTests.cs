@@ -100,26 +100,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstallerShouldRegisterDbContextTransientAsTransient()
-		{
-			// Arrange
-			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
-
-			// Act
-			IDbContextTransient dbContext1;
-			IDbContextTransient dbContext2;
-
-			using (var scope = serviceProvider.CreateScope())
-			{
-				dbContext1 = scope.ServiceProvider.GetRequiredService<IDbContextTransient>();
-				dbContext2 = scope.ServiceProvider.GetRequiredService<IDbContextTransient>();
-			}
-
-			// Assert
-			Assert.AreNotSame(dbContext1, dbContext2);
-		}
-
-		[TestMethod]
 		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
@@ -248,29 +228,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			// Assert
 			// no exception was thrown and...
 		}
-
-		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_DbDataSeedPersister_DbContextDependencyIsTransient()
-		{
-			// Arrange
-			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
-
-			// Act
-			IDataSeedPersister dataSeedPersister1;
-			IDataSeedPersister dataSeedPersister2;
-
-			using (var scope = serviceProvider.CreateScope())
-			{
-                dataSeedPersister1 = scope.ServiceProvider.GetRequiredService<IDataSeedPersister>();
-				dataSeedPersister2 = scope.ServiceProvider.GetRequiredService<IDataSeedPersister>();
-			}
-
-			// Assert
-			Assert.IsInstanceOfType(dataSeedPersister1, typeof(DbDataSeedPersister));
-			Assert.IsInstanceOfType(dataSeedPersister2, typeof(DbDataSeedPersister));
-			Assert.AreNotSame(((DbDataSeedPersister)dataSeedPersister1).DbContext, ((DbDataSeedPersister)dataSeedPersister2).DbContext);
-		}
-
+	
 		internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false)
 		{
 			IServiceCollection services = new ServiceCollection();
@@ -292,6 +250,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 			services.AddSingleton<ITimeService, ServerTimeService>();
 			services.AddSingleton<ICacheService, NullCacheService>();
 
+			// TODO EF Core 6: Validovat?
 			return services.BuildServiceProvider(true);
 		}
 	}

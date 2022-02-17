@@ -3,6 +3,7 @@ using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,8 +33,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		public ServiceCollectionEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
-			services.AddDbContext<IDbContext, TDbContext>(optionsAction, componentRegistrationOptions.DbContextLifestyle, componentRegistrationOptions.DbContextLifestyle);
-			services.AddTransient(typeof(IDbContextTransient), typeof(TDbContext));
+			// na pořadí záleží
+			services.AddDbContextFactory<TDbContext>(optionsAction);
+			services.AddDbContext<IDbContext, TDbContext>(optionsAction);
+
+			services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 			return this;
 		}
 
@@ -45,8 +49,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
 
-			services.AddDbContextPool<IDbContext, TDbContext>(optionsAction, poolSize);
-			services.AddTransient(typeof(IDbContextTransient), typeof(TDbContext));
+			services.AddPooledDbContextFactory<TDbContext>(optionsAction, poolSize);
+			services.AddDbContextPool<IDbContext, TDbContext>(optionsAction);			
+
+			services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 			return this;
 		}
 	}

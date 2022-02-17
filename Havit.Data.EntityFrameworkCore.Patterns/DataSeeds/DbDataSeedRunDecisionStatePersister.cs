@@ -16,6 +16,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         /// </summary>
         public DbDataSeedRunDecisionStatePersister(IDbContext dbContext)
         {
+            // TODO EF Core 6: Transakce!!!
             this.dbContext = dbContext;
         }
 

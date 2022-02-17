@@ -6,6 +6,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
@@ -83,10 +84,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.TryAddServiceSingleton<ISoftDeleteManager, SoftDeleteManager>();
 			installer.TryAddServiceSingleton<ICurrentCultureService, CurrentCultureService>();
 			installer.TryAddServiceTransient<IDataSeedRunner, DbDataSeedRunner>();
-			installer.TryAddServiceTransient<ITransactionWrapper, TransactionScopeTransactionWrapper>();
 			installer.TryAddServiceTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
 			installer.TryAddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 			installer.TryAddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
+			// TODO EF Core 6: Scoped
+			installer.TryAddService<IDbDataSeedContext, DbDataSeedContext>(componentRegistrationOptions.UnitOfWorkLifestyle); 
 			installer.TryAddFactory(typeof(IDataSeedPersisterFactory));
 
 			installer.TryAddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);

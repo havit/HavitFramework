@@ -20,13 +20,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
         {
             IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
             IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
-            IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContextFactory, new DbDataSeedContext());
+            IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContextFactory, new DbDataSeedTransactionContext());
 
 			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContextFactory, new DbDataSeedContext());
+			return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContextFactory, new DbDataSeedTransactionContext());
         }
 
         [TestClass]

@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 	public class DbDataSeedPersister : IDataSeedPersister
 	{
         private readonly IDbContextFactory dbContextFactory;
-        private readonly IDbDataSeedContext dbDataSeedContext;
+        private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
         /// <summary>
         /// Konstruktor.
@@ -29,10 +29,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         /// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
         /// Ale dále se k němu chováme jako k IDbContextu.
         /// </remarks>
-        public DbDataSeedPersister(IDbContextFactory dbContextFactory, IDbDataSeedContext dbDataSeedContext)
+        public DbDataSeedPersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
 		{
             this.dbContextFactory = dbContextFactory;
-            this.dbDataSeedContext = dbDataSeedContext;
+            this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
         }
 
 		/// <summary>
@@ -43,11 +43,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		{
 			ExecuteWithDbContext(dbContext =>
 			{
-				if (dbDataSeedContext.CurrentTransaction != null)
+				if (dbDataSeedTransactionContext.CurrentTransaction != null)
 				{
-					var transaction = dbDataSeedContext.CurrentTransaction.GetDbTransaction();
-					dbContext.Database.SetDbConnection(transaction.Connection);
-					dbContext.Database.UseTransaction(transaction);
+					dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
 				}
 
 				CheckConditions(configuration);

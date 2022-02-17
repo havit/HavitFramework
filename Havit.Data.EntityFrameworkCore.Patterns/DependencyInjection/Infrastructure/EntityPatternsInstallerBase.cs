@@ -88,7 +88,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.TryAddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 			installer.TryAddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
 			// TODO EF Core 6: Scoped
-			installer.TryAddService<IDbDataSeedContext, DbDataSeedContext>(componentRegistrationOptions.UnitOfWorkLifestyle); 
+			installer.TryAddService<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>(componentRegistrationOptions.UnitOfWorkLifestyle); 
 			installer.TryAddFactory(typeof(IDataSeedPersisterFactory));
 
 			installer.TryAddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);

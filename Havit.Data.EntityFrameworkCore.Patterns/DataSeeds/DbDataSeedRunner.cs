@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
     {
         private const string DataSeedLockValue = "DbDataSeeds";
         private readonly IDbContextFactory dbContextFactory;
-        private readonly IDbDataSeedContext dbDataSeedContext;
+        private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
         /// <summary>
         /// Konstruktor.
@@ -29,17 +29,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             IDataSeedRunDecision dataSeedRunDecision,
             IDataSeedPersisterFactory dataSeedPersisterFactory,           
             IDbContextFactory dbContextFactory,
-            IDbDataSeedContext dbDataSeedContext) 
+            IDbDataSeedTransactionContext dbDataSeedTransactionContext) 
             : base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory, new NullTransactionWrapper())
         {
             this.dbContextFactory = dbContextFactory;
-            this.dbDataSeedContext = dbDataSeedContext;
+            this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
         }
 
         /// <inheritdoc />
         public override void SeedData(Type dataSeedProfileType, bool forceRun = false)
         {
-            Contract.Requires(dbDataSeedContext.CurrentTransaction == null);
+            Contract.Requires(dbDataSeedTransactionContext.CurrentTransaction == null);
             using (IDbContext dbContext = dbContextFactory.CreateDbContext())
             {
                 if (dbContext.Database.IsSqlServer())
@@ -48,7 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                     {
                         using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
                         {
-                            dbDataSeedContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
+                            dbDataSeedTransactionContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
                             try
                             {
                                 base.SeedData(dataSeedProfileType, forceRun);
@@ -56,7 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                             }
                             finally
                             {
-                                dbDataSeedContext.CurrentTransaction = null;
+                                dbDataSeedTransactionContext.CurrentTransaction = null;
                             }
                         }
                     });
@@ -66,7 +66,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                     base.SeedData(dataSeedProfileType, forceRun);
                 }
             }
-            Contract.Assert(dbDataSeedContext.CurrentTransaction == null);
+            Contract.Assert(dbDataSeedTransactionContext.CurrentTransaction == null);
         }
     }
 }

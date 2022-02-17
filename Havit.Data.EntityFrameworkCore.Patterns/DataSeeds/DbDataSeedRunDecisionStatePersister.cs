@@ -1,4 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.Patterns.DataSeeds;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
@@ -9,15 +10,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
     /// </summary>
     public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePersister
     {
-        private readonly IDbContext dbContext;
+        private readonly IDbContextFactory dbContextFactory;
+        private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        public DbDataSeedRunDecisionStatePersister(IDbContext dbContext)
+        public DbDataSeedRunDecisionStatePersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
         {
-            // TODO EF Core 6: Transakce!!!
-            this.dbContext = dbContext;
+            this.dbContextFactory = dbContextFactory;
+            this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
         }
 
         /// <summary>
@@ -31,8 +33,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         /// </remarks>
         public string ReadCurrentState(string profileName)
         {
-            DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
-            return dataSeedVersion?.Version;
+            using (var dbContext = dbContextFactory.CreateDbContext())
+            {
+                if (dbDataSeedTransactionContext.CurrentTransaction != null)
+                {
+                    dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
+                }
+
+                DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
+                return dataSeedVersion?.Version;
+            }
         }
 
         /// <summary>
@@ -45,14 +55,22 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         /// </remarks>
         public void WriteCurrentState(string profileName, string currentState)
         {
-            DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
-            if (dataSeedVersion == null)
+            using (var dbContext = dbContextFactory.CreateDbContext())
             {
-                dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
-                dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
+                if (dbDataSeedTransactionContext.CurrentTransaction != null)
+                {
+                    dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
+                }
+
+                DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
+                if (dataSeedVersion == null)
+                {
+                    dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
+                    dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
+                }
+                dataSeedVersion.Version = currentState;
+                dbContext.SaveChanges();
             }
-            dataSeedVersion.Version = currentState;
-            dbContext.SaveChanges();
         }
     }
 }

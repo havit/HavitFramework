@@ -79,6 +79,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return new FrameworkConventionSetOptionsExtension(this);
 		}
 
+		/// <summary>
+		/// Nastaví příznak CacheAttributeToAnnotationConventionEnabled.
+		/// </summary>
 		public FrameworkConventionSetOptionsExtension WithCacheAttributeToAnnotationConvention(bool enabled)
 		{
 			var clone = Clone();
@@ -86,6 +89,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return clone;
 		}
 
+		/// <summary>
+		/// Nastaví příznak CascadeDeleteToRestrictConventionEnabled.
+		/// </summary>
 		public FrameworkConventionSetOptionsExtension WithCascadeDeleteToRestrictConvention(bool enabled)
 		{
 			var clone = Clone();
@@ -93,6 +99,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return clone;
 		}
 
+		/// <summary>
+		/// Nastaví příznak DataTypeAttributeConventionEnabled.
+		/// </summary>
 		public FrameworkConventionSetOptionsExtension WithDataTypeAttributeConvention(bool enabled)
 		{
 			var clone = Clone();
@@ -100,6 +109,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return clone;
 		}
 
+		/// <summary>
+		/// Nastaví příznak FrameworkConventionSetOptionsExtension.
+		/// </summary>
 		public FrameworkConventionSetOptionsExtension WithStringPropertiesDefaultValueConvention(bool enabled)
 		{
 			var clone = Clone();
@@ -107,6 +119,9 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return clone;
 		}
 
+		/// <summary>
+		/// Nastaví příznak FrameworkConventionSetOptionsExtension.
+		/// </summary>
 		public FrameworkConventionSetOptionsExtension WithManyToManyEntityKeyDiscoveryConvention(bool enabled)
 		{
 			var clone = Clone();

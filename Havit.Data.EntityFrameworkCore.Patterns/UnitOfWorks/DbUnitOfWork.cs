@@ -51,8 +51,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		/// </summary>
 		public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IEntityCacheDependencyManager entityCacheDependencyManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner, ILookupDataInvalidationRunner lookupDataInvalidationRunner)
 		{
-			Contract.Requires<ArgumentNullException>(dbContext != null, nameof(dbContext));
-			Contract.Requires<ArgumentNullException>(softDeleteManager != null, nameof(softDeleteManager));
+			Contract.Requires<ArgumentNullException>(dbContext != null);
+			Contract.Requires<ArgumentNullException>(softDeleteManager != null);
 
 			DbContext = dbContext;
 			SoftDeleteManager = softDeleteManager;

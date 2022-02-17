@@ -89,7 +89,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// </summary>
 		internal void CheckConditions<TEntity>(DataSeedConfiguration<TEntity> configuration)
 		{
-			Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
+			Contract.Requires<ArgumentNullException>(configuration != null);
 			Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
 			ExecuteWithDbContext(dbContext =>
@@ -379,7 +379,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// </remarks>
 		internal List<IProperty> GetPropertiesForInserting(IEntityType entityType)
 		{
-			Contract.Requires<ArgumentNullException>(entityType != null, nameof(entityType));
+			Contract.Requires<ArgumentNullException>(entityType != null);
 
 			return entityType
 				.GetProperties()
@@ -394,7 +394,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// </summary>		
 		internal List<IProperty> GetPropertiesForUpdating<TEntity>(IEntityType entityType, List<Expression<Func<TEntity, object>>> excludedProperties)
 		{
-			Contract.Requires<ArgumentNullException>(entityType != null, nameof(entityType));
+			Contract.Requires<ArgumentNullException>(entityType != null);
 
 			List<IProperty> result = entityType
 				.GetProperties()

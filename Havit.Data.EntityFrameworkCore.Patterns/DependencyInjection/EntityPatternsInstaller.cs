@@ -229,7 +229,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			return this;
 		}
 
+		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
 		public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
@@ -241,8 +243,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			return this;
 		}
 
-		
+
+		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
 		public IEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -15,17 +15,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 {
     public class DbDataSeedsTests
     {
-        private static DataSeedRunner GetDefaultDataSeedRunner(IDbContextTransient dbContext, params IDataSeed[] dataSeedsParams)
+        private static DbDataSeedRunner GetDefaultDataSeedRunner(IDbContextFactory dbContextFactory, params IDataSeed[] dataSeedsParams)
         {
             IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
             IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
-            IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext);
+            IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContextFactory, new DbDataSeedTransactionContext());
 
 			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
-			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
+            dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, new NullTransactionWrapper(), dbContext);
+            return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContextFactory, new DbDataSeedTransactionContext());
         }
 
         [TestClass]
@@ -34,14 +34,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             [TestMethod]
             public void DataSeedRunner_SeedData_CanInsertNewItemsWithKeyGeneration()
             {
-                using (TestDbContext dbContext = new TestDbContext())
+                // Arrange
+                TestDbContextFactory dbContextFactory = new TestDbContextFactory();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
                 {
                     dbContext.Database.DropCreate();
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithNullablePropertySeed());
+                }
 
-                    dataSeedRunner.SeedData<DefaultProfile>();
+                // Act
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithNullablePropertySeed());
+                dataSeedRunner.SeedData<DefaultProfile>();
 
-                    var items = dbContext.Set<ItemWithNullableProperty>();
+                // Assert
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+                {
+                    var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable();
                     Assert.AreEqual(3, items.Count());
                 }
             }
@@ -64,15 +71,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             [TestMethod]
             public void DataSeedRunner_SeedData_CanInsertNewItemsWithoutUpdate()
             {
-                using (TestDbContext dbContext = new TestDbContext())
+                // Arrange
+                TestDbContextFactory dbContextFactory = new TestDbContextFactory();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
                 {
                     dbContext.Database.DropCreate();
-                    // Arrange
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+                }
 
-                    dataSeedRunner.SeedData<DefaultProfile>();
+                // Act
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                dataSeedRunner.SeedData<DefaultProfile>();
 
-                    var items = dbContext.Set<ItemWithNullableProperty>();
+                // Assert
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+                {
+                    var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable();
 
                     // Assert that all items ARE deleted (property is not ignored) in INSERT even if it is set by ExcludeUpdateExpressions
                     Assert.AreEqual(3, items.Where(i => i.NullableValue != null).Count());
@@ -98,21 +111,24 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             [TestMethod]
             public void DataSeedRunner_SeedData_AreExcludedUpdatePropertiesSetByExcludeUpdateExpressions()
             {
-                using (TestDbContext dbContext = new TestDbContext())
+                // Arrange
+                TestDbContextFactory dbContextFactory = new TestDbContextFactory();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
                 {
                     dbContext.Database.DropCreate();
-                    dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
-                    dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = null });
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "B", Deleted = null });
                     dbContext.SaveChanges();
+                }
 
-                    // Arrange
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+                // Act
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                dataSeedRunner.SeedData<DefaultProfile>();
 
-                    dataSeedRunner.SeedData<DefaultProfile>();
-
-                    var items = dbContext.Set<ItemWithDeleted>();
-
-                    // Assert that item is NOT updated, because of ExcludeUpdateExpressions
+                // Assert that item is NOT updated, because of ExcludeUpdateExpressions
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+                {
+                    var items = dbContext.Set<ItemWithDeleted>().AsQueryable();
                     Assert.IsTrue(items.All(item => item.Deleted == null));
                 }
             }
@@ -136,21 +152,25 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             [TestMethod]
             public void DataSeedRunner_SeedData_AreExcludedUpdatePropertiesSetByWithoutUpdate()
             {
-                using (TestDbContext dbContext = new TestDbContext())
+                // Arrange
+                TestDbContextFactory dbContextFactory = new TestDbContextFactory();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
                 {
-	                dbContext.Database.DropCreate();
-	                dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
-	                dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = null });
-	                dbContext.SaveChanges();
+                    dbContext.Database.DropCreate();
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "B", Deleted = null });
+                    dbContext.SaveChanges();
+                }
 
-					// Arrange
-					DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+                // Act
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                dataSeedRunner.SeedData<DefaultProfile>();
 
-                    dataSeedRunner.SeedData<DefaultProfile>();
 
-                    var items = dbContext.Set<ItemWithDeleted>();
-
-                    // Assert that items ARE NOT updated, because of WithoutUpdate()
+                // Assert that items ARE NOT updated, because of WithoutUpdate()
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+                {
+                    var items = dbContext.Set<ItemWithDeleted>().AsQueryable();
                     Assert.AreEqual(true, items.All(item => item.Deleted == null));
                 }
             }
@@ -174,21 +194,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             [TestMethod]
             public void DataSeedRunner_SeedData_ItemsArePairedAndUpdated()
             {
-                using (TestDbContext dbContext = new TestDbContext())
+                // Arrange
+                TestDbContextFactory dbContextFactory = new TestDbContextFactory();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
                 {
-	                dbContext.Database.DropCreate();
-	                dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now });
-	                dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now });
-	                dbContext.SaveChanges();
+                    dbContext.Database.DropCreate();
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now });
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now });
+                    dbContext.SaveChanges();
+                }
 
-					// Arrange
-					DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+                // Act
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                dataSeedRunner.SeedData<DefaultProfile>();
 
-                    dataSeedRunner.SeedData<DefaultProfile>();
+                // Assert that ALL items ARE paired and updated
 
-                    var items = dbContext.Set<ItemWithDeleted>();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+                {
+                    var items = dbContext.Set<ItemWithDeleted>().AsQueryable();
 
-                    // Assert that ALL items ARE paired and updated
                     Assert.AreEqual(2, items.Count());
                     Assert.IsTrue(items.All(item => item.Deleted == null));
                 }
@@ -213,24 +238,29 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
             [TestMethod]
             public void DataSeedRunner_SeedData_CanMixAndUpdateNewItems()
             {
-                using (TestDbContext dbContext = new TestDbContext())
+                // Arrange
+                TestDbContextFactory dbContextFactory = new TestDbContextFactory();
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
                 {
                     dbContext.Database.DropCreate();
 
-                    dbContext.Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
-                    dbContext.Add(new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now });
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
+                    dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "B", Deleted = DateTime.Now });
                     dbContext.SaveChanges();
+                }
 
-                    // Arrange
-                    DataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+                // Act
+                DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
+                dataSeedRunner.SeedData<DefaultProfile>();
 
-                    dataSeedRunner.SeedData<DefaultProfile>();
 
-                    var items = dbContext.Set<ItemWithDeleted>().OrderBy(s => s.Id).ToArray();
+                // Assert that first two items are updated and new two items are created
+                using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+                {
+                    var items = dbContext.Set<ItemWithDeleted>().AsQueryable().OrderBy(s => s.Id).ToArray();
 
-                    // Assert that first two items are updated and new two items are created
                     Assert.AreEqual(4, items.Length);
-	                Assert.AreEqual(true, items.Single(item => item.Symbol == "A").Deleted != null);
+                    Assert.AreEqual(true, items.Single(item => item.Symbol == "A").Deleted != null);
                     Assert.AreEqual(true, items.Single(item => item.Symbol == "B").Deleted != null);
                     Assert.AreEqual(true, items.Single(item => item.Symbol == "C").Deleted == null);
                     Assert.AreEqual(true, items.Single(item => item.Symbol == "D").Deleted != null);

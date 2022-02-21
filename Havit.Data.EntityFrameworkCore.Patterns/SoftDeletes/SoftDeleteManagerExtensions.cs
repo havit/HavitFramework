@@ -15,8 +15,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 		/// </summary>
 		public static IQueryable<TSource> WhereNotDeleted<TSource>(this IQueryable<TSource> source, ISoftDeleteManager softDeleteManager)
 		{
-			Contract.Requires<ArgumentNullException>(source != null, nameof(source));
-			Contract.Requires<ArgumentNullException>(softDeleteManager != null, nameof(source));
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(softDeleteManager != null);
 
 			return softDeleteManager.IsSoftDeleteSupported<TSource>()
 				? source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>())
@@ -28,8 +28,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes
 		/// </summary>
 		public static IEnumerable<TSource> WhereNotDeleted<TSource>(this IEnumerable<TSource> source, ISoftDeleteManager softDeleteManager)
 		{
-			Contract.Requires<ArgumentNullException>(source != null, nameof(source));
-			Contract.Requires<ArgumentNullException>(softDeleteManager != null, nameof(source));
+			Contract.Requires<ArgumentNullException>(source != null);
+			Contract.Requires<ArgumentNullException>(softDeleteManager != null);
 
 			return softDeleteManager.IsSoftDeleteSupported<TSource>()
 				? source.Where(softDeleteManager.GetNotDeletedCompiledLambda<TSource>())

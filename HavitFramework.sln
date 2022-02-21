@@ -138,9 +138,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions", "Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj", "{EDD0CA2B-EB22-4A8B-A68E-4507B9A360A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor", "Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor.csproj", "{1A82E2E8-407D-482A-91D4-0155D877CA6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor[IGNORED]", "Havit.Data.EntityFrameworkCore.Patterns.Windsor\Havit.Data.EntityFrameworkCore.Patterns.Windsor[IGNORED].csproj", "{1A82E2E8-407D-482A-91D4-0155D877CA6A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests", "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests.csproj", "{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests[IGNORED]", "Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests\Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests[IGNORED].csproj", "{EE685A1E-0F48-4523-98B9-4C9A3787A8F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCoreTests", "EFCoreTests", "{CF4BD356-B8EB-4375-B017-5C5BF2835911}"
 EndProject
@@ -239,6 +239,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HangfireJobs", "HangfireJobs\HangfireJobs.csproj", "{12062C11-F9FE-46A2-8D03-CBBF6B8680CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hangfire", "Hangfire", "{BC8AF1A3-FB36-48A9-B665-C2C247B57947}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenchmarkApp", "EFCoreTests\BenchmarkApp\BenchmarkApp.csproj", "{52D236AF-980E-4F72-913A-B9C0C7EA9063}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -614,6 +616,10 @@ Global
 		{12062C11-F9FE-46A2-8D03-CBBF6B8680CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12062C11-F9FE-46A2-8D03-CBBF6B8680CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12062C11-F9FE-46A2-8D03-CBBF6B8680CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52D236AF-980E-4F72-913A-B9C0C7EA9063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D236AF-980E-4F72-913A-B9C0C7EA9063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D236AF-980E-4F72-913A-B9C0C7EA9063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D236AF-980E-4F72-913A-B9C0C7EA9063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -722,6 +728,7 @@ Global
 		{9F7C91A3-A91C-4CDA-8407-432B2229C1BE} = {BC8AF1A3-FB36-48A9-B665-C2C247B57947}
 		{12062C11-F9FE-46A2-8D03-CBBF6B8680CD} = {BC8AF1A3-FB36-48A9-B665-C2C247B57947}
 		{BC8AF1A3-FB36-48A9-B665-C2C247B57947} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
+		{52D236AF-980E-4F72-913A-B9C0C7EA9063} = {CF4BD356-B8EB-4375-B017-5C5BF2835911}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

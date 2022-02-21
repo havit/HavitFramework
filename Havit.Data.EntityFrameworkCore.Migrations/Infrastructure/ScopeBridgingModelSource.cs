@@ -46,16 +46,9 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         /// <remarks>
         ///     This is necessary, if <see cref="IModelSource"/> (or one of its dependencies) needs to access <see cref="IDbContextOptions"/>.
         /// </remarks>
-        /// <param name="context"> The context the model is being produced for. </param>
-        /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
-        /// <param name="modelDependencies"> The dependencies object for the model. </param>
-        /// <returns> The model to be used. </returns>
-        protected override IModel CreateModel(
-			DbContext context,
-			IConventionSetBuilder conventionSetBuilder,
-			ModelDependencies modelDependencies)
+        public override IModel GetModel(DbContext context, ModelCreationDependencies modelCreationDependencies, bool designTime)
         {
-	        return context.GetService<IScopedModelSource>().GetModel(context, conventionSetBuilder, modelDependencies);
+	        return context.GetService<IScopedModelSource>().GetModel(context, modelCreationDependencies, designTime);
         }
     }
 }

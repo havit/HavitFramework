@@ -13,7 +13,7 @@ namespace Havit.Data.EntityFrameworkCore
 	/// Poskytuje služby DbContextu vyšším vrstvám.
 	/// Umožňuje např. v testech podstrčit jinou instanci DbContextu.
 	/// </summary>
-	public interface IDbContext
+	public interface IDbContext : IDisposable
 	{
 		/// <summary>
 		/// Creates a DbSet&lt;TEntity&gt; that can be used to query and save instances of TEntity.

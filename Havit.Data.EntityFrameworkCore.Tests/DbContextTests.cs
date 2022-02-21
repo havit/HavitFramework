@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -97,6 +99,21 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 			// Assert
 			Assert.IsNotNull(thrownException);
 			Assert.AreSame(exception, thrownException.InnerException);
+		}
+
+		[TestMethod]
+		public void DbContext_UsesDbLockedMigrator()
+		{
+			// Arrange
+			EmptyDbContext dbContext = new EmptyDbContext();
+
+			// Act
+			var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
+
+			// Assert
+			#pragma warning disable EF1001 // Internal EF Core API usage.
+			Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
+			#pragma warning restore EF1001 // Internal EF Core API usage.
 		}
 	}
 }

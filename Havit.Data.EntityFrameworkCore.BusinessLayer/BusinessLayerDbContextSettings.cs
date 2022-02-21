@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
     ///
     /// <remarks>Úprava konfigurácie prebieha v metóde <see cref="BusinessLayerDbContext.CreateDbContextSettings"/>, ktorú je potrebné prepísať v aplikačnom DbContexte.</remarks>
     /// </summary>
-	public class BusinessLayerDbContextSettings : DbContextSettings
+	public class BusinessLayerDbContextSettings
 	{
 		/// <summary>
 		/// Indikuje používání konvence CollectionExtendedPropertiesConvention.

@@ -20,11 +20,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		{
 			return serviceProvider.GetRequiredService<IEnumerable<IBeforeCommitProcessor<TEntity>>>();
 		}
-
-		public void Release<TEntity>(IEnumerable<IBeforeCommitProcessor<TEntity>> services)
-			where TEntity : class
-		{
-			// NOOP
-		}
 	}
 }

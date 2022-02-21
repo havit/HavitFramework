@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Vrátí sloupec reprezentující příznak smazání záznamu.
 		/// </summary>
-        public static IProperty GetBusinessLayerDeletedProperty(this IEntityType entityType)
+        public static IReadOnlyProperty GetBusinessLayerDeletedProperty(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
@@ -27,11 +27,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// <summary>
 		/// Vrátí neignorované sloupce (vlastnosti).
 		/// </summary>
-		public static IEnumerable<IProperty> GetBusinessLayerNotIgnoredProperties(this IEntityType entityType)
+		public static IEnumerable<IReadOnlyProperty> GetBusinessLayerNotIgnoredProperties(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 
-            foreach (IProperty property in entityType.GetProperties())
+            foreach (IReadOnlyProperty property in entityType.GetProperties())
             {
                 if (!property.GetExtendedProperties().ContainsKey(IgnoredAttribute.ExtendedPropertyName))
                 {
@@ -44,7 +44,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata
 		/// Indikuje, zda jde o entitu reprezentující vztah Many-to-Many.
 		/// Podporuje extravaganci BL v tom smyslu, kdy můžeme mít v tabulce dva cizí klíče ve složeném primárním klíči a také několik dalších ignorovaných sloupců.
 		/// </summary>
-        public static bool IsBusinessLayerManyToManyEntity(this IEntityType entityType)
+        public static bool IsBusinessLayerManyToManyEntity(this IReadOnlyEntityType entityType)
         {
             Contract.Requires<ArgumentNullException>(entityType != null);
 

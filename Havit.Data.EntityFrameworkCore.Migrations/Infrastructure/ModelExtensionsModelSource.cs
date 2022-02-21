@@ -36,26 +36,21 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
             this.conventionPlugin = conventionPlugin;
         }
 
-		/// <summary>
-		///     Creates the model with Model Extensions annotations. Caching is not implemented,
-		///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
-		/// </summary>
-		/// <param name="context"> The context the model is being produced for. </param>
-		/// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
-		/// <remarks>
-		///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
-		/// </remarks>
-		/// <returns> The model to be used. </returns>
-		[Obsolete]
-		public override IModel GetModel(DbContext context, IConventionSetBuilder conventionSetBuilder)
+        /// <summary>
+        ///     Creates the model with Model Extensions annotations. Caching is not implemented,
+        ///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
+        /// </summary>
+        /// <remarks>
+        ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
+        /// </remarks>
+        /// <returns> The model to be used. </returns>
+        public override IModel GetModel(DbContext context, ModelCreationDependencies modelCreationDependencies, bool designTime)
         {
-            ConventionSet conventionSet = conventionPlugin.ModifyConventions(conventionSetBuilder.CreateConventionSet());
-
-            // suppress reason: need to call base implementation that actually creates IModel (without duplicating its code)
-#pragma warning disable SA1100 // Do not prefix calls with base unless local implementation exists
-            IModel model = base.CreateModel(context, new StaticConventionSetBuilder(conventionSet));
-#pragma warning restore SA1100 // Do not prefix calls with base unless local implementation exists
-
+            var model = CreateModel(context, modelCreationDependencies.ConventionSetBuilder, modelCreationDependencies.ModelDependencies);
+            
+            // Vrácený model musí být finalizovaný, proto nestačí vrátit výsledek metody CreateModel.
+            // Finalizace modelu - vykopírováno z bázové ModelSource.GetModel(...).
+            model = modelCreationDependencies.ModelRuntimeInitializer.Initialize(model, designTime, modelCreationDependencies.ValidationLogger);
             return model;
         }
 
@@ -63,23 +58,16 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure
         ///     Creates the model with Model Extensions annotations. Caching is not implemented,
         ///     since dependency <see cref="ModelExtensionRegistrationConventionPlugin"/> has scoped lifestyle.
         /// </summary>
-        /// <param name="context"> The context the model is being produced for. </param>
-        /// <param name="conventionSetBuilder"> The convention set to use when creating the model. </param>
-        /// <param name="modelDependencies"> The dependencies object for the model. </param>
+        ///
         /// <remarks>
         ///     Implemented by adding <see cref="ModelExtensionRegistrationConvention"/> into <see cref="ConventionSet"/> used to create <see cref="IModel"/>.
         /// </remarks>
         /// <returns> The model to be used. </returns>
-        public override IModel GetModel(DbContext context, IConventionSetBuilder conventionSetBuilder, ModelDependencies modelDependencies)
+        protected override IModel CreateModel(DbContext context, IConventionSetBuilder conventionSetBuilder, ModelDependencies modelDependencies)
         {
 	        ConventionSet conventionSet = conventionPlugin.ModifyConventions(conventionSetBuilder.CreateConventionSet());
-
-	        // suppress reason: need to call base implementation that actually creates IModel (without duplicating its code)
-#pragma warning disable SA1100 // Do not prefix calls with base unless local implementation exists
-	        IModel model = base.CreateModel(context, new StaticConventionSetBuilder(conventionSet), modelDependencies);
-#pragma warning restore SA1100 // Do not prefix calls with base unless local implementation exists
-
-	        return model;
+            return base.CreateModel(context, new StaticConventionSetBuilder(conventionSet), modelDependencies);
         }
+
     }
 }

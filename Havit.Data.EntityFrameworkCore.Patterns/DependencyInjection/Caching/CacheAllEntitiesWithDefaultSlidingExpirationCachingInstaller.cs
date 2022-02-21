@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 {
 	/// <summary>
 	/// Installer, která konfiguraci služeb pro cachování. Cachovat se budu všechny objekty s definovanou sliding expirací.
 	/// </summary>
-	public class CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller<TLifetime> : DefaultCachingInstaller<TLifetime>
+	public class CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller : DefaultCachingInstaller
 	{
 		private readonly TimeSpan slidingExpiration;
 
@@ -22,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		}
 
 		/// <inheritdoc />
-		protected override void RegisterEntityCacheOptionsGenerator(IServiceInstaller<TLifetime> installer)
+		protected override void RegisterEntityCacheOptionsGenerator(IServiceCollection services)
 		{
 			// no base call!
 
@@ -32,16 +30,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 				AbsoluteExpiration = null
 			};
 
-			installer.AddServiceTransient<IEntityCacheOptionsGenerator, AnnotationsWithDefaultsEntityCacheOptionsGenerator>();
-			installer.AddServiceSingletonInstance(typeof(AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions), options);
-			installer.AddServiceSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
+			services.AddTransient<IEntityCacheOptionsGenerator, AnnotationsWithDefaultsEntityCacheOptionsGenerator>();
+			services.AddSingleton(typeof(AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions), options);
+			services.AddSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
 		}
 
 		/// <inheritdoc />
-		protected override void RegisterEntityCacheSupportDecision(IServiceInstaller<TLifetime> installer)
+		protected override void RegisterEntityCacheSupportDecision(IServiceCollection services)
 		{
 			// no base call!
-			installer.AddServiceSingleton<IEntityCacheSupportDecision, CacheAllEntitiesEntityCacheSupportDecision>();
+			services.AddSingleton<IEntityCacheSupportDecision, CacheAllEntitiesEntityCacheSupportDecision>();
 		}
 	}
 }

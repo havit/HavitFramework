@@ -20,11 +20,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation
 		/// </remarks>
 		IEnumerable<IEntityValidator<TEntity>> Create<TEntity>()
 			where TEntity : class;
-
-		/// <summary>
-		/// Uvolňuje vytvořené validátory.
-		/// </summary>
-		void Release<TEntity>(IEnumerable<IEntityValidator<TEntity>> validators)
-			where TEntity : class;
 	}
 }

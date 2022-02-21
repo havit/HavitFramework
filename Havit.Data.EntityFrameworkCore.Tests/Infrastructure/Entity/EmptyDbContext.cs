@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseInMemoryDatabase(typeof(EmptyDbContext).FullName);
+			optionsBuilder.UseSqlServer("fake");
 		}
 	}
 }

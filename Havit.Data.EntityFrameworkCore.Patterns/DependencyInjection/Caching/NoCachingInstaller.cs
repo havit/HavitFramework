@@ -4,18 +4,19 @@ using System.Text;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
 using Havit.Services.Caching;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 {
 	/// <summary>
 	/// Installer, která zaregistruje službu, která nic necachuje (NoCachingEntityCacheManager). 
 	/// </summary>
-	public sealed class NoCachingInstaller<TLifetime> : ICachingInstaller<TLifetime>
+	public sealed class NoCachingInstaller : ICachingInstaller
 	{
 		/// <inheritdoc />
-		public void Install(IServiceInstaller<TLifetime> serviceInstaller)
+		public void Install(IServiceCollection services)
 		{
-			serviceInstaller.AddServiceSingleton<IEntityCacheManager, NoCachingEntityCacheManager>();
+			services.AddSingleton<IEntityCacheManager, NoCachingEntityCacheManager>();
 		}
 	}
 }

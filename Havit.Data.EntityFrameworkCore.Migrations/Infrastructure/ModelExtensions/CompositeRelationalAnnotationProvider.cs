@@ -27,87 +27,87 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IRelationalModel model)
+		public override IEnumerable<IAnnotation> For(IRelationalModel model, bool designTime)
 		{
-			return base.For(model).Concat(providers.SelectMany(provider => provider.For(model)));
+			return base.For(model, designTime).Concat(providers.SelectMany(provider => provider.For(model, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(ITable table)
+		public override IEnumerable<IAnnotation> For(ITable table, bool designTime)
 		{
-			return base.For(table).Concat(providers.SelectMany(provider => provider.For(table)));
+			return base.For(table, designTime).Concat(providers.SelectMany(provider => provider.For(table, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IColumn column)
+		public override IEnumerable<IAnnotation> For(IColumn column, bool designTime)
 		{
-			return base.For(column).Concat(providers.SelectMany(provider => provider.For(column)));
+			return base.For(column, designTime).Concat(providers.SelectMany(provider => provider.For(column, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IView view)
+		public override IEnumerable<IAnnotation> For(IView view, bool designTime)
 		{
-			return base.For(view).Concat(providers.SelectMany(provider => provider.For(view)));
+			return base.For(view, designTime).Concat(providers.SelectMany(provider => provider.For(view, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IViewColumn column)
+		public override IEnumerable<IAnnotation> For(IViewColumn column, bool designTime)
 		{
-			return base.For(column).Concat(providers.SelectMany(provider => provider.For(column)));
+			return base.For(column, designTime).Concat(providers.SelectMany(provider => provider.For(column, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(ISqlQuery sqlQuery)
+		public override IEnumerable<IAnnotation> For(ISqlQuery sqlQuery, bool designTime)
 		{
-			return base.For(sqlQuery).Concat(providers.SelectMany(provider => provider.For(sqlQuery)));
+			return base.For(sqlQuery, designTime).Concat(providers.SelectMany(provider => provider.For(sqlQuery, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(ISqlQueryColumn column)
+		public override IEnumerable<IAnnotation> For(ISqlQueryColumn column, bool designTime)
 		{
-			return base.For(column).Concat(providers.SelectMany(provider => provider.For(column)));
+			return base.For(column, designTime).Concat(providers.SelectMany(provider => provider.For(column, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IStoreFunction function)
+		public override IEnumerable<IAnnotation> For(IStoreFunction function, bool designTime)
 		{
-			return base.For(function).Concat(providers.SelectMany(provider => provider.For(function)));
+			return base.For(function, designTime).Concat(providers.SelectMany(provider => provider.For(function, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IFunctionColumn column)
+		public override IEnumerable<IAnnotation> For(IFunctionColumn column, bool designTime)
 		{
-			return base.For(column).Concat(providers.SelectMany(provider => provider.For(column)));
+			return base.For(column, designTime).Concat(providers.SelectMany(provider => provider.For(column, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IForeignKeyConstraint foreignKey)
+		public override IEnumerable<IAnnotation> For(IForeignKeyConstraint foreignKey, bool designTime)
 		{
-			return base.For(foreignKey).Concat(providers.SelectMany(provider => provider.For(foreignKey)));
+			return base.For(foreignKey, designTime).Concat(providers.SelectMany(provider => provider.For(foreignKey, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(ITableIndex index)
+		public override IEnumerable<IAnnotation> For(ITableIndex index, bool designTime)
 		{
-			return base.For(index).Concat(providers.SelectMany(provider => provider.For(index)));
+			return base.For(index, designTime).Concat(providers.SelectMany(provider => provider.For(index, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(IUniqueConstraint constraint)
+		public override IEnumerable<IAnnotation> For(IUniqueConstraint constraint, bool designTime)
 		{
-			return base.For(constraint).Concat(providers.SelectMany(provider => provider.For(constraint)));
+			return base.For(constraint, designTime).Concat(providers.SelectMany(provider => provider.For(constraint, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(ISequence sequence)
+		public override IEnumerable<IAnnotation> For(ISequence sequence, bool designTime)
 		{
-			return base.For(sequence).Concat(providers.SelectMany(provider => provider.For(sequence)));
+			return base.For(sequence, designTime).Concat(providers.SelectMany(provider => provider.For(sequence, designTime)));
 		}
 
 		/// <inheritdoc />
-		public override IEnumerable<IAnnotation> For(ICheckConstraint checkConstraint)
+		public override IEnumerable<IAnnotation> For(ICheckConstraint checkConstraint, bool designTime)
 		{
-			return base.For(checkConstraint).Concat(providers.SelectMany(provider => provider.For(checkConstraint)));
+			return base.For(checkConstraint, designTime).Concat(providers.SelectMany(provider => provider.For(checkConstraint, designTime)));
 		}
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using System;
 using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
@@ -8,12 +10,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// Installer Havit.Data.Entity.Patterns a souvisejících služeb.
 	/// </summary>
 	public interface IEntityPatternsInstaller
-	{
+	{		
 		/// <summary>
-		/// Registruje do DI containeru DbContext a související.
+		/// Registruje do DI containeru DbContext vč. IDbContextFactory.
 		/// </summary>
-		IEntityPatternsInstaller AddDbContext<TDbContext>(DbContextOptions options = null)
-			where TDbContext : class, IDbContext;
+		public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext;
+
+		/// <summary>
+		/// Registruje do DI containeru DbContext s DbContext poolingem vč. IDbContextFactory.
+		/// </summary>
+		public IEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext;
 
 		/// <summary>
 		/// Registruje do DI containeru služby pro lokalizaci.
@@ -27,6 +35,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		IEntityPatternsInstaller AddLookupService<TService, TImplementation>()
 			where TService : class
 			where TImplementation : class, TService, ILookupDataInvalidationService;
+
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
+		IEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
+			where TService : class
+			where TImplementation : class, TService
+			where TLookupDataInvalidationService : ILookupDataInvalidationService;
 
 		/// <summary>
 		/// Registruje do DI containeru služby HFW pro Entity Framework Core.

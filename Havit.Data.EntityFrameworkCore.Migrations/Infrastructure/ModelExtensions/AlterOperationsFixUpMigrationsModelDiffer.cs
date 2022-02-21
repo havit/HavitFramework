@@ -82,7 +82,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
                 IsRowVersion = originalOperation.IsRowVersion,
                 IsUnicode = originalOperation.IsUnicode,
                 MaxLength = originalOperation.MaxLength,
-                OldColumn = new AlterColumnOperation // TODO: EF5: Zvalidovat typ ColumnOperation
+                OldColumn = new AlterColumnOperation
                 {
                     ClrType = originalOperation.OldColumn.ClrType,
                     ComputedColumnSql = originalOperation.OldColumn.ComputedColumnSql,

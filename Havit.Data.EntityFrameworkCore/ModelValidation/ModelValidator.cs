@@ -62,7 +62,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda třída obsahuje právě jeden primární klíč.
 		/// </summary>
-		internal IEnumerable<string> CheckPrimaryKeyIsNotComposite(IEntityType entityType)
+		internal IEnumerable<string> CheckPrimaryKeyIsNotComposite(IReadOnlyEntityType entityType)
 		{
 			if (entityType.FindPrimaryKey().Properties.Count > 1)
 			{
@@ -73,9 +73,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda je primární klíč pojmenovaný "Id".
 		/// </summary>
-		internal IEnumerable<string> CheckPrimaryKeyName(IEntityType entityType)
+		internal IEnumerable<string> CheckPrimaryKeyName(IReadOnlyEntityType entityType)
 		{
-			foreach (IProperty keyProperty in entityType.FindPrimaryKey().Properties)
+			foreach (IReadOnlyProperty keyProperty in entityType.FindPrimaryKey().Properties)
 			{
 				if (keyProperty.Name != "Id")
 				{
@@ -87,9 +87,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda je primární klíč typu System.Int32.
 		/// </summary>
-		internal IEnumerable<string> CheckPrimaryKeyType(IEntityType entityType)
+		internal IEnumerable<string> CheckPrimaryKeyType(IReadOnlyEntityType entityType)
 		{
-			foreach (IProperty keyProperty in entityType.FindPrimaryKey().Properties)
+			foreach (IReadOnlyProperty keyProperty in entityType.FindPrimaryKey().Properties)
 			{
 				if (keyProperty.ClrType != typeof(int))
 				{
@@ -101,9 +101,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, aby žádná vlastnost nekončila na "ID" (kapitálkami).
 		/// </summary>
-		internal IEnumerable<string> CheckIdPascalCaseNamingConvention(IEntityType entityType)
+		internal IEnumerable<string> CheckIdPascalCaseNamingConvention(IReadOnlyEntityType entityType)
 		{
-			foreach (IProperty property in entityType.GetProperties())
+			foreach (IReadOnlyProperty property in entityType.GetProperties())
 			{
 				if (property.Name.EndsWith("ID", false, CultureInfo.InvariantCulture))
 				{
@@ -115,9 +115,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda mají všechny stringové vlastnosti uvedenu maximální délku.
 		/// </summary>
-		internal IEnumerable<string> CheckStringsHaveMaxLengths(IEntityType entityType)
+		internal IEnumerable<string> CheckStringsHaveMaxLengths(IReadOnlyEntityType entityType)
 		{
-			foreach (IProperty property in entityType.GetProperties())
+			foreach (IReadOnlyProperty property in entityType.GetProperties())
 			{
 				if (property.ClrType == typeof(string))
 				{
@@ -146,7 +146,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda jsou použity pouze podporované nested types.
 		/// </summary>
-		internal IEnumerable<string> CheckSupportedNestedTypes(IEntityType entityMap)
+		internal IEnumerable<string> CheckSupportedNestedTypes(IReadOnlyEntityType entityMap)
 		{
 			Type[] nestedTypes = entityMap.ClrType.GetNestedTypes();
 
@@ -162,9 +162,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda mají navigační vlastnosti cizí klíč.
 		/// </summary>
-		internal IEnumerable<string> CheckNavigationPropertiesHaveForeignKeys(IEntityType entityType)
+		internal IEnumerable<string> CheckNavigationPropertiesHaveForeignKeys(IReadOnlyEntityType entityType)
 		{
-			foreach (INavigation navigationProperty in entityType.GetNavigations())
+			foreach (IReadOnlyNavigation navigationProperty in entityType.GetNavigations())
 			{
 				// Pro Owned types nemůžeme mít cizí klíč (Bug 41479).
 				if ((!navigationProperty.ForeignKey.IsOwnership) && navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty()))
@@ -177,7 +177,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbol, musí mít generovaný klíč.
 		/// </summary>
-		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IEntityType entityType)
+		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IReadOnlyEntityType entityType)
 		{
 			bool hasEntryEnum = entityType.ClrType.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
 			bool primaryKeySequence = entityType.FindPrimaryKey().Properties.Single().GetDefaultValueSql()?.ToUpper().Contains("NEXT VALUE FOR") ?? false;
@@ -202,9 +202,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda všechny vlastnosti, jejichž název končí 'Id' jsou cizím klíčem.
 		/// </summary>
-		internal IEnumerable<string> CheckOnlyForeignKeysEndsWithId(IEntityType entityType)
+		internal IEnumerable<string> CheckOnlyForeignKeysEndsWithId(IReadOnlyEntityType entityType)
 		{
-			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
+			foreach (IReadOnlyProperty property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
 			{
 				if (property.Name.EndsWith("Id") && !property.IsForeignKey() && !property.IsKey())
 				{
@@ -216,9 +216,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// <summary>
 		/// Kontroluje, zda názvy všech cizích klíčů končí 'Id'.
 		/// </summary>
-		internal IEnumerable<string> CheckAllForeignKeysEndsWithId(IEntityType entityType)
+		internal IEnumerable<string> CheckAllForeignKeysEndsWithId(IReadOnlyEntityType entityType)
 		{
-			foreach (var property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
+			foreach (IReadOnlyProperty property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
 			{
 				if (!property.Name.EndsWith("Id") && property.IsForeignKey())
 				{
@@ -230,7 +230,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
         /// <summary>
         /// Kontroluje, zda není registrován žádný Owned Type.
         /// </summary>
-        internal IEnumerable<string> CheckNoOwnedIsRegistered(IEntityType entityType)
+        internal IEnumerable<string> CheckNoOwnedIsRegistered(IReadOnlyEntityType entityType)
         {
             if (entityType.IsOwned())
             {

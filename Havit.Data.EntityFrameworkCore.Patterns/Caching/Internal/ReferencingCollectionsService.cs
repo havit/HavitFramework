@@ -39,18 +39,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal
                             {
                                 ClrType = entityType.ClrType,
                                 // abychom vzali referencující kolekce, vezmeme cizí klíče a z nich "opačný směr", tj. kolekci (neřešíme vazbu 1:1)
-                                ReferencingCollections = entityType.GetForeignKeys()
-                                    .Where(item => (item.PrincipalToDependent != null)
-                                        && (item.PrincipalToDependent is Microsoft.EntityFrameworkCore.Metadata.Internal.Navigation)
-                                        && (((Microsoft.EntityFrameworkCore.Metadata.Internal.Navigation)item.PrincipalToDependent).CollectionAccessor != null))
-                                    .Select(foreignKey =>
+                                ReferencingCollections = entityType.GetNavigations()
+                                    .Where(navigation => navigation.Inverse?.IsCollection ?? false) // Hledáme navigace vedoucí na entityType, proto musíme použít Inverse
+                                    .Select(navigation =>
                                     {
-                                        var property = foreignKey.Properties.Single();
+                                        var property = navigation.ForeignKey.Properties.Single();
                                         return new ReferencingCollection
                                         {
-                                            EntityType = foreignKey.PrincipalEntityType.ClrType,
+                                            EntityType = navigation.ForeignKey.PrincipalEntityType.ClrType,
                                             GetForeignKeyValue = (dbContext2, entity) => dbContext2.GetEntry(entity, suppressDetectChanges: true).CurrentValues[property],
-                                            CollectionPropertyName = foreignKey.PrincipalToDependent.Name
+                                            CollectionPropertyName = navigation.ForeignKey.PrincipalToDependent.Name
                                         };
                                     })
                                     .ToList()

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Sockets;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.Data.Patterns.Transactions.Internal;
 using Havit.Diagnostics.Contracts;
 using Havit.Services;
 
@@ -19,7 +18,6 @@ namespace Havit.Data.Patterns.DataSeeds
 		private readonly List<IDataSeed> dataSeeds;
 		private readonly IDataSeedRunDecision dataSeedRunDecision;
 		private readonly IDataSeedPersisterFactory dataSeedPersisterFactory;
-		private readonly ITransactionWrapper transactionWrapper;
 
 		/// <summary>
 		/// Konstruktor.
@@ -27,18 +25,16 @@ namespace Havit.Data.Patterns.DataSeeds
 		/// <param name="dataSeeds">Předpisy seedování objektů.</param>
 		/// <param name="dataSeedRunDecision">Služba vracející, zda se má dataseed spustit. Lze takto spouštění potlačit (např. pokud již bylo spuštěno).</param>
 		/// <param name="dataSeedPersisterFactory">Persister seedovaných objektů (factory).</param>
-		/// <param name="transactionWrapper">Transaction wraper zajišťující běh všech dataseedů v transakci.</param>
 		/// <remarks>
 		/// Revize použití s ohledem na https://github.com/volosoft/castle-windsor-ms-adapter/issues/32:
 		/// DbDataSeedPersister je registrován jako transientní se závislostí DbContext, který je v tomto případě rovněž transientní.
 		/// Proto se v tomto případě factory IServiceFactory&lt;IDataSeedPersister&gt; popsaná issue netýká.
 		/// </remarks>
-		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersisterFactory dataSeedPersisterFactory, ITransactionWrapper transactionWrapper)
+		public DataSeedRunner(IEnumerable<IDataSeed> dataSeeds, IDataSeedRunDecision dataSeedRunDecision, IDataSeedPersisterFactory dataSeedPersisterFactory)
 	    {
 	        Contract.Requires<ArgumentNullException>(dataSeeds != null, nameof(dataSeeds));
 	        Contract.Requires<ArgumentNullException>(dataSeedRunDecision != null, nameof(dataSeedRunDecision));
 	        Contract.Requires<ArgumentNullException>(dataSeedPersisterFactory != null, nameof(dataSeedPersisterFactory));
-	        Contract.Requires<ArgumentNullException>(transactionWrapper != null, nameof(transactionWrapper));
 			
 			this.dataSeeds = dataSeeds.ToList();
 
@@ -49,7 +45,6 @@ namespace Havit.Data.Patterns.DataSeeds
 
 	        this.dataSeedRunDecision = dataSeedRunDecision;
 	        this.dataSeedPersisterFactory = dataSeedPersisterFactory;
-			this.transactionWrapper = transactionWrapper;
 		}
 
 	    /// <summary>
@@ -66,10 +61,7 @@ namespace Havit.Data.Patterns.DataSeeds
         /// </summary>
 	    public virtual void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	    {
-			transactionWrapper.ExecuteWithTransaction(() =>
-			{
-				SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
-			});
+			SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
 	    }
 
         /// <summary>

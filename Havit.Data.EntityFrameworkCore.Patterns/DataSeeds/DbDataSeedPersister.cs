@@ -10,6 +10,7 @@ using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 {
@@ -18,19 +19,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 	/// </summary>
 	public class DbDataSeedPersister : IDataSeedPersister
 	{
-		internal IDbContext DbContext { get; }
+        private readonly IDbContextFactory dbContextFactory;
+        private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		/// <remarks>
-		/// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
-		/// Ale dále se k němu chováme jako k IDbContextu.
-		/// </remarks>
-		public DbDataSeedPersister(IDbContextTransient dbContext)
+        /// <summary>
+        /// Konstruktor.
+        /// </summary>
+        /// <remarks>
+        /// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
+        /// Ale dále se k němu chováme jako k IDbContextu.
+        /// </remarks>
+        public DbDataSeedPersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
 		{
-			this.DbContext = dbContext;
-		}
+            this.dbContextFactory = dbContextFactory;
+            this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
+        }
 
 		/// <summary>
 		/// Dle předpisu seedování dat (konfigurace) provede persistenci seedovaných dat.
@@ -38,39 +41,47 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		public void Save<TEntity>(DataSeedConfiguration<TEntity> configuration)
 			where TEntity : class
 		{
-			CheckConditions(configuration);
-
-			IDbSet<TEntity> dbSet = DbContext.Set<TEntity>();
-			List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
-			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
-			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
-
-			if (!configuration.UpdateEnabled)
+			ExecuteWithDbContext(dbContext =>
 			{
-				seedDataPairsToUpdate.RemoveAll(item => item.DbEntity != null);
-			}
-
-			List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
-			foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
-			{
-				unpairedSeedDataPair.DbEntity = EntityActivator.CreateInstance<TEntity>();
-				unpairedSeedDataPair.IsNew = true;
-			}
-
-			Update(configuration, seedDataPairsToUpdate);
-			dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
-
-			DoBeforeSaveActions(configuration, seedDataPairs);
-			DbContext.SaveChanges();
-			DoAfterSaveActions(configuration, seedDataPairs);
-
-			if (configuration.ChildrenSeeds != null)
-			{
-				foreach (ChildDataSeedConfigurationEntry childSeed in configuration.ChildrenSeeds)
+				if (dbDataSeedTransactionContext.CurrentTransaction != null)
 				{
-					childSeed.SaveAction(this);
+					dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
 				}
-			}
+
+				CheckConditions(configuration);
+
+				IDbSet<TEntity> dbSet = dbContext.Set<TEntity>();
+				List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
+				List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
+				List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
+
+				if (!configuration.UpdateEnabled)
+				{
+					seedDataPairsToUpdate.RemoveAll(item => item.DbEntity != null);
+				}
+
+				List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
+				foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
+				{
+					unpairedSeedDataPair.DbEntity = EntityActivator.CreateInstance<TEntity>();
+					unpairedSeedDataPair.IsNew = true;
+				}
+
+				Update(configuration, seedDataPairsToUpdate, dbContext);
+				dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
+
+				DoBeforeSaveActions(configuration, seedDataPairs);
+				dbContext.SaveChanges();
+				DoAfterSaveActions(configuration, seedDataPairs);
+
+				if (configuration.ChildrenSeeds != null)
+				{
+					foreach (ChildDataSeedConfigurationEntry childSeed in configuration.ChildrenSeeds)
+					{
+						childSeed.SaveAction(this);
+					}
+				}
+			});
 		}
 
 		/// <summary>
@@ -78,13 +89,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// </summary>
 		internal void CheckConditions<TEntity>(DataSeedConfiguration<TEntity> configuration)
 		{
-			Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
+			Contract.Requires<ArgumentNullException>(configuration != null);
 			Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
-			var entityType = DbContext.Model.FindEntityType(typeof(TEntity));
-			var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
+			ExecuteWithDbContext(dbContext =>
+			{
+				var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+				var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
 
-			Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(GetPropertyName(expression.Body.RemoveConvert()))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
+				Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(GetPropertyName(expression.Body.RemoveConvert()))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
+			});
 		}
 
 		/// <summary>
@@ -276,11 +290,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// <summary>
 		/// Provede vytvoření či aktualizaci dat dle předpisu seedování.
 		/// </summary>
-		private void Update<TEntity>(DataSeedConfiguration<TEntity> configuration, IEnumerable<SeedDataPair<TEntity>> pairs)
+		private void Update<TEntity>(DataSeedConfiguration<TEntity> configuration, IEnumerable<SeedDataPair<TEntity>> pairs, IDbContext dbContext)
 			where TEntity : class
 		{
 			// current entity type from model
-			IEntityType entityType = DbContext.Model.FindEntityType(typeof(TEntity));
+			IEntityType entityType = null;
+			ExecuteWithDbContext(dbContext =>
+			{
+				entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+			});
 
 			List<IProperty> propertiesForInserting = GetPropertiesForInserting(entityType);
 			List<IProperty> propertiesForUpdating = GetPropertiesForUpdating<TEntity>(entityType,
@@ -352,7 +370,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		}
 
 		/// <summary>
-		/// Vrátí seznam vlasností, které můžeme vložit.
+		/// Vrátí seznam vlastností, které můžeme vložit.
 		/// </summary>		
 		/// <remarks>
 		/// Nelze se spolehnout na ValueGenerated.OnAdd, protože podle https://github.com/aspnet/EntityFrameworkCore/issues/5366 platí:
@@ -361,7 +379,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// </remarks>
 		internal List<IProperty> GetPropertiesForInserting(IEntityType entityType)
 		{
-			Contract.Requires<ArgumentNullException>(entityType != null, nameof(entityType));
+			Contract.Requires<ArgumentNullException>(entityType != null);
 
 			return entityType
 				.GetProperties()
@@ -376,7 +394,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		/// </summary>		
 		internal List<IProperty> GetPropertiesForUpdating<TEntity>(IEntityType entityType, List<Expression<Func<TEntity, object>>> excludedProperties)
 		{
-			Contract.Requires<ArgumentNullException>(entityType != null, nameof(entityType));
+			Contract.Requires<ArgumentNullException>(entityType != null);
 
 			List<IProperty> result = entityType
 				.GetProperties()
@@ -395,13 +413,44 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			return result;
 		}
 
-		internal bool PropertyIsIdentity(IProperty property)
+		private bool PropertyIsIdentity(IProperty property)
 		{
-			return property.ClrType == typeof(Int32) // identitu uvažujeme jen pro Int32
-				&& property.IsPrimaryKey() // byť to není správné, uvažujeme identitu jen na primárním klíči
-				&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // pokud má nastaveno OnAdd, může mít použito autoincrement
-				&& (property.GetDefaultValue() == null) // ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu výrazem (třeba prázdný řetězec)
-				&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // a ovšem to jen tehdy, pokud nemá použitu nějakou jinou defaultní hodnotu (třeba sekvenci)
+			// Mohli bychom použít (a funguje spolehlivě) https://github.com/dotnet/efcore/blob/786798e80b518f1af450152359c081d1d7c93d59/src/EFCore.SqlServer/Migrations/SqlServerMigrationsSqlGenerator.cs#L2184
+
+			// Jenže jiné providery než SQL Server nemusí mít Identity či obdobu.
+			// Takže by bylo technicky správné, aby tato metoda vrátila false.
+			// Jenže, to by nám fungovaly unit testy se seedováním dat v každém provideru trochu jinak.
+			// Uděláme zde tedy předpoklad, že:
+			// * Identity definujeme jen na primárním klíči
+			// * Identity definujeme jen na typu Int32
+			// * Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL. 
+
+			return property.ClrType == typeof(Int32) // Identity definujeme jen na typu Int32
+				&& property.IsPrimaryKey() // Identity definujeme jen na primárním klíči
+				&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
+				&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
 		}
+
+		private void ExecuteWithDbContext(Action<IDbContext> action)
+        {
+			if (_currentDbContext == null)
+            {
+				using (var dbContext = dbContextFactory.CreateDbContext())
+				try
+				{
+					_currentDbContext = dbContext;
+					action(_currentDbContext);
+				}
+				finally
+                {
+					_currentDbContext = null;
+				}
+            }
+			else
+            {
+				action(_currentDbContext);
+            }
+        }
+		private IDbContext _currentDbContext;
 	}
 }

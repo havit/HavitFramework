@@ -13,12 +13,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
     /// </summary>
     public abstract class BusinessLayerDbContext : DbContext
 	{
-		protected new virtual BusinessLayerDbContextSettings Settings => (BusinessLayerDbContextSettings)base.Settings;
-
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected BusinessLayerDbContext()
+		protected BusinessLayerDbContext() : this(new DbContextOptions<BusinessLayerDbContext>())
 		{
 		}
 
@@ -31,11 +29,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		}
 
 		/// <inheritdoc />
-		protected override DbContextSettings CreateDbContextSettings()
+		protected virtual BusinessLayerDbContextSettings CreateDbContextSettings()
 		{
 			return new BusinessLayerDbContextSettings
 			{
-				UseStringPropertiesDefaultValueConvention = true,
                 ModelExtensionsAssembly = GetType().Assembly
 			};
 		}
@@ -45,34 +42,40 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		{
 			base.OnConfiguring(optionsBuilder);
 
+			// Sice není ideální ve frameworku použít OnConfiguring, nicméně použití BusinessLayerDbContextu se nepředpokládá tam, kde toto bude blokující pro použití DbContextu (např. pooled db connection)
+			BusinessLayerDbContextSettings settings = CreateDbContextSettings();
+			
+			optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions.UseStringPropertiesDefaultValueConvention(true));
+
 			optionsBuilder.UseModelExtensions(builder => builder
-						 .ModelExtensionsAssembly(Settings.ModelExtensionsAssembly)
+						 .ModelExtensionsAssembly(settings.ModelExtensionsAssembly)
 				.UseStoredProcedures()
 				.UseExtendedProperties()
 				.UseBusinessLayerStoredProcedures()
 				.UseViews());
 			optionsBuilder.UseSqlServerExtendedProperties();
 
-			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionExtendedPropertiesConventionPlugin>(() => Settings.UseCollectionExtendedPropertiesConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionOrderIndexConventionPlugin>(() => Settings.UseCollectionOrderIndexConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<ExtendedPropertiesConventionPlugin>(() => Settings.UseAttributeBasedExtendedPropertiesConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueAttributeConventionPlugin>(() => Settings.UseDefaultValueAttributeConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueSqlAttributeConventionPlugin>(() => Settings.UseDefaultValueSqlAttributeConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<CharColumnTypeForCharPropertyConventionPlugin>(() => Settings.UseCharColumnTypeForCharPropertyConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<NamespaceExtendedPropertyConventionPlugin>(() => Settings.UseNamespaceExtendedPropertyConvention);
+
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionExtendedPropertiesConventionPlugin>(() => settings.UseCollectionExtendedPropertiesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CollectionOrderIndexConventionPlugin>(() => settings.UseCollectionOrderIndexConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ExtendedPropertiesConventionPlugin>(() => settings.UseAttributeBasedExtendedPropertiesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueAttributeConventionPlugin>(() => settings.UseDefaultValueAttributeConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<DefaultValueSqlAttributeConventionPlugin>(() => settings.UseDefaultValueSqlAttributeConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<CharColumnTypeForCharPropertyConventionPlugin>(() => settings.UseCharColumnTypeForCharPropertyConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<NamespaceExtendedPropertyConventionPlugin>(() => settings.UseNamespaceExtendedPropertyConvention);
 
 			// reagují na přidání cizího klíče, naše konvence musíme dostat před tvorbu indexů vestavěnou v EF Core
-			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysColumnNamesConventionPlugin>(() => Settings.UseForeignKeysColumnNamesConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<PrefixedTablePrimaryKeysConventionPlugin>(() => Settings.UsePrefixedTablePrimaryKeysConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysColumnNamesConventionPlugin>(() => settings.UseForeignKeysColumnNamesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<PrefixedTablePrimaryKeysConventionPlugin>(() => settings.UsePrefixedTablePrimaryKeysConvention);
 			// konvence používá primární klíč nastavený v předchozí konvenci
-			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTablesParentEntitiesConventionPlugin>(() => Settings.UseLocalizationTablesParentEntitiesConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTablesParentEntitiesConventionPlugin>(() => settings.UseLocalizationTablesParentEntitiesConvention);
 			// reagují na přidání cizího klíče, konvenci musíme dostat před tvorbu indexů vestavěnou v EF Core, ale až za naše předchozí konvence
-			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysIndexConventionPlugin>(() => Settings.UseForeignKeysIndexConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<ForeignKeysIndexConventionPlugin>(() => settings.UseForeignKeysIndexConvention);
 
-			optionsBuilder.ConditionalyUseConventionSetPlugin<LanguageUiCultureIndexConventionPlugin>(() => Settings.UseLanguageUiCultureIndexConvention);
-			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTableIndexConventionPlugin>(() => Settings.LocalizationTableIndexConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LanguageUiCultureIndexConventionPlugin>(() => settings.UseLanguageUiCultureIndexConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTableIndexConventionPlugin>(() => settings.LocalizationTableIndexConvention);
 
-			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => Settings.UseXmlCommentsForDescriptionPropertyConvention);
+			optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => settings.UseXmlCommentsForDescriptionPropertyConvention);
 		}
 	}
 }

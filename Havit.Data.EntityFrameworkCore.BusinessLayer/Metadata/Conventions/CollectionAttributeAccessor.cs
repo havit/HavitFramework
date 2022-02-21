@@ -12,12 +12,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// </summary>
 	public class CollectionAttributeAccessor
 	{
-		private readonly INavigation navigation;
+		private readonly IReadOnlyNavigation navigation;
 
 		/// <summary>
 		/// Konštruktor.
 		/// </summary>
-		public CollectionAttributeAccessor(INavigation navigation)
+		public CollectionAttributeAccessor(IReadOnlyNavigation navigation)
 		{
 			this.navigation = navigation;
 		}

@@ -1,50 +1,48 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 {
 	/// <summary>
 	/// Installer, která výchozí konfiguraci služeb pro cachování (EntityCacheManager a závislosti - viz metody).
 	/// </summary>
-	public class DefaultCachingInstaller<TLifetime> : ICachingInstaller<TLifetime>
+	public class DefaultCachingInstaller : ICachingInstaller
 	{
 		/// <inheritdoc />
-		public void Install(IServiceInstaller<TLifetime> installer)
+		public void Install(IServiceCollection services)
 		{
-			installer.TryAddServiceTransient<IEntityCacheManager, EntityCacheManager>(); // kvůli https://github.com/volosoft/castle-windsor-ms-adapter/issues/32 nemůžeme být singleton, protože potřebujeme AKTUÁLNÍ DbContext, ale přes factory dostáváme vždy nový
-			RegisterEntityCacheOptionsGenerator(installer);
-			RegisterEntityCacheKeyGenerator(installer);
-			RegisterEntityCacheSupportDecision(installer);
+			services.TryAddTransient<IEntityCacheManager, EntityCacheManager>();
+			RegisterEntityCacheOptionsGenerator(services);
+			RegisterEntityCacheKeyGenerator(services);
+			RegisterEntityCacheSupportDecision(services);
 		}
 
 		/// <summary>
 		/// Zaregistruje službu, která vrací CacheOptions, které budou použity pro cachování entit.		
 		/// </summary>
-		protected virtual void RegisterEntityCacheOptionsGenerator(IServiceInstaller<TLifetime> installer)
+		protected virtual void RegisterEntityCacheOptionsGenerator(IServiceCollection services)
 		{
-			installer.TryAddServiceTransient<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
-			installer.TryAddServiceSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
+			services.TryAddTransient<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
+			services.TryAddSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
 		}
 
 		/// <summary>
 		/// Zaregistruje službu, která vrací klíče, pod kterými budou položky v cache uloženy.
 		/// </summary>
-		protected virtual void RegisterEntityCacheKeyGenerator(IServiceInstaller<TLifetime> installer)
+		protected virtual void RegisterEntityCacheKeyGenerator(IServiceCollection services)
 		{
-			installer.TryAddServiceTransient<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
-			installer.TryAddServiceSingleton<IEntityCacheKeyGeneratorStorage, EntityCacheKeyGeneratorStorage>();
+			services.TryAddTransient<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
+			services.TryAddSingleton<IEntityCacheKeyGeneratorStorage, EntityCacheKeyGeneratorStorage>();
 		}
 
 		/// <summary>
 		/// Zaregistruje službu, která rozhoduje, zda bude daná entita cachována.
 		/// </summary>
-		protected virtual void RegisterEntityCacheSupportDecision(IServiceInstaller<TLifetime> installer)
+		protected virtual void RegisterEntityCacheSupportDecision(IServiceCollection services)
 		{
-			installer.TryAddServiceTransient<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
-			installer.TryAddServiceSingleton<IAnnotationsEntityCacheSupportDecisionStorage, AnnotationsEntityCacheSupportDecisionStorage>();
+			services.TryAddTransient<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
+			services.TryAddSingleton<IAnnotationsEntityCacheSupportDecisionStorage, AnnotationsEntityCacheSupportDecisionStorage>();
 		}
 	}
 }

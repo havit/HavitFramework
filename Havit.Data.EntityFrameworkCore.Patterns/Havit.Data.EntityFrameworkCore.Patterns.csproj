@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>netstandard2.1</TargetFramework>
+	<TargetFramework>net6.0</TargetFramework>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>($NoWarn);EF1001</NoWarn>
   </PropertyGroup>
@@ -14,8 +14,8 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.3.10</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
+	  <PackageVersion>2.6.0</PackageVersion>
+	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	<LangVersion>latest</LangVersion>
   </PropertyGroup>
 

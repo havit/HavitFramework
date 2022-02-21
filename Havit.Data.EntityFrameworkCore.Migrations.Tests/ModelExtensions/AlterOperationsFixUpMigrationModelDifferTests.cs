@@ -387,21 +387,21 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions
 	        {
 	        }
 
-	        public override IEnumerable<IAnnotation> For(IColumn column)
+	        public override IEnumerable<IAnnotation> For(IColumn column, bool designTime)
             {
                 return column.PropertyMappings.First().Property
 	                .GetAnnotations()
 	                .Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
-            public override IEnumerable<IAnnotation> For(ITable table)
+            public override IEnumerable<IAnnotation> For(ITable table, bool designTime)
             {
 	            return table.EntityTypeMappings.First().EntityType
 		            .GetAnnotations()
 		            .Where(a => a.Name.StartsWith(TestAnnotationPrefix));
             }
 
-            public override IEnumerable<IAnnotation> For(IRelationalModel relationalModel)
+            public override IEnumerable<IAnnotation> For(IRelationalModel relationalModel, bool designTime)
             {
 	            return relationalModel.Model
 		            .GetAnnotations()

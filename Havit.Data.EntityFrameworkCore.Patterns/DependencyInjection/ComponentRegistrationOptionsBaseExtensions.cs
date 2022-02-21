@@ -13,23 +13,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Řekne, že má být zaregistrována služba, která neprovádí žádné cachování.
 		/// </summary>
-		public static void ConfigureNoCaching<TLifetime>(this ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions)
+		public static void ConfigureNoCaching(this ComponentRegistrationOptions componentRegistrationOptions)
 		{
-			componentRegistrationOptions.CachingInstaller = new NoCachingInstaller<TLifetime>();
+			componentRegistrationOptions.CachingInstaller = new NoCachingInstaller();
 		}
 
 		/// <summary>
 		/// Řekne, že má být zaregistrována služba, která cachuje úplně všechno se sliding expirací.
 		/// </summary>
-		public static void ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching<TLifetime>(this ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions, TimeSpan slidingExpiration)
+		public static void ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(this ComponentRegistrationOptions componentRegistrationOptions, TimeSpan slidingExpiration)
 		{
-			componentRegistrationOptions.CachingInstaller = new CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller<TLifetime>(slidingExpiration);
+			componentRegistrationOptions.CachingInstaller = new CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller(slidingExpiration);
 		}
 
 		/// <summary>
 		/// Řekne, že má být zaregistrována služba vlastním installerem.
 		/// </summary>
-		public static void ConfigureCustomCaching<TLifetime>(this ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions, ICachingInstaller<TLifetime> installer)
+		public static void ConfigureCustomCaching(this ComponentRegistrationOptions componentRegistrationOptions, ICachingInstaller installer)
 		{
 			componentRegistrationOptions.CachingInstaller = installer;
 		}

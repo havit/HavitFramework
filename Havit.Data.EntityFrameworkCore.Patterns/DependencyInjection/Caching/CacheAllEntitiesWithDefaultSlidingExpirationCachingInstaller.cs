@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 	/// <summary>
 	/// Installer, která konfiguraci služeb pro cachování. Cachovat se budu všechny objekty s definovanou sliding expirací.
 	/// </summary>
-	public class CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller<TLifetime> : DefaultCachingInstaller<TLifetime>
+	public class CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller : DefaultCachingInstaller
 	{
 		private readonly TimeSpan slidingExpiration;
 
@@ -22,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		}
 
 		/// <inheritdoc />
-		protected override void RegisterEntityCacheOptionsGenerator(IServiceInstaller<TLifetime> installer)
+		protected override void RegisterEntityCacheOptionsGenerator(IServiceInstaller installer)
 		{
 			// no base call!
 
@@ -38,7 +38,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		}
 
 		/// <inheritdoc />
-		protected override void RegisterEntityCacheSupportDecision(IServiceInstaller<TLifetime> installer)
+		protected override void RegisterEntityCacheSupportDecision(IServiceInstaller installer)
 		{
 			// no base call!
 			installer.AddServiceSingleton<IEntityCacheSupportDecision, CacheAllEntitiesEntityCacheSupportDecision>();

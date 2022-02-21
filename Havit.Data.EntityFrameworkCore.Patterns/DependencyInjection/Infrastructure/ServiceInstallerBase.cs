@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,33 +10,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 	/// Třída pro registraci služeb do dependency injection controlleru.
 	/// Abstrakrní implementace, která pomáhá implementovat v potomcích jen funkcionalitu specifickou jednotlivým containerům.
 	/// </summary>
-	public abstract class ServiceInstallerBase<TLifetime> : IServiceInstaller<TLifetime>
+	public abstract class ServiceInstallerBase : IServiceInstaller
 	{
-		/// <summary>
-		/// Lifetime pro singletony.
-		/// </summary>
-		protected abstract TLifetime SingletonLifetime { get; }
-
-		/// <summary>
-		/// Lifetime pro transientní služby.
-		/// </summary>
-		protected abstract TLifetime TransientLifetime { get; }
-
 		/// <inheritdoc />
 		public abstract void TryAddFactory(Type factoryType);
 
         #region AddService...
         /// <inheritdoc />
-        public void AddService<TService, TImplementation>(TLifetime lifetime)
+        public void AddService<TService, TImplementation>(ServiceLifetime lifetime)
 		{
 			AddService(typeof(TService), typeof(TImplementation), lifetime);
 		}
 
 		/// <inheritdoc />
-		public abstract void AddService(Type serviceType, Type implementationType, TLifetime lifetime);
+		public abstract void AddService(Type serviceType, Type implementationType, ServiceLifetime lifetime);
 
 		/// <inheritdoc />
-		public void AddServices(Type[] serviceTypes, Type implementationType, TLifetime lifetime)
+		public void AddServices(Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime)
 		{
 			if (serviceTypes.Length == 0)
 			{
@@ -56,30 +47,42 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// Registrace více služeb k dané implementaci.
 		/// Před voláním je ověřeno, že dochází k registraci minimálně dvou služeb.
 		/// </summary>
-		protected abstract void AddMultipleServices(Type[] serviceTypes, Type implementationType, TLifetime lifetime);
+		protected abstract void AddMultipleServices(Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime);
 
 		/// <inheritdoc />
 		public void AddServiceSingleton<TService, TImplementation>()
 		{
-			AddService<TService, TImplementation>(this.SingletonLifetime);
+			AddService<TService, TImplementation>(ServiceLifetime.Singleton);
 		}
 
 		/// <inheritdoc />
 		public void AddServiceSingleton(Type serviceType, Type implementationType)
 		{
-			AddService(serviceType, implementationType, this.SingletonLifetime);
+			AddService(serviceType, implementationType, ServiceLifetime.Singleton);
+		}
+
+		/// <inheritdoc />
+		public void AddServiceScoped(Type serviceType, Type implementationType)
+		{
+			AddService(serviceType, implementationType, ServiceLifetime.Scoped);
+		}
+
+		/// <inheritdoc />
+		public void AddServiceScoped<TService, TImplementation>()
+		{
+			AddService<TService, TImplementation>(ServiceLifetime.Scoped);
 		}
 
 		/// <inheritdoc />
 		public void AddServiceTransient<TService, TImplementation>()
 		{
-			AddService<TService, TImplementation>(this.TransientLifetime);			
+			AddService<TService, TImplementation>(ServiceLifetime.Transient);			
 		}
 
 		/// <inheritdoc />
 		public void AddServiceTransient(Type serviceType, Type implementationType)
 		{
-			AddService(serviceType, implementationType, this.TransientLifetime);
+			AddService(serviceType, implementationType, ServiceLifetime.Transient);
 		}
 
 		/// <inheritdoc />
@@ -88,7 +91,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// <inheritdoc />
 		public void AddServicesTransient(Type[] serviceTypes, Type implementationType)
 		{
-			AddServices(serviceTypes, implementationType, this.TransientLifetime);
+			AddServices(serviceTypes, implementationType, ServiceLifetime.Transient);
 		}
         #endregion
 
@@ -96,35 +99,47 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
         /// <inheritdoc />
         public void TryAddServiceTransient<TService, TImplementation>()
         {
-			TryAddService<TService, TImplementation>(this.TransientLifetime);
+			TryAddService<TService, TImplementation>(ServiceLifetime.Transient);
         }
 
 		/// <inheritdoc />
 		public void TryAddServiceTransient(Type serviceType, Type implementationType)
         {
-			TryAddService(serviceType, implementationType, this.TransientLifetime);            
+			TryAddService(serviceType, implementationType, ServiceLifetime.Transient);            
         }
+
+		/// <inheritdoc />
+		public void TryAddServiceScoped(Type serviceType, Type implementationType)
+		{
+			TryAddService(serviceType, implementationType, ServiceLifetime.Scoped);
+		}
+
+		/// <inheritdoc />
+		public void TryAddServiceScoped<TService, TImplementation>()
+		{
+			TryAddService<TService, TImplementation>(ServiceLifetime.Scoped);
+		}
 
 		/// <inheritdoc />
 		public void TryAddServiceSingleton<TService, TImplementation>()
         {
-			TryAddService<TService, TImplementation>(this.SingletonLifetime);
+			TryAddService<TService, TImplementation>(ServiceLifetime.Singleton);
         }
 
 		/// <inheritdoc />
 		public void TryAddServiceSingleton(Type serviceType, Type implementationType)
         {
-			TryAddService(serviceType, implementationType, this.SingletonLifetime);
+			TryAddService(serviceType, implementationType, ServiceLifetime.Singleton);
 		}
 
 		/// <inheritdoc />
-		public void TryAddService<TService, TImplementation>(TLifetime lifetime)
+		public void TryAddService<TService, TImplementation>(ServiceLifetime lifetime)
         {
 			TryAddService(typeof(TService), typeof(TImplementation), lifetime);
 		}
 
 		/// <inheritdoc />
-		public abstract void TryAddService(Type serviceType, Type implementationType, TLifetime lifetime);
-		#endregion
-	}
+		public abstract void TryAddService(Type serviceType, Type implementationType, ServiceLifetime lifetime);
+        #endregion
+    }
 }

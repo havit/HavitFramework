@@ -16,15 +16,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 	/// <summary>
 	/// Třída pro registraci služeb do dependency injection containeru, kterým je ServiceCollection.
 	/// </summary>
-	internal class ServiceCollectionServiceInstaller : ServiceInstallerBase<ServiceLifetime>
+	internal class ServiceCollectionServiceInstaller : ServiceInstallerBase
 	{
 		private readonly IServiceCollection services;
-
-		/// <inheritdoc/>
-		protected override ServiceLifetime SingletonLifetime => ServiceLifetime.Singleton;
-
-		/// <inheritdoc/>
-		protected override ServiceLifetime TransientLifetime => ServiceLifetime.Transient;
 
 		/// <summary>
 		/// Konstruktor.

@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 	/// Třída pro registraci služeb do dependency injection controlleru.
 	/// Pomáhá abstrahovat registraci do různých DI containerů.
 	/// </summary>
-	public interface IServiceInstaller<TLifetime>
+	public interface IServiceInstaller
 	{
         #region AddService...
         /// <summary>
@@ -22,6 +22,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// Přidá transientní službu s implementací do DI containeru.
 		/// </summary>
 		void AddServiceTransient(Type serviceType, Type implementationType);
+
+		/// <summary>
+		/// Přidá scoped službu s implementací do DI containeru.
+		/// </summary>
+		void AddServiceScoped(Type serviceType, Type implementationType);
+
+		/// <summary>
+		/// Přidá scoped službu s implementací do DI containeru.
+		/// </summary>
+		void AddServiceScoped<TService, TImplementation>();
 
 		/// <summary>
 		/// Přidá službu s implementací do DI containeru jako singleton.
@@ -36,12 +46,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// <summary>
 		/// Přidá službu s implementací do DI containeru s uvedeným lifetime.
 		/// </summary>
-		void AddService<TService, TImplementation>(TLifetime lifetime);
+		void AddService<TService, TImplementation>(ServiceLifetime lifetime);
 
 		/// <summary>
 		/// Přidá službu s implementací do DI containeru s uvedeným lifetime.
 		/// </summary>
-		void AddService(Type serviceType, Type implementationType, TLifetime lifetime);
+		void AddService(Type serviceType, Type implementationType, ServiceLifetime lifetime);
 
 		/// <summary>
 		/// Zaregistruje singleton s konkrétní instancí.
@@ -52,7 +62,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// Přidá služby (ev. jedinou službu) s implementací do DI containeru s uvedeným lifetime.
 		/// Implementace je zaregistrována pod všechny uvedené interfaces.
 		/// </summary>
-		void AddServices(Type[] serviceTypes, Type implementationType, TLifetime lifetime);
+		void AddServices(Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime);
 
 		/// <summary>
 		/// Přidá transientní služby (ev. jedinou službu) s implementací do DI containeru.
@@ -62,6 +72,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		#endregion
 
 		#region TryAddService...
+
+		/// <summary>
+		/// Přidá scoped službu s implementací do DI containeru, pokud ještě není registrována.
+		/// </summary>
+		void TryAddServiceScoped(Type serviceType, Type implementationType);
+
+		/// <summary>
+		/// Přidá scoped službu s implementací do DI containeru, pokud ještě není registrována.
+		/// </summary>
+		void TryAddServiceScoped<TService, TImplementation>();
 
 		/// <summary>
 		/// Přidá transientní službu s implementací do DI containeru, pokud ještě není registrována.
@@ -86,12 +106,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		/// <summary>
 		/// Přidá službu s implementací do DI containeru s uvedeným lifetime, pokud ještě není registrována.
 		/// </summary>
-		void TryAddService<TService, TImplementation>(TLifetime lifetime);
+		void TryAddService<TService, TImplementation>(ServiceLifetime lifetime);
 
 		/// <summary>
 		/// Přidá službu s implementací do DI containeru s uvedeným lifetime, pokud ještě není registrována.
 		/// </summary>
-		void TryAddService(Type serviceType, Type implementationType, TLifetime lifetime);
+		void TryAddService(Type serviceType, Type implementationType, ServiceLifetime lifetime);
 		#endregion
 
 		/// <summary>

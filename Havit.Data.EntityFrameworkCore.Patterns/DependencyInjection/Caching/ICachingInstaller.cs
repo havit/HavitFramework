@@ -8,11 +8,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 	/// <summary>
 	/// Installer cachovací strategie.
 	/// </summary>
-	public interface ICachingInstaller<TLifetime>
+	public interface ICachingInstaller
 	{
 		/// <summary>
 		/// Zaregistruje služby.
 		/// </summary>
-		public void Install(IServiceInstaller<TLifetime> serviceInstaller);
+		public void Install(IServiceInstaller serviceInstaller);
 	}
 }

@@ -13,15 +13,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// <summary>
 	/// Implementace <see cref="IEntityPatternsInstaller"/>u pro IServiceCollection.
 	/// </summary>
-	public class ServiceCollectionEntityPatternsInstaller : EntityPatternsInstallerBase<ServiceLifetime, ServiceCollectionEntityPatternsInstaller>
+	public class ServiceCollectionEntityPatternsInstaller : EntityPatternsInstallerBase<ServiceCollectionEntityPatternsInstaller>
 	{
         private readonly IServiceCollection services;
-        private readonly ServiceCollectionComponentRegistrationOptions componentRegistrationOptions;
+        private readonly ComponentRegistrationOptions componentRegistrationOptions;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller(IServiceCollection services, ServiceCollectionComponentRegistrationOptions componentRegistrationOptions) : base(new ServiceCollectionServiceInstaller(services), componentRegistrationOptions)
+		public ServiceCollectionEntityPatternsInstaller(IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions) : base(new ServiceCollectionServiceInstaller(services), componentRegistrationOptions)
 		{
             this.services = services;
             this.componentRegistrationOptions = componentRegistrationOptions;
@@ -47,7 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		public ServiceCollectionEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
-			Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
+			//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
 
 			services.AddPooledDbContextFactory<TDbContext>(optionsAction, poolSize);
 			services.AddDbContextPool<IDbContext, TDbContext>(optionsAction);			

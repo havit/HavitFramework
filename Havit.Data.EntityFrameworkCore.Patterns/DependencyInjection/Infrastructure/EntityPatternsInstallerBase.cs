@@ -29,25 +29,26 @@ using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure
 {
 	/// <summary>
 	/// Bázová implementace <see cref="IEntityPatternsInstaller"/>u.
-	/// Pro použití pro jednotlivé DI kontejnery. Chce se, aby pro každý kontejner byla práce minimální, de facto jen implementace IServiceInstaller&lt;TLifetime&gt;.
+	/// Pro použití pro jednotlivé DI kontejnery. Chce se, aby pro každý kontejner byla práce minimální.
 	/// </summary>
-	public abstract class EntityPatternsInstallerBase<TLifetime, TEntityPatternsInstaller> 
-		where TEntityPatternsInstaller : EntityPatternsInstallerBase<TLifetime, TEntityPatternsInstaller>
+	public abstract class EntityPatternsInstallerBase<TEntityPatternsInstaller> 
+		where TEntityPatternsInstaller : EntityPatternsInstallerBase<TEntityPatternsInstaller>
 	{
-		private readonly IServiceInstaller<TLifetime> installer;
-		private readonly ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions;
+		private readonly IServiceInstaller installer;
+		private readonly ComponentRegistrationOptions componentRegistrationOptions;
 
         /// <summary>
         /// Konstruktor.
         /// </summary>
         /// <param name="installer">Installer, kterým budou provedeny registrace.</param>
         /// <param name="componentRegistrationOptions">Nastavení registrací.</param>
-        protected EntityPatternsInstallerBase(IServiceInstaller<TLifetime> installer, ComponentRegistrationOptionsBase<TLifetime> componentRegistrationOptions)
+        protected EntityPatternsInstallerBase(IServiceInstaller installer, ComponentRegistrationOptions componentRegistrationOptions)
 		{
 			Contract.Requires<ArgumentNullException>(installer != null);
 			Contract.Requires<ArgumentNullException>(componentRegistrationOptions != null);
@@ -65,7 +66,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
 			Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
 
-			installer.TryAddService(typeof(ILanguageService), currentLanguageServiceType, componentRegistrationOptions.GeneralLifestyle);
+			installer.TryAddServiceScoped(typeof(ILanguageService), currentLanguageServiceType);
 			installer.TryAddServiceTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
 			installer.TryAddServiceSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
 			installer.TryAddServiceTransient<ILocalizationService, LocalizationService>();
@@ -87,11 +88,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			installer.TryAddServiceTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 			installer.TryAddServiceTransient<IDataSeedPersister, DbDataSeedPersister>();
 			// TODO EF Core 6: Scoped
-			installer.TryAddService<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>(componentRegistrationOptions.UnitOfWorkLifestyle); 
+			installer.TryAddServiceScoped<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>(); 
 			installer.TryAddFactory(typeof(IDataSeedPersisterFactory));
 
-			installer.TryAddService(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType, componentRegistrationOptions.UnitOfWorkLifestyle);
-			installer.TryAddService<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>(componentRegistrationOptions.DataLoaderLifestyle);
+			installer.TryAddServiceScoped(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType);
+			installer.TryAddServiceScoped<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>();
 			installer.TryAddServiceTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
 
 			installer.TryAddServiceSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
@@ -156,7 +157,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 				Type repositoryConstructedInterface = repositoryType.GetSingleConstructedType(typeof(IRepository<>)); // získáme IRepository<KonkrétníTyp>
 				Type repositoryInterface = repositoryType.GetInterfaces().Where(repositoryTypeInterfaceType => repositoryTypeInterfaceType.ImplementsInterface(repositoryConstructedInterface)).Single(); // získáme IKonkrétníTypDataSource
 
-				installer.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface }, repositoryType, componentRegistrationOptions.RepositoriesLifestyle);
+				installer.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface }, repositoryType, ServiceLifetime.Scoped);
 			}
 
 			// DataEntries
@@ -171,7 +172,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 			{
 				Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypEntries
 
-				installer.AddService(dataEntryInterface, dataEntryType, componentRegistrationOptions.DataEntriesLifestyle);
+				installer.AddServiceScoped(dataEntryInterface, dataEntryType);
 
 				// DataEntrySymbolService+Storage potřebujeme jen pro ty dataEntryTypes, které mají dva konstruktory.
 				// Pokud má jeden konstruktor, je to IRepository.

@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
-    /// <summary>
-    /// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
-    /// <remarks>
-    /// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
-    /// </remarks>
-    /// </summary>
-    public abstract class BusinessLayerDbContext : DbContext
+	/// <summary>
+	/// Bázová trieda pre <see cref="DbContext"/> používaný v Business Layer projektoch. Mal by sa používať výhradne pre správu schémy DB.
+	/// </summary>
+	/// <remarks>
+	/// Pridáva podporu pre extended properties a DB Injections a ich spoločnú infraštruktúru. Definuje rôzne konvencie používané na Business Layer projektoch.
+	/// </remarks>
+	public abstract class BusinessLayerDbContext : DbContext
 	{
 		/// <summary>
 		/// Konstruktor.
@@ -28,7 +28,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		{
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Vrací konfiguraci konvencí pro BusinessLayerDbContextu.
+		/// </summary>
 		protected virtual BusinessLayerDbContextSettings CreateDbContextSettings()
 		{
 			return new BusinessLayerDbContextSettings

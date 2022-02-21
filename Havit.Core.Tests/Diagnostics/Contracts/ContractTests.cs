@@ -55,7 +55,7 @@ namespace Havit.Tests.Diagnostics.Contracts
 		}
 
 		[TestMethod]
-		public void Contract_GenericRequires_WithMessage()
+		public void Contract_GenericRequires_ArgumentException_WithMessage()
 		{
 			// Act
 			ArgumentException argumentException = null;
@@ -64,6 +64,25 @@ namespace Havit.Tests.Diagnostics.Contracts
 				Contract.Requires<ArgumentException>(false, "Custom message.");
 			}
 			catch (ArgumentException e)
+			{
+				argumentException = e;
+			}
+
+			// Assert
+			Assert.IsNotNull(argumentException);
+			Assert.AreEqual("Custom message.", argumentException.Message);
+		}
+
+		[TestMethod]
+		public void Contract_GenericRequires_ArgumentNullException_WithMessage()
+		{
+			// Act
+			ArgumentNullException argumentException = null;
+			try
+			{
+				Contract.Requires<ArgumentNullException>(false, "Custom message.");
+			}
+			catch (ArgumentNullException e)
 			{
 				argumentException = e;
 			}

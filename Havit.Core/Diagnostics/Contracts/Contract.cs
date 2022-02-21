@@ -24,7 +24,7 @@ namespace Havit.Diagnostics.Contracts
 		public static void Requires([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-		public static void Requires( bool condition, string userMessage = null)
+		public static void Requires(bool condition, string userMessage = null)
 #endif
 		{			
 			if (!condition)
@@ -104,7 +104,15 @@ namespace Havit.Diagnostics.Contracts
 			Exception resultException;
 			try
 			{
-				resultException = (Exception)Activator.CreateInstance(typeof(TException), message);
+				if (typeof(TException) == typeof(ArgumentNullException))
+				{
+					resultException = new ArgumentNullException(null, message);
+				}
+				else
+				{
+					resultException = (Exception)Activator.CreateInstance(typeof(TException), message);
+				}
+
 			}
 			catch
 			{

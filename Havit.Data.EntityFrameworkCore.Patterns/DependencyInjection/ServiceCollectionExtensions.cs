@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
@@ -20,6 +21,51 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			ComponentRegistrationOptions componentRegistrationOptions = new ComponentRegistrationOptions();
 			componentRegistrationAction?.Invoke(componentRegistrationOptions);
 			return new ServiceCollectionEntityPatternsInstaller(services, componentRegistrationOptions);
+		}
+
+
+		/// <inheritdoc />
+		internal static IServiceCollection AddServices(this IServiceCollection services, Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime)
+		{
+			if (serviceTypes.Length == 0)
+			{
+				throw new ArgumentException("ServiceTypes required.", nameof(serviceTypes));
+			}
+
+			if (serviceTypes.Length == 1)
+			{
+				services.Add(new ServiceDescriptor(serviceTypes.Single(), implementationType, lifetime));
+			}
+			else
+			{
+				services.AddMultipleServices(serviceTypes, implementationType, lifetime);
+			}
+
+			return services;
+		}
+
+		private static void AddMultipleServices(this IServiceCollection services, Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime)
+		{
+			if (lifetime == ServiceLifetime.Transient)
+			{
+				foreach (var serviceType in serviceTypes)
+				{
+					services.Add(new ServiceDescriptor(serviceType, implementationType, ServiceLifetime.Transient));
+				}
+				return;
+			}
+
+			// je Scoped nebo Singleton a zároveň máme více interfaces
+			var firstServiceTypeToRegister = serviceTypes.First();
+
+			// registrace prvního interface
+			services.Add(new ServiceDescriptor(firstServiceTypeToRegister, implementationType, lifetime /* Scoped nebo Singleton */));
+
+			// registrace druhého a dalšího interface
+			foreach (var serviceType in serviceTypes.Skip(1) /* až od druhého */)
+			{
+				services.AddTransient(serviceType, sp => sp.GetRequiredService(firstServiceTypeToRegister));
+			}
 		}
 	}
 }

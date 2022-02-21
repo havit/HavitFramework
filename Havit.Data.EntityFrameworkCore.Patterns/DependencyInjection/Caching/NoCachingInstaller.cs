@@ -4,6 +4,7 @@ using System.Text;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
 using Havit.Services.Caching;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 {
@@ -13,9 +14,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 	public sealed class NoCachingInstaller : ICachingInstaller
 	{
 		/// <inheritdoc />
-		public void Install(IServiceInstaller serviceInstaller)
+		public void Install(IServiceCollection services)
 		{
-			serviceInstaller.AddServiceSingleton<IEntityCacheManager, NoCachingEntityCacheManager>();
+			services.AddSingleton<IEntityCacheManager, NoCachingEntityCacheManager>();
 		}
 	}
 }

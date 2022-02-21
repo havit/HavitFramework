@@ -20,11 +20,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastruc
 		{
 			return serviceProvider.GetRequiredService<IEnumerable<IEntityValidator<TEntity>>>();
 		}
-
-		public void Release<TEntity>(IEnumerable<IEntityValidator<TEntity>> services)
-			where TEntity : class
-		{
-			// NOOP
-		}
 	}
 }

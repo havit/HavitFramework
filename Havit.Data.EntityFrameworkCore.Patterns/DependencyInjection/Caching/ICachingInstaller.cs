@@ -1,7 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 {
@@ -13,6 +10,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
 		/// <summary>
 		/// Zaregistruje služby.
 		/// </summary>
-		public void Install(IServiceInstaller serviceInstaller);
+		public void Install(IServiceCollection serviceCollection);
 	}
 }

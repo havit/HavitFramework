@@ -20,11 +20,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProces
 		/// </remarks>
 		IEnumerable<IBeforeCommitProcessor<TEntity>> Create<TEntity>()
 			where TEntity : class;
-
-		/// <summary>
-		/// Uvolňuje vytvořené procesory.
-		/// </summary>
-		void Release<TEntity>(IEnumerable<IBeforeCommitProcessor<TEntity>> processors)
-			where TEntity : class;
 	}
 }

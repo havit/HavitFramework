@@ -19,7 +19,6 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
         /// <summary>
         /// Konstruktor.
         /// </summary>
-        /// <param name="optionsBuilder"></param>
         public FrameworkConventionSetOptionsBuilder(DbContextOptionsBuilder optionsBuilder)
         {
             this.optionsBuilder = optionsBuilder;

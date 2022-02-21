@@ -106,8 +106,7 @@ namespace Havit.Extensions.DependencyInjection.Tests
 				serviceProvider.GetRequiredService<IGenericService<string, string>>();
 				serviceProvider.GetRequiredService<IGenericService<object, string>>();
 			}
-			// Assert
-			// assert: exception was thrown
+			// Assert: no exception was thrown
 		}
 
 		[TestMethod]
@@ -125,8 +124,7 @@ namespace Havit.Extensions.DependencyInjection.Tests
 				serviceProvider.GetRequiredService<IGenericService<object, string>>();
 			}
 
-			// Assert
-			// assert: exception was thrown
+			// Assert: no exception was thrown
 		}
 
 		[TestMethod]

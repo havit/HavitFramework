@@ -73,7 +73,6 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		/// <summary>
 		/// Získá kopii objektu se shodným nastavením.
 		/// </summary>
-		/// <returns></returns>
 		public FrameworkConventionSetOptionsExtension Clone()
         {
 			return new FrameworkConventionSetOptionsExtension(this);

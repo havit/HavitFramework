@@ -14,8 +14,8 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	  <PackageVersion>2.6.0</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
+	  <PackageVersion>2.6.0-preview02</PackageVersion>
+	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	<LangVersion>latest</LangVersion>
   </PropertyGroup>
 

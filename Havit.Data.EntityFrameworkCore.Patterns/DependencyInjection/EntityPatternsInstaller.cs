@@ -39,9 +39,9 @@ using System.Text;
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 {
 	/// <summary>
-	/// Implementace <see cref="IEntityPatternsInstaller"/>u pro IServiceCollection.
+	/// Implementace <see cref="IEntityPatternsInstaller"/>u.
 	/// </summary>
-	public class ServiceCollectionEntityPatternsInstaller
+	internal class EntityPatternsInstaller : IEntityPatternsInstaller
 	{
         private readonly IServiceCollection services;
         private readonly ComponentRegistrationOptions componentRegistrationOptions;
@@ -49,7 +49,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller(IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions)
+		public EntityPatternsInstaller(IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions)
 		{
             this.services = services;
             this.componentRegistrationOptions = componentRegistrationOptions;
@@ -58,7 +58,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddLocalizationServices<TLanguage>()
+		public IEntityPatternsInstaller AddLocalizationServices<TLanguage>()
 			where TLanguage : class, ILanguage
 		{
 			Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
@@ -75,7 +75,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddEntityPatterns()
+		public IEntityPatternsInstaller AddEntityPatterns()
 		{
 			componentRegistrationOptions.CachingInstaller.Install(services);
 
@@ -121,7 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
+		public IEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
 		{
 			Type[] dataLayerDependencyInjectionEnabledTypes = dataLayerAssembly.GetTypes().Where(type => type.IsClass && type.IsPublic).Where(IsNotAbstract).Where(DoesNotHaveFakeAttribute).ToArray();
 
@@ -208,7 +208,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddLookupService<TService, TImplementation>()
+		public IEntityPatternsInstaller AddLookupService<TService, TImplementation>()
 			where TService : class
 			where TImplementation : class, TService, ILookupDataInvalidationService
 		{
@@ -218,7 +218,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
+		public IEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
 			where TService : class
 			where TImplementation : class, TService
 			where TLookupDataInvalidationService : ILookupDataInvalidationService
@@ -229,10 +229,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			return this;
 		}
 
-		/// <summary>
-		/// Registruje do DI containeru DbContext a IDbContextTransient.
-		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
 			// na pořadí záleží
@@ -243,10 +241,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			return this;
 		}
 
-		/// <summary>
-		/// Registruje do DI containeru DbContext s DbContext poolingem. Dále registruje IDbContextTransient.
-		/// </summary>
-		public ServiceCollectionEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
+		
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		public IEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
 			//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);

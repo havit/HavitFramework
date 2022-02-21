@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// <summary>
 	/// Extension metody ke konfiguraci ComponentRegistrationOptions.
 	/// </summary>
-	public static class ComponentRegistrationOptionsBaseExtensions
+	public static class ComponentRegistrationOptionsExtensions
 	{
 		/// <summary>
 		/// Řekne, že má být zaregistrována služba, která neprovádí žádné cachování.

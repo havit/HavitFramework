@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// <summary>
 	/// Pomocné třídy pro registraci služeb do DI kontejneru.
 	/// </summary>
-	internal static class EntityPatternsInstallerBaseHelpers
+	internal static class EntityPatternsInstallerHelpers
 	{
 		/// <summary>
 		/// Vrací true, pokud daná třída má jako předka (předka předka, předka předka předka) daný typ.

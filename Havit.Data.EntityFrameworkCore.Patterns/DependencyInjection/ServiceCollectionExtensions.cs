@@ -16,15 +16,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// </summary>
 		/// <param name="services">ServiceCollection.</param>
 		/// <param name="componentRegistrationAction">Konfigurace registrace komponent.</param>
-		public static ServiceCollectionEntityPatternsInstaller WithEntityPatternsInstaller(this IServiceCollection services, Action<ComponentRegistrationOptions> componentRegistrationAction = null)
+		public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IServiceCollection services, Action<ComponentRegistrationOptions> componentRegistrationAction = null)
 		{
 			ComponentRegistrationOptions componentRegistrationOptions = new ComponentRegistrationOptions();
 			componentRegistrationAction?.Invoke(componentRegistrationOptions);
-			return new ServiceCollectionEntityPatternsInstaller(services, componentRegistrationOptions);
+			return new EntityPatternsInstaller(services, componentRegistrationOptions);
 		}
 
-
-		/// <inheritdoc />
 		internal static IServiceCollection AddServices(this IServiceCollection services, Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime)
 		{
 			if (serviceTypes.Length == 0)
@@ -44,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			return services;
 		}
 
-		private static void AddMultipleServices(this IServiceCollection services, Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime)
+		internal static void AddMultipleServices(this IServiceCollection services, Type[] serviceTypes, Type implementationType, ServiceLifetime lifetime)
 		{
 			if (lifetime == ServiceLifetime.Transient)
 			{

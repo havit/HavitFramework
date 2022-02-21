@@ -24,10 +24,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 {
 	[TestClass]
-	public class ServiceCollectionEntityPatternsInstallerTests
+	public class EntityPatternsInstallerTests
 	{
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_DbContextIsScoped()
+		public void EntityPatternsInstaller_DbContextIsScoped()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -55,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_PooledDbContextIsScoped()
+		public void EntityPatternsInstaller_PooledDbContextIsScoped()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
@@ -74,7 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_PooledDbContextIsReused()
+		public void EntityPatternsInstaller_PooledDbContextIsReused()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
@@ -100,7 +100,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
+		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -117,7 +117,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterDataSourcesAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterDataSourcesAndDependencies()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -134,7 +134,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterRepositoriesAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterRepositoriesAndDependencies()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -151,7 +151,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -166,7 +166,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -182,7 +182,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterEntityCacheManager()
+		public void EntityPatternsInstaller_ShouldRegisterEntityCacheManager()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -198,7 +198,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -214,7 +214,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection
 		}
 
 		[TestMethod]
-		public void ServiceCollectionEntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
+		public void EntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
 		{
 			// Arrange
 			IServiceProvider serviceProvider = CreateAndSetupServiceProvider();

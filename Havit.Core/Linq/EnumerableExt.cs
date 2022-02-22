@@ -90,11 +90,24 @@ namespace Havit.Linq
 			return result.ToList();
 		}
 
-#if !NET6_0_OR_GREATER
 		/// <summary>
 		/// Skip last items.
 		/// </summary>
+#if NET6_0_OR_GREATER
+		// System.Linq v .NET 6 obsahuje tuto extension metodu. Při použití je pak hlášena chyba "The call is ambiguous between the following methods...".
+		// To bychom mohli vyřešit odstraněním této metody z .NET 6, nicméně to pak může přinést nepěkný aspekt, takovýto:
+		// Mějme knihovnu implementovanou pro .NET Standard 2.0, která použije tuto extension metodu SkipLast.
+		// Nicméně jako runtime projektu, který tuto knihovnu bude používat, bude zvolen .NET 6.
+		// Vše půjde bez chyb zkompilovat, ale v runtime dostaneme MissingMethodException, že metoda v assembly není.
+
+		// Jako řešení volíme, aby tato metoda v .NET 6 existovala, ale nebyla extension metodou.
+		// To pak v .NET Standard 2.0 umožní použít syntactic sugar extension metody a použije se naše metoda.
+		// Při spuštění pod .NET 6 dojde k použití této metody´, metoda bude nalezena a to, že nejde o extension metodu nevadí.		
+		// Kompilace volání SkipLast(...) v .NET 6 použije extension metodu z System.Linq.Enumerable.
+		public static IEnumerable<TSource> SkipLast<TSource>(IEnumerable<TSource> source, int count)
+#else
 		public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
+#endif
 		{
 			if (count <= 0)
 			{
@@ -140,7 +153,6 @@ namespace Havit.Linq
 				}
 			}
 		}
-#endif
 
 		/// <summary>
 		/// Skip last items.

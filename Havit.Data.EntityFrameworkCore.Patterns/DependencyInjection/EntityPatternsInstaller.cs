@@ -236,8 +236,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
 			// na pořadí záleží
-			services.AddDbContextFactory<TDbContext>(optionsAction);
-			services.AddDbContext<IDbContext, TDbContext>(optionsAction);
+			services.AddDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction));
+			services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 
 			services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 			return this;
@@ -252,11 +252,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
 
-			services.AddPooledDbContextFactory<TDbContext>(optionsAction, poolSize);
-			services.AddDbContextPool<IDbContext, TDbContext>(optionsAction);			
+			services.AddPooledDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction), poolSize);
+			services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));			
 
 			services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 			return this;
+		}
+
+		private Action<DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<DbContextOptionsBuilder> customOptionsBuilder)
+        {
+			return (DbContextOptionsBuilder targetOptionsBuilder) =>
+			{
+				targetOptionsBuilder.UseFrameworkConventions();
+				targetOptionsBuilder.UseDbLockedMigrator();
+				customOptionsBuilder?.Invoke(targetOptionsBuilder);
+			};
 		}
 
 		/// <summary>

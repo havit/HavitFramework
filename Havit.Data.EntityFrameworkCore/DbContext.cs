@@ -25,18 +25,18 @@ namespace Havit.Data.EntityFrameworkCore
 	    /// </summary>
 	    private List<Action> afterSaveChangesActions;
 
-		/// <summary>
-		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
-		/// </summary>
-		protected DbContext() : this(new DbContextOptions<DbContext>())
-		{
-			
-		}
+        /// <summary>
+        /// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
+        /// </summary>
+        protected DbContext() : this(new DbContextOptions<DbContext>())
+        {
 
-		/// <summary>
-		/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext(DbContextOptions)"/>.
-		/// </summary>
-		protected DbContext(DbContextOptions options) : base(EnsureCustomExtensions(options))
+        }
+
+        /// <summary>
+        /// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext(DbContextOptions)"/>.
+        /// </summary>
+        protected DbContext(DbContextOptions options) : base(options)
 	    {
 	    }
 
@@ -52,10 +52,21 @@ namespace Havit.Data.EntityFrameworkCore
 			ModelCreatingCompleting(modelBuilder);
 		}
 
-		/// <summary>
-		/// Zaregistruje třídu DataSeedVersion do modelu
-		/// </summary>
-		protected void RegisterDataSeedVersion(ModelBuilder modelBuilder)
+		/// <inheritdoc />
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+			// Nebude fungovat v DbContext poolingu.
+			// Pro DbContext pooling se přidávají tyto konvence v AddDbContext(Pool).
+			optionsBuilder.UseFrameworkConventions();
+			optionsBuilder.UseDbLockedMigrator();
+		}
+
+        /// <summary>
+        /// Zaregistruje třídu DataSeedVersion do modelu
+        /// </summary>
+        protected void RegisterDataSeedVersion(ModelBuilder modelBuilder)
 	    {
 		    EntityTypeBuilder<DataSeedVersion> dataSeedVersionEntity = modelBuilder.Entity<DataSeedVersion>();
 		    dataSeedVersionEntity.ToTable("__DataSeed");
@@ -241,21 +252,5 @@ namespace Havit.Data.EntityFrameworkCore
 	    {
 		    return SaveChangesAsync(cancellationToken);			
 	    }
-
-		/// <summary>
-		/// Zajistí, aby byly v options použity frameworkové koncence a DbLockedMigrator.
-		/// </summary>
-		private static DbContextOptions EnsureCustomExtensions(DbContextOptions options)
-		{
-			return optionsDictionary.GetOrAdd(options, (o =>
-			{
-				DbContextOptionsBuilder builder = new DbContextOptionsBuilder(o);
-				builder.UseFrameworkConventions();
-				builder.UseDbLockedMigrator();
-				return builder.Options;
-			}));
-		}
-
-		private static ConcurrentDictionary<DbContextOptions, DbContextOptions> optionsDictionary = new ConcurrentDictionary<DbContextOptions, DbContextOptions>();
 	}
 }

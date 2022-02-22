@@ -249,8 +249,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 		{
 			return new List<IDbContextFactory>
 			{
-				new LambdaDbContextFactory(() => new DbDataSeedPersisterTestsDbContext(new DbContextOptionsBuilder().UseSqlServer("FAKE").Options)),
-				new LambdaDbContextFactory(() => new DbDataSeedPersisterTestsDbContext(new DbContextOptionsBuilder().UseInMemoryDatabase("FAKE").Options))
+				new LambdaDbContextFactory(() => new DbDataSeedPersisterTestsDbContext(new DbContextOptionsBuilder<DbDataSeedPersisterTestsDbContext>().UseSqlServer("FAKE").Options)),
+				new LambdaDbContextFactory(() => new DbDataSeedPersisterTestsDbContext(new DbContextOptionsBuilder<DbDataSeedPersisterTestsDbContext>().UseInMemoryDatabase("FAKE").Options))
 			};
 		}
 

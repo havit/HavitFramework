@@ -33,6 +33,7 @@ using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
+using Havit.EFCoreTests.DataLayer.Seeds.Persons;
 
 namespace ConsoleApp1
 {
@@ -47,10 +48,10 @@ namespace ConsoleApp1
 
 		private static IServiceProvider CreateServiceProvider()
 		{
-			//var loggerFactory = LoggerFactory.Create(builder => builder
-			//.AddFilter((categoryName, logLevel) => (((logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name)) 
-			//	|| (/*(logLevel == LogLevel.Info) &&*/ (categoryName == DbLoggerCategory.Database.Transaction.Name))))
-			//.AddSimpleConsole());
+			var loggerFactory = LoggerFactory.Create(builder => builder
+				.AddFilter((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name))
+				//.AddSimpleConsole()
+			);
 
 			IServiceCollection services = new ServiceCollection();
 			services.WithEntityPatternsInstaller()
@@ -59,9 +60,8 @@ namespace ConsoleApp1
 					optionsBuilder
 						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
 						//.UseInMemoryDatabase("ConsoleApp")
-						//.UseLoggerFactory(loggerFactory))
-				)
-				.AddEntityPatterns()
+						.UseLoggerFactory(loggerFactory))
+				.AddEntityPatterns()				
 				.AddLookupService<IUserLookupService, UserLookupService>();
 
 			services.AddSingleton<ITimeService, ServerTimeService>();
@@ -81,16 +81,24 @@ namespace ConsoleApp1
 		{
 			using (var scope = serviceProvider.CreateScope())
 			{
+				//scope.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
 				scope.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
+				//scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>();
 			}
 		}
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			for (int i = 0; i < 10000; i++)
+			for (int i = 0; i < 1000; i++)
 			{
-				using var scope = serviceProvider.CreateScope();
-				var dataSeedRunner = scope.ServiceProvider.GetRequiredService<IDbContext>();				
+				using (var scope = serviceProvider.CreateScope())
+				{
+					var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
+					var dataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
+					var persons = dataSource.Data.Where(p => p.BossId == null).ToList();
+
+					dataLoader.LoadAll(persons, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+				}
 			}
 		}
 	}

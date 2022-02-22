@@ -92,14 +92,9 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
 					string cloneModeValue = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(this.ParentTable), String.Format("Collection_{0}_CloneMode", this.PropertyName));
 					if (string.IsNullOrEmpty(cloneModeValue))
 					{
-						if (IsManyToMany)
-						{
-							cloneMode = CloneMode.Shallow;
-						}
-						else
-						{
-							cloneMode = CloneMode.No;							
-						}
+						// Historická poznámka: Dříve jsme jako default měli pro ManyToMany default Shallow, ale kód jsme pro pro Shallow negenerovali (bug).
+						// Generování shallow klonování kolekcí bylo doplněno, ale pro zpětnou kompatibilitu nastavíme CloneMode na No (tak jsme se ke kolekcím chovali dosud i přes hodnotu "Shallow").
+						cloneMode = CloneMode.No;							
 					}
 					else
 					{

@@ -21,12 +21,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 
 			// jediný záznam - testujeme na rovnost
 			if (values.Count == 1)
-			{								
+			{
+				var singleValueHolder = new SingleValueHolder(values.Single());
+
 				// item => item == [0]
 				return (Expression<Func<TEntity, bool>>)Expression.Lambda(
 					Expression.Equal(
 						propertyAccessor.Body,
-						Expression.Constant(values.Single())),
+						Expression.Property(Expression.Constant(singleValueHolder), nameof(SingleValueHolder.Value))),
 					propertyAccessor.Parameters);
 			}
 
@@ -38,10 +40,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 			// if 1 + 4 - 1 (4) == 4
 			if ((sortedKeysToQuery[0] + sortedKeysToQuery.Length - 1) == sortedKeysToQuery[sortedKeysToQuery.Length - 1]) // testujeme, zda jde o posloupnost IDček
 			{
+				var fromToValueHolder = new FromToValueHolder(sortedKeysToQuery.First(), sortedKeysToQuery.Last());
+
 				return (Expression<Func<TEntity, bool>>)Expression.Lambda(
 					Expression.AndAlso(
-						Expression.GreaterThanOrEqual(propertyAccessor.Body, Expression.Constant(sortedKeysToQuery.First())),
-						Expression.LessThanOrEqual(propertyAccessor.Body, Expression.Constant(sortedKeysToQuery.Last()))),
+						Expression.GreaterThanOrEqual(propertyAccessor.Body, Expression.Property(Expression.Constant(fromToValueHolder), nameof(FromToValueHolder.FromValue))),
+						Expression.LessThanOrEqual(propertyAccessor.Body, Expression.Property(Expression.Constant(fromToValueHolder), nameof(FromToValueHolder.ToValue)))),
 					propertyAccessor.Parameters);
 			}
 
@@ -52,7 +56,31 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 					typeof(List<int>).GetMethod("Contains"),
 					new List<Expression> { propertyAccessor.Body }),
 				propertyAccessor.Parameters);
+		}
+		
+		// SingleValueHolder.Value a FromToValueHolder.FromValue
+		// Názvy vlastností se propisují do názvu SQL Parametrů v databázovém dotazu.
 
+		private class SingleValueHolder
+        {			
+			public int Value { get; }
+
+            public SingleValueHolder(int value)
+            {
+				Value = value;
+            }
+        }
+
+		private class FromToValueHolder
+		{
+			public int FromValue { get; }
+			public int ToValue { get; }
+
+			public FromToValueHolder(int fromValue, int toValue)
+			{
+                FromValue = fromValue;
+                ToValue = toValue;
+            }
 		}
 	}
 }

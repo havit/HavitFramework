@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -246,10 +247,15 @@ namespace Havit.Data.EntityFrameworkCore
 		/// </summary>
 		private static DbContextOptions EnsureCustomExtensions(DbContextOptions options)
 		{
-			DbContextOptionsBuilder builder = new DbContextOptionsBuilder(options);
-			builder.UseFrameworkConventions();
-			builder.UseDbLockedMigrator();
-			return builder.Options;
+			return optionsDictionary.GetOrAdd(options, (o =>
+			{
+				DbContextOptionsBuilder builder = new DbContextOptionsBuilder(o);
+				builder.UseFrameworkConventions();
+				builder.UseDbLockedMigrator();
+				return builder.Options;
+			}));
 		}
+
+		private static ConcurrentDictionary<DbContextOptions, DbContextOptions> optionsDictionary = new ConcurrentDictionary<DbContextOptions, DbContextOptions>();
 	}
 }

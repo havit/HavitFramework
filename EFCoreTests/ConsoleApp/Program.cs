@@ -47,11 +47,10 @@ namespace ConsoleApp1
 
 		private static IServiceProvider CreateServiceProvider()
 		{
-			//var loggerFactory = LoggerFactory.Create();
-			var loggerFactory = LoggerFactory.Create(builder => builder
-			.AddFilter((categoryName, logLevel) => (((logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name)) 
-				|| (/*(logLevel == LogLevel.Info) &&*/ (categoryName == DbLoggerCategory.Database.Transaction.Name))))
-			.AddSimpleConsole());
+			//var loggerFactory = LoggerFactory.Create(builder => builder
+			//.AddFilter((categoryName, logLevel) => (((logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name)) 
+			//	|| (/*(logLevel == LogLevel.Info) &&*/ (categoryName == DbLoggerCategory.Database.Transaction.Name))))
+			//.AddSimpleConsole());
 
 			IServiceCollection services = new ServiceCollection();
 			services.WithEntityPatternsInstaller()
@@ -60,7 +59,8 @@ namespace ConsoleApp1
 					optionsBuilder
 						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
 						//.UseInMemoryDatabase("ConsoleApp")
-						.UseLoggerFactory(loggerFactory))
+						//.UseLoggerFactory(loggerFactory))
+				)
 				.AddEntityPatterns()
 				.AddLookupService<IUserLookupService, UserLookupService>();
 
@@ -70,7 +70,11 @@ namespace ConsoleApp1
 			services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
 			services.AddSingleton<IMemoryCache, MemoryCache>();			
 
-			return services.BuildServiceProvider();
+			return services.BuildServiceProvider(new ServiceProviderOptions
+            {
+				ValidateOnBuild = true,
+				ValidateScopes = true
+            });
 		}
 
 		private static void UpdateDatabase(IServiceProvider serviceProvider)
@@ -83,9 +87,11 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			using var scope = serviceProvider.CreateScope();
-			var dataSeedRunner = scope.ServiceProvider.GetRequiredService<IDataSeedRunner>();
-			dataSeedRunner.SeedData<ProtectedPropertiesProfile>();
+			for (int i = 0; i < 10000; i++)
+			{
+				using var scope = serviceProvider.CreateScope();
+				var dataSeedRunner = scope.ServiceProvider.GetRequiredService<IDbContext>();				
+			}
 		}
 	}
 }

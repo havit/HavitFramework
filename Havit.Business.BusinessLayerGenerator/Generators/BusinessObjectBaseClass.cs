@@ -2096,6 +2096,12 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 							ConsoleHelper.WriteLineWarning("Tabulka {0}: Kolekce {1} je typu 1:N a má nastaveno klonování typu Shallow, což není podporováno.", table.Name, collectionProperty.PropertyName);
 							continue;
 						}
+						
+						if (collectionProperty.CloneMode == CloneMode.Shallow)
+						{
+							writer.WriteLine(String.Format("clone.{0}.Value.AddRange(this.{0}.Value);", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+						}
+						
 						if (collectionProperty.CloneMode == CloneMode.Deep)
 						{
 							writer.WriteLine(String.Format("this.{0}.Value.LoadAll();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));

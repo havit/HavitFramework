@@ -142,6 +142,7 @@ namespace Havit.Services.FileStorage
 			}
 		}
 
+		/// <inheritdoc />
 		protected override void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
@@ -154,6 +155,7 @@ namespace Havit.Services.FileStorage
 			}
 		}
 
+		/// <inheritdoc />
 		protected override void PerformMove(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)

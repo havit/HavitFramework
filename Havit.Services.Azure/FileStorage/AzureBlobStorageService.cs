@@ -281,10 +281,41 @@ namespace Havit.Services.Azure.FileStorage
 			};
 		}
 
-		/// <summary>
-		/// Vrátí čas poslední modifikace souboru v UTC timezone.
-		/// </summary>
-		public override DateTime? GetLastModifiedTimeUtc(string fileName)
+		/// <inheritdoc />
+        protected override void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+        {
+			if (targetFileStorageService is AzureBlobStorageService targetAzureBlobStorageService)
+			{
+				BlobClient sourceBlobClient = this.GetBlobClient(sourceFileName);
+				BlobClient targetBlobClient = targetAzureBlobStorageService.GetBlobClient(targetFileName);
+				targetBlobClient.StartCopyFromUri(sourceBlobClient.Uri).WaitForCompletion();
+			}
+			else
+			{
+				base.PerformCopy(sourceFileName, targetFileStorageService, targetFileName);
+			}
+        }
+
+		/// <inheritdoc />
+		protected override async Task PerformCopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken)
+		{
+			if (targetFileStorageService is AzureBlobStorageService targetAzureBlobStorageService)
+			{
+				BlobClient sourceBlobClient = this.GetBlobClient(sourceFileName);
+				BlobClient targetBlobClient = targetAzureBlobStorageService.GetBlobClient(targetFileName);
+                CopyFromUriOperation operation = await targetBlobClient.StartCopyFromUriAsync(sourceBlobClient.Uri, null, cancellationToken).ConfigureAwait(false);
+				await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
+			}
+			else
+			{
+				base.PerformCopy(sourceFileName, targetFileStorageService, targetFileName);
+			}
+		}
+
+        /// <summary>
+        /// Vrátí čas poslední modifikace souboru v UTC timezone.
+        /// </summary>
+        public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 

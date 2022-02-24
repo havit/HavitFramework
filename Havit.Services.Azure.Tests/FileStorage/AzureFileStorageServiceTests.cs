@@ -209,6 +209,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_Copy_OverwritesTargetFile()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Copy_OverwritesTargetFile(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_CopyAsync_OverwritesTargetFile()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync_OverwritesTargetFile(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
 		public void AzureFileStorageService_Move()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_Move(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));

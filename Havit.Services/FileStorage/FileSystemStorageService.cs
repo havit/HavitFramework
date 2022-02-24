@@ -146,7 +146,7 @@ namespace Havit.Services.FileStorage
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
-				File.Copy(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
+				File.Copy(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName), overwrite: true);
 			}
 			else
 			{

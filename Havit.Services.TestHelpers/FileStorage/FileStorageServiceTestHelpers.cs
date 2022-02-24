@@ -637,6 +637,62 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService2.DeleteAsync(targetFilename);
 		}
 
+		public static void FileStorageService_Copy_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = "file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService1.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(fileStorageService1.Exists(sourceFilename));
+			Assert.IsFalse(fileStorageService2.Exists(targetFilename));
+
+			// Act
+			fileStorageService1.Copy(sourceFilename, fileStorageService2, targetFilename);
+			Assert.IsTrue(fileStorageService2.Exists(targetFilename));
+			fileStorageService1.Copy(sourceFilename, fileStorageService2, targetFilename);
+			Assert.IsTrue(fileStorageService2.Exists(targetFilename));
+
+			// Assert - does not throw exception
+
+			// Clean up
+			fileStorageService1.Delete(sourceFilename);
+			fileStorageService2.Delete(targetFilename);
+		}
+
+		public static async Task FileStorageService_CopyAsync_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = "file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				await fileStorageService1.SaveAsync(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(await fileStorageService1.ExistsAsync(sourceFilename));
+			Assert.IsFalse(await fileStorageService2.ExistsAsync(targetFilename));
+
+			// Act
+			await fileStorageService1.CopyAsync(sourceFilename, fileStorageService2, targetFilename);
+			Assert.IsTrue(await fileStorageService2.ExistsAsync(targetFilename));
+			await fileStorageService1.CopyAsync(sourceFilename, fileStorageService2, targetFilename);
+			Assert.IsTrue(await fileStorageService2.ExistsAsync(targetFilename));
+
+			// Assert - does not throw exception
+
+			// Clean up
+			await fileStorageService1.DeleteAsync(sourceFilename);
+			await fileStorageService2.DeleteAsync(targetFilename);
+		}
+
 		public static void FileStorageService_Move(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
 		{
 			// Arrange

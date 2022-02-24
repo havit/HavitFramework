@@ -7,8 +7,6 @@ using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 namespace Havit.Services.Azure.Tests.FileStorage
 {
@@ -274,27 +272,8 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 		{
-			var config = new ConfigurationBuilder()
-				.AddEnvironmentVariables()
-				.Build();
-			string connectionString = config.GetConnectionString("AzureStorage");
-			
-			if (connectionString is null)
-            {
-				config = new ConfigurationBuilder()
-					.AddAzureKeyVault("https://HavitFrameworkConfigKV.vault.azure.net", new DefaultKeyVaultSecretManager())
-					.Build();
-				connectionString = config.GetConnectionString("AzureStorage");
-			}
-
-			if (connectionString is null)
-			{
-				throw new InvalidOperationException("Couldn't find Azure storage connection string in configuration.");
-			}
-
-			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			return new AzureFileStorageService(
-				fileStorageConnectionString: connectionString,
+				fileStorageConnectionString: AzureStorageConnectionStringHelper.GetConnectionString(),
 				fileShareName: "tests",
 				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
 		}

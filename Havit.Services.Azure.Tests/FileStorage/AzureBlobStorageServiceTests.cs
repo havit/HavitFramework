@@ -10,8 +10,6 @@ using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -415,34 +413,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
-		{
-			var config = new ConfigurationBuilder()
-				.AddEnvironmentVariables()
-				.Build();
-			string connectionString = config.GetConnectionString("AzureStorage");
-
-			if (connectionString is null)
-			{
-				config = new ConfigurationBuilder()
-					.AddAzureKeyVault("https://HavitFrameworkConfigKV.vault.azure.net", new DefaultKeyVaultSecretManager())
-					.Build();
-				connectionString = config.GetConnectionString("AzureStorage");
-			}
-
-			if (connectionString is null)
-			{
-				throw new InvalidOperationException("Couldn't find Azure storage connection string in configuration.");
-			}
-
+		{			
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			return new AzureBlobStorageService(
 				new AzureBlobStorageServiceOptions
 				{
-					BlobStorage = connectionString,
+					BlobStorage = AzureStorageConnectionStringHelper.GetConnectionString(),
 					ContainerName = secondary ? "secondarytests" : "primarytests",
 					CacheControl = cacheControl,
 					EncryptionOptions = encryptionOptions
 				});
 		}
+
+
 	}
 }

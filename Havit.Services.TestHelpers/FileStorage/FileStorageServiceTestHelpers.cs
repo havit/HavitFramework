@@ -819,5 +819,65 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService2.DeleteAsync(filename);
 		}
 
+		public static void FileStorageService_Move_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = "file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService1.Save(sourceFilename, stream, "text/plain");
+				fileStorageService1.Move(sourceFilename, fileStorageService2, targetFilename);
+			}
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService1.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(fileStorageService1.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService2.Exists(targetFilename));
+
+			// Act
+			fileStorageService1.Move(sourceFilename, fileStorageService2, targetFilename);
+
+			// Assert - does not throw exception
+
+			// Clean up
+			fileStorageService2.Delete(targetFilename);
+		}
+
+		public static async Task FileStorageService_MoveAsync_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = "file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				await fileStorageService1.SaveAsync(sourceFilename, stream, "text/plain");
+				await fileStorageService1.MoveAsync(sourceFilename, fileStorageService2, targetFilename);
+			}
+
+			using (Stream stream = new MemoryStream())
+			{
+				await fileStorageService1.SaveAsync(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(await fileStorageService1.ExistsAsync(sourceFilename));
+			Assert.IsTrue(await fileStorageService2.ExistsAsync(targetFilename));
+
+			// Act
+			await fileStorageService1.MoveAsync(sourceFilename, fileStorageService2, targetFilename);
+
+			// Assert - does not throw exception
+
+			// Clean up
+			await fileStorageService2.DeleteAsync(targetFilename);
+		}
+
 	}
 }

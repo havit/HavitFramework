@@ -158,6 +158,10 @@ namespace Havit.Services.FileStorage
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
+				if (File.Exists(targetFileSystemStorageService.GetFullPath(targetFileName)))
+                {
+					File.Delete(targetFileSystemStorageService.GetFullPath(targetFileName));
+                }
 				File.Move(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
 			}
 			else
@@ -172,6 +176,10 @@ namespace Havit.Services.FileStorage
 			{
 				// předpokládáme, že přejmenovat (přesunout soubor) v rámci jednoho FileSystemStorageService neasynchronně, je efektivnější,
 				// než přesun souboru přes streamy v bázové třídě asynchronně.
+				if (File.Exists(targetFileSystemStorageService.GetFullPath(targetFileName)))
+				{
+					File.Delete(targetFileSystemStorageService.GetFullPath(targetFileName));
+				}
 				File.Move(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
 			}
 			else

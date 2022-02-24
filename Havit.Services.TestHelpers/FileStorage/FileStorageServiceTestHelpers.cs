@@ -277,7 +277,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				// Act
 				fileStorageService.Save(filename, ms, "text/plain");
 				Assert.IsTrue(fileStorageService.Exists(filename));
-				Assert.AreEqual(content1.Length +3 /* BOM */, fileStorageService.EnumerateFiles(filename).Single().Size);
+				Assert.AreEqual(content1.Length + 3 /* BOM */, fileStorageService.EnumerateFiles(filename).Single().Size);
 			}
 
 			// Act
@@ -293,7 +293,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Assert - no exception is thrown
-			Assert.AreEqual(content2.Length +3 /* BOM */, fileStorageService.EnumerateFiles(filename).Single().Size);
+			Assert.AreEqual(content2.Length + 3 /* BOM */, fileStorageService.EnumerateFiles(filename).Single().Size);
 
 			// Clean-up
 			fileStorageService.Delete(filename);
@@ -317,7 +317,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				// Act
 				await fileStorageService.SaveAsync(filename, ms, "text/plain");
 				Assert.IsTrue(await fileStorageService.ExistsAsync(filename));
-				Assert.AreEqual(content1.Length +3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);	
+				Assert.AreEqual(content1.Length + 3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);	
 			}
 
 			// Act
@@ -333,7 +333,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Assert - no exception is thrown
-			Assert.AreEqual(content2.Length +3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
+			Assert.AreEqual(content2.Length + 3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
 
 			// Clean-up
 			await fileStorageService.DeleteAsync(filename);

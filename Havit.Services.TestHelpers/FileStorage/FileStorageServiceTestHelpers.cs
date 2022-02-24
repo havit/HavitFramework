@@ -147,7 +147,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService.DeleteAsync(fileName);
 		}
 
-		public static void FileStorageService_SaveDoNotAcceptSeekedStream(IFileStorageService fileStorageService)
+		public static void FileStorageService_Save_DoNotAcceptSeekedStream(IFileStorageService fileStorageService)
 		{
 			using (MemoryStream ms = new MemoryStream())
 			{
@@ -254,6 +254,86 @@ namespace Havit.Services.TestHelpers.FileStorage
 					Assert.AreEqual(content, readContent);
 				}
 			}
+
+			// Clean-up
+			await fileStorageService.DeleteAsync(filename);
+		}
+
+		public static void FileStorageService_Save_OverwritesTargetFile(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string content1 = "abcdefghijklmnopqrstuvwxyz";
+			string content2 = "abc"; // Musí být kratší než content!
+			string filename = Guid.NewGuid().ToString();
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+				{
+					sw.Write(content1);
+				}
+				ms.Seek(0, SeekOrigin.Begin);
+
+				// Act
+				fileStorageService.Save(filename, ms, "text/plain");
+				Assert.IsTrue(fileStorageService.Exists(filename));
+				Assert.AreEqual(content1.Length +3 /* BOM */, fileStorageService.EnumerateFiles(filename).Single().Size);
+			}
+
+			// Act
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+				{
+					sw.Write(content2);
+				}
+				ms.Seek(0, SeekOrigin.Begin);
+
+				fileStorageService.Save(filename, ms, "text/plain");
+			}
+
+			// Assert - no exception is thrown
+			Assert.AreEqual(content2.Length +3 /* BOM */, fileStorageService.EnumerateFiles(filename).Single().Size);
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static async Task FileStorageService_SaveAsync_OverwritesTargetFile(IFileStorageService fileStorageService)
+        {
+			// Arrange
+			string content1 = "abcdefghijklmnopqrstuvwxyz";
+			string content2 = "abc"; // Musí být kratší než content!
+			string filename = Guid.NewGuid().ToString();
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+				{
+					await sw.WriteAsync(content1);
+				}
+				ms.Seek(0, SeekOrigin.Begin);
+
+				// Act
+				await fileStorageService.SaveAsync(filename, ms, "text/plain");
+				Assert.IsTrue(await fileStorageService.ExistsAsync(filename));
+				Assert.AreEqual(content1.Length +3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);	
+			}
+
+			// Act
+			using (MemoryStream ms = new MemoryStream())
+			{
+				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+				{
+					await sw.WriteAsync(content2);
+				}
+				ms.Seek(0, SeekOrigin.Begin);
+
+				await fileStorageService.SaveAsync(filename, ms, "text/plain");
+			}
+
+			// Assert - no exception is thrown
+			Assert.AreEqual(content2.Length +3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
 
 			// Clean-up
 			await fileStorageService.DeleteAsync(filename);

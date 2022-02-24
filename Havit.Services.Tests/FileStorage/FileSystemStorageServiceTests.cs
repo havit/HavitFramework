@@ -125,7 +125,7 @@ namespace Havit.Services.Tests.FileStorage
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void FileSystemStorageService_SaveDoesNotAcceptSeekedStream()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_SaveDoNotAcceptSeekedStream(GetFileSystemStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
@@ -169,6 +169,18 @@ namespace Havit.Services.Tests.FileStorage
 		public async Task FileSystemStorageService_SavedAndReadContentsWithEncryptionAreSame_Async()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_Save_OverwritesTargetFile()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Save_OverwritesTargetFile(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_SaveAsync_OverwritesTargetFile()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_SaveAsync_OverwritesTargetFile(GetFileSystemStorageService());
 		}
 
 		[TestMethod]

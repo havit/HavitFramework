@@ -75,7 +75,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void AzureBlobStorageService_SaveDoNotAcceptSeekedStream()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_SaveDoNotAcceptSeekedStream(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
@@ -119,6 +119,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		public async Task AzureBlobStorageService_SavedAndReadContentsWithEncryptionAreSame_Async()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_Save_OverwritesTargetFile()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Save_OverwritesTargetFile(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_SaveAsync_OverwritesTargetFile()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_SaveAsync_OverwritesTargetFile(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]

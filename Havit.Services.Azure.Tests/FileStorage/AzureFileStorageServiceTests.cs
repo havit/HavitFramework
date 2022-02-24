@@ -69,7 +69,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void AzureFileStorageService_SaveDoNotAcceptSeekedStream()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_SaveDoNotAcceptSeekedStream(GetAzureFileStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetAzureFileStorageService());
 		}
 
 		[TestMethod]
@@ -116,6 +116,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			await Task.CompletedTask;
 			//Šifrování není podporováno.
 			//await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public void AzureFileStorageService_Save_OverwritesTargetFile()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Save_OverwritesTargetFile(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_SaveAsync_OverwritesTargetFile()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_SaveAsync_OverwritesTargetFile(GetAzureFileStorageService());
 		}
 
 		[TestMethod]

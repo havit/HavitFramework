@@ -142,7 +142,7 @@ namespace Havit.Services.FileStorage
 			}
 		}
 
-		public override void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		protected override void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
@@ -150,11 +150,11 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				base.Copy(sourceFileName, targetFileStorageService, targetFileName);
+				base.PerformCopy(sourceFileName, targetFileStorageService, targetFileName);
 			}
 		}
 
-		public override void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		protected override void PerformMove(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
@@ -166,11 +166,11 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				base.Move(sourceFileName, targetFileStorageService, targetFileName);
+				base.PerformMove(sourceFileName, targetFileStorageService, targetFileName);
 			}
 		}
 
-		public override async Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		protected override async Task PerformMoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
@@ -184,7 +184,7 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				await base.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+				await base.PerformMoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
 			}
 		}
 

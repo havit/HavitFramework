@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
     public class DbDataSeedRunner : DataSeedRunner
     {
         private const string DataSeedLockValue = "DbDataSeeds";
-        private readonly IDbContextFactory dbContextFactory;
+        private readonly IDbContext dbContext;
         private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
         /// <summary>
@@ -27,11 +27,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         public DbDataSeedRunner(IEnumerable<IDataSeed> dataSeeds,
             IDataSeedRunDecision dataSeedRunDecision,
             IDataSeedPersisterFactory dataSeedPersisterFactory,           
-            IDbContextFactory dbContextFactory,
+            IDbContext dbContext,
             IDbDataSeedTransactionContext dbDataSeedTransactionContext) 
             : base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory)
         {
-            this.dbContextFactory = dbContextFactory;
+            this.dbContext = dbContext;
             this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
         }
 
@@ -39,31 +39,28 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
         public override void SeedData(Type dataSeedProfileType, bool forceRun = false)
         {
             Contract.Requires(dbDataSeedTransactionContext.CurrentTransaction == null);
-            using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+            if (dbContext.Database.IsSqlServer())
             {
-                if (dbContext.Database.IsSqlServer())
+                new DbLockedCriticalSection((SqlConnection)dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
                 {
-                    new DbLockedCriticalSection((SqlConnection)dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
+                    using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
                     {
-                        using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
+                        dbDataSeedTransactionContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
+                        try
                         {
-                            dbDataSeedTransactionContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
-                            try
-                            {
-                                base.SeedData(dataSeedProfileType, forceRun);
-                                transaction.Commit();
-                            }
-                            finally
-                            {
-                                dbDataSeedTransactionContext.CurrentTransaction = null;
-                            }
+                            base.SeedData(dataSeedProfileType, forceRun);
+                            transaction.Commit();
                         }
-                    });
-                }
-                else
-                {
-                    base.SeedData(dataSeedProfileType, forceRun);
-                }
+                        finally
+                        {
+                            dbDataSeedTransactionContext.CurrentTransaction = null;
+                        }
+                    }
+                });
+            }
+            else
+            {
+                base.SeedData(dataSeedProfileType, forceRun);
             }
             Contract.Assert(dbDataSeedTransactionContext.CurrentTransaction == null);
         }

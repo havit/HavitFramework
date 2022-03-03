@@ -55,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			this.lambdaExpressionManager = lambdaExpressionManager;
 			this.entityCacheManager = entityCacheManager;
 			this.entityKeyAccessor = entityKeyAccessor;
-            this.logger=logger;
+            this.logger = logger;
         }
 
 		/// <summary>
@@ -361,7 +361,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 		private void LogDebug(string message, [System.Runtime.CompilerServices.CallerMemberName] string caller = null, params object[] args)
         {						
-			logger.LogDebug(String.Concat(caller, "[",this.GetHashCode(), "]: ", message), args);
+			logger.LogDebug(String.Concat(caller, "[", this.GetHashCode(), "]: ", message), args);
         }
 	}
 }

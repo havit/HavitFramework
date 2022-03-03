@@ -29,17 +29,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TOriginalPropertyCollection : class
 			where TPropertyItem : class
 		{
+			LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
 			LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out var entitiesToLoadQuery);
 			if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-                List<TPropertyItem> loadedProperties = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName).ToList();
+				LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
+				var query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				LogDebug("Starting reading from a database.");
+				List<TPropertyItem> loadedProperties = query.ToList();
+				LogDebug("Finished reading from a database.");
+				LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
 				LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
                 LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
             }
-
+			
+			LogDebug("Initializing collections.");
 			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
+			LogDebug("Marking properties as loaded.");
 			LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 
+			LogDebug("Returning.");
 			return LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(entities, originalPropertyName);
 		}
 
@@ -51,17 +60,28 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TPropertyCollection : class
 			where TPropertyItem : class
 		{
+			LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
 			LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out var entitiesToLoadQuery);
+
 			if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-                List<TPropertyItem> loadedProperties = await LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName).ToListAsync(cancellationToken).ConfigureAwait(false);
-                LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
+				var query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				LogDebug("Starting reading from a database.");
+				List<TPropertyItem> loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+				LogDebug("Finished reading from a database.");
+				
+				LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
+				LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
                 LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
             }
 
+			LogDebug("Initializing collections.");
 			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
+			LogDebug("Marking properties as loaded.");
 			LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 			
+			LogDebug("Returning.");
 			return LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(entities, originalPropertyName);
 		}
 

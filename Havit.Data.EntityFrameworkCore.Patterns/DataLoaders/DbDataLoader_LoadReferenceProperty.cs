@@ -2,6 +2,7 @@
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
+			LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
 			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
 			if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				List<TProperty> loadedProperties = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad).ToList();
+				LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
+				
+				var query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
+				LogDebug("Starting reading from a database.");
+				List<TProperty> loadedProperties = query.ToList();
+				LogDebug("Finished reading from a database.");
+
+				LogDebug("Storing data for {0} entities to the cache.", args: loadedProperties.Count);
 				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
+			LogDebug("Returning.");
 			return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 		}
 
@@ -38,14 +48,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
+			LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
 			LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
 			if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
-				List<TProperty> loadedProperties = await LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad).ToListAsync(cancellationToken).ConfigureAwait(false);
+				LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
+
+				var query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
+				LogDebug("Starting reading from a database.");
+				List<TProperty> loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+				LogDebug("Finished reading from a database.");
+
+				LogDebug("Storing data for {0} entities to the cache.", args: loadedProperties.Count);
 				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 			}
 
+			LogDebug("Returning.");
 			return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 		}
 
@@ -103,6 +122,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			// Known issue: Property bude i nadále považována za nenačtenou. Avšak díky metodě v IsEntityPropertyLoaded v DbDataLoaderWithLoadedPropertiesMemory nebude docházet k opakovanému zpracování této vlastnosti.
 			if (shouldFixup)
 			{
+				LogDebug("Starting change tracker change detection.");
 				dbContext.ChangeTracker.DetectChanges();
 			}
 		}

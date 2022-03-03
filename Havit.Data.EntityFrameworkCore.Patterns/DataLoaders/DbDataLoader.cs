@@ -19,6 +19,7 @@ using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 {
@@ -34,16 +35,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
 		private readonly IEntityCacheManager entityCacheManager;
 		private readonly IEntityKeyAccessor entityKeyAccessor;
+        private readonly ILogger<DbDataLoader> logger;
 
-		/// <summary>
-		/// Konstructor.
-		/// </summary>
-		/// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
-		/// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>
-		/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
-		/// <param name="entityCacheManager">Zajišťuje získávání a ukládání entit z/do cache.</param>
-		/// <param name="entityKeyAccessor">Zajišťuje získávání hodnot primárního klíče entit.</param>
-		public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor)
+        /// <summary>
+        /// Konstructor.
+        /// </summary>
+        /// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
+        /// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>
+        /// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
+        /// <param name="entityCacheManager">Zajišťuje získávání a ukládání entit z/do cache.</param>
+        /// <param name="entityKeyAccessor">Zajišťuje získávání hodnot primárního klíče entit.</param>
+        /// <param name="logger">Logger.</param>
+        public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILogger<DbDataLoader> logger)
 		{
 			Contract.Requires(dbContext != null);
 
@@ -52,7 +55,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			this.lambdaExpressionManager = lambdaExpressionManager;
 			this.entityCacheManager = entityCacheManager;
 			this.entityKeyAccessor = entityKeyAccessor;
-		}
+            this.logger=logger;
+        }
 
 		/// <summary>
 		/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
@@ -182,11 +186,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
+			LogDebug("Processing {0} entities.", args: entitiesToLoad.Count());
+
 			// přeskočíme prázdné
 			TEntity[] entitiesToLoadWithoutNulls = entitiesToLoad.Where(entity => entity != null).ToArray();
 
 			if (entitiesToLoadWithoutNulls.Length == 0) // pokud ne máme, co načítat
 			{
+				LogDebug("Exiting, there is nothing to load.");
 				return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
 			}
 
@@ -201,6 +208,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 			{
+				LogDebug("Loading a property '{0}'.", args: propertyToLoad.OriginalPropertyName);
+
 				LoadPropertyInternalResult loadPropertyInternalResult = default;
 
 				if (!propertyToLoad.IsCollection)
@@ -216,6 +225,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 					}
 					catch (TargetInvocationException ex)
 					{
+						LogDebug("Exception: {0}", args: ex.Message);
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
@@ -234,6 +244,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 					}
 					catch (TargetInvocationException ex)
 					{
+						LogDebug("Exception: {0}", args: ex.Message);
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
@@ -244,10 +255,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				if (entities.Length == 0)
 				{
 					// shortcut
+					LogDebug("Returning via shortcut.");
 					return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
 				}
 			}
 
+			LogDebug("Returning.");
 			return (IFluentDataLoader<TProperty>)fluentDataLoader;
 		}
 
@@ -258,11 +271,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
+			LogDebug("Processing {0} entities.", args: entitiesToLoad.Count());			
 			// přeskočíme prázdné
 			TEntity[] entitiesToLoadWithoutNulls = entitiesToLoad.Where(entity => entity != null).ToArray();
 
 			if (entitiesToLoadWithoutNulls.Length == 0) // pokud ne máme, co načítat
 			{
+				LogDebug("Exiting, there is nothing to load.");
 				return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
 			}
 
@@ -277,6 +292,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 			{
+				LogDebug("Loading a property '{0}'.", args: propertyToLoad.OriginalPropertyName);
+
 				ValueTask<LoadPropertyInternalResult> task = default;
 				if (!propertyToLoad.IsCollection)
 				{
@@ -291,6 +308,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 					}
 					catch (TargetInvocationException ex)
 					{
+						LogDebug("Exception: {0}", args: ex.Message);
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
@@ -308,6 +326,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 					}
 					catch (TargetInvocationException ex)
 					{
+						LogDebug("Exception: {0}", args: ex.Message);
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
@@ -320,10 +339,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				if (entities.Length == 0)
 				{
 					// shortcut
+					LogDebug("Returning via shortcut.");
 					return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
 				}
 			}
 
+			LogDebug("Returning.");
 			return (IFluentDataLoader<TProperty>)fluentDataLoader;
 		}
 
@@ -337,5 +358,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		{
 			return dbContext.IsNavigationLoaded(entity, propertyName);
 		}
+
+		private void LogDebug(string message, [System.Runtime.CompilerServices.CallerMemberName] string caller = null, params object[] args)
+        {						
+			logger.LogDebug(String.Concat(caller, "[",this.GetHashCode(), "]: ", message), args);
+        }
 	}
 }

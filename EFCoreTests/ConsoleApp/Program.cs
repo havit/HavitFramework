@@ -34,6 +34,7 @@ using Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using Havit.EFCoreTests.DataLayer.Seeds.Persons;
+using Microsoft.Extensions.Hosting;
 
 namespace ConsoleApp1
 {
@@ -41,26 +42,30 @@ namespace ConsoleApp1
 	{
 		public static void Main(string[] args)
 		{
-			IServiceProvider serviceProvider = CreateServiceProvider();
-			UpdateDatabase(serviceProvider);
-			Debug(serviceProvider);
+			var host = Host.CreateDefaultBuilder(args)
+				.ConfigureAppConfiguration(configurationBuilder =>
+					configurationBuilder.AddJsonFile("appsettings.ConsoleApp.json", optional: false)
+				)
+				.ConfigureLogging((hostingContext, logging) => logging
+				.AddFile("logs\\dbdataloader_{0:yyyy}-{0:MM}-{0:dd}.log", fileLoggerOpts =>
+				{
+					fileLoggerOpts.FormatLogFileName = fName => String.Format(fName, DateTime.UtcNow);
+				}))
+				.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
+				.Build();
+					
+			UpdateDatabase(host.Services);
+			Debug(host.Services);
 		}
 
-		private static IServiceProvider CreateServiceProvider()
+		private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
 		{
-			var loggerFactory = LoggerFactory.Create(builder => builder
-				.AddFilter((categoryName, logLevel) => (logLevel == LogLevel.Information) && (categoryName == DbLoggerCategory.Database.Command.Name))
-				//.AddSimpleConsole()
-			);
-
-			IServiceCollection services = new ServiceCollection();
 			services.WithEntityPatternsInstaller()
 				.AddDataLayer(typeof(IPersonRepository).Assembly)
 				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 					optionsBuilder
-						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
+						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0"))
 						//.UseInMemoryDatabase("ConsoleApp")
-						.UseLoggerFactory(loggerFactory))
 				.AddEntityPatterns()				
 				.AddLookupService<IUserLookupService, UserLookupService>();
 
@@ -69,12 +74,6 @@ namespace ConsoleApp1
 			services.AddSingleton<IOptions<MemoryCacheOptions>, OptionsManager<MemoryCacheOptions>>();
 			services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
 			services.AddSingleton<IMemoryCache, MemoryCache>();			
-
-			return services.BuildServiceProvider(new ServiceProviderOptions
-            {
-				ValidateOnBuild = true,
-				ValidateScopes = true
-            });
 		}
 
 		private static void UpdateDatabase(IServiceProvider serviceProvider)

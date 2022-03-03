@@ -79,6 +79,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		{
 			componentRegistrationOptions.CachingInstaller.Install(services);
 
+			services.AddLogging();
+
 			services.TryAddSingleton<ISoftDeleteManager, SoftDeleteManager>();
 			services.TryAddSingleton<ICurrentCultureService, CurrentCultureService>();
 			services.TryAddTransient<IDataSeedRunner, DbDataSeedRunner>();

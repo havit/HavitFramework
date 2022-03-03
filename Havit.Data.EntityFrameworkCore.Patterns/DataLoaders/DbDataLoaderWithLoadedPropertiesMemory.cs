@@ -3,6 +3,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.Patterns.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 {
@@ -17,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public DbDataLoaderWithLoadedPropertiesMemory(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor) : base(dbContext, propertyLoadSequenceResolver, lambdaExpressionManager, entityCacheManager, entityKeyAccessor)
+		public DbDataLoaderWithLoadedPropertiesMemory(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILogger<DbDataLoader> logger) : base(dbContext, propertyLoadSequenceResolver, lambdaExpressionManager, entityCacheManager, entityKeyAccessor, logger)
 		{
 		}
 

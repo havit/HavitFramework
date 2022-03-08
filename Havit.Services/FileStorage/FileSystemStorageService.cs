@@ -109,7 +109,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override void PerformSave(string fileName, Stream fileContent, string contentType)
 		{
-			PerformSave_EnsureDirectory(fileName);
+			EnsureDirectoryFor(fileName);
 
 			using (FileStream fileStream = new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920))
 			{
@@ -122,7 +122,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
 		{		
-			PerformSave_EnsureDirectory(fileName);
+			EnsureDirectoryFor(fileName);
 
 			using (FileStream fileStream = new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920))
 			{
@@ -133,7 +133,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Zajistí vytvoření cílové složky, pokud je název souboru včetně složky.
 		/// </summary>
-		private void PerformSave_EnsureDirectory(string fileName)
+		private void EnsureDirectoryFor(string fileName)
 		{
 			var directory = Path.GetDirectoryName(fileName);
 			if (!String.IsNullOrWhiteSpace(directory))
@@ -147,6 +147,7 @@ namespace Havit.Services.FileStorage
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
+				targetFileSystemStorageService.EnsureDirectoryFor(targetFileName);
 				File.Copy(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName), overwrite: true);
 			}
 			else
@@ -160,6 +161,7 @@ namespace Havit.Services.FileStorage
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
+				targetFileSystemStorageService.EnsureDirectoryFor(targetFileName);
 				if (File.Exists(targetFileSystemStorageService.GetFullPath(targetFileName)))
                 {
 					File.Delete(targetFileSystemStorageService.GetFullPath(targetFileName));
@@ -176,6 +178,7 @@ namespace Havit.Services.FileStorage
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
+				targetFileSystemStorageService.EnsureDirectoryFor(targetFileName);
 				// předpokládáme, že přejmenovat (přesunout soubor) v rámci jednoho FileSystemStorageService neasynchronně, je efektivnější,
 				// než přesun souboru přes streamy v bázové třídě asynchronně.
 				if (File.Exists(targetFileSystemStorageService.GetFullPath(targetFileName)))

@@ -1,24 +1,25 @@
-﻿using Havit.Business;
-using Havit.BusinessLayerTest;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Files.Shares;
+using Havit.Services.Azure.FileStorage;
+using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
+using Havit.Services.FileStorage;
 using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace TestConsoleApp
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static void Main()
 		{
-			using (var ims = new IdentityMapScope())
-			{
-				Console.WriteLine(Subjekt.GetObject(8).Nazev);
-			}
+			
+			var services = new FileSystemStorageService(@"D:\Temp", useFullyQualifiedPathNames: false, encryptionOptions: null);
 
-			using (new IdentityMapScope())
-			{
-				Console.WriteLine(Subjekt.GetObject(8).Nazev);
-			}
-
+			var files = services.EnumerateFiles("nuget/*").ToList();
+			files.ForEach(blob => Console.WriteLine(blob.Name));
 		}
 	}
 }

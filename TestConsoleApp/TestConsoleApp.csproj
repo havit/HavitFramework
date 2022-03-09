@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLayerTest\BusinessLayerTest.csproj" />
-    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+    <ProjectReference Include="..\Havit.Services.Azure.Tests\Havit.Services.Azure.Tests.csproj" />
   </ItemGroup>
 
 </Project>

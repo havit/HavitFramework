@@ -209,7 +209,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			if (!String.IsNullOrWhiteSpace(searchPattern))
 			{
-				// zamen souborova '\\' za '/', ktere lze pouzit v Azure blobu
+				// zamen souborova '\\' za '/', ktere lze pouzit v Azure blobu (azure blob storage je sám také zaměňuje)
 				searchPattern = searchPattern.Replace("\\", "/");
 			}
 

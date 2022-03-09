@@ -217,14 +217,20 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
+			if (useFullyQualifiedPathNames)
+            {
+				VerifyPathIsFullyQualified(searchPattern);
+			}
+
 			if (!String.IsNullOrWhiteSpace(searchPattern))
 			{
-				// zamen azure blobova '/' za '\\', ktere lze pouzit v souborovem systemu
+				// zpětná lomítka potřebujeme v searchpatterns pro RegexPatterns.IsFileWildcardMatch
 				searchPattern = searchPattern.Replace("/", "\\");
 			}
 
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
-			string prefix = EnumerableFilesGetPrefix(searchPattern);
+			// EnumerableFilesGetPrefix předpokládá členění dle běžných lomítek, nikoliv dle zpětných
+			string prefix = EnumerableFilesGetPrefix(searchPattern.Replace("\\", "/"));
 
 			// nacti soubory z oblasti dane storagePath a prefixem
 			IEnumerable<System.IO.FileInfo> filesEnumerable = 
@@ -289,18 +295,7 @@ namespace Havit.Services.FileStorage
 		{
 			if (useFullyQualifiedPathNames)
 			{
-				// Path.IsPathFullyQualified není součástí .NET Frameworku ani .NET Standard 2.0 (je v .NET Standard 2.1)
-
-				// https://stackoverflow.com/questions/5565029/check-if-full-path-given
-				bool pathIsFullyQualifies = !String.IsNullOrWhiteSpace(fileNamePath)
-				   && fileNamePath.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
-				   && Path.IsPathRooted(fileNamePath)
-				   && !Path.GetPathRoot(fileNamePath).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
-
-				if (!pathIsFullyQualifies)
-                {
-					throw new InvalidOperationException("Cesta k souboru musí být zadána jako plně kvalifikovaná (vč. disku, od rootu).");
-				}
+				VerifyPathIsFullyQualified(fileNamePath);				
 				return fileNamePath;
 			}
 			else
@@ -316,6 +311,22 @@ namespace Havit.Services.FileStorage
 				}
 
 				return fileNameFullPath;
+			}
+		}
+
+		internal void VerifyPathIsFullyQualified(string path)
+        {
+			// Path.IsPathFullyQualified není součástí .NET Frameworku ani .NET Standard 2.0 (je v .NET Standard 2.1)
+
+			// https://stackoverflow.com/questions/5565029/check-if-full-path-given
+			bool pathIsFullyQualifies = !String.IsNullOrWhiteSpace(path)
+			   && path.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
+			   && Path.IsPathRooted(path)
+			   && !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
+
+			if (!pathIsFullyQualifies)
+			{
+				throw new InvalidOperationException("Cesta k souboru musí být zadána jako plně kvalifikovaná (vč. disku, od rootu).");
 			}
 		}
 

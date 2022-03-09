@@ -35,6 +35,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
 using Havit.EFCoreTests.DataLayer.Seeds.Persons;
 using Microsoft.Extensions.Hosting;
+using System.Threading;
 
 namespace ConsoleApp1
 {
@@ -47,7 +48,8 @@ namespace ConsoleApp1
 					configurationBuilder.AddJsonFile("appsettings.ConsoleApp.json", optional: false)
 				)
 				.ConfigureLogging((hostingContext, logging) => logging
-				.AddFile("logs\\dbdataloader_{0:yyyy}-{0:MM}-{0:dd}.log", fileLoggerOpts =>
+				.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] ")
+				.AddFile("%TEMP%\\dbdataloader_{0:yyyy}-{0:MM}-{0:dd}.log", fileLoggerOpts =>
 				{
 					fileLoggerOpts.FormatLogFileName = fName => String.Format(fName, DateTime.UtcNow);
 				}))
@@ -64,7 +66,8 @@ namespace ConsoleApp1
 				.AddDataLayer(typeof(IPersonRepository).Assembly)
 				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 					optionsBuilder
-						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0"))
+						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
+						.EnableSensitiveDataLogging(true))
 						//.UseInMemoryDatabase("ConsoleApp")
 				.AddEntityPatterns()				
 				.AddLookupService<IUserLookupService, UserLookupService>();
@@ -88,15 +91,19 @@ namespace ConsoleApp1
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			for (int i = 0; i < 1000; i++)
+			for (int i = 0; i < 2; i++)
 			{
 				using (var scope = serviceProvider.CreateScope())
 				{
 					var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 					var dataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
+					var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
 					var persons = dataSource.Data.Where(p => p.BossId == null).ToList();
 
-					dataLoader.LoadAll(persons, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+					dbContext.ChangeTracker.DetectChanges();
+
+					Thread.Sleep(3000);
+					//dataLoader.LoadAll(persons, p => p.Subordinates).ThenLoad(p => p.Subordinates);
 				}
 			}
 		}

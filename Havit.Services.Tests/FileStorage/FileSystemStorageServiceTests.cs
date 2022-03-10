@@ -407,6 +407,32 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsInstanceOfType(service, typeof(FileSystemStorageService<TestFileStorage>));
 		}
 
+		[TestMethod]
+		public void FileSystemStorageService_IsPathFullyQualified()
+		{
+			// Arrange
+
+			// Act + Assert
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(null), "null");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(""), "");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("d:"), "d:");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("D:"), "D:");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("d:*"), "d:*");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("D:*"), "D:*");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("d:abc"), "d:abc");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("D:Abc"), "D:Abc");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\Abc"), @"\\Abc");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\abc"), @"\\abc");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\abc\def\ghi"), @"\\abc\def\ghi");
+			
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\"), @"C:\");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\"), @"c:\");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\Data"), @"C:\Data");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\data"), @"c:\data");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\*"), @"C:\*");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\*"), @"c:\*");
+		}
+
 		private static FileSystemStorageService GetFileSystemStorageService(bool secondary = false, EncryptionOptions encryptionOptions = null)
 		{
 			return new FileSystemStorageService(GetStoragePath(secondary), false, encryptionOptions);

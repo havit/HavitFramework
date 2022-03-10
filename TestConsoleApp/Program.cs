@@ -16,10 +16,16 @@ namespace TestConsoleApp
 		public static void Main()
 		{
 			
-			var services = new FileSystemStorageService(@"D:\Temp", useFullyQualifiedPathNames: false, encryptionOptions: null);
-
-			var files = services.EnumerateFiles("nuget/*").ToList();
+			var service = new FileSystemStorageService(@"D:\Temp", useFullyQualifiedPathNames: false, encryptionOptions: null);
+			var files = service.EnumerateFiles("nug*").ToList();
 			files.ForEach(blob => Console.WriteLine(blob.Name));
+
+			Console.WriteLine();
+
+			var service2 = new FileSystemStorageService(null, useFullyQualifiedPathNames: true, encryptionOptions: null);
+			var files2 = service2.EnumerateFiles(@"d:\temp\nug*").ToList();
+			files2.ForEach(blob => Console.WriteLine(blob.Name));
+
 		}
 	}
 }

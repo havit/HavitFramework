@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Havit.Linq;
 using Havit.Diagnostics.Contracts;
 using Havit.Text.RegularExpressions;
 
@@ -217,37 +218,43 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
-			if (useFullyQualifiedPathNames)
-            {
-				VerifyPathIsFullyQualified(searchPattern);
-			}
-
-			if (!String.IsNullOrWhiteSpace(searchPattern))
-			{
-				// zpětná lomítka potřebujeme v searchpatterns pro RegexPatterns.IsFileWildcardMatch
-				searchPattern = searchPattern.Replace("/", "\\");
-			}
+			// zpětná lomítka potřebujeme v searchpatterns pro RegexPatterns.IsFileWildcardMatch
+			searchPattern = searchPattern?.Replace("/", "\\");
 
 			// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
 			// EnumerableFilesGetPrefix předpokládá členění dle běžných lomítek, nikoliv dle zpětných
-			string prefix = EnumerableFilesGetPrefix(searchPattern.Replace("\\", "/"));
+			string prefix = EnumerableFilesGetPrefix(searchPattern?.Replace("\\", "/"));
 
-			// nacti soubory z oblasti dane storagePath a prefixem
-			IEnumerable<System.IO.FileInfo> filesEnumerable = 
-				new System.IO.DirectoryInfo(Path.Combine(StoragePath, prefix ?? String.Empty))
-				.EnumerateFiles("*", SearchOption.AllDirectories);
-
-			if (searchPattern != null)
+			IEnumerable<System.IO.FileInfo> filesEnumerable;
+			if (!useFullyQualifiedPathNames)
 			{
-				// vyfiltruj validni soubory podle souboroveho wildcards
-				filesEnumerable = filesEnumerable.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(StoragePath.Length + 1), searchPattern));
+				// nacti soubory z oblasti dane storagePath a prefixem
+				filesEnumerable =
+					new System.IO.DirectoryInfo(Path.Combine(StoragePath, prefix ?? String.Empty))
+					.EnumerateFiles("*", SearchOption.AllDirectories)
+					.WhereIf(searchPattern != null, item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(StoragePath.Length + 1), searchPattern)); // vyfiltruj validni soubory podle souboroveho wildcards
+			}
+			else
+            {
+				VerifyPathIsFullyQualified(searchPattern);
+
+				// prefix musí být not null, jinak není cesta validní
+				// pokud je použito např. D:\Nu*, vrací prefix jen "D:", chceme však použít "D:\".
+				if (prefix.EndsWith(":"))
+                {
+					prefix += '\\';
+                }
+
+				filesEnumerable = new System.IO.DirectoryInfo(prefix)
+					.EnumerateFiles("*", SearchOption.AllDirectories)
+					.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName, searchPattern));
 			}
 
 			return filesEnumerable.Select(fileInfo => new FileInfo
 			{
 				// Zamen souborova '\\' za azure blobova '/'. Toto je dohoda, ze interface IFileStorageService.EnumerateFiles vraci vzdy cestu s '/' a ne s '\\'.
 				// Odmaz storage path - misto, kde jsou soubory ulozeny fyzicky na disku. To je soucasti storagePath z konstruktoru.
-				Name = fileInfo.FullName.Substring(StoragePath.Length + 1).Replace("\\", "/"),
+				Name = (useFullyQualifiedPathNames ? fileInfo.FullName : fileInfo.FullName.Substring(StoragePath.Length + 1)).Replace("\\", "/"),
 				LastModifiedUtc = fileInfo.LastWriteTimeUtc,
 				Size = fileInfo.Length,
 				ContentType = null
@@ -314,20 +321,24 @@ namespace Havit.Services.FileStorage
 			}
 		}
 
-		internal void VerifyPathIsFullyQualified(string path)
+		private static void VerifyPathIsFullyQualified(string path)
         {
-			// Path.IsPathFullyQualified není součástí .NET Frameworku ani .NET Standard 2.0 (je v .NET Standard 2.1)
-
-			// https://stackoverflow.com/questions/5565029/check-if-full-path-given
-			bool pathIsFullyQualifies = !String.IsNullOrWhiteSpace(path)
-			   && path.IndexOfAny(System.IO.Path.GetInvalidPathChars().ToArray()) == -1
-			   && Path.IsPathRooted(path)
-			   && !Path.GetPathRoot(path).Equals(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal);
-
-			if (!pathIsFullyQualifies)
+			if (!IsPathFullyQualified(path))
 			{
 				throw new InvalidOperationException("Cesta k souboru musí být zadána jako plně kvalifikovaná (vč. disku, od rootu).");
 			}
+		}
+
+		internal static bool IsPathFullyQualified(string path)
+		{
+			// Path.IsPathFullyQualified není součástí .NET Frameworku ani .NET Standard 2.0 (je v .NET Standard 2.1)
+
+			// stačí nám jen podpora disků ve Windows, bez UNC cest
+			return !String.IsNullOrWhiteSpace(path)
+			   && (path.Length >= 3)
+			   && (((path[0] >= 'A') && (path[0] <= 'Z')) || ((path[0] >= 'a') && (path[0] <= 'z')))
+			   && (path[1] == ':')
+			   && ((path[2] == '/') || (path[2] == '\\'));
 		}
 
 		private bool IsPathInsideFolder(DirectoryInfo filePath, DirectoryInfo storageDirectory)

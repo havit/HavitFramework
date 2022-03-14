@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
@@ -106,7 +107,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				result = DbSet.Find(id);
+				var query = GetEqualsQuery(id);
+				result = query.FirstOrDefault();
+
 				if (result != null)
 				{
 					// načtený objekt uložíme do cache
@@ -143,7 +146,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				result = await DbSet.FindAsync(new object[] { id }, cancellationToken).ConfigureAwait(false);
+				var query = GetEqualsQuery(id);
+				result = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+
 				if (result != null)
 				{
 					// načtený objekt uložíme do cache
@@ -356,10 +361,25 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		private TEntity[] _all;
 
 		/// <summary>
+		/// Vrací dotaz pro GetObject/GetObjectAsync.
+		/// </summary>
+		private IQueryable<TEntity> GetEqualsQuery(int id)
+		{
+			ValueHolder valueHolder = new ValueHolder { Id = id };
+			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
+			Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
+					Expression.Equal(
+					Expression.Property(parameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName()),
+					Expression.Property(Expression.Constant(valueHolder), nameof(ValueHolder.Id))),
+				parameter);
+			return DbSet.AsQueryable().Where(expression);
+		}
+
+		/// <summary>
 		/// Vrací dotaz pro GetObjects/GetObjectsAsync.
 		/// </summary>
 		private IQueryable<TEntity> GetInQuery(int[] ids)
-		{
+		{		
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
 					Expression.Call(
@@ -439,5 +459,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 			throw new Havit.Data.Patterns.Exceptions.ObjectNotFoundException(exceptionText);
 		}
+
+		private class ValueHolder
+		{
+			public int Id { get; set; }
+		}
+
 	}
 }

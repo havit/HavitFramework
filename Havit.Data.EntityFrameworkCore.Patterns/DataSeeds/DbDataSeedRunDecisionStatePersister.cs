@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Model;
+﻿using System.Linq;
+using Havit.Data.EntityFrameworkCore.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.Patterns.DataSeeds;
 
@@ -40,7 +41,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                     dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
                 }
 
-                DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
+                DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
                 return dataSeedVersion?.Version;
             }
         }
@@ -62,7 +63,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                     dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
                 }
 
-                DataSeedVersion dataSeedVersion = dbContext.Set<DataSeedVersion>().Find(profileName);
+                DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
                 if (dataSeedVersion == null)
                 {
                     dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
@@ -71,6 +72,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
                 dataSeedVersion.Version = currentState;
                 dbContext.SaveChanges();
             }
+        }
+
+        private DataSeedVersion GetDataSeedVersion(IDbContext dbContext, string profileName)
+        {
+            IDbSet<DataSeedVersion> dbSet = dbContext.Set<DataSeedVersion>();
+            return dbSet.FindTracked(profileName) ?? dbSet.AsQueryable().SingleOrDefault(dataSeedVersion => dataSeedVersion.ProfileName == profileName);
         }
     }
 }

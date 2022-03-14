@@ -36,6 +36,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Havit.EFCoreTests.DataLayer.Seeds.Persons;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ConsoleApp1
 {
@@ -85,27 +86,24 @@ namespace ConsoleApp1
 			{
 				//scope.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
 				scope.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
-				//scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>();
+				scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>();
 			}
 		}
 
 		private static void Debug(IServiceProvider serviceProvider)
 		{
-			for (int i = 0; i < 2; i++)
+			Stopwatch sw = Stopwatch.StartNew();
+			for (int i = 0; i < 10_000; i++)
 			{
 				using (var scope = serviceProvider.CreateScope())
 				{
-					var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
-					var dataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
-					var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-					var persons = dataSource.Data.Where(p => p.BossId == null).ToList();
+					var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
 
-					dbContext.ChangeTracker.DetectChanges();
-
-					Thread.Sleep(3000);
-					//dataLoader.LoadAll(persons, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+					repository.GetObject(1);
 				}
 			}
+			Console.WriteLine(sw.ElapsedMilliseconds);
 		}
+
 	}
 }

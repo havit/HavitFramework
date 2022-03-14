@@ -24,9 +24,9 @@ namespace Havit.Diagnostics.Contracts
 		public static void Requires([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-		public static void Requires(bool condition, string userMessage = null)
+		public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
-		{			
+		{
 			if (!condition)
 			{
 				ThrowException<ContractException>(ConstructMessage(userMessage));
@@ -42,7 +42,7 @@ namespace Havit.Diagnostics.Contracts
 		public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-		public static void Requires<TException>(bool condition, string userMessage = null)
+		public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 			where TException : Exception
 		{
@@ -60,7 +60,7 @@ namespace Havit.Diagnostics.Contracts
 		public static void Assert([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-		public static void Assert(bool condition, string userMessage = null)
+		public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		{
 			if (!condition)
@@ -87,7 +87,7 @@ namespace Havit.Diagnostics.Contracts
 		public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 		[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-		public static void Assert<TException>(bool condition, string userMessage = null)
+		public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 			where TException : Exception
 		{
@@ -97,7 +97,7 @@ namespace Havit.Diagnostics.Contracts
 			}
 		}
 
-		[DebuggerStepThrough]		
+		[DebuggerStepThrough]
 		private static void ThrowException<TException>(string message)
 			where TException : Exception
 		{
@@ -127,7 +127,7 @@ namespace Havit.Diagnostics.Contracts
 		/// </summary>
 		private static string ConstructMessage(string message)
 		{
-			return String.IsNullOrEmpty(message) 
+			return String.IsNullOrEmpty(message)
 				? "Contract failed."
 				: "Contract failed: " + message;
 		}

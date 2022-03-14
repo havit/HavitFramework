@@ -28,11 +28,7 @@ namespace Havit.Tests.Diagnostics.Contracts
 
 			// Assert
 			Assert.IsNotNull(contractException);
-#if NET6_0_OR_GREATER
 			Assert.AreEqual("Contract failed: i == (5 + 5)", contractException.Message);
-#else
-			Assert.AreEqual("Contract failed.", contractException.Message);
-#endif
 		}
 
 		[TestMethod]

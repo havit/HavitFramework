@@ -29,6 +29,9 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 				return new NetCoreProject(csprojPath, content);
 			}
 
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine($"{csprojPath} has an old csproj format, use the new csproj format.");
+			Console.ResetColor();
 			return new LegacyProject(csprojPath, content);
 		}
 

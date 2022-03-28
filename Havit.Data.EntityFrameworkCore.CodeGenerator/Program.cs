@@ -55,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 			Parallel.Invoke(
-				() => GenerateMetadata(metadataProject, modelProject, dbContext),
+				() => GenerateMetadata(metadataProject, modelProject, dbContext, configuration),
 				() => GenerateDataSources(dataLayerProject, modelProject, dbContext),
 				() => GenerateDataEntries(dataLayerProject, modelProject, dbContext, dataEntriesModelSource),
 				() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource)
@@ -165,12 +165,12 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			return GetConfiguration(solutionPath, currentPath.Parent);
         }
 
-        private static void GenerateMetadata(IProject metadataProject, IProject modelProject, DbContext dbContext)
+        private static void GenerateMetadata(IProject metadataProject, IProject modelProject, DbContext dbContext, CodeGeneratorConfiguration configuration)
 		{
 			CodeWriter codeWriter = new CodeWriter(metadataProject);
 			MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(metadataProject);
 			MetadataClassTemplateFactory factory = new MetadataClassTemplateFactory();
-			MetadataClassModelSource modelSource = new MetadataClassModelSource(dbContext, metadataProject, modelProject);
+			MetadataClassModelSource modelSource = new MetadataClassModelSource(dbContext, metadataProject, modelProject, configuration);
 			var metadataGenerator = new GenericGenerator<MetadataClass>(modelSource, factory, fileNamingService, codeWriter);
 			metadataGenerator.Generate();
 		}

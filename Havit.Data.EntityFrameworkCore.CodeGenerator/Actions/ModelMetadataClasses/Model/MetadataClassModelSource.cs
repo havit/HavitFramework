@@ -4,6 +4,7 @@ using System.Linq;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model
 {
@@ -12,13 +13,15 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 		private readonly DbContext dbContext;
 		private readonly IProject metadataProject;
 		private readonly IProject modelProject;
+        private readonly CodeGeneratorConfiguration configuration;
 
-		public MetadataClassModelSource(DbContext dbContext, IProject metadataProject, IProject modelProject)
+        public MetadataClassModelSource(DbContext dbContext, IProject metadataProject, IProject modelProject, CodeGeneratorConfiguration configuration)
 		{
 			this.dbContext = dbContext;
 			this.metadataProject = metadataProject;
 			this.modelProject = modelProject;
-		}
+            this.configuration = configuration;
+        }
 
 		public IEnumerable<MetadataClass> GetModels()
 		{
@@ -46,11 +49,11 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 			string modelProjectNamespace = modelProject.GetProjectRootNamespace();
 			if (namespaceName.StartsWith(modelProjectNamespace))
 			{
-				return metadataProjectNamespace + ".Metadata" + namespaceName.Substring(modelProjectNamespace.Length);
+				return metadataProjectNamespace + "." + configuration.MetadataNamespace + namespaceName.Substring(modelProjectNamespace.Length);
 			}
 			else
 			{
-				return namespaceName + ".Metadata";
+				return namespaceName + "." + configuration.MetadataNamespace;
 			}
 		}
 	}

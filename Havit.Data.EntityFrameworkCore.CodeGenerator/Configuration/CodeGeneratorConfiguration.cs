@@ -10,6 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration
     {
         public string ModelProjectPath { get; set; } = @"Model\Model.csproj";
         public string MetadataProjectPath { get; set; } = @"Model\Model.csproj";
+        public string MetadataNamespace { get; set; } = @"Metadata";
 
         public static CodeGeneratorConfiguration Defaults => new CodeGeneratorConfiguration();
 

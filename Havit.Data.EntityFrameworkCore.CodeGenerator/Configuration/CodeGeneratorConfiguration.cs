@@ -11,11 +11,6 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration
         public string ModelProjectPath { get; set; } = @"Model\Model.csproj";
         public string MetadataProjectPath { get; set; } = @"Model\Model.csproj";
 
-        /// <remarks>
-        /// Konfigurovatelnost složky DataLayer není dokončena, další hardcodovaná cesta je v samotném CodeGenerator.Tool
-        /// </remarks>
-        public string DataLayerProjectPath { get; set; } = @"DataLayer\DataLayer.csproj";
-
         public static CodeGeneratorConfiguration Defaults => new CodeGeneratorConfiguration();
 
         public static CodeGeneratorConfiguration ReadFromFile(string configurationFileName)

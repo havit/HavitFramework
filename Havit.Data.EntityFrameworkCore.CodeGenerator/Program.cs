@@ -35,22 +35,23 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			string solutionDirectory = args[0];
 			string entityAssemblyName = args[1];
 
-			if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
-            {
-				return;
-            }
 
-			CodeGeneratorConfiguration configuration = GetConfiguration(solutionDirectory);
+			Console.WriteLine($"Reading configuration...");
+			CodeGeneratorConfiguration configuration = GetConfiguration(new DirectoryInfo(solutionDirectory));
 
 			IProject modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.ModelProjectPath));
 			IProject metadataProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.MetadataProjectPath));
-			IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.DataLayerProjectPath));
+			IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer\\DataLayer.csproj"));
 			
+
 			Console.WriteLine($"Initializing DbContext...");
-			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
+			if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
+			{
+				return;
+			}
 
 			Console.WriteLine($"Generating code...");
-			
+			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
 			var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 			Parallel.Invoke(
@@ -143,17 +144,25 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			return true;
 		}
 
-		private static CodeGeneratorConfiguration GetConfiguration(string solutionPath)
+		private static CodeGeneratorConfiguration GetConfiguration(DirectoryInfo solutionPath, DirectoryInfo currentPath = null)
         {
-			string configurationFileName = Path.Combine(solutionPath, "efcore.codegenerator.json");
+			if (currentPath == null)
+			{
+				currentPath = new DirectoryInfo(Environment.CurrentDirectory);
+			}
+
+			string configurationFileName = Path.Combine(currentPath.FullName, "efcore.codegenerator.json");
 			if (File.Exists(configurationFileName))
 			{
 				return CodeGeneratorConfiguration.ReadFromFile(configurationFileName);
 			}
-            else
-            {
+
+			if ((currentPath.Parent == null) || (solutionPath.FullName == currentPath.FullName))
+			{
 				return CodeGeneratorConfiguration.Defaults;
             }
+
+			return GetConfiguration(solutionPath, currentPath.Parent);
         }
 
         private static void GenerateMetadata(IProject metadataProject, IProject modelProject, DbContext dbContext)

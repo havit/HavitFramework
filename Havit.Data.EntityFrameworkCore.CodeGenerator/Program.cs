@@ -19,6 +19,7 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Template
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore.Design;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 {
@@ -30,63 +31,21 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 		public static void Main(string[] args)
 		{
 			Stopwatch stopwatch = Stopwatch.StartNew();
-			IProject modelProject = null;
-			IProject dataLayerProject = null;
-			DbContext dbContext = null;
 
 			string solutionDirectory = args[0];
 			string entityAssemblyName = args[1];
 
-			Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
+			if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
+            {
+				return;
+            }
+
+			CodeGeneratorConfiguration configuration = GetConfiguration(solutionDirectory);
+
+			IProject modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.ModelProjectPath));
+			IProject metadataProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.MetadataProjectPath));
+			IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.DataLayerProjectPath));
 			
-			Type[] assemblyTypes = null;
-			try
-			{
-				assemblyTypes = assembly.GetTypes();
-			}
-			catch (ReflectionTypeLoadException reflectionTypeLoadException)
-			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"There was an error during loading types from {entityAssemblyName}.");
-				if (reflectionTypeLoadException.LoaderExceptions.All(exception => exception is FileLoadException))
-				{
-					reflectionTypeLoadException.LoaderExceptions
-						.Cast<FileLoadException>()
-						.Select(exception => exception.FileName)
-						.Distinct()
-						.OrderBy(message => message)
-						.ToList()
-						.ForEach(message => Console.WriteLine("Cannot load " + message));
-				}
-				else
-				{
-					reflectionTypeLoadException.LoaderExceptions
-						.Select(exception => exception.Message)
-						.Distinct()
-						.OrderBy(message => message)
-						.ToList()
-						.ForEach(message => Console.WriteLine(message));
-				}
-				Console.ResetColor();
-				return;
-			}
-
-			Type dbContextType = assemblyTypes.SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
-			if (dbContextType == null)
-			{
-				Console.WriteLine("No IDbContext implementation was found.");
-				return;
-			}
-
-			Parallel.Invoke(
-				() =>
-				{
-					dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
-				},
-				() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "Model", "Model.csproj")),
-				() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj"))
-			);
-
 			Console.WriteLine($"Initializing DbContext...");
 			CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
 
@@ -95,11 +54,10 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 			Parallel.Invoke(
-				() => GenerateMetadata(modelProject, dbContext),
+				() => GenerateMetadata(metadataProject, modelProject, dbContext),
 				() => GenerateDataSources(dataLayerProject, modelProject, dbContext),
 				() => GenerateDataEntries(dataLayerProject, modelProject, dbContext, dataEntriesModelSource),
-				() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource)/*,
-				() => GenerateQueryExtensions(dataLayerProject, sourceControlClient, registeredEntityEnumerator)*/
+				() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource)
 			);
 
 			string[] unusedDataLayerFiles = null;
@@ -136,12 +94,74 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
 		}
 
-		private static void GenerateMetadata(IProject modelProject, DbContext dbContext)
+        private static bool TryGetDbContext(string entityAssemblyName, out DbContext dbContext)
+        {
+			Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
+
+			Type[] assemblyTypes = null;
+			try
+			{
+				assemblyTypes = assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException reflectionTypeLoadException)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine($"There was an error during loading types from {entityAssemblyName}.");
+				if (reflectionTypeLoadException.LoaderExceptions.All(exception => exception is FileLoadException))
+				{
+					reflectionTypeLoadException.LoaderExceptions
+						.Cast<FileLoadException>()
+						.Select(exception => exception.FileName)
+						.Distinct()
+						.OrderBy(message => message)
+						.ToList()
+						.ForEach(message => Console.WriteLine("Cannot load " + message));
+				}
+				else
+				{
+					reflectionTypeLoadException.LoaderExceptions
+						.Select(exception => exception.Message)
+						.Distinct()
+						.OrderBy(message => message)
+						.ToList()
+						.ForEach(message => Console.WriteLine(message));
+				}
+				Console.ResetColor();
+				dbContext = null;
+				return false;
+			}
+
+			Type dbContextType = assemblyTypes.SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
+			if (dbContextType == null)
+			{
+				Console.WriteLine("No IDbContext implementation was found.");
+				dbContext = null;
+				return false;
+			}
+
+			dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
+			return true;
+		}
+
+		private static CodeGeneratorConfiguration GetConfiguration(string solutionPath)
+        {
+			string configurationFileName = Path.Combine(solutionPath, "efcore.codegenerator.json");
+			if (File.Exists(configurationFileName))
+			{
+				return CodeGeneratorConfiguration.ReadFromFile(configurationFileName);
+			}
+            else
+            {
+				return CodeGeneratorConfiguration.Defaults;
+            }
+        }
+
+        private static void GenerateMetadata(IProject metadataProject, IProject modelProject, DbContext dbContext)
 		{
-			CodeWriter codeWriter = new CodeWriter(modelProject);
-			MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(modelProject);
+			CodeWriter codeWriter = new CodeWriter(metadataProject);
+			MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(metadataProject);
 			MetadataClassTemplateFactory factory = new MetadataClassTemplateFactory();
-			MetadataClassModelSource modelSource = new MetadataClassModelSource(dbContext, modelProject);
+			MetadataClassModelSource modelSource = new MetadataClassModelSource(dbContext, metadataProject, modelProject);
 			var metadataGenerator = new GenericGenerator<MetadataClass>(modelSource, factory, fileNamingService, codeWriter);
 			metadataGenerator.Generate();
 		}

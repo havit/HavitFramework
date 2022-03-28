@@ -10,12 +10,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 	public class MetadataClassModelSource : IModelSource<MetadataClass>
 	{
 		private readonly DbContext dbContext;
-		private readonly IProject project;
+		private readonly IProject metadataProject;
+		private readonly IProject modelProject;
 
-		public MetadataClassModelSource(DbContext dbContext, IProject project)
+		public MetadataClassModelSource(DbContext dbContext, IProject metadataProject, IProject modelProject)
 		{
 			this.dbContext = dbContext;
-			this.project = project;
+			this.metadataProject = metadataProject;
+			this.modelProject = modelProject;
 		}
 
 		public IEnumerable<MetadataClass> GetModels()
@@ -40,10 +42,11 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 
 		private string GetNamespaceName(string namespaceName)
 		{
-			string projectNamespace = project.GetProjectRootNamespace();
-			if (namespaceName.StartsWith(projectNamespace))
+			string metadataProjectNamespace = metadataProject.GetProjectRootNamespace();
+			string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+			if (namespaceName.StartsWith(modelProjectNamespace))
 			{
-				return projectNamespace + ".Metadata" + namespaceName.Substring(projectNamespace.Length);
+				return metadataProjectNamespace + ".Metadata" + namespaceName.Substring(modelProjectNamespace.Length);
 			}
 			else
 			{

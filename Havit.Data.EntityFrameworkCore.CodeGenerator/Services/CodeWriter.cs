@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Services.SourceControl;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
@@ -12,12 +11,10 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 	public class CodeWriter
 	{
 		private readonly IProject project;
-		private readonly ISourceControlClient sourceControlClient;
 
-		public CodeWriter(IProject project, ISourceControlClient sourceControlClient)
+		public CodeWriter(IProject project)
 		{
 			this.project = project;
-			this.sourceControlClient = sourceControlClient;
 		}
 
 		/// <summary>
@@ -37,10 +34,6 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 				if (canOverwriteExistingFile || !exists)
 				{
 					File.WriteAllText(filename, content, Encoding.UTF8);
-					if (!exists)
-					{
-						sourceControlClient.Add(filename);
-					}
 				}
 			}
 			project.AddOrUpdate(filename);

@@ -16,7 +16,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
         private readonly CodeGeneratorConfiguration configuration;
 
         public MetadataClassModelSource(DbContext dbContext, IProject metadataProject, IProject modelProject, CodeGeneratorConfiguration configuration)
-		{
+		{			
 			this.dbContext = dbContext;
 			this.metadataProject = metadataProject;
 			this.modelProject = modelProject;
@@ -35,9 +35,12 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 						select new MetadataClass.MaxLengthConstant
 						{
 							Name = property.Name + "MaxLength",
-							Value = (property.GetMaxLength() == -1)
-								? Int32.MaxValue
-								: property.GetMaxLength() ?? 0
+							// Pokud je použit MaxLengthAttribute atribut bez hodnoty, je jako hodnota považována -1.
+							// Konvence MaxLengthAttributeConvention aplikující MaxLengthAttributy, použije jen atributy s hodnotou > 0.
+							// Property, bez nastavené hodnoty (null), jsou považovány za nvarchar(max). Stejně tak i property s nastavenou maximální délkou na Int32.MaxValue.
+							Value = ((property.GetMaxLength() == null) || (property.GetMaxLength() == Int32.MaxValue))
+								? "Int32.MaxValue"
+								: property.GetMaxLength().ToString()
 						}).ToList()
 				}).ToList();
 			return result;

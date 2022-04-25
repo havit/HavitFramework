@@ -42,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 				.AddEntityPatterns();
 
 
-			using var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes= true });
+			using var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
 			using var scope = serviceProvider.CreateScope();
 			IDataSeedRunner dbDataSeedRunner = scope.ServiceProvider.GetRequiredService<IDataSeedRunner>();
 

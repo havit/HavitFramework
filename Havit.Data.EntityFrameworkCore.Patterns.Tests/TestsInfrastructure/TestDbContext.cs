@@ -4,11 +4,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 {
 	public class TestDbContext : DbContext
 	{
+		private bool useInMemoryDatabase = false;
+
+        public TestDbContext()
+        {
+			useInMemoryDatabase = true;
+        }
+
+        public TestDbContext(DbContextOptions options) : base(options)
+        {
+			useInMemoryDatabase = false;
+        }
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
+			if (useInMemoryDatabase)
+			{
+				optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
+			}
 		}
 
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)

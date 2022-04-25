@@ -43,19 +43,26 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
             {
                 new DbLockedCriticalSection((SqlConnection)dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
                 {
-                    using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
+                    // podpora pro Connection Resiliency
+                    // seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
+                    // viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+                    var strategy = dbContext.Database.CreateExecutionStrategy();
+                    strategy.Execute(() =>
                     {
-                        dbDataSeedTransactionContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
-                        try
+                        using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
                         {
-                            base.SeedData(dataSeedProfileType, forceRun);
-                            transaction.Commit();
+                            dbDataSeedTransactionContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
+                            try
+                            {
+                                base.SeedData(dataSeedProfileType, forceRun);
+                                transaction.Commit();
+                            }
+                            finally
+                            {
+                                dbDataSeedTransactionContext.CurrentTransaction = null;
+                            }
                         }
-                        finally
-                        {
-                            dbDataSeedTransactionContext.CurrentTransaction = null;
-                        }
-                    }
+                    });
                 });
             }
             else

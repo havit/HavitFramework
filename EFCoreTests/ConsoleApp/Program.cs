@@ -49,11 +49,7 @@ namespace ConsoleApp1
 					configurationBuilder.AddJsonFile("appsettings.ConsoleApp.json", optional: false)
 				)
 				.ConfigureLogging((hostingContext, logging) => logging
-				.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] ")
-				.AddFile("%TEMP%\\dbdataloader_{0:yyyy}-{0:MM}-{0:dd}.log", fileLoggerOpts =>
-				{
-					fileLoggerOpts.FormatLogFileName = fName => String.Format(fName, DateTime.UtcNow);
-				}))
+				.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] "))
 				.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
 				.Build();
 					

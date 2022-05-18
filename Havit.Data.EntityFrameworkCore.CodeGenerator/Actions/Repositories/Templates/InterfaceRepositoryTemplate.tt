@@ -3,18 +3,9 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Patterns.Repositories;
-using <#= Model.ModelClassNamespace #>;
+namespace <#= Model.NamespaceName #>;
 
-namespace <#= Model.NamespaceName #>
+public partial interface <#= Model.InterfaceRepositoryName #>
 {
-	public partial interface <#= Model.InterfaceRepositoryName #>
-	{
 
-	}
 }

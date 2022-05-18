@@ -13,7 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 		private readonly ICompilationAssemblyResolver innerResolver;
 
 		public DependencyContext DependencyContext { get; }
-		
+
 		public AssemblyPathFixingCompilationAssemblyResolver(DependencyContext dependencyContext, ICompilationAssemblyResolver innerResolver)
 		{
 			DependencyContext = dependencyContext;

@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			new ReferenceAssemblyPathResolver(),
 			new PackageCompilationAssemblyResolver()
 		};
-		
+
 		private readonly CompositeCompilationAssemblyResolver innerResolver;
 
 		public AssemblyPathFixingCompilationAssemblyResolverFactory(string appBasePath)

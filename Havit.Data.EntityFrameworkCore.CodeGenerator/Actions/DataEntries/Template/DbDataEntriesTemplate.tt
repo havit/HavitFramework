@@ -19,8 +19,13 @@ public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntr
 	public <#= Model.ModelClassFullName #> <#= entry.PropertyName #> => <#= entry.FieldName #> ??= GetEntry(<#= Model.ModelEntriesEnumerationFullName #>.<#= entry.PropertyName #>);
 <# } #>
 
+<# if (Model.UseDataEntrySymbolStorage) { #>
+	public <#= Model.DbClassName #>(Havit.Data.Patterns.DataEntries.IDataEntrySymbolService<<#= Model.ModelClassFullName #>> dataEntrySymbolService, <#= Model.RepositoryDependencyFullName #> repository)
+		: base(dataEntrySymbolService, repository)
+<# } else { #>
 	public <#= Model.DbClassName #>(<#= Model.RepositoryDependencyFullName #> repository)
 		: base(repository)
+<# } #>
 	{
 	}
 }

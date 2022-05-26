@@ -141,21 +141,63 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
             
             #line default
             #line hidden
-            this.Write("\r\n\tpublic ");
+            this.Write("\r\n");
             
             #line 22 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+ if (Model.UseDataEntrySymbolStorage) { 
+            
+            #line default
+            #line hidden
+            this.Write("\tpublic ");
+            
+            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbClassName));
+            
+            #line default
+            #line hidden
+            this.Write("(Havit.Data.Patterns.DataEntries.IDataEntrySymbolService<");
+            
+            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write("> dataEntrySymbolService, ");
+            
+            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.RepositoryDependencyFullName));
+            
+            #line default
+            #line hidden
+            this.Write(" repository)\r\n\t\t: base(dataEntrySymbolService, repository)\r\n");
+            
+            #line 25 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            this.Write("\tpublic ");
+            
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbClassName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 22 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.RepositoryDependencyFullName));
             
             #line default
             #line hidden
-            this.Write(" repository)\r\n\t\t: base(repository)\r\n\t{\r\n\t}\r\n}\r\n");
+            this.Write(" repository)\r\n\t\t: base(repository)\r\n");
+            
+            #line 28 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t{\r\n\t}\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

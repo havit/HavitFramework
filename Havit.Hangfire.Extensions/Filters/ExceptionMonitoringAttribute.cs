@@ -6,36 +6,35 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Hangfire.Extensions.Filters
+namespace Havit.Hangfire.Extensions.Filters;
+
+/// <summary>
+/// Notifies job failure using an <see cref="IExceptionMonitoringService"/>.
+/// </summary>
+public class ExceptionMonitoringAttribute : JobFilterAttribute, IServerFilter
 {
+	private readonly IExceptionMonitoringService exceptionMonitoringService;
+
 	/// <summary>
-	/// Notifies job failure using an <see cref="IExceptionMonitoringService"/>.
+	/// Constructor.
 	/// </summary>
-	public class ExceptionMonitoringAttribute : JobFilterAttribute, IServerFilter
+	public ExceptionMonitoringAttribute(IExceptionMonitoringService exceptionMonitoringService)
 	{
-        private readonly IExceptionMonitoringService exceptionMonitoringService;
+		this.exceptionMonitoringService = exceptionMonitoringService;
+	}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-        public ExceptionMonitoringAttribute(IExceptionMonitoringService exceptionMonitoringService)
-		{
-            this.exceptionMonitoringService = exceptionMonitoringService;
-        }
+	/// <inheritdoc />
+	public void OnPerforming(PerformingContext filterContext)
+	{
+		// NOOP
+	}
 
-		/// <inheritdoc />
-		public void OnPerforming(PerformingContext filterContext)
+	/// <inheritdoc />
+	public void OnPerformed(PerformedContext filterContext)
+	{
+		if ((filterContext.Exception != null) && !filterContext.ExceptionHandled)
 		{
-			// NOOP
-		}
-
-		/// <inheritdoc />
-		public void OnPerformed(PerformedContext filterContext)
-		{
-			if ((filterContext.Exception != null) && !filterContext.ExceptionHandled)
-			{
-				exceptionMonitoringService.HandleException(filterContext.Exception.InnerException ?? filterContext.Exception);
-			}
+			exceptionMonitoringService.HandleException(filterContext.Exception.InnerException ?? filterContext.Exception);
 		}
 	}
 }

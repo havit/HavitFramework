@@ -18,4 +18,12 @@ public static class ServiceCollectionExtensions
 		services.AddHostedService<RecurringJobsSchedulerOnApplicationStartup>();
 		services.PostConfigure<RecurringJobsSchedulerOnApplicationStartupOptions>(options => options.RecurringJobs.AddRange(recurringJobs));
 	}
+
+	/// <summary>
+	/// Adds support for <see cref="SequenceRecurringJob" />.
+	/// </summary>
+	public static void AddHangfireSequenceRecurringJobScheduler(this IServiceCollection services)
+	{
+		services.TryAddSingleton<ISequenceRecurringJobScheduler, SequenceRecurringJobScheduler>();
+	}
 }

@@ -10,29 +10,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Havit.Hangfire.Extensions.BackgroundJobs
+namespace Havit.Hangfire.Extensions.BackgroundJobs;
+
+/// <summary>
+/// Methods to help with background jobs.
+/// </summary>
+public static class ServiceCollectionExtensions
 {
 	/// <summary>
-	/// Methods to help with background jobs.
+	/// Deletes all enqueued jobs in a queue.
 	/// </summary>
-	public static class ServiceCollectionExtensions
+	public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string queue = "default")
 	{
-		/// <summary>
-		/// Deletes all enqueued jobs in a queue.
-		/// </summary>
-		public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string queue = "default")
-		{
-			AddHangfireEnqueuedJobsCleanupOnApplicationStartup(services, new string[] { queue });
-		}
+		AddHangfireEnqueuedJobsCleanupOnApplicationStartup(services, new string[] { queue });
+	}
 
-		/// <summary>
-		/// Deletes all enqueued jobs in a queues.
-		/// </summary>
-		public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string[] queues)
-		{
-			services.TryAddSingleton<IBackgroundJobManager, BackgroundJobManager>();
-			services.AddHostedService<EnqueuedJobsCleanupOnApplicationStartup>();
-			services.PostConfigure<EnqueuedJobsCleanupOnApplicationStartupOptions>(options => options.Queues.AddRange(queues));
-		}
+	/// <summary>
+	/// Deletes all enqueued jobs in a queues.
+	/// </summary>
+	public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string[] queues)
+	{
+		services.TryAddSingleton<IBackgroundJobManager, BackgroundJobManager>();
+		services.AddHostedService<EnqueuedJobsCleanupOnApplicationStartup>();
+		services.PostConfigure<EnqueuedJobsCleanupOnApplicationStartupOptions>(options => options.Queues.AddRange(queues));
 	}
 }

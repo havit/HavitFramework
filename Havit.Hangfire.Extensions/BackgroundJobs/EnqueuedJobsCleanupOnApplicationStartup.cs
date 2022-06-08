@@ -1,52 +1,44 @@
-﻿using Hangfire;
-using Hangfire.Storage;
-using Hangfire.Storage.Monitoring;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Hangfire.Extensions.BackgroundJobs
+namespace Havit.Hangfire.Extensions.BackgroundJobs;
+
+/// <summary>
+/// Methods to help with background jobs.
+/// </summary>
+internal class EnqueuedJobsCleanupOnApplicationStartup : IHostedService
 {
+	private readonly EnqueuedJobsCleanupOnApplicationStartupOptions options;
+	private readonly IBackgroundJobManager backgroundJobManager;
+
 	/// <summary>
-	/// Methods to help with background jobs.
+	/// Constructor.
 	/// </summary>
-	internal class EnqueuedJobsCleanupOnApplicationStartup : IHostedService
+	public EnqueuedJobsCleanupOnApplicationStartup(IBackgroundJobManager backgroundJobManager, IOptions<EnqueuedJobsCleanupOnApplicationStartupOptions> options)
 	{
-        private readonly EnqueuedJobsCleanupOnApplicationStartupOptions options;
-        private readonly IBackgroundJobManager backgroundJobManager;
+		this.backgroundJobManager = backgroundJobManager;
+		this.options = options.Value;
+	}
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public EnqueuedJobsCleanupOnApplicationStartup(IBackgroundJobManager backgroundJobManager, IOptions<EnqueuedJobsCleanupOnApplicationStartupOptions> options)
-        {
-            this.backgroundJobManager = backgroundJobManager;
-            this.options = options.Value;
-        }
+	public Task StartAsync(CancellationToken cancellationToken)
+	{
+		foreach (var queue in options.Queues)
+		{
+			backgroundJobManager.DeleteEnqueuedJobs(queue);
+		}
+		return Task.CompletedTask;
+	}
 
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            foreach (var queue in options.Queues)
-            {
-                backgroundJobManager.DeleteEnqueuedJobs(queue);
-            }
-            return Task.CompletedTask;
-        }
+	public void StopApplication()
+	{
+		// NOOP
+	}
 
-        public void StopApplication()
-        {  
-            // NOOP
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            // NOOP
-            return Task.CompletedTask;
-        }
-    }
+	public Task StopAsync(CancellationToken cancellationToken)
+	{
+		// NOOP
+		return Task.CompletedTask;
+	}
 }

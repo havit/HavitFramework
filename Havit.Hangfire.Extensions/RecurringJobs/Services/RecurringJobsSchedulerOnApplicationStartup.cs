@@ -10,40 +10,39 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Hangfire.Extensions.RecurringJobs.Services
+namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
+
+/// <summary>
+/// Methods to help with background jobs.
+/// </summary>
+internal class RecurringJobsSchedulerOnApplicationStartup : IHostedService
 {
+	private readonly IRecurringJobsScheduler recurringJobsScheduler;
+	private readonly RecurringJobsSchedulerOnApplicationStartupOptions options;
+
 	/// <summary>
-	/// Methods to help with background jobs.
+	/// Constructor.
 	/// </summary>
-	internal class RecurringJobsSchedulerOnApplicationStartup : IHostedService
+	public RecurringJobsSchedulerOnApplicationStartup(IRecurringJobsScheduler recurringJobsHelperService, IOptions<RecurringJobsSchedulerOnApplicationStartupOptions> options)
 	{
-		private readonly IRecurringJobsScheduler recurringJobsScheduler;
-		private readonly RecurringJobsSchedulerOnApplicationStartupOptions options;
+		recurringJobsScheduler = recurringJobsHelperService;
+		this.options = options.Value;
+	}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public RecurringJobsSchedulerOnApplicationStartup(IRecurringJobsScheduler recurringJobsHelperService, IOptions<RecurringJobsSchedulerOnApplicationStartupOptions> options)
-		{
-			recurringJobsScheduler = recurringJobsHelperService;
-			this.options = options.Value;
-		}
+	public Task StartAsync(CancellationToken cancellationToken)
+	{
+		recurringJobsScheduler.SetSchedule(options.RecurringJobs.ToArray());
+		return Task.CompletedTask;
+	}
 
-		public Task StartAsync(CancellationToken cancellationToken)
-		{
-			recurringJobsScheduler.SetSchedule(options.RecurringJobs.ToArray());
-			return Task.CompletedTask;
-		}
+	public void StopApplication()
+	{
+		// NOOP
+	}
 
-		public void StopApplication()
-		{
-			// NOOP
-		}
-
-		public Task StopAsync(CancellationToken cancellationToken)
-		{
-			// NOOP
-			return Task.CompletedTask;
-		}
+	public Task StopAsync(CancellationToken cancellationToken)
+	{
+		// NOOP
+		return Task.CompletedTask;
 	}
 }

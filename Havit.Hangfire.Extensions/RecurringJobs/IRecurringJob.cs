@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs
 {
-	// TODO: Zpětná kompatibilita? K čemu? Vlastní službu na spouštění?
 	/// <summary>
 	/// Recurrying job to schedule.
 	/// </summary>

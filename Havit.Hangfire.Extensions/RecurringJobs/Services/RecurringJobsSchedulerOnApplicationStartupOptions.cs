@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Hangfire.Extensions.RecurringJobs
+namespace Havit.Hangfire.Extensions.RecurringJobs.Services
 {
 	/// <summary>
 	/// Options for RecurringJobsSchedulerOnApplicationStartup.
@@ -20,5 +20,5 @@ namespace Havit.Hangfire.Extensions.RecurringJobs
 		/// Recurring jobs to schedule.
 		/// </summary>
 		public List<IRecurringJob> RecurringJobs { get; } = new List<IRecurringJob>();
-    }
+	}
 }

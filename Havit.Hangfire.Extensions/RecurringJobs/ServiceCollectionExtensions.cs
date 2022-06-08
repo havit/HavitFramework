@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.Storage;
 using Hangfire.Storage.Monitoring;
+using Havit.Hangfire.Extensions.RecurringJobs.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;

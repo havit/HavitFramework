@@ -180,7 +180,8 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IReadOnlyEntityType entityType)
 		{
 			bool hasEntryEnum = entityType.ClrType.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
-			bool primaryKeySequence = entityType.FindPrimaryKey().Properties.Single().GetDefaultValueSql()?.ToUpper().Contains("NEXT VALUE FOR") ?? false;
+			// Properties.All: Sice čekáme jediný sloupec, nicméně v databázi můžeme mít na tabulce složený primární klíč (což sice nechceme, ale být to tam může)
+			bool primaryKeySequence = entityType.FindPrimaryKey().Properties.All(property => property.GetDefaultValueSql()?.ToUpper().Contains("NEXT VALUE FOR") ?? false);
 
 			if (hasEntryEnum && !primaryKeySequence)
 			{

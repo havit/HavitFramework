@@ -56,15 +56,49 @@ public class SequenceRecurringJobScheduler : ISequenceRecurringJobScheduler
 		}
 
 		string jobId = recurringJobManager.TriggerExecution(recurringJobIdToEnqueue);
-		Contract.Assert(jobId != null);
+		if (jobId == null)
+		{
+			logger.LogWarning("Triggering recurring job '{RecurringJobId}' failed.", recurringJobIdToEnqueue);
+			if (jobContinuationOptions == JobContinuationOptions.OnlyOnSucceededState)
+			{
+				// job cheme označit za selhaný
+				throw new TriggeringNextJobFailedException($"Triggering next jobs stopped ({recurringJobIdToEnqueue} was not successfully triggered).");
+			}
+		}
 
 		var nextRecurringJobIdsToRunInSequence = remainingRecurringJobIdsToRunInSequence.Skip(1).ToArray();
 		if (nextRecurringJobIdsToRunInSequence.Any())
 		{
-			logger.LogDebug("Enqueueing continuation to run next {Count} jobs in the sequence '{SequnceRecurringJobId}'.", nextRecurringJobIdsToRunInSequence.Length, sequenceRecurringJobId);
+			if (jobId == null)
+			{
+				logger.LogDebug("Continuing with next jobs...");
+				// pokud naplánování spuštění dané naplánované úlohy selhalo, a můžeme pokračovat i v případě neúspěchu,
+				// pokračujeme v naplánování dalšího kroku
+				EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions);
+			}
+			else
+			{
+				logger.LogDebug("Enqueueing continuation to run next {Count} jobs in the sequence '{SequnceRecurringJobId}'.", nextRecurringJobIdsToRunInSequence.Length, sequenceRecurringJobId);
 
-			// parameters are serialized!
-			backgroundJobClient.ContinueJobWith(jobId, () => EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions), jobContinuationOptions);
+				// parameters are serialized!
+				backgroundJobClient.ContinueJobWith(jobId, () => EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions), jobContinuationOptions);
+			}
 		}
 	}
+
+	#region TriggeringNextJobFailedException  (nested class)
+	/// <summary>
+	/// Exception throw when triggering job failed.
+	/// </summary>
+	public class TriggeringNextJobFailedException : System.Exception
+	{
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		public TriggeringNextJobFailedException(string message) : base(message)
+		{
+			// NOOP
+		}
+	}
+	#endregion
 }

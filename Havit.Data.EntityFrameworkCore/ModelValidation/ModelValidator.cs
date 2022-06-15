@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -29,11 +30,12 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// Kontroluje pravidla modelu.
 		/// </summary>
 		/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
-		public string Validate(DbContext dbContext, ValidationRules validationRules)
+		public string Validate(DbContext dbContext, ValidationRules validationRules, Func<IReadOnlyEntityType, bool> entityTypeFilter = null)
 		{
 			IModel model = dbContext.Model;
 
 			List<string> errors = model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+				.WhereIf(entityTypeFilter != null, entityTypeFilter)
 				.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityType))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityType)))

@@ -2097,7 +2097,7 @@ namespace Havit.Web.UI.WebControls
 			this.ExtractRowValues(fieldValues, row, false, false);
 			DataBinderExt.SetValues(dataObject, fieldValues);
 		}
-
+		
 		/// <summary>
 		/// Renders the Web server control content to the client's browser using the specified System.Web.UI.HtmlTextWriter object.
 		/// </summary>
@@ -2182,6 +2182,79 @@ namespace Havit.Web.UI.WebControls
 				}
 			}
 			base.PrepareControlHierarchy();
+
+			// pokud máme buňky a máme hodnoty v gridu seřazené, aplikujeme styly SortedAscendingHeaderStyle / SortedDescendingHeaderStyle,
+			// SortedAscendingCellStyle / SortedDescendingCellStyle.
+			if ((Controls.Count != 0) && AllowSorting && (SortExpressions.SortItems.Count > 0))
+			{
+				// z výkonových důvodů nechceme pro každou datovou buňku znovu a znovu řešit, zda je podle ní seřazeno (mnoho opakujících se operací),
+				// proto si připravíme styly, které chceme nastavit headeru a buňce
+				Dictionary<DataControlField, TableItemStyle> headerStylesForSortedColumns = new Dictionary<DataControlField, TableItemStyle>();
+				Dictionary<DataControlField, TableItemStyle> cellStylesForSortedColumns = new Dictionary<DataControlField, TableItemStyle>();
+
+				foreach (DataControlField column in Columns)
+				{
+					if (!String.IsNullOrEmpty(column.SortExpression)) // pokud se podle daného sloupce může řadit
+					{
+						SortExpressions columnSortExpressions = new SortExpressions();
+						columnSortExpressions.AddSortExpression(column.SortExpression);
+
+						// ověříme, zda se podle sloupce aktuálně řadí
+						if (this.SortExpressions.StartsWith(columnSortExpressions))
+						{
+							// a pokud se řadí, je řazení vzestupné nebo sestupné...
+							if (SortExpressions.SortItems[0].Direction == Collections.SortDirection.Ascending)
+							{
+								// zapíšeme si, že budeme aplikovat styly pro vzestupné řazení
+								headerStylesForSortedColumns.Add(column, this.SortedAscendingHeaderStyle);
+								cellStylesForSortedColumns.Add(column, this.SortedAscendingCellStyle);
+							}
+							else
+							{
+								// zapíšeme si, že budeme aplikovat styly pro sestupné řazení
+								headerStylesForSortedColumns.Add(column, this.SortedDescendingHeaderStyle);
+								cellStylesForSortedColumns.Add(column, this.SortedDescendingCellStyle);
+							}
+						}
+					}
+
+				}
+
+				// projdeme buňky záhlaví tabulky a těmto buňkám styl
+				if (this.HeaderRow != null)
+				{
+					foreach (TableCell headerCell in this.HeaderRow.Cells)
+					{
+						if (headerCell is DataControlFieldCell dataControlFieldCell)
+						{
+							if (headerStylesForSortedColumns.TryGetValue(dataControlFieldCell.ContainingField, out var headerCellStyle))
+							{
+								headerCell.MergeStyle(headerCellStyle);
+							}
+						}
+					}
+				}
+
+				// nyní projdeme data tabulky a nastavíme buňkám styl
+				foreach (GridViewRow row in Rows)
+				{
+					if (row.RowType != DataControlRowType.DataRow)
+					{
+						continue; // Never happens (I hope).
+					}
+
+					foreach (TableCell cell in row.Cells)
+					{
+						if (cell is DataControlFieldCell dataControlFieldCell)
+						{
+							if (cellStylesForSortedColumns.TryGetValue(dataControlFieldCell.ContainingField, out var sortedCellStyle))
+							{
+								cell.MergeStyle(sortedCellStyle);
+							}
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>

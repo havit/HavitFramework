@@ -2229,7 +2229,7 @@ namespace Havit.Web.UI.WebControls
 						{
 							if (headerStylesForSortedColumns.TryGetValue(dataControlFieldCell.ContainingField, out var headerCellStyle))
 							{
-								headerCell.MergeStyle(headerCellStyle);
+								headerCell.MergeStyleIncludingCssClass(headerCellStyle);
 							}
 						}
 					}
@@ -2249,7 +2249,7 @@ namespace Havit.Web.UI.WebControls
 						{
 							if (cellStylesForSortedColumns.TryGetValue(dataControlFieldCell.ContainingField, out var sortedCellStyle))
 							{
-								cell.MergeStyle(sortedCellStyle);
+								cell.MergeStyleIncludingCssClass(sortedCellStyle);
 							}
 						}
 					}

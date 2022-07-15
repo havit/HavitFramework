@@ -17,8 +17,6 @@ internal static class WebControlExtensions
 	/// Standardně (vestavěná metoda MergeStyle) použije ze stylu CssClass jen tehdy, pokud na WebControlu dosud není nastavena.
 	/// Chování této metody toto mění a cssclass přidává vždy.
 	/// </summary>
-	/// <param name="webControl"></param>
-	/// <param name="style"></param>
 	public static void MergeStyleIncludingCssClass(this WebControl webControl, Style style)
 	{
 		if (!String.IsNullOrEmpty(style.CssClass))

@@ -52,6 +52,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			});
 		}
 
+		/// <summary>
+		/// Provede seedování s daným DbContextem. Ten má již nastavenu transakci.
+		/// </summary>
 		protected virtual void PerformSave<TEntity>(IDbContext dbContext, DataSeedConfiguration<TEntity> configuration)
 			where TEntity : class
 		{

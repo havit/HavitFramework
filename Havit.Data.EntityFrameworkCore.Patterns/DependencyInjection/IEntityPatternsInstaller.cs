@@ -26,7 +26,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Registruje do DI containeru DbContext vč. IDbContextFactory.
 		/// </summary>
-		IEntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContext, IDbContext;
+		IEntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null)
+			where TDbContext : DbContext, IDbContext;
 
 		/// <summary>
 		/// Registruje do DI containeru DbContext s DbContext poolingem vč. IDbContextFactory.

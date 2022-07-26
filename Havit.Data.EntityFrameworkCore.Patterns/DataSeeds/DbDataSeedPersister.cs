@@ -48,40 +48,46 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 					dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
 				}
 
-				CheckConditions(configuration);
-
-				IDbSet<TEntity> dbSet = dbContext.Set<TEntity>();
-				List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
-				List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
-				List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
-
-				if (!configuration.UpdateEnabled)
-				{
-					seedDataPairsToUpdate.RemoveAll(item => item.DbEntity != null);
-				}
-
-				List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
-				foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
-				{
-					unpairedSeedDataPair.DbEntity = EntityActivator.CreateInstance<TEntity>();
-					unpairedSeedDataPair.IsNew = true;
-				}
-
-				Update(configuration, seedDataPairsToUpdate, dbContext);
-				dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
-
-				DoBeforeSaveActions(configuration, seedDataPairs);
-				dbContext.SaveChanges();
-				DoAfterSaveActions(configuration, seedDataPairs);
-
-				if (configuration.ChildrenSeeds != null)
-				{
-					foreach (ChildDataSeedConfigurationEntry childSeed in configuration.ChildrenSeeds)
-					{
-						childSeed.SaveAction(this);
-					}
-				}
+				PerformSave<TEntity>(dbContext, configuration);
 			});
+		}
+
+		protected virtual void PerformSave<TEntity>(IDbContext dbContext, DataSeedConfiguration<TEntity> configuration)
+			where TEntity : class
+		{
+			CheckConditions(configuration);
+
+			IDbSet<TEntity> dbSet = dbContext.Set<TEntity>();
+			List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
+			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
+			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
+
+			if (!configuration.UpdateEnabled)
+			{
+				seedDataPairsToUpdate.RemoveAll(item => item.DbEntity != null);
+			}
+
+			List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
+			foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
+			{
+				unpairedSeedDataPair.DbEntity = EntityActivator.CreateInstance<TEntity>();
+				unpairedSeedDataPair.IsNew = true;
+			}
+
+			Update(configuration, seedDataPairsToUpdate, dbContext);
+			dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
+
+			DoBeforeSaveActions(configuration, seedDataPairs);
+			dbContext.SaveChanges();
+			DoAfterSaveActions(configuration, seedDataPairs);
+
+			if (configuration.ChildrenSeeds != null)
+			{
+				foreach (ChildDataSeedConfigurationEntry childSeed in configuration.ChildrenSeeds)
+				{
+					childSeed.SaveAction(this);
+				}
+			}
 		}
 
 		/// <summary>

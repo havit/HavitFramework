@@ -10,12 +10,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// Installer Havit.Data.Entity.Patterns a souvisejících služeb.
 	/// </summary>
 	public interface IEntityPatternsInstaller
-	{		
+	{
+		/// <summary>
+		/// Registruje do DI containeru DbContext vč. IDbContextFactory.
+		/// </summary>
+		public IEntityPatternsInstaller AddDbContext<TDbContext>()
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext;
+
 		/// <summary>
 		/// Registruje do DI containeru DbContext vč. IDbContextFactory.
 		/// </summary>
 		public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext;
+
+		/// <summary>
+		/// Registruje do DI containeru DbContext vč. IDbContextFactory.
+		/// </summary>
+		IEntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null) where TDbContext : DbContext, IDbContext;
 
 		/// <summary>
 		/// Registruje do DI containeru DbContext s DbContext poolingem vč. IDbContextFactory.

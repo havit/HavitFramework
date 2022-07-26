@@ -234,6 +234,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
+		public IEntityPatternsInstaller AddDbContext<TDbContext>()
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+		{
+			return AddDbContext<TDbContext>((Action<DbContextOptionsBuilder>)null);
+		}
+
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
 		public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 		{
@@ -241,11 +250,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			services.AddDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 			services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 
-			services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
+			services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
 			return this;
 		}
 
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
+		public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null)
+			where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+		{
+			// na pořadí záleží
+			services.AddDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction));
+			services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 
+			services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
+			return this;
+		}
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
@@ -255,7 +276,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
 
 			services.AddPooledDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction), poolSize);
-			services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));			
+			services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 
 			services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 			return this;
@@ -268,6 +289,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 				targetOptionsBuilder.UseFrameworkConventions();
 				targetOptionsBuilder.UseDbLockedMigrator();
 				customOptionsBuilder?.Invoke(targetOptionsBuilder);
+			};
+		}
+
+		private Action<IServiceProvider, DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<IServiceProvider, DbContextOptionsBuilder> customOptionsBuilder)
+		{
+			return (IServiceProvider serviceProvider, DbContextOptionsBuilder targetOptionsBuilder) =>
+			{
+				targetOptionsBuilder.UseFrameworkConventions();
+				targetOptionsBuilder.UseDbLockedMigrator();
+				customOptionsBuilder?.Invoke(serviceProvider, targetOptionsBuilder);
 			};
 		}
 

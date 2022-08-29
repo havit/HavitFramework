@@ -12,10 +12,10 @@ using System.Web;
 
 namespace Havit.Web.UI.WebControls
 {
-    /// <summary>
-    /// Control, který zamezuje dvojímu odeslání formuláře.
-    /// Při submitu překryje viditelnou část formuláře průhledným, ale neprokliknutelným, DIVem.
-    /// </summary>
+	/// <summary>
+	/// Control, který zamezuje dvojímu odeslání formuláře.
+	/// Při submitu překryje viditelnou část formuláře průhledným, ale neprokliknutelným, DIVem.
+	/// </summary>
 	public class SingleSubmitProtection : WebControl
 	{
 		/// <summary>
@@ -43,10 +43,10 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-	    /// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
-	    /// </summary>
-	    /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. </param>
-	    protected override void OnPreRender(EventArgs e)
+		/// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+		/// </summary>
+		/// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. </param>
+		protected override void OnPreRender(EventArgs e)
 		{
 			base.OnPreRender(e);
 
@@ -58,11 +58,7 @@ namespace Havit.Web.UI.WebControls
 
 			SingleSubmitProtection.RegisterStylesheets(this.Page);
 
-            // Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
-            ScriptManager.RegisterClientScriptResource(
-                this.Page,
-                typeof(SingleSubmitProtection),
-                "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
+			SingleSubmitProtection.RegisterScript(this.Page);
 
 			if (this.Enabled)
 			{
@@ -91,25 +87,46 @@ namespace Havit.Web.UI.WebControls
 		}
 
 		/// <summary>
-        /// Zaregistruje css.
-        /// </summary>
-        public static void RegisterStylesheets(Page page)
-        {
-            if (page.Header != null)
-            {
-                bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterStylesheets_registered"] ?? false);
+		/// Zaregistruje script.
+		/// </summary>
+		public static void RegisterScript(Page page)
+		{
+			if (page.Header != null)
+			{
+				bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterScript_registered"] ?? false);
 
-                if (!registered)
-                {
-                    HtmlLink htmlLink = new HtmlLink();
-                    string resourceName = "Havit.Web.UI.WebControls.SingleSubmitProtection.css";
-                    htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(SingleSubmitProtection), resourceName);
-                    htmlLink.Attributes.Add("rel", "stylesheet");
-                    htmlLink.Attributes.Add("type", "text/css");
-                    page.Header.Controls.Add(htmlLink);
-                    HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterStylesheets_registered"] = true;
-                }
-            }
-        }
+				if (!registered)
+				{
+					// Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
+					ScriptManager.RegisterClientScriptResource(
+						page,
+						typeof(SingleSubmitProtection),
+						"Havit.Web.UI.WebControls.SingleSubmitProtection.js");
+					HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterScript_registered"] = true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Zaregistruje css.
+		/// </summary>
+		public static void RegisterStylesheets(Page page)
+		{
+			if (page.Header != null)
+			{
+				bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterStylesheets_registered"] ?? false);
+
+				if (!registered)
+				{
+					HtmlLink htmlLink = new HtmlLink();
+					string resourceName = "Havit.Web.UI.WebControls.SingleSubmitProtection.css";
+					htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(SingleSubmitProtection), resourceName);
+					htmlLink.Attributes.Add("rel", "stylesheet");
+					htmlLink.Attributes.Add("type", "text/css");
+					page.Header.Controls.Add(htmlLink);
+					HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterStylesheets_registered"] = true;
+				}
+			}
+		}
 	}
 }

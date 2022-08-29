@@ -91,19 +91,16 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public static void RegisterScript(Page page)
 		{
-			if (page.Header != null)
-			{
-				bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterScript_registered"] ?? false);
+			bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterScript_registered"] ?? false);
 
-				if (!registered)
-				{
-					// Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
-					ScriptManager.RegisterClientScriptResource(
-						page,
-						typeof(SingleSubmitProtection),
-						"Havit.Web.UI.WebControls.SingleSubmitProtection.js");
-					HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterScript_registered"] = true;
-				}
+			if (!registered)
+			{
+				// Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
+				ScriptManager.RegisterClientScriptResource(
+					page,
+					typeof(SingleSubmitProtection),
+					"Havit.Web.UI.WebControls.SingleSubmitProtection.js");
+				HttpContext.Current.Items["Havit.Web.UI.WebControls.SingleSubmitProtection.RegisterScript_registered"] = true;
 			}
 		}
 

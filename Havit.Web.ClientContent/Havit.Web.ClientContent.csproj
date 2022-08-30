@@ -7,7 +7,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.4-pre1</PackageVersion>
+	<PackageVersion>2.0.3</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Installs Havit.Web client side content and scripts to project.</Description>
 	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
 	<IncludeBuildOutput>false</IncludeBuildOutput>

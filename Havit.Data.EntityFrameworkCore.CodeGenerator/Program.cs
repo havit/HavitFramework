@@ -42,7 +42,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			IProject modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.ModelProjectPath));
 			IProject metadataProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.MetadataProjectPath));
 			IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj"));
-			
+
 
 			Console.WriteLine($"Initializing DbContext...");
 			if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
@@ -65,18 +65,18 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			string[] unusedModelFiles = null;
 
 			Parallel.Invoke(
-		        () =>
-		        {
-			        unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
+				() =>
+				{
+					unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
 					modelProject.RemoveUnusedGeneratedFiles();
-		            modelProject.SaveChanges();
-		        },
-		        () =>
-		        {
-			        unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
-		            dataLayerProject.RemoveUnusedGeneratedFiles();
-		            dataLayerProject.SaveChanges();
-		        });
+					modelProject.SaveChanges();
+				},
+				() =>
+				{
+					unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
+					dataLayerProject.RemoveUnusedGeneratedFiles();
+					dataLayerProject.SaveChanges();
+				});
 
 			unusedModelFiles.Concat(unusedDataLayerFiles).ToList().ForEach(item =>
 			{
@@ -95,8 +95,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
 		}
 
-        private static bool TryGetDbContext(string entityAssemblyName, out DbContext dbContext)
-        {
+		private static bool TryGetDbContext(string entityAssemblyName, out DbContext dbContext)
+		{
 			Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
 
 			Type[] assemblyTypes = null;
@@ -140,12 +140,15 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 				return false;
 			}
 
+			// Pokud nejde zkompilovat následující řádek, velmi pravděpodobně se do CSPROJ při aktualizaci nuget balíčku Microsoft.Data.EntityFrameworkCore.Design dostalo
+			// nastavení privateAssets, které je třeba odebrat. Nastavení se tam dostává, neboť .Data.EntityFrameworkCore.Design je zejména toolingový balíček.
+			// Přestože to zní příšerně, to doporučeno, abychom si po každé aktualizaci csproj ručně upravili.
 			dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
 			return true;
 		}
 
 		private static CodeGeneratorConfiguration GetConfiguration(DirectoryInfo solutionPath, DirectoryInfo currentPath = null)
-        {
+		{
 			if (currentPath == null)
 			{
 				currentPath = new DirectoryInfo(Environment.CurrentDirectory);
@@ -160,12 +163,12 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator
 			if ((currentPath.Parent == null) || (solutionPath.FullName == currentPath.FullName))
 			{
 				return CodeGeneratorConfiguration.Defaults;
-            }
+			}
 
 			return GetConfiguration(solutionPath, currentPath.Parent);
-        }
+		}
 
-        private static void GenerateMetadata(IProject metadataProject, IProject modelProject, DbContext dbContext, CodeGeneratorConfiguration configuration)
+		private static void GenerateMetadata(IProject metadataProject, IProject modelProject, DbContext dbContext, CodeGeneratorConfiguration configuration)
 		{
 			CodeWriter codeWriter = new CodeWriter(metadataProject);
 			MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(metadataProject);

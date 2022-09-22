@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
@@ -12,13 +12,13 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.6.4</PackageVersion>
+		<PackageVersion>2.7.0-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[6.0.1,7)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[7.0.0-rc.1.22426.7, 8)" />
 	</ItemGroup>
 
 	<ItemGroup>

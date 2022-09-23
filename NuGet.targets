@@ -29,7 +29,7 @@
          ale do projektů importujeme tento NuGet.targets.
          Chování balíčku Microsoft.SourceLink.AzureRepos.Git neověřuji, předpokládám, že jde víceméně jen o přejmenování.
     -->
-    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <!-- Publish NuGet -->

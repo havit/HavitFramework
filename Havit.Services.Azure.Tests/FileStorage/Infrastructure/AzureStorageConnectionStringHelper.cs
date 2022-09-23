@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
+﻿using Azure.Identity;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure
@@ -18,7 +19,7 @@ namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure
 			if (connectionString is null)
 			{
 				config = new ConfigurationBuilder()
-					.AddAzureKeyVault("https://HavitFrameworkConfigKV.vault.azure.net", new DefaultKeyVaultSecretManager())
+					.AddAzureKeyVault(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential())
 					.Build();
 				connectionString = config.GetConnectionString("AzureStorage");
 			}

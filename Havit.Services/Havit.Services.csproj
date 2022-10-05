@@ -22,9 +22,11 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 		<Reference Include="System.DirectoryServices" Pack="false" />
 		<Reference Include="System.Runtime.Caching" Pack="false" />
-		<Reference Include="System.Web" Pack="false" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
+		<Reference Include="System.Web" Pack="false" />		
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

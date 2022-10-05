@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<!--<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>-->
-	<TargetFramework>net472</TargetFramework>
+	<!--<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>-->
+	<TargetFramework>net48</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 	
@@ -13,7 +13,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.5</PackageVersion>
+    <PackageVersion>2.0.30</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Data Class Library</Description>
   </PropertyGroup>
   <ItemGroup>
@@ -22,7 +22,7 @@
 	  <!-- Závislost na System.Data.SqlClient dělá neplechu v .NET Frameworkových aplikacích,
 	       pokud je projekt BusinessLayer nastaven pro .NET Standard 2.0.
 		   Typicky pak při spuštění projektu chybí System.Data.SqlClient.dll.
-		   Proto ponecháme v HFW tuto knihovnu na .NET Frameworku 4.7.2 bez .NET Standard 2.0.
+		   Proto ponecháme v HFW tuto knihovnu na .NET Frameworku 4.8 bez .NET Standard 2.0.
 		   Tu zavedeme nejspíš se zavedením Microsoft.Data.SqlClient.
 		   Další issue je ve WebForms aplikaci, která má při použití BusinessLayeru v .NET Standard 2.0
 		   (blíže nezkoumané) problémy s prací s ResourceManagerem.
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Configuration" Pack="false" Condition="'$(TargetFramework)' == 'net472'" />
+    <Reference Include="System.Configuration" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
   </ItemGroup>
 
 </Project>

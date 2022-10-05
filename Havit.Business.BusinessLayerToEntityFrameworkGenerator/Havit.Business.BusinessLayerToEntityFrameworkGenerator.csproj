@@ -1,17 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
+	<TargetFramework>net48</TargetFramework>
 	<OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-	<!-- Vzhledem k potřebě Havit.Business.BusinessLayerGenerator (net472) a EntityFrameworkCore (od verze 5.0 jen net5.0) a obtížnosti při	součinnosti obou projektů,
-	nechávám použitou verzi 3.x, která funguje pro net472. Z EFCore je potřeba naprosto minimální kus implementace. -->
+	<!-- Vzhledem k potřebě Havit.Business.BusinessLayerGenerator (net48) a EntityFrameworkCore (od verze 5.0 jen net5.0) a obtížnosti při	součinnosti obou projektů,
+	nechávám použitou verzi 3.x, která funguje pro net48. Z EFCore je potřeba naprosto minimální kus implementace. -->
 	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.14" />
-	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-	<PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0" />
 	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46367.54" />
   </ItemGroup>
 

@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
+	<TargetFramework>net48</TargetFramework>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.2</PackageVersion>
+	<PackageVersion>2.0.30</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - PayMuzo Library</Description>
   </PropertyGroup>
   <ItemGroup>

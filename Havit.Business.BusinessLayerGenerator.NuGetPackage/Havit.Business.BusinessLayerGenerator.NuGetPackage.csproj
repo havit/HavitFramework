@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>    
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
 
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
     <PackageId>Havit.Business.BLGenerator</PackageId>
-    <PackageVersion>2.0.16</PackageVersion>
+    <PackageVersion>2.0.30</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
     <!-- Publikujeme výstup buildu jiného projektu. -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Havit.Business.BusinessLayerGenerator\bin\$(Configuration)\net472\**">
+    <Content Include="..\Havit.Business.BusinessLayerGenerator\bin\$(Configuration)\net48\**">
       <Pack>true</Pack>
       <PackagePath>tools\BLG</PackagePath>
     </Content>

@@ -1,20 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  
-  <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-	<OutputType>Exe</OutputType>
-  </PropertyGroup>
 
-  <ItemGroup>
-	<!-- Vzhledem k potřebě Havit.Business.BusinessLayerGenerator (net48) a EntityFrameworkCore (od verze 5.0 jen net5.0) a obtížnosti při	součinnosti obou projektů,
-	nechávám použitou verzi 3.x, která funguje pro net48. Z EFCore je potřeba naprosto minimální kus implementace. -->
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.14" />
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46367.54" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj" />
-	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<!-- Vzhledem k potřebě Havit.Business.BusinessLayerGenerator (net48) a EntityFrameworkCore (od verze 5.0 jen net5.0) a obtížnosti při	součinnosti obou projektů,
+			 nechávám použitou verzi 3.x, která funguje pro net48. Z EFCore je potřeba naprosto minimální kus implementace. -->
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[3.1.29]" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+		<!-- Vzhledem k situaci okolo net48 a EFCore popsané výše, máme starý EF Core.
+			 Jenže ve verzi, která je závislostí, je ServiceCollection v jiné assembly, než v nových verzích Microsoft.Extensions.DependencyInjection[.Abstractions].
+			 Proto použijeme starší verzi i zde.
+		-->
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.1.29]" />
+		<PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0" />
+		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46367.54" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<!-- schovává warning:
+			 Warning	MSB3277	Found conflicts between different versions of "Microsoft.Extensions.DependencyInjection.Abstractions" that could not be resolved.
+
+			 Vzniká pravděpodobně použitím staré verze, přičemž Havit.Business.BusinessLayerGenerator předepisuje novější verzi.
+			 Možná to takto poskládané dohromady fungovat bude, možná ne. Budeme řešit, až bude někdo tento nástroj opět potřebovat.
+		-->
+		<NoWarn>MSB3277</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Business.BusinessLayerGenerator\Havit.Business.BusinessLayerGenerator.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
+	</ItemGroup>
 
 </Project>

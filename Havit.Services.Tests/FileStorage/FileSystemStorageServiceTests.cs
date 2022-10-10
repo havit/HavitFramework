@@ -266,6 +266,18 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_EnumerateFiles_HasLastModifiedUtc()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetFileSystemStorageService());

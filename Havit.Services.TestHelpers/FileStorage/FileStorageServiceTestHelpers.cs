@@ -555,6 +555,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Clean-up
 			await fileStorageService.DeleteAsync(testFilename);
 		}
+
 		public static async Task FileStorageService_EnumerateFilesAsync_HasSize(IFileStorageService fileStorageService)
 		{
 			// Arrange
@@ -575,6 +576,29 @@ namespace Havit.Services.TestHelpers.FileStorage
 
 			// Clean-up
 			await fileStorageService.DeleteAsync(testFilename);
+		}
+
+		public static void FileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder(IFileStorageService fileStorageService)
+		{
+			// Arrange
+
+			// Act
+			IEnumerable<FileInfo> files = fileStorageService.EnumerateFiles("NONEXISTING_FOLDER\\*");
+
+			// Assert
+			Assert.IsNotNull(files);
+			Assert.IsTrue(!files.Any());
+		}
+
+		public static async Task FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(IFileStorageService fileStorageService)
+		{
+			// Arrange
+
+			// Act
+			List<FileInfo> files = await fileStorageService.EnumerateFilesAsync("NONEXISTING_FOLDER\\*").ToListAsync();
+
+			// Assert
+			Assert.IsTrue(!files.Any());
 		}
 
 		public static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)

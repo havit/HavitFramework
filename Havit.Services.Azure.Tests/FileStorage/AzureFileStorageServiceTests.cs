@@ -164,6 +164,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureFileStorageService());
 		}
 
+		[TestMethod]
+		public void AzureFileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(GetAzureFileStorageService());
+		}
+
 		//[TestMethod]
 		public void AzureFileStorageService_EnumerateFiles_HasLastModifiedUtc()
 		{

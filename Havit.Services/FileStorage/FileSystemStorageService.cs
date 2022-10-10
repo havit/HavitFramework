@@ -218,6 +218,20 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
 		{
+			#region Local function ExecuteWithDirectoryNotFoundExceptionHandling
+			IEnumerable<System.IO.FileInfo> ExecuteWithDirectoryNotFoundExceptionHandling(Func<IEnumerable<System.IO.FileInfo>> func)
+			{
+				try
+				{
+					return func();
+				}
+				catch (DirectoryNotFoundException)
+				{
+					return Enumerable.Empty<System.IO.FileInfo>();
+				}
+			};
+			#endregion
+
 			// zpětná lomítka potřebujeme v searchpatterns pro RegexPatterns.IsFileWildcardMatch
 			searchPattern = searchPattern?.Replace("/", "\\");
 
@@ -229,10 +243,10 @@ namespace Havit.Services.FileStorage
 			if (!useFullyQualifiedPathNames)
 			{
 				// nacti soubory z oblasti dane storagePath a prefixem
-				filesEnumerable =
-					new System.IO.DirectoryInfo(Path.Combine(StoragePath, prefix ?? String.Empty))
-					.EnumerateFiles("*", SearchOption.AllDirectories)
-					.WhereIf(searchPattern != null, item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(StoragePath.Length + 1), searchPattern)); // vyfiltruj validni soubory podle souboroveho wildcards
+				filesEnumerable = ExecuteWithDirectoryNotFoundExceptionHandling(() =>
+						new System.IO.DirectoryInfo(Path.Combine(StoragePath, prefix ?? String.Empty))
+						.EnumerateFiles("*", SearchOption.AllDirectories)
+						.WhereIf(searchPattern != null, item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(StoragePath.Length + 1), searchPattern))); // vyfiltruj validni soubory podle souboroveho wildcards
 			}
 			else
             {
@@ -245,9 +259,9 @@ namespace Havit.Services.FileStorage
 					prefix += '\\';
                 }
 
-				filesEnumerable = new System.IO.DirectoryInfo(prefix)
+				filesEnumerable = ExecuteWithDirectoryNotFoundExceptionHandling(() => new System.IO.DirectoryInfo(prefix)
 					.EnumerateFiles("*", SearchOption.AllDirectories)
-					.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName, searchPattern));
+					.Where(item => RegexPatterns.IsFileWildcardMatch(item.FullName, searchPattern)));
 			}
 
 			return filesEnumerable.Select(fileInfo => new FileInfo

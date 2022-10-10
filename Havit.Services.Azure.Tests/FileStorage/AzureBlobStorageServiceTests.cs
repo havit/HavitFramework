@@ -157,7 +157,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
-		{			
+		{
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
@@ -165,6 +165,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]

@@ -229,7 +229,7 @@ namespace Havit.Services.FileStorage
 				{
 					return Enumerable.Empty<System.IO.FileInfo>();
 				}
-			};
+			}
 			#endregion
 
 			// zpětná lomítka potřebujeme v searchpatterns pro RegexPatterns.IsFileWildcardMatch

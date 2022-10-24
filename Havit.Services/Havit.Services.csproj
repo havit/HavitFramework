@@ -13,29 +13,37 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.31</PackageVersion>
+		<PackageVersion>2.0.32</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Services</Description>
 		<LangVersion>default</LangVersion>
 		<NoWarn>1701;1702;1591</NoWarn>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-		<Reference Include="System.DirectoryServices" Pack="false" />
-		<Reference Include="System.Runtime.Caching" Pack="false" />
-		<Reference Include="System.Web" Pack="false" />		
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
+	<!-- Conditional dependencies: see https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#adding-a-packagereference-condition -->
+	<ItemGroup>
+		<!-- net48 dependencies -->
+		<Reference Include="System.DirectoryServices" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
+		<Reference Include="System.Runtime.Caching" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
+		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />		
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" Condition="'$(TargetFramework)' == 'net48'" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" Condition="'$(TargetFramework)' == 'net48'" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- netstandard2.0 dependencies -->
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="System.Runtime.Caching" Version="6.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+	</ItemGroup>
+	<!-- End of conditional dependencies -->
+
+	<ItemGroup>
+		<!-- shared net48 & netstandard2.0 dependencies -->
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- dev dependency -->
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
 	</ItemGroup>
 

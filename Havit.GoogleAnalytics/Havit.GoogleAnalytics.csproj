@@ -12,7 +12,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.4</PackageVersion>
+		<PackageVersion>$(HavitGoogleAnalytics_PackageVersion)</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Google Analytics Client Library</Description>
 	</PropertyGroup>
 

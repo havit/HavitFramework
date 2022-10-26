@@ -26,19 +26,22 @@
 		<Reference Include="System.Runtime.Caching" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
 		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />		
 		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" Condition="'$(TargetFramework)' == 'net48'" />
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" Condition="'$(TargetFramework)' == 'net48'" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<!-- netstandard2.0 dependencies -->
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 		<PackageReference Include="System.Runtime.Caching" Version="6.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 	</ItemGroup>
 	<!-- End of conditional dependencies -->
 
 	<ItemGroup>
 		<!-- shared net48 & netstandard2.0 dependencies -->
+		<!-- Microsoft.Bcl.AsyncInterfaces musíme uvést jako závislost (obou frameworků), přestože build jde i bez nich.
+			 Důvod, proč jde kompilace i bez nich je takový, že Microsoft.Extensions.DependencyInjection.Abstractions mají uvedenu Microsoft.Bcl.AsyncInterfaces jako svoji závislost pro
+			 netstandard2.0. Ovšem tuto knihovnu nemají jako závislost pro net6, takže při zavedení do projektu (bez explicitního uvedení Microsoft.Bcl.AsyncInterfaces zde)
+			 dojde k pádu na nenalezení Microsoft.Bcl.AsyncInterfaces. -->
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 

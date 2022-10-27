@@ -433,9 +433,9 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("D:*"), "D:*");
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("d:abc"), "d:abc");
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified("D:Abc"), "D:Abc");
+			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\"), @"\\");
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\Abc"), @"\\Abc");
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\abc"), @"\\abc");
-			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\abc\def\ghi"), @"\\abc\def\ghi");
 			
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\"), @"C:\");
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\"), @"c:\");
@@ -443,6 +443,10 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\data"), @"c:\data");
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\*"), @"C:\*");
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\*"), @"c:\*");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"\\Abc\"), @"\\Abc\\");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"\\abc\"), @"\\abc\\");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"\\abc\*"), @"\\abc\\*");
+			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"\\abc\def\ghi"), @"\\abc\def\ghi");
 		}
 
 		private static FileSystemStorageService GetFileSystemStorageService(bool secondary = false, EncryptionOptions encryptionOptions = null)

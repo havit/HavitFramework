@@ -79,7 +79,7 @@ namespace Havit.Services.FileStorage
 		/// Nemá asynchronní implementaci, spouští synchronní PerformRead.
 		/// </summary>
 		protected override Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
-		{			
+		{
 			return Task.FromResult(PerformRead(fileName));
 		}
 
@@ -122,7 +122,7 @@ namespace Havit.Services.FileStorage
 		/// Uloží stream do úložiště.
 		/// </summary>
 		protected override async Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default)
-		{		
+		{
 			EnsureDirectoryFor(fileName);
 
 			using (FileStream fileStream = new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920))
@@ -164,9 +164,9 @@ namespace Havit.Services.FileStorage
 			{
 				targetFileSystemStorageService.EnsureDirectoryFor(targetFileName);
 				if (File.Exists(targetFileSystemStorageService.GetFullPath(targetFileName)))
-                {
+				{
 					File.Delete(targetFileSystemStorageService.GetFullPath(targetFileName));
-                }
+				}
 				File.Move(GetFullPath(sourceFileName), targetFileSystemStorageService.GetFullPath(targetFileName));
 			}
 			else
@@ -249,15 +249,15 @@ namespace Havit.Services.FileStorage
 						.WhereIf(searchPattern != null, item => RegexPatterns.IsFileWildcardMatch(item.FullName.Substring(StoragePath.Length + 1), searchPattern))); // vyfiltruj validni soubory podle souboroveho wildcards
 			}
 			else
-            {
+			{
 				VerifyPathIsFullyQualified(searchPattern);
 
 				// prefix musí být not null, jinak není cesta validní
 				// pokud je použito např. D:\Nu*, vrací prefix jen "D:", chceme však použít "D:\".
 				if (prefix.EndsWith(":"))
-                {
+				{
 					prefix += '\\';
-                }
+				}
 
 				filesEnumerable = ExecuteWithDirectoryNotFoundExceptionHandling(() => new System.IO.DirectoryInfo(prefix)
 					.EnumerateFiles("*", SearchOption.AllDirectories)
@@ -316,7 +316,7 @@ namespace Havit.Services.FileStorage
 		{
 			if (useFullyQualifiedPathNames)
 			{
-				VerifyPathIsFullyQualified(fileNamePath);				
+				VerifyPathIsFullyQualified(fileNamePath);
 				return fileNamePath;
 			}
 			else
@@ -336,7 +336,7 @@ namespace Havit.Services.FileStorage
 		}
 
 		private static void VerifyPathIsFullyQualified(string path)
-        {
+		{
 			if (!IsPathFullyQualified(path))
 			{
 				throw new InvalidOperationException("Cesta k souboru musí být zadána jako plně kvalifikovaná (vč. disku, od rootu).");
@@ -346,13 +346,20 @@ namespace Havit.Services.FileStorage
 		internal static bool IsPathFullyQualified(string path)
 		{
 			// Path.IsPathFullyQualified není součástí .NET Frameworku ani .NET Standard 2.0 (je v .NET Standard 2.1)
+			// navíc nám moc nepomáhá ani jako inspirace
 
-			// stačí nám jen podpora disků ve Windows, bez UNC cest
 			return !String.IsNullOrWhiteSpace(path)
-			   && (path.Length >= 3)
-			   && (((path[0] >= 'A') && (path[0] <= 'Z')) || ((path[0] >= 'a') && (path[0] <= 'z')))
-			   && (path[1] == ':')
-			   && ((path[2] == '/') || (path[2] == '\\'));
+			   && (( /* local path */
+					(path.Length >= 3)
+					&& (((path[0] >= 'A') && (path[0] <= 'Z')) || ((path[0] >= 'a') && (path[0] <= 'z')))
+					&& (path[1] == ':')
+					&& ((path[2] == '/') || (path[2] == '\\')))
+				|| ( /* UNC */
+					(path.Length >= 4)
+					&& (path[0] == '\\')
+					&& (path[1] == '\\')
+					&& (((path[2] >= 'A') && (path[2] <= 'Z')) || ((path[2] >= 'a') && (path[2] <= 'z')))
+					&& (path.LastIndexOf('\\') > 2)));
 		}
 
 		private bool IsPathInsideFolder(DirectoryInfo filePath, DirectoryInfo storageDirectory)

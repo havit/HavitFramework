@@ -20,9 +20,9 @@
 	  <HavitServices_PackageVersion>2.0.34</HavitServices_PackageVersion>
 	  <HavitServicesAzure_PackageVersion>2.0.16</HavitServicesAzure_PackageVersion>
 	  <HavitServicesRedis_PackageVersion>2.0.4</HavitServicesRedis_PackageVersion>
-	  <HavitWeb_PackageVersion>2.0.30</HavitWeb_PackageVersion>
+	  <HavitWeb_PackageVersion>2.0.34</HavitWeb_PackageVersion>
 	  <HavitWebBootstrap_PackageVersion>2.0.30</HavitWebBootstrap_PackageVersion>
-	  <HavitWebClientContent_PackageVersion>2.0.30</HavitWebClientContent_PackageVersion>
+	  <HavitWebClientContent_PackageVersion>2.0.34</HavitWebClientContent_PackageVersion>
   </PropertyGroup>
 
 </Project>

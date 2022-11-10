@@ -13,6 +13,8 @@ namespace Havit.Services.Azure.Tests.FileStorage
 	[TestClass]
 	public class AzureFileStorageServiceTests
 	{
+		private static string testRunSuffix = Guid.NewGuid().ToString("N");
+
 		[ClassInitialize]
 		public static void InitializeTestClass(TestContext testContext)
 		{
@@ -34,9 +36,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[ClassCleanup]
 		public static void CleanUpTestClass()
 		{
-#if !DEBUG
 			GetAzureFileStorageService().GetShareClient().DeleteIfExists();
-#endif
 		}
 
 		[TestMethod]
@@ -286,7 +286,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		{
 			return new AzureFileStorageService(
 				fileStorageConnectionString: AzureStorageConnectionStringHelper.GetConnectionString(),
-				fileShareName: "tests",
+				fileShareName: "tests" + testRunSuffix,
 				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
 		}
 	}

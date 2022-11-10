@@ -20,8 +20,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 	[TestClass]
 	public class AzureBlobStorageServiceTests
 	{
+		private static string containersSuffix = Guid.NewGuid().ToString("N");
+
 		[ClassInitialize]
-		public static void Initialize(TestContext testContext)
+		public static void InitializeTestClass(TestContext testContext)
 		{
 			// testy jsou slušné, mažou po sobě
 			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
@@ -38,12 +40,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[ClassCleanup]
-		public static void CleanUp()
+		public static void CleanUpTestClass()
 		{
-#if !DEBUG
 			GetAzureBlobStorageService().GetBlobContainerClient().Delete();
 			GetAzureBlobStorageService(secondary: true).GetBlobContainerClient().Delete();
-#endif
 		}
 
 		[TestMethod]
@@ -437,12 +437,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 				new AzureBlobStorageServiceOptions
 				{
 					BlobStorage = AzureStorageConnectionStringHelper.GetConnectionString(),
-					ContainerName = secondary ? "secondarytests" : "primarytests",
+					ContainerName = (secondary ? "secondarytests" : "primarytests") + containersSuffix,
 					CacheControl = cacheControl,
 					EncryptionOptions = encryptionOptions
 				});
 		}
-
-
 	}
 }

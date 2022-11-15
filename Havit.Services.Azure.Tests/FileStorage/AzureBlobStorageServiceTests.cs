@@ -157,14 +157,12 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		[Ignore("Test storage with hierarchical namespace.")] // TODO
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		[Ignore("Test storage with hierarchical namespace.")] // TODO
 		public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
@@ -267,7 +265,6 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		[Ignore("Test storage with hierarchical namespace?")] // TODO
 		public void AzureBlobStorageService_EncryptAndDecryptAllFiles()
 		{
 			// Arrange

@@ -1,9 +1,5 @@
-﻿using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using Azure.Storage.Files.Shares;
-using Havit.Services.Azure.FileStorage;
-using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
-using Havit.Services.FileStorage;
+﻿using Havit.Services.Sftp.FileStorage;
+using Renci.SshNet;
 using System;
 using System.IO;
 using System.Linq;
@@ -15,16 +11,16 @@ namespace TestConsoleApp
 	{
 		public static void Main()
 		{
-			
-			var service = new FileSystemStorageService(@"D:\Temp", useFullyQualifiedPathNames: false, encryptionOptions: null);
-			var files = service.EnumerateFiles("nug*").ToList();
-			files.ForEach(blob => Console.WriteLine(blob.Name));
+			// jak získat tento soubor?
+			// a) stáhnout puttygen, spustit
+			// b) načíst *.ppk přes menu Conversions, Import Key
+			// c) exportovat přes Conversion, Export OpenSSH key (nikoliv new format, nikoliv ssh.com!)
 
-			Console.WriteLine();
-
-			var service2 = new FileSystemStorageService(null, useFullyQualifiedPathNames: true, encryptionOptions: null);
-			var files2 = service2.EnumerateFiles(@"d:\temp\nug*").ToList();
-			files2.ForEach(blob => Console.WriteLine(blob.Name));
+			using var service = new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfo = new ConnectionInfo("sfteu.xerox.com", "ESPChester", new Renci.SshNet.PrivateKeyAuthenticationMethod("ESPChester", new PrivateKeyFile("D:\\Temp\\ESPChester.new"))) });
+			foreach (var fileInfo in service.EnumerateFiles())
+			{
+				Console.WriteLine(fileInfo.Name);
+			}
 
 		}
 	}

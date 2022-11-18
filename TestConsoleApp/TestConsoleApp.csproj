@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Havit.Services.Azure.Tests\Havit.Services.Azure.Tests.csproj" />
+    <ProjectReference Include="..\Havit.Services.Sftp\Havit.Services.Sftp.csproj" />
   </ItemGroup>
 
 </Project>

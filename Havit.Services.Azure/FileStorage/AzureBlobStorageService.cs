@@ -217,7 +217,7 @@ namespace Havit.Services.Azure.FileStorage
 			string prefix = FileStorageServiceBase.EnumerableFilesGetPrefix(searchPattern);
 
 			EnsureContainer();
-
+			
 			// nacti soubory s danym prefixem - optimalizace na rychlost
 			Pageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobs(prefix: prefix);
 

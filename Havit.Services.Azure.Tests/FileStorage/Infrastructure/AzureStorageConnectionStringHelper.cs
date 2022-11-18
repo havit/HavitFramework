@@ -26,7 +26,7 @@ namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure
 
 			if (connectionString is null)
 			{
-				throw new InvalidOperationException("Couldn't find Azure storage connection string in configuration.");
+				throw new InvalidOperationException("Couldn't find Azure storage connection string in the configuration.");
 			}
 
 			return connectionString;

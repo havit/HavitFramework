@@ -1,6 +1,27 @@
-// ** I18N Afrikaans
-Calendar._DN = new Array("Sondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrydag", "Saterdag", "Sondag");
-Calendar._MN = new Array("Januarie", "Februarie", "Maart", "April", "Mei", "Junie", "Julie", "Augustus", "September", "Oktober", "November", "Desember");
+﻿// ** I18N Afrikaans
+Calendar._DN = new Array
+("Sondag",
+ "Maandag",
+ "Dinsdag",
+ "Woensdag",
+ "Donderdag",
+ "Vrydag",
+ "Saterdag",
+ "Sondag");
+Calendar._MN = new Array
+("Januarie",
+ "Februarie",
+ "Maart",
+ "April",
+ "Mei",
+ "Junie",
+ "Julie",
+ "Augustus",
+ "September",
+ "Oktober",
+ "November",
+ "Desember");
+
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "About the calendar";

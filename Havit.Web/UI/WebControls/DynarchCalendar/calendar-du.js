@@ -1,6 +1,27 @@
-// ** I18N
-Calendar._DN = new Array("Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag");
-Calendar._MN = new Array("Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December");
+﻿// ** I18N
+Calendar._DN = new Array
+("Zondag",
+ "Maandag",
+ "Dinsdag",
+ "Woensdag",
+ "Donderdag",
+ "Vrijdag",
+ "Zaterdag",
+ "Zondag");
+Calendar._MN = new Array
+("Januari",
+ "Februari",
+ "Maart",
+ "April",
+ "Mei",
+ "Juni",
+ "Juli",
+ "Augustus",
+ "September",
+ "Oktober",
+ "November",
+ "December");
+
 // tooltips
 Calendar._TT = {};
 Calendar._TT["INFO"] = "About the calendar";
@@ -17,9 +38,11 @@ Calendar._TT["MON_FIRST"] = "Toon Maandag eerst";
 Calendar._TT["SUN_FIRST"] = "Toon Zondag eerst";
 Calendar._TT["CLOSE"] = "Sluiten";
 Calendar._TT["TODAY"] = "Vandaag";
+
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "y-mm-dd";
 Calendar._TT["TT_DATE_FORMAT"] = "D, M d";
+
 Calendar._TT["WK"] = "wk";
 Calendar._TT["WEEKEND"] = "0,6";
 Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";

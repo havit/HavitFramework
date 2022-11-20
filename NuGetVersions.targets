@@ -21,9 +21,9 @@
 	  <HavitServicesAzure_PackageVersion>2.0.16</HavitServicesAzure_PackageVersion>
 	  <HavitServicesRedis_PackageVersion>2.0.4</HavitServicesRedis_PackageVersion>
 	  <HavitServicesSftp_PackageVersion>2.0.1</HavitServicesSftp_PackageVersion>
-	  <HavitWeb_PackageVersion>2.0.34</HavitWeb_PackageVersion>
-	  <HavitWebBootstrap_PackageVersion>2.0.30</HavitWebBootstrap_PackageVersion>
-	  <HavitWebClientContent_PackageVersion>2.0.34</HavitWebClientContent_PackageVersion>
+	  <HavitWeb_PackageVersion>2.0.35</HavitWeb_PackageVersion>
+	  <HavitWebBootstrap_PackageVersion>2.0.35</HavitWebBootstrap_PackageVersion>
+	  <HavitWebClientContent_PackageVersion>2.0.35</HavitWebClientContent_PackageVersion>
   </PropertyGroup>
 
 </Project>

@@ -32,6 +32,7 @@
 		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.css" />
 		<EmbeddedResource Include="UI\Adapters\CssAdapters\CssTreeViewAdapter.js" />
 		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-cs-win.js" />
+		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-nb.js" />
 		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-setup_stripped.js" />
 		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar_stripped.js" />
 		<EmbeddedResource Include="UI\WebControls\DynarchCalendar\calendar-blue.css" />

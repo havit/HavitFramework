@@ -27,6 +27,10 @@ Calendar._SDN = new Array
  "La",
  "Su");
 
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 1;
+
 // full month names
 Calendar._MN = new Array
 ("Tammikuu",
@@ -85,6 +89,7 @@ Calendar._TT["NEXT_YEAR"] = "Seur. vuosi (paina hetki, näet valikon)";
 Calendar._TT["SEL_DATE"] = "Valitse päivämäärä";
 Calendar._TT["DRAG_TO_MOVE"] = "Siirrä kalenterin paikkaa";
 Calendar._TT["PART_TODAY"] = " (tänään)";
+Calendar._TT["DAY_FIRST"] = "Näytä %s ensimmäisenä";
 Calendar._TT["MON_FIRST"] = "Näytä maanantai ensimmäisenä";
 Calendar._TT["SUN_FIRST"] = "Näytä sunnuntai ensimmäisenä";
 Calendar._TT["CLOSE"] = "Sulje";

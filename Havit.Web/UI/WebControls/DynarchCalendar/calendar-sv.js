@@ -80,6 +80,7 @@ Calendar._TT["NEXT_YEAR"] = "Följande år (håll för menu)";
 Calendar._TT["SEL_DATE"] = "Välj datum";
 Calendar._TT["DRAG_TO_MOVE"] = "Drag för att flytta";
 Calendar._TT["PART_TODAY"] = " (idag)";
+Calendar._TT["DAY_FIRST"] = "Visa %s först";
 Calendar._TT["MON_FIRST"] = "Visa måndag först";
 Calendar._TT["SUN_FIRST"] = "Visa söndag först";
 Calendar._TT["CLOSE"] = "Stäng";

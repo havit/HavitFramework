@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Threading;
-using System.Diagnostics;
-
-using Havit.Web.UI.ClientScripts;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-setup_stripped.js", "text/javascript")]
@@ -37,6 +33,7 @@ using Havit.Web.UI.ClientScripts;
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-lt.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-lv.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-nl.js", "text/javascript")]
+[assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-nb.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-no.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-pl.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.DynarchCalendar.calendar-pt.js", "text/javascript")]
@@ -93,7 +90,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public static string MainScriptUrl
 		{
-			get	{ return mainScriptUrl; }
+			get { return mainScriptUrl; }
 			set { mainScriptUrl = value; }
 		}
 		private static string mainScriptUrl = String.Empty;
@@ -121,7 +118,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		public static string SetupScriptUrl
 		{
-			get	{ return setupScriptUrl; }
+			get { return setupScriptUrl; }
 			set { setupScriptUrl = value; }
 		}
 		private static string setupScriptUrl = String.Empty;
@@ -354,7 +351,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				ViewState["DateStatusFunction"] = value;
 			}
-		}		
+		}
 
 		/// <summary>
 		/// Specifies which day is to be displayed as the first day of week.
@@ -693,6 +690,7 @@ namespace Havit.Web.UI.WebControls
 			supportedLanguages.Add("lt", null);
 			supportedLanguages.Add("lv", null);
 			supportedLanguages.Add("nl", null);
+			supportedLanguages.Add("nb", null);
 			supportedLanguages.Add("no", null);
 			supportedLanguages.Add("pl", null);
 			supportedLanguages.Add("pt", null);
@@ -744,7 +742,7 @@ namespace Havit.Web.UI.WebControls
 			{
 				ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar_stripped.js");
 			}
-			else			
+			else
 			{
 				ScriptManager.RegisterClientScriptInclude(this, typeof(DynarchCalendar), "DynarchCalendar.MainScriptUrl", this.ResolveUrl(MainScriptUrl));
 			}
@@ -765,7 +763,7 @@ namespace Havit.Web.UI.WebControls
 				{
 					throw new ApplicationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
 				}
-				
+
 				if ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs"))
 				{
 					if (HttpContext.Current.Response.ContentEncoding == Encoding.UTF8)
@@ -774,9 +772,9 @@ namespace Havit.Web.UI.WebControls
 						ScriptManager.RegisterClientScriptResource(this, typeof(DynarchCalendar), "Havit.Web.UI.WebControls.DynarchCalendar.calendar-cs-utf8.js");
 					}
 					else
-					{						
+					{
 						// čeština Win-1250
-						
+
 						// POZOR! Pokud použiji ScriptManager na soubor uložený ve Windows-1250, nezobrazí se čeština správně.
 						// Ovšem pokud použiji soubor uložený v UTF-8 při ResponseEncoding Windows-1250, čeština je správně!
 
@@ -879,7 +877,7 @@ namespace Havit.Web.UI.WebControls
 		/// </summary>
 		protected void RegisterCalendarSetupScript()
 		{
-			StringBuilder sb = new StringBuilder();		
+			StringBuilder sb = new StringBuilder();
 
 			//writer.WriteLine("<script type=\"text/javascript\">");
 			//writer.Indent++;
@@ -1159,10 +1157,10 @@ namespace Havit.Web.UI.WebControls
 				// date: ve výsledku mohli přibýt A, a, B, b, Y, y
 
 				// time
-//			section = section.Replace("%H", "%k");
+				//			section = section.Replace("%H", "%k");
 				section = section.Replace("%H", "#2#");
 				section = section.Replace("HH", "#2#"); // %H
-//			section = section.Replace("H", "%k");
+														//			section = section.Replace("H", "%k");
 				section = section.Replace("H", "#2#");
 				section = section.Replace("hh", "%I");
 				section = section.Replace("h", "%l");

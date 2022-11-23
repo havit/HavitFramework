@@ -22,7 +22,6 @@ namespace Havit.Extensions.DependencyInjection
 		/// <summary>
 		/// ServiceAttribute with service lifetime and service types.
 		/// </summary>
-		public ServiceAttribute ServiceAttribute { get; set; }
-		
+		public ServiceAttributeBase ServiceAttribute { get; set; }
 	}
 }

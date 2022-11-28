@@ -143,7 +143,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			EnsureFileShare();
 
-			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: true);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
 
 			System.IO.Stream seekableFileContent;
 			bool seekableFileContentNeedsDispose;
@@ -201,7 +201,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken: cancellationToken).ConfigureAwait(false);
 
 			System.IO.Stream seekableFileContent;
 			bool seekableFileContentNeedsDispose;
@@ -528,7 +528,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje.
+		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje (a je povoleno vytváření složek).
 		/// </summary>
 		protected void EnsureFileShare()
 		{
@@ -543,7 +543,10 @@ namespace Havit.Services.Azure.FileStorage
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
 						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
-						directory.CreateIfNotExists();
+						if (options.AutoCreateDirectories)
+						{
+							directory.CreateIfNotExists();
+						}
 					}
 				}
 
@@ -552,7 +555,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje.
+		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje (a je povoleno vytváření složek).
 		/// </summary>
 		protected async Task EnsureFileShareAsync(CancellationToken cancellationToken = default)
 		{
@@ -567,7 +570,10 @@ namespace Havit.Services.Azure.FileStorage
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
 						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
-						await directory.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+						if (options.AutoCreateDirectories)
+						{
+							await directory.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+						}
 					}
 				}
 

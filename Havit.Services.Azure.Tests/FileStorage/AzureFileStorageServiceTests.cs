@@ -284,10 +284,12 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 		{
-			return new AzureFileStorageService(
-				fileStorageConnectionString: AzureStorageConnectionStringHelper.GetConnectionString(),
-				fileShareName: "tests" + testRunSuffix,
-				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
+			return new AzureFileStorageService(new AzureFileStorageServiceOptions
+			{
+				FileStorageConnectionString = AzureStorageConnectionStringHelper.GetConnectionString(),
+				FileShareName = "tests" + testRunSuffix,
+				RootDirectoryName = secondary ? "root\\secondarytests" : "root\\primarytests"
+			});
 		}
 	}
 }

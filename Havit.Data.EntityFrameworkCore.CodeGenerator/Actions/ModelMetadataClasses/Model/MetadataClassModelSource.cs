@@ -41,7 +41,9 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 							Value = ((property.GetMaxLength() == null) || (property.GetMaxLength() == Int32.MaxValue))
 								? "Int32.MaxValue"
 								: property.GetMaxLength().ToString()
-						}).ToList()
+						})
+						.OrderBy(property => property.Name, StringComparer.InvariantCulture)
+						.ToList()
 				}).ToList();
 			return result;
 		}

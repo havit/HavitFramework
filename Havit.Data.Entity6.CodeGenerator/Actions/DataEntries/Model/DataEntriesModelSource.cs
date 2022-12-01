@@ -13,8 +13,6 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 		private readonly IProject dataLayerProject;
 		private readonly CammelCaseNamingStrategy cammelCaseNamingStrategy;
 
-		private static readonly StringComparer neutralStringComparer = StringComparer.InvariantCulture;
-
 		public DataEntriesModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
 		{
 			this.dbContext = dbContext;
@@ -37,7 +35,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 						ModelClassFullName = registeredEntity.FullName,
 						ModelEntriesEnumerationFullName = registeredEntity.FullName + ".Entry",
 						Entries = System.Enum.GetNames(entriesEnumType)
-							.OrderBy(item => item, neutralStringComparer) // order should be language-neutral
+							.OrderBy(item => item, StringComparer.InvariantCulture) // order should be language-neutral
 							.Select(item => new DataEntriesModel.Entry
 							{
 								PropertyName = item,
@@ -74,7 +72,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model
 		{
 			var fi = type.GetField(value);
 			var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
-			return attributes != null && attributes.Length > 0;
+			return (attributes != null) && (attributes.Length > 0);
 		}
 	}
 }

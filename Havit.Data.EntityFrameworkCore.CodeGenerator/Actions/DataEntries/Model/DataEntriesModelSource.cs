@@ -15,8 +15,6 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 		private readonly IProject dataLayerProject;
 		private readonly CammelCaseNamingStrategy cammelCaseNamingStrategy;
 
-		private static readonly StringComparer neutralStringComparer = StringComparer.InvariantCulture;
-
 		public DataEntriesModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
 		{
 			this.dbContext = dbContext;
@@ -44,12 +42,15 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 						ModelClassFullName = registeredEntity.ClrType.FullName,
 						ModelEntriesEnumerationFullName = registeredEntity.ClrType.FullName + ".Entry",
 						RepositoryDependencyFullName = GetRepositoryDependencyFullName(registeredEntity.ClrType),
-						Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item, neutralStringComparer).Select(item => new DataEntriesModel.Entry
-						{
-							PropertyName = item,
-							FieldName = cammelCaseNamingStrategy.GetCammelCase(item),
-							IsObsolete = IsValueObsolete(entriesEnumType, item)
-						}).ToList()
+						Entries = System.Enum.GetNames(entriesEnumType)
+							.OrderBy(item => item, StringComparer.InvariantCulture)
+							.Select(item => new DataEntriesModel.Entry
+							{
+								PropertyName = item,
+								FieldName = cammelCaseNamingStrategy.GetCammelCase(item),
+								IsObsolete = IsValueObsolete(entriesEnumType, item)
+							})
+							.ToList()
 					}).ToList();
 		}
 

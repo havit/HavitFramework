@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 				select new MetadataClass
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
-					ClassName = registeredEntity.ClrType.Name + "Metadata",
+					ClassName = registeredEntity.ClrType.Name + "Metadata",					
 					MaxLengthConstants = (from property in registeredEntity.GetProperties()
 						where property.ClrType == typeof(string)
 						select new MetadataClass.MaxLengthConstant
@@ -40,7 +40,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 							// Property, bez nastavené hodnoty (null), jsou považovány za nvarchar(max). Stejně tak i property s nastavenou maximální délkou na Int32.MaxValue.
 							Value = ((property.GetMaxLength() == null) || (property.GetMaxLength() == Int32.MaxValue))
 								? "Int32.MaxValue"
-								: property.GetMaxLength().ToString()
+								: property.GetMaxLength().ToString(),
+							RequiresSystemNamespace = (property.GetMaxLength() == null) || (property.GetMaxLength() == Int32.MaxValue)
 						})
 						.OrderBy(property => property.Name, StringComparer.InvariantCulture)
 						.ToList()

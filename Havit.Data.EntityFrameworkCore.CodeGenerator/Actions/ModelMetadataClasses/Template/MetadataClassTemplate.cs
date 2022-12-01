@@ -34,9 +34,23 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 //     Changes to this file will be lost if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------");
-            this.Write("\r\n\r\nnamespace ");
+            this.Write("\r\n\r\n");
             
             #line 8 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+ if (Model.RequiresSystemNamespace) { 
+            
+            #line default
+            #line hidden
+            this.Write("using System;\r\n\r\n");
+            
+            #line 11 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("namespace ");
+            
+            #line 12 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -44,35 +58,35 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
             this.Write(";\r\n\r\n[System.CodeDom.Compiler.GeneratedCode(\"Havit.Data.EntityFrameworkCore.CodeG" +
                     "enerator\", \"1.0\")]\r\npublic static class ");
             
-            #line 11 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 15 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ClassName));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n");
             
-            #line 13 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
  foreach (var constant in Model.MaxLengthConstants) { 
             
             #line default
             #line hidden
             this.Write("\tpublic const int ");
             
-            #line 14 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(constant.Name));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 14 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(constant.Value));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 15 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\ModelMetadataClasses\Template\MetadataClassTemplate.tt"
  } 
             
             #line default

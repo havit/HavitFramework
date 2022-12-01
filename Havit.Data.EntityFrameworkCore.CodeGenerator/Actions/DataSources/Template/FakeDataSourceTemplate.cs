@@ -34,11 +34,11 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Templ
 //     Changes to this file will be lost if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------");
-            this.Write("\r\n\r\nusing Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;\r\nusing Havit" +
-                    ".Data.EntityFrameworkCore.Patterns.SoftDeletes;\r\nusing Havit.Data.Patterns.Attri" +
-                    "butes;\r\n\r\nnamespace ");
+            this.Write("\r\n\r\nusing System.Collections.Generic;\r\nusing Havit.Data.EntityFrameworkCore.Patte" +
+                    "rns.DataSources.Fakes;\r\nusing Havit.Data.EntityFrameworkCore.Patterns.SoftDelete" +
+                    "s;\r\nusing Havit.Data.Patterns.Attributes;\r\n\r\nnamespace ");
             
-            #line 12 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 13 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -46,56 +46,56 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Templ
             this.Write(";\r\n\r\n[Fake]\r\n[System.CodeDom.Compiler.GeneratedCode(\"Havit.Data.EntityFrameworkCo" +
                     "re.CodeGenerator\", \"1.0\")]\r\npublic class ");
             
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.FakeDataSourceClassName));
             
             #line default
             #line hidden
             this.Write(" : FakeDataSource<");
             
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">, ");
             
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceDataSourceFullName));
             
             #line default
             #line hidden
             this.Write("\r\n{\r\n\tpublic ");
             
-            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.FakeDataSourceClassName));
             
             #line default
             #line hidden
             this.Write("(params ");
             
-            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write("[] data)\r\n\t\t: this((IEnumerable<");
             
-            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">)data)\r\n\t{\t\t\t\r\n\t}\r\n\r\n\tpublic ");
             
-            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.FakeDataSourceClassName));
             
             #line default
             #line hidden
             this.Write("(IEnumerable<");
             
-            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataSources\Template\FakeDataSourceTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default

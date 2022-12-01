@@ -16,10 +16,11 @@ using Havit.Data.Patterns.Infrastructure;
 namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public partial class ModelationDbRepository : ModelationDbRepositoryBase, IModelationRepository
+public abstract class CheckedEntityDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.CheckedEntity>
 {
-	public ModelationDbRepository(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IModelationDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.Modelation, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+	protected CheckedEntityDbRepositoryBase(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.ICheckedEntityDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.CheckedEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
 		: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
 	{
 	}
+
 }

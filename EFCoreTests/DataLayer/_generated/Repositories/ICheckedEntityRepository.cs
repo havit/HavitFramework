@@ -5,10 +5,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Havit.EFCoreTests.Model.Metadata;
+using Havit.Data.Patterns.Repositories;
+
+namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public static class UserMetadata
+public partial interface ICheckedEntityRepository : IRepository<Havit.EFCoreTests.Model.CheckedEntity>
 {
-	public const int UsernameMaxLength = Int32.MaxValue;
 }

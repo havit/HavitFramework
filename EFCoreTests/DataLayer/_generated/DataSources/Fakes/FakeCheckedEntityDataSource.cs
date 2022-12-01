@@ -13,14 +13,14 @@ namespace Havit.EFCoreTests.DataLayer.DataSources.Fakes;
 
 [Fake]
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public class FakePersonDataSource : FakeDataSource<Havit.EFCoreTests.Model.Person>, Havit.EFCoreTests.DataLayer.DataSources.IPersonDataSource
+public class FakeCheckedEntityDataSource : FakeDataSource<Havit.EFCoreTests.Model.CheckedEntity>, Havit.EFCoreTests.DataLayer.DataSources.ICheckedEntityDataSource
 {
-	public FakePersonDataSource(params Havit.EFCoreTests.Model.Person[] data)
-		: this((IEnumerable<Havit.EFCoreTests.Model.Person>)data)
+	public FakeCheckedEntityDataSource(params Havit.EFCoreTests.Model.CheckedEntity[] data)
+		: this((IEnumerable<Havit.EFCoreTests.Model.CheckedEntity>)data)
 	{			
 	}
 
-	public FakePersonDataSource(IEnumerable<Havit.EFCoreTests.Model.Person> data, ISoftDeleteManager softDeleteManager = null)
+	public FakeCheckedEntityDataSource(IEnumerable<Havit.EFCoreTests.Model.CheckedEntity> data, ISoftDeleteManager softDeleteManager = null)
 		: base(data, softDeleteManager)
 	{
 	}

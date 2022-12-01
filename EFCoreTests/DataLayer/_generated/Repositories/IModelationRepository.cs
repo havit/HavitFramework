@@ -5,17 +5,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.Patterns.Repositories;
 
-namespace Havit.EFCoreTests.DataLayer.Repositories
+namespace Havit.EFCoreTests.DataLayer.Repositories;
+
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public partial interface IModelationRepository : IRepository<Havit.EFCoreTests.Model.Modelation>
 {
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public partial interface IModelationRepository : IRepository<Havit.EFCoreTests.Model.Modelation>
-	{
-	}
 }

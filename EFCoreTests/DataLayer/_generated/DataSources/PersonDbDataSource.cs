@@ -5,23 +5,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
-namespace Havit.EFCoreTests.DataLayer.DataSources
+namespace Havit.EFCoreTests.DataLayer.DataSources;
+
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public partial class PersonDbDataSource : DbDataSource<Havit.EFCoreTests.Model.Person>, IPersonDataSource
 {
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public partial class PersonDbDataSource : DbDataSource<Havit.EFCoreTests.Model.Person>, IPersonDataSource
+	public PersonDbDataSource(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
+		: base(dbContext, softDeleteManager)
 	{
-		public PersonDbDataSource(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
-			: base(dbContext, softDeleteManager)
-		{
-		}
 	}
 }

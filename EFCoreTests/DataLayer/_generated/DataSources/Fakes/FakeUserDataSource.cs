@@ -5,29 +5,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Attributes;
 
-namespace Havit.EFCoreTests.DataLayer.DataSources.Fakes
-{
-	[Fake]
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public class FakeUserDataSource : FakeDataSource<Havit.EFCoreTests.Model.User>, Havit.EFCoreTests.DataLayer.DataSources.IUserDataSource
-	{
-		public FakeUserDataSource(params Havit.EFCoreTests.Model.User[] data)
-			: this((IEnumerable<Havit.EFCoreTests.Model.User>)data)
-		{			
-		}
+namespace Havit.EFCoreTests.DataLayer.DataSources.Fakes;
 
-		public FakeUserDataSource(IEnumerable<Havit.EFCoreTests.Model.User> data, ISoftDeleteManager softDeleteManager = null)
-			: base(data, softDeleteManager)
-		{
-		}
+[Fake]
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public class FakeUserDataSource : FakeDataSource<Havit.EFCoreTests.Model.User>, Havit.EFCoreTests.DataLayer.DataSources.IUserDataSource
+{
+	public FakeUserDataSource(params Havit.EFCoreTests.Model.User[] data)
+		: this((IEnumerable<Havit.EFCoreTests.Model.User>)data)
+	{			
+	}
+
+	public FakeUserDataSource(IEnumerable<Havit.EFCoreTests.Model.User> data, ISoftDeleteManager softDeleteManager = null)
+		: base(data, softDeleteManager)
+	{
 	}
 }

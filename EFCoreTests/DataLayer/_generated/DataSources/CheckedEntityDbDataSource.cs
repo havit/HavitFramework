@@ -12,9 +12,9 @@ using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 namespace Havit.EFCoreTests.DataLayer.DataSources;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public partial class ModelationDbDataSource : DbDataSource<Havit.EFCoreTests.Model.Modelation>, IModelationDataSource
+public partial class CheckedEntityDbDataSource : DbDataSource<Havit.EFCoreTests.Model.CheckedEntity>, ICheckedEntityDataSource
 {
-	public ModelationDbDataSource(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
+	public CheckedEntityDbDataSource(IDbContext dbContext, ISoftDeleteManager softDeleteManager)
 		: base(dbContext, softDeleteManager)
 	{
 	}

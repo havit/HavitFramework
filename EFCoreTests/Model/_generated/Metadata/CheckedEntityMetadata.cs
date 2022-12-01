@@ -8,7 +8,7 @@
 namespace Havit.EFCoreTests.Model.Metadata;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public static class UserMetadata
+public static class CheckedEntityMetadata
 {
-	public const int UsernameMaxLength = Int32.MaxValue;
+	public const int ValueMaxLength = Int32.MaxValue;
 }

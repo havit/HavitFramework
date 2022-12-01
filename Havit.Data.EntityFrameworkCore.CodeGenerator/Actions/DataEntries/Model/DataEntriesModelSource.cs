@@ -93,7 +93,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 		{
 			var fi = type.GetField(value);
 			var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
-			return attributes != null && attributes.Length > 0;
+			return (attributes != null) && (attributes.Length > 0);
 		}
 	}
 }

@@ -1,31 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	<PackageVersion>2.0.3</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Installs Havit.Web client side content and scripts to project.</Description>
-	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
-	<IncludeBuildOutput>false</IncludeBuildOutput>
-	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
-	<NoWarn>$(NoWarn);NU5128</NoWarn>
-	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
-	<ContentTargetFolders>content</ContentTargetFolders>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>$(HavitWebClientContent_PackageVersion)</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Installs Havit.Web client side content and scripts to project.</Description>
+		<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+		<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
+		<ContentTargetFolders>content</ContentTargetFolders>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<Content Include="..\Havit.Web\Content\styles\*.css" PackagePath="content\Content\havit.web.clientcontent" />
-	<Content Include="..\Havit.Web\Content\styles\*.less" PackagePath="content\Content\havit.web.clientcontent" />
-	<Content Include="..\Havit.Web\Content\styles\*.png" PackagePath="content\Content\havit.web.clientcontent" />
-	<Content Include="..\Havit.Web\Content\js\*.js" PackagePath="content\Scripts\havit.web.clientcontent" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\Havit.Web\Content\styles\*.css" PackagePath="content\Content\havit.web.clientcontent" />
+		<Content Include="..\Havit.Web\Content\styles\*.less" PackagePath="content\Content\havit.web.clientcontent" />
+		<Content Include="..\Havit.Web\Content\styles\*.png" PackagePath="content\Content\havit.web.clientcontent" />
+		<Content Include="..\Havit.Web\Content\js\*.js" PackagePath="content\Scripts\havit.web.clientcontent" />
+	</ItemGroup>
 
 </Project>

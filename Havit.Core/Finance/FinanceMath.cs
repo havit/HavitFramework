@@ -102,7 +102,7 @@ namespace Havit.Finance
 		/// <param name="presentValue">The present value (or lump sum) of a series of future payments. For example, when you borrow money to buy a car, the loan amount is the present value to the lender of the monthly car payments you will make. If omitted, 0 is assumed.</param>
 		/// <param name="due">Object of type <see cref="DueDate"/> that specifies when payments are due. This argument must be either DueDate.EndOfPeriod if payments are due at the end of the payment period, or DueDate.BegOfPeriod if payments are due at the beginning of the period. If omitted, DueDate.EndOfPeriod is assumed.</param>
 		/// <remarks>
-		/// https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.financial.fv?view=netframework-4.7.2
+		/// https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.financial.fv?view=netframework-4.8
 		/// </remarks>
 		public static double FV(double interestRate, double numberOfPeriods, double paymentAmount, double presentValue = 0.0, DueDate due = DueDate.EndOfPeriod)
 		{
@@ -124,7 +124,7 @@ namespace Havit.Finance
 		/// <param name="futureValue">The future value or cash balance you want after you make the final payment. For example, the future value of a loan is $0 because that is its value after the final payment. However, if you want to save $50,000 over 18 years for your child's education, then $50,000 is the future value. If omitted, 0 is assumed.</param>
 		/// <param name="due">Object of type <see cref="DueDate"/> that specifies when payments are due. This argument must be either DueDate.EndOfPeriod if payments are due at the end of the payment period, or DueDate.BegOfPeriod if payments are due at the beginning of the period. If omitted, DueDate.EndOfPeriod is assumed.</param>
 		/// <remarks>
-		/// https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.financial.pv?view=netframework-4.7.2
+		/// https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.financial.pv?view=netframework-4.8
 		/// </remarks>
 		public static double PV(double interestRate, double numberOfPeriods, double paymentAmount, double futureValue = 0.0, DueDate due = DueDate.EndOfPeriod)
 		{

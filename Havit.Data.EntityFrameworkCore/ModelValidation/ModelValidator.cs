@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -29,11 +30,12 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// Kontroluje pravidla modelu.
 		/// </summary>
 		/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
-		public string Validate(DbContext dbContext, ValidationRules validationRules)
+		public string Validate(DbContext dbContext, ValidationRules validationRules, Func<IReadOnlyEntityType, bool> entityTypeFilter = null)
 		{
 			IModel model = dbContext.Model;
 
 			List<string> errors = model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+				.WhereIf(entityTypeFilter != null, entityTypeFilter)
 				.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityType))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityType)))
@@ -180,7 +182,8 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IReadOnlyEntityType entityType)
 		{
 			bool hasEntryEnum = entityType.ClrType.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
-			bool primaryKeySequence = entityType.FindPrimaryKey().Properties.Single().GetDefaultValueSql()?.ToUpper().Contains("NEXT VALUE FOR") ?? false;
+			// Properties.All: Sice čekáme jediný sloupec, nicméně v databázi můžeme mít na tabulce složený primární klíč (což sice nechceme, ale být to tam může)
+			bool primaryKeySequence = entityType.FindPrimaryKey().Properties.All(property => property.GetDefaultValueSql()?.ToUpper().Contains("NEXT VALUE FOR") ?? false);
 
 			if (hasEntryEnum && !primaryKeySequence)
 			{

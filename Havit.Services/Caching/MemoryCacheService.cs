@@ -30,11 +30,11 @@ namespace Havit.Services.Caching
 	/// - konstruktor s IMemoryCache a MemoryCacheServiceOptions
 	/// </remarks>
 	public class MemoryCacheService : ICacheService
-    {
-	    /// <summary>
-	    /// IMemoryCache používaná touto třídou.
-	    /// </summary>
-	    private readonly IMemoryCache memoryCache;
+	{
+		/// <summary>
+		/// IMemoryCache používaná touto třídou.
+		/// </summary>
+		private readonly IMemoryCache memoryCache;
 
 		/// <summary>
 		/// Indikuje, zda cache podporuje cache dependencies, tj. mechanismus, kdy při výpadku určitého klíče z cache má být odstraněn i jiný klíč.
@@ -57,8 +57,8 @@ namespace Havit.Services.Caching
 		/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>
 		/// <param name="useCacheDependenciesSupport">Indikuje, zda má být použita podpora pro cache dependencies.</param>
 		public MemoryCacheService(IMemoryCache memoryCache, bool useCacheDependenciesSupport)
-	    {
-		    this.memoryCache = memoryCache;
+		{
+			this.memoryCache = memoryCache;
 			this.SupportsCacheDependencies = useCacheDependenciesSupport;
 		}
 
@@ -72,11 +72,11 @@ namespace Havit.Services.Caching
 			// NOOP
 		}
 
-	    /// <summary>
-	    /// Přidá položku s daným klíčem a hodnotou do cache.
-	    /// </summary>
-	    public void Add(string key, object value, CacheOptions options = null)
-	    {
+		/// <summary>
+		/// Přidá položku s daným klíčem a hodnotou do cache.
+		/// </summary>
+		public void Add(string key, object value, CacheOptions options = null)
+		{
 			MemoryCacheEntryOptions cacheEntryOptions = null;
 
 			if (SupportsCacheDependencies)
@@ -87,43 +87,43 @@ namespace Havit.Services.Caching
 			}
 
 			if (options != null)
-		    {
+			{
 				if (!SupportsCacheDependencies)
 				{
 					// pokud podporujeme cache dependencies, jsou iž cacheEntryOptions založeny
 					cacheEntryOptions = new MemoryCacheEntryOptions();
 				}
-			    if (options.AbsoluteExpiration != null)
-			    {
-				    cacheEntryOptions = cacheEntryOptions.SetAbsoluteExpiration(DateTimeOffset.Now.Add(options.AbsoluteExpiration.Value));
-			    }
+				if (options.AbsoluteExpiration != null)
+				{
+					cacheEntryOptions = cacheEntryOptions.SetAbsoluteExpiration(DateTimeOffset.Now.Add(options.AbsoluteExpiration.Value));
+				}
 
-			    if (options.SlidingExpiration != null)
-			    {
-				    cacheEntryOptions = cacheEntryOptions.SetSlidingExpiration(options.SlidingExpiration.Value);
-			    }
+				if (options.SlidingExpiration != null)
+				{
+					cacheEntryOptions = cacheEntryOptions.SetSlidingExpiration(options.SlidingExpiration.Value);
+				}
 
-			    switch (options.Priority)
-			    {
-				    case CacheItemPriority.Low:
-					    cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.Low);
-					    break;
+				switch (options.Priority)
+				{
+					case CacheItemPriority.Low:
+						cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.Low);
+						break;
 
-				    case CacheItemPriority.Normal:
-					    cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal);
-					    break;
+					case CacheItemPriority.Normal:
+						cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal);
+						break;
 
-				    case CacheItemPriority.High:
-					    cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.High);
-					    break;
+					case CacheItemPriority.High:
+						cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.High);
+						break;
 
-				    case CacheItemPriority.NotRemovable:
-					    cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.NeverRemove);
-					    break;
+					case CacheItemPriority.NotRemovable:
+						cacheEntryOptions = cacheEntryOptions.SetPriority(Microsoft.Extensions.Caching.Memory.CacheItemPriority.NeverRemove);
+						break;
 
-				    default:
-					    throw new NotSupportedException(String.Format("Hodnota CacheItemPriority.{0} není podporována.", options.Priority.ToString()));
-			    }
+					default:
+						throw new NotSupportedException(String.Format("Hodnota CacheItemPriority.{0} není podporována.", options.Priority.ToString()));
+				}
 
 				if ((options.CacheDependencyKeys != null) && (options.CacheDependencyKeys.Length > 0))
 				{
@@ -142,10 +142,10 @@ namespace Havit.Services.Caching
 							// proto ani svoji položku do cache nedáváme --> končíme metodu
 							return;
 						}
-						
+
 						cacheEntryOptions = cacheEntryOptions.AddExpirationToken(new CancellationChangeToken(cancellationToken));
 					}
-			    }
+				}
 
 				if (options.Size != null)
 				{
@@ -154,7 +154,7 @@ namespace Havit.Services.Caching
 			}
 
 			memoryCache.Set(key, SupportsCacheDependencies ? new CacheEntry(value, new CancellationTokenSource()) : value, cacheEntryOptions);
-	    }
+		}
 
 		private CancellationToken GetCancellationToken(string dependencyKey)
 		{
@@ -170,27 +170,27 @@ namespace Havit.Services.Caching
 		/// True, pokud položka v cache je, jinak false.
 		/// </returns>
 		public bool TryGet(string key, out object value)
-	    {
-		    bool result = memoryCache.TryGetValue(key, out object cacheValue);
+		{
+			bool result = memoryCache.TryGetValue(key, out object cacheValue);
 			value = result
 				? (SupportsCacheDependencies ? ((CacheEntry)cacheValue).Value : cacheValue)
 				: null;
 			return result;
-	    }
+		}
 
-	    /// <summary>
-	    /// Vrací true, pokud je položka s daným klíčem v cache.
-	    /// </summary>
-	    public bool Contains(string key)
-	    {
-		    return memoryCache.TryGetValue(key, out object cacheValue);
-	    }
+		/// <summary>
+		/// Vrací true, pokud je položka s daným klíčem v cache.
+		/// </summary>
+		public bool Contains(string key)
+		{
+			return memoryCache.TryGetValue(key, out object cacheValue);
+		}
 
-	    /// <summary>
-	    /// Odstraní položku s daným klíčem z cache. Pokud položka v cache není, nic neudělá.
-	    /// </summary>
-	    public void Remove(string key)
-	    {
+		/// <summary>
+		/// Odstraní položku s daným klíčem z cache. Pokud položka v cache není, nic neudělá.
+		/// </summary>
+		public void Remove(string key)
+		{
 			if (memoryCache.TryGetValue(key, out object cacheValue))
 			{
 				memoryCache.Remove(key);
@@ -200,31 +200,44 @@ namespace Havit.Services.Caching
 				{
 					((CacheEntry)cacheValue).CancellationTokenSource.Cancel();
 				}
-			}		    
-	    }
+			}
+		}
 
-	    /// <summary>
-	    /// Vyčistí obsah cache.
-	    /// </summary>
-	    public void Clear()
-	    {
+		/// <summary>
+		/// Vyčistí obsah cache.
+		/// </summary>
+		public void Clear()
+		{
+			// Řešení pro MemoryCache od .NET 7
+
+			// Od .NET 7 má MemoryCache (avšak nikoliv IMemoryCache) metodu Clear
+			MethodInfo clearMethod = memoryCache.GetType().GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
+			if (clearMethod != null)
+			{
+				clearMethod.Invoke(memoryCache, null);
+				return;
+			}
+
+			// Řešení pro MemoryCache před .NET 7
+
 			// Nejvíce doporučené řešení s CancellationTokenSource na následujícím odkazu nemůžeme použít, protože do IMemoryCache se dostanou objekty i mimo naše metody.
 			// My chceme vyčistit všechno, ať už se dostalo do IMemoryCache jakkoliv, proto volíme řešení s reflexí (stabilitu ověříme/ochráníme unit testem).
 			// https://stackoverflow.com/questions/34406737/how-to-remove-all-objects-reset-from-imemorycache-in-asp-net-core
 
 			PropertyInfo entriesCollectionPropertyInfo = memoryCache.GetType().GetProperty("EntriesCollection", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Public);
-			if (entriesCollectionPropertyInfo == null)
+			if (entriesCollectionPropertyInfo != null)
 			{
-				throw new NotSupportedException("IMemoryCache implementation does not have EntriesCollection property.");
+				object cacheEntriesCollection = entriesCollectionPropertyInfo.GetValue(memoryCache);
+				MethodInfo cacheEntriesClearMethod = cacheEntriesCollection.GetType().GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
+				if (cacheEntriesClearMethod == null)
+				{
+					throw new NotSupportedException("IMemoryCache.EntriesCollection does not have a Clear() method.");
+				}
+				cacheEntriesClearMethod.Invoke(cacheEntriesCollection, null);
+				return;
 			}
 
-			object cacheEntriesCollection = entriesCollectionPropertyInfo.GetValue(memoryCache);
-			MethodInfo clearMethod = cacheEntriesCollection.GetType().GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
-			if (clearMethod == null)
-			{
-				throw new NotSupportedException("IMemoryCache.EntriesCollection does not have a Clear() method.");
-			}
-			clearMethod.Invoke(cacheEntriesCollection, null);
+			throw new NotSupportedException("IMemoryCache implementation has neither Clear method nor EntriesCollection property.");
 		}
 
 		/// <summary>
@@ -248,5 +261,5 @@ namespace Havit.Services.Caching
 				CancellationTokenSource = cancellationTokenSource;
 			}
 		}
-    }
+	}
 }

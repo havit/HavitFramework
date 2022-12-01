@@ -1,33 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	<PackageVersion>2.0.6</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - Installs Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) and other client-side Bootstrap dependencies.</Description>
-	<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
-	<IncludeBuildOutput>false</IncludeBuildOutput>
-	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
-	<NoWarn>$(NoWarn);NU5128</NoWarn>
-	<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
-	<ContentTargetFolders>content</ContentTargetFolders>
-  </PropertyGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>$(HavitWebBootstrap_PackageVersion)</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Installs Bootstrap LESS files (via Twitter.Bootstrap.Less NuGet) and other client-side Bootstrap dependencies.</Description>
+		<!-- Projekt neobsahuje žádný C# kód a tudíž ani assembly k zabalení, jde čistě o klientský obsah -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+		<!-- Cílíme jen na WebForms, kde contentFiles nemá smysl (protože WebForms nepoužívají nový csproj, tudíž nepoužívají PackageReference, ale packages.config. -->
+		<ContentTargetFolders>content</ContentTargetFolders>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<PackageReference Include="bootstrap.less" Version="3.4.1" />
-	<PackageReference Include="jQuery" Version="3.6.0" />
-	<PackageReference Include="Microsoft.AspNet.ScriptManager.WebForms" Version="5.0.0" />
-	<PackageReference Include="toastr" Version="2.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="bootstrap.less" Version="3.4.1" />
+		<PackageReference Include="jQuery" Version="3.6.0" />
+		<PackageReference Include="Microsoft.AspNet.ScriptManager.WebForms" Version="5.0.0" />
+		<PackageReference Include="toastr" Version="2.1.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-	<Content Include="..\Havit.Web\Bootstrap\content\less\*.less" PackagePath="content\Content\havit.web.bootstrap" />
-	<Content Include="..\Havit.Web\Bootstrap\content\js\*.js" PackagePath="content\Scripts\havit.web.bootstrap" />
-	<Content Include="content\Web.config.*.xdt" PackagePath="content" />
-  </ItemGroup>
-  
+	<ItemGroup>
+		<Content Include="..\Havit.Web\Bootstrap\content\less\*.less" PackagePath="content\Content\havit.web.bootstrap" />
+		<Content Include="..\Havit.Web\Bootstrap\content\js\*.js" PackagePath="content\Scripts\havit.web.bootstrap" />
+		<Content Include="content\Web.config.*.xdt" PackagePath="content" />
+	</ItemGroup>
+
 </Project>

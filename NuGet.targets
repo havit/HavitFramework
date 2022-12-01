@@ -7,6 +7,8 @@
 	<PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
 
+  <Import Project="NuGetVersions.targets" />
+	
   <ItemGroup>
     <None Include="../logo.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
@@ -29,7 +31,7 @@
          ale do projektů importujeme tento NuGet.targets.
          Chování balíčku Microsoft.SourceLink.AzureRepos.Git neověřuji, předpokládám, že jde víceméně jen o přejmenování.
     -->
-    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <!-- Publish NuGet -->
@@ -50,4 +52,7 @@
 		<Error Text="Generated nuget package is empty." Condition="( ($(CheckPackageIsNotEmpty) == 'true') And @(_BuildOutputInPackage->Count()) == 0) And (@(_PackageFiles->Count()) &lt;= 1)" />
 	</Target>
 
+	<Target Name="HavitCheckPackageVersionIsSet" BeforeTargets="GenerateNuspec" AfterTargets="_CalculateInputsOutputsForPack" Condition=" $(GeneratePackageOnBuild) == 'true' ">
+		<Error Text="Nuget package version not set." Condition="$(PackageVersion) == '$(VersionPrefix)'"  />
+	</Target>
 </Project>

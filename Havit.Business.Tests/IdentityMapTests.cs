@@ -79,6 +79,10 @@ namespace Havit.Business.Tests
 		[TestMethod]
 		public void IdentityMap_UseOnlyWeakReferenceToAllowObjectToBeCollectedByGC()
 		{
+#if DEBUG
+			Assert.Inconclusive("Cannot run this unit test in debug mode.");
+#endif
+
 			IdentityMap im = new IdentityMap();
 
 			TestingBusinessObject businessObject = new TestingBusinessObject(10);

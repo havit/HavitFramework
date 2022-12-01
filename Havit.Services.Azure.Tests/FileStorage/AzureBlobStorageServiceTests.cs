@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Core;
@@ -19,8 +20,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 	[TestClass]
 	public class AzureBlobStorageServiceTests
 	{
+		private static string containersSuffix = Guid.NewGuid().ToString("N");
+
 		[ClassInitialize]
-		public static void Initialize(TestContext testContext)
+		public static void InitializeTestClass(TestContext testContext)
 		{
 			// testy jsou slušné, mažou po sobě
 			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
@@ -37,12 +40,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[ClassCleanup]
-		public static void CleanUp()
+		public static void CleanUpTestClass()
 		{
-#if !DEBUG
 			GetAzureBlobStorageService().GetBlobContainerClient().Delete();
 			GetAzureBlobStorageService(secondary: true).GetBlobContainerClient().Delete();
-#endif
 		}
 
 		[TestMethod]
@@ -157,7 +158,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		[TestMethod]
 		public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
-		{			
+		{
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
 		}
 
@@ -165,6 +166,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
@@ -282,7 +295,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			// kontrola, zda je soubor zašifrovaný
 			using (MemoryStream ms = new MemoryStream())
 			{
-				encryptedStorageService.ReadToStream(testFilename, ms); 
+				encryptedStorageService.ReadToStream(testFilename, ms);
 				ms.Seek(0, SeekOrigin.Begin);
 
 				using (StreamReader sr = new StreamReader(ms, Encoding.UTF8, false, 1024, true))
@@ -363,13 +376,13 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_GenerateSasUri()
+		public async Task AzureBlobStorageService_GenerateSasUri()
 		{
 			// Arrange
 			string filename = "file.txt";
 			string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
 
-			var azureBlobStorageService = GetAzureBlobStorageService();			
+			var azureBlobStorageService = GetAzureBlobStorageService();
 			using (MemoryStream ms = new MemoryStream())
 			{
 				using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
@@ -385,7 +398,8 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			Uri uri = azureBlobStorageService.GenerateSasUri(filename, global::Azure.Storage.Sas.BlobSasPermissions.Read, TimeSpan.FromMinutes(1));
 
 			// Assert
-			string readContent = new System.Net.WebClient().DownloadString(uri);
+			using var httpClient = new HttpClient();
+			string readContent = await httpClient.GetStringAsync(uri);
 			Assert.AreEqual(content, readContent);
 
 			// Clean up
@@ -393,18 +407,19 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_GenerateSasUri_ExpiredToken()
+		public async Task AzureBlobStorageService_GenerateSasUri_ExpiredTokenAsync()
 		{
 			// Act
-			var azureBlobStorageService = GetAzureBlobStorageService();			
+			var azureBlobStorageService = GetAzureBlobStorageService();
 			Uri uri = azureBlobStorageService.GenerateSasUri("abc", global::Azure.Storage.Sas.BlobSasPermissions.Read, TimeSpan.FromMinutes(-1)); // -1 = expired token
 
 			// Assert
 			try
 			{
-				new System.Net.WebClient().DownloadString(uri);
+				using var httpClient = new HttpClient();
+				string readContent = await httpClient.GetStringAsync(uri);
 			}
-			catch (System.Net.WebException webExpcetion) when ((webExpcetion.Response is System.Net.HttpWebResponse httpWebResponse) && (httpWebResponse.StatusCode == System.Net.HttpStatusCode.Forbidden))
+			catch (HttpRequestException webExpcetion) when ((webExpcetion.StatusCode == System.Net.HttpStatusCode.Forbidden))
 			{
 				return; // test je úspěšný, pokud je odpověď 403 Forbidden
 			}
@@ -413,18 +428,16 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
-		{			
+		{
 			// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 			return new AzureBlobStorageService(
 				new AzureBlobStorageServiceOptions
 				{
 					BlobStorage = AzureStorageConnectionStringHelper.GetConnectionString(),
-					ContainerName = secondary ? "secondarytests" : "primarytests",
+					ContainerName = (secondary ? "secondarytests" : "primarytests") + containersSuffix,
 					CacheControl = cacheControl,
 					EncryptionOptions = encryptionOptions
 				});
 		}
-
-
 	}
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
+		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Havit.Data.Entity.Azure</RootNamespace>
 		<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
@@ -10,12 +10,12 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.2.3</PackageVersion>
+		<PackageVersion>2.2.30</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Azure</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
 		<PackageReference Include="EntityFramework" Version="6.4.4" />
 	</ItemGroup>
 

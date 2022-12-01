@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 {
@@ -30,20 +32,24 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 					where (entriesEnumType != null)
 					select new DataEntriesModel
 					{
+						UseDataEntrySymbolStorage = registeredEntity.FindPrimaryKey().Properties.Any(property =>
+							 // Snaha o identifikaci použití sloupce Identity
+							 // viz DbDataSeedProvider.PropertyIsIdentity
+							 property.ClrType == typeof(Int32) // Identity definujeme jen na typu Int32
+								&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
+								&& String.IsNullOrEmpty(property.GetDefaultValueSql())), // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
 						NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
 						InterfaceName = "I" + registeredEntity.ClrType.Name + "Entries",
 						DbClassName = registeredEntity.ClrType.Name + "Entries",
 						ModelClassFullName = registeredEntity.ClrType.FullName,
 						ModelEntriesEnumerationFullName = registeredEntity.ClrType.FullName + ".Entry",
 						RepositoryDependencyFullName = GetRepositoryDependencyFullName(registeredEntity.ClrType),
-						Entries = System.Enum.GetNames(entriesEnumType)
-							.OrderBy(item => item, neutralStringComparer) // order should be language-neutral
-							.Select(item => new DataEntriesModel.Entry
-							{
-								PropertyName = item,
-								FieldName = cammelCaseNamingStrategy.GetCammelCase(item),
-								IsObsolete = IsValueObsolete(entriesEnumType, item)
-							}).ToList()
+						Entries = System.Enum.GetNames(entriesEnumType).OrderBy(item => item, neutralStringComparer).Select(item => new DataEntriesModel.Entry
+						{
+							PropertyName = item,
+							FieldName = cammelCaseNamingStrategy.GetCammelCase(item),
+							IsObsolete = IsValueObsolete(entriesEnumType, item)
+						}).ToList()
 					}).ToList();
 		}
 

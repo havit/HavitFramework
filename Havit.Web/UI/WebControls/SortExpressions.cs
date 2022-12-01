@@ -116,6 +116,16 @@ namespace Havit.Web.UI.WebControls
 		/// Na směr řazení se bere ohled v tom smyslu, že směr řazení všech stávající položek musí být stejný 
 		/// jako směr řazení nových položek nebo musí být směr řazení na všech položkách opačný.
 		/// </summary>
+		public bool StartsWith(SortExpressions sortExpressions)
+		{
+			return StartsWith(sortExpressions.SortItems);
+		}
+
+		/// <summary>
+		/// Vrací true, pokud kolekce začíná stejnými položkami, jako jsou zde uvedené.
+		/// Na směr řazení se bere ohled v tom smyslu, že směr řazení všech stávající položek musí být stejný 
+		/// jako směr řazení nových položek nebo musí být směr řazení na všech položkách opačný.
+		/// </summary>
 		protected bool StartsWith(SortItemCollection referencingItems)
 		{
 			if (referencingItems.Count == 0)

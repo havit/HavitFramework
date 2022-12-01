@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Services.Sftp.Tests" />
+	</ItemGroup>
+
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>$(HavitServicesSftp_PackageVersion)</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - SFTP Services</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
+		<PackageReference Include="SSH.NET" Version="2020.0.2" />
+	</ItemGroup>
+
+</Project>

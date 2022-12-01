@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 		{
 			assemblyLoadContext.Resolving += ResolveAssembly;
 		}
-		
+
 		private Assembly ResolveAssembly(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
 		{
 			var compilationLibrary = projectAssetLoadInfo.FindCompilationLibrary(assemblyName);

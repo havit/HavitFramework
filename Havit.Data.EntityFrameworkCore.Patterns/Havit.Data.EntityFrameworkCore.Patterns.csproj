@@ -14,13 +14,13 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	  <PackageVersion>2.6.4</PackageVersion>
+	  <PackageVersion>2.6.5</PackageVersion>
 	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	<LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
+	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

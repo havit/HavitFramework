@@ -3,22 +3,9 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore;
-using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
-using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
-using Havit.Data.Patterns.DataEntries;
-using Havit.Data.Patterns.DataLoaders;
-using <#= Model.ModelClassNamespace #>;
+namespace <#= Model.NamespaceName #>;
 
-namespace <#= Model.NamespaceName #>
+public partial class <#= Model.DbRepositoryName #> : <#= Model.InterfaceRepositoryName #>
 {
-	public partial class <#= Model.DbRepositoryName #> : <#= Model.InterfaceRepositoryName #>
-	{
 
-	}
 }

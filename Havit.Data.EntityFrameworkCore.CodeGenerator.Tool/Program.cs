@@ -103,7 +103,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 				Console.WriteLine("CodeGenerator entry point (class) was not found.");
 				return;
 			}
-			
+
 			MethodInfo main = program.GetMethod("Main", BindingFlags.Static | BindingFlags.Public);
 			if (program == null)
 			{

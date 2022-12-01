@@ -21,6 +21,8 @@ namespace <#= Model.NamespaceName #>
 	public class <#= Model.DbClassName #> : DataEntries<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceName #> 
 	{
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
+<# if (entry.IsObsolete) { #>		[Obsolete] 
+<# } #>
 		public <#= Model.ModelClassFullName #> <#= entry.PropertyName #>
         {
             get

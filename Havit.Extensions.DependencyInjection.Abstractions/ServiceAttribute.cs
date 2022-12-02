@@ -19,9 +19,9 @@ public class ServiceAttribute : ServiceAttributeBase
 	/// Typ, pod kterým bude služba zaregistrována.
 	/// Nelze kombinovat s <see cref="ServiceTypes"/>.
 	/// </summary>
-#if NET7_0_OR_GREATER
-	[Obsolete("Use a generic variant of the ServiceAttribute.")]
-#endif
+	/// <remarks>
+	/// ServiceType/ServiceTypes potřebujeme i pro .NET 7, protože bez nich nemůžeme použít open generic types.
+	/// </remarks>
 	public Type ServiceType
 	{
 		get
@@ -41,9 +41,9 @@ public class ServiceAttribute : ServiceAttributeBase
 	/// Typy, pod kterým bude služba zaregistrována.
 	/// Nelze kombinovat s <see cref="ServiceType"/>.
 	/// </summary>
-#if NET7_0_OR_GREATER
-	[Obsolete("Use a generic variant of the ServiceAttribute.")]
-#endif
+	/// <remarks>
+	/// ServiceType/ServiceTypes potřebujeme i pro .NET 7, protože bez nich nemůžeme použít open generic types.
+	/// </remarks>
 	public Type[] ServiceTypes
 	{
 		get
@@ -67,9 +67,7 @@ public class ServiceAttribute : ServiceAttributeBase
 	{
 		if ((_serviceType != null) && (_serviceTypes != null))
 		{
-#pragma warning disable CS0618
 			throw new InvalidOperationException($"Properties {nameof(ServiceType)} and {nameof(ServiceTypes)} are mutual exclusive. Use {nameof(ServiceType)} or {nameof(ServiceTypes)}, not both.");
-#pragma warning restore CS0618
 		}
 	}
 

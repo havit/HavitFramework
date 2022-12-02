@@ -67,7 +67,9 @@ public class ServiceAttribute : ServiceAttributeBase
 	{
 		if ((_serviceType != null) && (_serviceTypes != null))
 		{
+#pragma warning disable CS0618
 			throw new InvalidOperationException($"Properties {nameof(ServiceType)} and {nameof(ServiceTypes)} are mutual exclusive. Use {nameof(ServiceType)} or {nameof(ServiceTypes)}, not both.");
+#pragma warning restore CS0618
 		}
 	}
 

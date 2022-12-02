@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Havit.Extensions.DependencyInjection.Abstractions;
 
+/// <summary>
+/// Slouží k označení tříd, které mají být automaticky zaregistrovány do IoC containeru.
+/// Bázová (abstraktní) třída.
+/// </summary>
 public abstract class ServiceAttributeBase : Attribute
 {
 	/// <summary>

@@ -5,6 +5,7 @@
     <AssemblyName>Havit.EFCoreTests.DataLayer</AssemblyName>
     <RootNamespace>Havit.EFCoreTests.DataLayer</RootNamespace>
 	<CopyLocalLockFileAssemblies>True</CopyLocalLockFileAssemblies>
+	<ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

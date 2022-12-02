@@ -40,8 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 							// Property, bez nastavené hodnoty (null), jsou považovány za nvarchar(max). Stejně tak i property s nastavenou maximální délkou na Int32.MaxValue.
 							Value = ((property.GetMaxLength() == null) || (property.GetMaxLength() == Int32.MaxValue))
 								? "Int32.MaxValue"
-								: property.GetMaxLength().ToString(),
-							RequiresSystemNamespace = (property.GetMaxLength() == null) || (property.GetMaxLength() == Int32.MaxValue)
+								: property.GetMaxLength().ToString()
 						})
 						.OrderBy(property => property.Name, StringComparer.InvariantCulture)
 						.ToList()

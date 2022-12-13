@@ -341,7 +341,7 @@ namespace Havit.Services.Azure.FileStorage
 				yield break;
 			}
 
-			Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories();
+			Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps });
 			List<string> subdirectories = new List<string>();
 
 			foreach (ShareFileItem item in directoryItems)
@@ -351,7 +351,7 @@ namespace Havit.Services.Azure.FileStorage
 					yield return new FileInfo
 					{
 						Name = directoryPrefix + item.Name,
-						LastModifiedUtc = default(DateTime),
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
 						Size = item.FileSize ?? -1,
 						ContentType = null
 					};
@@ -381,7 +381,7 @@ namespace Havit.Services.Azure.FileStorage
 				yield break;
 			}
 
-			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(cancellationToken: cancellationToken);
+			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }, cancellationToken: cancellationToken);
 			List<string> subdirectories = new List<string>();
 
 			await foreach (ShareFileItem item in directoryItems.ConfigureAwait(false))
@@ -391,7 +391,7 @@ namespace Havit.Services.Azure.FileStorage
 					yield return new FileInfo
 					{
 						Name = directoryPrefix + item.Name,
-						LastModifiedUtc = default(DateTime),
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
 						Size = item.FileSize ?? -1,
 						ContentType = null
 					};
@@ -430,7 +430,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			ShareFileClient shareFileClient = GetShareFileClient(fileName);			
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
 			ShareFileProperties properties = shareFileClient.GetProperties();
 			return properties.LastModified.UtcDateTime;
 		}

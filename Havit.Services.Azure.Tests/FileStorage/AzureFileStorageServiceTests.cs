@@ -176,11 +176,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(GetAzureFileStorageService());
 		}
 
-		//[TestMethod]
+		[TestMethod]
 		public void AzureFileStorageService_EnumerateFiles_HasLastModifiedUtc()
 		{
-			// Není podporováno.
-			//FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetAzureFileStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetAzureFileStorageService());
 		}
 
 		[TestMethod]
@@ -189,12 +188,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasSize(GetAzureFileStorageService());
 		}
 
-		//[TestMethod]
+		[TestMethod]
 		public async Task AzureFileStorageService_EnumerateFilesAsync_HasLastModifiedUtc()
 		{
-			// Není podporováno.
-			//await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(GetAzureFileStorageService());
-			await Task.CompletedTask;
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(GetAzureFileStorageService());
 		}
 
 		[TestMethod]

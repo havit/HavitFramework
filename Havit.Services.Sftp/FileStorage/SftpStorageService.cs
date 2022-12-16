@@ -33,7 +33,8 @@ namespace Havit.Services.Sftp.FileStorage
 		{
 			if (sftpClient == null)
 			{
-				sftpClient = new SftpClient(options.ConnectionInfo);
+				var connectionInfo = options.ConnectionInfoFunc();
+				sftpClient = new SftpClient(connectionInfo);
 			}
 
 			if (!sftpClient.IsConnected)

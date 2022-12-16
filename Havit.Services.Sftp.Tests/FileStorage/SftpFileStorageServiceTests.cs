@@ -288,7 +288,7 @@ public class SftpFileStorageServiceTests
 	{
 		// Arrange
 		ServiceCollection services = new ServiceCollection();
-		services.AddSftpStorageService<TestFileStorage>(new ConnectionInfo("fake", "fake", new PasswordAuthenticationMethod("fake", "fake")));
+		services.AddSftpStorageService<TestFileStorage>(() => new ConnectionInfo("fake", "fake", new PasswordAuthenticationMethod("fake", "fake")));
 		var provider = services.BuildServiceProvider();
 
 		// Act
@@ -307,8 +307,8 @@ public class SftpFileStorageServiceTests
 		string secondarySftpUsername = "hfwsftpteststorage.sftp-secondary.hfwsecondary";
 		
 		return secondary
-			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfo = new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) })
-			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfo = new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) });
+			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) })
+			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) });
 	}
 	private static SftpStorageService primarySftpStorageService;
 	private static SftpStorageService secondarySftpStorageService;

@@ -1,4 +1,5 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿using System;
+using Havit.Diagnostics.Contracts;
 using Renci.SshNet;
 
 namespace Havit.Services.Sftp.FileStorage
@@ -15,6 +16,6 @@ namespace Havit.Services.Sftp.FileStorage
 		/// Díky typu ConnectionInfo publikujeme závislost na použité knihovně, vzhledem ke scope knihovny a vzhledem k možnostem,
 		/// které to přináší pro možnost konfigurace připojení, toto necháváme jako OK.
 		/// </remarks>
-		public ConnectionInfo ConnectionInfo { get; set; }
+		public Func<ConnectionInfo> ConnectionInfoFunc { get; set; }
 	}
 }

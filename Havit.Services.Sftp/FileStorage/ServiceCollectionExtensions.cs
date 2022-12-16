@@ -1,4 +1,5 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿using System;
+using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Renci.SshNet;
@@ -13,12 +14,12 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <summary>
 		/// Zaregistruje úložiště souborů jakožto klienta SFTP serveru.
 		/// </summary>
-		public static void AddSftpStorageService<TFileStorageContext>(this IServiceCollection services, ConnectionInfo connectionInfo)
+		public static void AddSftpStorageService<TFileStorageContext>(this IServiceCollection services, Func<ConnectionInfo> connectionInfoFunc)
 			where TFileStorageContext : FileStorageContext
 		{
-			Contract.Requires(connectionInfo != null);
+			Contract.Requires(connectionInfoFunc != null);
 
-			var options = new SftpStorageServiceOptions<TFileStorageContext> { ConnectionInfo = connectionInfo };
+			var options = new SftpStorageServiceOptions<TFileStorageContext> { ConnectionInfoFunc = connectionInfoFunc };
 			AddSftpStorageService(services, options);
 		}
 

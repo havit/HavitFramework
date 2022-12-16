@@ -16,7 +16,7 @@ namespace TestConsoleApp
 			// b) načíst *.ppk přes menu Conversions, Import Key
 			// c) exportovat přes Conversion, Export OpenSSH key (nikoliv new format, nikoliv ssh.com!)
 
-			using var service = new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfo = new ConnectionInfo("sfteu.xerox.com", "ESPChester", new Renci.SshNet.PrivateKeyAuthenticationMethod("ESPChester", new PrivateKeyFile("D:\\Temp\\ESPChester.new"))) });
+			using var service = new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new ConnectionInfo("sfteu.xerox.com", "ESPChester", new Renci.SshNet.PrivateKeyAuthenticationMethod("ESPChester", new PrivateKeyFile("D:\\Temp\\ESPChester.new"))) });
 			foreach (var fileInfo in service.EnumerateFiles())
 			{
 				Console.WriteLine(fileInfo.Name);

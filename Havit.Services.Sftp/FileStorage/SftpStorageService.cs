@@ -59,7 +59,7 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		public override void Delete(string fileName)
 		{
-			GetConnectedSftpClient().Delete(fileName);
+			GetConnectedSftpClient().Delete(SubstituteFileName(fileName));
 		}
 
 		/// <inheritdoc />
@@ -181,7 +181,7 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		public override bool Exists(string fileName)
 		{
-			return GetConnectedSftpClient().Exists(fileName);
+			return GetConnectedSftpClient().Exists(SubstituteFileName(fileName));
 		}
 
 		/// <inheritdoc />
@@ -194,7 +194,7 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
-			return GetConnectedSftpClient().GetLastWriteTimeUtc(fileName);
+			return GetConnectedSftpClient().GetLastWriteTimeUtc(SubstituteFileName(fileName));
 		}
 
 		/// <inheritdoc />
@@ -219,7 +219,7 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		protected override System.IO.Stream PerformRead(string fileName)
 		{
-			return GetConnectedSftpClient().OpenRead(fileName);
+			return GetConnectedSftpClient().OpenRead(SubstituteFileName(fileName));
 		}
 
 		/// <inheritdoc />
@@ -232,7 +232,7 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 		{
-			GetConnectedSftpClient().DownloadFile(fileName, stream);
+			GetConnectedSftpClient().DownloadFile(SubstituteFileName(fileName), stream);
 		}
 
 		/// <inheritdoc />
@@ -246,9 +246,10 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		protected override void PerformSave(string fileName, System.IO.Stream fileContent, string contentType)
 		{
-			PerformSave_EnsureFolderFor(fileName);
+			string substitutedFilename = SubstituteFileName(fileName);
 
-			GetConnectedSftpClient().UploadFile(fileContent, fileName, true);
+			PerformSave_EnsureFolderFor(substitutedFilename);
+			GetConnectedSftpClient().UploadFile(fileContent, substitutedFilename, true);
 		}
 
 		private void PerformSave_EnsureFolderFor(string fileName)
@@ -307,15 +308,22 @@ namespace Havit.Services.Sftp.FileStorage
 			// Implementace je ochranou před:
 			// The requested operation cannot be performed because there is a file transfer in progress.
 
+			// download to temp tile
 			string tempFilename = System.IO.Path.GetTempFileName();
 			using (var tempStream = System.IO.File.OpenWrite(tempFilename))
 			{
-				sftpClient.DownloadFile(sourceFileName, tempStream);
+				GetConnectedSftpClient().DownloadFile(SubstituteFileName(sourceFileName), tempStream);
 			}
+
+			// upload from temp file
+			string substitutedTartetFileName = SubstituteFileName(targetFileName);
+			PerformSave_EnsureFolderFor(substitutedTartetFileName);
 			using (var tempStream = System.IO.File.OpenRead(tempFilename))
 			{
-				sftpClient.UploadFile(tempStream, targetFileName);
+				GetConnectedSftpClient().UploadFile(tempStream, substitutedTartetFileName);
 			}
+
+			// clear temp file
 			System.IO.File.Delete(tempFilename);
 		}
 
@@ -324,7 +332,7 @@ namespace Havit.Services.Sftp.FileStorage
 		{
 			if (this == targetFileStorageService)
 			{
-				sftpClient.RenameFile(sourceFileName, targetFileName);
+				PerformMoveInternalOnThis(sourceFileName, targetFileName);
 			}
 			else
 			{
@@ -337,7 +345,7 @@ namespace Havit.Services.Sftp.FileStorage
 		{
 			if (this == targetFileStorageService)
 			{
-				sftpClient.RenameFile(sourceFileName, targetFileName); // No async support
+				PerformMoveInternalOnThis(sourceFileName, targetFileName); // No async support
 			}
 			else
 			{
@@ -345,11 +353,23 @@ namespace Havit.Services.Sftp.FileStorage
 			}
 		}
 
+		private void PerformMoveInternalOnThis(string sourceFileName, string targetFileName)
+		{
+			string substitutedTargetFileName = SubstituteFileName(targetFileName);
+			PerformSave_EnsureFolderFor(substitutedTargetFileName);
+			GetConnectedSftpClient().RenameFile(SubstituteFileName(sourceFileName), substitutedTargetFileName);
+		}
+
 		/// <inheritdoc />
 		public void Dispose()
 		{
 			sftpClient?.Dispose();
 			sftpClient = null;
+		}
+
+		private string SubstituteFileName(string sourceFileName)
+		{
+			return sourceFileName.Replace(@"\", "/");
 		}
 	}
 }

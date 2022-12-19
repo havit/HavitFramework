@@ -242,9 +242,23 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
+	public void SftpStorageService_Copy_SingleInstance()
+	{
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		FileStorageServiceTestHelpers.FileStorageService_Copy(sftpStorageService, sftpStorageService);
+	}
+
+	[TestMethod]
 	public async Task SftpStorageService_CopyAsync()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_CopyAsync_SingleInstance()
+	{
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(sftpStorageService, sftpStorageService);
 	}
 
 	[TestMethod]
@@ -266,9 +280,23 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
+	public void SftpStorageService_Move_SingleInstance()
+	{
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		FileStorageServiceTestHelpers.FileStorageService_Move(sftpStorageService, sftpStorageService);
+	}
+
+	[TestMethod]
 	public async Task SftpStorageService_MoveAsync()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_MoveAsync_SingleInstance()
+	{
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(sftpStorageService, sftpStorageService);
 	}
 
 	[TestMethod]
@@ -298,17 +326,17 @@ public class SftpFileStorageServiceTests
 		Assert.IsNotNull(service);
 		Assert.IsInstanceOfType(service, typeof(SftpStorageService<TestFileStorage>));
 	}
-
+	
 	private static SftpStorageService GetSftpFileStorageService(bool secondary = false)
 	{
 		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 
 		string primarySftpUsername = "hfwsftpteststorage.sftp-primary.hfwprimary";
 		string secondarySftpUsername = "hfwsftpteststorage.sftp-secondary.hfwsecondary";
-		
+
 		return secondary
-			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) })
-			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) });
+			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) { MaxSessions = 1 } })
+			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) { MaxSessions = 1 } });
 	}
 	private static SftpStorageService primarySftpStorageService;
 	private static SftpStorageService secondarySftpStorageService;

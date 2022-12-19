@@ -232,10 +232,7 @@ namespace Havit.Services.Sftp.FileStorage
 		/// <inheritdoc />
 		protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 		{
-			using (System.IO.Stream sftpStream = PerformRead(fileName))
-			{
-				sftpStream.CopyTo(stream);
-			}
+			GetConnectedSftpClient().DownloadFile(fileName, stream);
 		}
 
 		/// <inheritdoc />
@@ -251,15 +248,7 @@ namespace Havit.Services.Sftp.FileStorage
 		{
 			PerformSave_EnsureFolderFor(fileName);
 
-			if (Exists(fileName))
-			{
-				Delete(fileName);
-			}
-
-			using (System.IO.Stream sftpStream = GetConnectedSftpClient().OpenWrite(fileName))
-			{
-				fileContent.CopyTo(sftpStream);
-			}
+			GetConnectedSftpClient().UploadFile(fileContent, fileName, true);
 		}
 
 		private void PerformSave_EnsureFolderFor(string fileName)
@@ -285,6 +274,75 @@ namespace Havit.Services.Sftp.FileStorage
 			cancellationToken.ThrowIfCancellationRequested();
 			this.PerformSave(fileName, fileContent, contentType); // No async support
 			return Task.CompletedTask;
+		}
+
+		/// <inheritdoc />
+		protected override void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			if (this == targetFileStorageService)
+			{
+				PerformCopyInternalOnThis(sourceFileName, targetFileName);
+			}
+			else
+			{
+				base.PerformCopy(sourceFileName, targetFileStorageService, targetFileName);
+			}
+		}
+
+		/// <inheritdoc />
+		protected override async Task PerformCopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken)
+		{
+			if (this == targetFileStorageService)
+			{
+				PerformCopyInternalOnThis(sourceFileName, targetFileName); // No async support
+			}
+			else
+			{
+				await base.PerformCopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+			}
+		}
+
+		private void PerformCopyInternalOnThis(string sourceFileName, string targetFileName)
+		{
+			// Implementace je ochranou před:
+			// The requested operation cannot be performed because there is a file transfer in progress.
+
+			string tempFilename = System.IO.Path.GetTempFileName();
+			using (var tempStream = System.IO.File.OpenWrite(tempFilename))
+			{
+				sftpClient.DownloadFile(sourceFileName, tempStream);
+			}
+			using (var tempStream = System.IO.File.OpenRead(tempFilename))
+			{
+				sftpClient.UploadFile(tempStream, targetFileName);
+			}
+			System.IO.File.Delete(tempFilename);
+		}
+
+		/// <inheritdoc />
+		protected override void PerformMove(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
+			if (this == targetFileStorageService)
+			{
+				sftpClient.RenameFile(sourceFileName, targetFileName);
+			}
+			else
+			{
+				base.PerformMove(sourceFileName, targetFileStorageService, targetFileName);
+			}
+		}
+
+		/// <inheritdoc />
+		protected override async Task PerformMoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			if (this == targetFileStorageService)
+			{
+				sftpClient.RenameFile(sourceFileName, targetFileName); // No async support
+			}
+			else
+			{
+				await base.PerformMoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+			}
 		}
 
 		/// <inheritdoc />

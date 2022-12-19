@@ -222,9 +222,23 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_Copy_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Copy(azureFileStorageService, azureFileStorageService);
+		}
+
+		[TestMethod]
 		public async Task AzureFileStorageService_CopyAsync()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_CopyAsync_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(azureFileStorageService, azureFileStorageService);
 		}
 
 		[TestMethod]
@@ -246,9 +260,23 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_Move_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Move(azureFileStorageService, azureFileStorageService);
+		}
+
+		[TestMethod]
 		public async Task AzureFileStorageService_MoveAsync()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_MoveAsync_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(azureFileStorageService, azureFileStorageService);
 		}
 
 		[TestMethod]

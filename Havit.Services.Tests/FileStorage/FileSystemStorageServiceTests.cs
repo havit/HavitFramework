@@ -319,9 +319,23 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_Copy_SingleInstance()
+		{
+			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Copy(fileSystemStorageService, fileSystemStorageService);
+		}
+
+		[TestMethod]
 		public async Task FileSystemStorageService_CopyAsync()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_CopyAsync_SingleInstance()
+		{
+			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(fileSystemStorageService, fileSystemStorageService);
 		}
 
 		[TestMethod]
@@ -343,9 +357,23 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_Move_SingleInstance()
+		{
+			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Move(fileSystemStorageService, fileSystemStorageService);
+		}
+
+		[TestMethod]
 		public async Task FileSystemStorageService_MoveAsync()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_MoveAsync_SingleInstance()
+		{
+			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(fileSystemStorageService, fileSystemStorageService);
 		}
 
 		[TestMethod]

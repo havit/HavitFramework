@@ -99,7 +99,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 		{
-			ShareFileClient shareFileClient = GetShareFileClient(fileName);			
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
 			using (System.IO.Stream azureFileStream = shareFileClient.OpenRead())
 			{
 				azureFileStream.CopyTo(stream);
@@ -535,7 +535,10 @@ namespace Havit.Services.Azure.FileStorage
 			if (!fileShareAlreadyCreated)
 			{
 				var shareClient = GetShareClient();
-				shareClient.CreateIfNotExists();
+				if (options.AutoCreateFileShare)
+				{
+					shareClient.CreateIfNotExists();
+				}
 
 				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)
@@ -559,10 +562,13 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected async Task EnsureFileShareAsync(CancellationToken cancellationToken = default)
 		{
-			if (!fileShareAlreadyCreated)
+			if (!fileShareAlreadyCreated && options.AutoCreateFileShare)
 			{
 				var shareClient = GetShareClient();
-				await shareClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+				if (options.AutoCreateFileShare)
+				{
+					await shareClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+				}
 
 				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)

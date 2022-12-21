@@ -390,7 +390,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected void EnsureContainer()
 		{
-			if (!containerAlreadyCreated)
+			if (!containerAlreadyCreated && options.AutoCreateBlobContainer)
 			{
 				ensureContainerCriticalSection.ExecuteAction(0, () =>
 				{
@@ -408,7 +408,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected async Task EnsureContainerAsync(CancellationToken cancellationToken = default)
 		{
-			if (!containerAlreadyCreated)
+			if (!containerAlreadyCreated && options.AutoCreateBlobContainer)
 			{
 				await ensureContainerCriticalSection.ExecuteActionAsync(0, async () =>
 				{

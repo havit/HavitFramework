@@ -123,17 +123,31 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
 		/// </summary>
-		public IEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
+		public IEntityPatternsInstaller AddDataSeeds(Assembly dataSeedsAssembly)
 		{
-			Type[] dataLayerDependencyInjectionEnabledTypes = dataLayerAssembly.GetTypes().Where(type => type.IsClass && type.IsPublic).Where(IsNotAbstract).Where(DoesNotHaveFakeAttribute).ToArray();
-
-			// DataSeeds
-			Type[] dataSeedTypes = dataLayerDependencyInjectionEnabledTypes.Where(type => type.ImplementsInterface(typeof(IDataSeed))).ToArray();
+			Type[] dataSeedTypes = dataSeedsAssembly.GetTypes()
+				.Where(type => type.IsClass && type.IsPublic)
+				.Where(IsNotAbstract)
+				.Where(DoesNotHaveFakeAttribute)
+				.Where(type => type.ImplementsInterface(typeof(IDataSeed)))
+				.ToArray();
 
 			foreach (Type dataSeedType in dataSeedTypes)
 			{
 				services.AddTransient(typeof(IDataSeed), dataSeedType); // nesmí být *TryAdd*, ale musí být Add, jinak se nám přidá jen první dataSeedType!
 			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Viz <see cref="IEntityPatternsInstaller"/>
+		/// </summary>
+		public IEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
+		{
+			AddDataSeeds(dataLayerAssembly);
+
+			Type[] dataLayerDependencyInjectionEnabledTypes = dataLayerAssembly.GetTypes().Where(type => type.IsClass && type.IsPublic).Where(IsNotAbstract).Where(DoesNotHaveFakeAttribute).ToArray();
 
 			// Registrace přes IDataSource<T> nestačí, protože při pokusu získání instance dostaneme chybu
 			// proto registrujeme přes IDataSource<KonkrétníTyp> pomocí metody WithServiceConstructedInterface.

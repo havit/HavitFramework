@@ -66,5 +66,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// Registrují se data seedy, data sources, repositories a data entries.
 		/// </summary>
 		IEntityPatternsInstaller AddDataLayer(Assembly assembly);
+
+		/// <summary>
+		/// Registruje do DI containeru dataseeds z dané assembly.
+		/// </summary>
+		IEntityPatternsInstaller AddDataSeeds(Assembly dataSeedsAssembly);
 	}
 }

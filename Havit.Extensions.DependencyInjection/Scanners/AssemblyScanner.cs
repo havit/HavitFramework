@@ -18,7 +18,7 @@ namespace Havit.Extensions.DependencyInjection.Scanners
 		public static TypeServiceAttributeInfo[] GetTypesWithServiceAttribute(Assembly assembly, string profile)
 		{
 			return (from type in assembly.GetTypes()
-					from serviceAttribute in type.GetCustomAttributes(typeof(ServiceAttribute), false).Cast<ServiceAttribute>()
+					from serviceAttribute in type.GetCustomAttributes(typeof(ServiceAttributeBase), false).Cast<ServiceAttributeBase>()
 					where (serviceAttribute.Profile == profile)
 					select new TypeServiceAttributeInfo { Type = type, ServiceAttribute = serviceAttribute })
 					.ToArray();

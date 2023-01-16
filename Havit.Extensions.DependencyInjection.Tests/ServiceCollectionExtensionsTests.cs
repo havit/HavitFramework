@@ -142,5 +142,20 @@ namespace Havit.Extensions.DependencyInjection.Tests
 			// Assert
 			// assert: exception was thrown
 		}
+
+		[TestMethod]
+		public void ServiceCollectionExtensions_AddByServiceAttribute_ServiceWithGenericServiceAttribute()
+		{
+			// Arrange
+			ServiceCollection services = new ServiceCollection();
+
+			// Act
+			services.AddByServiceAttribute(typeof(DecoratedGenericServiceAttributeService).Assembly, nameof(DecoratedGenericServiceAttributeService));
+			services.BuildServiceProvider().GetRequiredService<DecoratedGenericServiceAttributeService>();
+
+			// Assert
+			// assert: no exception was thrown
+		}
+
 	}
 }

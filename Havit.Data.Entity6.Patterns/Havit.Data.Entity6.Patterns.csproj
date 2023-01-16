@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
+		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
 	</PropertyGroup>
@@ -14,7 +14,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.2.10</PackageVersion>
+		<PackageVersion>2.2.30</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
@@ -25,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-		<Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net472'" />
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
+		<Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
 </Project>

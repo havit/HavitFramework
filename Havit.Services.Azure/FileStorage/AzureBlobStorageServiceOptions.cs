@@ -41,5 +41,10 @@ namespace Havit.Services.Azure.FileStorage
 		/// Parametry šifrování file storage.
 		/// </summary>
 		public EncryptionOptions EncryptionOptions { get; set; }
+
+		/// <summary>
+		/// Indikuje, zda má automaticky zakládat BlobContainer, pokud neexistuje.
+		/// </summary>
+		public bool AutoCreateBlobContainer { get; set; } = true;
 	}
 }

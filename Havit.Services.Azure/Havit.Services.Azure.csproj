@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Havit.Services.Azure.Tests" />
 	</ItemGroup>
-	
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.0.16</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Azure Services</Description>
-  </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
-    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.11.0" />
-    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0" PrivateAssets="all" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>$(HavitServicesAzure_PackageVersion)</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Azure Services</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
+		<PackageReference Include="Azure.Storage.Files.Shares" Version="12.11.0" />
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -27,5 +27,15 @@ namespace Havit.Services.Azure.FileStorage
 		/// Název složky, která bude rootem pro použití.
 		/// </summary>
 		public string RootDirectoryName { get; set; }
+
+		/// <summary>
+		/// Indikuje, zda má automaticky zakládat FileShare, pokud neexistuje.
+		/// </summary>
+		public bool AutoCreateFileShare { get; set; } = true;
+
+		/// <summary>
+		/// Indikuje, zda má automaticky zakládat neexistující složky použité ve filename při zakládání FileShare nebo při ukládání souboru.
+		/// </summary>
+		public bool AutoCreateDirectories { get; set; } = true;
 	}
 }

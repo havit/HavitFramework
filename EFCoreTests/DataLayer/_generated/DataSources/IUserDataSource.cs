@@ -5,17 +5,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.Patterns.DataSources;
 
-namespace Havit.EFCoreTests.DataLayer.DataSources
+namespace Havit.EFCoreTests.DataLayer.DataSources;
+
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public interface IUserDataSource : IDataSource<Havit.EFCoreTests.Model.User>
 {
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public interface IUserDataSource : IDataSource<Havit.EFCoreTests.Model.User>
-	{
-	}
 }

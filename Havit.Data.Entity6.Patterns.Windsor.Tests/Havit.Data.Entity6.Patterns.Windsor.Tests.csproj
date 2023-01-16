@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net472</TargetFramework>
+	<TargetFramework>net48</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,29 +5,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Attributes;
 
-namespace Havit.EFCoreTests.DataLayer.DataSources.Fakes
-{
-	[Fake]
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public class FakePropertyWithProtectedMembersDataSource : FakeDataSource<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>, Havit.EFCoreTests.DataLayer.DataSources.IPropertyWithProtectedMembersDataSource
-	{
-		public FakePropertyWithProtectedMembersDataSource(params Havit.EFCoreTests.Model.PropertyWithProtectedMembers[] data)
-			: this((IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>)data)
-		{			
-		}
+namespace Havit.EFCoreTests.DataLayer.DataSources.Fakes;
 
-		public FakePropertyWithProtectedMembersDataSource(IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers> data, ISoftDeleteManager softDeleteManager = null)
-			: base(data, softDeleteManager)
-		{
-		}
+[Fake]
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public class FakePropertyWithProtectedMembersDataSource : FakeDataSource<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>, Havit.EFCoreTests.DataLayer.DataSources.IPropertyWithProtectedMembersDataSource
+{
+	public FakePropertyWithProtectedMembersDataSource(params Havit.EFCoreTests.Model.PropertyWithProtectedMembers[] data)
+		: this((IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>)data)
+	{			
+	}
+
+	public FakePropertyWithProtectedMembersDataSource(IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers> data, ISoftDeleteManager softDeleteManager = null)
+		: base(data, softDeleteManager)
+	{
 	}
 }

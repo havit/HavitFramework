@@ -33,7 +33,9 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.ModelMetadataClasses.Model
 							Value = (property.MaxLength == -1)
 								? Int32.MaxValue
 								: property.MaxLength ?? 0
-						}).ToList()
+						})
+						.OrderBy(property => property.Name, StringComparer.InvariantCulture)
+						.ToList()
 				}).ToList();
 			return result;
 		}

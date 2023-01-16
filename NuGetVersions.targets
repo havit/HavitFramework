@@ -1,0 +1,29 @@
+<Project>
+
+  <!--
+  Cílem je zkusit dát si na jedno místo, jaké verze balíčků publikujeme.
+  Pokud se to osvědčí, pokročíme dál, než jen Core libraries.
+  Případně tento nápad revertujeme.
+  (Můžeme zvolit i jiné technické řešení, např. nastavit PackageVersion zde podle projektu, nemusíme pak tvořit spoustu proměnných.)
+  -->
+	
+  <!-- Core Libraries -->
+  <PropertyGroup>
+	  <HavitCore_PackageVersion>2.0.26</HavitCore_PackageVersion>
+	  <HavitData_PackageVersion>2.0.30</HavitData_PackageVersion>
+	  <HavitDataSqlClientAzure_PackageVersion>2.0.5</HavitDataSqlClientAzure_PackageVersion>
+	  <HavitDrawing_PackageVersion>2.0.30</HavitDrawing_PackageVersion>
+	  <HavitGoogleAnalytics_PackageVersion>2.0.30</HavitGoogleAnalytics_PackageVersion>
+	  <HavitGoPay_PackageVersion>2.0.30</HavitGoPay_PackageVersion>
+	  <HavitPayMuzo_PackageVersion>2.0.30</HavitPayMuzo_PackageVersion>
+	  <HavitPayPal_PackageVersion>2.0.30</HavitPayPal_PackageVersion>
+	  <HavitServices_PackageVersion>2.0.35</HavitServices_PackageVersion>
+	  <HavitServicesAzure_PackageVersion>2.0.19</HavitServicesAzure_PackageVersion>
+	  <HavitServicesRedis_PackageVersion>2.0.4</HavitServicesRedis_PackageVersion>
+	  <HavitServicesSftp_PackageVersion>2.0.3</HavitServicesSftp_PackageVersion>
+	  <HavitWeb_PackageVersion>2.0.36</HavitWeb_PackageVersion>
+	  <HavitWebBootstrap_PackageVersion>2.0.36</HavitWebBootstrap_PackageVersion>
+	  <HavitWebClientContent_PackageVersion>2.0.36</HavitWebClientContent_PackageVersion>
+  </PropertyGroup>
+
+</Project>

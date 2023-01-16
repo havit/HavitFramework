@@ -5,16 +5,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Havit.EFCoreTests.Model.Metadata;
 
-namespace Havit.EFCoreTests.Model.Metadata
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public static class ModelationMetadata
 {
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public static class ModelationMetadata
-	{
-	}
 }

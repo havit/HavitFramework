@@ -17,6 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 		{
 			public string PropertyName { get; set; }
 			public string FieldName { get; set; }
+			public bool IsObsolete { get; set; }
 		}
 	}
 }

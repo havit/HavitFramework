@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Havit.EFCoreTests.DataLayer.Seeds.Persons
 {
-    internal class PersonSeed : DataSeed<PersonsProfile>
+    public class PersonSeed : DataSeed<PersonsProfile>
     {
         public override void SeedData()
         {

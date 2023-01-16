@@ -99,7 +99,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 		{
-			ShareFileClient shareFileClient = GetShareFileClient(fileName);			
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
 			using (System.IO.Stream azureFileStream = shareFileClient.OpenRead())
 			{
 				azureFileStream.CopyTo(stream);
@@ -143,7 +143,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			EnsureFileShare();
 
-			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: true);
+			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
 
 			System.IO.Stream seekableFileContent;
 			bool seekableFileContentNeedsDispose;
@@ -201,7 +201,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken: cancellationToken).ConfigureAwait(false);
 
 			System.IO.Stream seekableFileContent;
 			bool seekableFileContentNeedsDispose;
@@ -341,7 +341,7 @@ namespace Havit.Services.Azure.FileStorage
 				yield break;
 			}
 
-			Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories();
+			Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps });
 			List<string> subdirectories = new List<string>();
 
 			foreach (ShareFileItem item in directoryItems)
@@ -351,7 +351,7 @@ namespace Havit.Services.Azure.FileStorage
 					yield return new FileInfo
 					{
 						Name = directoryPrefix + item.Name,
-						LastModifiedUtc = default(DateTime),
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
 						Size = item.FileSize ?? -1,
 						ContentType = null
 					};
@@ -381,7 +381,7 @@ namespace Havit.Services.Azure.FileStorage
 				yield break;
 			}
 
-			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(cancellationToken: cancellationToken);
+			AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }, cancellationToken: cancellationToken);
 			List<string> subdirectories = new List<string>();
 
 			await foreach (ShareFileItem item in directoryItems.ConfigureAwait(false))
@@ -391,7 +391,7 @@ namespace Havit.Services.Azure.FileStorage
 					yield return new FileInfo
 					{
 						Name = directoryPrefix + item.Name,
-						LastModifiedUtc = default(DateTime),
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
 						Size = item.FileSize ?? -1,
 						ContentType = null
 					};
@@ -430,7 +430,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			ShareFileClient shareFileClient = GetShareFileClient(fileName);			
+			ShareFileClient shareFileClient = GetShareFileClient(fileName);
 			ShareFileProperties properties = shareFileClient.GetProperties();
 			return properties.LastModified.UtcDateTime;
 		}
@@ -528,14 +528,17 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje.
+		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje (a je povoleno vytváření složek).
 		/// </summary>
 		protected void EnsureFileShare()
 		{
 			if (!fileShareAlreadyCreated)
 			{
 				var shareClient = GetShareClient();
-				shareClient.CreateIfNotExists();
+				if (options.AutoCreateFileShare)
+				{
+					shareClient.CreateIfNotExists();
+				}
 
 				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)
@@ -543,7 +546,10 @@ namespace Havit.Services.Azure.FileStorage
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
 						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
-						directory.CreateIfNotExists();
+						if (options.AutoCreateDirectories)
+						{
+							directory.CreateIfNotExists();
+						}
 					}
 				}
 
@@ -552,14 +558,17 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <summary>
-		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje.
+		/// Vytvoří úložiště souborů (a ev. root directory), pokud ještě neexistuje (a je povoleno vytváření složek).
 		/// </summary>
 		protected async Task EnsureFileShareAsync(CancellationToken cancellationToken = default)
 		{
-			if (!fileShareAlreadyCreated)
+			if (!fileShareAlreadyCreated && options.AutoCreateFileShare)
 			{
 				var shareClient = GetShareClient();
-				await shareClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+				if (options.AutoCreateFileShare)
+				{
+					await shareClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+				}
 
 				var directory = shareClient.GetRootDirectoryClient();
 				if (rootDirectoryNameSegments.Length > 0)
@@ -567,7 +576,10 @@ namespace Havit.Services.Azure.FileStorage
 					for (int i = 0; i < rootDirectoryNameSegments.Length; i++)
 					{
 						directory = directory.GetSubdirectoryClient(rootDirectoryNameSegments[i]);
-						await directory.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+						if (options.AutoCreateDirectories)
+						{
+							await directory.CreateIfNotExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+						}
 					}
 				}
 

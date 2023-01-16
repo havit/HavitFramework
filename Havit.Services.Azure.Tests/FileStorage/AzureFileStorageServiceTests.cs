@@ -13,8 +13,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 	[TestClass]
 	public class AzureFileStorageServiceTests
 	{
+		private static string testRunSuffix = Guid.NewGuid().ToString("N");
+
 		[ClassInitialize]
-		public static void Initialize(TestContext testContext)
+		public static void InitializeTestClass(TestContext testContext)
 		{
 			// testy jsou slušné, mažou po sobě
 			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
@@ -32,11 +34,9 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[ClassCleanup]
-		public static void CleanUp()
+		public static void CleanUpTestClass()
 		{
-#if !DEBUG
 			GetAzureFileStorageService().GetShareClient().DeleteIfExists();
-#endif
 		}
 
 		[TestMethod]
@@ -164,11 +164,22 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureFileStorageService());
 		}
 
-		//[TestMethod]
+		[TestMethod]
+		public void AzureFileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_ReturnsEmptyOnNonExistingFolder(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
 		public void AzureFileStorageService_EnumerateFiles_HasLastModifiedUtc()
 		{
-			// Není podporováno.
-			//FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetAzureFileStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasLastModifiedUtc(GetAzureFileStorageService());
 		}
 
 		[TestMethod]
@@ -177,12 +188,10 @@ namespace Havit.Services.Azure.Tests.FileStorage
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_HasSize(GetAzureFileStorageService());
 		}
 
-		//[TestMethod]
+		[TestMethod]
 		public async Task AzureFileStorageService_EnumerateFilesAsync_HasLastModifiedUtc()
 		{
-			// Není podporováno.
-			//await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(GetAzureFileStorageService());
-			await Task.CompletedTask;
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(GetAzureFileStorageService());
 		}
 
 		[TestMethod]
@@ -213,9 +222,23 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_Copy_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Copy(azureFileStorageService, azureFileStorageService);
+		}
+
+		[TestMethod]
 		public async Task AzureFileStorageService_CopyAsync()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_CopyAsync_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(azureFileStorageService, azureFileStorageService);
 		}
 
 		[TestMethod]
@@ -237,9 +260,23 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_Move_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Move(azureFileStorageService, azureFileStorageService);
+		}
+
+		[TestMethod]
 		public async Task AzureFileStorageService_MoveAsync()
 		{
 			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_MoveAsync_SingleInstance()
+		{
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(azureFileStorageService, azureFileStorageService);
 		}
 
 		[TestMethod]
@@ -272,10 +309,12 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 		{
-			return new AzureFileStorageService(
-				fileStorageConnectionString: AzureStorageConnectionStringHelper.GetConnectionString(),
-				fileShareName: "tests",
-				rootDirectoryName: secondary ? "root\\secondarytests" : "root\\primarytests");
+			return new AzureFileStorageService(new AzureFileStorageServiceOptions
+			{
+				FileStorageConnectionString = AzureStorageConnectionStringHelper.GetConnectionString(),
+				FileShareName = "tests" + testRunSuffix,
+				RootDirectoryName = secondary ? "root\\secondarytests" : "root\\primarytests"
+			});
 		}
 	}
 }

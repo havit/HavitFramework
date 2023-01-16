@@ -16,6 +16,8 @@ public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntr
 <# } #>
 
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
+<# if (entry.IsObsolete) { #>	[System.Obsolete] 
+<# } #>
 	public <#= Model.ModelClassFullName #> <#= entry.PropertyName #> => <#= entry.FieldName #> ??= GetEntry(<#= Model.ModelEntriesEnumerationFullName #>.<#= entry.PropertyName #>);
 <# } #>
 

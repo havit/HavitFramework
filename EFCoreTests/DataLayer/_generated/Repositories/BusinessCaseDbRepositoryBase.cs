@@ -5,11 +5,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
@@ -18,15 +13,14 @@ using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 
-namespace Havit.EFCoreTests.DataLayer.Repositories
-{
-	[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-	public abstract class BusinessCaseDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.BusinessCase>
-	{
-		protected BusinessCaseDbRepositoryBase(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IBusinessCaseDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.BusinessCase, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-			: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
-		{
-		}
+namespace Havit.EFCoreTests.DataLayer.Repositories;
 
+[System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+public abstract class BusinessCaseDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.BusinessCase>
+{
+	protected BusinessCaseDbRepositoryBase(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IBusinessCaseDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.BusinessCase, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	{
 	}
+
 }

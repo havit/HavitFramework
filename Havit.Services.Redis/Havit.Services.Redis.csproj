@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.0.4</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Redis Services</Description>
-  </PropertyGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>$(HavitServicesRedis_PackageVersion)</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Redis Services</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.EntityFrameworkCore.Update;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
 {
@@ -17,10 +18,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 		/// Konstruktor.
 		/// </summary>
 		public CompositeMigrationsSqlGenerator(
-		    MigrationsSqlGeneratorDependencies dependencies,
-			IRelationalAnnotationProvider migrationsAnnotations,
+			MigrationsSqlGeneratorDependencies dependencies,
+			ICommandBatchPreparer commandBatchPreparer,
 		    IEnumerable<IMigrationOperationSqlGenerator> operationGenerators) 
-		    : base(dependencies, migrationsAnnotations)
+		    : base(dependencies, commandBatchPreparer)
 	    {
 		    this.operationGenerators = operationGenerators;
 	    }

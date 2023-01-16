@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
-{
+{	
 	/// <summary>
 	/// Composite implementation of <see cref="IRelationalAnnotationProvider"/>. Encapsulates <see cref="IRelationalAnnotationProvider"/> components and concatenates annotations for various elements of the <see cref="IRelationalModel"/>.
 	///
-	/// Annotations are used by EF Core Migrations and are defined on various elements of the <see cref="IModel" />. <see cref="IModel"/> is transformed to <see cref="IRelationalModel"/> when finalizing <see cref="IModel"/> creation (<see cref="RelationalModelConvention"/>).
+	/// Annotations are used by EF Core Migrations and are defined on various elements of the <see cref="IModel" />. <see cref="IModel"/> is transformed to <see cref="IRelationalModel"/> when finalizing <see cref="IModel"/> creation.
 	/// </summary>
 	public class CompositeRelationalAnnotationProvider : RelationalAnnotationProvider
 	{

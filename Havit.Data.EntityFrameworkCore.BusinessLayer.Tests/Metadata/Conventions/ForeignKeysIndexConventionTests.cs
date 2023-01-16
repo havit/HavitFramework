@@ -38,8 +38,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Convention
 			var dbContext = new TestDbContext(builder =>
 			{
 				builder.Entity<TestEntity>()
+				.ToTable(t => t
 					.HasComment("Abc")
-					.HasComment(null);
+					.HasComment(null));
 			});
 
 			_ = dbContext.Model;

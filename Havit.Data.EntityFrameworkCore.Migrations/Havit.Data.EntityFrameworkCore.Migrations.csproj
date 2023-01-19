@@ -16,7 +16,7 @@
   <PropertyGroup>
 	  <!-- Při povýšení je doporučeno aktualizovat i Havit.Data.EntityFrameworkCore.BusinessLayer,
 	  neboť tento balíček je obvykle distribuován zejména jako závislost Havit.Data.EntityFrameworkCore.BusinessLayer -->
-	  <PackageVersion>2.7.1-pre01</PackageVersion>
+	  <PackageVersion>2.7.1-pre02</PackageVersion>
 	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Model Extensions</Description>
   </PropertyGroup>
 

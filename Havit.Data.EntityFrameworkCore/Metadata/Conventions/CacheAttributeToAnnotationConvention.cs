@@ -71,7 +71,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 
 			if (attribute.SlidingExpirationSeconds != 0)
 			{
-				entityTypeBuilder.HasAnnotation(AbsoluteExpirationAnnotationName, attribute.SlidingExpirationSeconds, fromDataAnnotation: true /* DataAnnotation */);
+				entityTypeBuilder.HasAnnotation(SlidingExpirationAnnotationName, attribute.SlidingExpirationSeconds, fromDataAnnotation: true /* DataAnnotation */);
 			}
 
 			if (attribute.Priority != CacheItemPriority.Normal)

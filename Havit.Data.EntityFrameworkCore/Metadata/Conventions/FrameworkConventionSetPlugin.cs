@@ -29,39 +29,29 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 
 			if (extension.CacheAttributeToAnnotationConventionEnabled)
 			{
-				conventionSet.EntityTypeAddedConventions.Add(new CacheAttributeToAnnotationConvention(conventionSetBuilderDependencies));
+				conventionSet.Add(new CacheAttributeToAnnotationConvention(conventionSetBuilderDependencies));
 			}
 
 			if (extension.CascadeDeleteToRestrictConventionEnabled)
 			{
+				// ponecháme vestavěnou CascadeDeleteConvention a přebijeme ji pomocí CascadeDeleteToRestrictConvention
 				CascadeDeleteToRestrictConvention convention = new CascadeDeleteToRestrictConvention(conventionSetBuilderDependencies);
-
-				if (!ConventionSet.Replace<IForeignKeyAddedConvention, CascadeDeleteConvention>(conventionSet.ForeignKeyAddedConventions, convention))
-				{
-					// pokud se nepodaří vyměnit konvenci za CascadeDeleteConvention, přidáme ji
-					conventionSet.ForeignKeyAddedConventions.Add(convention);
-				}
-
-				if (!ConventionSet.Replace<IForeignKeyRequirednessChangedConvention, CascadeDeleteConvention>(conventionSet.ForeignKeyRequirednessChangedConventions, convention))
-				{
-					// pokud se nepodaří vyměnit konvenci za CascadeDeleteConvention, přidáme ji
-					conventionSet.ForeignKeyRequirednessChangedConventions.Add(convention);
-				}
+				conventionSet.Add(convention);
 			}
 
 			if (extension.DataTypeAttributeConventionEnabled)
 			{
-				conventionSet.PropertyAddedConventions.Add(new DataTypeAttributeConvention(conventionSetBuilderDependencies));
+				conventionSet.Add(new DataTypeAttributeConvention(conventionSetBuilderDependencies));
 			}
 
 			if (extension.ManyToManyEntityKeyDiscoveryConventionEnabled)
 			{
-				conventionSet.ForeignKeyAddedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
+				conventionSet.Add(new ManyToManyEntityKeyDiscoveryConvention());
 			}
 
 			if (extension.StringPropertiesDefaultValueConventionEnabled)
 			{
-				conventionSet.PropertyAddedConventions.Add(new StringPropertiesDefaultValueConvention());
+				conventionSet.Add(new StringPropertiesDefaultValueConvention());
 			}
 
 			return conventionSet;

@@ -14,10 +14,21 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// <summary>
 	/// Konvence vyhledá kandidáty na entity reprezentující vztah ManyToMany bez nastaveného primárního klíče a nastaví složený primární klíč.
 	/// </summary>
-	public class ManyToManyEntityKeyDiscoveryConvention : IForeignKeyAddedConvention
+	public class ManyToManyEntityKeyDiscoveryConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
 	{
 		/// <inheritdoc />
 		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
+		{
+			TryDiscoverPrimaryKey(relationshipBuilder, context);
+		}
+
+		/// <inheritdoc />
+		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
+		{
+			TryDiscoverPrimaryKey(relationshipBuilder, context);
+		}
+
+		private void TryDiscoverPrimaryKey(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext context)
 		{
 			// Systémové tabulky nechceme změnit.
 			if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())
@@ -38,7 +49,11 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				// fromDataAnnotation: false 
 				//  - není definováno v modelu
 				//	- jinak dostaneme výjimku System.InvalidOperationException: 'Entity type 'PersonToPerson' has composite primary key defined with data annotations. To set composite primary key, use fluent API.'
-				entityType.SetPrimaryKey(entityType.GetProperties().OrderBy(property => property.DeclaringEntityType.ClrType.GetProperties().ToList().IndexOf(property.PropertyInfo)).ToList().AsReadOnly(), fromDataAnnotation: false /* Convention */);
+				IConventionKey newConventionKey = entityType.SetPrimaryKey(entityType.GetProperties().OrderBy(property => property.DeclaringEntityType.ClrType.GetProperties().ToList().IndexOf(property.PropertyInfo)).ToList().AsReadOnly(), fromDataAnnotation: false /* Convention */);
+				if (newConventionKey != null)
+				{
+					context.StopProcessing();
+				}
 			}
 		}
 	}

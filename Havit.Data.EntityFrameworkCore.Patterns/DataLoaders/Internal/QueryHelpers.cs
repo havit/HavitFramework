@@ -57,19 +57,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 					new List<Expression> { propertyAccessor.Body }),
 				propertyAccessor.Parameters);
 		}
-		
+
 		// SingleValueHolder.Value a FromToValueHolder.FromValue
 		// Názvy vlastností se propisují do názvu SQL Parametrů v databázovém dotazu.
 
 		private class SingleValueHolder
-        {			
+		{
 			public int Value { get; }
 
-            public SingleValueHolder(int value)
-            {
+			public SingleValueHolder(int value)
+			{
 				Value = value;
-            }
-        }
+			}
+		}
 
 		private class FromToValueHolder
 		{
@@ -78,9 +78,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 
 			public FromToValueHolder(int fromValue, int toValue)
 			{
-                FromValue = fromValue;
-                ToValue = toValue;
-            }
+				FromValue = fromValue;
+				ToValue = toValue;
+			}
 		}
 	}
 }

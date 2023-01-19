@@ -177,7 +177,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 			{
 				throw new InvalidOperationException("Sourda data contains duplicity.", argumentException);
 			}
-			
+
 			Dictionary<int, TLookupKey> lookupKeyByEntityKeyDictionary = !OptimizationHints.HasFlag(LookupServiceOptimizationHints.EntityIsReadOnly)
 				? pairs.ToDictionary(pair => pair.EntityKey, pair => pair.LookupKey)
 				: null;
@@ -221,10 +221,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 
 			// nedošlo k žádné změně sledované entity, neprovádíme žádnou invalidaci
 			if (!changes.GetAllChanges().OfType<TEntity>().Any())
-			{				
+			{
 				return;
 			}
-			
+
 			// musí předcházet opuštění v případě neexistence lookup dat
 			distributedLookupDataInvalidationService.Invalidate(GetStorageKey());
 

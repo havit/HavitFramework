@@ -26,10 +26,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 				if (propertyToLoad.IsCollection)
 				{
 					string propertyNameIncludingDeleted = propertyToLoad.PropertyName + "IncludingDeleted";
-					PropertyInfo propertyIncludingDeleted = propertyToLoad.SourceType.GetProperty(propertyNameIncludingDeleted);					
+					PropertyInfo propertyIncludingDeleted = propertyToLoad.SourceType.GetProperty(propertyNameIncludingDeleted);
 					if (propertyIncludingDeleted != null)
 					{
-						 Type enumerableType = typeof(IEnumerable<>).MakeGenericType(propertyToLoad.CollectionItemType);						
+						Type enumerableType = typeof(IEnumerable<>).MakeGenericType(propertyToLoad.CollectionItemType);
 						if (enumerableType.IsAssignableFrom(propertyIncludingDeleted.PropertyType))
 						{
 							propertyToLoad.PropertyName = propertyNameIncludingDeleted;

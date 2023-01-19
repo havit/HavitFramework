@@ -12,12 +12,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 	/// Extension metody k IReadOnlyEntityType.
 	/// </summary>
 	public static class ReadOnlyEntityTypeExtensions
-    {
-	    /// <summary>
-	    /// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou EF automaticky.
-	    /// </summary>
-	    public static bool IsSystemType(this IReadOnlyEntityType entityType)
-	    {
+	{
+		/// <summary>
+		/// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou EF automaticky.
+		/// </summary>
+		public static bool IsSystemType(this IReadOnlyEntityType entityType)
+		{
 			return (entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion))
 				|| (entityType.ClrType == typeof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow));
 		}
@@ -34,7 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// Vrací true, pokud je entita vztahovou entitou M:N vztahu.
 		/// </summary>
 		public static bool IsManyToManyEntity(this IReadOnlyEntityType entityType)
-	    {
+		{
 			// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
 			return !entityType.IsOwned()
 				&& !entityType.IsKeyless()

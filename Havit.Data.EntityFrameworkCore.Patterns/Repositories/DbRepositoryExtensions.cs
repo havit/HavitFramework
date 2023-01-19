@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 {
-    /// <summary>
+	/// <summary>
 	/// Extension methods related to DbRepositories.
 	/// </summary>
 	public static class DbRepositoryExtensions
-    {
+	{
 		/// <summary>
 		/// To be used inside DbRepository implementations as .Include(GetLoadReferences).MyQueryContinued...
 		/// </summary>

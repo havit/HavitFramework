@@ -5,7 +5,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 {
 	public class NetCoreProject : ProjectBase
 	{
-		public NetCoreProject(string filename, XDocument content) 
+		public NetCoreProject(string filename, XDocument content)
 			: base(filename, content)
 		{
 		}

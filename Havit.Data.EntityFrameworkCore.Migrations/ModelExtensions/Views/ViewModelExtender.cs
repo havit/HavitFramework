@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.Views
 	/// Bázová trieda pre definovanie DB Injections na views.
 	/// </summary>
 	public class ViewModelExtender : IModelExtender
-    {
+	{
 		/// <summary>
 		/// Vytvorí <see cref="ViewModelExtension"/> objekt z create skriptu v resources.
 		/// </summary>
@@ -21,23 +21,23 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.Views
 		{
 			resourceAssembly = resourceAssembly ?? GetDefaultResourceAssembly();
 
-            if (!resourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
-            {
-                throw new ArgumentException($"Invalid embedded resource name {createScriptResourceName}", nameof(createScriptResourceName));
-            }
+			if (!resourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
+			{
+				throw new ArgumentException($"Invalid embedded resource name {createScriptResourceName}", nameof(createScriptResourceName));
+			}
 
-            using (var textStream = new StreamReader(resourceAssembly.GetManifestResourceStream(createScriptResourceName)))
-            {
-                string createScript = textStream.ReadToEnd();
-                return new ViewModelExtension { CreateSql = createScript, ViewName = ParseViewName(createScript) };
-            }
-        }
+			using (var textStream = new StreamReader(resourceAssembly.GetManifestResourceStream(createScriptResourceName)))
+			{
+				string createScript = textStream.ReadToEnd();
+				return new ViewModelExtension { CreateSql = createScript, ViewName = ParseViewName(createScript) };
+			}
+		}
 
 		/// <summary>
 		/// Assembly, ktorá obsahuje resources so skriptami. Štandardne je to assembly, v ktorej je definovaná trieda zdedená od <see cref="ViewModelExtension"/>.
 		/// </summary>
 		private Assembly GetDefaultResourceAssembly() => GetType().Assembly;
 
-        private string ParseViewName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)VIEW(\s+)(\[.*?\]\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
-    }
+		private string ParseViewName(string createScript) => Regex.Match(createScript, @"CREATE(\s+)VIEW(\s+)(\[.*?\]\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
+	}
 }

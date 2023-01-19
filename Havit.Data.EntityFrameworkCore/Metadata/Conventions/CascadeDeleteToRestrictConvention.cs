@@ -45,7 +45,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			}
 
 			base.ProcessForeignKeyRequirednessChanged(relationshipBuilder, context);
-		}		
+		}
 
 		/// <inheritdoc />
 		protected override DeleteBehavior GetTargetDeleteBehavior(IConventionForeignKey foreignKey)

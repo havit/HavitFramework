@@ -22,12 +22,12 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 		public IEnumerable<InterfaceDataSourceModel> GetModels()
 		{
 			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
-				select new InterfaceDataSourceModel
-				{
-					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
-					InterfaceDataSourceName = "I" + registeredEntity.ClrType.Name + "DataSource",
-					ModelClassFullName = registeredEntity.ClrType.FullName
-				}).ToList();
+					select new InterfaceDataSourceModel
+					{
+						NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
+						InterfaceDataSourceName = "I" + registeredEntity.ClrType.Name + "DataSource",
+						ModelClassFullName = registeredEntity.ClrType.FullName
+					}).ToList();
 		}
 
 		private string GetNamespaceName(string namespaceName)

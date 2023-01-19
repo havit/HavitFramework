@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation
 		/// </summary>
 		public ValidationFailedException(IEnumerable<string> validationErrors)
 		{
-			ValidationErrors = validationErrors.ToList().AsReadOnly();			
+			ValidationErrors = validationErrors.ToList().AsReadOnly();
 		}
 
 		/// <summary>

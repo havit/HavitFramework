@@ -22,15 +22,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IDbContext dbContext;
 		private readonly ICollectionTargetTypeService collectionTargetTypeService;
 
-        /// <summary>
-        /// Konstruktor.
-        /// </summary>
-        public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
 		{
 			this.annotationsEntityCacheOptionsGeneratorStorage = annotationsEntityCacheOptionsGeneratorStorage;
 			this.dbContext = dbContext;
 			this.collectionTargetTypeService = collectionTargetTypeService;
-        }
+		}
 
 		/// <inheritdoc />
 		public CacheOptions GetEntityCacheOptions<TEntity>(TEntity entity)
@@ -40,14 +40,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc />
-        public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
-            where TEntity : class
-        {
+		public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
+			where TEntity : class
+		{
 			return GetValueForEntity(collectionTargetTypeService.GetCollectionTargetType(typeof(TEntity), propertyName));
-        }
+		}
 
-        /// <inheritdoc />
-        public CacheOptions GetAllKeysCacheOptions<TEntity>()
+		/// <inheritdoc />
+		public CacheOptions GetAllKeysCacheOptions<TEntity>()
 			where TEntity : class
 		{
 			return GetValueForEntity(typeof(TEntity));
@@ -127,5 +127,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}
 		}
 
-    }
+	}
 }

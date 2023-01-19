@@ -10,16 +10,16 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 		{
 			string csprojPath;
 			if (folderOrCsprojPath.EndsWith(".csproj"))
-            {
+			{
 				csprojPath = folderOrCsprojPath;
 			}
-            else
-            {
+			else
+			{
 				var csprojFile = new System.IO.DirectoryInfo(folderOrCsprojPath).EnumerateFiles("*.csproj").SingleOrDefault();
 				if (csprojFile == null)
-                {
+				{
 					throw new InvalidOperationException($"No csproj found in {folderOrCsprojPath}.");
-                }
+				}
 				csprojPath = csprojFile.FullName;
 			}
 

@@ -19,21 +19,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 	/// </summary>
 	public class DbDataSeedPersister : IDataSeedPersister
 	{
-        private readonly IDbContextFactory dbContextFactory;
-        private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
+		private readonly IDbContextFactory dbContextFactory;
+		private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
-        /// <summary>
-        /// Konstruktor.
-        /// </summary>
-        /// <remarks>
-        /// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
-        /// Ale dále se k němu chováme jako k IDbContextu.
-        /// </remarks>
-        public DbDataSeedPersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		/// <remarks>
+		/// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
+		/// Ale dále se k němu chováme jako k IDbContextu.
+		/// </remarks>
+		public DbDataSeedPersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
 		{
-            this.dbContextFactory = dbContextFactory;
-            this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
-        }
+			this.dbContextFactory = dbContextFactory;
+			this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
+		}
 
 		/// <summary>
 		/// Dle předpisu seedování dat (konfigurace) provede persistenci seedovaných dat.
@@ -393,7 +393,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			return entityType
 				.GetProperties()
 				.Where(item => !item.IsShadowProperty())
-				.Where(p => !PropertyIsIdentity(p))				
+				.Where(p => !PropertyIsIdentity(p))
 				.ToList();
 		}
 
@@ -441,25 +441,25 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		}
 
 		private void ExecuteWithDbContext(Action<IDbContext> action)
-        {
+		{
 			if (_currentDbContext == null)
-            {
+			{
 				using (var dbContext = dbContextFactory.CreateDbContext())
-				try
-				{
-					_currentDbContext = dbContext;
-					action(_currentDbContext);
-				}
-				finally
-                {
-					_currentDbContext = null;
-				}
-            }
+					try
+					{
+						_currentDbContext = dbContext;
+						action(_currentDbContext);
+					}
+					finally
+					{
+						_currentDbContext = null;
+					}
+			}
 			else
-            {
+			{
 				action(_currentDbContext);
-            }
-        }
+			}
+		}
 		private IDbContext _currentDbContext;
 	}
 }

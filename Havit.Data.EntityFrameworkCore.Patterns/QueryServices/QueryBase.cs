@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 		/// Definuje Query.
 		/// </summary>
 		protected abstract IQueryable<TQueryResultItem> Query();
-		
+
 		/// <summary>
 		/// Vrátí všechny objekty dle Query.
 		/// </summary>
@@ -58,7 +58,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices
 
 			return Query().Skip(pageIndex * pageSize).Take(pageSize).ToListAsync(cancellationToken);
 		}
-		
+
 		/// <summary>
 		/// Vrátí fragment dat dle Query.
 		/// </summary>

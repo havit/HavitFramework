@@ -22,13 +22,13 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 		public IEnumerable<DbDataSourceModel> GetModels()
 		{
 			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
-				select new DbDataSourceModel
-				{
-					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
-					InterfaceDataSourceFullName = "I" + registeredEntity.ClrType.Name + "DataSource",
-					DbDataSourceClassName = registeredEntity.ClrType.Name + "DbDataSource",
-					ModelClassFullName = registeredEntity.ClrType.FullName
-				}).ToList();
+					select new DbDataSourceModel
+					{
+						NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
+						InterfaceDataSourceFullName = "I" + registeredEntity.ClrType.Name + "DataSource",
+						DbDataSourceClassName = registeredEntity.ClrType.Name + "DbDataSource",
+						ModelClassFullName = registeredEntity.ClrType.FullName
+					}).ToList();
 		}
 
 		// TODO: Opakující se kód (obdobný)

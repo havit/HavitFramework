@@ -117,7 +117,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 			"yield"
 		};
 
-	public string GetCammelCase(string name)
+		public string GetCammelCase(string name)
 		{
 			string result = name[0].ToString().ToLower() + name.Substring(1);
 			return csharpKeywords.Contains(result)

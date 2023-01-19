@@ -21,14 +21,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			return true;
 		}
 
-        /// <inheritdoc/> 
-        public bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
-        {
-            return true;
-        }
+		/// <inheritdoc/> 
+		public bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
+		{
+			return true;
+		}
 
-        /// <inheritdoc/> 
-        public bool ShouldCacheEntityCollection(object entity, string propertyName)
+		/// <inheritdoc/> 
+		public bool ShouldCacheEntityCollection(object entity, string propertyName)
 		{
 			return true;
 		}
@@ -38,5 +38,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		{
 			return true;
 		}
-    }
+	}
 }

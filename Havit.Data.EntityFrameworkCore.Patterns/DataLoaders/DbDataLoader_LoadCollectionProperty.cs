@@ -40,9 +40,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				LogDebug("Finished reading from a database.");
 				LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
 				LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
-                LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
-            }
-			
+				LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
+			}
+
 			LogDebug("Initializing collections.");
 			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
 			LogDebug("Marking properties as loaded.");
@@ -70,17 +70,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				LogDebug("Starting reading from a database.");
 				List<TPropertyItem> loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 				LogDebug("Finished reading from a database.");
-				
+
 				LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
 				LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
-                LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
-            }
+				LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
+			}
 
 			LogDebug("Initializing collections.");
 			LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
 			LogDebug("Marking properties as loaded.");
 			LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
-			
+
 			LogDebug("Returning.");
 			return LoadCollectionPropertyInternal_GetResult<TEntity, TPropertyCollection, TPropertyItem>(entities, originalPropertyName);
 		}
@@ -93,9 +93,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private void LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(string propertyName, TEntity[] entities, out List<TEntity> entitiesToLoadQuery)
 			where TEntity : class
 			where TPropertyItem : class
-		{			
+		{
 			List<TEntity> entitiesToLoad = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).Where(item => dbContext.GetEntityState(item) != EntityState.Added).ToList();
-			
+
 			if (entitiesToLoad.Count == 0)
 			{
 				entitiesToLoadQuery = null;
@@ -123,9 +123,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TEntity : class
 			where TProperty : class
 		{
-            // Performance: No big issue.
-            var foreignKeyProperty = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
-			
+			// Performance: No big issue.
+			var foreignKeyProperty = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+
 			Contract.Assert(foreignKeyProperty.ClrType == typeof(int) || foreignKeyProperty.ClrType == typeof(int?));
 
 			List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
@@ -151,23 +151,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			// pozor, property zde ještě může být null
 			foreach (TEntity loadedEntity in loadedEntities)
 			{
-				entityCacheManager.StoreCollection<TEntity, TPropertyItem>(loadedEntity, propertyName);                                
-            }
+				entityCacheManager.StoreCollection<TEntity, TPropertyItem>(loadedEntity, propertyName);
+			}
 		}
 
-        private void LoadCollectionPropertyInternal_StoreEntitiesToCache<TProperty>(List<TProperty> loadedProperties)
-            where TProperty : class
-        {
-            // TODO: Test na ManyToMany
-            if (entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TProperty)).Length == 1)
-            {
-                // uložíme do cache, pokud je cachovaná
-                foreach (TProperty loadedEntity in loadedProperties)
-                {
-                    entityCacheManager.StoreEntity(loadedEntity);
-                }
-            }
-        }
+		private void LoadCollectionPropertyInternal_StoreEntitiesToCache<TProperty>(List<TProperty> loadedProperties)
+			where TProperty : class
+		{
+			// TODO: Test na ManyToMany
+			if (entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TProperty)).Length == 1)
+			{
+				// uložíme do cache, pokud je cachovaná
+				foreach (TProperty loadedEntity in loadedProperties)
+				{
+					entityCacheManager.StoreEntity(loadedEntity);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Tato metoda inicializuje kolekce (nastaví nové instance), pokud jsou null.

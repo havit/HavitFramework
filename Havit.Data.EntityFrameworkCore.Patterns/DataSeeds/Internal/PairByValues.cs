@@ -9,8 +9,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal
 	internal class PairByValues : IEquatable<PairByValues>
 	{
 		public object[] Data { get; }
-	
-		public PairByValues(object[] data) 
+
+		public PairByValues(object[] data)
 		{
 			Data = data;
 		}

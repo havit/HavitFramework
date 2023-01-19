@@ -7,7 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure
 	internal static class EntityActivator
 	{
 		public static TEntity CreateInstance<TEntity>()
-		{			
+		{
 			var constructor = typeof(TEntity).GetConstructor(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, Array.Empty<Type>(), null);
 			if (constructor == null)
 			{

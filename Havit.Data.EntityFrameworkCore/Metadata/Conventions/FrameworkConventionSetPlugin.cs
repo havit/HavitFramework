@@ -9,31 +9,31 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// "Installer" konvencí podle nastavení v FrameworkConventionSetOptionsExtension.
 	/// </summary>
 	public class FrameworkConventionSetPlugin : IConventionSetPlugin
-    {
-        private readonly IDbContextOptions options;
-        private readonly ProviderConventionSetBuilderDependencies conventionSetBuilderDependencies;
+	{
+		private readonly IDbContextOptions options;
+		private readonly ProviderConventionSetBuilderDependencies conventionSetBuilderDependencies;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public FrameworkConventionSetPlugin(IDbContextOptions options, ProviderConventionSetBuilderDependencies conventionSetBuilderDependencies)
-        {
-            this.options = options;
-            this.conventionSetBuilderDependencies = conventionSetBuilderDependencies;
-        }
+		public FrameworkConventionSetPlugin(IDbContextOptions options, ProviderConventionSetBuilderDependencies conventionSetBuilderDependencies)
+		{
+			this.options = options;
+			this.conventionSetBuilderDependencies = conventionSetBuilderDependencies;
+		}
 
 		/// <inheritdoc />
-        public ConventionSet ModifyConventions(ConventionSet conventionSet)
-        {
+		public ConventionSet ModifyConventions(ConventionSet conventionSet)
+		{
 			var extension = options.FindExtension<FrameworkConventionSetOptionsExtension>();
 
 			if (extension.CacheAttributeToAnnotationConventionEnabled)
-            {
+			{
 				conventionSet.EntityTypeAddedConventions.Add(new CacheAttributeToAnnotationConvention(conventionSetBuilderDependencies));
 			}
 
 			if (extension.CascadeDeleteToRestrictConventionEnabled)
-            {
+			{
 				CascadeDeleteToRestrictConvention convention = new CascadeDeleteToRestrictConvention(conventionSetBuilderDependencies);
 
 				if (!ConventionSet.Replace<IForeignKeyAddedConvention, CascadeDeleteConvention>(conventionSet.ForeignKeyAddedConventions, convention))
@@ -50,17 +50,17 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			}
 
 			if (extension.DataTypeAttributeConventionEnabled)
-            {
+			{
 				conventionSet.PropertyAddedConventions.Add(new DataTypeAttributeConvention(conventionSetBuilderDependencies));
 			}
 
 			if (extension.ManyToManyEntityKeyDiscoveryConventionEnabled)
-            {
+			{
 				conventionSet.ForeignKeyAddedConventions.Add(new ManyToManyEntityKeyDiscoveryConvention());
 			}
 
 			if (extension.StringPropertiesDefaultValueConventionEnabled)
-            {
+			{
 				conventionSet.PropertyAddedConventions.Add(new StringPropertiesDefaultValueConvention());
 			}
 

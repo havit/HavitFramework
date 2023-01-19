@@ -27,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
 			{
 				LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
-				
+
 				var query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
 				LogDebug("Starting reading from a database.");
 				List<TProperty> loadedProperties = query.ToList();
@@ -80,9 +80,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				return;
 			}
 
-            // získáme cizí klíč reprezentující referenci (Navigation)
-            // TODO JK: Performance? Každý pokus o načtení z cache?            
-            IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+			// získáme cizí klíč reprezentující referenci (Navigation)
+			// TODO JK: Performance? Každý pokus o načtení z cache?            
+			IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
 
 			// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
 			// ignorujeme nenastavené reference (null)
@@ -104,7 +104,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
 				if (trackedEntity != null)
 				{
-					shouldFixup = true;					
+					shouldFixup = true;
 				}
 				else if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
 				{
@@ -130,9 +130,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 		private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TProperty>(List<object> foreignKeysToLoad)
 			where TProperty : class
 		{
-            // získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
-            // Performance: No big issue.
-            string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
+			// získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
+			// Performance: No big issue.
+			string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
 
 			// získáme query pro načtení objektů
 
@@ -157,7 +157,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			where TProperty : class
 		{
 			var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
-			
+
 			// zde spoléháme na proběhnutí fixupu
 			var loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
 			return new LoadPropertyInternalResult

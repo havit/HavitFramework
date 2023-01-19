@@ -46,17 +46,17 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 					.Concat(CheckWhenEnabled(validationRules.CheckSymbolVsPrimaryKeyForEntries, () => CheckSymbolVsPrimaryKeyForEntries(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckOnlyForeignKeysEndWithId, () => CheckOnlyForeignKeysEndsWithId(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckAllForeignKeysEndWithId, () => CheckAllForeignKeysEndsWithId(entityType))))
-               .Concat(model.GetEntityTypes()
-                    .SelectMany(entityType => CheckWhenEnabled(validationRules.CheckNoOwnedIsRegistered, () => CheckNoOwnedIsRegistered(entityType))))
+			   .Concat(model.GetEntityTypes()
+					.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckNoOwnedIsRegistered, () => CheckNoOwnedIsRegistered(entityType))))
 				.ToList();
 
 			return String.Join(Environment.NewLine, errors);
 		}
 
-        /// <summary>
-        /// Vrací výsledek action, pokud je enabled true. Jinak vrací prázdný enumerátor.
-        /// </summary>
-        internal IEnumerable<string> CheckWhenEnabled(bool enabled, Func<IEnumerable<string>> action)
+		/// <summary>
+		/// Vrací výsledek action, pokud je enabled true. Jinak vrací prázdný enumerátor.
+		/// </summary>
+		internal IEnumerable<string> CheckWhenEnabled(bool enabled, Func<IEnumerable<string>> action)
 		{
 			return enabled ? action() : Enumerable.Empty<string>();
 		}
@@ -230,16 +230,16 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 			}
 		}
 
-        /// <summary>
-        /// Kontroluje, zda není registrován žádný Owned Type.
-        /// </summary>
-        internal IEnumerable<string> CheckNoOwnedIsRegistered(IReadOnlyEntityType entityType)
-        {
-            if (entityType.IsOwned())
-            {
-                yield return $"Class {entityType.ClrType.Name} is a registered owned type. Owned types are not supported.";
-            }
-        }
+		/// <summary>
+		/// Kontroluje, zda není registrován žádný Owned Type.
+		/// </summary>
+		internal IEnumerable<string> CheckNoOwnedIsRegistered(IReadOnlyEntityType entityType)
+		{
+			if (entityType.IsOwned())
+			{
+				yield return $"Class {entityType.ClrType.Name} is a registered owned type. Owned types are not supported.";
+			}
+		}
 
-    }
+	}
 }

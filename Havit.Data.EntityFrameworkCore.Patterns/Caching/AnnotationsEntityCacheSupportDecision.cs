@@ -23,47 +23,47 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IDbContext dbContext;
 		private readonly ICollectionTargetTypeService collectionTargetTypeService;
 
-        /// <summary>
-        /// Konstruktor.
-        /// </summary>
-        public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
+		/// <summary>
+		/// Konstruktor.
+		/// </summary>
+		public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
 		{
 			this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
 			this.dbContext = dbContext;
 			this.collectionTargetTypeService = collectionTargetTypeService;
-        }
+		}
 
 		/// <inheritdoc />
 		public virtual bool ShouldCacheEntityType(Type entityType)
 		{
-            return GetValueFromDictionary(GetShouldCacheEntitiesDictionary(), entityType);
+			return GetValueFromDictionary(GetShouldCacheEntitiesDictionary(), entityType);
 		}
 
 		/// <inheritdoc />
 		public virtual bool ShouldCacheEntity(object entity)
 		{
-            return ShouldCacheEntityType(entity.GetType());
+			return ShouldCacheEntityType(entity.GetType());
 		}
 
-        /// <inheritdoc />
-        public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
-        {
-            return ShouldCacheEntityType(collectionTargetTypeService.GetCollectionTargetType(entityType, propertyName));
-        }
-
-        /// <inheritdoc />
-        public virtual bool ShouldCacheEntityCollection(object entity, string propertyName)
+		/// <inheritdoc />
+		public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
 		{
-            return ShouldCacheEntityTypeCollection(entity.GetType(), propertyName);
-        }
+			return ShouldCacheEntityType(collectionTargetTypeService.GetCollectionTargetType(entityType, propertyName));
+		}
 
-        /// <inheritdoc />
-        public virtual bool ShouldCacheAllKeys(Type entityType)
+		/// <inheritdoc />
+		public virtual bool ShouldCacheEntityCollection(object entity, string propertyName)
+		{
+			return ShouldCacheEntityTypeCollection(entity.GetType(), propertyName);
+		}
+
+		/// <inheritdoc />
+		public virtual bool ShouldCacheAllKeys(Type entityType)
 		{
 			return GetValueFromDictionary(GetShouldCacheAllKeysDictionary(), entityType);
 		}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private Dictionary<Type, bool> GetShouldCacheEntitiesDictionary()
 		{
 			if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
@@ -81,7 +81,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			return annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities;
 		}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private Dictionary<Type, bool> GetShouldCacheAllKeysDictionary()
 		{
 			if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
@@ -99,7 +99,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			return annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys;
 		}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private bool GetValueFromDictionary(Dictionary<Type, bool> valuesDictionary, Type type)
 		{
 			if (valuesDictionary.TryGetValue(type, out bool result))
@@ -112,5 +112,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}
 		}
 
-    }
+	}
 }

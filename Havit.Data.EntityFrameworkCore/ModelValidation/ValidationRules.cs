@@ -43,7 +43,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// Kontroluje, zda mají navigační vlastnosti cizí klíč.
 		/// </summary>
 		public bool CheckNavigationPropertiesHaveForeignKeys { get; set; } = true;
-		
+
 		/// <summary>
 		/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbo, musí mít generovaný klíč.
 		/// </summary>
@@ -59,10 +59,10 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// </summary>
 		public bool CheckAllForeignKeysEndWithId { get; set; } = false;
 
-        /// <summary>
-        /// Kontroluje, zda v modelu není registrovaný žádný OwnedType.
-        /// </summary>
-        public bool CheckNoOwnedIsRegistered { get; set; } = true;
+		/// <summary>
+		/// Kontroluje, zda v modelu není registrovaný žádný OwnedType.
+		/// </summary>
+		public bool CheckNoOwnedIsRegistered { get; set; } = true;
 
-    }
+	}
 }

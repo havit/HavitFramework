@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries
 		public InterfaceDataEntriesFileNamingService(IProject project)
 			: base(project)
 		{
-			
+
 		}
 
 		protected override string GetClassName(DataEntriesModel model)

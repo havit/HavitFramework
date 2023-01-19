@@ -36,7 +36,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		/// </summary>
 		internal static Type GetSingleConstructedType(this Type type, Type genericType)
 		{
-			return type.GetInterfaces().Where(typeInterfaceType => typeInterfaceType.IsGenericType && typeInterfaceType.GetGenericTypeDefinition() == genericType).Single();			
+			return type.GetInterfaces().Where(typeInterfaceType => typeInterfaceType.IsGenericType && typeInterfaceType.GetGenericTypeDefinition() == genericType).Single();
 		}
 	}
 }

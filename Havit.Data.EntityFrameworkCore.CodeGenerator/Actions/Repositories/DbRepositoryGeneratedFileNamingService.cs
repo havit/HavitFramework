@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories
 		public DbRepositoryGeneratedFileNamingService(IProject project)
 			: base(project)
 		{
-			
+
 		}
 
 		protected override string GetClassName(RepositoryModel model)

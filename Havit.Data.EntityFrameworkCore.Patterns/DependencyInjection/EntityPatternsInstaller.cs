@@ -43,17 +43,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 	/// </summary>
 	internal class EntityPatternsInstaller : IEntityPatternsInstaller
 	{
-        private readonly IServiceCollection services;
-        private readonly ComponentRegistrationOptions componentRegistrationOptions;
+		private readonly IServiceCollection services;
+		private readonly ComponentRegistrationOptions componentRegistrationOptions;
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		public EntityPatternsInstaller(IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions)
 		{
-            this.services = services;
-            this.componentRegistrationOptions = componentRegistrationOptions;
-        }
+			this.services = services;
+			this.componentRegistrationOptions = componentRegistrationOptions;
+		}
 
 		/// <summary>
 		/// Viz <see cref="IEntityPatternsInstaller"/>
@@ -87,27 +87,27 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			services.TryAddTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
 			services.TryAddTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 			services.TryAddTransient<IDataSeedPersister, DbDataSeedPersister>();
-			
+
 			services.TryAddScoped<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>();
 			services.TryAddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 
 			services.TryAddScoped(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType);
 			services.TryAddScoped<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>();
 			services.TryAddTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
-			
+
 			services.TryAddSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
 			services.TryAddSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
 			services.TryAddSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
 			services.TryAddSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
 			services.TryAddSingleton<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
-			
+
 			services.TryAddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
-			
+
 			services.TryAddSingleton<IBeforeCommitProcessor<object>, SetCreatedToInsertingEntitiesBeforeCommitProcessor>();
 			services.TryAddSingleton<IEntityValidationRunner, EntityValidationRunner>();
-			
+
 			services.TryAddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
-			
+
 			services.TryAddTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
 			services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
 			services.TryAddTransient<IReferencingCollectionsService, ReferencingCollectionsService>();
@@ -297,7 +297,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 		}
 
 		private Action<DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<DbContextOptionsBuilder> customOptionsBuilder)
-        {
+		{
 			return (DbContextOptionsBuilder targetOptionsBuilder) =>
 			{
 				targetOptionsBuilder.UseFrameworkConventions();

@@ -35,7 +35,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 				: true; // klíč byl v kolekci, již jsme načítali
 		}
 		private readonly HashSet<LoadedEntityProperty> loadedEntityProperties = new HashSet<LoadedEntityProperty>();
-	
+
 		internal sealed class LoadedEntityProperty
 		{
 			public object Entity { get; }

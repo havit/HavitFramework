@@ -265,7 +265,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
 		protected virtual void PerformAddForDelete<TEntity>(params TEntity[] entities)
 			where TEntity : class
 		{
-			if (entities.Length > 0) 
+			if (entities.Length > 0)
 			{
 				if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 				{

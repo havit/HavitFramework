@@ -22,13 +22,13 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 		public IEnumerable<FakeDataSourceModel> GetModels()
 		{
 			return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
-				select new FakeDataSourceModel
-				{
-					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace, true),
-					InterfaceDataSourceFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, false) + ".I" + registeredEntity.ClrType.Name + "DataSource",
-					FakeDataSourceClassName = "Fake" + registeredEntity.ClrType.Name + "DataSource",
-					ModelClassFullName = registeredEntity.ClrType.FullName
-				}).ToList();
+					select new FakeDataSourceModel
+					{
+						NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace, true),
+						InterfaceDataSourceFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, false) + ".I" + registeredEntity.ClrType.Name + "DataSource",
+						FakeDataSourceClassName = "Fake" + registeredEntity.ClrType.Name + "DataSource",
+						ModelClassFullName = registeredEntity.ClrType.FullName
+					}).ToList();
 		}
 
 		private string GetNamespaceName(string namespaceName, bool addFakes)

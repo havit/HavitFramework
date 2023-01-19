@@ -22,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		private ImmutableList<Type> annotationProviders = ImmutableList.Create<Type>();
 		private ImmutableList<Type> sqlGenerators = ImmutableList.Create<Type>();
 		private bool consolidateStatementsForMigrationsAnnotationsForModel = true;
-        private Assembly extensionsAssembly;
+		private Assembly extensionsAssembly;
 
 		private DbContextOptionsExtensionInfo _info;
 
@@ -48,8 +48,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			annotationProviders = copyFrom.annotationProviders;
 			sqlGenerators = copyFrom.sqlGenerators;
 			consolidateStatementsForMigrationsAnnotationsForModel = copyFrom.consolidateStatementsForMigrationsAnnotationsForModel;
-            extensionsAssembly = copyFrom.extensionsAssembly;
-        }
+			extensionsAssembly = copyFrom.extensionsAssembly;
+		}
 
 		/// <summary>
 		/// Clones this <see cref="IDbContextOptionsExtension"/>.
@@ -65,10 +65,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		/// </summary>
 		public bool ConsolidateStatementsForMigrationsAnnotationsForModel => consolidateStatementsForMigrationsAnnotationsForModel;
 
-        /// <summary>
-        /// <see cref="Assembly"/> that contains <see cref="IModelExtender"/>s. This assembly is used to register <see cref="IModelExtender"/>s into the model.
-        /// </summary>
-        public Assembly ExtensionsAssembly => extensionsAssembly;
+		/// <summary>
+		/// <see cref="Assembly"/> that contains <see cref="IModelExtender"/>s. This assembly is used to register <see cref="IModelExtender"/>s into the model.
+		/// </summary>
+		public Assembly ExtensionsAssembly => extensionsAssembly;
 
 		/// <summary>
 		/// Consolidate generated code statements in migrations with annotations (e.g. AlterDatabase().Annotation().OldAnnotation()).
@@ -112,22 +112,22 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			return clone;
 		}
 
-        /// <summary>
-        /// Configures assembly that contains model extenders.
-        /// </summary>
-        /// <param name="extensionsAssembly">Assembly with model extenders.</param>
-        /// <returns>A new instance of <see cref="ModelExtensionsExtension"/> with option changed.</returns>
-        public ModelExtensionsExtension WithExtensionsAssembly(Assembly extensionsAssembly)
-        {
-            // currently we don't allow setting null, Model Extensions is based around using this assembly
+		/// <summary>
+		/// Configures assembly that contains model extenders.
+		/// </summary>
+		/// <param name="extensionsAssembly">Assembly with model extenders.</param>
+		/// <returns>A new instance of <see cref="ModelExtensionsExtension"/> with option changed.</returns>
+		public ModelExtensionsExtension WithExtensionsAssembly(Assembly extensionsAssembly)
+		{
+			// currently we don't allow setting null, Model Extensions is based around using this assembly
 
-            Contract.Requires<ArgumentNullException>(extensionsAssembly != null);
+			Contract.Requires<ArgumentNullException>(extensionsAssembly != null);
 
-            // clone with new extensions assembly 
-            var clone = Clone();
-            clone.extensionsAssembly = extensionsAssembly;
-            return clone;
-        }
+			// clone with new extensions assembly 
+			var clone = Clone();
+			clone.extensionsAssembly = extensionsAssembly;
+			return clone;
+		}
 
 		/// <inheritdoc />
 		public void ApplyServices(IServiceCollection services)
@@ -151,10 +151,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			services.AddSingleton<IModelExtensionSqlResolver, ModelExtensionSqlResolver>(DropSqlResolverFactory);
 			if (ConsolidateStatementsForMigrationsAnnotationsForModel)
 			{
-                services.ReplaceCoreService<IMigrationsModelDiffer, AlterOperationsFixUpMigrationsModelDiffer>();
-            }
+				services.ReplaceCoreService<IMigrationsModelDiffer, AlterOperationsFixUpMigrationsModelDiffer>();
+			}
 
-            services.TryAddScoped<IModelExtensionsAssembly, ModelExtensionsAssembly>();
+			services.TryAddScoped<IModelExtensionsAssembly, ModelExtensionsAssembly>();
 
 			// explicitly don't add IConventionSetPlugin, we want to use registration convention only manually in ModelExtensionsModelSource
 			// see ModelExtensionsModelSource an bug #48448
@@ -171,8 +171,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 		/// <inheritdoc />
 		public void Validate(IDbContextOptions options)
 		{
-            // NOOP
-        }
+			// NOOP
+		}
 
 		private class ExtensionInfo : DbContextOptionsExtensionInfo
 		{
@@ -185,7 +185,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			}
 
 			public override int GetServiceProviderHashCode() => 0xE436;
-			
+
 			public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other) => other is ExtensionInfo;
 
 			public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)

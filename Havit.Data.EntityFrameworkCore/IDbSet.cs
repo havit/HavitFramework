@@ -119,7 +119,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// applied when Microsoft.EntityFrameworkCore.DbContext.SaveChanges is called.
 		/// </remarks>
 		void RemoveRange(TEntity[] entities);
-		
+
 		/// <summary>
 		/// Begins tracking the given entity in the Microsoft.EntityFrameworkCore.EntityState.Unchanged
 		/// state such that no operation will be performed when Microsoft.EntityFrameworkCore.DbContext.SaveChanges
@@ -134,7 +134,7 @@ namespace Havit.Data.EntityFrameworkCore
 		/// Use Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry.State to set the
 		/// state of only a single entity.
 		/// </summary>
-		void Attach(TEntity entity);		
+		void Attach(TEntity entity);
 
 		/// <summary>
 		/// Begins tracking the given entities in the Unchanged state such that no operation will be

@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 		public MetadataClassFileNamingService(IProject project)
 			: base(project)
 		{
-			
+
 		}
 
 		protected override string GetClassName(MetadataClass model)

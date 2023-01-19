@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 	/// Třída je sealed pro jednodušší implementaci metody Clone.
 	/// </remarks>
 	public sealed class FrameworkConventionSetOptionsExtension : IDbContextOptionsExtension
-    {
+	{
 		private ExtensionInfo info;
 
 		/// <summary>
@@ -54,15 +54,15 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-        public FrameworkConventionSetOptionsExtension()
-        {
-        }
+		public FrameworkConventionSetOptionsExtension()
+		{
+		}
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		public FrameworkConventionSetOptionsExtension(FrameworkConventionSetOptionsExtension original)
-        {
+		{
 			this.CacheAttributeToAnnotationConventionEnabled = original.CacheAttributeToAnnotationConventionEnabled;
 			this.CascadeDeleteToRestrictConventionEnabled = original.CascadeDeleteToRestrictConventionEnabled;
 			this.DataTypeAttributeConventionEnabled = original.DataTypeAttributeConventionEnabled;
@@ -74,7 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		/// Získá kopii objektu se shodným nastavením.
 		/// </summary>
 		public FrameworkConventionSetOptionsExtension Clone()
-        {
+		{
 			return new FrameworkConventionSetOptionsExtension(this);
 		}
 
@@ -130,14 +130,14 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 
 		/// <inheritdoc />
 		public void ApplyServices(IServiceCollection services)
-        {
+		{
 			services.AddTransient<IConventionSetPlugin, FrameworkConventionSetPlugin>();
-        }
+		}
 
 		/// <inheritdoc />
 		public void Validate(IDbContextOptions options)
-        {
-        }
+		{
+		}
 
 		private class ExtensionInfo : DbContextOptionsExtensionInfo
 		{
@@ -208,5 +208,5 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 					&& (this.Extension.StringPropertiesDefaultValueConventionEnabled == otherExtensionInfo.Extension.StringPropertiesDefaultValueConventionEnabled);
 			}
 		}
-    }
+	}
 }

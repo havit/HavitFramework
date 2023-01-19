@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		protected override CacheOptions GetCacheOptions(IReadOnlyEntityType entityType)
 		{
 			CacheOptions result = base.GetCacheOptions(entityType);
-			
+
 			if (result == null)
 			{
 				result = new CacheOptions();

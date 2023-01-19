@@ -35,8 +35,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		private readonly IEntityCacheKeyGenerator entityCacheKeyGenerator;
 		private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 		private readonly IDbContext dbContext;
-        private readonly IReferencingCollectionsService referencingCollectionsService;
-        private readonly IEntityKeyAccessor entityKeyAccessor;
+		private readonly IReferencingCollectionsService referencingCollectionsService;
+		private readonly IEntityKeyAccessor entityKeyAccessor;
 		private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
 
 		/// <summary>
@@ -51,8 +51,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 			this.dbContext = dbContext;
-            this.referencingCollectionsService = referencingCollectionsService;
-        }
+			this.referencingCollectionsService = referencingCollectionsService;
+		}
 
 		/// <inheritdoc />
 		public bool TryGetEntity<TEntity>(object key, out TEntity entity)
@@ -89,15 +89,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			{
 				string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
 				EntityEntry entry = dbContext.GetEntry(entity, suppressDetectChanges: true);
-				
-                Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
+
+				Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
 
 				// entry.OriginalValues vrací abstraktní PropertyValues, ten nese spoustu vlastostí vč. DbContextu.
 				// Držením těchto instancí v cache bychom zabránili GC vyčistit je z paměti.
 				// Cachovat proto budeme nový objekt, který reprezentuje originální hodnoty.
 				// Ten získáme tak, že zavoláme entry.OriginalValues.ToObject(), což vrátí novou instanci entity ve stavu Detached.
 				// Tato instance by měla držen ten základní vlastnosti, bez navigačních vlastností (což vzhledem k Detached dává význam).
-				object originalValuesObject = entry.OriginalValues.ToObject(); 
+				object originalValuesObject = entry.OriginalValues.ToObject();
 				cacheService.Add(cacheKey, originalValuesObject, entityCacheOptionsGenerator.GetEntityCacheOptions(entity));
 			}
 		}
@@ -142,7 +142,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				{
 					object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
-                    // TODO JK: Performance? Každý pokus o načtení z cache?
+					// TODO JK: Performance? Každý pokus o načtení z cache?
 					bool isManyToManyEntity = dbContext.Model.FindEntityType(typeof(TPropertyItem)).IsManyToManyEntity();
 
 					var dbSet = dbContext.Set<TPropertyItem>();
@@ -235,33 +235,33 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 
 			// invalidate entity cache
 			Type entityType = entity.GetType();
-            
+
 			object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
 
-            // entity se složeným klíčem (ManyToMany)
-            // TODO: Ověřit si, že jde o ManyToMany, nejen o složený klíč
-            if (entityKeyValues.Length > 1)
-            {
-                // odebereme všechny prvky, které mohou mít objekt v kolekci
-                InvalidateCollectionsInternal(entityType, entity);
-                
-                // GetAll a GetEntity není nutné řešit, objekty reprezentující vztah ManyToMany se do cache nedostávají
-            }
-            else
-            {
-                object entityKeyValue = entityKeyValues.Single();
+			// entity se složeným klíčem (ManyToMany)
+			// TODO: Ověřit si, že jde o ManyToMany, nejen o složený klíč
+			if (entityKeyValues.Length > 1)
+			{
+				// odebereme všechny prvky, které mohou mít objekt v kolekci
+				InvalidateCollectionsInternal(entityType, entity);
+
+				// GetAll a GetEntity není nutné řešit, objekty reprezentující vztah ManyToMany se do cache nedostávají
+			}
+			else
+			{
+				object entityKeyValue = entityKeyValues.Single();
 
 				InvalidateEntityAndStoreEntityInternal(changeType, entityType, entity, entityKeyValue);
-                InvalidateCollectionsInternal(entityType, entity);
+				InvalidateCollectionsInternal(entityType, entity);
 				typesToInvalidateGetAll.Add(entityType);
-            }
+			}
 		}
 
 		private void InvalidateEntityAndStoreEntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey)
-		{			
+		{
 			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 			if (entityCacheSupportDecision.ShouldCacheEntity(entity))
-            {
+			{
 				if (changeType != ChangeType.Insert)
 				{
 					// nové entity nemohou být v cache, neinvalidujeme
@@ -287,15 +287,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 			}
 		}
 
-        private void InvalidateCollectionsInternal(Type entityType, object entity)
-        {            
-            var referencingCollections = referencingCollectionsService.GetReferencingCollections(entityType);            
-            foreach (var referencingCollection in referencingCollections)
-            {
-                // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
-                // Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
-                if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingCollection.EntityType, referencingCollection.CollectionPropertyName))
-                {
+		private void InvalidateCollectionsInternal(Type entityType, object entity)
+		{
+			var referencingCollections = referencingCollectionsService.GetReferencingCollections(entityType);
+			foreach (var referencingCollection in referencingCollections)
+			{
+				// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+				// Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
+				if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingCollection.EntityType, referencingCollection.CollectionPropertyName))
+				{
 					// získáme hodnotu cizího klíče
 					object foreignKeyValue = referencingCollection.GetForeignKeyValue(dbContext, entity);
 					// pokud hodnotu cizího klíče máme, tedy máme kolekci, kterou potřebujeme invalidovat
@@ -305,17 +305,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 						// a odebereme jej z cache
 						cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, foreignKeyValue, referencingCollection.CollectionPropertyName));
 					}
-                }
-            }            
-        }
+				}
+			}
+		}
 
-        private void InvalidateGetAllInternal(Type type)
+		private void InvalidateGetAllInternal(Type type)
 		{
-            // Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
-            if (entityCacheSupportDecision.ShouldCacheAllKeys(type))
-            {
-                cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
-            }
-        }
+			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+			if (entityCacheSupportDecision.ShouldCacheAllKeys(type))
+			{
+				cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
+			}
+		}
 	}
 }

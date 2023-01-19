@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 
 		private Dictionary<string, XElement> fileNamesWithElements;
 
-		public LegacyProject(string filename, XDocument content) 
+		public LegacyProject(string filename, XDocument content)
 			: base(filename, content)
 		{
 			content.Changed += Content_Changed;
@@ -105,7 +105,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
 			lock (Content)
 			{
 				GetUnusedGeneratedFilesElements().ForEach(element =>
-				{	
+				{
 					this.RemoveWithNextWhitespace(element);
 				});
 			}

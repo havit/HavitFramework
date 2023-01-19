@@ -40,7 +40,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal
 
 				default:
 					throw new NotSupportedException($"There is unsupported node \"{node.NodeType}\" in the expression \"{propertyPathString}\".");
-            }
+			}
 		}
 
 		protected override Expression VisitMember(MemberExpression node)

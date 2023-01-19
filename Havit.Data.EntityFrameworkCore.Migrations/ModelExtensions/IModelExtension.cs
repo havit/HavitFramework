@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Názov databázového objektu, ktorý je spravovaný touto <see cref="IModelExtension"/>.
 		/// </summary>
-        string ObjectName { get; }
+		string ObjectName { get; }
 	}
 }

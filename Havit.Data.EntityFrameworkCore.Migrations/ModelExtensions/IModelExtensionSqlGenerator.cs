@@ -10,9 +10,9 @@
 		/// </summary>
 		string GenerateAlterSql(IModelExtension modelExtension);
 
-        /// <summary>
-        /// Generates DROP SQL script for <see cref="IModelExtension"/>.
-        /// </summary>
-        string GenerateDropSql(IModelExtension modelExtension);
+		/// <summary>
+		/// Generates DROP SQL script for <see cref="IModelExtension"/>.
+		/// </summary>
+		string GenerateDropSql(IModelExtension modelExtension);
 	}
 }

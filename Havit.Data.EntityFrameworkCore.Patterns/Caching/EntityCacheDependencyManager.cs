@@ -37,7 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 				// závislosti nemohou být použity
 				return;
 			}
-			
+
 			HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey = new HashSet<Type>();
 
 			if (changes.Inserts.Length > 0)
@@ -92,7 +92,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 					// na nových záznamech nemohou být závislosti, neinvalidujeme
 					InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue);
 				}
-				
+
 				// invalidaci AnySave uděláme jen jednou pro každý typ (omezíme tak množství zpráv předávaných při případné distribuované invalidaci)
 				typesToInvalidateAnySaveCacheDependencyKey.Add(entityType);
 			}

@@ -30,7 +30,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation
 		{
 			// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 			// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
-			
+
 			var changeGroups = changes.Inserts.Select(item => new { Change = ChangeType.Insert, Entity = item })
 				.Concat(changes.Updates.Select(item => new { Change = ChangeType.Update, Entity = item }))
 				.Concat(changes.Deletes.Select(item => new { Change = ChangeType.Delete, Entity = item }))

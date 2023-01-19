@@ -17,42 +17,42 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions
 	/// Not intended to be used by application code.
 	/// </remarks>
 	public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
-    {
-        private readonly IModelExtensionsAssembly modelExtensionsAssembly;
-        private readonly IModelExtensionAnnotationProvider modelExtensionAnnotationProvider;
+	{
+		private readonly IModelExtensionsAssembly modelExtensionsAssembly;
+		private readonly IModelExtensionAnnotationProvider modelExtensionAnnotationProvider;
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ModelExtensionRegistrationConvention(
-            IModelExtensionsAssembly modelExtensionsAssembly,
-            IModelExtensionAnnotationProvider modelExtensionAnnotationProvider)
-        {
-            Contract.Requires<ArgumentNullException>(modelExtensionsAssembly != null);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelExtensionRegistrationConvention(
+			IModelExtensionsAssembly modelExtensionsAssembly,
+			IModelExtensionAnnotationProvider modelExtensionAnnotationProvider)
+		{
+			Contract.Requires<ArgumentNullException>(modelExtensionsAssembly != null);
 
-            this.modelExtensionsAssembly = modelExtensionsAssembly;
-            this.modelExtensionAnnotationProvider = modelExtensionAnnotationProvider;
-        }
+			this.modelExtensionsAssembly = modelExtensionsAssembly;
+			this.modelExtensionAnnotationProvider = modelExtensionAnnotationProvider;
+		}
 
-        /// <inheritdoc />
-        public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
-        {
-            foreach (TypeInfo modelExtenderClass in modelExtensionsAssembly.ModelExtenders)
-            {
-                IModelExtender extender = modelExtensionsAssembly.CreateModelExtender(modelExtenderClass);
+		/// <inheritdoc />
+		public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
+		{
+			foreach (TypeInfo modelExtenderClass in modelExtensionsAssembly.ModelExtenders)
+			{
+				IModelExtender extender = modelExtensionsAssembly.CreateModelExtender(modelExtenderClass);
 
-                IEnumerable<MethodInfo> publicMethods = modelExtenderClass.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                    .Where(m => typeof(IModelExtension).IsAssignableFrom(m.ReturnType));
+				IEnumerable<MethodInfo> publicMethods = modelExtenderClass.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+					.Where(m => typeof(IModelExtension).IsAssignableFrom(m.ReturnType));
 
-                foreach (MethodInfo method in publicMethods)
-                {
-                    var modelExtension = (IModelExtension)method.Invoke(extender, new object[0]);
+				foreach (MethodInfo method in publicMethods)
+				{
+					var modelExtension = (IModelExtension)method.Invoke(extender, new object[0]);
 
-                    List<IAnnotation> annotations = modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
+					List<IAnnotation> annotations = modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
 
-                    annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, false));
-                }
-            }
-        }
-    }
+					annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, false));
+				}
+			}
+		}
+	}
 }

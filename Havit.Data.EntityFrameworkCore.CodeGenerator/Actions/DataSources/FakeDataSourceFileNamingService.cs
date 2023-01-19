@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources
 		public FakeDataSourceFileNamingService(IProject project)
 			: base(project)
 		{
-			
+
 		}
 
 		protected override string GetClassName(FakeDataSourceModel model)

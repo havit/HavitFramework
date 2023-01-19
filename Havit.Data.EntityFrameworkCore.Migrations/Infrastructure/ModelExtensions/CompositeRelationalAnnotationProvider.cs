@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions
-{	
+{
 	/// <summary>
 	/// Composite implementation of <see cref="IRelationalAnnotationProvider"/>. Encapsulates <see cref="IRelationalAnnotationProvider"/> components and concatenates annotations for various elements of the <see cref="IRelationalModel"/>.
 	///

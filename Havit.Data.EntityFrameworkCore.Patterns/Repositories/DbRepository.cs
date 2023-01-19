@@ -35,12 +35,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// </remarks>
 		protected IDataLoader DataLoader => dataLoader;
 		private readonly IDataLoader dataLoader;
-		
+
 		/// <summary>
 		/// DbSet, nad kterým je DbRepository postaven.
 		/// </summary>
 		protected IDbSet<TEntity> DbSet => dbSetLazy.Value;
-		
+
 		/// <summary>
 		/// Implementačně jako Lazy, aby kontruktor nevyzvedával DbSet. To umožňuje psát unit testy s mockem dbContextu bez setupu metody Set (dbContext nemusí nic umět).
 		/// </summary>
@@ -97,7 +97,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 			// hledáme v identity mapě
 			TEntity result = DbSet.FindTracked(id);
-			
+
 			// není v identity mapě, hledáme v cache
 			if (result == null)
 			{
@@ -158,7 +158,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 			if (result == null)
 			{
-				ThrowObjectNotFoundException(id);					
+				ThrowObjectNotFoundException(id);
 			}
 
 			await LoadReferencesAsync(new TEntity[] { result }, cancellationToken).ConfigureAwait(false);
@@ -172,7 +172,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// </summary>
 		/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 		public List<TEntity> GetObjects(params int[] ids)
-		{			
+		{
 			Contract.Requires(ids != null);
 
 			HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
@@ -181,7 +181,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			foreach (int id in ids)
 			{
 				Contract.Assert<ArgumentException>(id != default(int));
-				
+
 				TEntity trackedEntity = DbSet.FindTracked(id);
 				if (trackedEntity != null)
 				{
@@ -189,7 +189,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				}
 				// není v identity mapě, hledáme v cache
 				else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
-				{					
+				{
 					loadedEntities.Add(cachedEntity);
 				}
 				else // není ani v identity mapě, ani v cache, hledáme v databázi
@@ -209,7 +209,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				if (idsToLoad.Count != loadedObjects.Count)
 				{
 					int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
-					ThrowObjectNotFoundException(missingObjectIds);					
+					ThrowObjectNotFoundException(missingObjectIds);
 				}
 
 				// načtené objekty uložíme do cache
@@ -240,7 +240,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			foreach (int id in ids)
 			{
 				Contract.Assert<ArgumentException>(id != default(int));
-				
+
 				TEntity trackedEntity = DbSet.FindTracked(id);
 				if (trackedEntity != null)
 				{
@@ -306,9 +306,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 					// pokud ne, načtene data a uložíme data a klíče do cache
 					allData = Data.ToArray();
 
-					EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());										
+					EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
-					{						
+					{
 						EntityCacheManager.StoreEntity<TEntity>(entity);
 					}
 				}
@@ -379,7 +379,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// Vrací dotaz pro GetObjects/GetObjectsAsync.
 		/// </summary>
 		private IQueryable<TEntity> GetInQuery(int[] ids)
-		{		
+		{
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
 					Expression.Call(
@@ -388,11 +388,11 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 							.GetMethods(BindingFlags.Public | BindingFlags.Static)
 							 .Where(m => m.Name == nameof(Enumerable.Contains))
 							 .Select(m => new
-								 {
-									 Method = m,
-									 Params = m.GetParameters(),
-									 Args = m.GetGenericArguments()
-								 })
+							 {
+								 Method = m,
+								 Params = m.GetParameters(),
+								 Args = m.GetGenericArguments()
+							 })
 							 .Where(x => x.Params.Length == 2)
 							 .Select(x => x.Method)
 							 .Single()
@@ -429,7 +429,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
 		/// </remarks>
 		protected virtual async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
-		{	
+		{
 			Contract.Requires(entities != null);
 
 			var loadReferences = GetLoadReferences().ToArray();

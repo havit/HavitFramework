@@ -7,7 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories
 		public InterfaceRepositoryFileNamingService(IProject project)
 			: base(project)
 		{
-			
+
 		}
 
 		protected override bool UseGeneratedFolder => false;

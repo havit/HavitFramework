@@ -13,12 +13,12 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 	/// <see cref="IDbContextOptionsExtension"/> for configuring <see cref="CompositeRelationalAnnotationProvider"/>.
 	/// </summary>
 	public class CompositeRelationalAnnotationProviderExtension : IDbContextOptionsExtension
-    {
-        private ImmutableHashSet<Type> providers = ImmutableHashSet<Type>.Empty;
+	{
+		private ImmutableHashSet<Type> providers = ImmutableHashSet<Type>.Empty;
 
 		private DbContextOptionsExtensionInfo _info;
 
-        internal IImmutableSet<Type> Providers => providers;
+		internal IImmutableSet<Type> Providers => providers;
 
 		/// <inheritdoc />
 		public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
@@ -27,54 +27,54 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 		/// Konstruktor.
 		/// </summary>
 		public CompositeRelationalAnnotationProviderExtension()
-	    {
-	    }
+		{
+		}
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
 		protected CompositeRelationalAnnotationProviderExtension(CompositeRelationalAnnotationProviderExtension copyFrom)
-	    {
-		    providers = copyFrom.providers;
-	    }
+		{
+			providers = copyFrom.providers;
+		}
 
-	    /// <summary>
-	    /// Clones this instance.
-	    /// </summary>
-	    protected virtual CompositeRelationalAnnotationProviderExtension Clone() => new CompositeRelationalAnnotationProviderExtension(this);
+		/// <summary>
+		/// Clones this instance.
+		/// </summary>
+		protected virtual CompositeRelationalAnnotationProviderExtension Clone() => new CompositeRelationalAnnotationProviderExtension(this);
 
-	    /// <summary>
-	    /// Registers specified type of <see cref="IRelationalAnnotationProvider"/>.
-	    /// </summary>
-	    /// <typeparam name="T">Implementation of <see cref="IRelationalAnnotationProvider"/></typeparam>
-	    /// <returns>Clone of <see cref="CompositeRelationalAnnotationProviderExtension"/>.</returns>
-	    public CompositeRelationalAnnotationProviderExtension WithAnnotationProvider<T>()
-            where T : IRelationalAnnotationProvider
-	    {
-		    var clone = Clone();
-		    clone.providers = providers.Add(typeof(T));
+		/// <summary>
+		/// Registers specified type of <see cref="IRelationalAnnotationProvider"/>.
+		/// </summary>
+		/// <typeparam name="T">Implementation of <see cref="IRelationalAnnotationProvider"/></typeparam>
+		/// <returns>Clone of <see cref="CompositeRelationalAnnotationProviderExtension"/>.</returns>
+		public CompositeRelationalAnnotationProviderExtension WithAnnotationProvider<T>()
+			where T : IRelationalAnnotationProvider
+		{
+			var clone = Clone();
+			clone.providers = providers.Add(typeof(T));
 			return clone;
-        }
+		}
 
-        /// <inheritdoc />
-        public void ApplyServices(IServiceCollection services)
-        {
-            var currentProviderTypes = providers.ToArray();
-            CompositeRelationalAnnotationProvider Factory(IServiceProvider serviceProvider)
-            {
-                var providers = currentProviderTypes.Select(type => (IRelationalAnnotationProvider)serviceProvider.GetService(type)).ToArray();
-                return new CompositeRelationalAnnotationProvider(serviceProvider.GetRequiredService<RelationalAnnotationProviderDependencies>(), providers);
-            }
+		/// <inheritdoc />
+		public void ApplyServices(IServiceCollection services)
+		{
+			var currentProviderTypes = providers.ToArray();
+			CompositeRelationalAnnotationProvider Factory(IServiceProvider serviceProvider)
+			{
+				var providers = currentProviderTypes.Select(type => (IRelationalAnnotationProvider)serviceProvider.GetService(type)).ToArray();
+				return new CompositeRelationalAnnotationProvider(serviceProvider.GetRequiredService<RelationalAnnotationProviderDependencies>(), providers);
+			}
 
-            services.Add(currentProviderTypes.Select(t => ServiceDescriptor.Singleton(t, t)));
-            services.Replace(ServiceDescriptor.Singleton<IRelationalAnnotationProvider, CompositeRelationalAnnotationProvider>(Factory));
-        }
+			services.Add(currentProviderTypes.Select(t => ServiceDescriptor.Singleton(t, t)));
+			services.Replace(ServiceDescriptor.Singleton<IRelationalAnnotationProvider, CompositeRelationalAnnotationProvider>(Factory));
+		}
 
-        /// <inheritdoc />
-        public void Validate(IDbContextOptions options)
-        {
-            // no validation
-        }
+		/// <inheritdoc />
+		public void Validate(IDbContextOptions options)
+		{
+			// no validation
+		}
 
 		private class ExtensionInfo : DbContextOptionsExtensionInfo
 		{

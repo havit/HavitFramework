@@ -24,17 +24,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
 		}
 
 		/// <inheritdoc />
-        public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
-            where TEntity : class
-        {
-            return null;
-        }
-
-        /// <inheritdoc />
-        public CacheOptions GetAllKeysCacheOptions<TEntity>()
+		public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
 			where TEntity : class
 		{
 			return null;
 		}
-    }
+
+		/// <inheritdoc />
+		public CacheOptions GetAllKeysCacheOptions<TEntity>()
+			where TEntity : class
+		{
+			return null;
+		}
+	}
 }

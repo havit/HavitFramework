@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 {
 	internal class FakeAsyncQueryProvider<TEntity> : Microsoft.EntityFrameworkCore.Query.IAsyncQueryProvider
-    {
-        private readonly IQueryProvider _inner;
+	{
+		private readonly IQueryProvider _inner;
 
-        internal FakeAsyncQueryProvider(IQueryProvider inner)
-        {
-            _inner = inner;
-        }
+		internal FakeAsyncQueryProvider(IQueryProvider inner)
+		{
+			_inner = inner;
+		}
 
 		public IQueryable CreateQuery(Expression expression)
 		{
@@ -36,7 +36,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes
 
 		TResult IAsyncQueryProvider.ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
 		{
-            return _inner.Execute<TResult>(expression);
-        }
+			return _inner.Execute<TResult>(expression);
+		}
 	}
 }

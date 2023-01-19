@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 {
-    /// <inheritdoc />
-    public class ModelExtensionSqlResolver : IModelExtensionSqlResolver
+	/// <inheritdoc />
+	public class ModelExtensionSqlResolver : IModelExtensionSqlResolver
 	{
 		private readonly IEnumerable<IModelExtensionSqlGenerator> sqlGenerators;
 
@@ -17,14 +17,14 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 			this.sqlGenerators = sqlGenerators;
 		}
 
-        /// <inheritdoc />
-        public List<string> ResolveAlterSqlScripts(List<IModelExtension> modelExtensions)
+		/// <inheritdoc />
+		public List<string> ResolveAlterSqlScripts(List<IModelExtension> modelExtensions)
 		{
 			return CollectSqlScripts(modelExtensions, ((generator, modelExtension) => generator.GenerateAlterSql(modelExtension)));
 		}
 
-        /// <inheritdoc />
-        public List<string> ResolveDropSqlScripts(List<IModelExtension> modelExtensions)
+		/// <inheritdoc />
+		public List<string> ResolveDropSqlScripts(List<IModelExtension> modelExtensions)
 		{
 			return CollectSqlScripts(modelExtensions, ((generator, modelExtension) => generator.GenerateDropSql(modelExtension)));
 		}

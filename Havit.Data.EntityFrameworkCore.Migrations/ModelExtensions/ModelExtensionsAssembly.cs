@@ -8,50 +8,50 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
 {
-    /// <inheritdoc />
-    public class ModelExtensionsAssembly : IModelExtensionsAssembly
-    {
-        private IReadOnlyCollection<TypeInfo> modelExtenders;
-        
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public ModelExtensionsAssembly(
-            ICurrentDbContext currentDbContext,
-            IDbContextOptions dbContextOptions)
-        {
-            Contract.Requires<ArgumentNullException>(currentDbContext != null);
-            Contract.Requires<ArgumentNullException>(dbContextOptions != null);
+	/// <inheritdoc />
+	public class ModelExtensionsAssembly : IModelExtensionsAssembly
+	{
+		private IReadOnlyCollection<TypeInfo> modelExtenders;
 
-            Assembly = dbContextOptions.FindExtension<ModelExtensionsExtension>()?.ExtensionsAssembly ??
-                       currentDbContext.Context.GetType().GetTypeInfo().Assembly;
-        }
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		public ModelExtensionsAssembly(
+			ICurrentDbContext currentDbContext,
+			IDbContextOptions dbContextOptions)
+		{
+			Contract.Requires<ArgumentNullException>(currentDbContext != null);
+			Contract.Requires<ArgumentNullException>(dbContextOptions != null);
 
-        /// <inheritdoc />
-        public IReadOnlyCollection<TypeInfo> ModelExtenders
-        {
-            get
-            {
-                IReadOnlyCollection<TypeInfo> Create()
-                {
-                    return Assembly != null ?
-                        Assembly.DefinedTypes.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition && t.GetInterface(nameof(IModelExtender)) != null).ToImmutableArray() :
-                        ImmutableArray<TypeInfo>.Empty;
-                }
+			Assembly = dbContextOptions.FindExtension<ModelExtensionsExtension>()?.ExtensionsAssembly ??
+					   currentDbContext.Context.GetType().GetTypeInfo().Assembly;
+		}
 
-                return modelExtenders ??= Create();
-            }
-        }
+		/// <inheritdoc />
+		public IReadOnlyCollection<TypeInfo> ModelExtenders
+		{
+			get
+			{
+				IReadOnlyCollection<TypeInfo> Create()
+				{
+					return Assembly != null ?
+						Assembly.DefinedTypes.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition && t.GetInterface(nameof(IModelExtender)) != null).ToImmutableArray() :
+						ImmutableArray<TypeInfo>.Empty;
+				}
 
-        /// <inheritdoc />
-        public Assembly Assembly { get; }
+				return modelExtenders ??= Create();
+			}
+		}
 
-        /// <inheritdoc />
-        public IModelExtender CreateModelExtender(TypeInfo modelExtenderClass)
-        {
-            Contract.Requires<ArgumentNullException>(modelExtenderClass != null);
+		/// <inheritdoc />
+		public Assembly Assembly { get; }
 
-            return (IModelExtender)Activator.CreateInstance(modelExtenderClass.AsType());
-        }
-    }
+		/// <inheritdoc />
+		public IModelExtender CreateModelExtender(TypeInfo modelExtenderClass)
+		{
+			Contract.Requires<ArgumentNullException>(modelExtenderClass != null);
+
+			return (IModelExtender)Activator.CreateInstance(modelExtenderClass.AsType());
+		}
+	}
 }

@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProced
 	/// Bázová trieda pre definovanie DB Injections na uložené procedúry.
 	/// </summary>
 	public class StoredProcedureModelExtender : IModelExtender
-    {
+	{
 		/// <summary>
 		/// Vytvorí <see cref="StoredProcedureModelExtension"/> objekt z create skriptu v resources.
 		/// </summary>
@@ -21,23 +21,23 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProced
 		{
 			resourceAssembly = resourceAssembly ?? GetDefaultResourceAssembly();
 
-            if (!resourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
-            {
-                throw new ArgumentException($"Invalid embedded resource name {createScriptResourceName}", nameof(createScriptResourceName));
-            }
+			if (!resourceAssembly.GetManifestResourceNames().Contains(createScriptResourceName))
+			{
+				throw new ArgumentException($"Invalid embedded resource name {createScriptResourceName}", nameof(createScriptResourceName));
+			}
 
-            using (var textStream = new StreamReader(resourceAssembly.GetManifestResourceStream(createScriptResourceName)))
-            {
-                string createScript = textStream.ReadToEnd();
-                return new StoredProcedureModelExtension { CreateSql = createScript, ProcedureName = ParseProcedureName(createScript) };
-            }
-        }
+			using (var textStream = new StreamReader(resourceAssembly.GetManifestResourceStream(createScriptResourceName)))
+			{
+				string createScript = textStream.ReadToEnd();
+				return new StoredProcedureModelExtension { CreateSql = createScript, ProcedureName = ParseProcedureName(createScript) };
+			}
+		}
 
 		/// <summary>
 		/// Assembly, ktorá obsahuje resources so skriptami. Štandardne je to assembly, v ktorej je definovaná trieda zdedená od <see cref="StoredProcedureModelExtension"/>.
 		/// </summary>
 		private Assembly GetDefaultResourceAssembly() => GetType().Assembly;
 
-        internal string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE\s+PROCEDURE\s+(\[?.*?\]?\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
-    }
+		internal string ParseProcedureName(string createScript) => Regex.Match(createScript, @"CREATE\s+PROCEDURE\s+(\[?.*?\]?\.)?\[?(?<proc_name>[\w]*)\]?").Groups["proc_name"].Value;
+	}
 }

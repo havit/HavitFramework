@@ -17,7 +17,7 @@ namespace Havit.Services.Caching
 		{
 			get
 			{
-				return false;				
+				return false;
 			}
 		}
 

@@ -586,7 +586,7 @@ namespace Havit.Services.Azure.FileStorage
 				fileShareAlreadyCreated = true;
 			}
 		}
-		
+
 		/// <inheritdoc />
 		protected override string GetContentType(string sourceFileName)
 		{

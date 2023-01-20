@@ -15,7 +15,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		public FileStorageServiceCachingProxy(IFileStorageService<TUnderlyingFileStorageContext> fileStorageService, ICacheService cacheService) :  base(fileStorageService, cacheService)
+		public FileStorageServiceCachingProxy(IFileStorageService<TUnderlyingFileStorageContext> fileStorageService, ICacheService cacheService) : base(fileStorageService, cacheService)
 		{
 			// NOOP
 		}

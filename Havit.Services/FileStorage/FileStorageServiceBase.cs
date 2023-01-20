@@ -151,7 +151,7 @@ namespace Havit.Services.FileStorage
 			else
 			{
 				using (CryptoStream encryptingStream = new CryptoStream(fileContent, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read))
-				{			
+				{
 					PerformSave(fileName, encryptingStream, contentType);
 				}
 			}
@@ -233,7 +233,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public abstract IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string pattern = null, CancellationToken cancellationToken = default);
 
-			/// <summary>
+		/// <summary>
 		/// Vrátí čas poslední modifikace souboru v UTC timezone.
 		/// </summary>
 		public abstract DateTime? GetLastModifiedTimeUtc(string fileName);
@@ -293,7 +293,7 @@ namespace Havit.Services.FileStorage
 				Copy(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName);
 				return;
 			}
-			
+
 			PerformCopy(sourceFileName, targetFileStorageService, targetFileName);
 		}
 
@@ -301,12 +301,12 @@ namespace Havit.Services.FileStorage
 		/// Zkopíruje soubor do dalšího úložiště.
 		/// </summary>
 		protected virtual void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
-        {
+		{
 			using (var stream = Read(sourceFileName))
 			{
 				targetFileStorageService.Save(targetFileName, stream, GetContentType(sourceFileName));
 			}
-		}	
+		}
 
 		/// <summary>
 		/// Zkopíruje soubor do dalšího úložiště.
@@ -327,7 +327,7 @@ namespace Havit.Services.FileStorage
 		/// Zkopíruje soubor do dalšího úložiště.
 		/// </summary>
 		protected virtual async Task PerformCopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken)
-        {
+		{
 			using (var stream = await ReadAsync(sourceFileName, cancellationToken).ConfigureAwait(false))
 			{
 				string contentType = await GetContentTypeAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
@@ -353,7 +353,7 @@ namespace Havit.Services.FileStorage
 		/// Přesune soubor do jiného úložiště.
 		/// </summary>
 		protected virtual void PerformMove(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
-        {
+		{
 			Copy(sourceFileName, targetFileStorageService, targetFileName);
 			Delete(sourceFileName);
 		}
@@ -376,7 +376,7 @@ namespace Havit.Services.FileStorage
 		/// Přesune soubor do jiného úložiště.
 		/// </summary>
 		protected virtual async Task PerformMoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
-        {
+		{
 			await CopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
 			await DeleteAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
 		}

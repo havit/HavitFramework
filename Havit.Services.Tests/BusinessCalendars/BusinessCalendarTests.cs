@@ -4,10 +4,10 @@ using System;
 
 namespace Havit.Services.Tests.BusinessCalendars
 {
-    /// <summary>
-    /// Testy třídy BusinessCalendar.
-    /// </summary>
-    [TestClass]
+	/// <summary>
+	/// Testy třídy BusinessCalendar.
+	/// </summary>
+	[TestClass]
 	public class BusinessCalendarTests
 	{
 		[TestMethod]
@@ -105,7 +105,7 @@ namespace Havit.Services.Tests.BusinessCalendars
 
 			// Act
 			actual = target.CountBusinessDays(startDate, endDate, options);
-			
+
 			// Assert
 			Assert.AreEqual(expected, actual);
 		}

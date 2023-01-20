@@ -29,7 +29,7 @@ namespace Havit.Services.Azure.FileStorage
 				BlobStorage = blobStorageConnectionString,
 				ContainerName = containerName,
 			};
-		
+
 			AddAzureBlobStorageService(services, options);
 		}
 

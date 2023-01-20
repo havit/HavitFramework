@@ -1,9 +1,9 @@
 ﻿namespace Havit.Services.BusinessCalendars
 {
-    /// <summary>
-    /// Options pro volání metody <see cref="BusinessCalendar.CountBusinessDays"/>.
-    /// </summary>
-    public enum CountBusinessDaysOptions
+	/// <summary>
+	/// Options pro volání metody <see cref="BusinessCalendar.CountBusinessDays"/>.
+	/// </summary>
+	public enum CountBusinessDaysOptions
 	{
 		/// <summary>
 		/// Zahrne do počtu dnů i koncové datum (od pondělí do pátku bude 5 pracovních dnů).

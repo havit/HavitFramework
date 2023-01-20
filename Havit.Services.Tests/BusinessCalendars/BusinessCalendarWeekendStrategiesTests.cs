@@ -4,7 +4,7 @@ using System;
 
 namespace Havit.Services.Tests.BusinessCalendars
 {
-    [TestClass]
+	[TestClass]
 	public class BusinessCalendarWeekendStrategiesTests
 	{
 		[TestMethod]
@@ -19,7 +19,7 @@ namespace Havit.Services.Tests.BusinessCalendars
 			Assert.IsTrue(weekendStrategy.IsWeekend(new DateTime(2015, 3, 7)));
 			Assert.IsFalse(weekendStrategy.IsWeekend(new DateTime(2015, 3, 8)));
 		}
-		
+
 		[TestMethod]
 		public void BusinessCalendarSaturdaySundayWeekendStrategy_IsWeekend_ReturnsTrueOnlyForSaturdaysAndSundays()
 		{

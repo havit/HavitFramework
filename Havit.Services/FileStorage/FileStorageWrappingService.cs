@@ -114,7 +114,7 @@ namespace Havit.Services.FileStorage
 		{
 			return fileStorageService.ReadAsync(fileName, cancellationToken);
 		}
-		
+
 		/// <inheritdoc />
 		public void ReadToStream(string fileName, Stream stream)
 		{

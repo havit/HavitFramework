@@ -20,7 +20,7 @@ namespace Havit.Services.FileStorage
 		/// Date of last modification.
 		/// </summary>
 		public DateTime LastModifiedUtc { get; set; }
-		
+
 		/// <summary>
 		/// Size of file. In bytes.
 		/// </summary>

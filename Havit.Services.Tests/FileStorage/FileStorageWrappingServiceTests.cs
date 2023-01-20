@@ -21,7 +21,7 @@ namespace Havit.Services.Tests.FileStorage
 			// aplikační služby pro použití se file storage services.
 
 			// Arrange
-			ServiceCollection services = new ServiceCollection();			
+			ServiceCollection services = new ServiceCollection();
 			services.AddFileStorageWrappingService<IApplicationFileStorageService, ApplicationFileStorageService, TestUnderlyingFileStorage>();
 			services.AddFileSystemStorageService<TestUnderlyingFileStorage>(Path.GetTempPath());
 			var serviceProvider = services.BuildServiceProvider();

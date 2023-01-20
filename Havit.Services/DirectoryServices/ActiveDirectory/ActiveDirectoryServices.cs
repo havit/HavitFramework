@@ -37,7 +37,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			this.directoryServicesUsername = directoryServicesUsername;
 			this.directoryServicesPassword = directoryServicesPassword;
 		}
-		
+
 		/// <summary>
 		/// Creates an instance of ActiveDirectoryServices class.
 		/// </summary>
@@ -106,7 +106,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.Member);
 				searchResult = searcher.FindOne();
 			}
-			
+
 			if (searchResult == null)
 			{
 				throw new GroupNotFoundException(groupname);
@@ -118,14 +118,14 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			if (groupMembersIdentifiers.Count > 0)
 			{
 				string distinguishedNames = String.Join("", groupMembersIdentifiers.OfType<string>().Select(memberIdentifier => string.Format("(distinguishedName={0})", memberIdentifier)));
-				
+
 				using (DirectorySearcher searcher = GetDirectorySearcher(domainName))
 				{
 					searcher.Filter = String.Format("(|{0})", distinguishedNames);
 					searcher.PropertiesToLoad.Add(ActiveDirectoryProperties.ObjectSid);
 					searcher.SizeLimit = groupMembersIdentifiers.Count;
 					searchResults.AddRange(searcher.FindAll().Cast<SearchResult>());
-				}				
+				}
 			}
 
 			SecurityIdentifier groupSecurityIdentifier = (SecurityIdentifier)(new NTAccount(domainName, accountName).Translate(typeof(SecurityIdentifier)));
@@ -182,7 +182,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		public string[] GetUserDomainMembership(string username)
 		{
 			Contract.Requires(!String.IsNullOrEmpty(username));
-			
+
 			List<string> result;
 
 			string cacheKey = username.ToLower();
@@ -260,7 +260,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 					result.Add(primaryGroup);
 				}
 			}
-			
+
 			_getGroupsMembersCache.Add(cacheKey, result);
 
 			return result.ToArray();
@@ -291,7 +291,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 					result.Add(group);
 				}
 			}
-				
+
 			return result.ToArray();
 		}
 
@@ -352,7 +352,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			{
 				userInfo.DisplayName = searchResult.Properties[ActiveDirectoryProperties.DisplayName][0].ToString();
 			}
-			
+
 			if (searchResult.Properties.Contains(ActiveDirectoryProperties.FirstName))
 			{
 				userInfo.FirstName = searchResult.Properties[ActiveDirectoryProperties.FirstName][0].ToString();
@@ -384,7 +384,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			DirectoryContext directoryContext;
 
 			if (!String.IsNullOrEmpty(domainController))
-			{				
+			{
 				directoryContext = String.IsNullOrEmpty(directoryServicesUsername) ? new DirectoryContext(DirectoryContextType.DirectoryServer, domainController) : new DirectoryContext(DirectoryContextType.DirectoryServer, domainController, directoryServicesUsername, directoryServicesPassword);
 			}
 			else if (String.IsNullOrEmpty(domainName))
@@ -397,12 +397,12 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			}
 
 			using (Domain domain = Domain.GetDomain(directoryContext))
-			{				
+			{
 				if (!String.IsNullOrEmpty(domainController) && !String.IsNullOrEmpty(domainName))
 				{
 					// kontrola domény v situaci, kdy je zadán domain controller a je požadována konkrétní doména
 					// test je značně nedokonalý, porovnáváme jen textové hodnoty
-					
+
 					if ((domainName.Contains(".") && !String.Equals(domain.Name, domainName, StringComparison.CurrentCultureIgnoreCase)) // pokud je v požadované doméně tečka, jde o celý název domény
 						|| (!domainName.Contains(".") && !domain.Name.StartsWith(domainName + ".", StringComparison.CurrentCultureIgnoreCase))) // pokud není v požadované doméně tečka, nesprávně tvrdíme, že tímto textem musí skutečný název domény začínat
 					{
@@ -411,7 +411,7 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 				}
 
 				using (DirectoryEntry directoryEntry = domain.GetDirectoryEntry())
-				{								
+				{
 					DirectorySearcher searcher = new DirectorySearcher(directoryEntry);
 					return searcher;
 				}
@@ -446,8 +446,8 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 		{
 			try
 			{
-				SecurityIdentifier securityIdentifier = new SecurityIdentifier(sid, 0);				
-				accountName = ((NTAccount)securityIdentifier.Translate(typeof(NTAccount))).ToString();				
+				SecurityIdentifier securityIdentifier = new SecurityIdentifier(sid, 0);
+				accountName = ((NTAccount)securityIdentifier.Translate(typeof(NTAccount))).ToString();
 				if (accountName.StartsWith("BUILTIN\\")) // Pro buildin
 				{
 					Trace.Write(String.Format("Skipped accountname {0} due internal implementation.", accountName), typeof(ActiveDirectoryServices).Name);
@@ -532,12 +532,12 @@ namespace Havit.Services.DirectoryServices.ActiveDirectory
 			SecurityIdentifier primaryGroupSecurityIdentifier = new SecurityIdentifier(primaryGroupSsdl);
 			byte[] primaryGroupSid = new byte[primaryGroupSecurityIdentifier.BinaryLength];
 			primaryGroupSecurityIdentifier.GetBinaryForm(primaryGroupSid, 0);
-			
+
 			string result;
 			if (this.TryGetAccountName(primaryGroupSid, out result))
 			{
 				return result;
-			}			
+			}
 			return null;
 		}
 	}

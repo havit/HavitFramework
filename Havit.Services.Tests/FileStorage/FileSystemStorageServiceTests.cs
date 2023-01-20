@@ -438,7 +438,7 @@ namespace Havit.Services.Tests.FileStorage
 			ServiceCollection services = new ServiceCollection();
 			services.AddFileSystemStorageService<TestFileStorage>(System.IO.Path.GetTempPath());
 			var provider = services.BuildServiceProvider();
-			
+
 			// Act
 			var service = provider.GetService<IFileStorageService<TestFileStorage>>();
 
@@ -464,7 +464,7 @@ namespace Havit.Services.Tests.FileStorage
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\"), @"\\");
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\Abc"), @"\\Abc");
 			Assert.IsFalse(FileSystemStorageService.IsPathFullyQualified(@"\\abc"), @"\\abc");
-			
+
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\"), @"C:\");
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"c:\"), @"c:\");
 			Assert.IsTrue(FileSystemStorageService.IsPathFullyQualified(@"C:\Data"), @"C:\Data");

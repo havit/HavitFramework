@@ -112,7 +112,7 @@ namespace Havit.Services.FileStorage
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>
 		public override DateTime? GetLastModifiedTimeUtc(string fileName) => throw new NotSupportedException();
-		
+
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>
@@ -136,7 +136,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>
-		protected override ValueTask<string> GetContentTypeAsync(string fileName, CancellationToken cancellationToken) => throw new NotImplementedException();		
+		protected override ValueTask<string> GetContentTypeAsync(string fileName, CancellationToken cancellationToken) => throw new NotImplementedException();
 		#endregion
 	}
 }

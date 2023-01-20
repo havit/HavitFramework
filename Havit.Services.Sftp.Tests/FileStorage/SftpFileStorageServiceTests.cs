@@ -326,7 +326,7 @@ public class SftpFileStorageServiceTests
 		Assert.IsNotNull(service);
 		Assert.IsInstanceOfType(service, typeof(SftpStorageService<TestFileStorage>));
 	}
-	
+
 	private static SftpStorageService GetSftpFileStorageService(bool secondary = false)
 	{
 		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible

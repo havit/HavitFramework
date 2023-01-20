@@ -154,7 +154,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 
 		[TestMethod]
 		public void AzureFileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
-		{			
+		{
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureFileStorageService());
 		}
 

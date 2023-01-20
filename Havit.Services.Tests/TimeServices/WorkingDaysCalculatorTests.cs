@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Havit.Services.Tests.TimeServices
 {
-    [TestClass]
+	[TestClass]
 	public class WorkingDaysCalculatorTests
-    {
+	{
 		[TestMethod]
 		public void WorkingDaysCalculator_CountBusinessDays_NoHolidaysIncludeEndDate()
 		{

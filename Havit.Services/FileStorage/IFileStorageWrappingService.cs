@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Vrátí wrappovanou službu file storage.
 		/// </summary>
-		public IFileStorageService GetWrappedFileStorageService(); 
+		public IFileStorageService GetWrappedFileStorageService();
 	}
 }

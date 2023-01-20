@@ -5,8 +5,8 @@ using System;
 
 namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure
 {
-    public static class AzureStorageConnectionStringHelper
-    {
+	public static class AzureStorageConnectionStringHelper
+	{
 		public static string GetConnectionString() => AzureBlobStorageConnectionStringLazy.Value;
 
 		private static Lazy<string> AzureBlobStorageConnectionStringLazy = new Lazy<string>(() =>

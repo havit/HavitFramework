@@ -5,19 +5,19 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Services.BusinessCalendars
 {
-    /// <summary>
-    /// Třída poskytující funkčnost pro práci s pracovním kalendářem,
-    /// pracovními dny, svátky, atp.
-    /// </summary>
-    /// <remarks>
-    /// Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
-    /// Třída se instancializuje se sadou významných dnů (zpravidla svátků), nebo bez svátků (pracovním
-    /// dnem je pak den, který není sobotou ani nedělí).<br/>
-    /// Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
-    /// <br/>
-    /// Jednou vytvořenou instanci třídy lze s výhodou opakovaně používat.
-    /// </remarks>
-    public class BusinessCalendar
+	/// <summary>
+	/// Třída poskytující funkčnost pro práci s pracovním kalendářem,
+	/// pracovními dny, svátky, atp.
+	/// </summary>
+	/// <remarks>
+	/// Pracovním dnem (business day) je den, který není sobotou, nedělí ani svátkem.<br/>
+	/// Třída se instancializuje se sadou významných dnů (zpravidla svátků), nebo bez svátků (pracovním
+	/// dnem je pak den, který není sobotou ani nedělí).<br/>
+	/// Jako svátky (holiday) lze samozřejmě předat i různé dovolené apod.<br/>
+	/// <br/>
+	/// Jednou vytvořenou instanci třídy lze s výhodou opakovaně používat.
+	/// </remarks>
+	public class BusinessCalendar
 	{
 		/// <summary>
 		/// Interní seznam významných dnů, tj. dnů, které se liší od běžného pracovního dne (např. svátků, atp.).<br/>
@@ -75,7 +75,7 @@ namespace Havit.Services.BusinessCalendars
 			IDateInfo dateInfo;
 			if (dateInfos.TryGetValue(time.Date, out dateInfo))
 			{
-				return dateInfo;			
+				return dateInfo;
 			}
 			return null;
 		}
@@ -160,7 +160,7 @@ namespace Havit.Services.BusinessCalendars
 			IDateInfo dateInfo = GetDateInfo(date);
 			if (dateInfo != null)
 			{
-				return dateInfo.IsHoliday;				
+				return dateInfo.IsHoliday;
 			}
 			return false;
 		}

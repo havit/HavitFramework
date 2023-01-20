@@ -1,9 +1,9 @@
 ﻿namespace Havit.Services.BusinessCalendars
 {
-    /// <summary>
-    /// Třída vracející strategii pro určení, které dny jsou víkendem.
-    /// </summary>
-    public static class BusinessCalendarWeekendStrategy
+	/// <summary>
+	/// Třída vracející strategii pro určení, které dny jsou víkendem.
+	/// </summary>
+	public static class BusinessCalendarWeekendStrategy
 	{
 		/// <summary>
 		/// Vrací strategii, která považuje za víkend sobotu a neděli.

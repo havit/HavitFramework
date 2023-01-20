@@ -30,8 +30,8 @@ namespace Havit.Services.Azure.FileStorage
 		/// Je potřeba nastavit hodnotu: new DefaultAzureCredential().
 		/// Vyžaduje nastavený BlobStorageName.
 		/// </summary>
-		public TokenCredential TokenCredential { get;set; }
-		
+		public TokenCredential TokenCredential { get; set; }
+
 		/// <summary>
 		/// CacheControl, která je nastavena do (CloudBlobReference.)Properties při save (uploadech) souborů.
 		/// </summary>

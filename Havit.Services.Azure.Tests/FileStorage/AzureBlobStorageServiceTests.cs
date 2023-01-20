@@ -221,7 +221,7 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		{
 			FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
 		}
-		
+
 		[TestMethod]
 		public void AzureBlobStorageService_Copy_SingleInstance()
 		{

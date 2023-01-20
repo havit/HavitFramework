@@ -32,7 +32,7 @@ namespace Havit.Services.Azure.FileStorage
 		private readonly AzureBlobStorageServiceOptions options;
 
 		private volatile bool containerAlreadyCreated = false;
-		private readonly CriticalSection<int> ensureContainerCriticalSection = new CriticalSection<int>();		
+		private readonly CriticalSection<int> ensureContainerCriticalSection = new CriticalSection<int>();
 		private readonly Lazy<BlobContainerClient> blobContainerClientLazy;
 
 		/// <summary>
@@ -188,7 +188,7 @@ namespace Havit.Services.Azure.FileStorage
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 			BlobClient blobClient = GetBlobClient(fileName);
-			blobClient.Delete();			
+			blobClient.Delete();
 		}
 
 		/// <summary>
@@ -217,7 +217,7 @@ namespace Havit.Services.Azure.FileStorage
 			string prefix = FileStorageServiceBase.EnumerableFilesGetPrefix(searchPattern);
 
 			EnsureContainer();
-			
+
 			// nacti soubory s danym prefixem - optimalizace na rychlost
 			Pageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobs(prefix: prefix);
 
@@ -266,7 +266,7 @@ namespace Havit.Services.Azure.FileStorage
 			{
 				return false;
 			}
-			
+
 			return true;
 		}
 
@@ -282,8 +282,8 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <inheritdoc />
-        protected override void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
-        {
+		protected override void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
+		{
 			if (targetFileStorageService is AzureBlobStorageService targetAzureBlobStorageService)
 			{
 				BlobClient sourceBlobClient = this.GetBlobClient(sourceFileName);
@@ -294,7 +294,7 @@ namespace Havit.Services.Azure.FileStorage
 			{
 				base.PerformCopy(sourceFileName, targetFileStorageService, targetFileName);
 			}
-        }
+		}
 
 		/// <inheritdoc />
 		protected override async Task PerformCopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken)
@@ -303,7 +303,7 @@ namespace Havit.Services.Azure.FileStorage
 			{
 				BlobClient sourceBlobClient = this.GetBlobClient(sourceFileName);
 				BlobClient targetBlobClient = targetAzureBlobStorageService.GetBlobClient(targetFileName);
-                CopyFromUriOperation operation = await targetBlobClient.StartCopyFromUriAsync(sourceBlobClient.Uri, null, cancellationToken).ConfigureAwait(false);
+				CopyFromUriOperation operation = await targetBlobClient.StartCopyFromUriAsync(sourceBlobClient.Uri, null, cancellationToken).ConfigureAwait(false);
 				await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
 			}
 			else
@@ -312,10 +312,10 @@ namespace Havit.Services.Azure.FileStorage
 			}
 		}
 
-        /// <summary>
-        /// Vrátí čas poslední modifikace souboru v UTC timezone.
-        /// </summary>
-        public override DateTime? GetLastModifiedTimeUtc(string fileName)
+		/// <summary>
+		/// Vrátí čas poslední modifikace souboru v UTC timezone.
+		/// </summary>
+		public override DateTime? GetLastModifiedTimeUtc(string fileName)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 

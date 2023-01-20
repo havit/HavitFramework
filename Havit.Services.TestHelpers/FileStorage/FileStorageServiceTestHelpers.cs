@@ -188,9 +188,9 @@ namespace Havit.Services.TestHelpers.FileStorage
 				{
 					// Act
 					string readContent = sr.ReadToEnd();
-					
+
 					// Assert
-					Assert.AreEqual(content, readContent); 
+					Assert.AreEqual(content, readContent);
 				}
 			}
 
@@ -300,7 +300,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 		}
 
 		public static async Task FileStorageService_SaveAsync_OverwritesTargetFile(IFileStorageService fileStorageService)
-        {
+		{
 			// Arrange
 			string content1 = "abcdefghijklmnopqrstuvwxyz";
 			string content2 = "abc"; // Musí být kratší než content!
@@ -317,7 +317,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				// Act
 				await fileStorageService.SaveAsync(filename, ms, "text/plain");
 				Assert.IsTrue(await fileStorageService.ExistsAsync(filename));
-				Assert.AreEqual(content1.Length + 3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);	
+				Assert.AreEqual(content1.Length + 3 /* BOM */, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
 			}
 
 			// Act
@@ -706,7 +706,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 
 			// Act
 			fileStorageService1.Copy(sourceFilename, fileStorageService2, targetFilename);
-			
+
 			// Assert
 			Assert.IsTrue(fileStorageService1.Exists(sourceFilename));
 			Assert.IsTrue(fileStorageService2.Exists(targetFilename));

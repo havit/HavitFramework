@@ -53,7 +53,7 @@ namespace Havit.Services.Xml.Rss
 		{
 			this.channels = new RssChannelCollection();
 			this.version = "2.0";
-			
+
 		}
 
 		/// <summary>

@@ -11,7 +11,7 @@ namespace Havit.Services.Xml.Rss
 		private string title = "";
 		private string link = "";
 		private string description = "";
-		private string language = "";		
+		private string language = "";
 		private string copyright = "";
 		private string managingEditor = "";
 		private string webMaster = "";

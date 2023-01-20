@@ -35,7 +35,7 @@ namespace Havit.Services.Redis.Caching
 
 			// při příjmu zprávy o odstranění poloýky z cache odstraníme příslušný klíč z lokální cache
 			redisSubscriber.Subscribe(redisRemoveChannel, (channel, message) => localCacheService.Remove(message));
-			
+
 			// při příjmu zprávy o smazání cache odstraníme vše z lokální cache
 			redisSubscriber.Subscribe(redisClearChannel, (channel, message) => localCacheService.Clear());
 		}

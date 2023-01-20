@@ -15,8 +15,10 @@ namespace Havit.Services.Tests.StateAdministrationServices
 		[DataRow(true, "790917/3030")]
 		[DataRow(false, "7909173/030")] // chybný formát
 		[DataRow(false, "79091/73030")] // chybný formát
+
 		//[DataRow(true, "9950010004")] 
 		//[DataRow(true, "995001/0004")]
+
 		[DataRow(true, "404040404")] // správný formát, nelze validovat
 		[DataRow(true, "404040/404")] // správný formát, nelze validovat
 		[DataRow(false, "40404/4040")] // chybný formát

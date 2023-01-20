@@ -45,7 +45,7 @@ namespace Havit.Services.Ares
 		/// Vrací strukturovanou odpověd z obchodního rejstříku.
 		/// </summary>
 		public AresData GetData(AresRegistr rejstriky = AresRegistr.Basic | AresRegistr.ObchodniRejstrik)
-		{			
+		{
 			AresData result = new AresData();
 			List<Task> tasks = new List<Task>();
 
@@ -97,7 +97,7 @@ namespace Havit.Services.Ares
 				foreach (XElement item in eElements)
 				{
 					bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
-                    if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
+					if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
 					{
 						// nehlásíme chybu
 						continue;
@@ -134,7 +134,7 @@ namespace Havit.Services.Ares
 
 		private void ParseBasicData(XDocument aresResponse, XNamespace aresDT, AresData result)
 		{
-		// Výpis BASIC (element).
+			// Výpis BASIC (element).
 			XElement vypisOrElement = aresResponse.Descendants(aresDT + "VBAS").FirstOrDefault();
 
 			if (vypisOrElement != null)
@@ -337,7 +337,7 @@ namespace Havit.Services.Ares
 		{
 			XDocument aresResponseXDocument = null;
 
-            try
+			try
 			{
 				WebRequest aresRequest = HttpWebRequest.Create(requestUrl);
 				if (this.Timeout != null)

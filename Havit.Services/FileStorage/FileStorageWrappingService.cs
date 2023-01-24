@@ -91,6 +91,16 @@ namespace Havit.Services.FileStorage
 			return fileStorageService;
 		}
 
+		public void Move(string sourceFileName, string targetFileName)
+		{
+			fileStorageService.Move(sourceFileName, targetFileName);
+		}
+
+		public async Task MoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			await fileStorageService.MoveAsync(sourceFileName, targetFileName, cancellationToken).ConfigureAwait(false);
+		}
+
 		/// <inheritdoc />
 		public void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{

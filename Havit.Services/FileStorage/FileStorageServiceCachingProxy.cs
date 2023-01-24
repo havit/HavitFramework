@@ -157,7 +157,7 @@ namespace Havit.Services.FileStorage
 			cacheOptions.Size = bytes.Length;
 
 			cacheService.Add(cacheKey, bytes, cacheOptions);
-			return new MemoryStream(bytes);
+			return new MemoryStream(bytes, false);
 		}
 
 		/// <inheritdoc />
@@ -214,8 +214,14 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		public void Save(string fileName, Stream fileContent, string contentType)
 		{
-			fileStorageService.Save(fileName, fileContent, contentType);
-			InvalidateCacheByFileName(fileName);
+			try
+			{
+				fileStorageService.Save(fileName, fileContent, contentType);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(fileName);
+			}
 		}
 
 		/// <inheritdoc />
@@ -234,8 +240,14 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		public void Delete(string fileName)
 		{
-			fileStorageService.Delete(fileName);
-			InvalidateCacheByFileName(fileName);
+			try
+			{
+				fileStorageService.Delete(fileName);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(fileName);
+			}
 		}
 
 		/// <inheritdoc />
@@ -288,25 +300,82 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		public void Copy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
-			fileStorageService.Copy(sourceFileName, targetFileStorageService, targetFileName);
+			try
+			{
+				fileStorageService.Copy(sourceFileName, targetFileStorageService, targetFileName);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(targetFileName);
+			}
 		}
 
 		/// <inheritdoc />
-		public Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		public async Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.CopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken);
+			try
+			{
+				await fileStorageService.CopyAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(targetFileName);
+			}
+
+		}
+
+		/// <inheritdoc />
+		public void Move(string sourceFileName, string targetFileName)
+		{
+			try
+			{
+				fileStorageService.Move(sourceFileName, targetFileName);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(sourceFileName);
+				InvalidateCacheByFileName(targetFileName);
+			}
+		}
+
+		/// <inheritdoc />
+		public async Task MoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			try
+			{
+				await fileStorageService.MoveAsync(sourceFileName, targetFileName, cancellationToken).ConfigureAwait(false);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(sourceFileName);
+				InvalidateCacheByFileName(targetFileName);
+			}
 		}
 
 		/// <inheritdoc />
 		public void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
-			fileStorageService.Move(sourceFileName, targetFileStorageService, targetFileName);
+			try
+			{
+				fileStorageService.Move(sourceFileName, targetFileStorageService, targetFileName);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(sourceFileName);
+			}
 		}
 
 		/// <inheritdoc />
-		public Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
+		public async Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
 		{
-			return fileStorageService.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken);
+			try
+			{
+				await fileStorageService.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
+			}
+			finally
+			{
+				InvalidateCacheByFileName(sourceFileName);
+			}
 		}
 
 		/// <summary>

@@ -336,10 +336,61 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
+		/// Přesune soubor v rámci stejného úložiště.
+		/// </summary>
+		public void Move(string sourceFileName, string targetFileName)
+		{
+			if (sourceFileName == targetFileName)
+			{
+				return;
+			}
+
+			PerformMove(sourceFileName, targetFileName);
+		}
+
+		/// <summary>
+		/// Přesune soubor v rámci stejného úložiště.
+		/// </summary>
+		protected abstract void PerformMove(string sourceFileName, string targetFileName);
+
+		/// <summary>
+		/// Přesune soubor v rámci stejného úložiště.
+		/// </summary>
+		public async Task MoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken = default)
+		{
+			if (sourceFileName == targetFileName)
+			{
+				return;
+			}
+
+			await PerformMoveAsync(sourceFileName, targetFileName, cancellationToken).ConfigureAwait(false);
+		}
+
+		/// <summary>
+		/// Přesune soubor v rámci stejného úložiště.
+		/// </summary>
+		protected abstract Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken);
+
+		/// <summary>
 		/// Přesune soubor do jiného úložiště.
 		/// </summary>
 		public void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
+			// Task 66700: Havit.Services.FileStorage.FileStorageServiceBase.PerformMove neporovnává sourceFileName a targetFileName
+			// Teoreticky se může stát, že kopírujeme soubor v rámci stejného úložiště a nezmění se zdrojový a cílový název.
+			// To díky základní implementaci Copy+Delete vede ke smazání souboru.
+			// Máme několik možností, jak se s tím vypořádat:
+			// * Striktní kontrola, zda zdrojový soubor odpovídá cílovému v rámci stejného úložiště (nejen instancí), pomocí porovnání "identit souborů".
+			//   To by však přineslo nutnost rozšířit IFileStorageService o poskytnutí identity souboru a úložiště, což se nám moc nechce měnit, přestože řešení by bylo nejspolehlivější.
+			// * Doplnit metodu Move, která nemá v parametrech targetFileStorageService. Metoda by prováděla přesun v rámci úložiště.
+			//   Nedocházelo by tak k volání, které může být takto potenciálně škodlivé.
+			// * Neřešit dokonalé chování služby, ale identifikovat jen zřejmě problematický scénář a tomu se pokusit zabránit.
+			if (this == targetFileStorageService)
+			{
+				this.Move(sourceFileName, targetFileName);
+				return;
+			}
+
 			if (targetFileStorageService is IFileStorageWrappingService fileStorageWrappingService)
 			{
 				Move(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName);
@@ -363,6 +414,12 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		public async Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
 		{
+			if (this == targetFileStorageService)
+			{
+				await this.MoveAsync(sourceFileName, targetFileName, cancellationToken).ConfigureAwait(false);
+				return;
+			}
+
 			if (targetFileStorageService is IFileStorageWrappingService fileStorageWrappingService)
 			{
 				await MoveAsync(sourceFileName, fileStorageWrappingService.GetWrappedFileStorageService(), targetFileName, cancellationToken).ConfigureAwait(false);

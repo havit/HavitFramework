@@ -257,39 +257,65 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[TestMethod]
 		public void AzureBlobStorageService_Move()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Move(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
-		}
-
-		[TestMethod]
-		public void AzureBlobStorageService_Move_SingleInstance()
-		{
-			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
-			FileStorageServiceTestHelpers.FileStorageService_Move(azureBlobStorageService, azureBlobStorageService);
+			FileStorageServiceTestHelpers.FileStorageService_Move(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_MoveAsync()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_MoveAsync_SingleInstance()
+		public void AzureBlobStorageService_Move_DoesNotDeleteFile()
 		{
 			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(azureBlobStorageService, azureBlobStorageService);
+			FileStorageServiceTestHelpers.FileStorageService_Move_DoesNotDeleteFile(azureBlobStorageService);
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_MoveAsync_DoesNotDeleteFile()
+		{
+			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_DoesNotDeleteFile(azureBlobStorageService);
 		}
 
 		[TestMethod]
 		public void AzureBlobStorageService_Move_OverwritesTargetFile()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(azureBlobStorageService);
 		}
 
 		[TestMethod]
 		public async Task AzureBlobStorageService_MoveAsync_OverwritesTargetFile()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+			AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(azureBlobStorageService);
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_Move_WithFileStorageService()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_MoveAsync_WithFileStorageService()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_Move_WithFileStorageService_OverwritesTargetFile()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService_OverwritesTargetFile(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
 		}
 
 		[TestMethod]

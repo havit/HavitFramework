@@ -432,5 +432,19 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			return (await GetBlobClient(fileName).GetPropertiesAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value.ContentType;
 		}
+
+		/// <inheritdoc />
+		protected override void PerformMove(string sourceFileName, string targetFileName)
+		{
+			PerformCopy(sourceFileName, this, targetFileName);
+			Delete(sourceFileName);
+		}
+
+		/// <inheritdoc />
+		protected override async Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
+		{
+			await PerformCopyAsync(sourceFileName, this, targetFileName, cancellationToken).ConfigureAwait(false);
+			await DeleteAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
+		}
 	}
 }

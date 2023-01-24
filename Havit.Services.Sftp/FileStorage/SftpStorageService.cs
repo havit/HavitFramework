@@ -328,36 +328,27 @@ namespace Havit.Services.Sftp.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override void PerformMove(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
-		{
-			if (this == targetFileStorageService)
-			{
-				PerformMoveInternalOnThis(sourceFileName, targetFileName);
-			}
-			else
-			{
-				base.PerformMove(sourceFileName, targetFileStorageService, targetFileName);
-			}
-		}
-
-		/// <inheritdoc />
-		protected override async Task PerformMoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default)
-		{
-			if (this == targetFileStorageService)
-			{
-				PerformMoveInternalOnThis(sourceFileName, targetFileName); // No async support
-			}
-			else
-			{
-				await base.PerformMoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
-			}
-		}
-
-		private void PerformMoveInternalOnThis(string sourceFileName, string targetFileName)
+		protected override void PerformMove(string sourceFileName, string targetFileName)
 		{
 			string substitutedTargetFileName = SubstituteFileName(targetFileName);
 			PerformSave_EnsureFolderFor(substitutedTargetFileName);
+
+			var sftpClient = GetConnectedSftpClient();
+
+			if (sftpClient.Exists(substitutedTargetFileName))
+			{
+				sftpClient.Delete(substitutedTargetFileName);
+			}
+
 			GetConnectedSftpClient().RenameFile(SubstituteFileName(sourceFileName), substitutedTargetFileName);
+		}
+
+		/// <inheritdoc />
+		protected override Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			PerformMove(sourceFileName, targetFileName);
+			return Task.CompletedTask;
 		}
 
 		/// <inheritdoc />

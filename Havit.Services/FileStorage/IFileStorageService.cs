@@ -72,11 +72,26 @@ namespace Havit.Services.FileStorage
 		Task CopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
+		/// Přesune soubor v rámci úložiště.
+		/// </summary>
+		/// <param name="sourceFileName">Soubor k přesunu.</param>
+		/// <param name="targetFileName">Cílový název souboru.</param>
+		void Move(string sourceFileName, string targetFileName);
+
+		/// <summary>
+		/// Přesune soubor v rámci úložiště.
+		/// </summary>
+		/// <param name="sourceFileName">Soubor k přesunu.</param>
+		/// <param name="targetFileName">Cílový název souboru.</param>
+		/// <param name="cancellationToken">Cancellation token.</param>
+		Task MoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken = default);
+
+		/// <summary>
 		/// Přesune soubor do jiného úložiště.
 		/// </summary>
 		/// <param name="sourceFileName">Soubor k přesunu.</param>
 		/// <param name="targetFileStorageService">Cílová file storage.</param>
-		/// <param name="targetFileName">Název souboru v cílovém file storage (pokud je null, použije se sourceFileName).</param>
+		/// <param name="targetFileName">Název souboru v cílovém file storage.</param>
 		void Move(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName);
 
 		/// <summary>
@@ -84,7 +99,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		/// <param name="sourceFileName">Soubor k přesunu.</param>
 		/// <param name="targetFileStorageService">Cílová file storage.</param>
-		/// <param name="targetFileName">Název souboru v cílovém file storage (pokud je null, použije se sourceFileName).</param>
+		/// <param name="targetFileName">Název souboru v cílovém file storage.</param>
 		/// <param name="cancellationToken">Cancellation token.</param>
 		Task MoveAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken = default);
 

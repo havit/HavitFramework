@@ -158,6 +158,29 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
+		protected override void PerformMove(string sourceFileName, string targetFileName)
+		{
+			EnsureDirectoryFor(targetFileName);
+			if (File.Exists(GetFullPath(targetFileName)))
+			{
+				File.Delete(GetFullPath(targetFileName));
+			}
+			File.Move(GetFullPath(sourceFileName), GetFullPath(targetFileName));
+		}
+
+		/// <inheritdoc />
+		protected override Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+
+			// Předpokládáme, že přejmenovat (přesunout soubor) v rámci jednoho FileSystemStorageService neasynchronně, je efektivnější,
+			// než přesun souboru přes streamy.
+			PerformMove(sourceFileName, targetFileName);
+
+			return Task.CompletedTask;
+		}
+
+		/// <inheritdoc />
 		protected override void PerformMove(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
@@ -179,8 +202,10 @@ namespace Havit.Services.FileStorage
 		{
 			if ((targetFileStorageService is FileSystemStorageService targetFileSystemStorageService) && !this.SupportsBasicEncryption && !targetFileSystemStorageService.SupportsBasicEncryption)
 			{
+				cancellationToken.ThrowIfCancellationRequested();
+
 				targetFileSystemStorageService.EnsureDirectoryFor(targetFileName);
-				// předpokládáme, že přejmenovat (přesunout soubor) v rámci jednoho FileSystemStorageService neasynchronně, je efektivnější,
+				// Předpokládáme, že přejmenovat (přesunout soubor) v rámci jednoho FileSystemStorageService neasynchronně, je efektivnější,
 				// než přesun souboru přes streamy v bázové třídě asynchronně.
 				if (File.Exists(targetFileSystemStorageService.GetFullPath(targetFileName)))
 				{

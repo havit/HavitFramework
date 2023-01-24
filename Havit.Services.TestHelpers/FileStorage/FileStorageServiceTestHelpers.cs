@@ -797,8 +797,172 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService2.DeleteAsync(targetFilename);
 		}
 
-		public static void FileStorageService_Move(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		public static void FileStorageService_Move(IFileStorageService fileStorageService)
 		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = @"folder_move\file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Preconditions
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+			Assert.IsFalse(fileStorageService.Exists(targetFilename));
+
+			// Act
+			fileStorageService.Move(sourceFilename, targetFilename);
+
+			// Assert
+			Assert.IsFalse(fileStorageService.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService.Exists(targetFilename));
+
+			// Clean up
+			fileStorageService.Delete(targetFilename);
+		}
+
+		public static async Task FileStorageService_MoveAsync(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = @"folder_move\file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Preconditions
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+			Assert.IsFalse(fileStorageService.Exists(targetFilename));
+
+			// Act
+			await fileStorageService.MoveAsync(sourceFilename, targetFilename);
+
+			// Assert
+			Assert.IsFalse(fileStorageService.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService.Exists(targetFilename));
+
+			// Clean up
+			await fileStorageService.DeleteAsync(targetFilename);
+		}
+
+		public static void FileStorageService_Move_OverwritesTargetFile(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = "file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+				fileStorageService.Move(sourceFilename, fileStorageService, targetFilename);
+			}
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService.Exists(targetFilename));
+
+			// Act
+			fileStorageService.Move(sourceFilename, targetFilename);
+
+			// Assert
+			Assert.IsFalse(fileStorageService.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService.Exists(targetFilename));
+
+			// Clean up
+			fileStorageService.Delete(targetFilename);
+		}
+
+		public static async Task FileStorageService_MoveAsync_OverwritesTargetFile(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+			string targetFilename = "file2.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+				fileStorageService.Move(sourceFilename, fileStorageService, targetFilename);
+			}
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService.Exists(targetFilename));
+
+			// Act
+			await fileStorageService.MoveAsync(sourceFilename, targetFilename);
+
+			// Assert
+			Assert.IsFalse(fileStorageService.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService.Exists(targetFilename));
+
+			// Clean up
+			fileStorageService.Delete(targetFilename);
+		}
+
+		public static void FileStorageService_Move_DoesNotDeleteFile(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+
+			// Act
+			fileStorageService.Move(sourceFilename, sourceFilename);
+
+			// Assert
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+
+			// Clean up
+			fileStorageService.Delete(sourceFilename);
+		}
+
+		public static async Task FileStorageService_MoveAsync_DoesNotDeleteFile(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string sourceFilename = "file1.txt";
+
+			using (Stream stream = new MemoryStream())
+			{
+				fileStorageService.Save(sourceFilename, stream, "text/plain");
+			}
+
+			// Precondition
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+
+			// Act
+			await fileStorageService.MoveAsync(sourceFilename, sourceFilename);
+
+			// Assert
+			Assert.IsTrue(fileStorageService.Exists(sourceFilename));
+
+			// Clean up
+			fileStorageService.Delete(sourceFilename);
+		}
+
+		public static void FileStorageService_Move_WithFileStorageService(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		{
+			Contract.Requires(fileStorageService1 != fileStorageService2);
+
 			// Arrange
 			string sourceFilename = "file1.txt";
 			string targetFilename = @"folder_move\file2.txt";
@@ -821,8 +985,10 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService2.Delete(targetFilename);
 		}
 
-		public static async Task FileStorageService_MoveAsync(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		public static async Task FileStorageService_MoveAsync_WithFileStorageService(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
 		{
+			Contract.Requires(fileStorageService1 != fileStorageService2);
+
 			// Arrange
 			string sourceFilename = "file1.txt";
 			string targetFilename = @"folder_moveasync\file2.txt";
@@ -845,8 +1011,10 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService2.DeleteAsync(targetFilename);
 		}
 
-		public static void FileStorageService_Move_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		public static void FileStorageService_Move_WithFileStorageService_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
 		{
+			Contract.Requires(fileStorageService1 != fileStorageService2);
+
 			// Arrange
 			string sourceFilename = "file1.txt";
 			string targetFilename = "file2.txt";
@@ -869,14 +1037,18 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Act
 			fileStorageService1.Move(sourceFilename, fileStorageService2, targetFilename);
 
-			// Assert - does not throw exception
+			// Assert
+			Assert.IsFalse(fileStorageService1.Exists(sourceFilename));
+			Assert.IsTrue(fileStorageService2.Exists(targetFilename));
 
 			// Clean up
 			fileStorageService2.Delete(targetFilename);
 		}
 
-		public static async Task FileStorageService_MoveAsync_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+		public static async Task FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
 		{
+			Contract.Requires(fileStorageService1 != fileStorageService2);
+
 			// Arrange
 			string sourceFilename = "file1.txt";
 			string targetFilename = "file2.txt";
@@ -899,11 +1071,12 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Act
 			await fileStorageService1.MoveAsync(sourceFilename, fileStorageService2, targetFilename);
 
-			// Assert - does not throw exception
+			// Assert
+			Assert.IsFalse(await fileStorageService1.ExistsAsync(sourceFilename));
+			Assert.IsTrue(await fileStorageService2.ExistsAsync(targetFilename));
 
 			// Clean up
 			await fileStorageService2.DeleteAsync(targetFilename);
 		}
-
 	}
 }

@@ -131,6 +131,16 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>
+		protected override void PerformMove(string sourceFileName, string targetFileName) => throw new NotSupportedException();
+
+		/// <summary>
+		/// Vyhazuje <see cref="NotSupportedException"/>.
+		/// </summary>
+		protected override Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken) => throw new NotSupportedException();
+
+		/// <summary>
+		/// Vyhazuje <see cref="NotSupportedException"/>.
+		/// </summary>
 		protected override string GetContentType(string fileName) => throw new NotImplementedException();
 
 		/// <summary>

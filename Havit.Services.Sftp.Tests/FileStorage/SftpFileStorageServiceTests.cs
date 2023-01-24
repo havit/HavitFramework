@@ -276,39 +276,65 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public void SftpStorageService_Move()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Move(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
-	}
-
-	[TestMethod]
-	public void SftpStorageService_Move_SingleInstance()
-	{
-		SftpStorageService sftpStorageService = GetSftpFileStorageService();
-		FileStorageServiceTestHelpers.FileStorageService_Move(sftpStorageService, sftpStorageService);
+		FileStorageServiceTestHelpers.FileStorageService_Move(GetSftpFileStorageService());
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_MoveAsync()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetSftpFileStorageService());
 	}
 
 	[TestMethod]
-	public async Task SftpStorageService_MoveAsync_SingleInstance()
+	public void SftpStorageService_Move_DoesNotDeleteFile()
 	{
 		SftpStorageService sftpStorageService = GetSftpFileStorageService();
-		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(sftpStorageService, sftpStorageService);
+		FileStorageServiceTestHelpers.FileStorageService_Move_DoesNotDeleteFile(sftpStorageService);
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_MoveAsync_DoesNotDeleteFile()
+	{
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_DoesNotDeleteFile(sftpStorageService);
 	}
 
 	[TestMethod]
 	public void SftpStorageService_Move_OverwritesTargetFile()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(sftpStorageService);
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_MoveAsync_OverwritesTargetFile()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		SftpStorageService sftpStorageService = GetSftpFileStorageService();
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(sftpStorageService);
+	}
+
+	[TestMethod]
+	public void SftpStorageService_Move_WithFileStorageService()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_MoveAsync_WithFileStorageService()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+	}
+
+	[TestMethod]
+	public void SftpStorageService_Move_WithFileStorageService_OverwritesTargetFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
 	}
 
 	[TestMethod]
@@ -326,7 +352,7 @@ public class SftpFileStorageServiceTests
 		Assert.IsNotNull(service);
 		Assert.IsInstanceOfType(service, typeof(SftpStorageService<TestFileStorage>));
 	}
-
+	
 	private static SftpStorageService GetSftpFileStorageService(bool secondary = false)
 	{
 		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible

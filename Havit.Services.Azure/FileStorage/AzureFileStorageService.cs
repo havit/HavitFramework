@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -251,6 +250,24 @@ namespace Havit.Services.Azure.FileStorage
 					seekableFileContent.Dispose();
 				}
 			}
+		}
+
+		/// <inheritdoc />
+		protected override void PerformMove(string sourceFileName, string targetFileName)
+		{
+			ShareFileClient shareSourceFileClient = GetShareFileClient(sourceFileName);
+			ShareFileClient shareTargetFileClient = GetShareFileClient(targetFileName, createDirectoryStructure: options.AutoCreateDirectories);
+
+			shareSourceFileClient.Rename(shareTargetFileClient.Path, new ShareFileRenameOptions { ReplaceIfExists = true });
+		}
+
+		/// <inheritdoc />
+		protected override async Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
+		{
+			ShareFileClient shareSourceFileClient = GetShareFileClient(sourceFileName);
+			ShareFileClient shareTargetFileClient = await GetShareFileClientAsync(targetFileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
+
+			await shareSourceFileClient.RenameAsync(shareTargetFileClient.Path, new ShareFileRenameOptions { ReplaceIfExists = true }, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>

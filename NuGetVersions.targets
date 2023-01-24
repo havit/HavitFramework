@@ -17,10 +17,10 @@
 	  <HavitGoPay_PackageVersion>2.0.30</HavitGoPay_PackageVersion>
 	  <HavitPayMuzo_PackageVersion>2.0.30</HavitPayMuzo_PackageVersion>
 	  <HavitPayPal_PackageVersion>2.0.30</HavitPayPal_PackageVersion>
-	  <HavitServices_PackageVersion>2.0.35</HavitServices_PackageVersion>
-	  <HavitServicesAzure_PackageVersion>2.0.19</HavitServicesAzure_PackageVersion>
+	  <HavitServices_PackageVersion>2.0.36</HavitServices_PackageVersion>
+	  <HavitServicesAzure_PackageVersion>2.0.20</HavitServicesAzure_PackageVersion>
 	  <HavitServicesRedis_PackageVersion>2.0.4</HavitServicesRedis_PackageVersion>
-	  <HavitServicesSftp_PackageVersion>2.0.3</HavitServicesSftp_PackageVersion>
+	  <HavitServicesSftp_PackageVersion>2.0.4</HavitServicesSftp_PackageVersion>
 	  <HavitWeb_PackageVersion>2.0.36</HavitWeb_PackageVersion>
 	  <HavitWebBootstrap_PackageVersion>2.0.36</HavitWebBootstrap_PackageVersion>
 	  <HavitWebClientContent_PackageVersion>2.0.36</HavitWebClientContent_PackageVersion>

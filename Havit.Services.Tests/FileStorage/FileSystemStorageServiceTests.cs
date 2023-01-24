@@ -353,39 +353,63 @@ namespace Havit.Services.Tests.FileStorage
 		[TestMethod]
 		public void FileSystemStorageService_Move()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Move(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
-		}
-
-		[TestMethod]
-		public void FileSystemStorageService_Move_SingleInstance()
-		{
-			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
-			FileStorageServiceTestHelpers.FileStorageService_Move(fileSystemStorageService, fileSystemStorageService);
+			FileStorageServiceTestHelpers.FileStorageService_Move(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
 		public async Task FileSystemStorageService_MoveAsync()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_MoveAsync_SingleInstance()
+		public void FileSystemStorageService_Move_DoesNotDeleteFile()
 		{
 			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync(fileSystemStorageService, fileSystemStorageService);
+			FileStorageServiceTestHelpers.FileStorageService_Move_DoesNotDeleteFile(fileSystemStorageService);
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_MoveAsync_DoesNotDeleteFile()
+		{
+			FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_DoesNotDeleteFile(fileSystemStorageService);
 		}
 
 		[TestMethod]
 		public void FileSystemStorageService_Move_OverwritesTargetFile()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+			FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
 		public async Task FileSystemStorageService_MoveAsync_OverwritesTargetFile()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_Move_WithFileStorageService()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_MoveAsync_WithFileStorageService()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_Move_WithFileStorageService_OverwritesTargetFile()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService_OverwritesTargetFile(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
 		}
 
 		[TestMethod]

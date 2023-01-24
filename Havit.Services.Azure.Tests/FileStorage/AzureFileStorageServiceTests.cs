@@ -268,29 +268,29 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		[TestMethod]
 		public void AzureFileStorageService_Move_DoesNotDeleteFile()
 		{
-			AzureFileStorageService AzureFileStorageService = GetAzureFileStorageService();
-			FileStorageServiceTestHelpers.FileStorageService_Move_DoesNotDeleteFile(AzureFileStorageService);
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Move_DoesNotDeleteFile(azureFileStorageService);
 		}
 
 		[TestMethod]
 		public async Task AzureFileStorageService_MoveAsync_DoesNotDeleteFile()
 		{
-			AzureFileStorageService AzureFileStorageService = GetAzureFileStorageService();
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_DoesNotDeleteFile(AzureFileStorageService);
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_DoesNotDeleteFile(azureFileStorageService);
 		}
 
 		[TestMethod]
 		public void AzureFileStorageService_Move_OverwritesTargetFile()
 		{
-			AzureFileStorageService AzureFileStorageService = GetAzureFileStorageService();
-			FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(AzureFileStorageService);
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			FileStorageServiceTestHelpers.FileStorageService_Move_OverwritesTargetFile(azureFileStorageService);
 		}
 
 		[TestMethod]
 		public async Task AzureFileStorageService_MoveAsync_OverwritesTargetFile()
 		{
-			AzureFileStorageService AzureFileStorageService = GetAzureFileStorageService();
-			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(AzureFileStorageService);
+			AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
+			await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_OverwritesTargetFile(azureFileStorageService);
 		}
 
 		[TestMethod]

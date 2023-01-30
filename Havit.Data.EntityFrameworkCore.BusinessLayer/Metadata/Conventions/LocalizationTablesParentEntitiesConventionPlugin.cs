@@ -24,6 +24,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 					conventionSet.ForeignKeyAddedConventions.Add(convention);
 				}
 			}
+
+			conventionSet.ForeignKeyPropertiesChangedConventions.Add(convention);
+
 			return conventionSet;
 
 		}

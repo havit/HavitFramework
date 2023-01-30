@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,24 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	/// <summary>
 	/// Konvencia pre názov stĺpca v tabuľke XyLocalization pre lokalizovanú entitu - použije sa názov primárneho kľúča z tabuľky pre lokalizovanú entitu.
 	/// </summary>
-	public class LocalizationTablesParentEntitiesConvention : IForeignKeyAddedConvention
+	public class LocalizationTablesParentEntitiesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
 	{
 		/// <inheritdoc />
 		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
-			var entityType = foreignKeyBuilder.Metadata.DeclaringEntityType;
+			TrySetColumnName(foreignKeyBuilder.Metadata);
+
+		}
+
+		/// <inheritdoc />
+		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
+		{
+			TrySetColumnName(relationshipBuilder.Metadata);
+		}
+
+		private void TrySetColumnName(IConventionForeignKey foreignKey)
+		{
+			var entityType = foreignKey.DeclaringEntityType;
 
 			// Systémové tabulky nechceme změnit.
 			if (entityType.IsSystemType())
@@ -35,12 +48,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				return;
 			}
 
-			if ((foreignKeyBuilder.Metadata.Properties.Count == 1) && (foreignKeyBuilder.Metadata.Properties.Single().Name == "ParentId"))
+			if ((foreignKey.Properties.Count == 1) && (foreignKey.Properties.Single().Name == "ParentId"))
 			{
 				// cizí klíč s názvem vlastnosti ParentId
-				var parentIdProperty = foreignKeyBuilder.Metadata.Properties.Single();
+				var parentIdProperty = foreignKey.Properties.Single();
 
-				IConventionEntityType principalEntityType = foreignKeyBuilder.Metadata.PrincipalEntityType;
+				IConventionEntityType principalEntityType = foreignKey.PrincipalEntityType;
 				IConventionProperty property = principalEntityType.FindPrimaryKey().Properties.First();
 				string pkColumnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
 				parentIdProperty.SetColumnName(pkColumnName, fromDataAnnotation: false /* Convention */);

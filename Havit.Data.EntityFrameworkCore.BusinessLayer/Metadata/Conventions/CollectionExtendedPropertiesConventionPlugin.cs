@@ -13,7 +13,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
 		{
-			conventionSet.NavigationAddedConventions.Add(new CollectionExtendedPropertiesConvention());
+			CollectionExtendedPropertiesConvention convention = new CollectionExtendedPropertiesConvention();
+			conventionSet.NavigationAddedConventions.Add(convention);
+			conventionSet.ForeignKeyPropertiesChangedConventions.Add(convention);
 			return conventionSet;
 		}
 	}

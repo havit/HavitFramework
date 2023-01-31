@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -6,45 +8,59 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
     /// <summary>
     /// Konvencia pre definovanie Collection_{propertyName} extended properties na entitách. Vynecháva kolekcie s názvom "Localizations", nakoľko by BusinessLayerGenerator vygeneroval kolekciu dvakrát.
     /// </summary>
-    public class CollectionExtendedPropertiesConvention : INavigationAddedConvention
+    public class CollectionExtendedPropertiesConvention : INavigationAddedConvention, IForeignKeyPropertiesChangedConvention
 	{
+		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
+		{
+			var navigation = relationshipBuilder.Metadata.GetNavigation(false);
+			if (navigation != null)
+			{
+				Try(relationshipBuilder.Metadata.GetNavigation(false));
+			}
+		}
+
 		/// <inheritdoc />
 		public void ProcessNavigationAdded(IConventionNavigationBuilder navigationBuilder, IConventionContext<IConventionNavigationBuilder> context)
 		{
+			Try(navigationBuilder.Metadata);
+		}
+
+		private void Try(IConventionNavigation navigation)
+		{
 			// Systémové tabulky nechceme změnit.
-			if (navigationBuilder.Metadata.DeclaringEntityType.IsSystemType())
+			if (navigation.DeclaringEntityType.IsSystemType())
 			{
 				return;
 			}
 
-			if (navigationBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.CollectionExtendedPropertiesConvention))
+			if (navigation.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.CollectionExtendedPropertiesConvention))
 			{
 				return;
 			}
 
-			if (navigationBuilder.Metadata.IsCollection)
+			if (navigation.IsCollection)
 			{
-				if ((navigationBuilder.Metadata.Name == "Localizations") && navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
+				if ((navigation.Name == "Localizations") && navigation.ForeignKey.DeclaringEntityType.IsBusinessLayerLocalizationEntity())
 				{
 					// Localizations property cannot have Collection extended property defined
 					return;
 				}
 
-				IConventionProperty fkProperty = navigationBuilder.Metadata.ForeignKey.Properties[0];
-				var fkColumn = fkProperty.GetColumnName(
-					StoreObjectIdentifier.Create(fkProperty.DeclaringEntityType, StoreObjectType.Table)!.Value);
+				IConventionProperty fkProperty = navigation.ForeignKey.Properties[0];
+				var fkColumn = fkProperty.GetColumnName();
 				var extendedProperties = new Dictionary<string, string>
 					{
-						{ $"Collection_{navigationBuilder.Metadata.PropertyInfo.Name}", navigationBuilder.Metadata.ForeignKey.DeclaringEntityType.GetTableName() + "." + fkColumn }
+						{ $"Collection_{navigation.PropertyInfo.Name}", navigation.ForeignKey.DeclaringEntityType.GetTableName() + "." + fkColumn }
 					};
 
-				navigationBuilder.Metadata.DeclaringEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
+				navigation.DeclaringEntityType.AddExtendedProperties(extendedProperties, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

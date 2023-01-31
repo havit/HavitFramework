@@ -9,7 +9,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.7.1-pre02</PackageVersion>
+		<PackageVersion>2.7.1-pre03</PackageVersion>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>efcodegenerator</ToolCommandName>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator (dotnet tool)</Description>

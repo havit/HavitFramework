@@ -121,7 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		{
 			foreach (IReadOnlyProperty property in entityType.GetProperties())
 			{
-				if (property.ClrType == typeof(string))
+				if (property.ClrType == typeof(string) && !property.IsShadowProperty() /* !Discriminator */)
 				{
 					MaxLengthAttribute maxLengthAttribute = property.PropertyInfo.GetCustomAttribute<MaxLengthAttribute>();
 					if (maxLengthAttribute == null)

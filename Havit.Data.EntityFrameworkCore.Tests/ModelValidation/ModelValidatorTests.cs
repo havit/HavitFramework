@@ -178,6 +178,20 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 		}
 
 		[TestMethod]
+		public void ModelValidator_CheckStringsHaveMaxLengths_SupportsModelInheritance()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
+
+			// Assert			
+			Assert.AreEqual(2, errorsMoreInvalidKeysClass.Count(item => item.Contains("MaxLengthAttribute on property is expected")));
+		}
+
+		[TestMethod]
 		public void ModelValidator_CheckSupportedNestedTypes_ReportsNestedClass()
 		{
 			// Arrange

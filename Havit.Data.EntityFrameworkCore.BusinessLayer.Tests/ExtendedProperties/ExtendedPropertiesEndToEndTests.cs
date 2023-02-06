@@ -41,39 +41,39 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 ",
 					migrations[0].CommandText);
 			}
-        }
-        [TestClass]
-        public class AddingPropertyToTableInNonDefaultSchema
-        {
-            [Table("Table")]
-            private class SourceEntity
-            {
-                public int Id { get; set; }
-            }
+		}
+		[TestClass]
+		public class AddingPropertyToTableInNonDefaultSchema
+		{
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
 
-            [TestExtendedProperties("Jiri", "Value")]
-            [Table("Table")]
-            private class TargetEntity
-            {
-                public int Id { get; set; }
-            }
+			[TestExtendedProperties("Jiri", "Value")]
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
 
-            [TestMethod]
-            public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToTable()
-            {
-                var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
-                var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
-                var migrations = source.Migrate(target);
+			[TestMethod]
+			public void ExtendedPropertiesDbMigrations_EndToEnd_AddingPropertyToTable()
+			{
+				var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+				var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+				var migrations = source.Migrate(target);
 
-                Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(
-                    @"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
 ",
-                    migrations[0].CommandText);
-            }
-        }
+					migrations[0].CommandText);
+			}
+		}
 
-        [TestClass]
+		[TestClass]
 		public class AddingPropertyToTableUsingExtension
 		{
 			[Table("Table")]
@@ -130,47 +130,47 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Table]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Table]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 END
 ", migrations[0].CommandText);
 			}
-        }
+		}
 
-        [TestClass]
-        public class RemovingPropertyFromTableInNonDefaultSchema
-        {
-            [TestExtendedProperties("Jiri", "Value")]
-            [Table("Table")]
-            private class SourceEntity
-            {
-                public int Id { get; set; }
-            }
+		[TestClass]
+		public class RemovingPropertyFromTableInNonDefaultSchema
+		{
+			[TestExtendedProperties("Jiri", "Value")]
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
 
-            [Table("Table")]
-            private class TargetEntity
-            {
-                public int Id { get; set; }
-            }
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
 
-            [TestMethod]
-            public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromTable()
-            {
-                var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
-                var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
-                var migrations = source.Migrate(target);
+			[TestMethod]
+			public void ExtendedPropertiesDbMigrations_EndToEnd_RemovingPropertyFromTable()
+			{
+				var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+				var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+				var migrations = source.Migrate(target);
 
-                Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[custom_schema].[Table]') IS NOT NULL
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(@"IF OBJECT_ID(N'[custom_schema].[Table]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
 END
 ", migrations[0].CommandText);
-            }
-        }
+			}
+		}
 
-        [TestClass]
+		[TestClass]
 		public class ChangingPropertyOnTable
 		{
 			[TestExtendedProperties("Jiri", "OldValue")]
@@ -202,39 +202,39 @@ END
 			}
 		}
 
-        [TestClass]
-        public class ChangingPropertyOnTableInNonDefaultSchema
-        {
-            [TestExtendedProperties("Jiri", "OldValue")]
-            [Table("Table")]
-            private class SourceEntity
-            {
-                public int Id { get; set; }
-            }
+		[TestClass]
+		public class ChangingPropertyOnTableInNonDefaultSchema
+		{
+			[TestExtendedProperties("Jiri", "OldValue")]
+			[Table("Table")]
+			private class SourceEntity
+			{
+				public int Id { get; set; }
+			}
 
-            [TestExtendedProperties("Jiri", "NewValue")]
-            [Table("Table")]
-            private class TargetEntity
-            {
-                public int Id { get; set; }
-            }
+			[TestExtendedProperties("Jiri", "NewValue")]
+			[Table("Table")]
+			private class TargetEntity
+			{
+				public int Id { get; set; }
+			}
 
-            [TestMethod]
-            public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingPropertyOnTable()
-            {
-                var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
-                var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
-                var migrations = source.Migrate(target);
+			[TestMethod]
+			public void ExtendedPropertiesDbMigrations_EndToEnd_ChangingPropertyOnTable()
+			{
+				var source = new EndToEndTestDbContext<SourceEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+				var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
+				var migrations = source.Migrate(target);
 
-                Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(
-                    @"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
+				Assert.AreEqual(1, migrations.Count);
+				Assert.AreEqual(
+					@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
 ",
-                    migrations[0].CommandText);
-            }
-        }
+					migrations[0].CommandText);
+			}
+		}
 
-        [TestClass]
+		[TestClass]
 		public class AddingPropertyToColumn
 		{
 			[Table("Table")]
@@ -348,7 +348,7 @@ END
 					migrations[0].CommandText);
 			}
 		}
-		
+
 		[TestClass]
 		public class AddingPropertyToColumnQuoting
 		{
@@ -453,7 +453,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[T_Masters]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[T_Masters]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Test_Details_FooBar', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
 END
@@ -1181,7 +1181,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
 END
@@ -1212,7 +1212,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[OldName]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[OldName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'OldName';
 END
@@ -1247,7 +1247,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(2, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'OLD_TYPE', @level1name=N'Name';
 END
@@ -1330,7 +1330,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ProcedureName]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ProcedureName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
 END
@@ -1409,7 +1409,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ViewName]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ViewName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
 END
@@ -1488,7 +1488,7 @@ END
 				var migrations = source.Migrate(target);
 
 				Assert.AreEqual(1, migrations.Count);
-                Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[FunctionName]') IS NOT NULL
+				Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[FunctionName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';
 END

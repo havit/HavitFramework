@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.BeforeCommit
 			Mock<ITimeService> mockTimeService = new Mock<ITimeService>(MockBehavior.Strict);
 			mockTimeService.Setup(m => m.GetCurrentTime()).Returns(now);
 			SetCreatedToInsertingEntitiesBeforeCommitProcessor processor = new SetCreatedToInsertingEntitiesBeforeCommitProcessor(mockTimeService.Object);
-			
+
 			// Act
 			processor.Run(ChangeType.Insert, entity);
 

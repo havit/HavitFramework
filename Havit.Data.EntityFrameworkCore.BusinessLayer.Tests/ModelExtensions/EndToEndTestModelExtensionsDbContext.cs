@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 {
-    internal class EndToEndTestModelExtensionsDbContext<TEntity> : EndToEndTestDbContext<TEntity>
+	internal class EndToEndTestModelExtensionsDbContext<TEntity> : EndToEndTestDbContext<TEntity>
 		where TEntity : class
 	{
 		private readonly Type[] modelExtenderTypes;
@@ -17,14 +17,14 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 			this.modelExtenderTypes = modelExtenderTypes;
 		}
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			base.OnConfiguring(optionsBuilder);
 
-            IEnumerable<TypeInfo> typeInfos = modelExtenderTypes.Select(t => t.GetTypeInfo());
+			IEnumerable<TypeInfo> typeInfos = modelExtenderTypes.Select(t => t.GetTypeInfo());
 
-            // stub out Model Extender types in IModelExtensionsAssembly (used by Model Extensions infrastructure)
-            optionsBuilder.SetModelExtenderTypes(typeInfos);
-        }
-    }
+			// stub out Model Extender types in IModelExtensionsAssembly (used by Model Extensions infrastructure)
+			optionsBuilder.SetModelExtenderTypes(typeInfos);
+		}
+	}
 }

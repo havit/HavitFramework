@@ -71,16 +71,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			}
 		}
 
-        internal static void AddExtendedPropertyAnnotations(IConventionAnnotatable annotatable, MemberInfo memberInfo, bool fromDataAnnotation)
-        {
-            var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), false).Cast<ExtendedPropertiesAttribute>();
-            foreach (var attribute in attributes)
-            {
-                AddExtendedPropertyAnnotations(annotatable, attribute.GetExtendedProperties(memberInfo), fromDataAnnotation);
-            }
-        }
+		internal static void AddExtendedPropertyAnnotations(IConventionAnnotatable annotatable, MemberInfo memberInfo, bool fromDataAnnotation)
+		{
+			var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), false).Cast<ExtendedPropertiesAttribute>();
+			foreach (var attribute in attributes)
+			{
+				AddExtendedPropertyAnnotations(annotatable, attribute.GetExtendedProperties(memberInfo), fromDataAnnotation);
+			}
+		}
 
-        internal static void AddExtendedPropertyAnnotations(IConventionAnnotatable annotatable, IDictionary<string, string> extendedProperties, bool fromDataAnnotation)
+		internal static void AddExtendedPropertyAnnotations(IConventionAnnotatable annotatable, IDictionary<string, string> extendedProperties, bool fromDataAnnotation)
 		{
 			if (extendedProperties == null)
 			{

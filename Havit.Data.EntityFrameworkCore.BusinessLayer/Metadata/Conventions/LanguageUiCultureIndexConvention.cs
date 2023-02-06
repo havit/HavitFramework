@@ -27,7 +27,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				{
 					entityTypeBuilder
 						.HasIndex(new List<IConventionProperty> { uiCultureProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */)
-						.IsUnique(true, fromDataAnnotation: false /* Convention */);					
+						.IsUnique(true, fromDataAnnotation: false /* Convention */);
 				}
 			}
 		}

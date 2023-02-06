@@ -31,7 +31,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 			return annotatable.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation)
 				.ToDictionary(ExtendedPropertiesAnnotationsHelper.ParseAnnotationName, a => (string)a.Value);
-	    }
+		}
 
 		public static string GetStringExtendedProperty(this IReadOnlyAnnotatable annotatable, string key)
 		{
@@ -39,25 +39,25 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			return value;
 		}
 
-	    public static bool? GetBoolExtendedProperty(this IReadOnlyAnnotatable annotatable, string key)
-	    {
-	        if (!GetExtendedProperties(annotatable).TryGetValue(key, out string value))
-	        {
-	            return null;
-	        }
+		public static bool? GetBoolExtendedProperty(this IReadOnlyAnnotatable annotatable, string key)
+		{
+			if (!GetExtendedProperties(annotatable).TryGetValue(key, out string value))
+			{
+				return null;
+			}
 
-	        if (value.ToLowerInvariant() == "true" || value == "1")
-	        {
-	            return true;
-	        }
+			if (value.ToLowerInvariant() == "true" || value == "1")
+			{
+				return true;
+			}
 
-	        if (value.ToLowerInvariant() == "false" || value == "0")
-	        {
-	            return false;
-	        }
+			if (value.ToLowerInvariant() == "false" || value == "0")
+			{
+				return false;
+			}
 
-	        throw new ArgumentException($"Unknown bool value \"{value}\" in extended property {key}.");
-        }
+			throw new ArgumentException($"Unknown bool value \"{value}\" in extended property {key}.");
+		}
 
 		public static void AddExtendedProperties(this IMutableAnnotatable annotatable, IDictionary<string, string> extendedProperties)
 		{

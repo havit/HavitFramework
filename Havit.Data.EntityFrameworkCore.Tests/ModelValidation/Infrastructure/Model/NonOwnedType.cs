@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
 {
-    public class NonOwnedType
-    {
-        public int Id { get; set; }
-    }
+	public class NonOwnedType
+	{
+		public int Id { get; set; }
+	}
 }

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-    /// <summary>
-    /// Konvencia pre názvy stĺpcov s cudzím kľúčom - mení suffix z Id na ID (konvencia BusinessLayeru).
-    /// </summary>
-    public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
-    {
+	/// <summary>
+	/// Konvencia pre názvy stĺpcov s cudzím kľúčom - mení suffix z Id na ID (konvencia BusinessLayeru).
+	/// </summary>
+	public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
+	{
 		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 		{
 			SetColumnName(foreignKeyBuilder);

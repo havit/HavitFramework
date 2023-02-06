@@ -7,7 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model
 	public class NotMappedClass
 	{
 		public int Id { get; set; }
-		
+
 		[MaxLength(100)]
 		public string Name { get; set; }
 	}

@@ -97,7 +97,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks
 			Language language = new Language();
 			language.Culture = "";
 			language.UiCulture = "";
-			
+
 			// Act
 			dbUnitOfWork.AddForInsert(language);
 			await dbUnitOfWork.CommitAsync();

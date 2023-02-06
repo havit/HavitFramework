@@ -9,7 +9,7 @@
 		/// Datový zdroj obsahuje jen informace pro založení ghosta (primární klíč).
 		/// </summary>
 		Ghost,
-		
+
 		/// <summary>
 		/// Datový zdroj obsahuje nekompletní řádek dat.
 		/// </summary>

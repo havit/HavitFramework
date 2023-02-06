@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Metadata
 {
 	[TestClass]
 	public class EntityTypeExtensionsTests
-	{			
+	{
 		[TestMethod]
 		public void EntityTypeExtensions_IsSystemEntity()
 		{
@@ -52,7 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Metadata
 		{
 			// Arrange
 			ApplicationEntityTestDbContext applicationEntityTestDbContext = new ApplicationEntityTestDbContext();
-			
+
 			// Act + Assert
 			Assert.IsTrue(applicationEntityTestDbContext.Model.FindEntityType(typeof(DefaultApplicationEntity)).IsApplicationEntity());
 		}

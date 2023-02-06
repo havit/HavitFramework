@@ -7,7 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.M
 	{
 		public int Id { get; set; }
 
-        public List<Membership> Memberships { get; set; }
+		public List<Membership> Memberships { get; set; }
 
 		public DateTime? Deleted { get; set; }
 	}

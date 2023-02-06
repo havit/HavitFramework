@@ -34,11 +34,11 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 		/// </summary>
 		public string Sorting => GetExtendedProperties().FirstOrDefault(p => p.Item1 == nameof(CollectionAttribute.Sorting)).Item2;
 
-        public List<string> ParseSortingProperties() => string.IsNullOrEmpty(Sorting) ? new List<string>() : 
-            Regex.Matches(Sorting, "(^|[^{])({([^{}]*)}|\\[([^\\[\\]]*)\\])")
-                .Cast<Match>()
-                .Where(m => m.Success && m.Groups[4].Success)
-                .Select(m => m.Groups[4].Value)
-                .ToList();
-    }
+		public List<string> ParseSortingProperties() => string.IsNullOrEmpty(Sorting) ? new List<string>() :
+			Regex.Matches(Sorting, "(^|[^{])({([^{}]*)}|\\[([^\\[\\]]*)\\])")
+				.Cast<Match>()
+				.Where(m => m.Success && m.Groups[4].Success)
+				.Select(m => m.Groups[4].Value)
+				.ToList();
+	}
 }

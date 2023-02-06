@@ -50,7 +50,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups.Infrastructure
 		/// </summary>
 		protected override Expression<Func<Uzivatel, bool>> Filter => filter;
 		private Expression<Func<Uzivatel, bool>> filter;
-		
+
 		public void SetIncludeDeleted(bool value) => includeDeleted = value;
 		public void SetThrowExceptionWhenNotFound(bool value) => throwExceptionWhenNotFound = value;
 		public void SetFilter(Expression<Func<Uzivatel, bool>> value) => filter = value;

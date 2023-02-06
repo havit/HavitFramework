@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-    /// <summary>
-    /// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
-    /// </summary>
-    public class ForeignKeysIndexConvention :
-        IForeignKeyAddedConvention,
-        IForeignKeyPropertiesChangedConvention,
-        IForeignKeyRemovedConvention,
-        IPropertyAnnotationChangedConvention,
-        IEntityTypeAnnotationChangedConvention
+	/// <summary>
+	/// Zajišťuje tvorbu indexů pro cizí klíče spolu se sloupcem Deleted.
+	/// </summary>
+	public class ForeignKeysIndexConvention :
+		IForeignKeyAddedConvention,
+		IForeignKeyPropertiesChangedConvention,
+		IForeignKeyRemovedConvention,
+		IPropertyAnnotationChangedConvention,
+		IEntityTypeAnnotationChangedConvention
 	{
 		public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder,
 			IConventionContext<IConventionForeignKeyBuilder> context)
@@ -25,7 +25,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			CreateIndex(foreignKeyBuilder);
 		}
 
-        public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder,
+		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder,
 			IReadOnlyList<IConventionProperty> oldDependentProperties,
 			IConventionKey oldPrincipalKey,
 			IConventionContext<IReadOnlyList<IConventionProperty>> context)
@@ -36,20 +36,20 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			CreateIndex(foreignKeyBuilder);
 		}
 
-        public void ProcessForeignKeyRemoved(
-            IConventionEntityTypeBuilder entityTypeBuilder,
-            IConventionForeignKey foreignKey,
-            IConventionContext<IConventionForeignKey> context)
+		public void ProcessForeignKeyRemoved(
+			IConventionEntityTypeBuilder entityTypeBuilder,
+			IConventionForeignKey foreignKey,
+			IConventionContext<IConventionForeignKey> context)
 		{
 			RemoveIndex(entityTypeBuilder, foreignKey.Properties);
 		}
 
-        public void ProcessPropertyAnnotationChanged(
-            IConventionPropertyBuilder propertyBuilder,
-            string name,
-            IConventionAnnotation annotation,
-            IConventionAnnotation oldAnnotation,
-            IConventionContext<IConventionAnnotation> context)
+		public void ProcessPropertyAnnotationChanged(
+			IConventionPropertyBuilder propertyBuilder,
+			string name,
+			IConventionAnnotation annotation,
+			IConventionAnnotation oldAnnotation,
+			IConventionContext<IConventionAnnotation> context)
 		{
 			if (annotation?.Name == RelationalAnnotationNames.ColumnName)
 			{
@@ -57,12 +57,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 			}
 		}
 
-        public void ProcessEntityTypeAnnotationChanged(
-            IConventionEntityTypeBuilder entityTypeBuilder,
-            string name,
-            IConventionAnnotation annotation,
-            IConventionAnnotation oldAnnotation,
-            IConventionContext<IConventionAnnotation> context)
+		public void ProcessEntityTypeAnnotationChanged(
+			IConventionEntityTypeBuilder entityTypeBuilder,
+			string name,
+			IConventionAnnotation annotation,
+			IConventionAnnotation oldAnnotation,
+			IConventionContext<IConventionAnnotation> context)
 		{
 			if (annotation?.Name == RelationalAnnotationNames.TableName)
 			{

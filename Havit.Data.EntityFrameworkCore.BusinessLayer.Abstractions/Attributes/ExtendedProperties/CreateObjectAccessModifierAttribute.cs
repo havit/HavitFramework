@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 		/// Access modifier pro metodu Create Object.
 		/// </summary>
 		public string AccessModifier { get; }
-		
+
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>

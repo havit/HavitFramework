@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
 	/// <summary>
-    /// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
+	/// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
 	/// </summary>
 	public static class ExtendedPropertiesForExtraDatabaseObjectsBuilder
 	{

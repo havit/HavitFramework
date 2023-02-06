@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.M
 	public class ClassB
 	{
 		public int Id { get; set; }
-		
+
 		public ClassA ClassA { get; set; }
 		public int ClassAId { get; set; }
 	}

@@ -18,7 +18,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 		/// </summary>
 		[TestMethod]
 		public void DbContext_SaveChanges_CallsAfterSaveChangesOnlyOnce()
-		{			
+		{
 			// Arrange
 			Mock<EmptyDbContext> dbContextMock1 = new Mock<EmptyDbContext>();
 			dbContextMock1.CallBase = true;
@@ -77,7 +77,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 			dbContext.AfterSaveChanges();
 			Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
 		}
-		
+
 		[TestMethod]
 		public void DbContext_ExecuteWithDbUpdateExceptionHandling_WrapsDbUpdateException()
 		{
@@ -111,9 +111,9 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 			var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
 
 			// Assert
-			#pragma warning disable EF1001 // Internal EF Core API usage.
+#pragma warning disable EF1001 // Internal EF Core API usage.
 			Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
-			#pragma warning restore EF1001 // Internal EF Core API usage.
+#pragma warning restore EF1001 // Internal EF Core API usage.
 		}
 	}
 }

@@ -59,7 +59,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 				keyBuilder.Metadata.DeclaringEntityType.AddExtendedProperties(new Dictionary<string, string>()
 					{
 						{ "Namespace", entityNamespace },
-					}, 
+					},
 					fromDataAnnotation: false /* Convention */);
 			}
 		}

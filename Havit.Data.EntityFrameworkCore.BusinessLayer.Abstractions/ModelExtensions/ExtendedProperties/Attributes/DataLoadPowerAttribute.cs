@@ -8,10 +8,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedP
 	/// Atribút pre nastavenie DataLoadPower extended property na uloženej procedúre.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method)]
-    public class DataLoadPowerAttribute : ModelExtensionExtendedPropertiesAttribute
-    {
-	    /// <inheritdoc />
-	    public override string ObjectType { get; } = "PROCEDURE";
+	public class DataLoadPowerAttribute : ModelExtensionExtendedPropertiesAttribute
+	{
+		/// <inheritdoc />
+		public override string ObjectType { get; } = "PROCEDURE";
 
 		/// <summary>
 		/// Určuje, jaké množství dat se vrací z uložené procedury. Je použito pro návratové typy Object a Collection (viz ResultType).
@@ -21,15 +21,15 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedP
 		/// <summary>
 		/// Konštruktor.
 		/// </summary>
-	    public DataLoadPowerAttribute(DataLoadPowerType powerType)
-	    {
-		    PowerType = powerType;
-	    }
+		public DataLoadPowerAttribute(DataLoadPowerType powerType)
+		{
+			PowerType = powerType;
+		}
 
-	    /// <inheritdoc />
-	    public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>
-	    {
-		    { "DataLoadPower", PowerType.ToString() }
-	    };
-    }
+		/// <inheritdoc />
+		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>
+		{
+			{ "DataLoadPower", PowerType.ToString() }
+		};
+	}
 }

@@ -12,10 +12,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 {
-    /// <summary>
-    /// Konvencia pre definovanie Collection_{propertyName} extended properties na entitách. Vynecháva kolekcie s názvom "Localizations", nakoľko by BusinessLayerGenerator vygeneroval kolekciu dvakrát.
-    /// </summary>
-    public class CollectionExtendedPropertiesConvention : INavigationAddedConvention, IForeignKeyPropertiesChangedConvention
+	/// <summary>
+	/// Konvencia pre definovanie Collection_{propertyName} extended properties na entitách. Vynecháva kolekcie s názvom "Localizations", nakoľko by BusinessLayerGenerator vygeneroval kolekciu dvakrát.
+	/// </summary>
+	public class CollectionExtendedPropertiesConvention : INavigationAddedConvention, IForeignKeyPropertiesChangedConvention
 	{
 		public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
 		{

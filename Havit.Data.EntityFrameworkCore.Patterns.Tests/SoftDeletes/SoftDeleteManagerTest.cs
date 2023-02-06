@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.SoftDeletes
 			// Arrange
 			Mock<ITimeService> mockTimeSevice = new Mock<ITimeService>();
 			SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
-			
+
 			// Act
 			bool softDeleteSupported = softDeleteManager.IsSoftDeleteSupported<NullableDateTimeDeleted>();
 
@@ -29,7 +29,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.SoftDeletes
 			// Arrange
 			Mock<ITimeService> mockTimeSevice = new Mock<ITimeService>();
 			SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
-			
+
 			// Act
 			bool softDeleteSupported = softDeleteManager.IsSoftDeleteSupported<DateTimeDeleted>();
 
@@ -43,7 +43,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.SoftDeletes
 			// Arrange
 			Mock<ITimeService> mockTimeSevice = new Mock<ITimeService>();
 			SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
-			
+
 			// Act
 			bool softDeleteSupported = softDeleteManager.IsSoftDeleteSupported<BooleanDeleted>();
 
@@ -114,7 +114,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.SoftDeletes
 			object unsupportedType = new object();
 
 			// Act
-			softDeleteManager.SetDeleted(unsupportedType); 
+			softDeleteManager.SetDeleted(unsupportedType);
 
 			// Assert by method attribute 
 		}

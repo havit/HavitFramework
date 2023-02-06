@@ -23,7 +23,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
 			base.CustomizeModelCreating(modelBuilder);
-			
+
 			// Entity
 			modelBuilder.Entity<LoginAccount>();
 			modelBuilder.Entity<Role>();

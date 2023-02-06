@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 			: base(dependencies)
 		{ }
 
-        public override IEnumerable<IAnnotation> For(IColumn column, bool designTime)
+		public override IEnumerable<IAnnotation> For(IColumn column, bool designTime)
 		{
 			return column.PropertyMappings.Select(mapping => mapping.Property).SelectMany(Handle);
 		}

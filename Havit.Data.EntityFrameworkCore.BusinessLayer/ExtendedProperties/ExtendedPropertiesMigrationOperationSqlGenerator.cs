@@ -15,24 +15,24 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 {
 	internal class ExtendedPropertiesMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
 	{
-	    private const string DefaultSchemaName = "dbo";
-	    private const string TableLevel1Type = "TABLE";
-		
-        private readonly ISqlGenerationHelper sqlGenerationHelper;
-        private readonly Lazy<RelationalTypeMapping> stringTypeMappingLazy;
+		private const string DefaultSchemaName = "dbo";
+		private const string TableLevel1Type = "TABLE";
 
-        private RelationalTypeMapping StringTypeMapping => stringTypeMappingLazy.Value;
+		private readonly ISqlGenerationHelper sqlGenerationHelper;
+		private readonly Lazy<RelationalTypeMapping> stringTypeMappingLazy;
 
-        public ExtendedPropertiesMigrationOperationSqlGenerator(
-            IRelationalTypeMappingSource typeMappingSource,
-            ISqlGenerationHelper sqlGenerationHelper)
-        {
-            this.sqlGenerationHelper = sqlGenerationHelper;
+		private RelationalTypeMapping StringTypeMapping => stringTypeMappingLazy.Value;
 
-            stringTypeMappingLazy = new Lazy<RelationalTypeMapping>(() => typeMappingSource.FindMapping(typeof(string)));
-        }
+		public ExtendedPropertiesMigrationOperationSqlGenerator(
+			IRelationalTypeMappingSource typeMappingSource,
+			ISqlGenerationHelper sqlGenerationHelper)
+		{
+			this.sqlGenerationHelper = sqlGenerationHelper;
 
-        public override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
+			stringTypeMappingLazy = new Lazy<RelationalTypeMapping>(() => typeMappingSource.FindMapping(typeof(string)));
+		}
+
+		public override void Generate(CreateTableOperation operation, IModel model, MigrationCommandListBuilder builder)
 		{
 			foreach (var annotation in operation.GetAnnotations().Where(ExtendedPropertiesAnnotationsHelper.IsExtendedPropertyAnnotation))
 			{
@@ -197,29 +197,29 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		private void DropExtendedPropertyLevel1WithType(string name, string schemaName, string level1Type, string level1Name, MigrationCommandListBuilder builder)
 		{
-            builder
-                .Append("IF OBJECT_ID(")
-                .Append(GenerateSqlLiteral(sqlGenerationHelper.DelimitIdentifier(level1Name, schemaName)))
-                .AppendLine(") IS NOT NULL")
-                .AppendLine("BEGIN");
+			builder
+				.Append("IF OBJECT_ID(")
+				.Append(GenerateSqlLiteral(sqlGenerationHelper.DelimitIdentifier(level1Name, schemaName)))
+				.AppendLine(") IS NOT NULL")
+				.AppendLine("BEGIN");
 
-            using (builder.Indent())
-            {
-                builder
-                    .Append("EXEC sys.sp_dropextendedproperty @name=")
-                    .Append(GenerateSqlLiteral(name))
-                    .Append(", @level0type=N'SCHEMA', @level0name=")
-                    .Append(GenerateSqlLiteral(schemaName))
-                    .Append(", @level1type=N'")
-                    .Append(level1Type)
-                    .Append("', @level1name=")
-                    .Append(GenerateSqlLiteral(level1Name))
-                    .AppendLine(";");
-            }
+			using (builder.Indent())
+			{
+				builder
+					.Append("EXEC sys.sp_dropextendedproperty @name=")
+					.Append(GenerateSqlLiteral(name))
+					.Append(", @level0type=N'SCHEMA', @level0name=")
+					.Append(GenerateSqlLiteral(schemaName))
+					.Append(", @level1type=N'")
+					.Append(level1Type)
+					.Append("', @level1name=")
+					.Append(GenerateSqlLiteral(level1Name))
+					.AppendLine(";");
+			}
 
-            builder.AppendLine("END")
-                .EndCommand();
-        }
+			builder.AppendLine("END")
+				.EndCommand();
+		}
 		private void DropExtendedPropertyLevel1(string name, string schemaName, string tableName, MigrationCommandListBuilder builder)
 		{
 			DropExtendedPropertyLevel1WithType(name, schemaName, TableLevel1Type, tableName, builder);
@@ -374,7 +374,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties
 
 		}
 
-		private static bool ShouldMakeTemporaryVariable(string propertyValue) 
+		private static bool ShouldMakeTemporaryVariable(string propertyValue)
 			=> Regex.IsMatch(propertyValue, @"^(concat\(|cast\()+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 		private string GenerateSqlLiteral(string s) => StringTypeMapping.GenerateSqlLiteral(s);

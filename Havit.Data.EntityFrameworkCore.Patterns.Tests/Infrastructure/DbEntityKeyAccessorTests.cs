@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Infrastructure
 		public void GetEntityKeyPropertyName_GetEntityKeyPropertyName()
 		{
 			// Arrange
-			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), new TestDbContext());			
+			DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), new TestDbContext());
 
 			// Act + Assert
 			Assert.AreEqual(nameof(Language.Id), dbEntityKeyAccessor.GetEntityKeyPropertyNames(typeof(Language)).Single());

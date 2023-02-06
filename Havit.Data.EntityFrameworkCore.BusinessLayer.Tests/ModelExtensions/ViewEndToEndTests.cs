@@ -9,9 +9,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 {
 	public class ViewEndToEndTests
-    {
-	    [TestClass]
-	    public class ViewWithMsDescriptionExtendedProperty
+	{
+		[TestClass]
+		public class ViewWithMsDescriptionExtendedProperty
 		{
 			[Attach(nameof(Invoice))]
 			public class InvoiceViews : ViewModelExtender
@@ -31,16 +31,16 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions
 				public int Id { get; set; }
 			}
 
-		    //[TestMethod]
+			//[TestMethod]
 			// TODO: support for XML comments / MS_Description on views
-		    public void ViewModelExtensions_EndToEnd_ViewWithMsDescriptionExtendedProperty()
-		    {
-			    var source = new EndToEndTestModelExtensionsDbContext<Invoice>(typeof(InvoiceViews));
-			    var model = source.Model;
+			public void ViewModelExtensions_EndToEnd_ViewWithMsDescriptionExtendedProperty()
+			{
+				var source = new EndToEndTestModelExtensionsDbContext<Invoice>(typeof(InvoiceViews));
+				var model = source.Model;
 
-			    IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
-			    Assert.AreEqual("Gets all unpaid invoices.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
-		    }
-	    }
+				IDictionary<string, string> extendedProperties = model.GetExtendedProperties();
+				Assert.AreEqual("Gets all unpaid invoices.", extendedProperties.FirstOrDefault(a => a.Key.EndsWith("MS_Description")).Value?.Trim());
+			}
+		}
 	}
 }

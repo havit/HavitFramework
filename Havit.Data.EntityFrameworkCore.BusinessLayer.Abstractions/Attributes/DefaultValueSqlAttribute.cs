@@ -14,7 +14,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes
 		/// SQL Statement (expression).
 		/// </summary>
 		public string Value { get; }
-	
+
 		/// <summary>
 		/// Konstuktor.
 		/// </summary>

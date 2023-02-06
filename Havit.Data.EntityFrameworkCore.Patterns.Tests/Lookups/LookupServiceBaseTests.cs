@@ -162,7 +162,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups
 			UzivatelLookupService uzivatelLookupService = CreateLookupService(uzivatele);
 
 			// Act + Assert			
-			Assert.AreSame(uzivatel1, uzivatelLookupService.GetUzivatelByEmail(uzivatel1.Email)); 
+			Assert.AreSame(uzivatel1, uzivatelLookupService.GetUzivatelByEmail(uzivatel1.Email));
 
 			// změníme uživateli email
 			uzivatel1.Email = "another-email@havit.cz"; // změní
@@ -219,7 +219,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups
 			Mock<IEntityKeyAccessor> entityKeyAccessorMock = new Mock<IEntityKeyAccessor>(MockBehavior.Strict);
 			entityKeyAccessorMock.Setup(m => m.GetEntityKeyPropertyNames(typeof(Uzivatel))).Returns(new string[] { "Id" });
 			entityKeyAccessorMock.Setup(m => m.GetEntityKeyValues(It.IsAny<object>())).Returns((object o) => new object[] { ((Uzivatel)o).Id });
-			
+
 			var uzivatelLookupService = new UzivatelLookupService(new EntityLookupDataStorage(), uzivatelRepositoryMock.Object, uzivatelDataSource, entityKeyAccessorMock.Object, new SoftDeleteManager(new ServerTimeService()));
 			uzivatelLookupService.SetThrowExceptionWhenNotFound(false);
 			return uzivatelLookupService;

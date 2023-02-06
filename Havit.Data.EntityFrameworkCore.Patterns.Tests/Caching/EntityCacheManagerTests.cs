@@ -21,20 +21,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		[TestMethod]
 		public void EntityCacheManager_Store_CallsShouldCacheEntity()
 		{
-            // Arrange
-            CachingTestDbContext dbContext = new CachingTestDbContext();
-            Role role = new Role { Id = 100 };
-            dbContext.Attach(role);
-			
+			// Arrange
+			CachingTestDbContext dbContext = new CachingTestDbContext();
+			Role role = new Role { Id = 100 };
+			dbContext.Attach(role);
+
 			Mock<IEntityCacheSupportDecision> entityCacheSupportDecisionMock = new Mock<IEntityCacheSupportDecision>(MockBehavior.Strict);
 			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntity(role)).Returns(false);
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                entityCacheSupportDecision: entityCacheSupportDecisionMock.Object
-            );
+				dbContext: dbContext,
+				entityCacheSupportDecision: entityCacheSupportDecisionMock.Object
+			);
 
-            // Act
+			// Act
 			entityCacheManager.StoreEntity(role);
 
 			// Assert
@@ -45,15 +45,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		public void EntityCacheManager_Store_CallsCacheServiceAddWhenShouldCache()
 		{
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-            Role role = new Role { Id = 100 };
-            dbContext.Attach(role);
+			Role role = new Role { Id = 100 };
+			dbContext.Attach(role);
 
-            Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                cacheService: cacheServiceMock.Object);
+				dbContext: dbContext,
+				cacheService: cacheServiceMock.Object);
 
 			entityCacheManager.StoreEntity(role);
 
@@ -66,48 +66,48 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 		{
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-            Role role = new Role { Id = 100 };
-            dbContext.Attach(role);
+			Role role = new Role { Id = 100 };
+			dbContext.Attach(role);
 
-            Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
 
 			Mock<IEntityCacheSupportDecision> entityCacheSupportDecisionMock = new Mock<IEntityCacheSupportDecision>(MockBehavior.Strict);
 			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntity(role)).Returns(false);
 
-            EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                entityCacheSupportDecision: entityCacheSupportDecisionMock.Object,
-                cacheService: cacheServiceMock.Object);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+				dbContext: dbContext,
+				entityCacheSupportDecision: entityCacheSupportDecisionMock.Object,
+				cacheService: cacheServiceMock.Object);
 
-            // Act
+			// Act
 			entityCacheManager.StoreEntity(role);
 
 			// Assert
 			cacheServiceMock.Verify(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()), Times.Never);
 		}
-        
+
 		[TestMethod]
 		public void EntityCacheManager_TryGet_CallsCacheServiceTryGetWhenCouldCache()
 		{
-            // Arrange
+			// Arrange
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			object tryGetOutParameter;
 			cacheServiceMock.Setup(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter)).Returns(false);
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheServiceMock.Object);
 
-            // Act
-            var result = entityCacheManager.TryGetEntity<Role>(555, out Role role);
+			// Act
+			var result = entityCacheManager.TryGetEntity<Role>(555, out Role role);
 
 			// Assert
 			cacheServiceMock.Verify(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter), Times.Once);
 		}
-        
+
 		[TestMethod]
 		public void EntityCacheManager_TryGet_DoesNotCallCacheServiceTryGetWhenShouldNotCache()
 		{
-            // Arrange
+			// Arrange
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			object tryGetOutParameter;
 			cacheServiceMock.Setup(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter)).Returns(false);
@@ -116,20 +116,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			entityCacheSupportDecisionMock.Setup(m => m.ShouldCacheEntityType(typeof(Role))).Returns(false);
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                cacheService: cacheServiceMock.Object, 
-                entityCacheSupportDecision: entityCacheSupportDecisionMock.Object);
+				cacheService: cacheServiceMock.Object,
+				entityCacheSupportDecision: entityCacheSupportDecisionMock.Object);
 
-            // Act
-            var result = entityCacheManager.TryGetEntity<Role>(555, out Role langauge);
+			// Act
+			var result = entityCacheManager.TryGetEntity<Role>(555, out Role langauge);
 
 			// Assert
 			cacheServiceMock.Verify(m => m.TryGet(It.IsAny<string>(), out tryGetOutParameter), Times.Never);
 		}
-        
+
 		[TestMethod]
 		public void EntityCacheManager_Scenarion_Store_And_TryGet()
 		{
-            // Arrange
+			// Arrange
 			ICacheService cacheService = new DictionaryCacheService();
 
 			CachingTestDbContext dbContext1 = new CachingTestDbContext();
@@ -138,7 +138,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			CachingTestDbContext dbContext2 = new CachingTestDbContext();
 			var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
-            Role role = new Role { Id = 100, Name = "Reader" };
+			Role role = new Role { Id = 100, Name = "Reader" };
 			dbContext1.Attach(role);
 
 			// Act
@@ -155,101 +155,101 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			Assert.AreEqual(Microsoft.EntityFrameworkCore.EntityState.Unchanged, dbContext2.Entry(roleResult).State);
 		}
 
-        [TestMethod]
-        public void EntityCacheManager_Scenarion_StoreAllKeys_And_TryGetAllKeys()
-        {
-            // Arrange
-            ICacheService cacheService = new DictionaryCacheService();
+		[TestMethod]
+		public void EntityCacheManager_Scenarion_StoreAllKeys_And_TryGetAllKeys()
+		{
+			// Arrange
+			ICacheService cacheService = new DictionaryCacheService();
 
-            var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheService);
-            var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheService);
+			var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheService);
+			var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheService);
 
-            object allKeys = new object(); // just a marker object
-            // Act
-            entityCacheManager1.StoreAllKeys<Role>(allKeys);
-            bool success = entityCacheManager2.TryGetAllKeys<Role>(out object allKeysResult);
+			object allKeys = new object(); // just a marker object
+										   // Act
+			entityCacheManager1.StoreAllKeys<Role>(allKeys);
+			bool success = entityCacheManager2.TryGetAllKeys<Role>(out object allKeysResult);
 
-            // Assert
-            Assert.IsTrue(success);
-            Assert.IsNotNull(allKeysResult);
-            Assert.AreSame(allKeys, allKeysResult);
-        }
+			// Assert
+			Assert.IsTrue(success);
+			Assert.IsNotNull(allKeysResult);
+			Assert.AreSame(allKeys, allKeysResult);
+		}
 
-        [TestMethod]
-        public void EntityCacheManager_Scenarion_OneToMany_StoreCollection_And_TryGetCollection()
-        {
-            // Arrange
-            ICacheService cacheService = new DictionaryCacheService();
+		[TestMethod]
+		public void EntityCacheManager_Scenarion_OneToMany_StoreCollection_And_TryGetCollection()
+		{
+			// Arrange
+			ICacheService cacheService = new DictionaryCacheService();
+
+			CachingTestDbContext dbContext1 = new CachingTestDbContext();
+
+			Master master = new Master { Id = 1 };
+			Child child1 = new Child { Id = 100, ParentId = 1, Parent = master };
+			Child child2 = new Child { Id = 101, ParentId = 1, Parent = master, Deleted = DateTime.Now };
+			master.ChildrenIncludingDeleted.Add(child1);
+			master.ChildrenIncludingDeleted.Add(child2);
+			dbContext1.Attach(master);
+
+			var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
+
+			CachingTestDbContext dbContext2 = new CachingTestDbContext();
+			Master masterResult = new Master { Id = 1 };
+			dbContext2.Attach(masterResult);
+
+			var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
+
+			// Act
+			entityCacheManager1.StoreCollection<Master, Child>(master, nameof(Master.ChildrenIncludingDeleted));
+			entityCacheManager1.StoreEntity(child1);
+			entityCacheManager1.StoreEntity(child2);
+			bool success = entityCacheManager2.TryGetCollection<Master, Child>(masterResult, nameof(Master.ChildrenIncludingDeleted));
+
+			// Assert
+			Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
+			Assert.AreEqual(master.ChildrenIncludingDeleted.Count, masterResult.ChildrenIncludingDeleted.Count);
+			Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child1.Id));
+			Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child2.Id));
+			Assert.AreEqual(4, master.ChildrenIncludingDeleted.Union(masterResult.ChildrenIncludingDeleted).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
+		}
+
+		[TestMethod]
+		public void EntityCacheManager_Scenarion_ManyToMany_StoreCollection_And_TryGetCollection()
+		{
+			// Arrange
+			ICacheService cacheService = new DictionaryCacheService();
 
 			CachingTestDbContext dbContext1 = new CachingTestDbContext();
 
-            Master master = new Master { Id = 1 };
-            Child child1 = new Child { Id = 100, ParentId = 1, Parent = master };
-            Child child2 = new Child { Id = 101, ParentId = 1, Parent = master, Deleted = DateTime.Now };
-            master.ChildrenIncludingDeleted.Add(child1);
-            master.ChildrenIncludingDeleted.Add(child2);
-            dbContext1.Attach(master);
+			LoginAccount loginAccount = new LoginAccount { Id = 1 };
+			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1234 };
+			loginAccount.Memberships = new List<Membership> { membership };
 
-            var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
+			var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
 			CachingTestDbContext dbContext2 = new CachingTestDbContext();
-            Master masterResult = new Master { Id = 1 };
-            dbContext2.Attach(masterResult);
+			LoginAccount loginAccountResult = new LoginAccount { Id = 1 };
+			dbContext2.Attach(loginAccountResult);
 
-            var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
+			var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
-            // Act
-            entityCacheManager1.StoreCollection<Master, Child>(master, nameof(Master.ChildrenIncludingDeleted));
-            entityCacheManager1.StoreEntity(child1);
-            entityCacheManager1.StoreEntity(child2);
-            bool success = entityCacheManager2.TryGetCollection<Master, Child>(masterResult, nameof(Master.ChildrenIncludingDeleted));
+			// Act
+			entityCacheManager1.StoreCollection<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
+			bool success = entityCacheManager2.TryGetCollection<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
 
-            // Assert
-            Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
-            Assert.AreEqual(master.ChildrenIncludingDeleted.Count, masterResult.ChildrenIncludingDeleted.Count);
-            Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child1.Id));
-            Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child2.Id));
-            Assert.AreEqual(4, master.ChildrenIncludingDeleted.Union(masterResult.ChildrenIncludingDeleted).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
-        }
+			// Assert
+			Assert.IsTrue(success);
+			Assert.AreEqual(1, loginAccountResult.Memberships.Count);
+			Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
+			Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
+		}
 
-        [TestMethod]
-        public void EntityCacheManager_Scenarion_ManyToMany_StoreCollection_And_TryGetCollection()
-        {
-            // Arrange
-            ICacheService cacheService = new DictionaryCacheService();
-
-			CachingTestDbContext dbContext1 = new CachingTestDbContext();
-            
-            LoginAccount loginAccount = new LoginAccount { Id = 1 };
-            Membership membership = new Membership { LoginAccountId = 1, RoleId = 1234 };
-            loginAccount.Memberships = new List<Membership> { membership };
-
-            var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
-
-			CachingTestDbContext dbContext2 = new CachingTestDbContext();
-            LoginAccount loginAccountResult = new LoginAccount { Id = 1 };
-            dbContext2.Attach(loginAccountResult);
-
-            var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
-
-            // Act
-            entityCacheManager1.StoreCollection<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
-            bool success = entityCacheManager2.TryGetCollection<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
-
-            // Assert
-            Assert.IsTrue(success);
-            Assert.AreEqual(1, loginAccountResult.Memberships.Count);
-            Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
-            Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
-        }
-        
-        [TestMethod]
+		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_RemovesEntityAndAllKeysOnUpdate()
 		{
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-            LoginAccount loginAccount = new LoginAccount { Id = 1 };
-            dbContext.Attach(loginAccount);
+			LoginAccount loginAccount = new LoginAccount { Id = 1 };
+			dbContext.Attach(loginAccount);
 
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
@@ -261,9 +261,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                cacheService: cacheServiceMock.Object,
-                entityCacheKeyGenerator: entityCacheKeyGenerator);
+				dbContext: dbContext,
+				cacheService: cacheServiceMock.Object,
+				entityCacheKeyGenerator: entityCacheKeyGenerator);
 
 			Changes changes = new Changes
 			{
@@ -280,14 +280,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			cacheServiceMock.Verify(m => m.Remove(allKeysCacheKey), Times.Once);
 			cacheServiceMock.Verify(m => m.Remove(It.IsAny<string>()), Times.Exactly(2)); // a nic víc
 		}
-        
+
 		[TestMethod]
 		public void EntityCacheManager_InvalidateEntity_DoesNotRemoveEntityButRemovesAllKeysOnInsert()
 		{
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
-            LoginAccount loginAccount = new LoginAccount { Id = 1 };
-            dbContext.Attach(loginAccount);
+			LoginAccount loginAccount = new LoginAccount { Id = 1 };
+			dbContext.Attach(loginAccount);
 
 			Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
 			cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
@@ -299,9 +299,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                cacheService: cacheServiceMock.Object,
-                entityCacheKeyGenerator: entityCacheKeyGenerator);
+				dbContext: dbContext,
+				cacheService: cacheServiceMock.Object,
+				entityCacheKeyGenerator: entityCacheKeyGenerator);
 
 			Changes changes = new Changes
 			{
@@ -370,9 +370,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching
 			// Arrange
 			CachingTestDbContext dbContext = new CachingTestDbContext();
 			Membership membership = new Membership { LoginAccountId = 100, RoleId = 999 };
-            dbContext.Attach(membership);
+			dbContext.Attach(membership);
 
-            EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
 
 			Changes changes = new Changes
 			{

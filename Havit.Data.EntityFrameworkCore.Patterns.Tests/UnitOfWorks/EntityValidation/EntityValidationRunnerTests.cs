@@ -46,7 +46,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.EntityValida
 			entityValidatorMock.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
 			entityValidatorMock.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);
 			entityValidatorMock.Verify(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
-			
+
 			entityValidatorMock2.Verify(m => m.Validate(ChangeType.Insert, entityInserting), Times.Once);
 			entityValidatorMock2.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
 			entityValidatorMock2.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);

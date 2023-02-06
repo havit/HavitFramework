@@ -32,7 +32,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProper
 			var result = new Dictionary<string, string>();
 
 			if (!String.IsNullOrEmpty(PropertyAccessModifier))
-			{ 
+			{
 				result.Add("PropertyAccessModifier", PropertyAccessModifier);
 			}
 

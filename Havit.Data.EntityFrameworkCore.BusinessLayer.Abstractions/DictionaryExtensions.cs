@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 
 			// operator== is undefined for generic T; EqualityComparer solves this
 			if (!EqualityComparer<TValue>.Default.Equals(value, businessLayerGeneratorDefaultValue))
-			{ 
+			{
 				dictionary.Add(key, value.ToString());
 			}
 

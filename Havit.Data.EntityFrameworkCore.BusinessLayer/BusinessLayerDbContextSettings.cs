@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 {
-    /// <summary>
-    /// Konfigurácia <see cref="BusinessLayerDbContext"/>u, t.j. DbContextu pre Business Layer aplikácie (aka DB Migrations).
-    ///
-    /// <remarks>Úprava konfigurácie prebieha v metóde <see cref="BusinessLayerDbContext.CreateDbContextSettings"/>, ktorú je potrebné prepísať v aplikačnom DbContexte.</remarks>
-    /// </summary>
+	/// <summary>
+	/// Konfigurácia <see cref="BusinessLayerDbContext"/>u, t.j. DbContextu pre Business Layer aplikácie (aka DB Migrations).
+	///
+	/// <remarks>Úprava konfigurácie prebieha v metóde <see cref="BusinessLayerDbContext.CreateDbContextSettings"/>, ktorú je potrebné prepísať v aplikačnom DbContexte.</remarks>
+	/// </summary>
 	public class BusinessLayerDbContextSettings
 	{
 		/// <summary>
@@ -18,17 +18,17 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// </summary>
 		public bool UseCollectionExtendedPropertiesConvention { get; set; } = true;
 
-        /// <summary>
-        /// Indikuje používání konvence CollectionOrderIndexConvention.
-        /// Výchozí hodnota je false (WIP).
-        /// </summary>
-        public bool UseCollectionOrderIndexConvention { get; set; } = false;
+		/// <summary>
+		/// Indikuje používání konvence CollectionOrderIndexConvention.
+		/// Výchozí hodnota je false (WIP).
+		/// </summary>
+		public bool UseCollectionOrderIndexConvention { get; set; } = false;
 
-        /// <summary>
-        /// Indikuje používání konvence ExtendedPropertiesConvention.
-        /// Výchozí hodnota je true.
-        /// </summary>
-        public bool UseAttributeBasedExtendedPropertiesConvention { get; set; } = true;
+		/// <summary>
+		/// Indikuje používání konvence ExtendedPropertiesConvention.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool UseAttributeBasedExtendedPropertiesConvention { get; set; } = true;
 
 		/// <summary>
 		/// Indikuje používání konvence DefaultValueAttributeConvention.
@@ -96,12 +96,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 		/// </summary>
 		public bool UseXmlCommentsForDescriptionPropertyConvention { get; set; } = true;
 
-        /// <summary>
-        /// <see cref="Assembly"/>, ktorá obsahuje Model Extendery (objekty, ktoré reprezentujú rozšírenie dátového modelu napr. o uložené procedúry).
-        /// </summary>
-        /// <remarks>
-        /// <para>Štandardne sa nastaví na assembly, v ktorej sa nachádza DbContext aplikácie (t.j. trieda, ktorá dedí od <see cref="BusinessLayerDbContext"/>).</para>
-        /// </remarks>
-        public Assembly ModelExtensionsAssembly { get; set; }
-    }
+		/// <summary>
+		/// <see cref="Assembly"/>, ktorá obsahuje Model Extendery (objekty, ktoré reprezentujú rozšírenie dátového modelu napr. o uložené procedúry).
+		/// </summary>
+		/// <remarks>
+		/// <para>Štandardne sa nastaví na assembly, v ktorej sa nachádza DbContext aplikácie (t.j. trieda, ktorá dedí od <see cref="BusinessLayerDbContext"/>).</para>
+		/// </remarks>
+		public Assembly ModelExtensionsAssembly { get; set; }
+	}
 }

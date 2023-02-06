@@ -56,7 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
 
 				// Act
 				modelBuilder.Entity<EntityWithoutSuppression>();
-				modelBuilder.Entity<EntityWithSuppression>();				
+				modelBuilder.Entity<EntityWithSuppression>();
 			}
 		}
 

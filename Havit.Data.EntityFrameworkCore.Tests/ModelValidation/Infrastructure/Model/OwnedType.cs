@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
 {
-    [Owned]
-    public class OwnedType
-    {
-        public string Name { get; set; }
-    }
+	[Owned]
+	public class OwnedType
+	{
+		public string Name { get; set; }
+	}
 }

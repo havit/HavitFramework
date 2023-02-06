@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
 {
 	public class EntryWithGeneratedPrimaryKeyAndWithSymbol
-	{		
+	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 

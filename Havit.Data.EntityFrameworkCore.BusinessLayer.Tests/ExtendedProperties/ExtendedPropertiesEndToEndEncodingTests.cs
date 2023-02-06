@@ -116,7 +116,7 @@ World")]
 				var source = new EndToEndTestDbContext<SourceEntity>();
 				var target = new EndToEndTestDbContext<TargetEntity>();
 				var migrations = source.Migrate(target);
-				
+
 				Assert.AreEqual(1, migrations.Count);
 				Assert.AreEqual(
 					$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');

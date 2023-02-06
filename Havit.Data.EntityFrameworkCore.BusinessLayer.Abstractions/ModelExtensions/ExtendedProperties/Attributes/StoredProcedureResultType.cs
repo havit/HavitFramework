@@ -9,7 +9,7 @@
 		/// Nevrací žádný výsledek (void).
 		/// </summary>
 		None,
-		
+
 		/// <summary>
 		/// Object vrací nejvýše jeden objekt nebo null, pokud není z uložené procedury vrácen žádný záznam.
 		/// </summary>

@@ -36,8 +36,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// vytvoříme nový dbContext pro membership, do které načteme roli z cache
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
-            EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext, cacheService: cacheService);
-            DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);			
+			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext, cacheService: cacheService);
+			DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
@@ -55,7 +55,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsNotNull(membership.Role);
 			Assert.IsTrue(dbContext.Entry(membership).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 		}
-        
+
 		/// <summary>
 		/// Cílem je ověřit, že dojde k fixupu při použití objektu z cache.
 		/// </summary>
@@ -76,9 +76,9 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                cacheService: cacheService);
-            DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
+				dbContext: dbContext,
+				cacheService: cacheService);
+			DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
 
 			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
 			Membership membership1 = new Membership { LoginAccountId = 1, RoleId = 1 };
@@ -101,7 +101,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			Assert.IsTrue(dbContext.Entry(membership1).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 			Assert.IsTrue(dbContext.Entry(membership2).Reference(nameof(Membership.Role)).IsLoaded); // vlastnost je označena jako načtená
 		}
-        
+
 		/// <summary>
 		/// Cílem je ověřit, že dojde k fixupu při použití objektu z cache.
 		/// </summary>
@@ -119,13 +119,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
 			EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContext,
-                cacheService: cacheService);
+				dbContext: dbContext,
+				cacheService: cacheService);
 
-            DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
+			DbDataLoader dataLoader = DataLoaderTestHelper.CreateDataLoader(dbContext: dbContext, entityCacheManager: entityCacheManager);
 
-            // vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
-            Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
+			// vytvoříme si objekt membership s odkazem na neexistující LoginAccount a Roli, tento objekt si připojíme k DbContextu jako existující (avšak není v databázi)
+			Membership membership = new Membership { LoginAccountId = 1, RoleId = 1 };
 			dbContext.Attach(membership);
 
 			// Preconditions
@@ -149,19 +149,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			// připojíme objekt Role k DbContextu jako existující (avšak není v databázi)
 			dbContextInitial.Attach(role);
 
-            EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContextInitial);
+			EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContextInitial);
 
-            // a tento in memory objekt uložíme do cache (přestože není v databázi)
-            EntityCacheManager entityCacheManagerInitial = CachingTestHelper.CreateEntityCacheManager(
-                dbContext: dbContextInitial,
-                cacheService: cacheService,
-                entityCacheKeyGenerator: entityCacheKeyGenerator);
+			// a tento in memory objekt uložíme do cache (přestože není v databázi)
+			EntityCacheManager entityCacheManagerInitial = CachingTestHelper.CreateEntityCacheManager(
+				dbContext: dbContextInitial,
+				cacheService: cacheService,
+				entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-            entityCacheManagerInitial.StoreEntity(role);
+			entityCacheManagerInitial.StoreEntity(role);
 
 			// nyní máme objekt Role v cache
 			Assert.IsTrue(cacheService.Contains(entityCacheKeyGenerator.GetEntityCacheKey(role.GetType(), role.Id))); // pokud selže, nedostal se objekt do cache
 		}
-        
+
 	}
 }

@@ -15,8 +15,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds.Internal
 		public void PairByValues_Equals_ReturnsTrueWhenEquals()
 		{
 			// Arrange
-			var item1 = new PairByValues(new object[] { 1, 5.0, "test", true } );
-			var item2 = new PairByValues(new object[] { 1, 5.0, "test", true } );
+			var item1 = new PairByValues(new object[] { 1, 5.0, "test", true });
+			var item2 = new PairByValues(new object[] { 1, 5.0, "test", true });
 
 			// Act + Assert
 			Assert.IsTrue(item1.Equals(item2));
@@ -64,28 +64,28 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds.Internal
 			Assert.AreEqual("1", item.ToString());
 		}
 
-        [TestMethod]
-        public void PairByValues_ToString_SupportsNullInData()
-        {
-            // Arrange + Act
-            string result = new PairByValues(new object[] { null }).ToString();
-            
-            // Assert
-            Assert.AreEqual("null", result);
-        }
+		[TestMethod]
+		public void PairByValues_ToString_SupportsNullInData()
+		{
+			// Arrange + Act
+			string result = new PairByValues(new object[] { null }).ToString();
 
-        /// <summary>
-        /// Bug 43592: Seedování dat se složeným klíčem, pokud je jedna z hodnot null
-        /// </summary>
-        [TestMethod]
-        public void PairByValues_GetHashCode_SupportsNullInData()
-        {
-            // Arrange + Act
-            int hashCode = new PairByValues(new object[] { null }).GetHashCode();
+			// Assert
+			Assert.AreEqual("null", result);
+		}
 
-            // Assert
-            // no exception was thown
-        }
+		/// <summary>
+		/// Bug 43592: Seedování dat se složeným klíčem, pokud je jedna z hodnot null
+		/// </summary>
+		[TestMethod]
+		public void PairByValues_GetHashCode_SupportsNullInData()
+		{
+			// Arrange + Act
+			int hashCode = new PairByValues(new object[] { null }).GetHashCode();
 
-    }
+			// Assert
+			// no exception was thown
+		}
+
+	}
 }

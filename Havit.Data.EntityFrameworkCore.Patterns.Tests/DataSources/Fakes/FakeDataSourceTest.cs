@@ -25,13 +25,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources.Fakes
 			// Assert
 			Assert.AreEqual(0, resultData.Count);
 		}
-		
+
 		[TestMethod]
 		public void FakeDataSource_ReturnsSourceData()
 		{
 			// Arrange
 			int[] sourceData = Enumerable.Range(1, 5).ToArray();
-			FakeDataSource<int> dataSource = new FakeInt32DataSource(sourceData);			
+			FakeDataSource<int> dataSource = new FakeInt32DataSource(sourceData);
 
 			//Act
 			List<int> resultData = dataSource.Data.ToList();

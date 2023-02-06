@@ -47,7 +47,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests
 
 			// Act
 			ModelBuilderExtensions.ApplyConfigurationsFromAssembly(modelBuilderMock.Object, typeof(ModelBuilderExtensionsTests).Assembly, typeof(ModelClassConfiguration).Namespace);
-			
+
 			// Assert
 			modelBuilderMock.Verify(m => m.ApplyConfiguration<ModelClass>(It.IsAny<IEntityTypeConfiguration<ModelClass>>()), Times.Once);
 		}

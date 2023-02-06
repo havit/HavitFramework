@@ -113,7 +113,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			// Assert
 			Assert.IsNotNull(repositoryResult);
 		}
-		
+
 		[TestMethod]
 		public void DbRepository_GetAll_DoesNotReturnDeletedObjects()
 		{
@@ -167,7 +167,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 		}
 
 		[TestMethod]
-		public async Task  DbRepository_GetAllAsync_ReturnsAllObjectAfterCommit()
+		public async Task DbRepository_GetAllAsync_ReturnsAllObjectAfterCommit()
 		{
 			// Arrange
 			TestDbContext testDbContext = new TestDbContext();
@@ -181,7 +181,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			// Act
 			List<ItemWithDeleted> result1 = await repository.GetAllAsync();
 			Assert.AreEqual(0, result1.Count);
-			
+
 			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
 			await testDbContext.SaveChangesAsync();
 
@@ -234,7 +234,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
-			
+
 			// Act
 			List<ItemWithDeleted> result = repository.GetObjects(ids);
 
@@ -435,7 +435,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			// Assert
 			// no exception was thrown
-			
+
 			Assert.AreEqual(EntityState.Unchanged, testDbContext.Entry(entity).State);
 		}
 

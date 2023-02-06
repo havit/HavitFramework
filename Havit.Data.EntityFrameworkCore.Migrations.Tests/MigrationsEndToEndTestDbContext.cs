@@ -17,14 +17,14 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Tests
 			this.onModelCreating = onModelCreating;
 		}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
 
-            onModelCreating?.Invoke(modelBuilder);
-        }
+			onModelCreating?.Invoke(modelBuilder);
+		}
 
-        public IReadOnlyList<MigrationOperation> Diff(DbContext target)
+		public IReadOnlyList<MigrationOperation> Diff(DbContext target)
 		{
 			var differ = this.GetService<IMigrationsModelDiffer>();
 			return differ.GetDifferences(this.GetService<IDesignTimeModel>().Model.GetRelationalModel(), target.GetService<IDesignTimeModel>().Model.GetRelationalModel());

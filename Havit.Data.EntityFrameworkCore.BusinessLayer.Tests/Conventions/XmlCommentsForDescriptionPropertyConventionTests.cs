@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Conventions
 {
-    public class XmlCommentsForDescriptionPropertyConventionTests
+	public class XmlCommentsForDescriptionPropertyConventionTests
 	{
 		[TestClass]
 		public class NestedTypeWithXmlComment_EntityHasCorrectMsDescription

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.EntityValidation
 {
-    [TestClass]
+	[TestClass]
 	public class ValidatableObjectEntityValidatorTests
-    {
+	{
 		[TestMethod]
 		public void ValidatableObjectEntityValidator_SinglePlainMessage()
 		{

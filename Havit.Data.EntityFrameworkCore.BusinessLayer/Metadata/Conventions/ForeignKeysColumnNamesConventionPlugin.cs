@@ -12,7 +12,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	internal class ForeignKeysColumnNamesConventionPlugin : IConventionSetPlugin
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{			
+		{
 			ForeignKeysColumnNamesConvention convention = new ForeignKeysColumnNamesConvention();
 
 			// potřebujeme se dostat před tvorbu indexů

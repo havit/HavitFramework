@@ -4,9 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 {
-    /// <summary>
-    /// Tests for <see cref="XmlCommentParser"/>. See class model (in Model namespace) being used.
-    /// </summary>
+	/// <summary>
+	/// Tests for <see cref="XmlCommentParser"/>. See class model (in Model namespace) being used.
+	/// </summary>
 	[TestClass]
 	public class XmlCommentParserTests : XmlCommentTestBase
 	{
@@ -142,7 +142,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
 			var loginAccountType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.LoginAccount).FullName);
-			XmlCommentMember userNameProperty = loginAccountType.Properties.FirstOrDefault(p => 
+			XmlCommentMember userNameProperty = loginAccountType.Properties.FirstOrDefault(p =>
 				p.Name == typeof(Model.LoginAccount).GetProperty(nameof(Model.LoginAccount.Username)).FullName());
 			Assert.AreEqual("LoginAccount's user name", userNameProperty.Summary.Trim());
 		}
@@ -158,7 +158,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments
 			var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
 			var locationType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Location).FullName);
-			XmlCommentMember descriptionProperty = locationType.Properties.FirstOrDefault(p => 
+			XmlCommentMember descriptionProperty = locationType.Properties.FirstOrDefault(p =>
 				p.Name == typeof(Model.Location).GetProperty(nameof(Model.Location.Description)).FullName());
 			Assert.AreEqual(@"Summary tag with
 new lines and whitespace.", descriptionProperty.Summary);

@@ -48,10 +48,10 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions.Infr
 				debugInfo["ConventionType:" + nameof(Extension.ConventionType)] = (Extension.ConventionType.GetHashCode()).ToString(CultureInfo.InvariantCulture);
 			}
 
-            public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
-            {
+			public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
+			{
 				return (other is ExtensionInfo otherExtensionInfo) && (this.Extension.ConventionType == otherExtensionInfo.Extension.ConventionType);
-            }
-        }
+			}
+		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
 			dbContext.Set<Child>().Include(c => c.Parent).ThenInclude(p => p.ChildrenIncludingDeleted).FirstOrDefault();
 			dbContext.Set<Child>().Include(c => c.Parent.ChildrenIncludingDeleted).FirstOrDefault();
 			dbContext.Set<HiearchyItem>().Include(c1 => c1.Children).ThenInclude(c2 => c2.Children).ThenInclude(c3 => c3.Children).FirstOrDefault();
-			
+
 			// Předchozí způsob načítání již není podporován
 			//dbContext.Set<Child>().Include(c => c.Parent.Children.Select(item => item.Parent)).FirstOrDefault();
 			//dbContext.Set<HiearchyItem>().Include(c1 => c1.Children.Select(c2 => c2.Children.Select(c3 => c3.Children))).FirstOrDefault();

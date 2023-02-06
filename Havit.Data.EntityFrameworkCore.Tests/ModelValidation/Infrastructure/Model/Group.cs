@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
 {
-    public class Group
-    {
+	public class Group
+	{
 		public int Id { get; set; }
 		public string Name { get; set; }
 

@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 {
-    public class EndToEndTestDbContext : TestDbContext
+	public class EndToEndTestDbContext : TestDbContext
 	{
 		private readonly Action<ModelBuilder> onModelCreating;
 
@@ -22,9 +22,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			this.onModelCreating = onModelCreating;
 		}
 
-        protected override BusinessLayerDbContextSettings CreateDbContextSettings()
-        {
-            var settings = base.CreateDbContextSettings();
+		protected override BusinessLayerDbContextSettings CreateDbContextSettings()
+		{
+			var settings = base.CreateDbContextSettings();
 
 			settings.UseCharColumnTypeForCharPropertyConvention = false;
 			settings.UseCollectionExtendedPropertiesConvention = false;
@@ -42,9 +42,9 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			return settings;
 		}
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			base.OnConfiguring(optionsBuilder);
 
 			optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions
 				.UseCacheAttributeToAnnotationConvention(false)
@@ -54,12 +54,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 				.UseStringPropertiesDefaultValueConvention(false)
 			);
 
-            // stub out Model Extender types, so all extenders in test assembly don't interfere with tests.
-            // Tests should setup their own types when necessary.
-            optionsBuilder.SetModelExtenderTypes(Enumerable.Empty<TypeInfo>());
-        }
+			// stub out Model Extender types, so all extenders in test assembly don't interfere with tests.
+			// Tests should setup their own types when necessary.
+			optionsBuilder.SetModelExtenderTypes(Enumerable.Empty<TypeInfo>());
+		}
 
-        protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
 			base.CustomizeModelCreating(modelBuilder);
 			onModelCreating?.Invoke(modelBuilder);
@@ -77,5 +77,5 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests
 			var generator = this.GetService<IMigrationsSqlGenerator>();
 			return generator.Generate(diff, this.Model);
 		}
-    }
+	}
 }

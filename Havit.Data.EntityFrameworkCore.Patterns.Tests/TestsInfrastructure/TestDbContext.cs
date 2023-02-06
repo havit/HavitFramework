@@ -6,15 +6,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 	{
 		private bool useInMemoryDatabase = false;
 
-        public TestDbContext()
-        {
+		public TestDbContext()
+		{
 			useInMemoryDatabase = true;
-        }
+		}
 
-        public TestDbContext(DbContextOptions options) : base(options)
-        {
+		public TestDbContext(DbContextOptions options) : base(options)
+		{
 			useInMemoryDatabase = false;
-        }
+		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -32,8 +32,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
 
 			modelBuilder.Entity(typeof(ItemWithDeleted));
 			modelBuilder.Entity(typeof(ItemWithNullableProperty));
-            modelBuilder.Entity(typeof(Language));
-            modelBuilder.Entity(typeof(ManyToMany)).HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
+			modelBuilder.Entity(typeof(Language));
+			modelBuilder.Entity(typeof(ManyToMany)).HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
 		}
 	}
 }

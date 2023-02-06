@@ -12,7 +12,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
 	internal class XmlCommentsForDescriptionPropertyConventionPlugin : IConventionSetPlugin
 	{
 		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{			
+		{
 			conventionSet.ModelFinalizingConventions.Add(new XmlCommentsForDescriptionPropertyConvention());
 			return conventionSet;
 		}

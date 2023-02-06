@@ -35,5 +35,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
 			// Hierarchy
 			modelBuilder.Entity<HiearchyItem>().HasMany(parent => parent.Children).WithOne(child => child.Parent);
 		}
-    }
+	}
 }

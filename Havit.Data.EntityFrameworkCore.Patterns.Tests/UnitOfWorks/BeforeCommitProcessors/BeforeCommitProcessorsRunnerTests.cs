@@ -54,7 +54,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.BeforeCommit
 
 		public class Entity
 		{
-			
+
 		}
 	}
 }

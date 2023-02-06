@@ -52,7 +52,7 @@ namespace ConsoleApp1
 				.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] "))
 				.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
 				.Build();
-					
+
 			UpdateDatabase(host.Services);
 			Debug(host.Services);
 		}
@@ -65,15 +65,15 @@ namespace ConsoleApp1
 					optionsBuilder
 						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
 						.EnableSensitiveDataLogging(true))
-						//.UseInMemoryDatabase("ConsoleApp")
-				.AddEntityPatterns()				
+				//.UseInMemoryDatabase("ConsoleApp")
+				.AddEntityPatterns()
 				.AddLookupService<IUserLookupService, UserLookupService>();
 
 			services.AddSingleton<ITimeService, ServerTimeService>();
 			services.AddSingleton<ICacheService, MemoryCacheService>();
 			services.AddSingleton<IOptions<MemoryCacheOptions>, OptionsManager<MemoryCacheOptions>>();
 			services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
-			services.AddSingleton<IMemoryCache, MemoryCache>();			
+			services.AddSingleton<IMemoryCache, MemoryCache>();
 		}
 
 		private static void UpdateDatabase(IServiceProvider serviceProvider)

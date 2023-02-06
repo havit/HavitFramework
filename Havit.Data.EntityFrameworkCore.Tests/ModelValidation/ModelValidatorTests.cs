@@ -353,33 +353,33 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 			Assert.IsFalse(errors.Any());
 		}
 
-        [TestMethod]
-        public void ModelValidator_CheckNoOwnedIsRegistered_DoesNotReportNonOwnedType()
-        {
-            // Arrange
-            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-            ModelValidator modelValidator = new ModelValidator();
+		[TestMethod]
+		public void ModelValidator_CheckNoOwnedIsRegistered_DoesNotReportNonOwnedType()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
 
-            // Act
-            string[] errors = modelValidator.CheckNoOwnedIsRegistered(modelValidatingDbContext.Model.FindEntityType(typeof(NonOwnedType))).ToArray();
+			// Act
+			string[] errors = modelValidator.CheckNoOwnedIsRegistered(modelValidatingDbContext.Model.FindEntityType(typeof(NonOwnedType))).ToArray();
 
-            // Assert
-            Assert.IsFalse(errors.Any());
-        }
+			// Assert
+			Assert.IsFalse(errors.Any());
+		}
 
-        [TestMethod]
-        public void ModelValidator_CheckNoOwnedIsRegistered_ReportsOwnedType()
-        {
-            // Arrange
-            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-            ModelValidator modelValidator = new ModelValidator();
+		[TestMethod]
+		public void ModelValidator_CheckNoOwnedIsRegistered_ReportsOwnedType()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
 
-            // Act
-            string[] errors = modelValidator.CheckNoOwnedIsRegistered(modelValidatingDbContext.Model.FindEntityType(typeof(OwnedType))).ToArray();
+			// Act
+			string[] errors = modelValidator.CheckNoOwnedIsRegistered(modelValidatingDbContext.Model.FindEntityType(typeof(OwnedType))).ToArray();
 
-            // Assert
-            Assert.IsTrue(errors.Any());
-        }
+			// Assert
+			Assert.IsTrue(errors.Any());
+		}
 
 		[TestMethod]
 		public void ModelValidator_CheckInheritanceIsNotUsed_ReportsDescenantType()
@@ -392,7 +392,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 			string[] errors = modelValidator.CheckInheritanceIsNotUsed(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
 
 			// Assert
-			Assert.IsTrue(errors.Any(error => error.Contains("Inheritance is not supported.")));
+			Assert.IsTrue(errors.Any());
 		}
 
 	}

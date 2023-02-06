@@ -381,5 +381,19 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
             Assert.IsTrue(errors.Any());
         }
 
-    }
+		[TestMethod]
+		public void ModelValidator_CheckInheritanceIsNotUsed_ReportsDescenantType()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errors = modelValidator.CheckInheritanceIsNotUsed(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
+
+			// Assert
+			Assert.IsTrue(errors.Any(error => error.Contains("Inheritance is not supported.")));
+		}
+
+	}
 }

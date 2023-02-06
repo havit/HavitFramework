@@ -47,7 +47,8 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 					.Concat(CheckWhenEnabled(validationRules.CheckOnlyForeignKeysEndWithId, () => CheckOnlyForeignKeysEndsWithId(entityType)))
 					.Concat(CheckWhenEnabled(validationRules.CheckAllForeignKeysEndWithId, () => CheckAllForeignKeysEndsWithId(entityType))))
 			   .Concat(model.GetEntityTypes()
-					.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckNoOwnedIsRegistered, () => CheckNoOwnedIsRegistered(entityType))))
+					.SelectMany(entityType => CheckWhenEnabled(validationRules.CheckNoOwnedIsRegistered, () => CheckNoOwnedIsRegistered(entityType))
+						.Concat(CheckWhenEnabled(validationRules.CheckInheritanceNotUsed, () => CheckInheritanceIsNotUsed(entityType)))))
 				.ToList();
 
 			return String.Join(Environment.NewLine, errors);
@@ -241,5 +242,15 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 			}
 		}
 
+		/// <summary>
+		/// Kontroluje, zda v modelu není použita dědičnost.
+		/// </summary>
+		internal IEnumerable<string> CheckInheritanceIsNotUsed(IReadOnlyEntityType entityType)
+		{
+			if (entityType.BaseType != null)
+			{
+				yield return $"Class {entityType.ClrType.Name} is a descendant of {entityType.BaseType.ClrType.Name}. Inheritance is not supported.";
+			}
+		}
 	}
 }

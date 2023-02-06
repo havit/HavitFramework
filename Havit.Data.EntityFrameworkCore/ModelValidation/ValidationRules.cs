@@ -64,5 +64,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		/// </summary>
 		public bool CheckNoOwnedIsRegistered { get; set; } = true;
 
+		/// <summary>
+		/// Kontroluje, zda v modelu není použita dědičnost.
+		/// </summary>
+		public bool CheckInheritanceNotUsed { get; set; } = true;
 	}
 }

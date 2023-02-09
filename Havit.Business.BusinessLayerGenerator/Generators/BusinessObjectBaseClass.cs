@@ -736,7 +736,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					writer.WriteLine();
 					BusinessObjectSqlParameter.WriteSqlParameter(writer, column);
 					writer.WriteLine();
-					writer.WriteLine("dirtyFieldExists = true;");					
+					writer.WriteLine("dirtyFieldExists = true;");
 					if (TableHelper.IsCachable(table) && (column == deletedColumn))
 					{
 						writer.WriteLine("deletedFieldIsDirty = true;");
@@ -757,7 +757,16 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				writer.WriteLine();
 
 				writer.WriteLine("bool dirtyCollectionExists = false;");
-				bool shouldWriteDeletedDateTimeSqlParameter;
+				// chceme zjistit, zda bude zapsána nějaká kolekce, která používá DeletedDateTime
+				// takovou informaci vrací WriteSaveUpdate_Collections, jenže my chceme vypsat kód ještě před tuto metodu
+				// proto metodu zavoláme z fake-ovým CodeWriterem
+				WriteSaveUpdate_Collections(new CodeWriter("::nofile::", false), table, false, out bool shouldWriteDeletedDateTimeSqlParameter);
+				if (shouldWriteDeletedDateTimeSqlParameter)
+				{
+					writer.WriteLine("bool dirtyCollectionWithDeletedDateTimeExists = false;");
+				}
+
+				// nyní skutečný zápis kódu;
 				WriteSaveUpdate_Collections(writer, table, false, out shouldWriteDeletedDateTimeSqlParameter);
 
 				writer.WriteLine("// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme");
@@ -769,7 +778,10 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				if (shouldWriteDeletedDateTimeSqlParameter)
 				{
 					writer.WriteLine();
+					writer.WriteLine("if (dirtyCollectionWithDeletedDateTimeExists)");
+					writer.WriteLine("{");
 					BusinessObjectSqlParameter.WriteDeletedDateTimeSqlParameter(writer);
+					writer.WriteLine("}");
 					writer.WriteLine();
 				}
 
@@ -836,6 +848,10 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 					if (!deleteMode)
 					{
 						writer.WriteLine("dirtyCollectionExists = true;");
+						if ((!collectionProperty.ReferenceColumn.Nullable) && (deletedColumn != null) && TypeHelper.IsDateTime(deletedColumn))
+						{
+							writer.WriteLine("dirtyCollectionWithDeletedDateTimeExists = true;");
+						}
 					}
 
 					string idsCondition;

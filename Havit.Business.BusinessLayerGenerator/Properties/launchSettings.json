@@ -2,16 +2,16 @@
   "profiles": {
     "Havit.Business.BusinessLayerGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "-sqlserver:sqldev -database:HavitBusinessLayerTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest -username:development -password:development"
+      "commandLineArgs": "-sqlserver:sqldev.havit.local -database:HavitBusinessLayerTest -outputpath:D:\\Dev\\002.HFW-HavitFramework\\BusinessLayerTest -username:development -password:development"
     },
     "003.GOR": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\DEV\\003.GOR\\BusinessLayer -sqlserver:sqldev -database:Goran",
+      "commandLineArgs": "-outputpath:D:\\DEV\\003.GOR\\BusinessLayer -sqlserver:sqldev.havit.local -database:Goran -username:development -password:development",
       "workingDirectory": "D:\\Temp"
     },
     "021.DSV": {
       "commandName": "Project",
-      "commandLineArgs": "-outputpath:D:\\Dev\\021.DSV\\BusinessLayer -sqlserver:sqldev -database:DsvCommerce"
+      "commandLineArgs": "-outputpath:D:\\Dev\\021.DSV\\BusinessLayer -sqlserver:sqldev.havit.local -database:DsvCommerce -username:development -password:development"
     },
     "095.LPO": {
       "commandName": "Project",

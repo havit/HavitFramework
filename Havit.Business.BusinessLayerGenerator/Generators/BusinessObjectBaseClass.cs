@@ -823,11 +823,10 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				{
 					// vztah 1:N
 
-					writer.WriteLine(
-						String.Format(
-							"if ({0}.IsDirty && {0}.LoadedValue.Any())",
-							PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName),
-							collectionProperty.PropertyName));
+					writer.WriteLine(String.Format("if ({0}.IsDirty)", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+					writer.WriteLine("{");
+
+					writer.WriteLine(String.Format("if ({0}.LoadedValue.Any())", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
 					writer.WriteLine("{");
 
 					// dříve zde byl místo Where FindAll, ale ten způsoboval LoadAll. Takže podmínka na ghosta (IsLoaded) neměla význam a občas uložení způsobilo deadock.
@@ -967,9 +966,12 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 						collectionProperty,
 						String.Format("_{0}ToRemove.GetIDs()", ConventionsHelper.GetCammelCase(collectionProperty.PropertyName)));
 
-					writer.WriteLine(String.Format("{0}.UpdateLoadedValue();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+					writer.WriteLine("}");
 
 					writer.WriteLine("}");
+
+					writer.WriteLine(String.Format("{0}.UpdateLoadedValue();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+
 				}
 				else
 				{

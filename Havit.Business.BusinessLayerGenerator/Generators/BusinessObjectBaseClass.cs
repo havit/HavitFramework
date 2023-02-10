@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Havit.Business.BusinessLayerGenerator.Csproj;
@@ -1156,34 +1157,44 @@ namespace Havit.Business.BusinessLayerGenerator.Generators
 				}
 
 				// kolekce ukládáme jen ve full insertu
-				bool wasFirstCollection = false;
+				List<CollectionProperty> colectionProperties = TableHelper.GetCollectionColumns(table);
+				bool hasManyToManyCollection = colectionProperties.Any(colectionProperty => colectionProperty.IsManyToMany);
 				if (fullInsert)
 				{
-					foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
+					if (hasManyToManyCollection)
+					{
+						writer.WriteLine("StringBuilder collectionCommandBuilder = new StringBuilder();");
+						writer.WriteLine();
+					}
+
+					foreach (CollectionProperty collectionProperty in colectionProperties)
 					{
 						if (collectionProperty.IsManyToMany)
 						{
-
-							if (!wasFirstCollection)
-							{
-								writer.WriteLine("StringBuilder collectionCommandBuilder = new StringBuilder();");
-								writer.WriteLine();
-							}
-
 							writer.WriteLine(String.Format("if ({0}.Value.Count > 0)", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
 							writer.WriteLine("{");
 
 							WriteInsertMNCollectionData(writer, table, collectionProperty, "collectionCommandBuilder");
 
+							writer.WriteLine(String.Format("{0}.UpdateLoadedValue();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
 							writer.WriteLine("}");
 							writer.WriteLine();
-							wasFirstCollection = true;
+						}
+						else
+						{
+							// řeší Bug 67401: BusinessLayer - uložení objektu do kolekce a odebrání z kolekce v témže scope neuloží odebrání objektu
+							// nemám lepší místo, kam kód umístit
+							writer.WriteLine(String.Format("if ({0}.IsDirty)", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+							writer.WriteLine("{");
+							writer.WriteLine(String.Format("{0}.UpdateLoadedValue();", PropertyHelper.GetPropertyHolderName(collectionProperty.PropertyName)));
+							writer.WriteLine("}");
+							writer.WriteLine();
 						}
 					}
 				}
 
 				// pro SQL2005 generujeme normální insert
-				string commandText = commandBuilder.ToString() + (wasFirstCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");
+				string commandText = commandBuilder.ToString() + (fullInsert && hasManyToManyCollection ? "\" + collectionCommandBuilder.ToString() + \"" : "");
 				commandText += String.Format("SELECT @{0}; ", primaryKeyColumn.Name);
 				writer.WriteLine(String.Format("dbCommand.CommandText = \"{0}\";", commandText));
 				writer.WriteLine(String.Format("this.ID = (int){0}.ExecuteScalar(dbCommand);", DatabaseHelper.GetDbConnector()));

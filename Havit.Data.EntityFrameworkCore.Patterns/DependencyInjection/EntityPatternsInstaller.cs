@@ -99,7 +99,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection
 			services.TryAddSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
 			services.TryAddSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
 			services.TryAddSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
-			services.TryAddSingleton<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
+			services.TryAddTransient<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
 
 			services.TryAddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
 

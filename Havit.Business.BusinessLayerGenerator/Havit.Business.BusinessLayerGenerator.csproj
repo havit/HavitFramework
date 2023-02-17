@@ -5,6 +5,10 @@
 	<OutputType>Exe</OutputType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Havit.Web\HttpUtilityExt.HtmlEncode.cs" Link="HttpUtilityExt.HtmlEncode.cs" />
+  </ItemGroup>
+
   <!-- NuGet -->
   <!-- Pro různé komplikovanosti s publikováním konzolovky s použití SMO delegujeme generování do samostatného projektu. -->	
   
@@ -14,7 +18,6 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj" />
-	<ProjectReference Include="..\Havit.Web\Havit.Web.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

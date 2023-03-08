@@ -312,6 +312,20 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation
 		}
 
 		[TestMethod]
+		public void ModelValidator_CheckOnlyForeignKeysEndsWithId_DoesNotReportsNonForeignKeyWithExternalId()
+		{
+			// Arrange
+			ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+			ModelValidator modelValidator = new ModelValidator();
+
+			// Act
+			string[] errors = modelValidator.CheckOnlyForeignKeysEndsWithId(modelValidatingDbContext.Model.FindEntityType(typeof(ExternalIdWithNoForeignKey))).ToArray();
+
+			// Assert
+			Assert.IsFalse(errors.Any());
+		}
+
+		[TestMethod]
 		public void ModelValidator_CheckOnlyForeignKeysEndsWithId_DoesNotReportForeignKeyWithId()
 		{
 			// Arrange

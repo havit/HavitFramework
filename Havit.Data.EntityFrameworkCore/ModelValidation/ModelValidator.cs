@@ -205,12 +205,14 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 
 		/// <summary>
 		/// Kontroluje, zda všechny vlastnosti, jejichž název končí 'Id' jsou cizím klíčem.
+		/// Výjimkou z pravidla jsou vlastnosti končíci na ExternalId (tedy např. ExternalId nebo IdentityProviderExternalId mohou končit na Id,
+		/// přestože nejsou cizím ani primárním klíčem.
 		/// </summary>
 		internal IEnumerable<string> CheckOnlyForeignKeysEndsWithId(IReadOnlyEntityType entityType)
 		{
 			foreach (IReadOnlyProperty property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
 			{
-				if (property.Name.EndsWith("Id") && !property.IsForeignKey() && !property.IsKey())
+				if (property.Name.EndsWith("Id") && !property.Name.EndsWith("ExternalId") && !property.IsForeignKey() && !property.IsKey())
 				{
 					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is not a foreign key. The property name ends with 'Id' which is allowed only for foreign keys.";
 				}

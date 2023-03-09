@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Services.FileStorage;
@@ -13,8 +10,6 @@ using Havit.Text.RegularExpressions;
 using Azure.Storage.Blobs;
 using Azure;
 using Azure.Storage.Blobs.Models;
-using Microsoft.Extensions.Azure;
-using Azure.Core;
 using Havit.Threading;
 using System.Runtime.CompilerServices;
 
@@ -70,12 +65,23 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			Contract.Requires<ArgumentNullException>(options != null, nameof(options));
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.BlobStorage), nameof(options.BlobStorage));
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(options.ContainerName), nameof(options.ContainerName));
 
-			// contracts v této podobě se obtížně čtou, proto alternativně
-			if (!options.BlobStorage.Contains(';') && (options.TokenCredential == null))
+			var blobStorageValueType = GetBlobStorageValueType(options.BlobStorage);
+			switch (blobStorageValueType)
 			{
-				throw new InvalidOperationException($"When {nameof(options.BlobStorage)} contains storage name (not connection string) then {nameof(options.TokenCredential)} must be set.");
+				case BlobStorageValueType.ConnectionString:
+					Contract.Requires<InvalidOperationException>(!String.IsNullOrEmpty(options.ContainerName), $"When {nameof(options.BlobStorage)} contains connection string then {nameof(options.ContainerName)} must be set.");
+					break;
+
+				case BlobStorageValueType.UrlWithSas:
+					Contract.Requires<InvalidOperationException>(String.IsNullOrEmpty(options.ContainerName), $"When {nameof(options.BlobStorage)} contains URL with SAS token then {nameof(options.ContainerName)} must NOT be set (put the container to the URL).");
+					break;
+
+				case BlobStorageValueType.StorageName:
+					Contract.Requires<InvalidOperationException>(options.TokenCredential != null, $"When {nameof(options.BlobStorage)} contains storage name (not connection string) then {nameof(options.TokenCredential)} must be set.");
+					break;
+
+				default: throw new InvalidOperationException(blobStorageValueType.ToString());
 			}
 
 			this.options = options;
@@ -358,16 +364,21 @@ namespace Havit.Services.Azure.FileStorage
 		/// </summary>
 		public static BlobContainerClient CreateBlobContainerClient(AzureBlobStorageServiceOptions options)
 		{
-			if (options.BlobStorage.Contains(';'))
+			var blobStorageValueType = GetBlobStorageValueType(options.BlobStorage);
+
+			switch (blobStorageValueType)
 			{
-				// máme connection string
-				return new BlobContainerClient(options.BlobStorage, options.ContainerName);
-			}
-			else
-			{
-				// máme název blob storage -> pak použijeme TokenCredential (zamýšleno pro Managed Identity)
-				string containerEndpoint = $"https://{options.BlobStorage}.blob.core.windows.net/{options.ContainerName}";
-				return new BlobContainerClient(new Uri(containerEndpoint), options.TokenCredential);
+				case BlobStorageValueType.ConnectionString:
+					return new BlobContainerClient(options.BlobStorage, options.ContainerName);
+
+				case BlobStorageValueType.UrlWithSas:
+					return new BlobContainerClient(new Uri(options.BlobStorage));
+
+				case BlobStorageValueType.StorageName:
+					string containerEndpoint = $"https://{options.BlobStorage}.blob.core.windows.net/{options.ContainerName}";
+					return new BlobContainerClient(new Uri(containerEndpoint), options.TokenCredential);
+
+				default: throw new InvalidOperationException(blobStorageValueType.ToString());
 			}
 		}
 
@@ -445,6 +456,30 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await PerformCopyAsync(sourceFileName, this, targetFileName, cancellationToken).ConfigureAwait(false);
 			await DeleteAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
+		}
+
+		private static BlobStorageValueType GetBlobStorageValueType(string value)
+		{
+			if (value.Contains(";"))
+			{
+				return BlobStorageValueType.ConnectionString;
+			}
+
+			if (value.Contains("?") && value.ToLower().Contains("sig="))
+			{
+				// option.BlobStorage obsahuje URL se SAS tokenem (https://...blob.core.windows.net/demo?sp=...&st=...&se=...&spr=...&sv=...&sr=...&sig=...)
+				return BlobStorageValueType.UrlWithSas;
+			}
+
+			// option.BlobStorage obsahuje jen název blob storage -> pak použijeme TokenCredential (zamýšleno pro Managed Identity)
+			return BlobStorageValueType.StorageName;
+		}
+
+		private enum BlobStorageValueType
+		{
+			ConnectionString,
+			UrlWithSas,
+			StorageName
 		}
 	}
 }

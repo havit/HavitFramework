@@ -35,7 +35,7 @@ namespace Havit.Data.Patterns.DataSeeds
 	///	}
 	///	</code> </example>
 	public abstract class DataSeed<TDataSeedProfile> : IDataSeed
-        where TDataSeedProfile : IDataSeedProfile, new() // new() nás chrání před použitím abstraktní třídy Profile, jinou funkci zde nemá, instanci nevytváříme
+		where TDataSeedProfile : IDataSeedProfile, new() // new() nás chrání před použitím abstraktní třídy Profile, jinou funkci zde nemá, instanci nevytváříme
 	{
 		private IDataSeedPersister currentDataSeedPersister;
 
@@ -72,18 +72,18 @@ namespace Havit.Data.Patterns.DataSeeds
 			return new DataSeedFor<TEntity>(data);
 		}
 
-	    /// <summary>
-	    /// Vrátí profil, do kterého daný předpis seedování patří.
-	    /// </summary>
-	    Type IDataSeed.ProfileType
-	    {
-	        get
-	        {
-	            return typeof(TDataSeedProfile);
-	        }
-	    }
+		/// <summary>
+		/// Vrátí profil, do kterého daný předpis seedování patří.
+		/// </summary>
+		Type IDataSeed.ProfileType
+		{
+			get
+			{
+				return typeof(TDataSeedProfile);
+			}
+		}
 
-	    /// <summary>
+		/// <summary>
 		/// Provede seedování dat s persistencí.
 		/// </summary>
 		void IDataSeed.SeedData(IDataSeedPersister dataSeedPersister)

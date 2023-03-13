@@ -301,15 +301,15 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public void FileSystemStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestHelpers.FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public async Task FileSystemStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]

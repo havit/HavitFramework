@@ -182,7 +182,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				fileStorageService.Save(filename, ms, "text/plain");
 			}
 
-			using (Stream stream = fileStorageService.Read(filename))
+			using (Stream stream = fileStorageService.OpenRead(filename))
 			{
 				using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, false, 1024, true))
 				{
@@ -229,7 +229,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				await fileStorageService.SaveAsync(filename, ms, "text/plain");
 			}
 
-			using (Stream stream = await fileStorageService.ReadAsync(filename))
+			using (Stream stream = await fileStorageService.OpenReadAsync(filename))
 			{
 				using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, false, 1024, true))
 				{
@@ -601,7 +601,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			Assert.IsTrue(!files.Any());
 		}
 
-		public static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		public static void FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
@@ -627,7 +627,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Act
 
 			// přečteme jen jednu řádku, poté provedeme dispose
-			using (Stream stream = fileStorageService.Read(testFilename))
+			using (Stream stream = fileStorageService.OpenRead(testFilename))
 			using (StreamReader reader = new StreamReader(stream))
 			{
 				reader.ReadLine();
@@ -640,7 +640,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
-		public static async Task FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		public static async Task FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
@@ -666,7 +666,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Act
 
 			// přečteme jen jednu řádku, poté provedeme dispose
-			using (Stream stream = await fileStorageService.ReadAsync(testFilename))
+			using (Stream stream = await fileStorageService.OpenReadAsync(testFilename))
 			using (StreamReader reader = new StreamReader(stream))
 			{
 				await reader.ReadLineAsync();

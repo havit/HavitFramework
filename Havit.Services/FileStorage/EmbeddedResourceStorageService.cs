@@ -52,7 +52,7 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override Stream PerformRead(string fileName)
+		protected override Stream PerformOpenRead(string fileName)
 		{
 			string resourceName = GetResourceName(fileName);
 			var result = resourceAssembly.GetManifestResourceStream(resourceName);
@@ -64,15 +64,15 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
+		protected override Task<Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			return Task.FromResult(Read(fileName)); // no async version
+			return Task.FromResult(OpenRead(fileName)); // no async version
 		}
 
 		/// <inheritdoc />
 		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
-			using (Stream resourceStream = Read(fileName))
+			using (Stream resourceStream = OpenRead(fileName))
 			{
 				resourceStream.CopyTo(stream);
 			}
@@ -81,13 +81,23 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
-			using (Stream resourceStream = Read(fileName))
+			using (Stream resourceStream = OpenRead(fileName))
 			{
 				await resourceStream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
 		#region Not supported methods
+		/// <summary>
+		/// Vyhazuje <see cref="NotSupportedException"/>.
+		/// </summary>
+		protected override Stream PerformOpenWrite(string fileName, string contentType) => throw new NotSupportedException();
+
+		/// <summary>
+		/// Vyhazuje <see cref="NotSupportedException"/>.
+		/// </summary>
+		protected override Task<Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>

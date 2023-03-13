@@ -37,14 +37,14 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void EmbeddedResourceStorageService_Read()
+		public void EmbeddedResourceStorageService_OpenRead()
 		{
 			// Arrange
 			EmbeddedResourceStorageService service = GetEmbeddedResourceStorageService();
 			string text;
 
 			// Act
-			using (StreamReader sr = new StreamReader(service.Read("file.txt")))
+			using (StreamReader sr = new StreamReader(service.OpenRead("file.txt")))
 			{
 				text = sr.ReadToEnd();
 			}
@@ -55,27 +55,27 @@ namespace Havit.Services.Tests.FileStorage
 
 		[TestMethod]
 		[ExpectedException(typeof(FileNotFoundException))]
-		public void EmbeddedResourceStorageService_Read_MissingFile()
+		public void EmbeddedResourceStorageService_OpenRead_MissingFile()
 		{
 			// Arrange
 			EmbeddedResourceStorageService service = GetEmbeddedResourceStorageService();
 
 			// Act
-			service.Read("some_missing file.txt");
+			service.OpenRead("some_missing file.txt");
 
 			// Assert - by method attribute
 		}
 
 
 		[TestMethod]
-		public async Task EmbeddedResourceStorageService_ReadAsync()
+		public async Task EmbeddedResourceStorageService_OpenReadAsync()
 		{
 			// Arrange
 			EmbeddedResourceStorageService service = GetEmbeddedResourceStorageService();
 			string text;
 
 			// Act
-			using (StreamReader sr = new StreamReader(await service.ReadAsync("file.txt")))
+			using (StreamReader sr = new StreamReader(await service.OpenReadAsync("file.txt")))
 			{
 				text = await sr.ReadToEndAsync();
 			}

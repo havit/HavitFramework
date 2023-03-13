@@ -54,14 +54,32 @@ namespace Havit.Services.FileStorage
 		public abstract Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
+		/// Nahrazeno metodou <see cref="OpenRead(string)"/>.
+		/// </summary>
+		[Obsolete]
+		public Stream Read(string fileName)
+		{
+			return OpenRead(fileName);
+		}
+
+		/// <summary>
+		/// Nahrazeno metodou <see cref="OpenReadAsync(string, CancellationToken)"/>.
+		/// </summary>
+		[Obsolete]
+		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
+		{
+			return await OpenReadAsync(fileName, cancellationToken).ConfigureAwait(false);
+		}
+
+		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Pokud je zapnuto, provádí transparentní (de)šifrování.
 		/// </summary>
-		public Stream Read(string fileName)
+		public Stream OpenRead(string fileName)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-			Stream s = PerformRead(fileName);
+			Stream s = PerformOpenRead(fileName);
 			return Read_EnsureDecryption(s);
 		}
 
@@ -69,11 +87,11 @@ namespace Havit.Services.FileStorage
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Pokud je zapnuto, provádí transparentní (de)šifrování.
 		/// </summary>
-		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
+		public async Task<Stream> OpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-			Stream s = await PerformReadAsync(fileName, cancellationToken).ConfigureAwait(false);
+			Stream s = await PerformOpenReadAsync(fileName, cancellationToken).ConfigureAwait(false);
 			return Read_EnsureDecryption(s);
 		}
 
@@ -180,6 +198,39 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <summary>
+		/// Vrátí stream určený pro zápis do úložiště.
+		/// Pokud je zapnuto, provádí stream transparentní šifrování, tj. streamu (fileContent) jsou zašifrována.
+		/// </summary>
+		public Stream OpenWrite(string fileName, string contentType)
+		{
+			if (!SupportsBasicEncryption)
+			{
+				return PerformOpenWrite(fileName, contentType);
+			}
+			else
+			{
+				return new CryptoStream(PerformOpenWrite(fileName, contentType), EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read);
+			}
+		}
+
+		/// <summary>
+		/// Vrátí stream určený pro zápis do úložiště.
+		/// Pokud je zapnuto, provádí stream transparentní šifrování, tj. streamu (fileContent) jsou zašifrována.
+		/// </summary>
+		public async Task<Stream> OpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			if (!SupportsBasicEncryption)
+			{
+				return await PerformOpenWriteAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
+			}
+			else
+			{
+				Stream writeStream = await PerformOpenWriteAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
+				return new CryptoStream(writeStream, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read);
+			}
+		}
+
+		/// <summary>
 		/// Vrátí prefix pro vyhledání.
 		/// Prefix je úvodní část cesty po poslední '/', která neobsahuje '*' a '?'.
 		/// </summary>
@@ -246,12 +297,12 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected abstract Stream PerformRead(string fileName);
+		protected abstract Stream PerformOpenRead(string fileName);
 
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected abstract Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default);
+		protected abstract Task<Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
@@ -272,6 +323,16 @@ namespace Havit.Services.FileStorage
 		/// Uloží stream do úložiště.
 		/// </summary>
 		protected abstract Task PerformSaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Vrátí stream určený pro zápis do úložiště.
+		/// </summary>
+		protected abstract Stream PerformOpenWrite(string fileName, string contentType);
+
+		/// <summary>
+		/// Vrátí stream určený pro zápis do úložiště.
+		/// </summary>
+		protected abstract Task<Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí content type k souboru.
@@ -302,7 +363,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected virtual void PerformCopy(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName)
 		{
-			using (var stream = Read(sourceFileName))
+			using (var stream = OpenRead(sourceFileName))
 			{
 				targetFileStorageService.Save(targetFileName, stream, GetContentType(sourceFileName));
 			}
@@ -328,7 +389,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected virtual async Task PerformCopyAsync(string sourceFileName, IFileStorageService targetFileStorageService, string targetFileName, CancellationToken cancellationToken)
 		{
-			using (var stream = await ReadAsync(sourceFileName, cancellationToken).ConfigureAwait(false))
+			using (var stream = await OpenReadAsync(sourceFileName, cancellationToken).ConfigureAwait(false))
 			{
 				string contentType = await GetContentTypeAsync(sourceFileName, cancellationToken).ConfigureAwait(false);
 				await targetFileStorageService.SaveAsync(targetFileName, stream, contentType, cancellationToken).ConfigureAwait(false);

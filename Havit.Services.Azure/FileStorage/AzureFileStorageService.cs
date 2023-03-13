@@ -120,7 +120,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override System.IO.Stream PerformRead(string fileName)
+		protected override System.IO.Stream PerformOpenRead(string fileName)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName);
 			return shareFileClient.OpenRead();
@@ -129,7 +129,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override async Task<System.IO.Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
+		protected override async Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
 			return await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -614,6 +614,19 @@ namespace Havit.Services.Azure.FileStorage
 		protected override async ValueTask<string> GetContentTypeAsync(string sourceFileName, CancellationToken cancellationToken)
 		{
 			return (await GetShareFileClient(sourceFileName).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
+		}
+
+		/// <inheritdoc />
+		protected override System.IO.Stream PerformOpenWrite(string fileName, string contentType)
+		{
+			return GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories).OpenWrite(true, 0);
+		}
+
+		/// <inheritdoc />
+		protected override async Task<System.IO.Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			var shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
+			return await shareFileClient.OpenWriteAsync(true, 0, cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 	}
 }

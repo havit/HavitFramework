@@ -236,6 +236,18 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
+	public void SftpStorageService_OpenWrite_OverwritesExistingFileAndContent()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_OpenWriteAsync_OverwritesExistingFileAndContent()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
 	public void SftpStorageService_Copy()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Copy(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));

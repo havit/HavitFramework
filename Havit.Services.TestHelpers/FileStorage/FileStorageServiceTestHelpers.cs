@@ -679,6 +679,80 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
+		public static void FileStorageService_OpenWrite_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "openwrite.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				byte[] buffer = new byte[100000];
+				ms.Write(buffer, 0, buffer.Length);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				fileStorageService.Save(filename, ms, ""); // upload file
+			}
+
+			Assert.IsTrue(fileStorageService.Exists(filename)); // precondition
+
+			// Act
+			using (var stream = fileStorageService.OpenWrite(filename, "")) // should overwrite file and the content
+			{
+				stream.Write(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			using (var stream = fileStorageService.OpenRead(filename))
+			{
+				byte[] readBuffer = new byte[writeBuffer.Length + 1]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
+				var readBytes = stream.Read(readBuffer, 0, readBuffer.Length);
+
+				Assert.AreEqual(writeBuffer.Length, readBytes);
+				CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			}
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static async Task FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "openwrite.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				byte[] buffer = new byte[100000];
+				ms.Write(buffer, 0, buffer.Length);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				await fileStorageService.SaveAsync(filename, ms, ""); // upload file
+			}
+
+			Assert.IsTrue(await fileStorageService.ExistsAsync(filename)); // precondition
+
+			// Act
+			using (var stream = await fileStorageService.OpenWriteAsync(filename, "")) // should overwrite file and the content
+			{
+				await stream.WriteAsync(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			using (var stream = await fileStorageService.OpenReadAsync(filename))
+			{
+				byte[] readBuffer = new byte[writeBuffer.Length + 1]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
+				var readBytes = await stream.ReadAsync(readBuffer, 0, readBuffer.Length);
+
+				Assert.AreEqual(writeBuffer.Length, readBytes);
+				CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			}
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
 		private static bool FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(IFileStorageService fileStorageService, string searchPattern, string testFilename)
 		{
 			IEnumerable<FileInfo> fileInfos = fileStorageService.EnumerateFiles(searchPattern);

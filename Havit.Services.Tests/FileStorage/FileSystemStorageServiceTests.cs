@@ -313,6 +313,18 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_OpenWrite_OverwritesExistingFileAndContent()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_OpenWriteAsync_OverwritesExistingFileAndContent()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_Copy()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_Copy(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));

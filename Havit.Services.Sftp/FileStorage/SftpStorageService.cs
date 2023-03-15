@@ -283,7 +283,14 @@ namespace Havit.Services.Sftp.FileStorage
 			string substitutedFilename = SubstituteFileName(fileName);
 
 			PerformSave_EnsureFolderFor(substitutedFilename);
-			return GetConnectedSftpClient().OpenWrite(substitutedFilename);
+
+			var sftpClient = GetConnectedSftpClient();
+			if (sftpClient.Exists(substitutedFilename))
+			{
+				sftpClient.Delete(substitutedFilename);
+			}
+
+			return sftpClient.OpenWrite(substitutedFilename);
 		}
 
 		/// <inheritdoc />

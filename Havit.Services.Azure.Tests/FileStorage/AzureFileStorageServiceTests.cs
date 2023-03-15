@@ -201,18 +201,30 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		//[TestMethod]
-		public void AzureFileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public void AzureFileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			//Šifrování není podporováno.
 			//FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		//[TestMethod]
-		public async Task AzureFileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public async Task AzureFileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			//Šifrování není podporováno.
 			//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 			await Task.CompletedTask;
+		}
+
+		[TestMethod]
+		public void AzureFileStorageService_OpenWrite_OverwritesExistingFileAndContent()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(GetAzureFileStorageService());
 		}
 
 		[TestMethod]

@@ -152,7 +152,7 @@ namespace Havit.Services.FileStorage
 			}
 
 			byte[] bytes;
-			using (Stream dataStream = fileStorageService.Read(fileName))
+			using (Stream dataStream = fileStorageService.OpenRead(fileName))
 			{
 				if (dataStream is MemoryStream ms1)
 				{
@@ -185,7 +185,7 @@ namespace Havit.Services.FileStorage
 			}
 
 			byte[] bytes;
-			using (Stream dataStream = fileStorageService.Read(fileName))
+			using (Stream dataStream = fileStorageService.OpenRead(fileName))
 			{
 				if (dataStream is MemoryStream ms1)
 				{

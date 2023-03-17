@@ -212,9 +212,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation
 		{
 			foreach (IReadOnlyProperty property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
 			{
-				if (property.Name.EndsWith("Id") && !property.Name.EndsWith("ExternalId") && !property.IsForeignKey() && !property.IsKey())
+				if (property.Name.EndsWith("Id") && !property.Name.EndsWith("ExternalId") && !property.IsNonForeignKeyAllowedToEndWithId() && !property.IsForeignKey() && !property.IsKey())
 				{
-					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is not a foreign key. The property name ends with 'Id' which is allowed only for foreign keys.";
+					yield return $"Class {entityType.ClrType.Name} has a property named {property.Name} which is not a foreign key. The property name ends with 'Id' which is allowed only for foreign keys. Rename property or allow the name by {nameof(PropertyBuilderExtensions.AllowNonForeignKeyToEndWithId)}() method.";
 				}
 			}
 		}

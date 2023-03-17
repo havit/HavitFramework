@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
+using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
@@ -24,6 +25,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
 				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<GroupToGroup>().HasKey(groupHierarchy => new { groupHierarchy.ChildGroupId, groupHierarchy.ParentGroupId });
+
+			modelBuilder.Entity<IdWithNoForeignKeyButAllowed>().Property(entity => entity.MyId).AllowNonForeignKeyToEndWithId();
 
 			modelBuilder.Entity<IdWithPoorlyNamedForeignKey>().HasOne(item => item.ForeignKey).WithMany().HasForeignKey(item => item.ForeignKeyCode);
 

@@ -692,9 +692,10 @@ namespace Havit.Services.TestHelpers.FileStorage
 				ms.Seek(0, SeekOrigin.Begin);
 
 				fileStorageService.Save(filename, ms, ""); // upload file
-			}
 
-			Assert.IsTrue(fileStorageService.Exists(filename)); // precondition
+				// preconfition
+				Assert.AreEqual(buffer.Length, fileStorageService.EnumerateFiles(filename).Single().Size);
+			}
 
 			// Act
 			using (var stream = fileStorageService.OpenWrite(filename, "")) // should overwrite file and the content
@@ -703,14 +704,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Assert
-			using (var stream = fileStorageService.OpenRead(filename))
-			{
-				byte[] readBuffer = new byte[writeBuffer.Length + 1]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
-				var readBytes = stream.Read(readBuffer, 0, readBuffer.Length);
-
-				Assert.AreEqual(writeBuffer.Length, readBytes);
-				CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
-			}
+			Assert.AreEqual(writeBuffer.Length, fileStorageService.EnumerateFiles(filename).Single().Size);
 
 			// Clean-up
 			fileStorageService.Delete(filename);
@@ -729,9 +723,57 @@ namespace Havit.Services.TestHelpers.FileStorage
 				ms.Seek(0, SeekOrigin.Begin);
 
 				await fileStorageService.SaveAsync(filename, ms, ""); // upload file
+
+				// precondition
+				Assert.AreEqual(buffer.Length, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
+
 			}
 
-			Assert.IsTrue(await fileStorageService.ExistsAsync(filename)); // precondition
+			// Act
+			using (var stream = await fileStorageService.OpenWriteAsync(filename, "")) // should overwrite file and the content
+			{
+				await stream.WriteAsync(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			Assert.AreEqual(writeBuffer.Length, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static void FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "content.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+			byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
+
+			// Act
+			using (var stream = fileStorageService.OpenWrite(filename, "")) // should overwrite file and the content
+			{
+				stream.Write(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			using (var stream = fileStorageService.OpenRead(filename))
+			{
+				var readBytes = stream.Read(readBuffer, 0, readBuffer.Length);
+
+				Assert.AreEqual(writeBuffer.Length, readBytes);
+				CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			}
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static async Task FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "content.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+			byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
 
 			// Act
 			using (var stream = await fileStorageService.OpenWriteAsync(filename, "")) // should overwrite file and the content
@@ -742,7 +784,6 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Assert
 			using (var stream = await fileStorageService.OpenReadAsync(filename))
 			{
-				byte[] readBuffer = new byte[writeBuffer.Length + 1]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
 				var readBytes = await stream.ReadAsync(readBuffer, 0, readBuffer.Length);
 
 				Assert.AreEqual(writeBuffer.Length, readBytes);
@@ -750,7 +791,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Clean-up
-			fileStorageService.Delete(filename);
+			await fileStorageService.DeleteAsync(filename);
 		}
 
 		private static bool FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(IFileStorageService fileStorageService, string searchPattern, string testFilename)

@@ -313,6 +313,30 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void FileSystemStorageService_OpenWrite_OpenWriteAndOpenRead_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService());
+		}
+
+		[TestMethod]
+		public void FileSystemStorageService_OpenWriteAndOpenReadWithEncryption_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public async Task FileSystemStorageService_OpenWriteAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
 		public void FileSystemStorageService_OpenWrite_OverwritesExistingFileAndContent()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetFileSystemStorageService());

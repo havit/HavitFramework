@@ -217,6 +217,30 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureBlobStorageService_OpenWrite_OpenWriteAndOpenRead_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_OpenWriteAndOpenReadWithEncryption_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_OpenWriteAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
 		public void AzureBlobStorageService_OpenWrite_OverwritesExistingFileAndContent()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetAzureBlobStorageService());

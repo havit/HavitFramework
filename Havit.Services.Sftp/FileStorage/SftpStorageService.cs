@@ -284,7 +284,10 @@ namespace Havit.Services.Sftp.FileStorage
 
 			PerformSave_EnsureFolderFor(substitutedFilename);
 
-			var sftpClient = GetConnectedSftpClient();
+			// ISftpClient má k dispozici metodu Create, která dle dokumentace dělá přesně to, co potřebujeme.
+			// Nicméně při použití (minimálně vůči SFTP serveru nad Blob Storage, dostáváme chybu Renci.SshNet.Common.SshException: FeatureNotSupported: This feature is not supported.)
+			// Ponecháme tedy méně hezké, zato funčkní řešení s Exists+Delete+OpenWrite.
+			ISftpClient sftpClient = GetConnectedSftpClient();
 			if (sftpClient.Exists(substitutedFilename))
 			{
 				sftpClient.Delete(substitutedFilename);

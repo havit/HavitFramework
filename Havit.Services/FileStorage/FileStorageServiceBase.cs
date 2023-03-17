@@ -209,7 +209,7 @@ namespace Havit.Services.FileStorage
 			}
 			else
 			{
-				return new CryptoStream(PerformOpenWrite(fileName, contentType), EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read);
+				return new CryptoStream(PerformOpenWrite(fileName, contentType), EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Write);
 			}
 		}
 
@@ -226,7 +226,7 @@ namespace Havit.Services.FileStorage
 			else
 			{
 				Stream writeStream = await PerformOpenWriteAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
-				return new CryptoStream(writeStream, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Read);
+				return new CryptoStream(writeStream, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Write);
 			}
 		}
 

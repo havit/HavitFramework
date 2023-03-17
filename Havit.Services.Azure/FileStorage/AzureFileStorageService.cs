@@ -2,6 +2,7 @@
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 using Havit.Diagnostics.Contracts;
+using Havit.Services.Azure.FileStorage.Internal;
 using Havit.Services.FileStorage;
 using Havit.Text.RegularExpressions;
 using System;
@@ -144,6 +145,11 @@ namespace Havit.Services.Azure.FileStorage
 
 			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
 
+			PerformSaveInternal(shareFileClient, fileContent);
+		}
+
+		private void PerformSaveInternal(ShareFileClient shareFileClient, System.IO.Stream fileContent, bool emptyFileAlreadyCreated = false)
+		{
 			System.IO.Stream seekableFileContent;
 			bool seekableFileContentNeedsDispose;
 
@@ -162,7 +168,10 @@ namespace Havit.Services.Azure.FileStorage
 			try // jen pro finally + Dispose
 			{
 				long fileContentLength = seekableFileContent.Length; // zde nastavujeme velikost souboru, abychom mohli přečíst vlastnost Length, potřebujeme seekovatelný stream...
-				shareFileClient.Create(fileContentLength); // zde nastavujeme velikost souboru (ačkoliv se to jmenuje maxsize)
+				if (fileContentLength > 0 || !emptyFileAlreadyCreated)
+				{
+					shareFileClient.Create(fileContentLength); // zde nastavujeme velikost souboru (ačkoliv se to jmenuje maxsize)
+				}
 				if (fileContentLength > 0) // upload contentu nemůžeme provádět pro prázdný stream
 				{
 					try
@@ -616,17 +625,40 @@ namespace Havit.Services.Azure.FileStorage
 			return (await GetShareFileClient(sourceFileName).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
 		}
 
+		private void PerformOpenWrite_OnClosingMemoryStream(System.IO.MemoryStream memoryStream, ShareFileClient shareFileClient)
+		{
+			memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+
+			// Toto si můžeme dovolit pouze protože v této FileStorageService nepodporujeme šifrování.
+			PerformSaveInternal(shareFileClient, memoryStream, true);
+		}
+
 		/// <inheritdoc />
 		protected override System.IO.Stream PerformOpenWrite(string fileName, string contentType)
 		{
-			return GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories).OpenWrite(true, 0);
+			EnsureFileShare();
+
+			// Create/OpenWrite strikně vyžaduje, abychom uvedli velikost souboru (options.MaxSize).
+			// Jenže to při založení souboru znamená, že je založen soubor s touto velikostí. Do takovéhoto souboru můžeme zapisovat obsah.
+			// Ovšem, pokud chceme dát k dispozici obecný stream pro zápis, nemůžeme vědět velikost streamu dopředu.
+			// Takže vrátíme MemoryStream. A při uzavírání memory streamu jeho obsah uploadujeme do File Storage.
+			// Bohužel to vylučuje použití Async varianty, navíc v typickém kódu "using (Stream s  = OpenWrite() { s.Write(...); }"
+			// bude k zápisu docházet až v rámci Dispose.
+			var shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
+			shareFileClient.Create(0);
+
+			return new BeforeCloseActionableMemoryStream((System.IO.MemoryStream memoryStream) => PerformOpenWrite_OnClosingMemoryStream(memoryStream, shareFileClient));
 		}
 
 		/// <inheritdoc />
 		protected override async Task<System.IO.Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
+			EnsureFileShare();
+
 			var shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
-			return await shareFileClient.OpenWriteAsync(true, 0, cancellationToken: cancellationToken).ConfigureAwait(false);
+			await shareFileClient.CreateAsync(0).ConfigureAwait(false);
+
+			return new BeforeCloseActionableMemoryStream((System.IO.MemoryStream memoryStream) => PerformOpenWrite_OnClosingMemoryStream(memoryStream, shareFileClient));
 		}
 	}
 }

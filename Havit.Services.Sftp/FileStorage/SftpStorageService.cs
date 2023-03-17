@@ -278,7 +278,7 @@ namespace Havit.Services.Sftp.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override System.IO.Stream PerformOpenWrite(string fileName, string contentType)
+		protected override System.IO.Stream PerformOpenCreate(string fileName, string contentType)
 		{
 			string substitutedFilename = SubstituteFileName(fileName);
 
@@ -297,10 +297,10 @@ namespace Havit.Services.Sftp.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override Task<System.IO.Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		protected override Task<System.IO.Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
-			return Task.FromResult(PerformOpenWrite(fileName, contentType)); // no async support
+			return Task.FromResult(PerformOpenCreate(fileName, contentType)); // no async support
 		}
 
 		/// <inheritdoc />

@@ -201,15 +201,15 @@ namespace Havit.Services.FileStorage
 		/// Vrátí stream určený pro zápis do úložiště.
 		/// Pokud je zapnuto, provádí stream transparentní šifrování, tj. streamu (fileContent) jsou zašifrována.
 		/// </summary>
-		public Stream OpenWrite(string fileName, string contentType)
+		public Stream OpenCreate(string fileName, string contentType)
 		{
 			if (!SupportsBasicEncryption)
 			{
-				return PerformOpenWrite(fileName, contentType);
+				return PerformOpenCreate(fileName, contentType);
 			}
 			else
 			{
-				return new CryptoStream(PerformOpenWrite(fileName, contentType), EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Write);
+				return new CryptoStream(PerformOpenCreate(fileName, contentType), EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Write);
 			}
 		}
 
@@ -217,15 +217,15 @@ namespace Havit.Services.FileStorage
 		/// Vrátí stream určený pro zápis do úložiště.
 		/// Pokud je zapnuto, provádí stream transparentní šifrování, tj. streamu (fileContent) jsou zašifrována.
 		/// </summary>
-		public async Task<Stream> OpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		public async Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
 			if (!SupportsBasicEncryption)
 			{
-				return await PerformOpenWriteAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
+				return await PerformOpenCreateAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
-				Stream writeStream = await PerformOpenWriteAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
+				Stream writeStream = await PerformOpenCreateAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
 				return new CryptoStream(writeStream, EncryptionOptions.CreateEncryptor(), CryptoStreamMode.Write);
 			}
 		}
@@ -327,12 +327,12 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream určený pro zápis do úložiště.
 		/// </summary>
-		protected abstract Stream PerformOpenWrite(string fileName, string contentType);
+		protected abstract Stream PerformOpenCreate(string fileName, string contentType);
 
 		/// <summary>
 		/// Vrátí stream určený pro zápis do úložiště.
 		/// </summary>
-		protected abstract Task<Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
+		protected abstract Task<Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí content type k souboru.

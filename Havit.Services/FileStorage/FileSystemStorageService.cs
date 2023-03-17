@@ -132,15 +132,15 @@ namespace Havit.Services.FileStorage
 			}
 		}
 
-		protected override Stream PerformOpenWrite(string fileName, string contentType)
+		protected override Stream PerformOpenCreate(string fileName, string contentType)
 		{
 			return new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920);
 		}
 
-		protected override Task<Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		protected override Task<Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
-			return Task.FromResult(PerformOpenWrite(fileName, contentType)); // no async version
+			return Task.FromResult(PerformOpenCreate(fileName, contentType)); // no async version
 		}
 
 		/// <summary>

@@ -679,7 +679,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
-		public static void FileStorageService_OpenWrite_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
+		public static void FileStorageService_OpenCreate_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
 		{
 			// Arrange
 			string filename = "openwrite.txt";
@@ -698,7 +698,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Act
-			using (var stream = fileStorageService.OpenWrite(filename, "")) // should overwrite file and the content
+			using (var stream = fileStorageService.OpenCreate(filename, "")) // should overwrite file and the content
 			{
 				stream.Write(writeBuffer, 0, writeBuffer.Length);
 			}
@@ -710,7 +710,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService.Delete(filename);
 		}
 
-		public static async Task FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
+		public static async Task FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
 		{
 			// Arrange
 			string filename = "openwrite.txt";
@@ -730,7 +730,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			}
 
 			// Act
-			using (var stream = await fileStorageService.OpenWriteAsync(filename, "")) // should overwrite file and the content
+			using (var stream = await fileStorageService.OpenCreateAsync(filename, "")) // should overwrite file and the content
 			{
 				await stream.WriteAsync(writeBuffer, 0, writeBuffer.Length);
 			}
@@ -742,7 +742,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService.Delete(filename);
 		}
 
-		public static void FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(FileStorageServiceBase fileStorageService)
+		public static void FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(FileStorageServiceBase fileStorageService)
 		{
 			// Arrange
 			string filename = "content.txt";
@@ -750,7 +750,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
 
 			// Act
-			using (var stream = fileStorageService.OpenWrite(filename, "")) // should overwrite file and the content
+			using (var stream = fileStorageService.OpenCreate(filename, "")) // should overwrite file and the content
 			{
 				stream.Write(writeBuffer, 0, writeBuffer.Length);
 			}
@@ -768,7 +768,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService.Delete(filename);
 		}
 
-		public static async Task FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(FileStorageServiceBase fileStorageService)
+		public static async Task FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(FileStorageServiceBase fileStorageService)
 		{
 			// Arrange
 			string filename = "content.txt";
@@ -776,7 +776,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
 
 			// Act
-			using (var stream = await fileStorageService.OpenWriteAsync(filename, "")) // should overwrite file and the content
+			using (var stream = await fileStorageService.OpenCreateAsync(filename, "")) // should overwrite file and the content
 			{
 				await stream.WriteAsync(writeBuffer, 0, writeBuffer.Length);
 			}

@@ -221,14 +221,14 @@ public class SftpFileStorageServiceTests
 	}
 
 	//[TestMethod]
-	public void SftpStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+	public void SftpStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		//Šifrování není podporováno.
 		//FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	//[TestMethod]
-	public async Task SftpStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+	public async Task SftpStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		//Šifrování není podporováno.
 		//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
@@ -236,42 +236,42 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
-	public void SftpStorageService_OpenWrite_OpenWriteAndOpenRead_ContentsAreSame()
+	public void SftpStorageService_OpenCreateAndOpenRead_ContentsAreSame()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetSftpFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetSftpFileStorageService());
 	}
 
 	[TestMethod]
-	public async Task SftpStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame()
+	public async Task SftpStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetSftpFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetSftpFileStorageService());
 	}
 
 	//[TestMethod]
-	public void SftpStorageService_OpenWriteAndOpenReadWithEncryption_ContentsAreSame()
+	public void SftpStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
 	{
 		//Šifrování není podporováno.
-		//FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetSftpFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		//FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetSftpFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	//[TestMethod]
-	public Task SftpStorageService_OpenWriteAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+	public Task SftpStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
 	{
 		//Šifrování není podporováno.
-		//await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetSftpFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		//await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetSftpFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		return Task.CompletedTask;
 	}
 
 	[TestMethod]
-	public void SftpStorageService_OpenWrite_OverwritesExistingFileAndContent()
+	public void SftpStorageService_OpenCreate_OverwritesExistingFileAndContent()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetSftpFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_OpenCreate_OverwritesExistingFileAndContent(GetSftpFileStorageService());
 	}
 
 	[TestMethod]
-	public async Task SftpStorageService_OpenWriteAsync_OverwritesExistingFileAndContent()
+	public async Task SftpStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(GetSftpFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetSftpFileStorageService());
 	}
 
 	[TestMethod]

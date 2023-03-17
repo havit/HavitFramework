@@ -217,39 +217,39 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_OpenWrite_OpenWriteAndOpenRead_ContentsAreSame()
+		public void AzureBlobStorageService_OpenCreateAndOpenRead_ContentsAreSame()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame()
+		public async Task AzureBlobStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_OpenWriteAndOpenReadWithEncryption_ContentsAreSame()
+		public void AzureBlobStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_OpenWriteAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+		public async Task AzureBlobStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_OpenWrite_OverwritesExistingFileAndContent()
+		public void AzureBlobStorageService_OpenCreate_OverwritesExistingFileAndContent()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreate_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_OpenWriteAsync_OverwritesExistingFileAndContent()
+		public async Task AzureBlobStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]

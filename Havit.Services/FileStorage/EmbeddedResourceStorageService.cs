@@ -91,12 +91,12 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>
-		protected override Stream PerformOpenWrite(string fileName, string contentType) => throw new NotSupportedException();
+		protected override Stream PerformOpenCreate(string fileName, string contentType) => throw new NotSupportedException();
 
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.
 		/// </summary>
-		protected override Task<Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default) => throw new NotSupportedException();
+		protected override Task<Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default) => throw new NotSupportedException();
 
 		/// <summary>
 		/// Vyhazuje <see cref="NotSupportedException"/>.

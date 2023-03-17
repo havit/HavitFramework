@@ -252,11 +252,11 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public Stream OpenWrite(string fileName, string contentType)
+		public Stream OpenCreate(string fileName, string contentType)
 		{
 			try
 			{
-				return fileStorageService.OpenWrite(fileName, contentType);
+				return fileStorageService.OpenCreate(fileName, contentType);
 			}
 			finally
 			{
@@ -266,11 +266,11 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task<Stream> OpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		public async Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
 			try
 			{
-				return await fileStorageService.OpenWriteAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
+				return await fileStorageService.OpenCreateAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
 			}
 			finally
 			{

@@ -469,7 +469,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override Stream PerformOpenWrite(string fileName, string contentType)
+		protected override Stream PerformOpenCreate(string fileName, string contentType)
 		{
 			EnsureContainer();
 			BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
@@ -477,7 +477,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override async Task<Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		protected override async Task<Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
 			await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
 

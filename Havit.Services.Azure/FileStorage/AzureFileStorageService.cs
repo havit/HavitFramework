@@ -625,7 +625,7 @@ namespace Havit.Services.Azure.FileStorage
 			return (await GetShareFileClient(sourceFileName).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
 		}
 
-		private void PerformOpenWrite_OnClosingMemoryStream(System.IO.MemoryStream memoryStream, ShareFileClient shareFileClient)
+		private void PerformOpenCreate_OnClosingMemoryStream(System.IO.MemoryStream memoryStream, ShareFileClient shareFileClient)
 		{
 			memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
 
@@ -634,7 +634,7 @@ namespace Havit.Services.Azure.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override System.IO.Stream PerformOpenWrite(string fileName, string contentType)
+		protected override System.IO.Stream PerformOpenCreate(string fileName, string contentType)
 		{
 			EnsureFileShare();
 
@@ -647,18 +647,18 @@ namespace Havit.Services.Azure.FileStorage
 			var shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
 			shareFileClient.Create(0);
 
-			return new BeforeCloseActionableMemoryStream((System.IO.MemoryStream memoryStream) => PerformOpenWrite_OnClosingMemoryStream(memoryStream, shareFileClient));
+			return new BeforeCloseActionableMemoryStream((System.IO.MemoryStream memoryStream) => PerformOpenCreate_OnClosingMemoryStream(memoryStream, shareFileClient));
 		}
 
 		/// <inheritdoc />
-		protected override async Task<System.IO.Stream> PerformOpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		protected override async Task<System.IO.Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 		{
 			EnsureFileShare();
 
 			var shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
 			await shareFileClient.CreateAsync(0).ConfigureAwait(false);
 
-			return new BeforeCloseActionableMemoryStream((System.IO.MemoryStream memoryStream) => PerformOpenWrite_OnClosingMemoryStream(memoryStream, shareFileClient));
+			return new BeforeCloseActionableMemoryStream((System.IO.MemoryStream memoryStream) => PerformOpenCreate_OnClosingMemoryStream(memoryStream, shareFileClient));
 		}
 	}
 }

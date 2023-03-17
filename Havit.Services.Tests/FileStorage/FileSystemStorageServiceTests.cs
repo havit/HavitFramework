@@ -313,39 +313,39 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_OpenWrite_OpenWriteAndOpenRead_ContentsAreSame()
+		public void FileSystemStorageService_OpenCreateAndOpenRead_ContentsAreSame()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetFileSystemStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame()
+		public async Task FileSystemStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_OpenWriteAndOpenReadWithEncryption_ContentsAreSame()
+		public void FileSystemStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_OpenWriteAndOpenRead_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_OpenWriteAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+		public async Task FileSystemStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
-		public void FileSystemStorageService_OpenWrite_OverwritesExistingFileAndContent()
+		public void FileSystemStorageService_OpenCreate_OverwritesExistingFileAndContent()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_OpenWrite_OverwritesExistingFileAndContent(GetFileSystemStorageService());
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreate_OverwritesExistingFileAndContent(GetFileSystemStorageService());
 		}
 
 		[TestMethod]
-		public async Task FileSystemStorageService_OpenWriteAsync_OverwritesExistingFileAndContent()
+		public async Task FileSystemStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_OpenWriteAsync_OverwritesExistingFileAndContent(GetFileSystemStorageService());
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetFileSystemStorageService());
 		}
 
 		[TestMethod]

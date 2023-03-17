@@ -67,14 +67,14 @@ namespace Havit.Services.FileStorage
 		Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Vrátí straem pro upload do úložiště.
+		/// Vrátí straem pro upload do úložiště.		
 		/// </summary>
-		Stream OpenWrite(string fileName, string contentType);
+		Stream OpenCreate(string fileName, string contentType);
 
 		/// <summary>
 		/// Vrátí straem pro upload do úložiště.
 		/// </summary>
-		Task<Stream> OpenWriteAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
+		Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zkopíruje soubor do dalšího úložiště.

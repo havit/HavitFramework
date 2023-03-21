@@ -27,19 +27,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
 		/// </summary>
-		[Obsolete($"Use {nameof(OpenRead)} method instead of {nameof(Read)} method.")]
-		Stream Read(string fileName);
-
-		/// <summary>
-		/// Vrátí stream s obsahem souboru z úložiště.
-		/// </summary>
 		Stream OpenRead(string fileName);
-
-		/// <summary>
-		/// Vrátí stream s obsahem souboru z úložiště.
-		/// </summary>
-		[Obsolete($"Use {nameof(OpenReadAsync)} method instead of {nameof(ReadAsync)} method.")]
-		Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.

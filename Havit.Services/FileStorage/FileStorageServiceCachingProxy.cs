@@ -128,20 +128,6 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		[Obsolete]
-		public Stream Read(string fileName)
-		{
-			return OpenRead(fileName);
-		}
-
-		/// <inheritdoc />
-		[Obsolete]
-		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
-		{
-			return await OpenReadAsync(fileName, cancellationToken).ConfigureAwait(false);
-		}
-
-		/// <inheritdoc />
 		public Stream OpenRead(string fileName)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.Read, fileName);

@@ -54,24 +54,6 @@ namespace Havit.Services.FileStorage
 		public abstract Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Nahrazeno metodou <see cref="OpenRead(string)"/>.
-		/// </summary>
-		[Obsolete]
-		public Stream Read(string fileName)
-		{
-			return OpenRead(fileName);
-		}
-
-		/// <summary>
-		/// Nahrazeno metodou <see cref="OpenReadAsync(string, CancellationToken)"/>.
-		/// </summary>
-		[Obsolete]
-		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
-		{
-			return await OpenReadAsync(fileName, cancellationToken).ConfigureAwait(false);
-		}
-
-		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Pokud je zapnuto, provádí transparentní (de)šifrování.
 		/// </summary>

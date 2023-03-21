@@ -113,20 +113,6 @@ namespace Havit.Services.FileStorage
 			await fileStorageService.MoveAsync(sourceFileName, targetFileStorageService, targetFileName, cancellationToken).ConfigureAwait(false);
 		}
 
-		/// <inheritdoc />
-		[Obsolete]
-		public Stream Read(string fileName)
-		{
-			return fileStorageService.Read(fileName);
-		}
-
-		/// <inheritdoc />
-		[Obsolete]
-		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
-		{
-			return await fileStorageService.ReadAsync(fileName, cancellationToken).ConfigureAwait(false);
-		}
-
 		public Stream OpenRead(string fileName)
 		{
 			return fileStorageService.OpenRead(fileName);

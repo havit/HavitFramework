@@ -221,18 +221,57 @@ public class SftpFileStorageServiceTests
 	}
 
 	//[TestMethod]
-	public void SftpStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+	public void SftpStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		//Šifrování není podporováno.
 		//FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	//[TestMethod]
-	public async Task SftpStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+	public async Task SftpStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		//Šifrování není podporováno.
 		//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		await Task.CompletedTask;
+	}
+
+	[TestMethod]
+	public void SftpStorageService_OpenCreateAndOpenRead_ContentsAreSame()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetSftpFileStorageService());
+	}
+
+	//[TestMethod]
+	public void SftpStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
+	{
+		//Šifrování není podporováno.
+		//FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetSftpFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+	}
+
+	//[TestMethod]
+	public Task SftpStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+	{
+		//Šifrování není podporováno.
+		//await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetSftpFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		return Task.CompletedTask;
+	}
+
+	[TestMethod]
+	public void SftpStorageService_OpenCreate_OverwritesExistingFileAndContent()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenCreate_OverwritesExistingFileAndContent(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetSftpFileStorageService());
 	}
 
 	[TestMethod]

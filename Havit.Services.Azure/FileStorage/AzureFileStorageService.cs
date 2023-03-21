@@ -2,6 +2,7 @@
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 using Havit.Diagnostics.Contracts;
+using Havit.Services.Azure.FileStorage.Internal;
 using Havit.Services.FileStorage;
 using Havit.Text.RegularExpressions;
 using System;
@@ -120,7 +121,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override System.IO.Stream PerformRead(string fileName)
+		protected override System.IO.Stream PerformOpenRead(string fileName)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName);
 			return shareFileClient.OpenRead();
@@ -129,7 +130,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override async Task<System.IO.Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
+		protected override async Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
 			return await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -144,52 +145,27 @@ namespace Havit.Services.Azure.FileStorage
 
 			ShareFileClient shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
 
-			System.IO.Stream seekableFileContent;
-			bool seekableFileContentNeedsDispose;
-
-			if (fileContent.CanSeek)
+			try
 			{
-				seekableFileContent = fileContent;
-				seekableFileContentNeedsDispose = false;
-			}
-			else
-			{
-				seekableFileContent = new System.IO.MemoryStream();
-				fileContent.CopyTo(seekableFileContent);
-				seekableFileContentNeedsDispose = true;
-			}
-
-			try // jen pro finally + Dispose
-			{
-				long fileContentLength = seekableFileContent.Length; // zde nastavujeme velikost souboru, abychom mohli přečíst vlastnost Length, potřebujeme seekovatelný stream...
-				shareFileClient.Create(fileContentLength); // zde nastavujeme velikost souboru (ačkoliv se to jmenuje maxsize)
-				if (fileContentLength > 0) // upload contentu nemůžeme provádět pro prázdný stream
+				// Pokud víme cílovou velikost souboru, nastavíme ji. Jinak necháme soubor růst dle čtení ze zdrojového streamu a zápisu do cílového streamu.
+				var initialFileSize = fileContent.CanSeek ? fileContent.Length : 0;
+				using (var stream = new AzureFileStorageGrowingFileSizeStream(initialFileSize, shareFileClient))
 				{
-					try
-					{
-						shareFileClient.Upload(seekableFileContent);
-					}
-					catch
-					{
-						try
-						{
-							shareFileClient.Delete(); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
-						}
-						catch
-						{
-							// NOOP
-						}
-
-						throw;
-					}
+					fileContent.CopyTo(stream);
 				}
 			}
-			finally
+			catch
 			{
-				if (seekableFileContentNeedsDispose)
+				try
 				{
-					seekableFileContent.Dispose();
+					shareFileClient.DeleteIfExists(); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
 				}
+				catch
+				{
+					// NOOP
+				}
+
+				throw;
 			}
 		}
 
@@ -200,55 +176,29 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken: cancellationToken).ConfigureAwait(false);
+			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken);
 
-			System.IO.Stream seekableFileContent;
-			bool seekableFileContentNeedsDispose;
-
-			if (fileContent.CanSeek)
+			try
 			{
-				seekableFileContent = fileContent;
-				seekableFileContentNeedsDispose = false;
-			}
-			else
-			{
-				seekableFileContent = new System.IO.MemoryStream();
-				await fileContent.CopyToAsync(seekableFileContent, 81920 /* default */, cancellationToken).ConfigureAwait(false);
-				seekableFileContentNeedsDispose = true;
-			}
-
-			try // jen pro finally + Dispose
-			{
-				long fileContentLength = seekableFileContent.Length; // zde nastavujeme velikost souboru, abychom mohli přečíst vlastnost Length, potřebujeme seekovatelný stream...
-
-				await shareFileClient.CreateAsync(fileContentLength, cancellationToken: cancellationToken).ConfigureAwait(false);
-				if (fileContentLength > 0)
+				// Pokud víme cílovou velikost souboru, nastavíme ji. Jinak necháme soubor růst dle čtení ze zdrojového streamu a zápisu do cílového streamu.
+				var initialFileSize = fileContent.CanSeek ? fileContent.Length : 0;
+				using (var stream = new AzureFileStorageGrowingFileSizeStream(initialFileSize, shareFileClient))
 				{
-					try
-					{
-						await shareFileClient.UploadAsync(seekableFileContent, cancellationToken: cancellationToken).ConfigureAwait(false);
-					}
-					catch
-					{
-						try
-						{
-							await shareFileClient.DeleteAsync(cancellationToken).ConfigureAwait(false);
-						}
-						catch
-						{
-							// NOOP
-						}
-
-						throw;
-					}
+					await fileContent.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 				}
 			}
-			finally
+			catch
 			{
-				if (seekableFileContentNeedsDispose)
+				try
 				{
-					seekableFileContent.Dispose();
+					shareFileClient.DeleteIfExists(); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
 				}
+				catch
+				{
+					// NOOP
+				}
+
+				throw;
 			}
 		}
 
@@ -614,6 +564,24 @@ namespace Havit.Services.Azure.FileStorage
 		protected override async ValueTask<string> GetContentTypeAsync(string sourceFileName, CancellationToken cancellationToken)
 		{
 			return (await GetShareFileClient(sourceFileName).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
+		}
+
+		/// <inheritdoc />
+		protected override System.IO.Stream PerformOpenCreate(string fileName, string contentType)
+		{
+			EnsureFileShare();
+
+			var shareFileClient = GetShareFileClient(fileName, createDirectoryStructure: options.AutoCreateDirectories);
+			return new AzureFileStorageGrowingFileSizeStream(0, shareFileClient);
+		}
+
+		/// <inheritdoc />
+		protected override async Task<System.IO.Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
+
+			var shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
+			return new AzureFileStorageGrowingFileSizeStream(0, shareFileClient);
 		}
 	}
 }

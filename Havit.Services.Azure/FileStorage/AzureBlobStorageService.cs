@@ -131,7 +131,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override Stream PerformRead(string fileName)
+		protected override Stream PerformOpenRead(string fileName)
 		{
 			BlobClient blobClient = GetBlobClient(fileName);
 			return blobClient.OpenRead();
@@ -140,7 +140,7 @@ namespace Havit.Services.Azure.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override async Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
+		protected override async Task<Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			BlobClient blobClient = GetBlobClient(fileName);
 			return await blobClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -155,10 +155,7 @@ namespace Havit.Services.Azure.FileStorage
 
 			BlobClient blobClient = GetBlobClient(fileName);
 
-			BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
-			blobHttpHeaders.ContentType = contentType;
-			PerformSave_SetProperties(blobHttpHeaders);
-
+			BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
 			blobClient.Upload(fileContent, blobHttpHeaders);
 		}
 
@@ -171,13 +168,9 @@ namespace Havit.Services.Azure.FileStorage
 
 			BlobClient blobClient = GetBlobClient(fileName);
 
-			BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
-			blobHttpHeaders.ContentType = contentType;
-			PerformSave_SetProperties(blobHttpHeaders);
-
+			BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
 			await blobClient.UploadAsync(fileContent, httpHeaders: blobHttpHeaders, cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
-
 		private void PerformSave_SetProperties(BlobHttpHeaders blobHttpHeaders)
 		{
 			if (!String.IsNullOrEmpty(options.CacheControl))
@@ -473,6 +466,32 @@ namespace Havit.Services.Azure.FileStorage
 
 			// option.BlobStorage obsahuje jen název blob storage -> pak použijeme TokenCredential (zamýšleno pro Managed Identity)
 			return BlobStorageValueType.StorageName;
+		}
+
+		/// <inheritdoc />
+		protected override Stream PerformOpenCreate(string fileName, string contentType)
+		{
+			EnsureContainer();
+			BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
+			return GetBlobClient(fileName).OpenWrite(true, new BlobOpenWriteOptions { HttpHeaders = blobHttpHeaders });
+		}
+
+		/// <inheritdoc />
+		protected override async Task<Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
+
+			BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
+			return await GetBlobClient(fileName).OpenWriteAsync(true, new BlobOpenWriteOptions { HttpHeaders = blobHttpHeaders }, cancellationToken: cancellationToken).ConfigureAwait(false);
+		}
+
+		private BlobHttpHeaders GetUploadHttpHeaders(string contentType)
+		{
+			BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
+			blobHttpHeaders.ContentType = contentType;
+			PerformSave_SetProperties(blobHttpHeaders);
+
+			return blobHttpHeaders;
 		}
 
 		private enum BlobStorageValueType

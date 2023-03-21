@@ -96,7 +96,7 @@ namespace Havit.Web.UI
 
 			try
 			{
-				using (System.IO.Stream stream = fileStorageService.Read(storageFilename))
+				using (System.IO.Stream stream = fileStorageService.OpenRead(storageFilename))
 				{
 					Pair pair = (Pair)DeserializeFromStream(stream, storageFilename);
 

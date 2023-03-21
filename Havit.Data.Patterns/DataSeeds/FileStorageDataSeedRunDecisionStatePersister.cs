@@ -29,7 +29,7 @@ namespace Havit.Data.Patterns.DataSeeds
 		{
 			try
 			{
-				using (Stream stream = fileStorageService.Read(GetFileName(profileName)))
+				using (Stream stream = fileStorageService.OpenRead(GetFileName(profileName)))
 				using (StreamReader reader = new StreamReader(stream))
 				{
 					return reader.ReadToEnd();

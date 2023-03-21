@@ -205,15 +205,51 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void AzureBlobStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public void AzureBlobStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
-			FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			FileStorageServiceTestHelpers.FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		[TestMethod]
-		public async Task AzureBlobStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public async Task AzureBlobStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
-			await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_OpenCreateAndOpenRead_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		[TestMethod]
+		public void AzureBlobStorageService_OpenCreate_OverwritesExistingFileAndContent()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreate_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureBlobStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
 		}
 
 		[TestMethod]

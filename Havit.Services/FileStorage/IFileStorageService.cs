@@ -27,12 +27,24 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
 		/// </summary>
+		[Obsolete($"Use {nameof(OpenRead)} method instead of {nameof(Read)} method.")]
 		Stream Read(string fileName);
 
 		/// <summary>
 		/// Vrátí stream s obsahem souboru z úložiště.
 		/// </summary>
+		Stream OpenRead(string fileName);
+
+		/// <summary>
+		/// Vrátí stream s obsahem souboru z úložiště.
+		/// </summary>
+		[Obsolete($"Use {nameof(OpenReadAsync)} method instead of {nameof(ReadAsync)} method.")]
 		Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Vrátí stream s obsahem souboru z úložiště.
+		/// </summary>
+		Task<Stream> OpenReadAsync(string fileName, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
@@ -53,6 +65,16 @@ namespace Havit.Services.FileStorage
 		/// Uloží stream do úložiště.
 		/// </summary>
 		Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
+
+		/// <summary>
+		/// Vrátí straem pro upload do úložiště.		
+		/// </summary>
+		Stream OpenCreate(string fileName, string contentType);
+
+		/// <summary>
+		/// Vrátí straem pro upload do úložiště.
+		/// </summary>
+		Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Zkopíruje soubor do dalšího úložiště.

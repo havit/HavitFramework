@@ -217,16 +217,16 @@ namespace Havit.Services.Sftp.FileStorage
 		}
 
 		/// <inheritdoc />
-		protected override System.IO.Stream PerformRead(string fileName)
+		protected override System.IO.Stream PerformOpenRead(string fileName)
 		{
 			return GetConnectedSftpClient().OpenRead(SubstituteFileName(fileName));
 		}
 
 		/// <inheritdoc />
-		protected override Task<System.IO.Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
+		protected override Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
-			return Task.FromResult(this.PerformRead(fileName)); // No async support
+			return Task.FromResult(this.PerformOpenRead(fileName)); // No async support
 		}
 
 		/// <inheritdoc />
@@ -275,6 +275,32 @@ namespace Havit.Services.Sftp.FileStorage
 			cancellationToken.ThrowIfCancellationRequested();
 			this.PerformSave(fileName, fileContent, contentType); // No async support
 			return Task.CompletedTask;
+		}
+
+		/// <inheritdoc />
+		protected override System.IO.Stream PerformOpenCreate(string fileName, string contentType)
+		{
+			string substitutedFilename = SubstituteFileName(fileName);
+
+			PerformSave_EnsureFolderFor(substitutedFilename);
+
+			// ISftpClient má k dispozici metodu Create, která dle dokumentace dělá přesně to, co potřebujeme.
+			// Nicméně při použití (minimálně vůči SFTP serveru nad Blob Storage, dostáváme chybu Renci.SshNet.Common.SshException: FeatureNotSupported: This feature is not supported.)
+			// Ponecháme tedy méně hezké, zato funčkní řešení s Exists+Delete+OpenWrite.
+			ISftpClient sftpClient = GetConnectedSftpClient();
+			if (sftpClient.Exists(substitutedFilename))
+			{
+				sftpClient.Delete(substitutedFilename);
+			}
+
+			return sftpClient.OpenWrite(substitutedFilename);
+		}
+
+		/// <inheritdoc />
+		protected override Task<System.IO.Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return Task.FromResult(PerformOpenCreate(fileName, contentType)); // no async support
 		}
 
 		/// <inheritdoc />

@@ -53,20 +53,20 @@ namespace Havit.Services.Tests.FileStorage
 		}
 
 		[TestMethod]
-		public void FileStorageServiceCachingProxy_Read_UsesCache()
+		public void FileStorageServiceCachingProxy_OpenRead_UsesCache()
 		{
 			// Arrange
 			Mock<IFileStorageService> fileStorageServiceMock = new Mock<IFileStorageService>(MockBehavior.Strict);
-			fileStorageServiceMock.Setup(m => m.Read(It.IsAny<string>())).Returns(new MemoryStream());
+			fileStorageServiceMock.Setup(m => m.OpenRead(It.IsAny<string>())).Returns(new MemoryStream());
 			var cachingServiceProxy = new FileStorageServiceCachingProxy(fileStorageServiceMock.Object, new DictionaryCacheService());
 
 			// Act
-			cachingServiceProxy.Read("abc.txt");
-			cachingServiceProxy.Read("abc.txt");
-			cachingServiceProxy.Read("abc.txt");
+			cachingServiceProxy.OpenRead("abc.txt");
+			cachingServiceProxy.OpenRead("abc.txt");
+			cachingServiceProxy.OpenRead("abc.txt");
 
 			// Assert
-			fileStorageServiceMock.Verify(m => m.Read("abc.txt"), Times.Once); // třikrát voláme Read, ale druhé a třetí volání má být odbaveno z cache			
+			fileStorageServiceMock.Verify(m => m.OpenRead("abc.txt"), Times.Once); // třikrát voláme Read, ale druhé a třetí volání má být odbaveno z cache			
 		}
 
 		[TestMethod]

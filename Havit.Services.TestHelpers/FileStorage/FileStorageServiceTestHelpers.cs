@@ -182,7 +182,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				fileStorageService.Save(filename, ms, "text/plain");
 			}
 
-			using (Stream stream = fileStorageService.Read(filename))
+			using (Stream stream = fileStorageService.OpenRead(filename))
 			{
 				using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, false, 1024, true))
 				{
@@ -229,7 +229,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 				await fileStorageService.SaveAsync(filename, ms, "text/plain");
 			}
 
-			using (Stream stream = await fileStorageService.ReadAsync(filename))
+			using (Stream stream = await fileStorageService.OpenReadAsync(filename))
 			{
 				using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, false, 1024, true))
 				{
@@ -601,7 +601,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			Assert.IsTrue(!files.Any());
 		}
 
-		public static void FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		public static void FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
@@ -627,7 +627,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Act
 
 			// přečteme jen jednu řádku, poté provedeme dispose
-			using (Stream stream = fileStorageService.Read(testFilename))
+			using (Stream stream = fileStorageService.OpenRead(testFilename))
 			using (StreamReader reader = new StreamReader(stream))
 			{
 				reader.ReadLine();
@@ -640,7 +640,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			fileStorageService.Delete(testFilename);
 		}
 
-		public static async Task FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
+		public static async Task FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 		{
 			Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
@@ -666,7 +666,7 @@ namespace Havit.Services.TestHelpers.FileStorage
 			// Act
 
 			// přečteme jen jednu řádku, poté provedeme dispose
-			using (Stream stream = await fileStorageService.ReadAsync(testFilename))
+			using (Stream stream = await fileStorageService.OpenReadAsync(testFilename))
 			using (StreamReader reader = new StreamReader(stream))
 			{
 				await reader.ReadLineAsync();
@@ -677,6 +677,121 @@ namespace Havit.Services.TestHelpers.FileStorage
 
 			// Clean-up
 			await fileStorageService.DeleteAsync(testFilename);
+		}
+
+		public static void FileStorageService_OpenCreate_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "openwrite.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				byte[] buffer = new byte[100000];
+				ms.Write(buffer, 0, buffer.Length);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				fileStorageService.Save(filename, ms, ""); // upload file
+
+				// preconfition
+				Assert.AreEqual(buffer.Length, fileStorageService.EnumerateFiles(filename).Single().Size);
+			}
+
+			// Act
+			using (var stream = fileStorageService.OpenCreate(filename, "")) // should overwrite file and the content
+			{
+				stream.Write(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			Assert.AreEqual(writeBuffer.Length, fileStorageService.EnumerateFiles(filename).Single().Size);
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static async Task FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "openwrite.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				byte[] buffer = new byte[100000];
+				ms.Write(buffer, 0, buffer.Length);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				await fileStorageService.SaveAsync(filename, ms, ""); // upload file
+
+				// precondition
+				Assert.AreEqual(buffer.Length, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
+
+			}
+
+			// Act
+			using (var stream = await fileStorageService.OpenCreateAsync(filename, "")) // should overwrite file and the content
+			{
+				await stream.WriteAsync(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			Assert.AreEqual(writeBuffer.Length, (await fileStorageService.EnumerateFilesAsync(filename).ToListAsync()).Single().Size);
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static void FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "content.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+			byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
+
+			// Act
+			using (var stream = fileStorageService.OpenCreate(filename, "")) // should overwrite file and the content
+			{
+				stream.Write(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			using (var stream = fileStorageService.OpenRead(filename))
+			{
+				var readBytes = stream.Read(readBuffer, 0, readBuffer.Length);
+
+				Assert.AreEqual(writeBuffer.Length, readBytes);
+				CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			}
+
+			// Clean-up
+			fileStorageService.Delete(filename);
+		}
+
+		public static async Task FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(FileStorageServiceBase fileStorageService)
+		{
+			// Arrange
+			string filename = "content.txt";
+			byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
+			byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
+
+			// Act
+			using (var stream = await fileStorageService.OpenCreateAsync(filename, "")) // should overwrite file and the content
+			{
+				await stream.WriteAsync(writeBuffer, 0, writeBuffer.Length);
+			}
+
+			// Assert
+			using (var stream = await fileStorageService.OpenReadAsync(filename))
+			{
+				var readBytes = await stream.ReadAsync(readBuffer, 0, readBuffer.Length);
+
+				Assert.AreEqual(writeBuffer.Length, readBytes);
+				CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			}
+
+			// Clean-up
+			await fileStorageService.DeleteAsync(filename);
 		}
 
 		private static bool FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(IFileStorageService fileStorageService, string searchPattern, string testFilename)

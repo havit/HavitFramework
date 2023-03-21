@@ -201,18 +201,57 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		//[TestMethod]
-		public void AzureFileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public void AzureFileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			//Šifrování není podporováno.
 			//FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		}
 
 		//[TestMethod]
-		public async Task AzureFileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
+		public async Task AzureFileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 		{
 			//Šifrování není podporováno.
 			//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 			await Task.CompletedTask;
+		}
+
+		[TestMethod]
+		public void AzureFileStorageService_OpenCreateAndOpenRead_ContentsAreSame()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureFileStorageService());
+		}
+
+		//[TestMethod]
+		public void AzureFileStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
+		{
+			//Šifrování není podporováno.
+			//FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		}
+
+		//[TestMethod]
+		public Task AzureFileStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
+		{
+			//Šifrování není podporováno.
+			//await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+			return Task.CompletedTask;
+		}
+
+		[TestMethod]
+		public void AzureFileStorageService_OpenCreate_OverwritesExistingFileAndContent()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_OpenCreate_OverwritesExistingFileAndContent(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetAzureFileStorageService());
 		}
 
 		[TestMethod]

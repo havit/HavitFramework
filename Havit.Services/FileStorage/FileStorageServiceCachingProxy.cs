@@ -128,7 +128,21 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
+		[Obsolete]
 		public Stream Read(string fileName)
+		{
+			return OpenRead(fileName);
+		}
+
+		/// <inheritdoc />
+		[Obsolete]
+		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
+		{
+			return await OpenReadAsync(fileName, cancellationToken).ConfigureAwait(false);
+		}
+
+		/// <inheritdoc />
+		public Stream OpenRead(string fileName)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.Read, fileName);
 
@@ -138,7 +152,7 @@ namespace Havit.Services.FileStorage
 			}
 
 			byte[] bytes;
-			using (Stream dataStream = fileStorageService.Read(fileName))
+			using (Stream dataStream = fileStorageService.OpenRead(fileName))
 			{
 				if (dataStream is MemoryStream ms1)
 				{
@@ -161,7 +175,7 @@ namespace Havit.Services.FileStorage
 		}
 
 		/// <inheritdoc />
-		public async Task<Stream> ReadAsync(string fileName, CancellationToken cancellationToken = default)
+		public async Task<Stream> OpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
 			string cacheKey = GetCacheKey(CachedStorageOperation.Read, fileName);
 
@@ -171,7 +185,7 @@ namespace Havit.Services.FileStorage
 			}
 
 			byte[] bytes;
-			using (Stream dataStream = fileStorageService.Read(fileName))
+			using (Stream dataStream = fileStorageService.OpenRead(fileName))
 			{
 				if (dataStream is MemoryStream ms1)
 				{
@@ -196,7 +210,7 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		public void ReadToStream(string fileName, Stream stream)
 		{
-			using (MemoryStream dataStream = (MemoryStream)Read(fileName))
+			using (MemoryStream dataStream = (MemoryStream)OpenRead(fileName))
 			{
 				stream.CopyTo(stream);
 			}
@@ -205,7 +219,7 @@ namespace Havit.Services.FileStorage
 		/// <inheritdoc />
 		public async Task ReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
-			using (MemoryStream dataStream = (MemoryStream)await ReadAsync(fileName, cancellationToken).ConfigureAwait(false))
+			using (MemoryStream dataStream = (MemoryStream)await OpenReadAsync(fileName, cancellationToken).ConfigureAwait(false))
 			{
 				await stream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
@@ -233,6 +247,34 @@ namespace Havit.Services.FileStorage
 			}
 			finally
 			{
+				InvalidateCacheByFileName(fileName);
+			}
+		}
+
+		/// <inheritdoc />
+		public Stream OpenCreate(string fileName, string contentType)
+		{
+			try
+			{
+				return fileStorageService.OpenCreate(fileName, contentType);
+			}
+			finally
+			{
+				// TODO: Invalidovat až po uzavření streamu
+				InvalidateCacheByFileName(fileName);
+			}
+		}
+
+		/// <inheritdoc />
+		public async Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			try
+			{
+				return await fileStorageService.OpenCreateAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
+			}
+			finally
+			{
+				// TODO: Invalidovat až po uzavření streamu
 				InvalidateCacheByFileName(fileName);
 			}
 		}

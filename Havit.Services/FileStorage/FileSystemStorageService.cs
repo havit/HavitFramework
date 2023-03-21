@@ -69,7 +69,7 @@ namespace Havit.Services.FileStorage
 		/// <summary>
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// </summary>
-		protected override Stream PerformRead(string fileName)
+		protected override Stream PerformOpenRead(string fileName)
 		{
 			return new FileStream(GetFullPath(fileName), FileMode.Open, FileAccess.Read, FileShare.Read, 81920, FileOptions.RandomAccess);
 		}
@@ -78,17 +78,18 @@ namespace Havit.Services.FileStorage
 		/// Vrátí stream s obsahem soubor z úložiště.
 		/// Nemá asynchronní implementaci, spouští synchronní PerformRead.
 		/// </summary>
-		protected override Task<Stream> PerformReadAsync(string fileName, CancellationToken cancellationToken = default)
+		protected override Task<Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 		{
-			return Task.FromResult(PerformRead(fileName));
+			return Task.FromResult(PerformOpenRead(fileName));
 		}
+
 
 		/// <summary>
 		/// Zapíše obsah souboru z úložiště do streamu.
 		/// </summary>
 		protected override void PerformReadToStream(string fileName, Stream stream)
 		{
-			using (Stream fileStream = PerformRead(fileName))
+			using (Stream fileStream = PerformOpenRead(fileName))
 			{
 				fileStream.CopyTo(stream);
 			}
@@ -99,7 +100,7 @@ namespace Havit.Services.FileStorage
 		/// </summary>
 		protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 		{
-			using (Stream fileStream = PerformRead(fileName))
+			using (Stream fileStream = PerformOpenRead(fileName))
 			{
 				await fileStream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
@@ -129,6 +130,17 @@ namespace Havit.Services.FileStorage
 			{
 				await fileContent.CopyToAsync(fileStream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 			}
+		}
+
+		protected override Stream PerformOpenCreate(string fileName, string contentType)
+		{
+			return new FileStream(GetFullPath(fileName), FileMode.Create, FileAccess.Write, FileShare.None, 81920);
+		}
+
+		protected override Task<Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return Task.FromResult(PerformOpenCreate(fileName, contentType)); // no async version
 		}
 
 		/// <summary>
@@ -411,6 +423,5 @@ namespace Havit.Services.FileStorage
 		{
 			return new ValueTask<string>((string)null); // FileSystem nepoužívá content types
 		}
-
 	}
 }

@@ -176,7 +176,7 @@ namespace Havit.Services.Azure.FileStorage
 		{
 			await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken);
+			ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
 
 			try
 			{

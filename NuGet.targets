@@ -5,7 +5,7 @@
 		<Authors>HAVIT</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>logo.png</PackageIcon>
-		<NoWarn>$(NoWarn);NU5104</NoWarn>
+		<!--<NoWarn>$(NoWarn);NU5104</NoWarn>-->
 	</PropertyGroup>
 
 	<Import Project="NuGetVersions.targets" />

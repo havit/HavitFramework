@@ -26,7 +26,7 @@ namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure
 
 			modelBuilder.Entity<GroupToGroup>().HasKey(groupHierarchy => new { groupHierarchy.ChildGroupId, groupHierarchy.ParentGroupId });
 
-			modelBuilder.Entity<IdWithNoForeignKeyButAllowed>().Property(entity => entity.MyId).AllowNonForeignKeyToEndWithId();
+			modelBuilder.Entity<IdWithNoForeignKeyButAllowed>().Property(entity => entity.MyId).SuppressModelValidatorRule(ModelValidatorRule.OnlyForeignKeyPropertiesCanEndWithId);
 
 			modelBuilder.Entity<IdWithPoorlyNamedForeignKey>().HasOne(item => item.ForeignKey).WithMany().HasForeignKey(item => item.ForeignKeyCode);
 

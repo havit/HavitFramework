@@ -8,10 +8,10 @@ namespace Havit.Data.EntityFrameworkCore.Metadata;
 public static class PropertyBuilderExtensions
 {
 	/// <summary>
-	/// Doplní k property anotaci povolující pojmenování vlastnosti s 'Id' na konci, přestože nejde o cizí klíč.
+	/// Doplní k property anotaci potlačující pravidlo model validátoru.
 	/// </summary>
-	public static PropertyBuilder<TProperty> AllowNonForeignKeyToEndWithId<TProperty>(this PropertyBuilder<TProperty> propertyBuilder)
+	public static PropertyBuilder<TProperty> SuppressModelValidatorRule<TProperty>(this PropertyBuilder<TProperty> propertyBuilder, ModelValidatorRule modelValidatorRule)
 	{
-		return propertyBuilder.HasAnnotation(ModelValidationAnnotationContants.AllowNonForeignKeyToEndWithIdAnnotationName, true);
+		return propertyBuilder.HasAnnotation(modelValidatorRule.SuppressModelValidatorRuleAnnotationName, true);
 	}
 }

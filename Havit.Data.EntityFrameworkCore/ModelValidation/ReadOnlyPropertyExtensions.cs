@@ -5,9 +5,9 @@ namespace Havit.Data.EntityFrameworkCore.ModelValidation;
 
 internal static class ReadOnlyPropertyExtensions
 {
-	public static bool IsNonForeignKeyAllowedToEndWithId(this IReadOnlyProperty property)
+	public static bool IsModelValidatorRuleSupressed(this IReadOnlyProperty property, ModelValidatorRule modelValidatorRule)
 	{
-		object annotationValue = property.FindAnnotation(ModelValidationAnnotationContants.AllowNonForeignKeyToEndWithIdAnnotationName)?.Value;
+		object annotationValue = property.FindAnnotation(modelValidatorRule.SuppressModelValidatorRuleAnnotationName)?.Value;
 		return (bool?)annotationValue == true;
 	}
 }

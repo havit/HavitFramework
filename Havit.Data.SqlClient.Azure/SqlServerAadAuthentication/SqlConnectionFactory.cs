@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Text;
+﻿using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Identity;
 
 namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 {
@@ -48,7 +46,9 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 		/// </summary>
 		public static string GetAzureSqlAccessToken()
 		{
-			return (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/").ConfigureAwait(false).GetAwaiter().GetResult();
+			var credential = new DefaultAzureCredential();
+			var token = credential.GetToken(new global::Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" }));
+			return token.Token;
 		}
 
 		/// <summary>
@@ -56,7 +56,9 @@ namespace Havit.Data.SqlClient.Azure.SqlServerAadAuthentication
 		/// </summary>
 		public static async ValueTask<string> GetAzureSqlAccessTokenAsync(CancellationToken cancellationToken = default)
 		{
-			return await (new Microsoft.Azure.Services.AppAuthentication.AzureServiceTokenProvider()).GetAccessTokenAsync("https://database.windows.net/", cancellationToken: cancellationToken).ConfigureAwait(false);
+			var credential = new DefaultAzureCredential();
+			var token = await credential.GetTokenAsync(new global::Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" }), cancellationToken).ConfigureAwait(false);
+			return token.Token;
 		}
 	}
 }

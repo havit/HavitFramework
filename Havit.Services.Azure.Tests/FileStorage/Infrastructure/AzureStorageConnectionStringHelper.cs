@@ -1,5 +1,4 @@
 ﻿using Azure.Identity;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
 using System;
 

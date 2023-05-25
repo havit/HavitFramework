@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,9 +22,19 @@ public class SequenceRecurringJob : IRecurringJob
 	public string JobId { get; }
 
 	/// <summary>
+	/// Queue name.
+	/// </summary>
+	public string Queue { get; }
+
+	/// <summary>
 	/// Cron expression.
 	/// </summary>
 	public string CronExpression { get; }
+
+	/// <summary>
+	/// Recurring jobs options.
+	/// </summary>
+	public RecurringJobOptions RecurringJobOptions { get; }
 
 	/// <summary>
 	/// RecurringJobs to run in sequence.
@@ -36,28 +47,28 @@ public class SequenceRecurringJob : IRecurringJob
 	public JobContinuationOptions JobContinuationOptions { get; }
 
 	/// <summary>
-	/// Time zone info.
+	/// Constructor (for backward compatibility).
 	/// </summary>
-	public TimeZoneInfo TimeZone { get; }
-
-	/// <summary>
-	/// Queue name.
-	/// </summary>
-	public string Queue { get; }
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public SequenceRecurringJob(string jobId, string cronExpression, IRecurringJob[] recurringJobsToRunInSequence, JobContinuationOptions jobContinuationOptions = JobContinuationOptions.OnAnyFinishedState, TimeZoneInfo timeZone = null, string queue = "default", MisfireHandlingMode misfireHandling = MisfireHandlingMode.Relaxed)
+		: this(jobId, queue, cronExpression, new RecurringJobOptions { TimeZone = timeZone ?? TimeZoneInfo.Utc, MisfireHandling = misfireHandling }, recurringJobsToRunInSequence, jobContinuationOptions)
+	{
+		// NOOP
+	}
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public SequenceRecurringJob(string jobId, string cronExpression, IRecurringJob[] recurringJobsToRunInSequence, JobContinuationOptions jobContinuationOptions = JobContinuationOptions.OnAnyFinishedState, TimeZoneInfo timeZone = null, string queue = "default")
+	public SequenceRecurringJob(string jobId, string queue, string cronExpression, RecurringJobOptions recurringJobOptions, IRecurringJob[] recurringJobsToRunInSequence, JobContinuationOptions jobContinuationOptions = JobContinuationOptions.OnAnyFinishedState)
 	{
 		Contract.Requires((recurringJobsToRunInSequence != null) && recurringJobsToRunInSequence.Any());
 
 		this.JobId = jobId;
-		this.CronExpression = cronExpression;
-		this.JobContinuationOptions = jobContinuationOptions;
-		this.TimeZone = timeZone;
 		this.Queue = queue;
+		this.CronExpression = cronExpression;
+		this.RecurringJobOptions = recurringJobOptions;
 		this.RecurringJobsToRunInSequence = recurringJobsToRunInSequence;
+		this.JobContinuationOptions = jobContinuationOptions;
 	}
 
 	/// <inheritdoc />
@@ -88,6 +99,6 @@ public class SequenceRecurringJob : IRecurringJob
 	/// <inheritdoc />
 	public void ScheduleAsRecurringJob(IRecurringJobManager recurringJobManager)
 	{
-		recurringJobManager.AddOrUpdate<ISequenceRecurringJobScheduler>(this.JobId, planner => planner.ProcessRecurryingJobsInQueue(JobId, RecurringJobsToRunInSequence.Select(item => item.JobId).ToArray(), this.JobContinuationOptions), CronExpression, TimeZone, Queue);
+		recurringJobManager.AddOrUpdate<ISequenceRecurringJobScheduler>(this.JobId, Queue, planner => planner.ProcessRecurryingJobsInQueue(JobId, RecurringJobsToRunInSequence.Select(item => item.JobId).ToArray(), this.JobContinuationOptions), CronExpression, RecurringJobOptions);
 	}
 }

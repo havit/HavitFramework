@@ -43,7 +43,7 @@ namespace Havit.HangfireApp
 					services.AddTransient<IJobTwo, JobTwo>();
 					services.AddTransient<IJobThree, JobThree>();
 
-					services.AddApplicationInsightsTelemetryWorkerService();					
+					services.AddApplicationInsightsTelemetryWorkerService();
 					services.AddApplicationInsightsTelemetryProcessor<IgnoreSucceededDependenciesWithNoParentIdProcessor>(); // ignorujeme infrastrukturní položky Hangfire (předpokládá použití ApplicationInsightAttribute níže)
 					services.Remove(services.Single(descriptor => descriptor.ImplementationType == typeof(PerformanceCollectorModule))); // odebereme hlášení PerformanceCounters
 
@@ -72,6 +72,7 @@ namespace Havit.HangfireApp
 						);
 
 						services.AddHangfireConsoleExtensions(); // adds support for Hangfire jobs logging  to a dashboard using ILogger<T> (.UseConsole() in hangfire configuration is required!)
+						services.AddHangfireSequenceRecurringJobScheduler();
 
 #if DEBUG
 						services.AddHangfireEnqueuedJobsCleanupOnApplicationStartup();
@@ -107,9 +108,15 @@ namespace Havit.HangfireApp
 		{
 			TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
-			yield return new RecurringJob<IJobOne>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
-			yield return new RecurringJob<IJobTwo>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
-			yield return new RecurringJob<IJobThree>(job => job.ExecuteAsync(CancellationToken.None), Cron.Minutely(), timeZone);
+			var job1 = new RecurringJob<IJobOne>(job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), timeZone);
+			var job2 = new RecurringJob<IJobTwo>(job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), timeZone);
+			var job3 = new RecurringJob<IJobThree>(job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), timeZone);
+
+			yield return job1;
+			yield return job2;
+			yield return job3;
+
+			yield return new SequenceRecurringJob("All three jobs", Cron.Never(), new IRecurringJob[] { job1, job2, job3 });
 		}
 
 		private static async Task<bool> TryRunCommandAsync(IServiceProvider serviceProvider, string command)
@@ -151,4 +158,4 @@ namespace Havit.HangfireApp
 		}
 	}
 
-	}
+}

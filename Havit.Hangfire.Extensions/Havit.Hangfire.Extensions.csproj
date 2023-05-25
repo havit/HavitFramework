@@ -8,14 +8,14 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.10</PackageVersion>
+		<PackageVersion>2.0.11-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire extensions</Description>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="Hangfire.Core" Version="1.7.29" />
+	  <PackageReference Include="Hangfire.Core" Version="1.8.1" />
 	  <PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Havit.AspNetCore\Havit.AspNetCore.csproj" />

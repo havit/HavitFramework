@@ -55,7 +55,7 @@ public class SequenceRecurringJobScheduler : ISequenceRecurringJobScheduler
 			logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a continuation of job '{PreviousRecurringJobId}' in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, previousSequenceRecurringJobId, sequenceRecurringJobId);
 		}
 
-		string jobId = recurringJobManager.TriggerExecution(recurringJobIdToEnqueue);
+		string jobId = recurringJobManager.TriggerJob(recurringJobIdToEnqueue);
 		if (jobId == null)
 		{
 			logger.LogWarning("Triggering recurring job '{RecurringJobId}' failed.", recurringJobIdToEnqueue);

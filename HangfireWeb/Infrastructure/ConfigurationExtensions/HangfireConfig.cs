@@ -3,6 +3,7 @@ using Hangfire;
 using Hangfire.Console;
 using Hangfire.SqlServer;
 using Havit.Hangfire.Extensions.Filters;
+using Havit.Hangfire.Extensions.RecurringJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

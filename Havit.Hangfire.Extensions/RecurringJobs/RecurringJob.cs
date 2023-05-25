@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,11 @@ namespace Havit.Hangfire.Extensions.RecurringJobs;
 public class RecurringJob<TJob> : IRecurringJob
 {
 	/// <summary>
+	/// Default queue name.
+	/// </summary>
+	public const string DefaultQueueName = "default";
+
+	/// <summary>
 	/// Job identifier. Takes TJob class name (for interfaces it trims starting I).
 	/// </summary>
 	public string JobId
@@ -26,6 +32,11 @@ public class RecurringJob<TJob> : IRecurringJob
 	}
 
 	/// <summary>
+	/// Queue name.
+	/// </summary>
+	public string Queue { get; }
+
+	/// <summary>
 	/// Returns the jobs.
 	/// </summary>
 	public Expression<Func<TJob, Task>> MethodCall { get; }
@@ -36,30 +47,35 @@ public class RecurringJob<TJob> : IRecurringJob
 	public string CronExpression { get; }
 
 	/// <summary>
-	/// Time zone info.
+	/// Recurring jobs options.
 	/// </summary>
-	public TimeZoneInfo TimeZone { get; }
+	public RecurringJobOptions RecurringJobOptions { get; }
 
 	/// <summary>
-	/// Queue name.
+	/// Constructor (for backward compatibility).
 	/// </summary>
-	public string Queue { get;  }
+	public RecurringJob(Expression<Func<TJob, Task>> methodCall, string cronExpression, TimeZoneInfo timeZone, string queue = DefaultQueueName, MisfireHandlingMode misfireHandling = MisfireHandlingMode.Relaxed)
+		: this(queue, methodCall, cronExpression, new RecurringJobOptions { TimeZone = timeZone ?? TimeZoneInfo.Utc, MisfireHandling = misfireHandling })
+	{
+		// NOOP
+	}
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public RecurringJob(Expression<Func<TJob, Task>> methodCall, string cronExpression, TimeZoneInfo timeZone, string queue = "default")
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public RecurringJob(string queue, Expression<Func<TJob, Task>> methodCall, string cronExpression, RecurringJobOptions recurringJobOptions)
 	{
+		Queue = queue;
 		MethodCall = methodCall;
 		CronExpression = cronExpression ?? Cron.Never();
-		TimeZone = timeZone;
-		Queue = queue;
+		RecurringJobOptions = recurringJobOptions;
 	}
 
 	/// <inheritdoc />
 	public void ScheduleAsRecurringJob(IRecurringJobManager recurringJobManager)
 	{
-		recurringJobManager.AddOrUpdate<TJob>(JobId, MethodCall, CronExpression, TimeZone, Queue);
+		recurringJobManager.AddOrUpdate<TJob>(JobId, Queue, MethodCall, CronExpression, RecurringJobOptions);
 	}
 
 	/// <inheritdoc />

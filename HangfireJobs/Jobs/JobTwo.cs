@@ -11,12 +11,8 @@ namespace Havit.HangfireJobs.Jobs
 	{
 		public Task ExecuteAsync(CancellationToken cancellationToken)
 		{
-			throw new InvalidOperationException("Úloha se nezdařila :-).");
-			//for (int i = 0; i < 5; i++)
-			//{
-			//    Console.WriteLine(this.GetType().Name + ": " + i);
-			//    await Task.Delay(1000, cancellationToken);
-			//}
+			Console.WriteLine("Job two");
+			return Task.CompletedTask;
 		}
 	}
 }

@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
 
 /// <inheritdoc />
-public class SequenceRecurringJobScheduler : ISequenceRecurringJobScheduler
+public class SequenceRecurringJobScheduler
 {
-	private readonly RecurringJobManager recurringJobManager; // IRecurryingJobManager nemá TriggerExection, jenž vrací jobId
+	private readonly RecurringJobManager recurringJobManager; // IRecurringJobManager nemá TriggerExection, jenž vrací jobId
 	private readonly ILogger<SequenceRecurringJobScheduler> logger;
 	private readonly IBackgroundJobClient backgroundJobClient;
 

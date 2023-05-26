@@ -40,7 +40,7 @@ namespace Havit.HangfireApp
 				})
 				.ConfigureServices((hostContext, services) =>
 				{
-					services.AddHttpClient<IJobOne, JobOne>(c => c.BaseAddress = new Uri("https://www.havit.cz"));
+					services.AddTransient<IJobOne, JobOne>();
 					services.AddTransient<IJobTwo, JobTwo>();
 					services.AddTransient<IJobThree, JobThree>();
 
@@ -60,13 +60,14 @@ namespace Havit.HangfireApp
 							{
 								CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
 								SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-								//QueuePollInterval = TimeSpan.FromSeconds(5),
+								QueuePollInterval = TimeSpan.FromSeconds(5),
 								UseRecommendedIsolationLevel = true,
 								DisableGlobalLocks = true,
 							})
 							.WithJobExpirationTimeout(TimeSpan.FromDays(30)) // historie hangfire
 							.UseFilter(new AutomaticRetryAttribute { Attempts = 0 }) // do not retry failed jobs
 							.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně
+							.UseFilter(new DeleteSequenceRecurringJobSchedulerFilter()) // zajistí odstranění systémových stavů jobů zajišťujících běh recurring jobů v sekvenci
 							.UseFilter(new ExceptionMonitoringAttribute(serviceProvider.GetRequiredService<IExceptionMonitoringService>())) // zajistíme hlášení chyby v případě selhání jobu
 							.UseFilter(new ApplicationInsightAttribute(serviceProvider.GetRequiredService<TelemetryClient>()) { JobNameFunc = backgroundJob => Hangfire.Extensions.Helpers.JobNameHelper.TryGetSimpleName(backgroundJob.Job, out string simpleName) ? simpleName : backgroundJob.Job.ToString() })
 							.UseConsole()
@@ -110,9 +111,6 @@ namespace Havit.HangfireApp
 			RecurringJobOptions recurringJobOptions = new RecurringJobOptions
 			{
 				TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"),
-#if DEBUG
-				//MisfireHandling = MisfireHandlingMode.Ignorable // JK: Při tomto nastavení se recurring úlohy nespouští vůbec (a není to tím, že mám aktuálně níže Cron.Never() )
-#endif
 			};
 
 			var job1 = new RecurringJob<IJobOne>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);

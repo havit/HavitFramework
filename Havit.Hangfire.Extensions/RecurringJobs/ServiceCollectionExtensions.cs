@@ -24,6 +24,6 @@ public static class ServiceCollectionExtensions
 	/// </summary>
 	public static void AddHangfireSequenceRecurringJobScheduler(this IServiceCollection services)
 	{
-		services.TryAddSingleton<ISequenceRecurringJobScheduler, SequenceRecurringJobScheduler>();
+		services.TryAddSingleton<SequenceRecurringJobScheduler>();
 	}
 }

@@ -100,6 +100,6 @@ public class SequenceRecurringJob : IRecurringJob
 	/// <inheritdoc />
 	public void ScheduleAsRecurringJob(IRecurringJobManager recurringJobManager)
 	{
-		recurringJobManager.AddOrUpdate<ISequenceRecurringJobScheduler>(this.JobId, Queue, planner => planner.ProcessRecurryingJobsInQueue(JobId, RecurringJobsToRunInSequence.Select(item => item.JobId).ToArray(), this.JobContinuationOptions), CronExpression, RecurringJobOptions);
+		recurringJobManager.AddOrUpdate<SequenceRecurringJobScheduler>(this.JobId, Queue, planner => planner.ProcessRecurryingJobsInQueue(JobId, RecurringJobsToRunInSequence.Select(item => item.JobId).ToArray(), this.JobContinuationOptions), CronExpression, RecurringJobOptions);
 	}
 }

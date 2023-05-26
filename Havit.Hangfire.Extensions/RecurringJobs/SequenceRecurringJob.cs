@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
+using Hangfire.States;
 using Havit.Diagnostics.Contracts;
 using Havit.Hangfire.Extensions.RecurringJobs.Services;
 
@@ -50,7 +51,7 @@ public class SequenceRecurringJob : IRecurringJob
 	/// Constructor (for backward compatibility).
 	/// </summary>
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public SequenceRecurringJob(string jobId, string cronExpression, IRecurringJob[] recurringJobsToRunInSequence, JobContinuationOptions jobContinuationOptions = JobContinuationOptions.OnAnyFinishedState, TimeZoneInfo timeZone = null, string queue = "default", MisfireHandlingMode misfireHandling = MisfireHandlingMode.Relaxed)
+	public SequenceRecurringJob(string jobId, string cronExpression, IRecurringJob[] recurringJobsToRunInSequence, JobContinuationOptions jobContinuationOptions = JobContinuationOptions.OnAnyFinishedState, TimeZoneInfo timeZone = null, string queue = EnqueuedState.DefaultQueue, MisfireHandlingMode misfireHandling = MisfireHandlingMode.Relaxed)
 		: this(jobId, queue, cronExpression, new RecurringJobOptions { TimeZone = timeZone ?? TimeZoneInfo.Utc, MisfireHandling = misfireHandling }, recurringJobsToRunInSequence, jobContinuationOptions)
 	{
 		// NOOP

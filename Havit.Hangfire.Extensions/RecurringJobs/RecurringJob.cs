@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
+using Hangfire.States;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs;
@@ -13,11 +14,6 @@ namespace Havit.Hangfire.Extensions.RecurringJobs;
 /// </summary>
 public class RecurringJob<TJob> : IRecurringJob
 {
-	/// <summary>
-	/// Default queue name.
-	/// </summary>
-	public const string DefaultQueueName = "default";
-
 	/// <summary>
 	/// Job identifier. Takes TJob class name (for interfaces it trims starting I).
 	/// </summary>
@@ -54,7 +50,7 @@ public class RecurringJob<TJob> : IRecurringJob
 	/// <summary>
 	/// Constructor (for backward compatibility).
 	/// </summary>
-	public RecurringJob(Expression<Func<TJob, Task>> methodCall, string cronExpression, TimeZoneInfo timeZone, string queue = DefaultQueueName, MisfireHandlingMode misfireHandling = MisfireHandlingMode.Relaxed)
+	public RecurringJob(Expression<Func<TJob, Task>> methodCall, string cronExpression, TimeZoneInfo timeZone, string queue = EnqueuedState.DefaultQueue, MisfireHandlingMode misfireHandling = MisfireHandlingMode.Relaxed)
 		: this(queue, methodCall, cronExpression, new RecurringJobOptions { TimeZone = timeZone ?? TimeZoneInfo.Utc, MisfireHandling = misfireHandling })
 	{
 		// NOOP

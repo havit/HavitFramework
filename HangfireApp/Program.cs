@@ -2,6 +2,7 @@
 using Hangfire.Console;
 using Hangfire.Console.Extensions;
 using Hangfire.SqlServer;
+using Hangfire.States;
 using Havit.ApplicationInsights.DependencyCollector;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
@@ -106,17 +107,23 @@ namespace Havit.HangfireApp
 
 		private static IEnumerable<IRecurringJob> GetRecurringJobsToSchedule()
 		{
-			TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+			RecurringJobOptions recurringJobOptions = new RecurringJobOptions
+			{
+				TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"),
+#if DEBUG
+				MisfireHandling = MisfireHandlingMode.Ignorable
+#endif
+			};
 
-			var job1 = new RecurringJob<IJobOne>(job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), timeZone);
-			var job2 = new RecurringJob<IJobTwo>(job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), timeZone);
-			var job3 = new RecurringJob<IJobThree>(job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), timeZone);
+			var job1 = new RecurringJob<IJobOne>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
+			var job2 = new RecurringJob<IJobTwo>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
+			var job3 = new RecurringJob<IJobThree>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
 
 			yield return job1;
 			yield return job2;
 			yield return job3;
 
-			yield return new SequenceRecurringJob("All three jobs", Cron.Never(), new IRecurringJob[] { job1, job2, job3 });
+			yield return new SequenceRecurringJob("All three jobs", EnqueuedState.DefaultQueue, Cron.Never(), recurringJobOptions, new IRecurringJob[] { job1, job2, job3 });
 		}
 
 		private static async Task<bool> TryRunCommandAsync(IServiceProvider serviceProvider, string command)

@@ -60,7 +60,7 @@ namespace Havit.HangfireApp
 							{
 								CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
 								SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-								QueuePollInterval = TimeSpan.FromSeconds(5),
+								//QueuePollInterval = TimeSpan.FromSeconds(5),
 								UseRecommendedIsolationLevel = true,
 								DisableGlobalLocks = true,
 							})
@@ -111,7 +111,7 @@ namespace Havit.HangfireApp
 			{
 				TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time"),
 #if DEBUG
-				MisfireHandling = MisfireHandlingMode.Ignorable
+				//MisfireHandling = MisfireHandlingMode.Ignorable // JK: Při tomto nastavení se recurring úlohy nespouští vůbec (a není to tím, že mám aktuálně níže Cron.Never() )
 #endif
 			};
 

@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
 
-/// <inheritdoc />
+/// <summary>
+/// Ensures running recurrying jobs sequence. Used for <see cref="SequenceRecurringJob" />
+/// </summary>
 public class SequenceRecurringJobScheduler
 {
 	private readonly RecurringJobManager recurringJobManager; // IRecurringJobManager nemá TriggerExection, jenž vrací jobId
@@ -24,7 +26,9 @@ public class SequenceRecurringJobScheduler
 		this.backgroundJobClient = backgroundJobClient;
 	}
 
-	/// <inheritdoc />
+	/// <summary>
+	/// Ensures running recurrying jobs sequence. 
+	/// </summary>
 	public void ProcessRecurryingJobsInQueue(string sequenceRecurringJobId, string[] recurringJobIdsToRunInSequence, JobContinuationOptions jobContinuationOptions)
 	{
 		EnqueueNextRecurringJob(sequenceRecurringJobId, null, recurringJobIdsToRunInSequence, jobContinuationOptions);

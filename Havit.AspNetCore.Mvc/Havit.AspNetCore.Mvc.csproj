@@ -1,24 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net7.0;netstandard2.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.0.6</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - ASP.NET Core MVC/Web API Extensions</Description>
-  </PropertyGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.7-pre01</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - ASP.NET Core MVC/Web API Extensions</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
-	  <ProjectReference Include="..\Havit.AspNetCore\Havit.AspNetCore.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.1-packages-->
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+		<ProjectReference Include="..\Havit.AspNetCore\Havit.AspNetCore.csproj" />
+	</ItemGroup>
 
 </Project>

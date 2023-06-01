@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json;
 
 namespace Havit.AspNetCore.Mvc.Filters.ModelValidation
 {
@@ -17,7 +16,11 @@ namespace Havit.AspNetCore.Mvc.Filters.ModelValidation
 		/// <remarks>
 		/// Vracené fields jsou PascalCase - vychází z pojmenování v .NETu, nikoliv z pojmenování použitého JSON formatterem.
 		/// </remarks>
-		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if NET7_0_OR_GREATER
+		[System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+#else
+		[Newtonsoft.Json.JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+#endif
 		public string Field { get; }
 
 		/// <summary>

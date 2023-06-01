@@ -1,7 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!--
+		V zásadě bychom si vystačili s netstandard2.0, nicméně multitargetingem a podporou novějšího .NET Core říkáme, že na platformách, kde nepotřebujeme
+		zásilosti na nuget balíčcích pro zpětnou kompatibilitu (Microsoft.AspNetCore.Http.Abstractions), tak jej skutečně nebudeme mít jako závislost.
+	-->
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net7.0;netstandard2.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
@@ -17,8 +21,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" Condition="'$(TargetFramework)' != 'netstandard2.0'" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.1-packages-->
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />

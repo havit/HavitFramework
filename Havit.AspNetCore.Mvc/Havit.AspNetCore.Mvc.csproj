@@ -18,7 +18,7 @@
 
 	<ItemGroup>
 		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.1-packages-->
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="[2.1.38,2.2)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -5,7 +5,9 @@
 		<Authors>HAVIT</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>logo.png</PackageIcon>
-		<!--<NoWarn>$(NoWarn);NU5104</NoWarn>-->
+
+		<!-- Error NU5104: Warning As Error: A stable release of a package should not have a prerelease dependency -->
+		<NoWarn>$(NoWarn);NU5104</NoWarn>
 	</PropertyGroup>
 
 	<Import Project="NuGetVersions.targets" />

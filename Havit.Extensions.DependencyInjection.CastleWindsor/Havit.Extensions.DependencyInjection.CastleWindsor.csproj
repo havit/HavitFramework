@@ -8,12 +8,12 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>2.0.10</PackageVersion>
+    <PackageVersion>2.0.11-pre01</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions for Castle Windsor</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Windsor" Version="5.1.1" />
+    <PackageReference Include="Castle.Windsor" Version="5.1.2" />
   </ItemGroup>
 
   <ItemGroup>

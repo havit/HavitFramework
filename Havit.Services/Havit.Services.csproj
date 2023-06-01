@@ -30,7 +30,7 @@
 
 	<ItemGroup>
 		<!-- netstandard2.0 dependencies -->
-		<PackageReference Include="System.Runtime.Caching" Version="6.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 	</ItemGroup>
 	<!-- End of conditional dependencies -->
 

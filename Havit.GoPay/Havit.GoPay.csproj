@@ -8,13 +8,13 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-    <PackageVersion>$(HavitGoPay_PackageVersion)</PackageVersion>
+    <PackageVersion>2.0.31-pre01</PackageVersion>
     <Description>HAVIT .NET Framework Extensions - GoPay Library</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,12 +8,12 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>$(HavitServicesRedis_PackageVersion)</PackageVersion>
+		<PackageVersion>2.0.5-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Redis Services</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+		<PackageReference Include="StackExchange.Redis" Version="2.6.111" />
 	</ItemGroup>
 
 	<ItemGroup>

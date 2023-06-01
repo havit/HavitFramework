@@ -13,10 +13,8 @@
 	  <HavitData_PackageVersion>2.0.30</HavitData_PackageVersion>
 	  <HavitDataSqlClientAzure_PackageVersion>2.0.6</HavitDataSqlClientAzure_PackageVersion>
 	  <HavitDrawing_PackageVersion>2.0.30</HavitDrawing_PackageVersion>
-	  <HavitGoPay_PackageVersion>2.0.30</HavitGoPay_PackageVersion>
 	  <HavitPayMuzo_PackageVersion>2.0.30</HavitPayMuzo_PackageVersion>
 	  <HavitPayPal_PackageVersion>2.0.30</HavitPayPal_PackageVersion>
-	  <HavitServicesRedis_PackageVersion>2.0.4</HavitServicesRedis_PackageVersion>
 	  <HavitServicesSftp_PackageVersion>2.0.5</HavitServicesSftp_PackageVersion>
 	  <HavitWeb_PackageVersion>2.0.37</HavitWeb_PackageVersion>
 	  <HavitWebBootstrap_PackageVersion>2.0.36</HavitWebBootstrap_PackageVersion>

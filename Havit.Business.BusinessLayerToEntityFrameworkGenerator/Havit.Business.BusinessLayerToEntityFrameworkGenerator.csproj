@@ -10,7 +10,7 @@
 			 nechávám použitou verzi 3.x, která funguje pro net48. Z EFCore je potřeba naprosto minimální kus implementace. -->
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[3.1.29]" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
 		<!-- Vzhledem k situaci okolo net48 a EFCore popsané výše, máme starý EF Core.
 			 Jenže ve verzi, která je závislostí, je ServiceCollection v jiné assembly, než v nových verzích Microsoft.Extensions.DependencyInjection[.Abstractions].
 			 Proto použijeme starší verzi i zde.

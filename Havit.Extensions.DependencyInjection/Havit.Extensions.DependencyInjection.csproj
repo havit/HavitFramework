@@ -12,7 +12,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.12-pre01</PackageVersion>
+		<PackageVersion>2.0.12</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - Abstractions</Description>
 	</PropertyGroup>
 	<ItemGroup>

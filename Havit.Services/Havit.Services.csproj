@@ -41,8 +41,8 @@
 			 netstandard2.0. Ovšem tuto knihovnu nemají jako závislost pro net6, takže při zavedení do projektu (bez explicitního uvedení Microsoft.Bcl.AsyncInterfaces zde)
 			 dojde k pádu na nenalezení Microsoft.Bcl.AsyncInterfaces. -->
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

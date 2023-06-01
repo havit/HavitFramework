@@ -16,7 +16,6 @@
 	  <HavitGoPay_PackageVersion>2.0.30</HavitGoPay_PackageVersion>
 	  <HavitPayMuzo_PackageVersion>2.0.30</HavitPayMuzo_PackageVersion>
 	  <HavitPayPal_PackageVersion>2.0.30</HavitPayPal_PackageVersion>
-	  <HavitServicesAzure_PackageVersion>2.0.22</HavitServicesAzure_PackageVersion>
 	  <HavitServicesRedis_PackageVersion>2.0.4</HavitServicesRedis_PackageVersion>
 	  <HavitServicesSftp_PackageVersion>2.0.5</HavitServicesSftp_PackageVersion>
 	  <HavitWeb_PackageVersion>2.0.37</HavitWeb_PackageVersion>

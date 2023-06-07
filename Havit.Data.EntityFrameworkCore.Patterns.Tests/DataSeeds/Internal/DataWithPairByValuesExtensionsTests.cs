@@ -20,7 +20,7 @@ public class DataWithPairByValuesExtensionsTests
 		var dataWithPairByValues = new List<DataWithPairByValues<TestClass>>
 		{
 			new DataWithPairByValues<TestClass> { OriginalItem = new TestClass(), PairByValues = new PairByValues(new object[] { 123, "CodeX" }) },
-			new DataWithPairByValues<TestClass> { OriginalItem = new TestClass(), PairByValues = new PairByValues(new object[] { 123, "CodeX"}) },
+			new DataWithPairByValues<TestClass> { OriginalItem = new TestClass(), PairByValues = new PairByValues(new object[] { 123, "CodeX" }) },
 			new DataWithPairByValues<TestClass> { OriginalItem = new TestClass(), PairByValues = new PairByValues(new object[] { 234, null }) },
 			new DataWithPairByValues<TestClass> { OriginalItem = new TestClass(), PairByValues = new PairByValues(new object[] { 234, null }) }
 		};

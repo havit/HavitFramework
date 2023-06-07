@@ -29,13 +29,5 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal
 		{
 			return Data.Aggregate(0, (value, item) => value ^ (item?.GetHashCode() ?? 0));
 		}
-
-		public override string ToString()
-		{
-			return (Data.Length == 1)
-				? (Data[0]?.ToString() ?? "null")
-				: String.Concat("(", String.Join(", ", Data.Select(item => item?.ToString() ?? "null")), ")");
-		}
-
 	}
 }

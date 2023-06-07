@@ -51,6 +51,39 @@ namespace Havit.Tests.Linq.Expressions
 			Assert.AreSame(list[2], result.Single());
 		}
 
+		[TestMethod]
+		public void ExpressionExt_GetMemberAccessMemberName()
+		{
+			// Act
+			Expression<Func<B, bool>> expression = (B b) => b.C;
+			string result = ExpressionExt.GetMemberAccessMemberName(expression);
+
+			// Assert
+			Assert.AreEqual("C", result);
+		}
+
+		[TestMethod]
+		public void ExpressionExt_GetMemberAccessMemberName_SupportsConvert()
+		{
+			// Act
+			Expression<Func<B, object>> expression = (B b) => b.C; // použití typu "object" je v tomto testu klíčové.
+			string result = ExpressionExt.GetMemberAccessMemberName(expression);
+
+			// Assert
+			Assert.AreEqual("C", result);
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void ExpressionExt_GetMemberAccessMemberName_UnsupportedArgument()
+		{
+			// Act
+			Expression<Func<A, bool>> expression = (A a) => a.B.C;
+			string result = ExpressionExt.GetMemberAccessMemberName(expression);
+
+			// Assert by method attribute
+		}
+
 		internal class A
 		{
 			public B B { get; set; }

@@ -9,7 +9,6 @@
 	
   <!-- Core Libraries -->
   <PropertyGroup>
-	  <HavitCore_PackageVersion>2.0.26</HavitCore_PackageVersion>
 	  <HavitData_PackageVersion>2.0.30</HavitData_PackageVersion>
 	  <HavitDataSqlClientAzure_PackageVersion>2.0.6</HavitDataSqlClientAzure_PackageVersion>
 	  <HavitDrawing_PackageVersion>2.0.30</HavitDrawing_PackageVersion>

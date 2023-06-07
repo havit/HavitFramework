@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Linq.Expressions
 {
@@ -86,6 +84,28 @@ namespace Havit.Linq.Expressions
 			}
 
 			return (Expression<Func<T, bool>>)Expression.Lambda(result, resultParameter);
+		}
+
+		/// <summary>
+		/// Vrací název membera (property), ke které je v expression přistupováno. Tj. pro "person => person.Age" vrací "Age".
+		/// Nejsou podporovány bohatší expression, než takto triviální.
+		/// </summary>
+		public static string GetMemberAccessMemberName(Expression expression)
+		{
+			Contract.Requires(expression is LambdaExpression);
+
+			Expression expressionBody = ((LambdaExpression)expression).Body.RemoveConvert();
+
+			if (expressionBody is MemberExpression)
+			{
+				MemberExpression memberExpression = (MemberExpression)expressionBody;
+				if (memberExpression.Expression is System.Linq.Expressions.ParameterExpression)
+				{
+					return memberExpression.Member.Name;
+				}
+			}
+
+			throw new InvalidOperationException($"Expression '{expression.ToString()}' is not supported.");
 		}
 	}
 }

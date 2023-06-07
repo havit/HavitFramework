@@ -229,7 +229,7 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 			{
 				// TODO: Hezčí kód
 				// TODO: Duplikace vyhození KeyProperties
-				List<string> exludedUpdateProperties = configuration.ExcludeUpdateExpressions.Select(item => GetPropertyName(item.Body.RemoveConvert())).ToList().Concat(entityType.KeyProperties.Select(item => item.Name)).ToList();
+				List<string> exludedUpdateProperties = configuration.ExcludeUpdateExpressions.Select(item => ExpressionExt.GetMemberAccessMemberName(item)).ToList().Concat(entityType.KeyProperties.Select(item => item.Name)).ToList();
 				updateProperties = properties.Except(exludedUpdateProperties).ToList();
 			}
 			else
@@ -282,21 +282,7 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
 				}
 			}
 		}
-		/// <summary>
-		/// Vrátí název vlastnosti, která je reprezentována daným výrazem.
-		/// </summary>
-		private string GetPropertyName(Expression item)
-		{
-			if (item is MemberExpression)
-			{
-				MemberExpression memberExpression = (MemberExpression)item;
-				if (memberExpression.Expression is System.Linq.Expressions.ParameterExpression)
-				{
-					return memberExpression.Member.Name;
-				}
-			}
-			throw new NotSupportedException(item.ToString());
-		}
+
 
 	}
 }

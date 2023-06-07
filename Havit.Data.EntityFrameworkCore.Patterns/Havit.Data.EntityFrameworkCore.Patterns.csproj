@@ -14,7 +14,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	  <PackageVersion>2.7.4</PackageVersion>
+	  <PackageVersion>2.7.5</PackageVersion>
 	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	<LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
 	<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
   </ItemGroup>

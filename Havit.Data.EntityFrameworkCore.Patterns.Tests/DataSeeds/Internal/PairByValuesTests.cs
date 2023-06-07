@@ -44,36 +44,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds.Internal
 			Assert.IsFalse(item1.Equals(item2));
 		}
 
-		[TestMethod]
-		public void PairByValues_ToString_UsesBracketForMultipleValues()
-		{
-			// Arrange
-			var item = new PairByValues(new object[] { 1, "test", true });
-
-			// Act + Assert
-			Assert.AreEqual("(1, test, True)", item.ToString());
-		}
-
-		[TestMethod]
-		public void PairByValues_ToString_DoesNotUseBracketForSingleValue()
-		{
-			// Arrange
-			var item = new PairByValues(new object[] { 1 });
-
-			// Act + Assert
-			Assert.AreEqual("1", item.ToString());
-		}
-
-		[TestMethod]
-		public void PairByValues_ToString_SupportsNullInData()
-		{
-			// Arrange + Act
-			string result = new PairByValues(new object[] { null }).ToString();
-
-			// Assert
-			Assert.AreEqual("null", result);
-		}
-
 		/// <summary>
 		/// Bug 43592: Seedování dat se složeným klíčem, pokud je jedna z hodnot null
 		/// </summary>

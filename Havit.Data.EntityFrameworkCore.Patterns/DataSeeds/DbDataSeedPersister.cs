@@ -106,7 +106,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 				var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
 				var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
 
-				Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(GetPropertyName(expression.Body.RemoveConvert()))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
+				Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(ExpressionExt.GetMemberAccessMemberName(expression))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
 			});
 		}
 
@@ -119,7 +119,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			// vezmeme data k seedování, přidáme k nim klíč pro párování (pro pohodlný left join)
 			List<DataWithPairByValues<TEntity>> seedDataWithPairByValues = ToDataWithPairByValues(seedData, pairByExpressions);
 			// zkontrolujeme, zda data k seedování neobsahují duplicity
-			seedDataWithPairByValues.ThrowIfContainsDuplicates("Source data contains duplicates in pair by expression.");
+			seedDataWithPairByValues.ThrowIfContainsDuplicates($"Seed for {typeof(TEntity).Name} cannot be done. Data to seed contains duplicates in the source code. Duplicates:", pairByExpressions);
 
 			List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues;
 
@@ -135,7 +135,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			}
 
 			// zkontrolujeme, zda databázová data neobsahují duplicity
-			databaseDataWithPairByValues.ThrowIfContainsDuplicates("Database data contains duplicates in pair by expression.");
+			databaseDataWithPairByValues.ThrowIfContainsDuplicates($"Seed for {typeof(TEntity).Name} cannot be done. Data in the DATABASE already contains duplicates. Duplicate records:", pairByExpressions);
 
 			// ke zdrojovám datům připojíme databázová, porovnání proběhne podle PairBy
 			return seedDataWithPairByValues.LeftJoin(
@@ -363,22 +363,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		}
 
 		/// <summary>
-		/// Vrátí název vlastnosti, která je reprezentována daným výrazem.
-		/// </summary>
-		internal string GetPropertyName(Expression item)
-		{
-			if (item is MemberExpression)
-			{
-				MemberExpression memberExpression = (MemberExpression)item;
-				if (memberExpression.Expression is System.Linq.Expressions.ParameterExpression)
-				{
-					return memberExpression.Member.Name;
-				}
-			}
-			throw new NotSupportedException(item.ToString());
-		}
-
-		/// <summary>
 		/// Vrátí seznam vlastností, které můžeme vložit.
 		/// </summary>		
 		/// <remarks>
@@ -415,7 +399,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 			if (excludedProperties != null)
 			{
 				result = result
-					.Where(p => !excludedProperties.Select(exclude => GetPropertyName(exclude.Body.RemoveConvert())).Contains(p.Name))
+					.Where(p => !excludedProperties.Select(exclude => ExpressionExt.GetMemberAccessMemberName(exclude)).Contains(p.Name))
 					.ToList();
 			}
 

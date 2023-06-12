@@ -12,7 +12,7 @@ namespace Havit.Data.Patterns.DataEntries
 		where TEntity : class
 	{
 		private readonly IDataEntrySymbolService<TEntity> dataEntrySymbolService;
-		private readonly IRepository<TEntity> repository;
+		private readonly IRepository<TEntity> repository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
 
 		/// <summary>
 		/// Konstruktor.

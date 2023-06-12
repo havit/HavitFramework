@@ -34,13 +34,12 @@ namespace Havit.Data.EntityFrameworkCore.Internal
 #pragma warning restore EF1001 // Internal EF Core API usage.
 		}
 
-		/// <summary>
-		/// Vrátí data DbSetu jako IQueryable&lt;TEntity&gt;.
-		/// DbSet EntityFrameworku je IQueryable&lt;TEntity&gt; sám o sobě. Pro možnost snadné implementace a mockování získáme IQueryable&lt;TEntity&gt; touto metodou.
-		/// </summary>
-		public IQueryable<TEntity> AsQueryable()
+		/// <inheritdoc />
+		public IQueryable<TEntity> AsQueryable(string queryTag)
 		{
-			return dbSet;
+			return !String.IsNullOrEmpty(queryTag)
+				? dbSet.TagWith(queryTag)
+				: dbSet;
 		}
 
 		/// <summary>

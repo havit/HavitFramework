@@ -1,18 +1,12 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.Patterns.DataLoaders;
-using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
-using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -130,7 +124,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
 			return dbContext.Set<TProperty>()
-				.AsQueryable()
+				.AsQueryable(this.GetType().Name)
 
 				// V EF Core 2.x a 3.x bez následujícího řádku mohlo při vykonávání dotazu dojít k System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
 				// V EF Core 5.x opraveno, již není třeba.

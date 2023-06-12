@@ -6,10 +6,9 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
-using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
@@ -24,7 +23,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		 where TEntity : class
 	{
 		private readonly IDbContext dbContext;
-		private readonly IDataSource<TEntity> dataSource;
 		private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
 
 		/// <summary>
@@ -50,13 +48,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou odfiltrovány (nejsou v datech).
 		/// </summary>
-		protected IQueryable<TEntity> Data => dataSource.Data;
+		protected IQueryable<TEntity> Data => DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(Data))).WhereNotDeleted(SoftDeleteManager);
 
 		/// <summary>
 		/// Vrací data z datového zdroje jako IQueryable.
 		/// Pokud zdroj obsahuje záznamy smazané příznakem, jsou součástí dat.
 		/// </summary>
-		protected IQueryable<TEntity> DataIncludingDeleted => dataSource.DataIncludingDeleted;
+		protected IQueryable<TEntity> DataIncludingDeleted => DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(DataIncludingDeleted)));
 
 		/// <summary>
 		/// SoftDeleteManager používaný repository.
@@ -71,14 +69,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected DbRepository(IDbContext dbContext, IDataSource<TEntity> dataSource, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
 		{
 			Contract.Requires<ArgumentException>(dbContext != null);
-			Contract.Requires<ArgumentException>(dataSource != null);
 			Contract.Requires<ArgumentException>(softDeleteManager != null);
 
 			this.dbContext = dbContext;
-			this.dataSource = dataSource;
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.dataLoader = dataLoader;
 			this.SoftDeleteManager = softDeleteManager;
@@ -107,7 +103,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				var query = GetEqualsQuery(id);
+				var query = GetEqualsQuery(id, nameof(GetObject));
 				result = query.FirstOrDefault();
 
 				if (result != null)
@@ -146,7 +142,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 			// není ani v identity mapě, ani v cache, hledáme v databázi
 			if (result == null)
 			{
-				var query = GetEqualsQuery(id);
+				var query = GetEqualsQuery(id, nameof(GetObjectAsync));
 				result = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
 
 				if (result != null)
@@ -203,7 +199,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 			if (idsToLoad.Count > 0)
 			{
-				var query = GetInQuery(idsToLoad.ToArray());
+				var query = GetInQuery(idsToLoad.ToArray(), nameof(GetObjects));
 				var loadedObjects = query.ToList();
 
 				if (idsToLoad.Count != loadedObjects.Count)
@@ -262,7 +258,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 
 			if (idsToLoad.Count > 0)
 			{
-				var query = GetInQuery(idsToLoad.ToArray());
+				var query = GetInQuery(idsToLoad.ToArray(), nameof(GetObjectsAsync));
 				var loadedObjects = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
 				if (idsToLoad.Count != loadedObjects.Count)
@@ -304,7 +300,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				else
 				{
 					// pokud ne, načtene data a uložíme data a klíče do cache
-					allData = Data.ToArray();
+					allData = DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAll))).WhereNotDeleted(SoftDeleteManager).ToArray();
 
 					EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
@@ -344,7 +340,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 				else
 				{
 					// pokd ne, načtene data a uložíme klíče do cache
-					allData = await Data.ToArrayAsync(cancellationToken).ConfigureAwait(false);
+					allData = await DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAllAsync))).WhereNotDeleted(SoftDeleteManager).ToArrayAsync(cancellationToken).ConfigureAwait(false);
 					EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				}
 				await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
@@ -363,7 +359,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 		/// <summary>
 		/// Vrací dotaz pro GetObject/GetObjectAsync.
 		/// </summary>
-		private IQueryable<TEntity> GetEqualsQuery(int id)
+		private IQueryable<TEntity> GetEqualsQuery(int id, string tagMemberName)
 		{
 			ValueHolder valueHolder = new ValueHolder { Id = id };
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
@@ -372,13 +368,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 					Expression.Property(parameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName()),
 					Expression.Property(Expression.Constant(valueHolder), nameof(ValueHolder.Id))),
 				parameter);
-			return DbSet.AsQueryable().Where(expression);
+			return DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), tagMemberName)).Where(expression);
 		}
 
 		/// <summary>
 		/// Vrací dotaz pro GetObjects/GetObjectsAsync.
 		/// </summary>
-		private IQueryable<TEntity> GetInQuery(int[] ids)
+		private IQueryable<TEntity> GetInQuery(int[] ids, string tagMemberName)
 		{
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
@@ -400,7 +396,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories
 					Expression.Constant(ids),
 					Expression.Property(parameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName())),
 				parameter);
-			return DbSet.AsQueryable().Where(expression);
+			return DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), tagMemberName)).Where(expression);
 		}
 
 		/// <summary>

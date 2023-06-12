@@ -15,8 +15,8 @@ namespace Havit.Data.Patterns.DataEntries
 	public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 		where TEntity : class
 	{
-		private readonly IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage;
-		private readonly IDataSource<TEntity> dataSource;
+		private readonly IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage;		
+		private readonly IDataSource<TEntity> dataSource; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbDataSource.
 
 		/// <summary>
 		/// Konstructor.

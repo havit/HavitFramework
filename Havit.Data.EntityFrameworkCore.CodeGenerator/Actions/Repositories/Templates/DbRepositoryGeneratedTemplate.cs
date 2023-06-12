@@ -80,14 +80,7 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write("(IDbContext dbContext, ");
-            
-            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DataSourceDependencyFullName));
-            
-            #line default
-            #line hidden
-            this.Write(" dataSource, IEntityKeyAccessor<");
+            this.Write("(IDbContext dbContext, IEntityKeyAccessor<");
             
             #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
@@ -95,9 +88,8 @@ namespace ");
             #line default
             #line hidden
             this.Write(", int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteMa" +
-                    "nager, IEntityCacheManager entityCacheManager)\r\n\t\t: base(dbContext, dataSource, " +
-                    "entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)\r\n\t{\r\n\t}\r\n}" +
-                    "");
+                    "nager, IEntityCacheManager entityCacheManager)\r\n\t\t: base(dbContext, entityKeyAcc" +
+                    "essor, dataLoader, softDeleteManager, entityCacheManager)\r\n\t{\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -19,7 +19,7 @@ namespace Havit.Data.Patterns.Localizations.Internal
 		where TLanguage : class, ILanguage
 	{
 		private readonly ILanguageByCultureStorage languageByCultureStorage;
-		private readonly IRepository<TLanguage> languageRepository;
+		private readonly IRepository<TLanguage> languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
 		private readonly IEntityKeyAccessor<TLanguage, int> entityKeyAccessor;
 
 		/// <summary>

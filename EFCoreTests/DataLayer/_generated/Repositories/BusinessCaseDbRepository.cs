@@ -18,8 +18,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class BusinessCaseDbRepository : BusinessCaseDbRepositoryBase, IBusinessCaseRepository
 {
-	public BusinessCaseDbRepository(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IBusinessCaseDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.BusinessCase, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-		: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	public BusinessCaseDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.BusinessCase, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
 	{
 	}
 }

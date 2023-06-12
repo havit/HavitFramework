@@ -18,8 +18,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class ModelationDbRepository : ModelationDbRepositoryBase, IModelationRepository
 {
-	public ModelationDbRepository(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IModelationDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.Modelation, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-		: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	public ModelationDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.Modelation, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
 	{
 	}
 }

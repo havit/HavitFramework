@@ -10,7 +10,6 @@ using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 {
@@ -62,7 +61,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 
 			IDbSet<TEntity> dbSet = dbContext.Set<TEntity>();
 			List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
-			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
+			List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(PairWithDbData))), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
 			List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
 
 			if (!configuration.UpdateEnabled)

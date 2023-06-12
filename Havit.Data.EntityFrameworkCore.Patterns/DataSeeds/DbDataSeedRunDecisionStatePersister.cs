@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Havit.Data.EntityFrameworkCore.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
@@ -77,7 +78,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds
 		private DataSeedVersion GetDataSeedVersion(IDbContext dbContext, string profileName)
 		{
 			IDbSet<DataSeedVersion> dbSet = dbContext.Set<DataSeedVersion>();
-			return dbSet.FindTracked(profileName) ?? dbSet.AsQueryable().SingleOrDefault(dataSeedVersion => dataSeedVersion.ProfileName == profileName);
+			return dbSet.FindTracked(profileName) ?? dbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetDataSeedVersion))).SingleOrDefault(dataSeedVersion => dataSeedVersion.ProfileName == profileName);
 		}
 	}
 }

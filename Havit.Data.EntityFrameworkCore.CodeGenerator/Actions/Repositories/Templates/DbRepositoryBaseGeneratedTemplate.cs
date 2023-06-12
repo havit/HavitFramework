@@ -73,14 +73,7 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write("(IDbContext dbContext, ");
-            
-            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DataSourceDependencyFullName));
-            
-            #line default
-            #line hidden
-            this.Write(" dataSource, IEntityKeyAccessor<");
+            this.Write("(IDbContext dbContext, IEntityKeyAccessor<");
             
             #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
@@ -88,9 +81,8 @@ namespace ");
             #line default
             #line hidden
             this.Write(", int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteMa" +
-                    "nager, IEntityCacheManager entityCacheManager)\r\n\t\t: base(dbContext, dataSource, " +
-                    "entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)\r\n\t{\r\n\t}\r\n\r" +
-                    "\n");
+                    "nager, IEntityCacheManager entityCacheManager)\r\n\t\t: base(dbContext, entityKeyAcc" +
+                    "essor, dataLoader, softDeleteManager, entityCacheManager)\r\n\t{\r\n\t}\r\n\r\n");
             
             #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
  if (Model.GenerateGetObjectByEntryEnumMethod) { 

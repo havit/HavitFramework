@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
+﻿using Havit.Data.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
@@ -13,7 +14,7 @@ namespace Havit.EFCoreTests.DataLayer.Lookups
 {
 	public class UserLookupService : LookupServiceBase<object, User>, IUserLookupService
 	{
-		public UserLookupService(IEntityLookupDataStorage lookupStorage, IRepository<User> repository, IDataSource<User> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager) : base(lookupStorage, repository, dataSource, entityKeyAccessor, softDeleteManager)
+		public UserLookupService(IEntityLookupDataStorage lookupStorage, IRepository<User> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager) : base(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager)
 		{
 		}
 

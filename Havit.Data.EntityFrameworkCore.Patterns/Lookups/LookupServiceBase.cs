@@ -1,22 +1,16 @@
-﻿using Havit.Collections.Generic;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Exceptions;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 {
@@ -37,8 +31,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		where TEntity : class
 	{
 		private readonly IEntityLookupDataStorage lookupStorage;
-		private readonly IRepository<TEntity> repository;
-		private readonly IDataSource<TEntity> dataSource;
+		private readonly IRepository<TEntity> repository; // TODO: Odstranit závislost? Co se používá?
+		private readonly IDbContext dbContext;
 		private readonly IEntityKeyAccessor entityKeyAccessor;
 		private readonly ISoftDeleteManager softDeleteManager;
 		private readonly IDistributedLookupDataInvalidationService distributedLookupDataInvalidationService;
@@ -46,19 +40,19 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDataSource<TEntity> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager)
-			: this(lookupStorage, repository, dataSource, entityKeyAccessor, softDeleteManager, null)
+		protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager)
+			: this(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager, null)
 		{
 		}
 
 		/// <summary>
 		/// Konstruktor.
 		/// </summary>
-		protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDataSource<TEntity> dataSource, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager, IDistributedLookupDataInvalidationService distributedLookupDataInvalidationService)
+		protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager, IDistributedLookupDataInvalidationService distributedLookupDataInvalidationService)
 		{
 			this.lookupStorage = lookupStorage;
 			this.repository = repository;
-			this.dataSource = dataSource;
+			this.dbContext = dbContext;
 			this.entityKeyAccessor = entityKeyAccessor;
 			this.softDeleteManager = softDeleteManager;
 			this.distributedLookupDataInvalidationService = distributedLookupDataInvalidationService ?? new NullDistributedLookupDataInvalidationService();
@@ -163,7 +157,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
 				Expression.Bind(typeof(EntityLookupPair<int, TLookupKey>).GetProperty(nameof(EntityLookupPair<int, TLookupKey>.LookupKey)), ExpressionExt.ReplaceParameter(lookupKeyExpression.Body, lookupKeyExpression.Parameters[0], expressionParameter))),
 				expressionParameter);
 
-			List<EntityLookupPair<int, TLookupKey>> pairs = (IncludeDeleted ? dataSource.DataIncludingDeleted : dataSource.Data)
+			string tag = QueryTagBuilder.CreateTag(this.GetType(), nameof(CreateEntityLookupData));
+			List<EntityLookupPair<int, TLookupKey>> pairs = (IncludeDeleted ? dbContext.Set<TEntity>().AsQueryable(tag) : dbContext.Set<TEntity>().AsQueryable(tag).WhereNotDeleted(softDeleteManager))
 				.WhereIf(Filter != null, Filter)
 				.Select(lambdaExpression)
 				.ToList();

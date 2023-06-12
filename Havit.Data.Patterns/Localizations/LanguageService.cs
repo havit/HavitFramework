@@ -18,7 +18,7 @@ namespace Havit.Data.Patterns.Localizations
 	public class LanguageService<TLanguage> : ILanguageService
 		where TLanguage : class, ILanguage
 	{
-		private readonly IRepository<TLanguage> languageRepository;
+		private readonly IRepository<TLanguage> languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
 		private readonly ILanguageByCultureService languageByCultureService;
 
 		/// <summary>

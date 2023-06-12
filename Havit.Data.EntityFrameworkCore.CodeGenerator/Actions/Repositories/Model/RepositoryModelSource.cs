@@ -4,6 +4,7 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Metadata;
+using System;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model
 {
@@ -36,7 +37,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Mode
 						ModelClassNamespace = registeredEntity.ClrType.Namespace,
 						ModelClassFullName = registeredEntity.ClrType.FullName,
 						//GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum,
-						DataSourceDependencyFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, "DataSources") + ".I" + registeredEntity.ClrType.Name + "DataSource"
+						//DataSourceDependencyFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, "DataSources") + ".I" + registeredEntity.ClrType.Name + "DataSource"
 					}).ToList();
 		}
 

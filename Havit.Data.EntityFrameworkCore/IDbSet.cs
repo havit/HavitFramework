@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +15,10 @@ namespace Havit.Data.EntityFrameworkCore
 		/// Vrátí data DbSetu jako IQueryable&lt;TEntity&gt;.
 		/// DbSet EntityFrameworku je IQueryable&lt;TEntity&gt; sám o sobě. Pro možnost snadné implementace a mockování získáme IQueryable&lt;TEntity&gt; touto metodou.
 		/// </summary>
-		IQueryable<TEntity> AsQueryable();
+		/// <param name="queryTag">
+		/// Pokud je zadán, automaticky se použije jako tag k SQL dotazu (IQueryable&lt;&gt;.TagWith(tag)).
+		/// </param>
+		IQueryable<TEntity> AsQueryable(string queryTag);
 
 		/// <summary>
 		/// Vyhledá entitu v načtených (trackovaných objektech). Pokud objekt není nalezen, vrací null.

@@ -214,13 +214,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups
 			Mock<IRepository<Uzivatel>> uzivatelRepositoryMock = new Mock<IRepository<Uzivatel>>(MockBehavior.Strict);
 			uzivatelRepositoryMock.Setup(m => m.GetObject(It.IsAny<int>())).Returns((int id) => uzivatele.Single(u => u.Id == id));
 
-			UzivatelDataSource uzivatelDataSource = new UzivatelDataSource(uzivatele.ToArray());
-
 			Mock<IEntityKeyAccessor> entityKeyAccessorMock = new Mock<IEntityKeyAccessor>(MockBehavior.Strict);
 			entityKeyAccessorMock.Setup(m => m.GetEntityKeyPropertyNames(typeof(Uzivatel))).Returns(new string[] { "Id" });
 			entityKeyAccessorMock.Setup(m => m.GetEntityKeyValues(It.IsAny<object>())).Returns((object o) => new object[] { ((Uzivatel)o).Id });
 
-			var uzivatelLookupService = new UzivatelLookupService(new EntityLookupDataStorage(), uzivatelRepositoryMock.Object, uzivatelDataSource, entityKeyAccessorMock.Object, new SoftDeleteManager(new ServerTimeService()));
+			Mock<IDbSet<Uzivatel>> dbSetUzivatelMock = new Mock<IDbSet<Uzivatel>>(MockBehavior.Strict);
+			dbSetUzivatelMock.Setup(m => m.AsQueryable(It.IsAny<string>())).Returns(uzivatele.AsQueryable());
+			Mock<IDbContext> dbContextMock = new Mock<IDbContext>(MockBehavior.Strict);
+			dbContextMock.Setup(m => m.Set<Uzivatel>()).Returns(dbSetUzivatelMock.Object);
+
+			var uzivatelLookupService = new UzivatelLookupService(new EntityLookupDataStorage(), uzivatelRepositoryMock.Object, dbContextMock.Object, entityKeyAccessorMock.Object, new SoftDeleteManager(new ServerTimeService()));
 			uzivatelLookupService.SetThrowExceptionWhenNotFound(false);
 			return uzivatelLookupService;
 		}

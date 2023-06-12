@@ -18,8 +18,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class UserDbRepository : UserDbRepositoryBase, IUserRepository
 {
-	public UserDbRepository(IDbContext dbContext, Havit.EFCoreTests.DataLayer.DataSources.IUserDataSource dataSource, IEntityKeyAccessor<Havit.EFCoreTests.Model.User, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-		: base(dbContext, dataSource, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	public UserDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.User, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
 	{
 	}
 }

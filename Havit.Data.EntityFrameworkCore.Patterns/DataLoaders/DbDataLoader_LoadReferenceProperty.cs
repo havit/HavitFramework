@@ -2,11 +2,8 @@
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -139,7 +136,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 			// https://github.com/aspnet/EntityFrameworkCore/issues/14408
 			// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
 			List<int> foreignKeysToQueryInt = foreignKeysToLoad.Cast<int>().ToList();
-			return dbContext.Set<TProperty>().AsQueryable().Where(foreignKeysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
+			return dbContext.Set<TProperty>().AsQueryable(this.GetType().Name).Where(foreignKeysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
 		}
 
 		private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)

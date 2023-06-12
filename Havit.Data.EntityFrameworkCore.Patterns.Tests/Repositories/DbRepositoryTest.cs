@@ -34,8 +34,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			repository.GetObject(maxId + 1);
@@ -57,8 +56,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			await repository.GetObjectAsync(maxId + 1);
@@ -80,8 +78,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			ItemWithDeleted repositoryResult = repository.GetObject(ids[0]);
@@ -104,8 +101,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			ItemWithDeleted repositoryResult = await repository.GetObjectAsync(ids[0]);
@@ -125,8 +121,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result = repository.GetAll();
@@ -144,8 +139,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result1 = repository.GetAll();
@@ -175,8 +169,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result1 = await repository.GetAllAsync();
@@ -208,8 +201,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result = await repository.GetAllAsync();
@@ -232,8 +224,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result = repository.GetObjects(ids);
@@ -256,8 +247,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
@@ -283,8 +273,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result = repository.GetObjects(ids);
@@ -310,8 +299,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
@@ -334,8 +322,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			repository.GetObjects(maxId + 1, maxId + 2);
@@ -357,8 +344,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 });
@@ -379,8 +365,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> entities = repository.GetObjects(id, id, id); // duplicitní id (triplicitní)
@@ -403,8 +388,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			List<ItemWithDeleted> entities = await repository.GetObjectsAsync(new int[] { id, id, id }); // duplicitní id (triplicitní)
@@ -427,8 +411,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			ItemWithDeleted entity = repository.GetObject(id);
@@ -452,8 +435,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			ItemWithDeleted entity = await repository.GetObjectAsync(id);
@@ -476,8 +458,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			ItemWithDeleted entity = repository.GetObjects(id).Single();
@@ -500,8 +481,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories
 
 			var dataLoader = new FakeDataLoader();
 			var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-			var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
-			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
+			DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager());
 
 			// Act
 			ItemWithDeleted entity = (await repository.GetObjectsAsync(new int[] { id })).Single();

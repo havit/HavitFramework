@@ -48,7 +48,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 				// Assert
 				using (IDbContext dbContext = dbContextFactory.CreateDbContext())
 				{
-					var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable();
+					var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable(queryTag: this.GetType().Name);
 					Assert.AreEqual(3, items.Count());
 				}
 			}
@@ -85,7 +85,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 				// Assert
 				using (IDbContext dbContext = dbContextFactory.CreateDbContext())
 				{
-					var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable();
+					var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable(queryTag: this.GetType().Name);
 
 					// Assert that all items ARE deleted (property is not ignored) in INSERT even if it is set by ExcludeUpdateExpressions
 					Assert.AreEqual(3, items.Where(i => i.NullableValue != null).Count());
@@ -128,7 +128,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 				// Assert that item is NOT updated, because of ExcludeUpdateExpressions
 				using (IDbContext dbContext = dbContextFactory.CreateDbContext())
 				{
-					var items = dbContext.Set<ItemWithDeleted>().AsQueryable();
+					var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
 					Assert.IsTrue(items.All(item => item.Deleted == null));
 				}
 			}
@@ -170,7 +170,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 				// Assert that items ARE NOT updated, because of WithoutUpdate()
 				using (IDbContext dbContext = dbContextFactory.CreateDbContext())
 				{
-					var items = dbContext.Set<ItemWithDeleted>().AsQueryable();
+					var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
 					Assert.AreEqual(true, items.All(item => item.Deleted == null));
 				}
 			}
@@ -212,7 +212,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 
 				using (IDbContext dbContext = dbContextFactory.CreateDbContext())
 				{
-					var items = dbContext.Set<ItemWithDeleted>().AsQueryable();
+					var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
 
 					Assert.AreEqual(2, items.Count());
 					Assert.IsTrue(items.All(item => item.Deleted == null));
@@ -257,7 +257,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds
 				// Assert that first two items are updated and new two items are created
 				using (IDbContext dbContext = dbContextFactory.CreateDbContext())
 				{
-					var items = dbContext.Set<ItemWithDeleted>().AsQueryable().OrderBy(s => s.Id).ToArray();
+					var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name).OrderBy(s => s.Id).ToArray();
 
 					Assert.AreEqual(4, items.Length);
 					Assert.AreEqual(true, items.Single(item => item.Symbol == "A").Deleted != null);

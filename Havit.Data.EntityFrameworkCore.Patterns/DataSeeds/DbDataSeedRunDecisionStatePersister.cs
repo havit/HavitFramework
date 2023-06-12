@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Havit.Data.EntityFrameworkCore.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds

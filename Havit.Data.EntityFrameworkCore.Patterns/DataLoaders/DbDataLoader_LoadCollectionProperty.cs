@@ -124,7 +124,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders
 
 			List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
 			return dbContext.Set<TProperty>()
-				.AsQueryable(this.GetType().Name)
+				.AsQueryable(QueryTagBuilder.CreateTag(typeof(DbDataLoader), null))
 
 				// V EF Core 2.x a 3.x bez následujícího řádku mohlo při vykonávání dotazu dojít k System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
 				// V EF Core 5.x opraveno, již není třeba.

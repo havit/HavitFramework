@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Exceptions;
 using Havit.Data.Patterns.Infrastructure;

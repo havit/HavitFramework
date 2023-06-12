@@ -19,21 +19,21 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			{
 				if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
 				{
-					Console.WriteLine("Solution file was not found.");
+					Console.WriteLine("Solution file (*.sln) was not found.");
 					return;
 				}
 				solutionDirectory = solutionDirectory.Parent;
 			}
 
-			var dataLayerBinDirectory = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "DataLayer", "bin"));
-			if (!dataLayerBinDirectory.Exists)
+			var entityBinDirectory = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "Entity", "bin"));
+			if (!entityBinDirectory.Exists)
 			{
-				Console.WriteLine($"Bin directory for project DataLayer not found: {dataLayerBinDirectory}");
-				Console.WriteLine("Make sure the project is properly built");
+				Console.WriteLine($"Bin directory for project Entity not found ({entityBinDirectory}).");
+				Console.WriteLine("Make sure the project Entity is properly built.");
 				return;
 			}
 
-			FileInfo[] files = dataLayerBinDirectory
+			FileInfo[] files = entityBinDirectory
 				.GetFiles("*.Entity.dll", SearchOption.AllDirectories)
 				.Where(file => !file.Name.EndsWith("Havit.Entity.dll"))
 				.Where(file => !file.Name.Contains("ref"))
@@ -50,11 +50,11 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			DirectoryInfo workingFolder = applicationEntityAssembly.Directory;
 			Console.WriteLine($"Using folder {workingFolder}.");
 
-			var dataLayerDepsFile = new FileInfo(applicationEntityAssembly.FullName.Replace(".Entity.dll", ".DataLayer.deps.json"));
+			var dataLayerDepsFile = new FileInfo(applicationEntityAssembly.FullName.Replace(".Entity.dll", ".Entity.deps.json"));
 			if (!dataLayerDepsFile.Exists)
 			{
-				Console.WriteLine($"Deps.json file for *.DataLayer.dll not found: {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
-				Console.WriteLine("Make sure DataLayer project is properly built.");
+				Console.WriteLine($"Deps.json file for *.Entity.dll not found: {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
+				Console.WriteLine("Make sure Entity project is properly built.");
 				return;
 			}
 
@@ -66,8 +66,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 
 			if (!assetsJsonFile.Exists)
 			{
-				Console.WriteLine($"project.assets.json for DataLayer not found: {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
-				Console.WriteLine("Make sure DataLayer project is properly built.");
+				Console.WriteLine($"project.assets.json for Entity not found: {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
+				Console.WriteLine("Make sure Entity project is properly built.");
 				return;
 			}
 

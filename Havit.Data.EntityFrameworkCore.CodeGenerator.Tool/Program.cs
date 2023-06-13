@@ -28,8 +28,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			var entityBinDirectory = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "Entity", "bin"));
 			if (!entityBinDirectory.Exists)
 			{
-				Console.WriteLine($"Bin directory for project Entity not found ({entityBinDirectory}).");
-				Console.WriteLine("Make sure the project Entity is properly built.");
+				Console.WriteLine($"Bin directory for project Entity ({entityBinDirectory}) does not exists.");
+				Console.WriteLine("Make sure the Entity project is properly built.");
 				return;
 			}
 
@@ -46,37 +46,37 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 				return;
 			}
 
-			FileInfo applicationEntityAssembly = files.First();
-			DirectoryInfo workingFolder = applicationEntityAssembly.Directory;
-			Console.WriteLine($"Using folder {workingFolder}.");
+			FileInfo applicationEntityAssemblyFileInfo = files.First();
+			DirectoryInfo workingFolder = applicationEntityAssemblyFileInfo.Directory;
+			Console.WriteLine($"Using {applicationEntityAssemblyFileInfo.FullName}.");
 
-			var dataLayerDepsFile = new FileInfo(applicationEntityAssembly.FullName.Replace(".Entity.dll", ".Entity.deps.json"));
-			if (!dataLayerDepsFile.Exists)
+			var entityDepsFile = new FileInfo(applicationEntityAssemblyFileInfo.FullName.Replace(".Entity.dll", ".Entity.deps.json"));
+			if (!entityDepsFile.Exists)
 			{
-				Console.WriteLine($"Deps.json file for *.Entity.dll not found: {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
-				Console.WriteLine("Make sure Entity project is properly built.");
+				Console.WriteLine($"Deps.json file for {applicationEntityAssemblyFileInfo.Name} not found in the {entityDepsFile.GetRelativePath(solutionDirectory)} folder.");
+				Console.WriteLine("Make sure the Entity project is properly built.");
 				return;
 			}
 
-			var dataLayerDependencyContext = new DependencyContextJsonReader().Read(dataLayerDepsFile.OpenRead());
-			Console.WriteLine($"Resolving assemblies using {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
+			var entityDependencyContext = new DependencyContextJsonReader().Read(entityDepsFile.OpenRead());
+			Console.WriteLine($"Resolving assemblies using {entityDepsFile.GetRelativePath(solutionDirectory)}");
 
-			DirectoryInfo[] objDirectory = dataLayerDepsFile.Directory.Parent.Parent.Parent.GetDirectories("obj");
+			DirectoryInfo[] objDirectory = entityDepsFile.Directory.Parent.Parent.Parent.GetDirectories("obj");
 			var assetsJsonFile = objDirectory[0].GetFiles("project.assets.json")[0];
 
 			if (!assetsJsonFile.Exists)
 			{
-				Console.WriteLine($"project.assets.json for Entity not found: {dataLayerDepsFile.GetRelativePath(solutionDirectory)}");
-				Console.WriteLine("Make sure Entity project is properly built.");
+				Console.WriteLine($"project.assets.json for the Entity project not found in the {entityDepsFile.GetRelativePath(solutionDirectory)} folder.");
+				Console.WriteLine("Make sure the Entity project is properly built.");
 				return;
 			}
 
-			var dataLayerAssetsContext = new DependencyContextJsonReader().Read(assetsJsonFile.OpenRead());
+			var entityAssetsContext = new DependencyContextJsonReader().Read(assetsJsonFile.OpenRead());
 			Console.WriteLine($"Resolving assemblies using {assetsJsonFile.GetRelativePath(solutionDirectory)}");
 
 			// Default AssemblyLoadContext has to be used, because CodeGenerator itself uses it (and currently it's not passed over as parameter).
 			var assemblyLoadContext = AssemblyLoadContext.Default;
-			var assemblyLoader = new DependencyContextAssemblyLoader(dataLayerDependencyContext, dataLayerAssetsContext, workingFolder.FullName);
+			var assemblyLoader = new DependencyContextAssemblyLoader(entityDependencyContext, entityAssetsContext, workingFolder.FullName);
 			assemblyLoader.RegisterResolvingEvent(assemblyLoadContext);
 
 			Assembly assembly;
@@ -86,7 +86,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine("Failed to load Havit.Data.EntityFrameworkCore.CodeGenerator");
+				Console.WriteLine("Failed to load Havit.Data.EntityFrameworkCore.CodeGenerator.");
 				Console.WriteLine(ex);
 				throw;
 			}
@@ -100,21 +100,21 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			Type program = assembly.GetType("Havit.Data.EntityFrameworkCore.CodeGenerator.Program");
 			if (program == null)
 			{
-				Console.WriteLine("CodeGenerator entry point (class) was not found.");
+				Console.WriteLine("Havit.Data.EntityFrameworkCore.CodeGenerator entry point (class) was not found.");
 				return;
 			}
 
 			MethodInfo main = program.GetMethod("Main", BindingFlags.Static | BindingFlags.Public);
 			if (program == null)
 			{
-				Console.WriteLine("CodeGenerator entry point (method) was not found.");
+				Console.WriteLine("Havit.Data.EntityFrameworkCore.CodeGenerator entry point (method) was not found.");
 				return;
 			}
 
 			Console.WriteLine("Starting CodeGenerator...");
 			main.Invoke(null, new object[]
 			{
-				new string[] { solutionDirectory.FullName, Path.GetFileNameWithoutExtension(applicationEntityAssembly.FullName) }
+				new string[] { solutionDirectory.FullName, Path.GetFileNameWithoutExtension(applicationEntityAssemblyFileInfo.FullName) }
 			});
 		}
 	}

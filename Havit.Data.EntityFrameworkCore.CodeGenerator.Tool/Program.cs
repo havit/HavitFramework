@@ -47,38 +47,37 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			}
 
 			FileInfo applicationEntityAssemblyFileInfo = files.First();
-			DirectoryInfo workingFolder = applicationEntityAssemblyFileInfo.Directory;
 			Console.WriteLine($"Using {applicationEntityAssemblyFileInfo.FullName}.");
 
 			var entityDepsFile = new FileInfo(applicationEntityAssemblyFileInfo.FullName.Replace(".Entity.dll", ".Entity.deps.json"));
 			if (!entityDepsFile.Exists)
 			{
-				Console.WriteLine($"Deps.json file for {applicationEntityAssemblyFileInfo.Name} not found in the {entityDepsFile.GetRelativePath(solutionDirectory)} folder.");
+				Console.WriteLine($"Deps.json file for {applicationEntityAssemblyFileInfo.Name} not found in the {entityDepsFile.FullName} folder.");
 				Console.WriteLine("Make sure the Entity project is properly built.");
 				return;
 			}
 
 			var entityDependencyContext = new DependencyContextJsonReader().Read(entityDepsFile.OpenRead());
-			Console.WriteLine($"Resolving assemblies using {entityDepsFile.GetRelativePath(solutionDirectory)}");
+			Console.WriteLine($"Resolving assemblies using {entityDepsFile.FullName}");
 
 			DirectoryInfo[] objDirectory = entityDepsFile.Directory.Parent.Parent.Parent.GetDirectories("obj");
 			var assetsJsonFile = objDirectory[0].GetFiles("project.assets.json")[0];
 
 			if (!assetsJsonFile.Exists)
 			{
-				Console.WriteLine($"project.assets.json for the Entity project not found in the {entityDepsFile.GetRelativePath(solutionDirectory)} folder.");
+				Console.WriteLine($"project.assets.json for the Entity project not found in the {entityDepsFile.FullName} folder.");
 				Console.WriteLine("Make sure the Entity project is properly built.");
 				return;
 			}
 
 			var entityAssetsContext = new DependencyContextJsonReader().Read(assetsJsonFile.OpenRead());
-			Console.WriteLine($"Resolving assemblies using {assetsJsonFile.GetRelativePath(solutionDirectory)}");
+			Console.WriteLine($"Resolving assemblies using {assetsJsonFile.FullName}");
 
 			// Default AssemblyLoadContext has to be used, because CodeGenerator itself uses it (and currently it's not passed over as parameter).
 			var assemblyLoadContext = AssemblyLoadContext.Default;
-			var assemblyLoader = new DependencyContextAssemblyLoader(entityDependencyContext, entityAssetsContext, workingFolder.FullName);
-			assemblyLoader.RegisterResolvingEvent(assemblyLoadContext);
 
+			var assemblyLoader = new DependencyContextAssemblyLoader(entityDependencyContext, entityAssetsContext, applicationEntityAssemblyFileInfo.Directory.FullName);
+			assemblyLoader.RegisterResolvingEvent(assemblyLoadContext);
 			Assembly assembly;
 			try
 			{

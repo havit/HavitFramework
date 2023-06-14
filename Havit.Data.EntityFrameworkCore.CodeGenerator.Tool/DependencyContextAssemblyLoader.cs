@@ -50,10 +50,12 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			if (compilationLibrary?.Type == "project")
 			{
 				compilationLibrary = buildLoadInfo.FindCompilationLibrary(assemblyName);
-
-				if (buildLoadInfo.TryLoadAssembly(compilationLibrary, out Assembly assembly))
+				if (compilationLibrary != null) // pokud je DisableTransitiveProjectReferences=true, pak nemusí být projekt v *.deps.json!
 				{
-					return assembly;
+					if (buildLoadInfo.TryLoadAssembly(compilationLibrary, out Assembly assembly))
+					{
+						return assembly;
+					}
 				}
 			}
 

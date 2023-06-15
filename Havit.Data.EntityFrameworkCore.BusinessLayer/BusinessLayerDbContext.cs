@@ -47,10 +47,12 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer
 			// Sice není ideální ve frameworku použít OnConfiguring, nicméně použití BusinessLayerDbContextu se nepředpokládá tam, kde toto bude blokující pro použití DbContextu (např. pooled db connection)
 			BusinessLayerDbContextSettings settings = CreateDbContextSettings();
 
-			optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions.UseStringPropertiesDefaultValueConvention(true));
+			optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions
+				.UseStringPropertiesDefaultValueConvention(true)
+				.UseLocalizationTableIndexConvention(false));
 
 			optionsBuilder.UseModelExtensions(builder => builder
-						 .ModelExtensionsAssembly(settings.ModelExtensionsAssembly)
+				.ModelExtensionsAssembly(settings.ModelExtensionsAssembly)
 				.UseStoredProcedures()
 				.UseExtendedProperties()
 				.UseBusinessLayerStoredProcedures()

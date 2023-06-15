@@ -18,5 +18,11 @@ namespace Havit.Data.EntityFrameworkCore.Metadata
 		/// Identifikátor konvence StringPropertiesDefaultValueConvention.
 		/// </summary>
 		public const string StringPropertiesDefaultValueConvention = nameof(StringPropertiesDefaultValueConvention);
+
+		/// <summary>
+		/// Identifikátor konvence LocalizationTableIndexConvention.
+		/// </summary>
+		public const string LocalizationTableIndexConvention = nameof(LocalizationTableIndexConvention);
+
 	}
 }

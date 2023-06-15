@@ -48,6 +48,12 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 		/// </summary>
 		public bool ManyToManyEntityKeyDiscoveryConventionEnabled { get; private set; } = true;
 
+		/// <summary>
+		/// Indikuje používání konvence LocalizationTableIndexConvention.
+		/// Výchozí hodnota je true.
+		/// </summary>
+		public bool LocalizationTableIndexConventionEnabled { get; private set; } = true;
+
 		/// <inheritdoc />
 		public DbContextOptionsExtensionInfo Info => info ??= new ExtensionInfo(this);
 
@@ -68,6 +74,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			this.DataTypeAttributeConventionEnabled = original.DataTypeAttributeConventionEnabled;
 			this.StringPropertiesDefaultValueConventionEnabled = original.StringPropertiesDefaultValueConventionEnabled;
 			this.ManyToManyEntityKeyDiscoveryConventionEnabled = original.ManyToManyEntityKeyDiscoveryConventionEnabled;
+			this.LocalizationTableIndexConventionEnabled = original.LocalizationTableIndexConventionEnabled;
 		}
 
 		/// <summary>
@@ -128,6 +135,16 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return clone;
 		}
 
+		/// <summary>
+		/// Nastaví příznak FrameworkConventionSetOptionsExtension.
+		/// </summary>
+		public FrameworkConventionSetOptionsExtension WithLocalizationTableIndexConvention(bool enabled)
+		{
+			var clone = Clone();
+			clone.LocalizationTableIndexConventionEnabled = enabled;
+			return clone;
+		}
+
 		/// <inheritdoc />
 		public void ApplyServices(IServiceCollection services)
 		{
@@ -165,6 +182,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 						builder.Append(nameof(DataTypeAttributeConventionEnabled)).Append("=").Append(Extension.DataTypeAttributeConventionEnabled).Append(' ');
 						builder.Append(nameof(ManyToManyEntityKeyDiscoveryConventionEnabled)).Append("=").Append(Extension.ManyToManyEntityKeyDiscoveryConventionEnabled).Append(' ');
 						builder.Append(nameof(StringPropertiesDefaultValueConventionEnabled)).Append("=").Append(Extension.StringPropertiesDefaultValueConventionEnabled).Append(' ');
+						builder.Append(nameof(LocalizationTableIndexConventionEnabled)).Append("=").Append(Extension.LocalizationTableIndexConventionEnabled).Append(' ');
 
 						_logFragment = builder.ToString();
 					}
@@ -183,6 +201,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 					hashCode.Add(Extension.DataTypeAttributeConventionEnabled);
 					hashCode.Add(Extension.ManyToManyEntityKeyDiscoveryConventionEnabled);
 					hashCode.Add(Extension.StringPropertiesDefaultValueConventionEnabled);
+					hashCode.Add(Extension.LocalizationTableIndexConventionEnabled);
 					_serviceProviderHash = hashCode.ToHashCode();
 				}
 
@@ -196,6 +215,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 				debugInfo["HFW:" + nameof(FrameworkConventionSetOptionsExtension.DataTypeAttributeConventionEnabled)] = Extension.DataTypeAttributeConventionEnabled.GetHashCode().ToString(CultureInfo.InvariantCulture);
 				debugInfo["HFW:" + nameof(FrameworkConventionSetOptionsExtension.ManyToManyEntityKeyDiscoveryConventionEnabled)] = Extension.ManyToManyEntityKeyDiscoveryConventionEnabled.GetHashCode().ToString(CultureInfo.InvariantCulture);
 				debugInfo["HFW:" + nameof(FrameworkConventionSetOptionsExtension.StringPropertiesDefaultValueConventionEnabled)] = Extension.StringPropertiesDefaultValueConventionEnabled.GetHashCode().ToString(CultureInfo.InvariantCulture);
+				debugInfo["HFW:" + nameof(FrameworkConventionSetOptionsExtension.LocalizationTableIndexConventionEnabled)] = Extension.LocalizationTableIndexConventionEnabled.GetHashCode().ToString(CultureInfo.InvariantCulture);
 			}
 
 			public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
@@ -205,7 +225,8 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 					&& (this.Extension.CascadeDeleteToRestrictConventionEnabled == otherExtensionInfo.Extension.CascadeDeleteToRestrictConventionEnabled)
 					&& (this.Extension.DataTypeAttributeConventionEnabled == otherExtensionInfo.Extension.DataTypeAttributeConventionEnabled)
 					&& (this.Extension.ManyToManyEntityKeyDiscoveryConventionEnabled == otherExtensionInfo.Extension.ManyToManyEntityKeyDiscoveryConventionEnabled)
-					&& (this.Extension.StringPropertiesDefaultValueConventionEnabled == otherExtensionInfo.Extension.StringPropertiesDefaultValueConventionEnabled);
+					&& (this.Extension.StringPropertiesDefaultValueConventionEnabled == otherExtensionInfo.Extension.StringPropertiesDefaultValueConventionEnabled)
+					&& (this.Extension.LocalizationTableIndexConventionEnabled == otherExtensionInfo.Extension.LocalizationTableIndexConventionEnabled);
 			}
 		}
 	}

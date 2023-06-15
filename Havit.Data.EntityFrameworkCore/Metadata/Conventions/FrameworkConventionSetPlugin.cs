@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
@@ -52,6 +51,11 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			if (extension.StringPropertiesDefaultValueConventionEnabled)
 			{
 				conventionSet.Add(new StringPropertiesDefaultValueConvention());
+			}
+
+			if (extension.LocalizationTableIndexConventionEnabled)
+			{
+				conventionSet.Add(new LocalizationTableIndexConvention());
 			}
 
 			return conventionSet;

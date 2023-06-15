@@ -69,6 +69,15 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions
 			return this;
 		}
 
+		/// <summary>
+		/// Nastaví, zda se má použít LocalizationTableIndexConvention.
+		/// </summary>
+		public FrameworkConventionSetOptionsBuilder UseLocalizationTableIndexConvention(bool enabled)
+		{
+			WithOption(e => e.WithLocalizationTableIndexConvention(enabled));
+			return this;
+		}
+
 		private void WithOption(Func<FrameworkConventionSetOptionsExtension, FrameworkConventionSetOptionsExtension> withFunc)
 		{
 			var frameworkConventionSetOptionsExtension = optionsBuilder.Options.FindExtension<FrameworkConventionSetOptionsExtension>() ?? new FrameworkConventionSetOptionsExtension();

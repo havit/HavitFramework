@@ -153,6 +153,18 @@ namespace Havit.Services.Azure.Tests.FileStorage
 		}
 
 		[TestMethod]
+		public void AzureFileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive()
+		{
+			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
+		public async Task AzureFileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive()
+		{
+			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetAzureFileStorageService());
+		}
+
+		[TestMethod]
 		public void AzureFileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{
 			FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureFileStorageService());

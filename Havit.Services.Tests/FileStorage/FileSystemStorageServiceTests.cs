@@ -253,6 +253,21 @@ namespace Havit.Services.Tests.FileStorage
 			await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetFileSystemStorageService());
 		}
 
+		// Vyhledávání není case-sensitivní v části složky.
+		//[TestMethod]
+		//public void FileSystemStorageService_EnumerateFiles_SearchPatternIsCaseSensitive()
+		//{
+		//	FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetFileSystemStorageService());
+		//}
+
+		// Vyhledávání není case-sensitivní v části složky.
+		//[TestMethod]
+		//public async Task FileSystemStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive()
+		//{
+		//	await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetFileSystemStorageService());
+		//}
+
+
 		[TestMethod]
 		public void FileSystemStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 		{

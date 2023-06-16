@@ -173,6 +173,18 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
+	public void SftpStorageService_EnumerateFiles_SearchPatternIsCaseSensitive()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
 	public void SftpStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetSftpFileStorageService());

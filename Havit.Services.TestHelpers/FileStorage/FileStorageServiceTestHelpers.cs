@@ -397,6 +397,48 @@ namespace Havit.Services.TestHelpers.FileStorage
 			await fileStorageService.DeleteAsync(testFilename);
 		}
 
+		public static void FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string testFilename = "subfolder/test123.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				fileStorageService.Save(testFilename, ms, "text/plain");
+			}
+
+			// Act + Assert
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/test*", testFilename), "subfolder/test*");
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/TEST*", testFilename), "subfolder/TEST*");
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "SUBFOLDER/test*", testFilename), "SUBFOLDER/test*");
+			Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/*.txt", testFilename), "subfolder/*.txt");
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/*.TXT", testFilename), "subfolder/*.TXT");
+			Assert.IsFalse(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "SUBFOLDER/*.txt", testFilename), "SUBFOLDER/*.txt");
+
+			// Clean-up
+			fileStorageService.Delete(testFilename);
+		}
+
+		public static async Task FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(IFileStorageService fileStorageService)
+		{
+			// Arrange
+			string testFilename = "subfolder/test123.txt";
+			using (MemoryStream ms = new MemoryStream())
+			{
+				await fileStorageService.SaveAsync(testFilename, ms, "text/plain");
+			}
+
+			// Act + Assert
+			Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/test*", testFilename), "subfolder/test*");
+			Assert.IsFalse(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/TEST*", testFilename), "subfolder/TEST*");
+			Assert.IsFalse(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "SUBFOLDER/test*", testFilename), "SUBFOLDER/test*");
+			Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/*.txt", testFilename), "subfolder/*.txt");
+			Assert.IsFalse(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "subfolder/*.TXT", testFilename), "subfolder/*.TXT");
+			Assert.IsFalse(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "SUBFOLDER/*.txt", testFilename), "SUBFOLDER/*.txt");
+
+			// Clean-up
+			await fileStorageService.DeleteAsync(testFilename);
+		}
+
 		public static void FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(IFileStorageService fileStorageService)
 		{
 			// Arrange

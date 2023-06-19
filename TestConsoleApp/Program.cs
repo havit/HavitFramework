@@ -1,4 +1,5 @@
 ﻿using Havit.Services.Sftp.FileStorage;
+using Havit.Text.RegularExpressions;
 using Renci.SshNet;
 using System;
 using System.IO;
@@ -11,17 +12,11 @@ namespace TestConsoleApp
 	{
 		public static void Main()
 		{
-			// jak získat tento soubor?
-			// a) stáhnout puttygen, spustit
-			// b) načíst *.ppk přes menu Conversions, Import Key
-			// c) exportovat přes Conversion, Export OpenSSH key (nikoliv new format, nikoliv ssh.com!)
-
-			using var service = new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new ConnectionInfo("sfteu.xerox.com", "ESPChester", new Renci.SshNet.PrivateKeyAuthenticationMethod("ESPChester", new PrivateKeyFile("D:\\Temp\\ESPChester.new"))) });
-			foreach (var fileInfo in service.EnumerateFiles())
+			string[] strings = { "a.txt", "b.txt", "c.TXt", "d.TXT" };
+			foreach (string s in strings.Where(item => RegexPatterns.IsFileWildcardMatch(item.ToLower(), "*.TXT".ToLower())))
 			{
-				Console.WriteLine(fileInfo.Name);
+				Console.WriteLine(s);
 			}
-
 		}
 	}
 }

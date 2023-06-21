@@ -1,18 +1,17 @@
-﻿namespace Havit.Web.Bootstrap.UI.WebControls
+﻿namespace Havit.Web.Bootstrap.UI.WebControls;
+
+/// <summary>
+/// Icon position.
+/// </summary>
+public enum IconPosition
 {
 	/// <summary>
-	/// Icon position.
+	/// Icon on the left side.
 	/// </summary>
-	public enum IconPosition
-	{
-		/// <summary>
-		/// Icon on the left side.
-		/// </summary>
-		Left,
+	Left,
 
-		/// <summary>
-		/// Icon on the right side.
-		/// </summary>
-		Right
-	}
+	/// <summary>
+	/// Icon on the right side.
+	/// </summary>
+	Right
 }

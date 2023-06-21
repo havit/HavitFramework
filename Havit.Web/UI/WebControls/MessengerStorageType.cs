@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Web.UI.WebControls
-{
-	/// <summary>
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
     /// Typ úložiště zpráv používané Messengerem.
     /// </summary>
     public enum MessengerStorageType
@@ -19,4 +19,3 @@ namespace Havit.Web.UI.WebControls
         /// </summary>
         Cookies = 1
     }
-}

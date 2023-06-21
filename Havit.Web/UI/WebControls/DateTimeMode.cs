@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Režim zobrazení DateTime.
+/// </summary>
+public enum DateTimeMode
 {
 	/// <summary>
-	/// Režim zobrazení DateTime.
+	/// Režim pro zobrazení data.
 	/// </summary>
-	public enum DateTimeMode
-	{
-		/// <summary>
-		/// Režim pro zobrazení data.
-		/// </summary>
-		Date,
+	Date,
 
-		/// <summary>
-		/// Režim pro zobrazení data a času.
-		/// </summary>
-		DateTime
-	}
+	/// <summary>
+	/// Režim pro zobrazení data a času.
+	/// </summary>
+	DateTime
 }

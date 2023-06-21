@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Web.UI
-{
+namespace Havit.Web.UI;
+
     /// <summary>
     /// Způsob serializace viewstate.
     /// </summary>
@@ -39,4 +39,3 @@ namespace Havit.Web.UI
         /// </summary>
         LosFormatter
     }
-}

@@ -4,26 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Web.Bootstrap.UI.WebControls
+namespace Havit.Web.Bootstrap.UI.WebControls;
+
+/// <summary>
+/// Mode of rendering container in Navbar.
+/// </summary>
+public enum NavbarContainerMode
 {
 	/// <summary>
-	/// Mode of rendering container in Navbar.
+	/// Render as "container".
 	/// </summary>
-	public enum NavbarContainerMode
-	{
-		/// <summary>
-		/// Render as "container".
-		/// </summary>
-		Container,
+	Container,
 
-		/// <summary>
-		/// Render as "container-fluid".
-		/// </summary>
-		ContainerFluid,
+	/// <summary>
+	/// Render as "container-fluid".
+	/// </summary>
+	ContainerFluid,
 
-		/// <summary>
-		/// Do not render container.
-		/// </summary>
-		None
-	}
+	/// <summary>
+	/// Do not render container.
+	/// </summary>
+	None
 }

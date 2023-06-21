@@ -2,27 +2,26 @@
 using System.Diagnostics;
 using System.ServiceModel.Channels;
 
-namespace Havit.Web.UI
+namespace Havit.Web.UI;
+
+/// <summary>
+/// Loguje oprace FilePageStatePersisteru.
+/// </summary>
+internal class FilePageStatePersisterLogService : FilePageStatePersister.ILogService
 {
-	/// <summary>
-	/// Loguje oprace FilePageStatePersisteru.
-	/// </summary>
-	internal class FilePageStatePersisterLogService : FilePageStatePersister.ILogService
+	private readonly TraceSource traceSource;
+
+	public FilePageStatePersisterLogService()
 	{
-		private readonly TraceSource traceSource;
+		traceSource = new TraceSource("FilePageStatePersister", SourceLevels.All);				
+	}
 
-		public FilePageStatePersisterLogService()
-		{
-			traceSource = new TraceSource("FilePageStatePersister", SourceLevels.All);				
-		}
-
-		/// <summary>
-		/// Zapíše zprávu do logu.
-		/// </summary>
-		public void Log(string message, TraceEventType eventType = TraceEventType.Information)
-		{
-			traceSource.TraceEvent(eventType, 0, message, null);
-			traceSource.Flush();
-		}
+	/// <summary>
+	/// Zapíše zprávu do logu.
+	/// </summary>
+	public void Log(string message, TraceEventType eventType = TraceEventType.Information)
+	{
+		traceSource.TraceEvent(eventType, 0, message, null);
+		traceSource.Flush();
 	}
 }

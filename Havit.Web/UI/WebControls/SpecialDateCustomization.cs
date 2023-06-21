@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text;
 
-namespace Havit.Web.UI.WebControls
-{
+namespace Havit.Web.UI.WebControls;
+
     /// <summary>
     /// Třída implementující customizaci DateTimeBox-u pro special date collection. 
     /// </summary>
@@ -86,4 +86,3 @@ namespace Havit.Web.UI.WebControls
             return result.ToString();
         }
     }
-}

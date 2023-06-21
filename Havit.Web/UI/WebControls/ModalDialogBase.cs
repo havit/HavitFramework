@@ -8,302 +8,301 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.UI.ClientScripts;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Základní infrastruktura pro modální dialog. Umí zobrazovat a skrývat dialog, neřeší však implementační záležitosti.
+/// </summary>
+[ParseChildren(true)]
+[PersistChildren(false)]
+public abstract class ModalDialogBase : Control
 {
+	private bool _dialogCurrentlyHiding = false;
+
 	/// <summary>
-	/// Základní infrastruktura pro modální dialog. Umí zobrazovat a skrývat dialog, neřeší však implementační záležitosti.
+	/// Paměť pro _dialogPanel.ClientID.
+	/// Využívá metoda RegisterHideScript (volána z Page_PreRenderComplete) pro registraci scriptu pro schování dialogu na klientské straně.
+	/// Slouží pro řešení situace, kdy potřebujeme ze stránky vyhodit control, protože již ve stránce neexistuje (byl vyhozen databindingem, atp.).
 	/// </summary>
-	[ParseChildren(true)]
-	[PersistChildren(false)]
-	public abstract class ModalDialogBase : Control
+	protected string DialogPanelClientIDMemento
 	{
-		private bool _dialogCurrentlyHiding = false;
-
-		/// <summary>
-		/// Paměť pro _dialogPanel.ClientID.
-		/// Využívá metoda RegisterHideScript (volána z Page_PreRenderComplete) pro registraci scriptu pro schování dialogu na klientské straně.
-		/// Slouží pro řešení situace, kdy potřebujeme ze stránky vyhodit control, protože již ve stránce neexistuje (byl vyhozen databindingem, atp.).
-		/// </summary>
-		protected string DialogPanelClientIDMemento
+		get
 		{
-			get
-			{
-				return (string)ViewState["DialogPanelClientIDMemento"];
-			}
-			set
-			{
-				ViewState["DialogPanelClientIDMemento"] = value;
-			}
+			return (string)ViewState["DialogPanelClientIDMemento"];
 		}
-
-		/// <summary>
-		/// Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
-		/// </summary>
-		[TemplateInstance(TemplateInstance.Single)]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public virtual ITemplate ContentTemplate
+		set
 		{
-			get
-			{
-				return _contentTemplate;
-			}
-			set
-			{
-				_contentTemplate = value;
-				ChildControlsCreated = false;
-			}
+			ViewState["DialogPanelClientIDMemento"] = value;
 		}
-		private ITemplate _contentTemplate;
+	}
 
-		/// <summary>
-		/// Instancovaný obsah dialogu.
-		/// </summary>
-		internal Control ContentTemplateContainer
+	/// <summary>
+	/// Šablona obsahu dialogu. Instancovaný obsah šablony je v ContentTemplateContainer (instancováno v průběhu OnInit).
+	/// </summary>
+	[TemplateInstance(TemplateInstance.Single)]
+	[PersistenceMode(PersistenceMode.InnerProperty)]
+	public virtual ITemplate ContentTemplate
+	{
+		get
 		{
-			get
-			{
-				EnsureChildControls();
-				return GetContentContainer();
-			}
+			return _contentTemplate;
 		}
-
-		/// <summary>
-		/// Kolekce controlů.
-		/// Přístup k property zajistí inicializaci podstromu controlů (EnsureChildControls).
-		/// </summary>
-		public override ControlCollection Controls
+		set
 		{
-			get
-			{
-				EnsureChildControls();
-				return base.Controls;
-			}
+			_contentTemplate = value;
+			ChildControlsCreated = false;
 		}
+	}
+	private ITemplate _contentTemplate;
 
-		/// <summary>
-		/// Udává, zda je dialog viditelný.
-		/// </summary>
-		protected internal bool DialogVisible
+	/// <summary>
+	/// Instancovaný obsah dialogu.
+	/// </summary>
+	internal Control ContentTemplateContainer
+	{
+		get
 		{
-			get
-			{
-				return (bool)(ViewState["DialogVisible"] ?? false);
-			}
-			private set
-			{
-				ViewState["DialogVisible"] = value;
-			}
-		}
-
-		/// <summary>
-		/// OnInit.
-		/// </summary>
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
 			EnsureChildControls();
-			this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
+			return GetContentContainer();
+		}
+	}
+
+	/// <summary>
+	/// Kolekce controlů.
+	/// Přístup k property zajistí inicializaci podstromu controlů (EnsureChildControls).
+	/// </summary>
+	public override ControlCollection Controls
+	{
+		get
+		{
+			EnsureChildControls();
+			return base.Controls;
+		}
+	}
+
+	/// <summary>
+	/// Udává, zda je dialog viditelný.
+	/// </summary>
+	protected internal bool DialogVisible
+	{
+		get
+		{
+			return (bool)(ViewState["DialogVisible"] ?? false);
+		}
+		private set
+		{
+			ViewState["DialogVisible"] = value;
+		}
+	}
+
+	/// <summary>
+	/// OnInit.
+	/// </summary>
+	protected override void OnInit(EventArgs e)
+	{
+		base.OnInit(e);
+		EnsureChildControls();
+		this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
+	}
+
+	/// <summary>
+	/// Inicializuje podstrom controlů.
+	/// </summary>
+	protected override void CreateChildControls()
+	{
+		this.Controls.Clear();
+		Control contentContainer = GetContentContainer();
+		if (!contentContainer.HasControls() && (_contentTemplate != null))
+		{
+			_contentTemplate.InstantiateIn(contentContainer);
 		}
 
-		/// <summary>
-		/// Inicializuje podstrom controlů.
-		/// </summary>
-		protected override void CreateChildControls()
+		Control dialogContainer = GetDialogContainer();
+		if (dialogContainer != this)
 		{
-			this.Controls.Clear();
-			Control contentContainer = GetContentContainer();
-			if (!contentContainer.HasControls() && (_contentTemplate != null))
-			{
-				_contentTemplate.InstantiateIn(contentContainer);
-			}
-
-			Control dialogContainer = GetDialogContainer();
-			if (dialogContainer != this)
-			{
-				this.Controls.Add(dialogContainer);
-			}
-			dialogContainer.ID = this.ID + "__DC";
+			this.Controls.Add(dialogContainer);
 		}
+		dialogContainer.ID = this.ID + "__DC";
+	}
 
-		/// <summary>
-		/// Vrací control/kontejner, do kterého je instanciována šablona obsahu.
-		/// </summary>
-		protected abstract Control GetContentContainer();
+	/// <summary>
+	/// Vrací control/kontejner, do kterého je instanciována šablona obsahu.
+	/// </summary>
+	protected abstract Control GetContentContainer();
 
-		/// <summary>
-		/// Vrací control/kontejner, který reprezentuje dialog jako celek. Tento control je ovládán klientskými skripty pro zobrazení a schování obsahu.
-		/// </summary>
-		protected abstract Control GetDialogContainer();
+	/// <summary>
+	/// Vrací control/kontejner, který reprezentuje dialog jako celek. Tento control je ovládán klientskými skripty pro zobrazení a schování obsahu.
+	/// </summary>
+	protected abstract Control GetDialogContainer();
 
-		/// <summary>
-		/// Zobrazí dialog.
-		/// </summary>
-		public void Show()
+	/// <summary>
+	/// Zobrazí dialog.
+	/// </summary>
+	public void Show()
+	{
+		if (!DialogVisible)
 		{
-			if (!DialogVisible)
+			CancelEventArgs cancelEventArgs = new CancelEventArgs();
+			OnDialogShowing(cancelEventArgs);
+			if (!cancelEventArgs.Cancel)
 			{
-				CancelEventArgs cancelEventArgs = new CancelEventArgs();
-				OnDialogShowing(cancelEventArgs);
-				if (!cancelEventArgs.Cancel)
-				{
-					DialogVisible = true;
-					DialogPanelClientIDMemento = GetDialogContainer().ClientID;
-					OnDialogShown(EventArgs.Empty);
-				}
+				DialogVisible = true;
+				DialogPanelClientIDMemento = GetDialogContainer().ClientID;
+				OnDialogShown(EventArgs.Empty);
 			}
 		}
+	}
 
-		/// <summary>
-		/// Skryje dialog.
-		/// </summary>
-		public void Hide()
+	/// <summary>
+	/// Skryje dialog.
+	/// </summary>
+	public void Hide()
+	{
+		if (DialogVisible)
 		{
-			if (DialogVisible)
+			CancelEventArgs cancelEventArgs = new CancelEventArgs();				
+			OnDialogHiding(cancelEventArgs);
+			if (!cancelEventArgs.Cancel)
 			{
-				CancelEventArgs cancelEventArgs = new CancelEventArgs();				
-				OnDialogHiding(cancelEventArgs);
-				if (!cancelEventArgs.Cancel)
-				{
-					DialogVisible = false;
-					_dialogCurrentlyHiding = true;
-					OnDialogHidden(EventArgs.Empty);
-				}
+				DialogVisible = false;
+				_dialogCurrentlyHiding = true;
+				OnDialogHidden(EventArgs.Empty);
 			}
 		}
+	}
 
-		/// <summary>
-		/// Obsluhuje událost před zobrazením dialogu.
-		/// </summary>
-		protected virtual void OnDialogShowing(CancelEventArgs eventArgs)
+	/// <summary>
+	/// Obsluhuje událost před zobrazením dialogu.
+	/// </summary>
+	protected virtual void OnDialogShowing(CancelEventArgs eventArgs)
+	{
+		if (DialogShowing != null)
 		{
-			if (DialogShowing != null)
-			{
-				DialogShowing(this, eventArgs);
-			}
+			DialogShowing(this, eventArgs);
 		}
+	}
 
-		/// <summary>
-		/// Obsluhuje událost před zobrazením dialogu.
-		/// </summary>
-		protected virtual void OnDialogHiding(CancelEventArgs eventArgs)
+	/// <summary>
+	/// Obsluhuje událost před zobrazením dialogu.
+	/// </summary>
+	protected virtual void OnDialogHiding(CancelEventArgs eventArgs)
+	{
+		if (DialogHiding != null)
 		{
-			if (DialogHiding != null)
-			{
-				DialogHiding(this, eventArgs);
-			}
+			DialogHiding(this, eventArgs);
 		}
+	}
 
-		/// <summary>
-		/// Obsluhuje událost zobrazení dialogu.
-		/// </summary>
-		protected virtual void OnDialogShown(EventArgs eventArgs)
+	/// <summary>
+	/// Obsluhuje událost zobrazení dialogu.
+	/// </summary>
+	protected virtual void OnDialogShown(EventArgs eventArgs)
+	{
+		if (DialogShown != null)
 		{
-			if (DialogShown != null)
-			{
-				DialogShown(this, eventArgs);
-			}
+			DialogShown(this, eventArgs);
 		}
+	}
 
-		/// <summary>
-		/// Obsluhuje událost skrytí dialogu.
-		/// </summary>
-		protected virtual void OnDialogHidden(EventArgs eventArgs)
+	/// <summary>
+	/// Obsluhuje událost skrytí dialogu.
+	/// </summary>
+	protected virtual void OnDialogHidden(EventArgs eventArgs)
+	{
+		if (DialogHidden != null)
 		{
-			if (DialogHidden != null)
-			{
-				DialogHidden(this, eventArgs);
-			}
+			DialogHidden(this, eventArgs);
 		}
+	}
 
-		/// <summary>
-		/// Vrátí skript pro zobrazení dialogu na klientské straně.
-		/// </summary>
-		protected abstract string GetShowScript();
+	/// <summary>
+	/// Vrátí skript pro zobrazení dialogu na klientské straně.
+	/// </summary>
+	protected abstract string GetShowScript();
 
-		/// <summary>
-		/// Vrátí skript pro skrytí dialogu na klientské straně.
-		/// </summary>
-		protected abstract string GetHideScript();
+	/// <summary>
+	/// Vrátí skript pro skrytí dialogu na klientské straně.
+	/// </summary>
+	protected abstract string GetHideScript();
 
-		/// <summary>
-		/// Zaregistruje skript, který zobrazí dialog na klientské straně.
-		/// </summary>
-		protected void RegisterShowScript()
+	/// <summary>
+	/// Zaregistruje skript, který zobrazí dialog na klientské straně.
+	/// </summary>
+	protected void RegisterShowScript()
+	{
+		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
+
+		string showScript = GetShowScript();
+		if (!String.IsNullOrEmpty(showScript))
 		{
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
-
-			string showScript = GetShowScript();
-			if (!String.IsNullOrEmpty(showScript))
-			{
-				string script = String.Format("$(document).ready(function() {{ {0} }});", showScript);
-				ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
-			}
-		}
-
-		/// <summary>
-		/// Zaregistruje skript, který skryje dialog na klientské straně.
-		/// </summary>
-		protected void RegisterHideScript()
-		{
-			ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
-			string script = String.Format(
-				"$(document).ready(function() {{ {0} }});",
-				GetHideScript());
+			string script = String.Format("$(document).ready(function() {{ {0} }});", showScript);
 			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
 		}
-
-		/// <summary>
-		/// Událost oznamující začátek zobrazení dialogu.
-		/// </summary>
-		public event CancelEventHandler DialogShowing;
-
-		/// <summary>
-		/// Událost oznamující zobrazení dialogu.
-		/// </summary>
-		public event EventHandler DialogShown;
-
-		/// <summary>
-		/// Událost oznamující začátek skrytí dialogu.
-		/// </summary>
-		public event CancelEventHandler DialogHiding;
-
-		/// <summary>
-		/// Událost oznamující skrytí dialogu.
-		/// </summary>
-		public event EventHandler DialogHidden;
-
-		/// <summary>
-		/// OnPreRender.
-		/// </summary>
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-
-			EnsureChildControls();
-
-			if (DialogVisible)
-			{
-				RegisterShowScript();
-			}
-		}
-
-		private void Page_PreRenderComplete(object sender, EventArgs e)
-		{
-			// Dialog nemá být vidět a právě jej schováváme.
-			// To se může stát, že control již není ve stránce (např. byl v repeateru, který byl rebindován) 
-			// nebo je nadřazený element schovaný a pak se nevyvolá OnPreRender,
-			// proto zkusíme control schovat v každém případě (Page.PreRenderComplete)
-						
-			if (!DialogVisible && _dialogCurrentlyHiding)
-			{
-				RegisterHideScriptFromPreRenderComplete();
-				RegisterHideScript();
-			}
-		}
-
-		/// <summary>
-		/// Zajistí schování dialogu
-		/// </summary>
-		protected abstract void RegisterHideScriptFromPreRenderComplete();
 	}
+
+	/// <summary>
+	/// Zaregistruje skript, který skryje dialog na klientské straně.
+	/// </summary>
+	protected void RegisterHideScript()
+	{
+		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");
+		string script = String.Format(
+			"$(document).ready(function() {{ {0} }});",
+			GetHideScript());
+		ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
+	}
+
+	/// <summary>
+	/// Událost oznamující začátek zobrazení dialogu.
+	/// </summary>
+	public event CancelEventHandler DialogShowing;
+
+	/// <summary>
+	/// Událost oznamující zobrazení dialogu.
+	/// </summary>
+	public event EventHandler DialogShown;
+
+	/// <summary>
+	/// Událost oznamující začátek skrytí dialogu.
+	/// </summary>
+	public event CancelEventHandler DialogHiding;
+
+	/// <summary>
+	/// Událost oznamující skrytí dialogu.
+	/// </summary>
+	public event EventHandler DialogHidden;
+
+	/// <summary>
+	/// OnPreRender.
+	/// </summary>
+	protected override void OnPreRender(EventArgs e)
+	{
+		base.OnPreRender(e);
+
+		EnsureChildControls();
+
+		if (DialogVisible)
+		{
+			RegisterShowScript();
+		}
+	}
+
+	private void Page_PreRenderComplete(object sender, EventArgs e)
+	{
+		// Dialog nemá být vidět a právě jej schováváme.
+		// To se může stát, že control již není ve stránce (např. byl v repeateru, který byl rebindován) 
+		// nebo je nadřazený element schovaný a pak se nevyvolá OnPreRender,
+		// proto zkusíme control schovat v každém případě (Page.PreRenderComplete)
+					
+		if (!DialogVisible && _dialogCurrentlyHiding)
+		{
+			RegisterHideScriptFromPreRenderComplete();
+			RegisterHideScript();
+		}
+	}
+
+	/// <summary>
+	/// Zajistí schování dialogu
+	/// </summary>
+	protected abstract void RegisterHideScriptFromPreRenderComplete();
 }

@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Web.UI.WebControls
-{
+namespace Havit.Web.UI.WebControls;
+
     /// <summary>
     /// Zpráva do messengera.
     /// </summary>
     [Serializable]
     public class MessengerMessage
     {
-	    /// <summary>
+    /// <summary>
         /// Text zprávy.
         /// </summary>
         public string Text
@@ -59,11 +59,9 @@ namespace Havit.Web.UI.WebControls
         /// <param name="messageType">typ zprávy</param>
         public MessengerMessage(string text, MessageType messageType)
         {
-			Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(text), nameof(text));
+		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(text), nameof(text));
 
-			this._messageType = messageType;
+		this._messageType = messageType;
             this._text = text;
         }
     }
-
-}

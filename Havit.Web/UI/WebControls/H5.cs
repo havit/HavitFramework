@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Web.UI;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Reprezentuje label, který se renderuje jako HTML tag H5.
+/// </summary>
+public class H5 : System.Web.UI.WebControls.Label
 {
 	/// <summary>
-	/// Reprezentuje label, který se renderuje jako HTML tag H5.
+	/// Vrací HtmlTextWriterTag.H5 zajišťující správné renderování.
 	/// </summary>
-	public class H5 : System.Web.UI.WebControls.Label
+	protected override HtmlTextWriterTag TagKey
 	{
-		/// <summary>
-		/// Vrací HtmlTextWriterTag.H5 zajišťující správné renderování.
-		/// </summary>
-		protected override HtmlTextWriterTag TagKey
+		get
 		{
-			get
-			{
-				return HtmlTextWriterTag.H5;
-			}
+			return HtmlTextWriterTag.H5;
 		}
 	}
 }

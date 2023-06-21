@@ -2,27 +2,26 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// GridViewInsertedEventArgs.
+/// </summary>
+public class GridViewInsertedEventArgs : EventArgs
 {
 	/// <summary>
-	/// GridViewInsertedEventArgs.
+	/// Indikuje, zdali má GridView zůstat po zpracování událost v režimu editace nového řádku.
 	/// </summary>
-	public class GridViewInsertedEventArgs : EventArgs
+	public bool KeepInEditMode
 	{
-		/// <summary>
-		/// Indikuje, zdali má GridView zůstat po zpracování událost v režimu editace nového řádku.
-		/// </summary>
-		public bool KeepInEditMode
+		get
 		{
-			get
-			{
-				return this._keepInEditMode;
-			}
-			set
-			{
-				this._keepInEditMode = value;
-			}
+			return this._keepInEditMode;
 		}
-		private bool _keepInEditMode = false;
+		set
+		{
+			this._keepInEditMode = value;
+		}
 	}
+	private bool _keepInEditMode = false;
 }

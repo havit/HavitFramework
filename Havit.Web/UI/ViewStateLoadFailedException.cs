@@ -3,38 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Havit.Web.UI
+namespace Havit.Web.UI;
+
+/// <summary>
+/// Výjimka oznamující nenačtení viewstate.
+/// </summary>
+[Serializable]
+public class ViewStateLoadFailedException : Exception
 {
 	/// <summary>
-	/// Výjimka oznamující nenačtení viewstate.
+	/// Konstruktor.
 	/// </summary>
-	[Serializable]
-	public class ViewStateLoadFailedException : Exception
+	public ViewStateLoadFailedException()
 	{
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public ViewStateLoadFailedException()
-		{
-			
-		}
+		
+	}
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public ViewStateLoadFailedException(string message)
-			: base(message)
-		{
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public ViewStateLoadFailedException(string message)
+		: base(message)
+	{
 
-		}
+	}
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public ViewStateLoadFailedException(string message, Exception innerException)
-			: base(message, innerException)
-		{
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public ViewStateLoadFailedException(string message, Exception innerException)
+		: base(message, innerException)
+	{
 
-		}
 	}
 }

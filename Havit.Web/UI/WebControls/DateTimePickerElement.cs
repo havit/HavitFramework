@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Element, který bude sloužit pro otevření kalendáře.
+/// </summary>
+public enum DateTimePickerElement
 {
 	/// <summary>
-	/// Element, který bude sloužit pro otevření kalendáře.
+	/// Pro otevření kalendáře bude sloužit ikona s obrázkem.
 	/// </summary>
-	public enum DateTimePickerElement
-	{
-		/// <summary>
-		/// Pro otevření kalendáře bude sloužit ikona s obrázkem.
-		/// </summary>
-		Image,
+	Image,
 
-		/// <summary>
-		/// Pro otevření kalendáře bude sloužit element &lt;i&gt;.
-		/// </summary>
-		Icon
-	}
+	/// <summary>
+	/// Pro otevření kalendáře bude sloužit element &lt;i&gt;.
+	/// </summary>
+	Icon
 }

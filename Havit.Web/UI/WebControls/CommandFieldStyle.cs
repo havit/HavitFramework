@@ -6,1487 +6,1486 @@ using System.Web.UI;
 using System.Drawing.Design;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Zapouzdření pro skinování CommandFieldu, uložiště hodnot.
+/// </summary>
+public class CommandFieldStyle : IStateManager
 {
 	/// <summary>
-	/// Zapouzdření pro skinování CommandFieldu, uložiště hodnot.
+	/// Gets or sets text that is rendered as the AbbreviatedText property value in some controls.
 	/// </summary>
-	public class CommandFieldStyle : IStateManager
+	[Localizable(true)]
+	[Category("Accessibility")]
+	[DefaultValue("")]
+	public virtual string AccessibleHeaderText
 	{
-		/// <summary>
-		/// Gets or sets text that is rendered as the AbbreviatedText property value in some controls.
-		/// </summary>
-		[Localizable(true)]
-		[Category("Accessibility")]
-		[DefaultValue("")]
-		public virtual string AccessibleHeaderText
-		{
-			get
-			{
-				object temp = this.ViewState["AccessibleHeaderText"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
-			}
-			set
+		get
+		{
+			object temp = this.ViewState["AccessibleHeaderText"];
+			if (temp != null)
 			{
-				if (!object.Equals(value, this.ViewState["AccessibleHeaderText"]))
-				{
-					this.ViewState["AccessibleHeaderText"] = value;
-					this.OnPropertyChanged();
-				}
+				return (string)temp;
 			}
+			return string.Empty;
 		}
-
-		/// <summary>
-		/// Gets or sets the button type to display in the button field.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue(ButtonType.Link)]
-		public virtual ButtonType ButtonType
+		set
 		{
-			get
+			if (!object.Equals(value, this.ViewState["AccessibleHeaderText"]))
 			{
-				object temp = ViewState["ButtonType"];
-				if (temp != null)
-				{
-					return (ButtonType)temp;
-				}
-				return ButtonType.Link;
+				this.ViewState["AccessibleHeaderText"] = value;
+				this.OnPropertyChanged();
 			}
-			set
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the button type to display in the button field.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue(ButtonType.Link)]
+	public virtual ButtonType ButtonType
+	{
+		get
+		{
+			object temp = ViewState["ButtonType"];
+			if (temp != null)
 			{
-				if ((value < ButtonType.Button) || (value > ButtonType.Link))
-				{
-					throw new ArgumentOutOfRangeException("value");
-				}
-				object temp = ViewState["ButtonType"];
-				if ((temp == null) || (((ButtonType)temp) != value))
-				{
-					ViewState["ButtonType"] = value;
-					this.OnPropertyChanged();
-				}
+				return (ButtonType)temp;
 			}
+			return ButtonType.Link;
 		}
-
-		/// <summary>
-		/// Gets or sets the URL to an image to display for the Cancel button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[UrlProperty]
-		[DefaultValue("")]
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		public virtual string CancelImageUrl
+		set
 		{
-			get
+			if ((value < ButtonType.Button) || (value > ButtonType.Link))
 			{
-				object temp = ViewState["CancelImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				throw new ArgumentOutOfRangeException("value");
 			}
-			set
+			object temp = ViewState["ButtonType"];
+			if ((temp == null) || (((ButtonType)temp) != value))
 			{
-				if (!object.Equals(value, ViewState["CancelImageUrl"]))
-				{
-					ViewState["CancelImageUrl"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ButtonType"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the caption for the Cancel button displayed in a CommandField field.
-		/// </summary>
-		[DefaultValue(Havit.Web.UI.CommandNames.Cancel)]
-		[Category("Appearance")]
-		[Localizable(true)]
-		public virtual string CancelText
+	/// <summary>
+	/// Gets or sets the URL to an image to display for the Cancel button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[UrlProperty]
+	[DefaultValue("")]
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	public virtual string CancelImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["CancelImageUrl"];
+			if (temp != null)
 			{
-				object temp = ViewState["CancelText"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return Havit.Web.UI.CommandNames.Cancel;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["CancelImageUrl"]))
 			{
-				if (!object.Equals(value, ViewState["CancelText"]))
-				{
-					ViewState["CancelText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["CancelImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether validation is performed when the user clicks a button in a CommandField field.
-		/// </summary>
-		[DefaultValue(true)]
-		[Category("Behavior")]
-		public bool CausesValidation
+	/// <summary>
+	/// Gets or sets the caption for the Cancel button displayed in a CommandField field.
+	/// </summary>
+	[DefaultValue(Havit.Web.UI.CommandNames.Cancel)]
+	[Category("Appearance")]
+	[Localizable(true)]
+	public virtual string CancelText
+	{
+		get
 		{
-			get
+			object temp = ViewState["CancelText"];
+			if (temp != null)
 			{
-				object temp = ViewState["CausesValidation"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return true;
+				return (string)temp;
 			}
-			set
+			return Havit.Web.UI.CommandNames.Cancel;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["CancelText"]))
 			{
-				CausesValidation = value;
+				ViewState["CancelText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the style of any Web server controls contained by the DataControlField object.
-		/// </summary>
-		[Category("Styles")]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		[DefaultValue(null)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public Style ControlStyle
+	/// <summary>
+	/// Gets or sets a value indicating whether validation is performed when the user clicks a button in a CommandField field.
+	/// </summary>
+	[DefaultValue(true)]
+	[Category("Behavior")]
+	public bool CausesValidation
+	{
+		get
 		{
-			get
+			object temp = ViewState["CausesValidation"];
+			if (temp != null)
 			{
-				if (this._controlStyle == null)
-				{
-					this._controlStyle = new Style();
-					if (this._isTrackingViewState)
-					{
-						((IStateManager)this._controlStyle).TrackViewState();
-					}
-				}
-				return this._controlStyle;
+				return (bool)temp;
 			}
+			return true;
 		}
-		private Style _controlStyle;
+		set
+		{
+			CausesValidation = value;
+		}
+	}
 
-		/// <summary>
-		/// Gets or sets the URL to an image to display for a Delete button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[UrlProperty]
-		[DefaultValue("")]
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		public virtual string DeleteImageUrl
+	/// <summary>
+	/// Gets or sets the style of any Web server controls contained by the DataControlField object.
+	/// </summary>
+	[Category("Styles")]
+	[PersistenceMode(PersistenceMode.InnerProperty)]
+	[DefaultValue(null)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+	public Style ControlStyle
+	{
+		get
 		{
-			get
-			{
-				object temp = ViewState["DeleteImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
-			}
-			set
+			if (this._controlStyle == null)
 			{
-				if (!object.Equals(value, ViewState["DeleteImageUrl"]))
+				this._controlStyle = new Style();
+				if (this._isTrackingViewState)
 				{
-					ViewState["DeleteImageUrl"] = value;
-					this.OnPropertyChanged();
+					((IStateManager)this._controlStyle).TrackViewState();
 				}
 			}
+			return this._controlStyle;
 		}
+	}
+	private Style _controlStyle;
 
-		/// <summary>
-		/// Text, na který se má ptát jscript:confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue("")]
-		public virtual string DeleteConfirmationText
+	/// <summary>
+	/// Gets or sets the URL to an image to display for a Delete button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[UrlProperty]
+	[DefaultValue("")]
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	public virtual string DeleteImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["DeleteImageUrl"];
+			if (temp != null)
 			{
-				object temp = ViewState["DeleteConfirmationText"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return String.Empty;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["DeleteImageUrl"]))
 			{
-				if (!object.Equals(value, ViewState["DeleteConfirmationText"]))
-				{
-					ViewState["DeleteConfirmationText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["DeleteImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the caption for a Delete button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue(Havit.Web.UI.CommandNames.Delete)]
-		public virtual string DeleteText
+	/// <summary>
+	/// Text, na který se má ptát jscript:confirm() před smazáním záznamu. Pokud je prázdný, na nic se neptá.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue("")]
+	public virtual string DeleteConfirmationText
+	{
+		get
 		{
-			get
+			object temp = ViewState["DeleteConfirmationText"];
+			if (temp != null)
 			{
-				object obj2 = ViewState["DeleteText"];
-				if (obj2 != null)
-				{
-					return (string)obj2;
-				}
-				return Havit.Web.UI.CommandNames.Delete;
+				return (string)temp;
 			}
-			set
+			return String.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["DeleteConfirmationText"]))
 			{
-				if (!object.Equals(value, ViewState["DeleteText"]))
-				{
-					ViewState["DeleteText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["DeleteConfirmationText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the URL to an image to display for an Edit button in a CommandField field.
-		/// </summary>
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		[DefaultValue("")]
-		[Category("Appearance")]
-		[UrlProperty]
-		public virtual string EditImageUrl
+	/// <summary>
+	/// Gets or sets the caption for a Delete button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue(Havit.Web.UI.CommandNames.Delete)]
+	public virtual string DeleteText
+	{
+		get
 		{
-			get
+			object obj2 = ViewState["DeleteText"];
+			if (obj2 != null)
 			{
-				object temp = ViewState["EditImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				return (string)obj2;
 			}
-			set
+			return Havit.Web.UI.CommandNames.Delete;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["DeleteText"]))
 			{
-				if (!object.Equals(value, ViewState["EditImageUrl"]))
-				{
-					ViewState["EditImageUrl"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["DeleteText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the caption for an Edit button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue(Havit.Web.UI.CommandNames.Edit)]
-		public virtual string EditText
+	/// <summary>
+	/// Gets or sets the URL to an image to display for an Edit button in a CommandField field.
+	/// </summary>
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	[DefaultValue("")]
+	[Category("Appearance")]
+	[UrlProperty]
+	public virtual string EditImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["EditImageUrl"];
+			if (temp != null)
 			{
-				object temp = ViewState["EditText"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return Havit.Web.UI.CommandNames.Edit;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["EditImageUrl"]))
 			{
-				if (!object.Equals(value, ViewState["EditText"]))
-				{
-					ViewState["EditText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["EditImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the style of the footer of the data control field.
-		/// </summary>
-		[Localizable(true)]
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public virtual string FooterText
+	/// <summary>
+	/// Gets or sets the caption for an Edit button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue(Havit.Web.UI.CommandNames.Edit)]
+	public virtual string EditText
+	{
+		get
 		{
-			get
-			{
-				object obj2 = this.ViewState["FooterText"];
-				if (obj2 != null)
-				{
-					return (string)obj2;
-				}
-				return string.Empty;
-			}
-			set
+			object temp = ViewState["EditText"];
+			if (temp != null)
 			{
-				if (!object.Equals(value, this.ViewState["FooterText"]))
-				{
-					this.ViewState["FooterText"] = value;
-					this.OnPropertyChanged();
-				}
+				return (string)temp;
 			}
+			return Havit.Web.UI.CommandNames.Edit;
 		}
-
-		/// <summary>
-		/// Gets or sets the text that is displayed in the footer item of a data control field.
-		/// </summary>
-		[DefaultValue(null)]
-		[Category("Styles")]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public TableItemStyle FooterStyle
+		set
 		{
-			get
+			if (!object.Equals(value, ViewState["EditText"]))
 			{
-				if (this._footerStyle == null)
-				{
-					this._footerStyle = new TableItemStyle();
-					if (this._isTrackingViewState)
-					{
-						((IStateManager)this._footerStyle).TrackViewState();
-					}
-				}
-				return this._footerStyle;
+				ViewState["EditText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
-		private TableItemStyle _footerStyle;
+	}
 
-		/// <summary>
-		/// Gets or sets the URL of an image that is displayed in the header item of a data control field.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		[UrlProperty]
-		public virtual string HeaderImageUrl
+	/// <summary>
+	/// Gets or sets the style of the footer of the data control field.
+	/// </summary>
+	[Localizable(true)]
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public virtual string FooterText
+	{
+		get
 		{
-			get
+			object obj2 = this.ViewState["FooterText"];
+			if (obj2 != null)
 			{
-				object temp = this.ViewState["HeaderImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				return (string)obj2;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, this.ViewState["FooterText"]))
 			{
-				if (!object.Equals(value, this.ViewState["HeaderImageUrl"]))
-				{
-					this.ViewState["HeaderImageUrl"] = value;
-					this.OnPropertyChanged();
-				}
+				this.ViewState["FooterText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the style of the header of the data control field.
-		/// </summary>
-		[Category("Styles")]
-		[DefaultValue(null)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public TableItemStyle HeaderStyle
+	/// <summary>
+	/// Gets or sets the text that is displayed in the footer item of a data control field.
+	/// </summary>
+	[DefaultValue(null)]
+	[Category("Styles")]
+	[PersistenceMode(PersistenceMode.InnerProperty)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+	public TableItemStyle FooterStyle
+	{
+		get
 		{
-			get
+			if (this._footerStyle == null)
 			{
-				if (this._headerStyle == null)
+				this._footerStyle = new TableItemStyle();
+				if (this._isTrackingViewState)
 				{
-					this._headerStyle = new TableItemStyle();
-					if (this._isTrackingViewState)
-					{
-						((IStateManager)this._headerStyle).TrackViewState();
-					}
+					((IStateManager)this._footerStyle).TrackViewState();
 				}
-				return this._headerStyle;
 			}
+			return this._footerStyle;
 		}
-		private TableItemStyle _headerStyle;
+	}
+	private TableItemStyle _footerStyle;
 
-		/// <summary>
-		/// Gets or sets the text that is displayed in the header item of a data control field.
-		/// </summary>
-		[Localizable(true)]
-		[DefaultValue("")]
-		[Category("Appearance")]
-		public virtual string HeaderText
+	/// <summary>
+	/// Gets or sets the URL of an image that is displayed in the header item of a data control field.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	[UrlProperty]
+	public virtual string HeaderImageUrl
+	{
+		get
 		{
-			get
+			object temp = this.ViewState["HeaderImageUrl"];
+			if (temp != null)
 			{
-				object temp = this.ViewState["HeaderText"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, this.ViewState["HeaderImageUrl"]))
 			{
-				if (!object.Equals(value, this.ViewState["HeaderText"]))
-				{
-					this.ViewState["HeaderText"] = value;
-					this.OnPropertyChanged();
-				}
+				this.ViewState["HeaderImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the URL to an image to display for the Insert button in a CommandField field.
-		/// </summary>
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		[DefaultValue("")]
-		[Category("Appearance")]
-		[UrlProperty]
-		public virtual string InsertImageUrl
+	/// <summary>
+	/// Gets or sets the style of the header of the data control field.
+	/// </summary>
+	[Category("Styles")]
+	[DefaultValue(null)]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+	[PersistenceMode(PersistenceMode.InnerProperty)]
+	public TableItemStyle HeaderStyle
+	{
+		get
 		{
-			get
-			{
-				object temp = ViewState["InsertImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
-			}
-			set
+			if (this._headerStyle == null)
 			{
-				if (!object.Equals(value, ViewState["InsertImageUrl"]))
+				this._headerStyle = new TableItemStyle();
+				if (this._isTrackingViewState)
 				{
-					ViewState["InsertImageUrl"] = value;
-					this.OnPropertyChanged();
+					((IStateManager)this._headerStyle).TrackViewState();
 				}
 			}
+			return this._headerStyle;
 		}
+	}
+	private TableItemStyle _headerStyle;
 
-		/// <summary>
-		/// Gets or sets the caption for the Insert button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue(Havit.Web.UI.CommandNames.Insert)]
-		public virtual string InsertText
+	/// <summary>
+	/// Gets or sets the text that is displayed in the header item of a data control field.
+	/// </summary>
+	[Localizable(true)]
+	[DefaultValue("")]
+	[Category("Appearance")]
+	public virtual string HeaderText
+	{
+		get
 		{
-			get
-			{
-				object obj2 = ViewState["InsertText"];
-				if (obj2 != null)
-				{
-					return (string)obj2;
-				}
-				return Havit.Web.UI.CommandNames.Insert;
-			}
-			set
+			object temp = this.ViewState["HeaderText"];
+			if (temp != null)
 			{
-				if (!object.Equals(value, ViewState["InsertText"]))
-				{
-					ViewState["InsertText"] = value;
-					this.OnPropertyChanged();
-				}
+				return (string)temp;
 			}
+			return string.Empty;
 		}
-
-		/// <summary>
-		/// Gets the style of any text-based content displayed by a data control field.
-		/// </summary>
-		[DefaultValue(null)]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		[Category("Styles")]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		public TableItemStyle ItemStyle
+		set
 		{
-			get
+			if (!object.Equals(value, this.ViewState["HeaderText"]))
 			{
-				if (this._itemStyle == null)
-				{
-					this._itemStyle = new TableItemStyle();
-					if (this._isTrackingViewState)
-					{
-						((IStateManager)this._itemStyle).TrackViewState();
-					}
-				}
-				return this._itemStyle;
+				this.ViewState["HeaderText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
-		private TableItemStyle _itemStyle;
+	}
 
-		/// <summary>
-		/// Gets or sets the URL to an image to display for the New button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		[UrlProperty]
-		public virtual string NewImageUrl
+	/// <summary>
+	/// Gets or sets the URL to an image to display for the Insert button in a CommandField field.
+	/// </summary>
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	[DefaultValue("")]
+	[Category("Appearance")]
+	[UrlProperty]
+	public virtual string InsertImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["InsertImageUrl"];
+			if (temp != null)
 			{
-				object temp = ViewState["NewImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["InsertImageUrl"]))
 			{
-				if (!object.Equals(value, ViewState["NewImageUrl"]))
-				{
-					ViewState["NewImageUrl"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["InsertImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the caption for the New button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue(Havit.Web.UI.CommandNames.New)]
-		public virtual string NewText
+	/// <summary>
+	/// Gets or sets the caption for the Insert button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue(Havit.Web.UI.CommandNames.Insert)]
+	public virtual string InsertText
+	{
+		get
 		{
-			get
+			object obj2 = ViewState["InsertText"];
+			if (obj2 != null)
 			{
-				object temp = ViewState["NewText"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return Havit.Web.UI.CommandNames.New;
+				return (string)obj2;
 			}
-			set
+			return Havit.Web.UI.CommandNames.Insert;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["InsertText"]))
 			{
-				if (!object.Equals(value, ViewState["NewText"]))
-				{
-					ViewState["NewText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["InsertText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the URL to an image to display for a Select button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[UrlProperty]
-		[DefaultValue("")]
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		public virtual string SelectImageUrl
+	/// <summary>
+	/// Gets the style of any text-based content displayed by a data control field.
+	/// </summary>
+	[DefaultValue(null)]
+	[PersistenceMode(PersistenceMode.InnerProperty)]
+	[Category("Styles")]
+	[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+	public TableItemStyle ItemStyle
+	{
+		get
 		{
-			get
-			{
-				object temp = ViewState["SelectImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
-			}
-			set
+			if (this._itemStyle == null)
 			{
-				if (!object.Equals(value, ViewState["SelectImageUrl"]))
+				this._itemStyle = new TableItemStyle();
+				if (this._isTrackingViewState)
 				{
-					ViewState["SelectImageUrl"] = value;
-					this.OnPropertyChanged();
+					((IStateManager)this._itemStyle).TrackViewState();
 				}
 			}
+			return this._itemStyle;
 		}
+	}
+	private TableItemStyle _itemStyle;
 
-		/// <summary>
-		/// Gets or sets the caption for a Select button in a CommandField field.
-		/// </summary>
-		[Localizable(true)]
-		[Category("Appearance")]
-		[DefaultValue(Havit.Web.UI.CommandNames.Select)]
-		public virtual string SelectText
+	/// <summary>
+	/// Gets or sets the URL to an image to display for the New button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	[UrlProperty]
+	public virtual string NewImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["NewImageUrl"];
+			if (temp != null)
 			{
-				object obj2 = ViewState["SelectText"];
-				if (obj2 != null)
-				{
-					return (string)obj2;
-				}
-				return Havit.Web.UI.CommandNames.Select;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["NewImageUrl"]))
 			{
-				if (!object.Equals(value, ViewState["SelectText"]))
-				{
-					ViewState["SelectText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["NewImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether a Cancel button is displayed in a CommandField field.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(true)]
-		public virtual bool ShowCancelButton
+	/// <summary>
+	/// Gets or sets the caption for the New button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue(Havit.Web.UI.CommandNames.New)]
+	public virtual string NewText
+	{
+		get
 		{
-			get
+			object temp = ViewState["NewText"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowCancelButton"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return true;
+				return (string)temp;
 			}
-			set
+			return Havit.Web.UI.CommandNames.New;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["NewText"]))
 			{
-				object temp = ViewState["ShowCancelButton"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowCancelButton"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["NewText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether a Delete button is displayed in a CommandField field.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(false)]
-		public virtual bool ShowDeleteButton
+	/// <summary>
+	/// Gets or sets the URL to an image to display for a Select button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[UrlProperty]
+	[DefaultValue("")]
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	public virtual string SelectImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["SelectImageUrl"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowDeleteButton"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return false;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["SelectImageUrl"]))
 			{
-				object temp = ViewState["ShowDeleteButton"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowDeleteButton"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["SelectImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether an Edit button is displayed in a CommandField field.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(false)]
-		public virtual bool ShowEditButton
+	/// <summary>
+	/// Gets or sets the caption for a Select button in a CommandField field.
+	/// </summary>
+	[Localizable(true)]
+	[Category("Appearance")]
+	[DefaultValue(Havit.Web.UI.CommandNames.Select)]
+	public virtual string SelectText
+	{
+		get
 		{
-			get
+			object obj2 = ViewState["SelectText"];
+			if (obj2 != null)
 			{
-				object temp = ViewState["ShowEditButton"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return false;
+				return (string)obj2;
 			}
-			set
+			return Havit.Web.UI.CommandNames.Select;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["SelectText"]))
 			{
-				object temp = ViewState["ShowEditButton"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowEditButton"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["SelectText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether the header section is displayed in a ButtonFieldBase object.
-		/// </summary>
-		[DefaultValue(false)]
-		[Category("Behavior")]
-		public bool ShowHeader
+	/// <summary>
+	/// Gets or sets a value indicating whether a Cancel button is displayed in a CommandField field.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(true)]
+	public virtual bool ShowCancelButton
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowCancelButton"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowHeader"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return false;
+				return (bool)temp;
 			}
-			set
+			return true;
+		}
+		set
+		{
+			object temp = ViewState["ShowCancelButton"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				object temp = ViewState["ShowHeader"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowHeader"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowCancelButton"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether a New button is displayed in a CommandField field.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(false)]
-		public virtual bool ShowInsertButton
+	/// <summary>
+	/// Gets or sets a value indicating whether a Delete button is displayed in a CommandField field.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(false)]
+	public virtual bool ShowDeleteButton
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowDeleteButton"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowInsertButton"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return false;
+				return (bool)temp;
 			}
-			set
+			return false;
+		}
+		set
+		{
+			object temp = ViewState["ShowDeleteButton"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				object temp = ViewState["ShowInsertButton"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowInsertButton"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowDeleteButton"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(true)]
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public virtual bool ShowNewButtonForInsertByEditorExtender
+	/// <summary>
+	/// Gets or sets a value indicating whether an Edit button is displayed in a CommandField field.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(false)]
+	public virtual bool ShowEditButton
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowEditButton"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowNewButtonForInsertByEditorExtender"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return true;
+				return (bool)temp;
 			}
-			set
+			return false;
+		}
+		set
+		{
+			object temp = ViewState["ShowEditButton"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				object temp = ViewState["ShowNewButtonForInsertByEditorExtender"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowNewButtonForInsertByEditorExtender"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowEditButton"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(false)]
-		public virtual bool ShowNewButton
+	/// <summary>
+	/// Gets or sets a value indicating whether the header section is displayed in a ButtonFieldBase object.
+	/// </summary>
+	[DefaultValue(false)]
+	[Category("Behavior")]
+	public bool ShowHeader
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowHeader"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowNewButton"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return false;
+				return (bool)temp;
 			}
-			set
+			return false;
+		}
+		set
+		{
+			object temp = ViewState["ShowHeader"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				object temp = ViewState["ShowNewButton"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowNewButton"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowHeader"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether a Select button is displayed in a CommandField field.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(false)]
-		public virtual bool ShowSelectButton
+	/// <summary>
+	/// Gets or sets a value indicating whether a New button is displayed in a CommandField field.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(false)]
+	public virtual bool ShowInsertButton
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowInsertButton"];
+			if (temp != null)
 			{
-				object temp = ViewState["ShowSelectButton"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return false;
+				return (bool)temp;
 			}
-			set
+			return false;
+		}
+		set
+		{
+			object temp = ViewState["ShowInsertButton"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				object temp = ViewState["ShowSelectButton"];
-				if ((temp == null) || (((bool)temp) != value))
-				{
-					ViewState["ShowSelectButton"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowInsertButton"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the URL to an image to display for an Update button in a CommandField field.
-		/// </summary>
-		[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
-		[Category("Appearance")]
-		[DefaultValue("")]
-		[UrlProperty]
-		public virtual string UpdateImageUrl
+	/// <summary>
+	/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(true)]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public virtual bool ShowNewButtonForInsertByEditorExtender
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowNewButtonForInsertByEditorExtender"];
+			if (temp != null)
 			{
-				object temp = ViewState["UpdateImageUrl"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				return (bool)temp;
 			}
-			set
+			return true;
+		}
+		set
+		{
+			object temp = ViewState["ShowNewButtonForInsertByEditorExtender"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				if (!object.Equals(value, ViewState["UpdateImageUrl"]))
-				{
-					ViewState["UpdateImageUrl"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowNewButtonForInsertByEditorExtender"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the caption for an Update button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue(Havit.Web.UI.CommandNames.Update)]
-		public virtual string UpdateText
+	/// <summary>
+	/// Indikuje, zda má být zobrazeno tlačítko NewButton pro vkládání nového záznamu externím editorem.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(false)]
+	public virtual bool ShowNewButton
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowNewButton"];
+			if (temp != null)
 			{
-				object obj2 = ViewState["UpdateText"];
-				if (obj2 != null)
-				{
-					return (string)obj2;
-				}
-				return Havit.Web.UI.CommandNames.Update;
+				return (bool)temp;
 			}
-			set
+			return false;
+		}
+		set
+		{
+			object temp = ViewState["ShowNewButton"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				if (!object.Equals(value, ViewState["UpdateText"]))
-				{
-					ViewState["UpdateText"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowNewButton"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the name of the group of validation controls to validate when a button in a ButtonFieldBase object is clicked.
-		/// </summary>
-		[DefaultValue("")]
-		[Category("Behavior")]
-		public virtual string ValidationGroup
+	/// <summary>
+	/// Gets or sets a value indicating whether a Select button is displayed in a CommandField field.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(false)]
+	public virtual bool ShowSelectButton
+	{
+		get
 		{
-			get
+			object temp = ViewState["ShowSelectButton"];
+			if (temp != null)
 			{
-				object temp = ViewState["ValidationGroup"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return string.Empty;
+				return (bool)temp;
 			}
-			set
+			return false;
+		}
+		set
+		{
+			object temp = ViewState["ShowSelectButton"];
+			if ((temp == null) || (((bool)temp) != value))
 			{
-				if (!object.Equals(value, ViewState["ValidationGroup"]))
-				{
-					ViewState["ValidationGroup"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["ShowSelectButton"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether a data control field is rendered.
-		/// </summary>
-		[Category("Behavior")]
-		[DefaultValue(true)]
-		public bool Visible
+	/// <summary>
+	/// Gets or sets the URL to an image to display for an Update button in a CommandField field.
+	/// </summary>
+	[Editor("System.Web.UI.Design.ImageUrlEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+	[Category("Appearance")]
+	[DefaultValue("")]
+	[UrlProperty]
+	public virtual string UpdateImageUrl
+	{
+		get
 		{
-			get
+			object temp = ViewState["UpdateImageUrl"];
+			if (temp != null)
 			{
-				object temp = this.ViewState["Visible"];
-				if (temp != null)
-				{
-					return (bool)temp;
-				}
-				return true;
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["UpdateImageUrl"]))
 			{
-				object temp = this.ViewState["Visible"];
-				if ((temp == null) || (value != ((bool)temp)))
-				{
-					this.ViewState["Visible"] = value;
-					this.OnPropertyChanged();
-				}
+				ViewState["UpdateImageUrl"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Tooltip tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
-		/// </summary>
-		public string CancelTooltip
+	/// <summary>
+	/// Gets or sets the caption for an Update button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue(Havit.Web.UI.CommandNames.Update)]
+	public virtual string UpdateText
+	{
+		get
 		{
-			get
+			object obj2 = ViewState["UpdateText"];
+			if (obj2 != null)
 			{
-				return (string)(ViewState["CancelTooltip"] ?? String.Empty);
+				return (string)obj2;
 			}
-			set
+			return Havit.Web.UI.CommandNames.Update;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["UpdateText"]))
 			{
-				ViewState["CancelTooltip"] = value;
+				ViewState["UpdateText"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Tooltip tlačítka pro smazání záznamu.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string DeleteTooltip
+	/// <summary>
+	/// Gets or sets the name of the group of validation controls to validate when a button in a ButtonFieldBase object is clicked.
+	/// </summary>
+	[DefaultValue("")]
+	[Category("Behavior")]
+	public virtual string ValidationGroup
+	{
+		get
 		{
-			get
+			object temp = ViewState["ValidationGroup"];
+			if (temp != null)
 			{
-				return (string)(ViewState["DeleteTooltip"] ?? String.Empty);
+				return (string)temp;
 			}
-			set
+			return string.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["ValidationGroup"]))
 			{
-				ViewState["DeleteTooltip"] = value;
+				ViewState["ValidationGroup"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Tooltip tlačítka pro vstup do editace záznamu.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string EditTooltip
+	/// <summary>
+	/// Gets or sets a value indicating whether a data control field is rendered.
+	/// </summary>
+	[Category("Behavior")]
+	[DefaultValue(true)]
+	public bool Visible
+	{
+		get
 		{
-			get
+			object temp = this.ViewState["Visible"];
+			if (temp != null)
 			{
-				return (string)(ViewState["EditTooltip"] ?? String.Empty);
+				return (bool)temp;
 			}
-			set
+			return true;
+		}
+		set
+		{
+			object temp = this.ViewState["Visible"];
+			if ((temp == null) || (value != ((bool)temp)))
 			{
-				ViewState["EditTooltip"] = value;
+				this.ViewState["Visible"] = value;
+				this.OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Tooltip tlačítka pro vložení nového záznamu.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string InsertTooltip
+	/// <summary>
+	/// Tooltip tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel).
+	/// </summary>
+	public string CancelTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["InsertTooltip"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["InsertTooltip"] = value;
-			}
+			return (string)(ViewState["CancelTooltip"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["CancelTooltip"] = value;
 		}
+	}
 
-		/// <summary>
-		/// Tooltip tlačítka pro vložení nového záznamu.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string NewTooltip
+	/// <summary>
+	/// Tooltip tlačítka pro smazání záznamu.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string DeleteTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["NewTooltip"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["NewTooltip"] = value;
-			}
+			return (string)(ViewState["DeleteTooltip"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["DeleteTooltip"] = value;
+		}
+	}
 
-		/// <summary>
-		/// Tooltip tlačítka pro výběr řádku.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string SelectTooltip
+	/// <summary>
+	/// Tooltip tlačítka pro vstup do editace záznamu.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string EditTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["SelectTooltip"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["SelectTooltip"] = value;
-			}
+			return (string)(ViewState["EditTooltip"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["EditTooltip"] = value;
+		}
+	}
 
-		/// <summary>
-		/// Tooltip  tlačítka pro potvrzení úpravy záznamu.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string UpdateTooltip
+	/// <summary>
+	/// Tooltip tlačítka pro vložení nového záznamu.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string InsertTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["UpdateTooltip"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["UpdateTooltip"] = value;
-			}
+			return (string)(ViewState["InsertTooltip"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["InsertTooltip"] = value;
+		}
+	}
 
-		/// <summary>
-		/// CssClass povoleného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota vlastnosti CancelDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
-		/// </summary>
-		public string CancelCssClass
+	/// <summary>
+	/// Tooltip tlačítka pro vložení nového záznamu.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string NewTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["CancelCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["CancelCssClass"] = value;
-			}
+			return (string)(ViewState["NewTooltip"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["NewTooltip"] = value;
+		}
+	}
 
-		/// <summary>
-		/// CssClass zakázaného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota prázdná, použije se vlastnost CancelCssClass i pro zakázané tlačítko.
-		/// </summary>
-		public string CancelDisabledCssClass
+	/// <summary>
+	/// Tooltip tlačítka pro výběr řádku.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string SelectTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["CancelDisabledCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["CancelDisabledCssClass"] = value;
-			}
+			return (string)(ViewState["SelectTooltip"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["SelectTooltip"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass povoleného tlačítka pro smazání záznamu. Je-li hodnota vlastnosti DeleteDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string DeleteCssClass
+	/// <summary>
+	/// Tooltip  tlačítka pro potvrzení úpravy záznamu.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string UpdateTooltip
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["DeleteCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["DeleteCssClass"] = value;
-			}
+			return (string)(ViewState["UpdateTooltip"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["UpdateTooltip"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass zakázaného tlačítka pro smazání záznamu. Je-li hodnota prázdná, použije se vlastnost DeleteCssClass i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string DeleteDisabledCssClass
+	/// <summary>
+	/// CssClass povoleného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota vlastnosti CancelDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+	/// </summary>
+	public string CancelCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["DeleteDisabledCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["DeleteDisabledCssClass"] = value;
-			}
+			return (string)(ViewState["CancelCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["CancelCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass povolené tlačítka pro vstup do editace záznamu. Je-li hodnota vlastnosti EditDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string EditCssClass
+	/// <summary>
+	/// CssClass zakázaného tlačítka pro zrušení editačního režimu bez úpravy záznamu (cancel). Je-li hodnota prázdná, použije se vlastnost CancelCssClass i pro zakázané tlačítko.
+	/// </summary>
+	public string CancelDisabledCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["EditCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["EditCssClass"] = value;
-			}
+			return (string)(ViewState["CancelDisabledCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["CancelDisabledCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass zakázané tlačítka pro vstup do editace záznamu. Je-li hodnota prázdná, použije se vlastnost EditCssClass i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string EditDisabledCssClass
+	/// <summary>
+	/// CssClass povoleného tlačítka pro smazání záznamu. Je-li hodnota vlastnosti DeleteDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string DeleteCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["EditDisabledCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["EditDisabledCssClass"] = value;
-			}
+			return (string)(ViewState["DeleteCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["DeleteCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass povoleného tlačítka pro vložení nového záznamu. Je-li hodnota vlastnosti InsertDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string InsertCssClass
+	/// <summary>
+	/// CssClass zakázaného tlačítka pro smazání záznamu. Je-li hodnota prázdná, použije se vlastnost DeleteCssClass i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string DeleteDisabledCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["InsertCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["InsertCssClass"] = value;
-			}
+			return (string)(ViewState["DeleteDisabledCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["DeleteDisabledCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass zakázaného tlačítka pro vložení nového záznamu. Je-li hodnota prázdná, použije se vlastnost InsertCssClass i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string InsertDisabledCssClass
+	/// <summary>
+	/// CssClass povolené tlačítka pro vstup do editace záznamu. Je-li hodnota vlastnosti EditDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string EditCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["InsertDisabledCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["InsertDisabledCssClass"] = value;
-			}
+			return (string)(ViewState["EditCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["EditCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass povoleného tlačítka pro výběr řádku. Je-li hodnota vlastnosti SelectDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string SelectCssClass
+	/// <summary>
+	/// CssClass zakázané tlačítka pro vstup do editace záznamu. Je-li hodnota prázdná, použije se vlastnost EditCssClass i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string EditDisabledCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["SelectCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["SelectCssClass"] = value;
-			}
+			return (string)(ViewState["EditDisabledCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["EditDisabledCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// CssClass zakázaného tlačítka pro výběr řádku. Je-li hodnota prázdná, použije se vlastnost SelectCssClass i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string SelectDisabledCssClass
+	/// <summary>
+	/// CssClass povoleného tlačítka pro vložení nového záznamu. Je-li hodnota vlastnosti InsertDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string InsertCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["SelectDisabledCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["SelectDisabledCssClass"] = value;
-			}
+			return (string)(ViewState["InsertCssClass"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["InsertCssClass"] = value;
+		}
+	}
 
-		/// <summary>
-		/// CssClass povoleného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota vlastnosti UpdateDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string UpdateCssClass
+	/// <summary>
+	/// CssClass zakázaného tlačítka pro vložení nového záznamu. Je-li hodnota prázdná, použije se vlastnost InsertCssClass i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string InsertDisabledCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["UpdateCssClass"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["UpdateCssClass"] = value;
-			}
+			return (string)(ViewState["InsertDisabledCssClass"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["InsertDisabledCssClass"] = value;
+		}
+	}
 
-		/// <summary>
-		/// Gets or sets the CssClass for the New button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue("")]
-		public virtual string NewCssClass
+	/// <summary>
+	/// CssClass povoleného tlačítka pro výběr řádku. Je-li hodnota vlastnosti SelectDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string SelectCssClass
+	{
+		get
 		{
-			get
-			{
-				object temp = ViewState["NewCssClass"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return String.Empty;
-			}
-			set
-			{
-				if (!object.Equals(value, ViewState["NewCssClass"]))
-				{
-					ViewState["NewCssClass"] = value;
-					OnPropertyChanged();
-				}
-			}
+			return (string)(ViewState["SelectCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["SelectCssClass"] = value;
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the CssClass for the disabed New button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue("")]
-		public virtual string NewDisabledCssClass
+	/// <summary>
+	/// CssClass zakázaného tlačítka pro výběr řádku. Je-li hodnota prázdná, použije se vlastnost SelectCssClass i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string SelectDisabledCssClass
+	{
+		get
 		{
-			get
+			return (string)(ViewState["SelectDisabledCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["SelectDisabledCssClass"] = value;
+		}
+	}
+
+	/// <summary>
+	/// CssClass povoleného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota vlastnosti UpdateDisabledCssClass prázdná, použije se i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string UpdateCssClass
+	{
+		get
+		{
+			return (string)(ViewState["UpdateCssClass"] ?? String.Empty);
+		}
+		set
+		{
+			ViewState["UpdateCssClass"] = value;
+		}
+	}
+
+	/// <summary>
+	/// Gets or sets the CssClass for the New button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue("")]
+	public virtual string NewCssClass
+	{
+		get
+		{
+			object temp = ViewState["NewCssClass"];
+			if (temp != null)
 			{
-				object temp = ViewState["NewDisabledCssClass"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return String.Empty;
+				return (string)temp;
 			}
-			set
+			return String.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["NewCssClass"]))
 			{
-				if (!object.Equals(value, ViewState["NewDisabledCssClass"]))
-				{
-					ViewState["NewDisabledCssClass"] = value;
-					OnPropertyChanged();
-				}
+				ViewState["NewCssClass"] = value;
+				OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the CssClass for the header cell with new button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue("")]
-		public virtual string HeaderNewCssClass
+	/// <summary>
+	/// Gets or sets the CssClass for the disabed New button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue("")]
+	public virtual string NewDisabledCssClass
+	{
+		get
 		{
-			get
+			object temp = ViewState["NewDisabledCssClass"];
+			if (temp != null)
 			{
-				object temp = ViewState["HeaderNewCssClass"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return String.Empty;
+				return (string)temp;
 			}
-			set
+			return String.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["NewDisabledCssClass"]))
 			{
-				if (!object.Equals(value, ViewState["HeaderNewCssClass"]))
-				{
-					ViewState["HeaderNewCssClass"] = value;
-					OnPropertyChanged();
-				}
+				ViewState["NewDisabledCssClass"] = value;
+				OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// Gets or sets the CssClass for the header cell with a disabled new button in a CommandField field.
-		/// </summary>
-		[Category("Appearance")]
-		[Localizable(true)]
-		[DefaultValue("")]
-		public virtual string HeaderNewDisabledCssClass
+	/// <summary>
+	/// Gets or sets the CssClass for the header cell with new button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue("")]
+	public virtual string HeaderNewCssClass
+	{
+		get
 		{
-			get
+			object temp = ViewState["HeaderNewCssClass"];
+			if (temp != null)
 			{
-				object temp = ViewState["HeaderNewDisabledCssClass"];
-				if (temp != null)
-				{
-					return (string)temp;
-				}
-				return String.Empty;
+				return (string)temp;
 			}
-			set
+			return String.Empty;
+		}
+		set
+		{
+			if (!object.Equals(value, ViewState["HeaderNewCssClass"]))
 			{
-				if (!object.Equals(value, ViewState["HeaderNewDisabledCssClass"]))
-				{
-					ViewState["HeaderNewDisabledCssClass"] = value;
-					OnPropertyChanged();
-				}
+				ViewState["HeaderNewCssClass"] = value;
+				OnPropertyChanged();
 			}
 		}
+	}
 
-		/// <summary>
-		/// CssClass zakázaného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota prázdná, použije se vlastnost UpdateCssClass i pro zakázané tlačítko.
-		/// </summary>
-		[Category("Appearance")]
-		[DefaultValue("")]
-		public string UpdateDisabledCssClass
+	/// <summary>
+	/// Gets or sets the CssClass for the header cell with a disabled new button in a CommandField field.
+	/// </summary>
+	[Category("Appearance")]
+	[Localizable(true)]
+	[DefaultValue("")]
+	public virtual string HeaderNewDisabledCssClass
+	{
+		get
 		{
-			get
+			object temp = ViewState["HeaderNewDisabledCssClass"];
+			if (temp != null)
 			{
-				return (string)(ViewState["UpdateDisabledCssClass"] ?? String.Empty);
+				return (string)temp;
 			}
-			set
-			{
-				ViewState["UpdateDisabledCssClass"] = value;
-			}
+			return String.Empty;
 		}
-
-		/// <summary>
-		/// ViewState pro ukládání hodnot.
-		/// </summary>
-		internal StateBag ViewState
+		set
 		{
-			get
+			if (!object.Equals(value, ViewState["HeaderNewDisabledCssClass"]))
 			{
-				return this._viewState;
+				ViewState["HeaderNewDisabledCssClass"] = value;
+				OnPropertyChanged();
 			}
 		}
-		private readonly StateBag _viewState;
+	}
 
-		/// <summary>
-		/// Událost, která se zavolá při změně některé property.
-		/// </summary>
-		public event EventHandler PropertyChanged;
-
-		/// <summary>
-		/// Vytvoří instanci.
-		/// </summary>
-		public CommandFieldStyle()
+	/// <summary>
+	/// CssClass zakázaného tlačítka pro potvrzení úpravy záznamu. Je-li hodnota prázdná, použije se vlastnost UpdateCssClass i pro zakázané tlačítko.
+	/// </summary>
+	[Category("Appearance")]
+	[DefaultValue("")]
+	public string UpdateDisabledCssClass
+	{
+		get
 		{
-			this._viewState = new StateBag();
+			return (string)(ViewState["UpdateDisabledCssClass"] ?? String.Empty);
 		}
-
-		/// <summary>
-		/// Zajišťuje spuštění události <see cref="PropertyChanged"/>.
-		/// </summary>
-		protected void OnPropertyChanged()
+		set
 		{
-			if (this.PropertyChanged != null)
-			{
-				this.PropertyChanged(this, EventArgs.Empty);
-			}
+			ViewState["UpdateDisabledCssClass"] = value;
 		}
+	}
 
-		bool IStateManager.IsTrackingViewState
+	/// <summary>
+	/// ViewState pro ukládání hodnot.
+	/// </summary>
+	internal StateBag ViewState
+	{
+		get
 		{
-			get
-			{
-				return this._isTrackingViewState;
-			}
+			return this._viewState;
 		}
-		private bool _isTrackingViewState;
+	}
+	private readonly StateBag _viewState;
 
-		void IStateManager.LoadViewState(object savedState)
-		{
-			if (savedState != null)
-			{
-				object[] objArray = (object[])savedState;
-				if (objArray[0] != null)
-				{
-					((IStateManager)this.ViewState).LoadViewState(objArray[0]);
-				}
-				if (objArray[1] != null)
-				{
-					((IStateManager)this.ItemStyle).LoadViewState(objArray[1]);
-				}
-				if (objArray[2] != null)
-				{
-					((IStateManager)this.HeaderStyle).LoadViewState(objArray[2]);
-				}
-				if (objArray[3] != null)
-				{
-					((IStateManager)this.FooterStyle).LoadViewState(objArray[3]);
-				}
+	/// <summary>
+	/// Událost, která se zavolá při změně některé property.
+	/// </summary>
+	public event EventHandler PropertyChanged;
 
-				// tohle není v .NET Frameworku !?
-				if (objArray[4] != null)
-				{
-					((IStateManager)this.ControlStyle).LoadViewState(objArray[4]);
-				}
-			}
+	/// <summary>
+	/// Vytvoří instanci.
+	/// </summary>
+	public CommandFieldStyle()
+	{
+		this._viewState = new StateBag();
+	}
+
+	/// <summary>
+	/// Zajišťuje spuštění události <see cref="PropertyChanged"/>.
+	/// </summary>
+	protected void OnPropertyChanged()
+	{
+		if (this.PropertyChanged != null)
+		{
+			this.PropertyChanged(this, EventArgs.Empty);
 		}
+	}
 
-		object IStateManager.SaveViewState()
+	bool IStateManager.IsTrackingViewState
+	{
+		get
 		{
-			object obj0 = ((IStateManager)this.ViewState).SaveViewState();
-			object obj1 = (this._itemStyle != null) ? ((IStateManager)this._itemStyle).SaveViewState() : null;
-			object obj2 = (this._headerStyle != null) ? ((IStateManager)this._headerStyle).SaveViewState() : null;
-			object obj3 = (this._footerStyle != null) ? ((IStateManager)this._footerStyle).SaveViewState() : null;
-			object obj4 = (this._controlStyle != null) ? ((IStateManager)this._controlStyle).SaveViewState() : null;
-			if (((obj0 == null) && (obj1 == null)) && (((obj2 == null) && (obj3 == null)) && (obj4 == null)))
-			{
-				return null;
-			}
-			return new object[] { obj0, obj1, obj2, obj3, obj4 };
+			return this._isTrackingViewState;
 		}
+	}
+	private bool _isTrackingViewState;
 
-		void IStateManager.TrackViewState()
+	void IStateManager.LoadViewState(object savedState)
+	{
+		if (savedState != null)
 		{
-			this._isTrackingViewState = true;
-			((IStateManager)this.ViewState).TrackViewState();
-			if (this._itemStyle != null)
+			object[] objArray = (object[])savedState;
+			if (objArray[0] != null)
 			{
-				((IStateManager)this._itemStyle).TrackViewState();
+				((IStateManager)this.ViewState).LoadViewState(objArray[0]);
 			}
-			if (this._headerStyle != null)
+			if (objArray[1] != null)
 			{
-				((IStateManager)this._headerStyle).TrackViewState();
+				((IStateManager)this.ItemStyle).LoadViewState(objArray[1]);
 			}
-			if (this._footerStyle != null)
+			if (objArray[2] != null)
 			{
-				((IStateManager)this._footerStyle).TrackViewState();
+				((IStateManager)this.HeaderStyle).LoadViewState(objArray[2]);
 			}
-			if (this._controlStyle != null)
+			if (objArray[3] != null)
+			{
+				((IStateManager)this.FooterStyle).LoadViewState(objArray[3]);
+			}
+
+			// tohle není v .NET Frameworku !?
+			if (objArray[4] != null)
 			{
-				((IStateManager)this._controlStyle).TrackViewState();
+				((IStateManager)this.ControlStyle).LoadViewState(objArray[4]);
 			}
+		}
+	}
+
+	object IStateManager.SaveViewState()
+	{
+		object obj0 = ((IStateManager)this.ViewState).SaveViewState();
+		object obj1 = (this._itemStyle != null) ? ((IStateManager)this._itemStyle).SaveViewState() : null;
+		object obj2 = (this._headerStyle != null) ? ((IStateManager)this._headerStyle).SaveViewState() : null;
+		object obj3 = (this._footerStyle != null) ? ((IStateManager)this._footerStyle).SaveViewState() : null;
+		object obj4 = (this._controlStyle != null) ? ((IStateManager)this._controlStyle).SaveViewState() : null;
+		if (((obj0 == null) && (obj1 == null)) && (((obj2 == null) && (obj3 == null)) && (obj4 == null)))
+		{
+			return null;
+		}
+		return new object[] { obj0, obj1, obj2, obj3, obj4 };
+	}
+
+	void IStateManager.TrackViewState()
+	{
+		this._isTrackingViewState = true;
+		((IStateManager)this.ViewState).TrackViewState();
+		if (this._itemStyle != null)
+		{
+			((IStateManager)this._itemStyle).TrackViewState();
+		}
+		if (this._headerStyle != null)
+		{
+			((IStateManager)this._headerStyle).TrackViewState();
+		}
+		if (this._footerStyle != null)
+		{
+			((IStateManager)this._footerStyle).TrackViewState();
+		}
+		if (this._controlStyle != null)
+		{
+			((IStateManager)this._controlStyle).TrackViewState();
 		}
 	}
 }

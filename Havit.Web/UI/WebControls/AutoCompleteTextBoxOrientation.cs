@@ -4,26 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Orientace nabídky našeptávače
+/// </summary>
+public enum AutoCompleteTextBoxOrientation
 {
 	/// <summary>
-	/// Orientace nabídky našeptávače
+	/// Automaticky - směrem ke středu obrazovky
 	/// </summary>
-	public enum AutoCompleteTextBoxOrientation
-	{
-		/// <summary>
-		/// Automaticky - směrem ke středu obrazovky
-		/// </summary>
-		Auto,
+	Auto,
 
-		/// <summary>
-		/// Vzhůru
-		/// </summary>
-		Top,
+	/// <summary>
+	/// Vzhůru
+	/// </summary>
+	Top,
 
-		/// <summary>
-		/// Dolů
-		/// </summary>
-		Bottom
-	}
+	/// <summary>
+	/// Dolů
+	/// </summary>
+	Bottom
 }

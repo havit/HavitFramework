@@ -7,50 +7,49 @@ using Havit.Web.UI.WebControls;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 
-namespace Havit.Web.UI.WebControls.ControlsValues
+namespace Havit.Web.UI.WebControls.ControlsValues;
+
+/// <summary>
+/// IPersisterControlExtender pro EnumDropDownList.
+/// </summary>
+internal class EnumDropDownListPersisterControlExtender : IPersisterControlExtender
 {
-	/// <summary>
-	/// IPersisterControlExtender pro EnumDropDownList.
-	/// </summary>
-	internal class EnumDropDownListPersisterControlExtender : IPersisterControlExtender
+	public object GetValue(Control control)
 	{
-		public object GetValue(Control control)
-		{
-			return ((EnumDropDownList)control).SelectedEnumValue;
-		}
+		return ((EnumDropDownList)control).SelectedEnumValue;
+	}
 
-		public Type GetValueType()
-		{
-			return typeof(String);
-		}
+	public Type GetValueType()
+	{
+		return typeof(String);
+	}
 
-		public void SetValue(Control control, object value)
+	public void SetValue(Control control, object value)
+	{
+		EnumDropDownList enumDropDownList = (EnumDropDownList)control;
+		
+		enumDropDownList.ClearSelection();
+		if (value != null)
 		{
-			EnumDropDownList enumDropDownList = (EnumDropDownList)control;
-			
-			enumDropDownList.ClearSelection();
-			if (value != null)
-			{
-				enumDropDownList.SelectedEnumValue = Enum.Parse(enumDropDownList.EnumType, value.ToString());		
-			}
+			enumDropDownList.SelectedEnumValue = Enum.Parse(enumDropDownList.EnumType, value.ToString());		
 		}
+	}
 
-		public int? GetPriority(System.Web.UI.Control control)
+	public int? GetPriority(System.Web.UI.Control control)
+	{
+		if (control is EnumDropDownList)
 		{
-			if (control is EnumDropDownList)
-			{
-				return 2;
-			}
-			return null;
+			return 2;
 		}
+		return null;
+	}
 
-		/// <summary>
-		/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
-		/// Implicitně vrací false.
-		/// </summary>
-		public bool PersistsChildren(Control control)
-		{
-			return false;
-		}
+	/// <summary>
+	/// Pokud je true, ControlsValuesPersister se pokusí uložit i hodnoty child controlů.
+	/// Implicitně vrací false.
+	/// </summary>
+	public bool PersistsChildren(Control control)
+	{
+		return false;
 	}
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Web.UI.WebControls
-{
-	/// <summary>
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
     /// Typ zprávy Messengeru.
     /// </summary>
     public enum MessageType
@@ -24,4 +24,3 @@ namespace Havit.Web.UI.WebControls
         /// </summary>
         Error = 2
     }
-}

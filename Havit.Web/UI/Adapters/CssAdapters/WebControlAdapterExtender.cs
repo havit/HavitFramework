@@ -17,647 +17,646 @@ using System.Web.UI.HtmlControls;
 
 [assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssAdaptersUtils.js", "text/javascript")]
 
-namespace Havit.Web.UI.Adapters.CssAdapters
+namespace Havit.Web.UI.Adapters.CssAdapters;
+
+/// <summary>
+/// Pomocná třída pro CSS Friendly Control Adapters. 
+/// </summary>
+/// <remarks>
+/// ASP.NET 2.0 CSS Friendly Control Adapters 1.0, http://www.asp.net/CSSAdapters/, This version was last updated on 20 November 2006.
+/// </remarks>
+internal class WebControlAdapterExtender
 {
-	/// <summary>
-	/// Pomocná třída pro CSS Friendly Control Adapters. 
-	/// </summary>
-	/// <remarks>
-	/// ASP.NET 2.0 CSS Friendly Control Adapters 1.0, http://www.asp.net/CSSAdapters/, This version was last updated on 20 November 2006.
-	/// </remarks>
-	internal class WebControlAdapterExtender
+	public WebControl AdaptedControl
 	{
-		public WebControl AdaptedControl
+		get
 		{
-			get
-			{
-				System.Diagnostics.Debug.Assert(
-					_adaptedControl != null,
-					"CSS Friendly adapters internal error",
-					"No control has been defined for the adapter extender");
-				return _adaptedControl;
-			}
+			System.Diagnostics.Debug.Assert(
+				_adaptedControl != null,
+				"CSS Friendly adapters internal error",
+				"No control has been defined for the adapter extender");
+			return _adaptedControl;
 		}
-		private readonly WebControl _adaptedControl = null;
+	}
+	private readonly WebControl _adaptedControl = null;
 
-		public bool AdapterEnabled
+	public bool AdapterEnabled
+	{
+		get
 		{
-			get
+			bool bReturn = true; // normally the adapters are enabled
+
+			//  Individual controls can use the expando property called AdapterEnabled
+			//  as a way to turn the adapters off.
+			//  <asp:TreeView runat="server" AdapterEnabled="false" />
+			if ((AdaptedControl != null) && (!String.IsNullOrEmpty(AdaptedControl.Attributes["AdapterEnabled"]))
+				&& (AdaptedControl.Attributes["AdapterEnabled"].IndexOf("false", StringComparison.OrdinalIgnoreCase) == 0))
 			{
-				bool bReturn = true; // normally the adapters are enabled
-
-				//  Individual controls can use the expando property called AdapterEnabled
-				//  as a way to turn the adapters off.
-				//  <asp:TreeView runat="server" AdapterEnabled="false" />
-				if ((AdaptedControl != null) && (!String.IsNullOrEmpty(AdaptedControl.Attributes["AdapterEnabled"]))
-					&& (AdaptedControl.Attributes["AdapterEnabled"].IndexOf("false", StringComparison.OrdinalIgnoreCase) == 0))
-				{
-					bReturn = false;
-				}
-
-				return bReturn;
-			}
-		}
-
-		public bool AutoAccessKey
-		{
-			get
-			{
-				//  Individual controls can use the expando property called AdapterEnabled
-				//  as a way to turn on/off the heurisitic for automatically setting the AccessKey
-				//  attribute in the rendered HTML.  The default is shown below in the initialization
-				//  of the bReturn variable.
-				//  <asp:TreeView runat="server" AutoAccessKey="false" />
-
-				bool bReturn = true; // by default, the adapter will make access keys are available
-				if (_disableAutoAccessKey
-					||
-					((AdaptedControl != null) && (!String.IsNullOrEmpty(AdaptedControl.Attributes["AutoAccessKey"]))
-					 && (AdaptedControl.Attributes["AutoAccessKey"].IndexOf("false", StringComparison.OrdinalIgnoreCase) == 0)))
-				{
-					bReturn = false;
-				}
-
-				return bReturn;
-			}
-		}
-	
-		private bool _disableAutoAccessKey = false; // used when dealing with things like read-only textboxes that should not have access keys
-
-		public WebControlAdapterExtender(WebControl adaptedControl)
-		{
-			_adaptedControl = adaptedControl;
-		}
-
-		public void RegisterScripts()
-		{
-			_adaptedControl.Page.ClientScript.RegisterClientScriptResource(
-				typeof(WebControlAdapterExtender), "Havit.Web.UI.Adapters.CssAdapters.CssAdaptersUtils.js");
-
-			//string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
-			//if (String.IsNullOrEmpty(folderPath))
-			//{
-			//    folderPath = "~/JavaScript";
-			//}
-			//string filePath = folderPath.EndsWith("/") ? folderPath + "AdapterUtils.js" : folderPath + "/AdapterUtils.js";
-			//AdaptedControl.Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), AdaptedControl.Page.ResolveUrl(filePath));
-		}
-
-		public string ResolveUrl(string url)
-		{
-			string urlToResolve = url;
-			int nPound = url.LastIndexOf("#");
-			int nSlash = url.LastIndexOf("/");
-			if ((nPound > -1) && (nSlash > -1) && ((nSlash + 1) == nPound))
-			{
-				//  We have been given a somewhat strange URL.  It has a foreward slash (/) immediately followed
-				//  by a pound sign (#) like this xxx/#yyy.  This sort of oddly shaped URL is what you get when
-				//  you use named anchors instead of pages in the url attribute of a sitemapnode in an ASP.NET
-				//  sitemap like this:
-				//
-				//  <siteMapNode url="#Introduction" title="Introduction"  description="Introduction" />
-				//
-				//  The intend of the sitemap author is clearly to create a link to a named anchor in the page
-				//  that looks like these:
-				//
-				//  <a id="Introduction"></a>       (XHTML 1.1 Strict compliant)
-				//  <a name="Introduction"></a>     (more old fashioned but quite common in many pages)
-				//
-				//  However, the sitemap interpretter in ASP.NET doesn't understand url values that start with
-				//  a pound.  It prepends the current site's path in front of it before making it into a link
-				//  (typically for a TreeView or Menu).  We'll undo that problem, however, by converting this
-				//  sort of oddly shaped URL back into what was intended: a simple reference to a named anchor
-				//  that is expected to be within the current page.
-
-				urlToResolve = url.Substring(nPound);
-			}
-			else
-			{
-				urlToResolve = AdaptedControl.ResolveClientUrl(urlToResolve);
+				bReturn = false;
 			}
 
-			//  And, just to be safe, we'll make sure there aren't any troublesome characters in whatever URL
-			//  we have decided to use at this point.
-			string newUrl = AdaptedControl.Page.Server.HtmlEncode(urlToResolve);
-
-			return newUrl;
+			return bReturn;
 		}
+	}
 
-		public void RaiseAdaptedEvent(string eventName, EventArgs e)
+	public bool AutoAccessKey
+	{
+		get
 		{
-			string attr = "OnAdapted" + eventName;
-			if ((AdaptedControl != null) && (!String.IsNullOrEmpty(AdaptedControl.Attributes[attr])))
-			{
-				string delegateName = AdaptedControl.Attributes[attr];
-				Control methodOwner = AdaptedControl.Parent;
-				MethodInfo method = methodOwner.GetType().GetMethod(delegateName);
-				if (method == null)
-				{
-					methodOwner = AdaptedControl.Page;
-					method = methodOwner.GetType().GetMethod(delegateName);
-				}
-				if (method != null)
-				{
-					object[] args = new object[2];
-					args[0] = AdaptedControl;
-					args[1] = e;
-					method.Invoke(methodOwner, args);
-				}
-			}
-		}
+			//  Individual controls can use the expando property called AdapterEnabled
+			//  as a way to turn on/off the heurisitic for automatically setting the AccessKey
+			//  attribute in the rendered HTML.  The default is shown below in the initialization
+			//  of the bReturn variable.
+			//  <asp:TreeView runat="server" AutoAccessKey="false" />
 
-		public void RenderBeginTag(HtmlTextWriter writer, string cssClass)
-		{
-			string id = (AdaptedControl != null) ? AdaptedControl.ClientID : "";
-
-			if (!String.IsNullOrEmpty(AdaptedControl.Attributes["CssSelectorClass"]))
+			bool bReturn = true; // by default, the adapter will make access keys are available
+			if (_disableAutoAccessKey
+				||
+				((AdaptedControl != null) && (!String.IsNullOrEmpty(AdaptedControl.Attributes["AutoAccessKey"]))
+				 && (AdaptedControl.Attributes["AutoAccessKey"].IndexOf("false", StringComparison.OrdinalIgnoreCase) == 0)))
 			{
-				WriteBeginDiv(writer, AdaptedControl.Attributes["CssSelectorClass"], id);
-				id = "";
+				bReturn = false;
 			}
 
-			WriteBeginDiv(writer, cssClass, id);
+			return bReturn;
+		}
+	}
+
+	private bool _disableAutoAccessKey = false; // used when dealing with things like read-only textboxes that should not have access keys
+
+	public WebControlAdapterExtender(WebControl adaptedControl)
+	{
+		_adaptedControl = adaptedControl;
+	}
+
+	public void RegisterScripts()
+	{
+		_adaptedControl.Page.ClientScript.RegisterClientScriptResource(
+			typeof(WebControlAdapterExtender), "Havit.Web.UI.Adapters.CssAdapters.CssAdaptersUtils.js");
+
+		//string folderPath = WebConfigurationManager.AppSettings.Get("CSSFriendly-JavaScript-Path");
+		//if (String.IsNullOrEmpty(folderPath))
+		//{
+		//    folderPath = "~/JavaScript";
+		//}
+		//string filePath = folderPath.EndsWith("/") ? folderPath + "AdapterUtils.js" : folderPath + "/AdapterUtils.js";
+		//AdaptedControl.Page.ClientScript.RegisterClientScriptInclude(GetType(), GetType().ToString(), AdaptedControl.Page.ResolveUrl(filePath));
+	}
+
+	public string ResolveUrl(string url)
+	{
+		string urlToResolve = url;
+		int nPound = url.LastIndexOf("#");
+		int nSlash = url.LastIndexOf("/");
+		if ((nPound > -1) && (nSlash > -1) && ((nSlash + 1) == nPound))
+		{
+			//  We have been given a somewhat strange URL.  It has a foreward slash (/) immediately followed
+			//  by a pound sign (#) like this xxx/#yyy.  This sort of oddly shaped URL is what you get when
+			//  you use named anchors instead of pages in the url attribute of a sitemapnode in an ASP.NET
+			//  sitemap like this:
+			//
+			//  <siteMapNode url="#Introduction" title="Introduction"  description="Introduction" />
+			//
+			//  The intend of the sitemap author is clearly to create a link to a named anchor in the page
+			//  that looks like these:
+			//
+			//  <a id="Introduction"></a>       (XHTML 1.1 Strict compliant)
+			//  <a name="Introduction"></a>     (more old fashioned but quite common in many pages)
+			//
+			//  However, the sitemap interpretter in ASP.NET doesn't understand url values that start with
+			//  a pound.  It prepends the current site's path in front of it before making it into a link
+			//  (typically for a TreeView or Menu).  We'll undo that problem, however, by converting this
+			//  sort of oddly shaped URL back into what was intended: a simple reference to a named anchor
+			//  that is expected to be within the current page.
+
+			urlToResolve = url.Substring(nPound);
+		}
+		else
+		{
+			urlToResolve = AdaptedControl.ResolveClientUrl(urlToResolve);
 		}
 
-		public void RenderEndTag(HtmlTextWriter writer)
+		//  And, just to be safe, we'll make sure there aren't any troublesome characters in whatever URL
+		//  we have decided to use at this point.
+		string newUrl = AdaptedControl.Page.Server.HtmlEncode(urlToResolve);
+
+		return newUrl;
+	}
+
+	public void RaiseAdaptedEvent(string eventName, EventArgs e)
+	{
+		string attr = "OnAdapted" + eventName;
+		if ((AdaptedControl != null) && (!String.IsNullOrEmpty(AdaptedControl.Attributes[attr])))
+		{
+			string delegateName = AdaptedControl.Attributes[attr];
+			Control methodOwner = AdaptedControl.Parent;
+			MethodInfo method = methodOwner.GetType().GetMethod(delegateName);
+			if (method == null)
+			{
+				methodOwner = AdaptedControl.Page;
+				method = methodOwner.GetType().GetMethod(delegateName);
+			}
+			if (method != null)
+			{
+				object[] args = new object[2];
+				args[0] = AdaptedControl;
+				args[1] = e;
+				method.Invoke(methodOwner, args);
+			}
+		}
+	}
+
+	public void RenderBeginTag(HtmlTextWriter writer, string cssClass)
+	{
+		string id = (AdaptedControl != null) ? AdaptedControl.ClientID : "";
+
+		if (!String.IsNullOrEmpty(AdaptedControl.Attributes["CssSelectorClass"]))
+		{
+			WriteBeginDiv(writer, AdaptedControl.Attributes["CssSelectorClass"], id);
+			id = "";
+		}
+
+		WriteBeginDiv(writer, cssClass, id);
+	}
+
+	public void RenderEndTag(HtmlTextWriter writer)
+	{
+		WriteEndDiv(writer);
+
+		if (!String.IsNullOrEmpty(AdaptedControl.Attributes["CssSelectorClass"]))
 		{
 			WriteEndDiv(writer);
+		}
+	}
 
-			if (!String.IsNullOrEmpty(AdaptedControl.Attributes["CssSelectorClass"]))
+	public static void RemoveProblemChildren(Control ctrl, List<ControlRestorationInfo> stashedControls)
+	{
+		RemoveProblemTypes(ctrl.Controls, stashedControls);
+	}
+
+	[SuppressMessage("SonarLint", "S2219", Justification = "Převzatý kód, nechci do něj zasahovat.")]
+	public static void RemoveProblemTypes(ControlCollection coll, List<ControlRestorationInfo> stashedControls)
+	{
+		foreach (Control ctrl in coll)
+		{
+			if (typeof(RequiredFieldValidator).IsInstanceOfType(ctrl)
+				|| typeof(CompareValidator).IsInstanceOfType(ctrl)
+				|| typeof(RegularExpressionValidator).IsInstanceOfType(ctrl)
+				|| typeof(ValidationSummary).IsInstanceOfType(ctrl))
 			{
-				WriteEndDiv(writer);
+				ControlRestorationInfo cri = new ControlRestorationInfo(ctrl, coll);
+				stashedControls.Add(cri);
+				coll.Remove(ctrl);
+				continue;
+			}
+
+			if (ctrl.HasControls())
+			{
+				RemoveProblemTypes(ctrl.Controls, stashedControls);
 			}
 		}
+	}
 
-		public static void RemoveProblemChildren(Control ctrl, List<ControlRestorationInfo> stashedControls)
+	public static void RestoreProblemChildren(List<ControlRestorationInfo> stashedControls)
+	{
+		foreach (ControlRestorationInfo cri in stashedControls)
 		{
-			RemoveProblemTypes(ctrl.Controls, stashedControls);
+			cri.Restore();
 		}
+	}
 
-		[SuppressMessage("SonarLint", "S2219", Justification = "Převzatý kód, nechci do něj zasahovat.")]
-		public static void RemoveProblemTypes(ControlCollection coll, List<ControlRestorationInfo> stashedControls)
+	public string MakeChildId(string postfix)
+	{
+		return AdaptedControl.ClientID + "_" + postfix;
+	}
+
+	public static string MakeNameFromId(string id)
+	{
+		string name = "";
+		for (int i = 0; i < id.Length; i++)
 		{
-			foreach (Control ctrl in coll)
+			char thisChar = id[i];
+			char prevChar = ((i - 1) > -1) ? id[i - 1] : ' ';
+			char nextChar = ((i + 1) < id.Length) ? id[i + 1] : ' ';
+			if (thisChar == '_')
 			{
-				if (typeof(RequiredFieldValidator).IsInstanceOfType(ctrl)
-					|| typeof(CompareValidator).IsInstanceOfType(ctrl)
-					|| typeof(RegularExpressionValidator).IsInstanceOfType(ctrl)
-					|| typeof(ValidationSummary).IsInstanceOfType(ctrl))
+				if (prevChar == '_')
 				{
-					ControlRestorationInfo cri = new ControlRestorationInfo(ctrl, coll);
-					stashedControls.Add(cri);
-					coll.Remove(ctrl);
-					continue;
+					name += "_";
 				}
-
-				if (ctrl.HasControls())
+				else if (nextChar == '_')
 				{
-					RemoveProblemTypes(ctrl.Controls, stashedControls);
-				}
-			}
-		}
-
-		public static void RestoreProblemChildren(List<ControlRestorationInfo> stashedControls)
-		{
-			foreach (ControlRestorationInfo cri in stashedControls)
-			{
-				cri.Restore();
-			}
-		}
-
-		public string MakeChildId(string postfix)
-		{
-			return AdaptedControl.ClientID + "_" + postfix;
-		}
-
-		public static string MakeNameFromId(string id)
-		{
-			string name = "";
-			for (int i = 0; i < id.Length; i++)
-			{
-				char thisChar = id[i];
-				char prevChar = ((i - 1) > -1) ? id[i - 1] : ' ';
-				char nextChar = ((i + 1) < id.Length) ? id[i + 1] : ' ';
-				if (thisChar == '_')
-				{
-					if (prevChar == '_')
-					{
-						name += "_";
-					}
-					else if (nextChar == '_')
-					{
-						name += "$_";
-					}
-					else
-					{
-						name += "$";
-					}
+					name += "$_";
 				}
 				else
 				{
-					name += thisChar;
+					name += "$";
 				}
 			}
-			return name;
-		}
-
-		public static string MakeIdWithButtonType(string id, ButtonType type)
-		{
-			string idWithType = id;
-			switch (type)
+			else
 			{
-				case ButtonType.Button:
-					idWithType += "Button";
-					break;
-				case ButtonType.Image:
-					idWithType += "ImageButton";
-					break;
-				case ButtonType.Link:
-					idWithType += "LinkButton";
-					break;
-				default:
-					throw new NotSupportedException($"{type} not supported.");
+				name += thisChar;
 			}
-			return idWithType;
 		}
+		return name;
+	}
 
-		public string MakeChildName(string postfix)
+	public static string MakeIdWithButtonType(string id, ButtonType type)
+	{
+		string idWithType = id;
+		switch (type)
 		{
-			return MakeNameFromId(MakeChildId(postfix));
+			case ButtonType.Button:
+				idWithType += "Button";
+				break;
+			case ButtonType.Image:
+				idWithType += "ImageButton";
+				break;
+			case ButtonType.Link:
+				idWithType += "LinkButton";
+				break;
+			default:
+				throw new NotSupportedException($"{type} not supported.");
 		}
+		return idWithType;
+	}
 
-		public static void WriteBeginDiv(HtmlTextWriter writer, string className, string id)
+	public string MakeChildName(string postfix)
+	{
+		return MakeNameFromId(MakeChildId(postfix));
+	}
+
+	public static void WriteBeginDiv(HtmlTextWriter writer, string className, string id)
+	{
+		writer.WriteLine();
+		writer.WriteBeginTag("div");
+		if (!String.IsNullOrEmpty(className))
+		{
+			writer.WriteAttribute("class", className);
+		}
+		if (!String.IsNullOrEmpty(id))
+		{
+			writer.WriteAttribute("id", id);
+		}
+		writer.Write(HtmlTextWriter.TagRightChar);
+		writer.Indent++;
+	}
+
+	public static void WriteEndDiv(HtmlTextWriter writer)
+	{
+		writer.Indent--;
+		writer.WriteLine();
+		writer.WriteEndTag("div");
+	}
+
+	public static void WriteSpan(HtmlTextWriter writer, string className, string content)
+	{
+		if (!String.IsNullOrEmpty(content))
 		{
 			writer.WriteLine();
-			writer.WriteBeginTag("div");
+			writer.WriteBeginTag("span");
 			if (!String.IsNullOrEmpty(className))
 			{
 				writer.WriteAttribute("class", className);
 			}
-			if (!String.IsNullOrEmpty(id))
+			writer.Write(HtmlTextWriter.TagRightChar);
+			writer.Write(content);
+			writer.WriteEndTag("span");
+		}
+	}
+
+	public static void WriteImage(HtmlTextWriter writer, string url, string alt)
+	{
+		if (!String.IsNullOrEmpty(url))
+		{
+			writer.WriteLine();
+			writer.WriteBeginTag("img");
+			writer.WriteAttribute("src", url);
+			writer.WriteAttribute("alt", alt);
+			writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+		}
+	}
+
+	public static void WriteLink(HtmlTextWriter writer, string className, string url, string title, string content)
+	{
+		if ((!String.IsNullOrEmpty(url)) && (!String.IsNullOrEmpty(content)))
+		{
+			writer.WriteLine();
+			writer.WriteBeginTag("a");
+			if (!String.IsNullOrEmpty(className))
 			{
-				writer.WriteAttribute("id", id);
+				writer.WriteAttribute("class", className);
+			}
+			writer.WriteAttribute("href", url);
+			writer.WriteAttribute("title", title);
+			writer.Write(HtmlTextWriter.TagRightChar);
+			writer.Write(content);
+			writer.WriteEndTag("a");
+		}
+	}
+
+	//  Can't be static because it uses MakeChildId
+	public void WriteLabel(HtmlTextWriter writer, string className, string text, string forId)
+	{
+		if (!String.IsNullOrEmpty(text))
+		{
+			writer.WriteLine();
+			writer.WriteBeginTag("label");
+			writer.WriteAttribute("for", MakeChildId(forId));
+			if (!String.IsNullOrEmpty(className))
+			{
+				writer.WriteAttribute("class", className);
 			}
 			writer.Write(HtmlTextWriter.TagRightChar);
-			writer.Indent++;
-		}
 
-		public static void WriteEndDiv(HtmlTextWriter writer)
-		{
-			writer.Indent--;
-			writer.WriteLine();
-			writer.WriteEndTag("div");
-		}
-
-		public static void WriteSpan(HtmlTextWriter writer, string className, string content)
-		{
-			if (!String.IsNullOrEmpty(content))
+			if (AutoAccessKey)
 			{
-				writer.WriteLine();
-				writer.WriteBeginTag("span");
-				if (!String.IsNullOrEmpty(className))
-				{
-					writer.WriteAttribute("class", className);
-				}
+				writer.WriteBeginTag("em");
 				writer.Write(HtmlTextWriter.TagRightChar);
-				writer.Write(content);
-				writer.WriteEndTag("span");
+				writer.Write(text[0].ToString());
+				writer.WriteEndTag("em");
+				if (!String.IsNullOrEmpty(text))
+				{
+					writer.Write(text.Substring(1));
+				}
 			}
+			else
+			{
+				writer.Write(text);
+			}
+
+			writer.WriteEndTag("label");
+		}
+	}
+
+	//  Can't be static because it uses MakeChildId
+	public void WriteTextBox(
+		HtmlTextWriter writer,
+		bool isPassword,
+		string labelClassName,
+		string labelText,
+		string inputClassName,
+		string id,
+		string value)
+	{
+		WriteLabel(writer, labelClassName, labelText, id);
+
+		writer.WriteLine();
+		writer.WriteBeginTag("input");
+		writer.WriteAttribute("type", isPassword ? "password" : "text");
+		if (!String.IsNullOrEmpty(inputClassName))
+		{
+			writer.WriteAttribute("class", inputClassName);
+		}
+		writer.WriteAttribute("id", MakeChildId(id));
+		writer.WriteAttribute("name", MakeChildName(id));
+		writer.WriteAttribute("value", value);
+		if (AutoAccessKey && (!String.IsNullOrEmpty(labelText)))
+		{
+			writer.WriteAttribute("accesskey", labelText[0].ToString().ToLower());
 		}
 
-		public static void WriteImage(HtmlTextWriter writer, string url, string alt)
-		{
-			if (!String.IsNullOrEmpty(url))
-			{
-				writer.WriteLine();
-				writer.WriteBeginTag("img");
-				writer.WriteAttribute("src", url);
-				writer.WriteAttribute("alt", alt);
-				writer.Write(HtmlTextWriter.SelfClosingTagEnd);
-			}
-		}
+		writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+	}
 
-		public static void WriteLink(HtmlTextWriter writer, string className, string url, string title, string content)
+	//  Can't be static because it uses MakeChildId
+	public void WriteReadOnlyTextBox(
+		HtmlTextWriter writer, string labelClassName, string labelText, string inputClassName, string value)
+	{
+		bool oldDisableAutoAccessKey = _disableAutoAccessKey;
+		_disableAutoAccessKey = true;
+
+		WriteLabel(writer, labelClassName, labelText, "");
+
+		writer.WriteLine();
+		writer.WriteBeginTag("input");
+		writer.WriteAttribute("readonly", "readonly");
+		if (!String.IsNullOrEmpty(inputClassName))
 		{
-			if ((!String.IsNullOrEmpty(url)) && (!String.IsNullOrEmpty(content)))
-			{
-				writer.WriteLine();
+			writer.WriteAttribute("class", inputClassName);
+		}
+		writer.WriteAttribute("value", value);
+		writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+
+		_disableAutoAccessKey = oldDisableAutoAccessKey;
+	}
+
+	//  Can't be static because it uses MakeChildId
+	public void WriteCheckBox(
+		HtmlTextWriter writer, string labelClassName, string labelText, string inputClassName, string id, bool isChecked)
+	{
+		writer.WriteLine();
+		writer.WriteBeginTag("input");
+		writer.WriteAttribute("type", "checkbox");
+		if (!String.IsNullOrEmpty(inputClassName))
+		{
+			writer.WriteAttribute("class", inputClassName);
+		}
+		writer.WriteAttribute("id", MakeChildId(id));
+		writer.WriteAttribute("name", MakeChildName(id));
+		if (isChecked)
+		{
+			writer.WriteAttribute("checked", "checked");
+		}
+		if (AutoAccessKey && (!String.IsNullOrEmpty(labelText)))
+		{
+			writer.WriteAttribute("accesskey", labelText[0].ToString());
+		}
+		writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+
+		WriteLabel(writer, labelClassName, labelText, id);
+	}
+
+	//  Can't be static because it uses MakeChildId
+	public void WriteSubmit(
+		HtmlTextWriter writer,
+		ButtonType buttonType,
+		string className,
+		string id,
+		string imageUrl,
+		string javascript,
+		string text)
+	{
+		writer.WriteLine();
+
+		string idWithType = id;
+
+		switch (buttonType)
+		{
+			case ButtonType.Button:
+				writer.WriteBeginTag("input");
+				writer.WriteAttribute("type", "submit");
+				writer.WriteAttribute("value", text);
+				idWithType += "Button";
+				break;
+			case ButtonType.Image:
+				writer.WriteBeginTag("input");
+				writer.WriteAttribute("type", "image");
+				writer.WriteAttribute("src", imageUrl);
+				idWithType += "ImageButton";
+				break;
+			case ButtonType.Link:
 				writer.WriteBeginTag("a");
-				if (!String.IsNullOrEmpty(className))
-				{
-					writer.WriteAttribute("class", className);
-				}
-				writer.WriteAttribute("href", url);
-				writer.WriteAttribute("title", title);
-				writer.Write(HtmlTextWriter.TagRightChar);
-				writer.Write(content);
-				writer.WriteEndTag("a");
-			}
+				idWithType += "LinkButton";
+				break;
+			default:
+				throw new NotSupportedException($"{buttonType} not supported.");
 		}
 
-		//  Can't be static because it uses MakeChildId
-		public void WriteLabel(HtmlTextWriter writer, string className, string text, string forId)
+		if (!String.IsNullOrEmpty(className))
 		{
-			if (!String.IsNullOrEmpty(text))
-			{
-				writer.WriteLine();
-				writer.WriteBeginTag("label");
-				writer.WriteAttribute("for", MakeChildId(forId));
-				if (!String.IsNullOrEmpty(className))
-				{
-					writer.WriteAttribute("class", className);
-				}
-				writer.Write(HtmlTextWriter.TagRightChar);
-
-				if (AutoAccessKey)
-				{
-					writer.WriteBeginTag("em");
-					writer.Write(HtmlTextWriter.TagRightChar);
-					writer.Write(text[0].ToString());
-					writer.WriteEndTag("em");
-					if (!String.IsNullOrEmpty(text))
-					{
-						writer.Write(text.Substring(1));
-					}
-				}
-				else
-				{
-					writer.Write(text);
-				}
-
-				writer.WriteEndTag("label");
-			}
+			writer.WriteAttribute("class", className);
 		}
+		writer.WriteAttribute("id", MakeChildId(idWithType));
+		writer.WriteAttribute("name", MakeChildName(idWithType));
 
-		//  Can't be static because it uses MakeChildId
-		public void WriteTextBox(
-			HtmlTextWriter writer,
-			bool isPassword,
-			string labelClassName,
-			string labelText,
-			string inputClassName,
-			string id,
-			string value)
+		if (!String.IsNullOrEmpty(javascript))
 		{
-			WriteLabel(writer, labelClassName, labelText, id);
-
-			writer.WriteLine();
-			writer.WriteBeginTag("input");
-			writer.WriteAttribute("type", isPassword ? "password" : "text");
-			if (!String.IsNullOrEmpty(inputClassName))
+			string pureJS = javascript;
+			if (pureJS.StartsWith("javascript:"))
 			{
-				writer.WriteAttribute("class", inputClassName);
+				pureJS = pureJS.Substring("javascript:".Length);
 			}
-			writer.WriteAttribute("id", MakeChildId(id));
-			writer.WriteAttribute("name", MakeChildName(id));
-			writer.WriteAttribute("value", value);
-			if (AutoAccessKey && (!String.IsNullOrEmpty(labelText)))
-			{
-				writer.WriteAttribute("accesskey", labelText[0].ToString().ToLower());
-			}
-
-			writer.Write(HtmlTextWriter.SelfClosingTagEnd);
-		}
-
-		//  Can't be static because it uses MakeChildId
-		public void WriteReadOnlyTextBox(
-			HtmlTextWriter writer, string labelClassName, string labelText, string inputClassName, string value)
-		{
-			bool oldDisableAutoAccessKey = _disableAutoAccessKey;
-			_disableAutoAccessKey = true;
-
-			WriteLabel(writer, labelClassName, labelText, "");
-
-			writer.WriteLine();
-			writer.WriteBeginTag("input");
-			writer.WriteAttribute("readonly", "readonly");
-			if (!String.IsNullOrEmpty(inputClassName))
-			{
-				writer.WriteAttribute("class", inputClassName);
-			}
-			writer.WriteAttribute("value", value);
-			writer.Write(HtmlTextWriter.SelfClosingTagEnd);
-
-			_disableAutoAccessKey = oldDisableAutoAccessKey;
-		}
-
-		//  Can't be static because it uses MakeChildId
-		public void WriteCheckBox(
-			HtmlTextWriter writer, string labelClassName, string labelText, string inputClassName, string id, bool isChecked)
-		{
-			writer.WriteLine();
-			writer.WriteBeginTag("input");
-			writer.WriteAttribute("type", "checkbox");
-			if (!String.IsNullOrEmpty(inputClassName))
-			{
-				writer.WriteAttribute("class", inputClassName);
-			}
-			writer.WriteAttribute("id", MakeChildId(id));
-			writer.WriteAttribute("name", MakeChildName(id));
-			if (isChecked)
-			{
-				writer.WriteAttribute("checked", "checked");
-			}
-			if (AutoAccessKey && (!String.IsNullOrEmpty(labelText)))
-			{
-				writer.WriteAttribute("accesskey", labelText[0].ToString());
-			}
-			writer.Write(HtmlTextWriter.SelfClosingTagEnd);
-
-			WriteLabel(writer, labelClassName, labelText, id);
-		}
-
-		//  Can't be static because it uses MakeChildId
-		public void WriteSubmit(
-			HtmlTextWriter writer,
-			ButtonType buttonType,
-			string className,
-			string id,
-			string imageUrl,
-			string javascript,
-			string text)
-		{
-			writer.WriteLine();
-
-			string idWithType = id;
-
 			switch (buttonType)
 			{
 				case ButtonType.Button:
-					writer.WriteBeginTag("input");
-					writer.WriteAttribute("type", "submit");
-					writer.WriteAttribute("value", text);
-					idWithType += "Button";
+					writer.WriteAttribute("onclick", pureJS);
 					break;
 				case ButtonType.Image:
-					writer.WriteBeginTag("input");
-					writer.WriteAttribute("type", "image");
-					writer.WriteAttribute("src", imageUrl);
-					idWithType += "ImageButton";
+					writer.WriteAttribute("onclick", pureJS);
 					break;
 				case ButtonType.Link:
-					writer.WriteBeginTag("a");
-					idWithType += "LinkButton";
+					writer.WriteAttribute("href", javascript);
 					break;
 				default:
 					throw new NotSupportedException($"{buttonType} not supported.");
 			}
+		}
 
-			if (!String.IsNullOrEmpty(className))
-			{
-				writer.WriteAttribute("class", className);
-			}
-			writer.WriteAttribute("id", MakeChildId(idWithType));
-			writer.WriteAttribute("name", MakeChildName(idWithType));
+		if (buttonType == ButtonType.Link)
+		{
+			writer.Write(HtmlTextWriter.TagRightChar);
+			writer.Write(text);
+			writer.WriteEndTag("a");
+		}
+		else
+		{
+			writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+		}
+	}
 
-			if (!String.IsNullOrEmpty(javascript))
-			{
-				string pureJS = javascript;
-				if (pureJS.StartsWith("javascript:"))
-				{
-					pureJS = pureJS.Substring("javascript:".Length);
-				}
-				switch (buttonType)
-				{
-					case ButtonType.Button:
-						writer.WriteAttribute("onclick", pureJS);
-						break;
-					case ButtonType.Image:
-						writer.WriteAttribute("onclick", pureJS);
-						break;
-					case ButtonType.Link:
-						writer.WriteAttribute("href", javascript);
-						break;
-					default:
-						throw new NotSupportedException($"{buttonType} not supported.");
-				}
-			}
+	public static void WriteRequiredFieldValidator(
+		HtmlTextWriter writer, RequiredFieldValidator rfv, string className, string controlToValidate, string msg)
+	{
+		if (rfv != null)
+		{
+			rfv.CssClass = className;
+			rfv.ControlToValidate = controlToValidate;
+			rfv.ErrorMessage = msg;
+			rfv.RenderControl(writer);
+		}
+	}
 
-			if (buttonType == ButtonType.Link)
+	public static void WriteRegularExpressionValidator(
+		HtmlTextWriter writer,
+		RegularExpressionValidator rev,
+		string className,
+		string controlToValidate,
+		string msg,
+		string expression)
+	{
+		if (rev != null)
+		{
+			rev.CssClass = className;
+			rev.ControlToValidate = controlToValidate;
+			rev.ErrorMessage = msg;
+			rev.ValidationExpression = expression;
+			rev.RenderControl(writer);
+		}
+	}
+
+	public static void WriteCompareValidator(
+		HtmlTextWriter writer,
+		CompareValidator cv,
+		string className,
+		string controlToValidate,
+		string msg,
+		string controlToCompare)
+	{
+		if (cv != null)
+		{
+			cv.CssClass = className;
+			cv.ControlToValidate = controlToValidate;
+			cv.ErrorMessage = msg;
+			cv.ControlToCompare = controlToCompare;
+			cv.RenderControl(writer);
+		}
+	}
+
+	public static void WriteTargetAttribute(HtmlTextWriter writer, string targetValue)
+	{
+		if ((writer != null) && (!String.IsNullOrEmpty(targetValue)))
+		{
+			//  If the targetValue is _blank then we have an opportunity to use attributes other than "target"
+			//  which allows us to be compliant at the XHTML 1.1 Strict level. Specifically, we can use a combination
+			//  of "onclick" and "onkeypress" to achieve what we want to achieve when we used to render
+			//  target='blank'.
+			//
+			//  If the targetValue is other than _blank then we fall back to using the "target" attribute.
+			//  This is a heuristic that can be refined over time.
+			if (targetValue.Equals("_blank", StringComparison.OrdinalIgnoreCase))
 			{
-				writer.Write(HtmlTextWriter.TagRightChar);
-				writer.Write(text);
-				writer.WriteEndTag("a");
+				string js = "window.open(this.href, '_blank', ''); return false;";
+				writer.WriteAttribute("onclick", js);
+				writer.WriteAttribute("onkeypress", js);
 			}
 			else
 			{
-				writer.Write(HtmlTextWriter.SelfClosingTagEnd);
+				writer.WriteAttribute("target", targetValue);
+			}
+		}
+	}
+
+	public class ControlRestorationInfo
+	{
+		private readonly Control _ctrl = null;
+		private readonly ControlCollection _coll = null;
+
+		public Control Control
+		{
+			get
+			{
+				return _ctrl;
 			}
 		}
 
-		public static void WriteRequiredFieldValidator(
-			HtmlTextWriter writer, RequiredFieldValidator rfv, string className, string controlToValidate, string msg)
+		public ControlCollection Collection
 		{
-			if (rfv != null)
+			get
 			{
-				rfv.CssClass = className;
-				rfv.ControlToValidate = controlToValidate;
-				rfv.ErrorMessage = msg;
-				rfv.RenderControl(writer);
+				return _coll;
 			}
 		}
 
-		public static void WriteRegularExpressionValidator(
-			HtmlTextWriter writer,
-			RegularExpressionValidator rev,
-			string className,
-			string controlToValidate,
-			string msg,
-			string expression)
+		public bool IsValid
 		{
-			if (rev != null)
+			get
 			{
-				rev.CssClass = className;
-				rev.ControlToValidate = controlToValidate;
-				rev.ErrorMessage = msg;
-				rev.ValidationExpression = expression;
-				rev.RenderControl(writer);
+				return (Control != null) && (Collection != null);
 			}
 		}
 
-		public static void WriteCompareValidator(
-			HtmlTextWriter writer,
-			CompareValidator cv,
-			string className,
-			string controlToValidate,
-			string msg,
-			string controlToCompare)
+		public ControlRestorationInfo(Control ctrl, ControlCollection coll)
 		{
-			if (cv != null)
-			{
-				cv.CssClass = className;
-				cv.ControlToValidate = controlToValidate;
-				cv.ErrorMessage = msg;
-				cv.ControlToCompare = controlToCompare;
-				cv.RenderControl(writer);
-			}
+			_ctrl = ctrl;
+			_coll = coll;
 		}
 
-		public static void WriteTargetAttribute(HtmlTextWriter writer, string targetValue)
+		public void Restore()
 		{
-			if ((writer != null) && (!String.IsNullOrEmpty(targetValue)))
+			if (IsValid)
 			{
-				//  If the targetValue is _blank then we have an opportunity to use attributes other than "target"
-				//  which allows us to be compliant at the XHTML 1.1 Strict level. Specifically, we can use a combination
-				//  of "onclick" and "onkeypress" to achieve what we want to achieve when we used to render
-				//  target='blank'.
-				//
-				//  If the targetValue is other than _blank then we fall back to using the "target" attribute.
-				//  This is a heuristic that can be refined over time.
-				if (targetValue.Equals("_blank", StringComparison.OrdinalIgnoreCase))
-				{
-					string js = "window.open(this.href, '_blank', ''); return false;";
-					writer.WriteAttribute("onclick", js);
-					writer.WriteAttribute("onkeypress", js);
-				}
-				else
-				{
-					writer.WriteAttribute("target", targetValue);
-				}
-			}
-		}
-
-		public class ControlRestorationInfo
-		{
-			private readonly Control _ctrl = null;
-			private readonly ControlCollection _coll = null;
-
-			public Control Control
-			{
-				get
-				{
-					return _ctrl;
-				}
-			}
-
-			public ControlCollection Collection
-			{
-				get
-				{
-					return _coll;
-				}
-			}
-
-			public bool IsValid
-			{
-				get
-				{
-					return (Control != null) && (Collection != null);
-				}
-			}
-
-			public ControlRestorationInfo(Control ctrl, ControlCollection coll)
-			{
-				_ctrl = ctrl;
-				_coll = coll;
-			}
-
-			public void Restore()
-			{
-				if (IsValid)
-				{
-					_coll.Add(_ctrl);
-				}
+				_coll.Add(_ctrl);
 			}
 		}
 	}

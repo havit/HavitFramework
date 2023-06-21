@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Argument pro událost AutoFilterControlCreated.
+/// </summary>
+public class AutoFilterControlCreatedEventArgs : EventArgs
 {
 	/// <summary>
-	/// Argument pro událost AutoFilterControlCreated.
+	/// Parametr bez hodnot.
 	/// </summary>
-	public class AutoFilterControlCreatedEventArgs : EventArgs
-	{
-		/// <summary>
-		/// Parametr bez hodnot.
-		/// </summary>
-		public new static readonly AutoFilterControlCreatedEventArgs Empty = new AutoFilterControlCreatedEventArgs();
-	}
+	public new static readonly AutoFilterControlCreatedEventArgs Empty = new AutoFilterControlCreatedEventArgs();
 }

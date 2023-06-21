@@ -9,38 +9,37 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.UI.WebControls;
 
-namespace Havit.Web.Bootstrap.UI.WebControls
+namespace Havit.Web.Bootstrap.UI.WebControls;
+
+/// <summary>
+/// Extends ModalDialogUserControlBase by persisting dialog Result value.
+/// </summary>
+[SuppressMessage("StyleCop.Analyzers", "SA1649", Justification = "Máme i negenerickou variantu (viz předek), která je v požadovaném souboru.")]
+public class ModalDialogUserControlBase<T> : ModalDialogUserControlBase
 {
 	/// <summary>
-	/// Extends ModalDialogUserControlBase by persisting dialog Result value.
+	/// Sets result value to type T default value.
 	/// </summary>
-	[SuppressMessage("StyleCop.Analyzers", "SA1649", Justification = "Máme i negenerickou variantu (viz předek), která je v požadovaném souboru.")]
-	public class ModalDialogUserControlBase<T> : ModalDialogUserControlBase
+	protected override void OnDialogShown(EventArgs eventArgs)
 	{
-		/// <summary>
-		/// Sets result value to type T default value.
-		/// </summary>
-		protected override void OnDialogShown(EventArgs eventArgs)
-		{
-			base.OnDialogShown(eventArgs);
-			Result = default(T);
-		}
+		base.OnDialogShown(eventArgs);
+		Result = default(T);
+	}
 
-		/// <summary>
-		/// User result of modal dialog activity.
-		/// Result value is automatically reset when the dialog in shown, it is set to the type T default value.
-		/// Value is persisted in ViewState (so it must be serializable).
-		/// </summary>
-		public virtual T Result
+	/// <summary>
+	/// User result of modal dialog activity.
+	/// Result value is automatically reset when the dialog in shown, it is set to the type T default value.
+	/// Value is persisted in ViewState (so it must be serializable).
+	/// </summary>
+	public virtual T Result
+	{
+		get
 		{
-			get
-			{
-				return (T)(ViewState["Result"] ?? default(T));
-			}
-			set
-			{
-				ViewState["Result"] = value;
-			}
+			return (T)(ViewState["Result"] ?? default(T));
+		}
+		set
+		{
+			ViewState["Result"] = value;
 		}
 	}
 }

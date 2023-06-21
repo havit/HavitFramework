@@ -3,48 +3,47 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
-{
+namespace Havit.Web.UI.WebControls;
+
     /// <summary>
     /// Argumenty události oznamující nabidnování hodnoty do seznamového prvku (DropDownList, CheckBoxList, EnumDropDownList, apod.)
     /// </summary>
-	public class ListControlItemDataBoundEventArgs : EventArgs
+public class ListControlItemDataBoundEventArgs : EventArgs
+{
+	/// <summary>
+	/// Prvek, kterého se událost týká.
+	/// </summary>
+	public ListItem Item
 	{
-		/// <summary>
-		/// Prvek, kterého se událost týká.
-		/// </summary>
-		public ListItem Item
+		get
 		{
-			get
-			{
-				return this._item;
-			}
+			return this._item;
 		}
-		private readonly ListItem _item;
+	}
+	private readonly ListItem _item;
 
-		/// <summary>
-		/// Data, na jejich základě prvek vzniknul.
-		/// </summary>
-		public object DataItem
+	/// <summary>
+	/// Data, na jejich základě prvek vzniknul.
+	/// </summary>
+	public object DataItem
+	{
+		get
 		{
-			get
-			{
-				return _dataItem;
-			}
-			set
-			{
-				_dataItem = value;
-			}
+			return _dataItem;
 		}
-		private object _dataItem;
+		set
+		{
+			_dataItem = value;
+		}
+	}
+	private object _dataItem;
 
-		/// <summary>
-		/// Vytvoří instanci.
-		/// </summary>
-		public ListControlItemDataBoundEventArgs(ListItem item, object dataItem)
-		{
-			this._item = item;
-			this._dataItem = dataItem;
-		}
+	/// <summary>
+	/// Vytvoří instanci.
+	/// </summary>
+	public ListControlItemDataBoundEventArgs(ListItem item, object dataItem)
+	{
+		this._item = item;
+		this._dataItem = dataItem;
 	}
 }

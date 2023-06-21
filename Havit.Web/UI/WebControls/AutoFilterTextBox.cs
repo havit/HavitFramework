@@ -8,98 +8,97 @@ using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// TextBox pro automatické filtry.
+/// Sám se spojí s GridView, získá bidnovaná data a z nich získá distinct hodnoty pro filtrování. Sám (ve spojení s gridem) filtruje jeho bindované hodnoty.
+/// </summary>
+public class AutoFilterTextBox : TextBoxExt, IAutoFilterControl
 {
 	/// <summary>
-	/// TextBox pro automatické filtry.
-	/// Sám se spojí s GridView, získá bidnovaná data a z nich získá distinct hodnoty pro filtrování. Sám (ve spojení s gridem) filtruje jeho bindované hodnoty.
+	/// Vlastnost, ve které se vyhledává.
 	/// </summary>
-	public class AutoFilterTextBox : TextBoxExt, IAutoFilterControl
+	public string DataFilterField
 	{
-		/// <summary>
-		/// Vlastnost, ve které se vyhledává.
-		/// </summary>
-		public string DataFilterField
+		get
 		{
-			get
-			{
-				return (string)(ViewState["DataFilterField"] ?? String.Empty);
-			}
-			set
-			{
-				ViewState["DataFilterField"] = value;
-			}
+			return (string)(ViewState["DataFilterField"] ?? String.Empty);
 		}
+		set
+		{
+			ViewState["DataFilterField"] = value;
+		}
+	}
 
-		/// <summary>
-		/// Konstructor.
-		/// </summary>
-		public AutoFilterTextBox()
-		{
-			AutoPostBack = true;
-		}
+	/// <summary>
+	/// Konstructor.
+	/// </summary>
+	public AutoFilterTextBox()
+	{
+		AutoPostBack = true;
+	}
 
-		/// <summary>
-		/// Událost oznamuje změnu hodnoty filtru.
-		/// </summary>
-		public event EventHandler ValueChanged
+	/// <summary>
+	/// Událost oznamuje změnu hodnoty filtru.
+	/// </summary>
+	public event EventHandler ValueChanged
+	{
+		add
 		{
-			add
-			{
-				Events.AddHandler(eventValueChanged, value);
-			}
-			remove
-			{
-				Events.RemoveHandler(eventValueChanged, value);
-			}
+			Events.AddHandler(eventValueChanged, value);
 		}
-		private static readonly object eventValueChanged = new object();
+		remove
+		{
+			Events.RemoveHandler(eventValueChanged, value);
+		}
+	}
+	private static readonly object eventValueChanged = new object();
 
-		/// <summary>
-		/// Vyvolá událost ValueChanged.
-		/// </summary>
-		protected void OnValueChanged(EventArgs e)
+	/// <summary>
+	/// Vyvolá událost ValueChanged.
+	/// </summary>
+	protected void OnValueChanged(EventArgs e)
+	{
+		EventHandler handler = (EventHandler)Events[eventValueChanged];
+		if (handler != null)
 		{
-			EventHandler handler = (EventHandler)Events[eventValueChanged];
-			if (handler != null)
-			{
-				handler(this, e);
-			}
+			handler(this, e);
 		}
+	}
 
-		/// <summary>
-		/// Provede filtrování dat na základě nastavení filtru.
-		/// </summary>
-		public IEnumerable FilterData(IEnumerable data)
+	/// <summary>
+	/// Provede filtrování dat na základě nastavení filtru.
+	/// </summary>
+	public IEnumerable FilterData(IEnumerable data)
+	{
+		if (this.Text.Length > 0)
 		{
-			if (this.Text.Length > 0)
-			{
-				Regex filterRegex = Havit.Text.RegularExpressions.RegexPatterns.GetWildcardRegex("*" + this.Text + "*");
-				return data.Cast<object>().Where(item => filterRegex.IsMatch(DataBinderExt.GetValue(item, this.DataFilterField, ""))).ToList();
-			}
-			else
-			{
-				return data;
-			}
+			Regex filterRegex = Havit.Text.RegularExpressions.RegexPatterns.GetWildcardRegex("*" + this.Text + "*");
+			return data.Cast<object>().Where(item => filterRegex.IsMatch(DataBinderExt.GetValue(item, this.DataFilterField, ""))).ToList();
 		}
+		else
+		{
+			return data;
+		}
+	}
 
-		/// <summary>
-		/// Inicializuje control.
-		/// Vyvoláním události s argumentem AutoFilterControlCreatedEventArgs.Empty se registruje jak control pro automatický databind.
-		/// </summary>
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			this.RaiseBubbleEvent(this, AutoFilterControlCreatedEventArgs.Empty); // registrace autofilter controlu
-		}
+	/// <summary>
+	/// Inicializuje control.
+	/// Vyvoláním události s argumentem AutoFilterControlCreatedEventArgs.Empty se registruje jak control pro automatický databind.
+	/// </summary>
+	protected override void OnInit(EventArgs e)
+	{
+		base.OnInit(e);
+		this.RaiseBubbleEvent(this, AutoFilterControlCreatedEventArgs.Empty); // registrace autofilter controlu
+	}
 
-		/// <summary>
-		/// Při změně hodnoty vyvolá událost ValueChanged.
-		/// </summary>
-		protected override void OnTextChanged(EventArgs e)
-		{
-			base.OnTextChanged(e);
-			this.OnValueChanged(EventArgs.Empty); // oznámení změny hodnoty filtru
-		}
+	/// <summary>
+	/// Při změně hodnoty vyvolá událost ValueChanged.
+	/// </summary>
+	protected override void OnTextChanged(EventArgs e)
+	{
+		base.OnTextChanged(e);
+		this.OnValueChanged(EventArgs.Empty); // oznámení změny hodnoty filtru
 	}
 }

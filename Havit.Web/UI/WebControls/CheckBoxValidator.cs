@@ -6,99 +6,99 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Validátor, který řeší povinnost zaškrtnutí (eventuelně odškrtnutí - viz vlastnost ValidCheckedState) CheckBoxu.
+/// </summary>
+public class CheckBoxValidator : BaseValidator
 {
 	/// <summary>
-	/// Validátor, který řeší povinnost zaškrtnutí (eventuelně odškrtnutí - viz vlastnost ValidCheckedState) CheckBoxu.
+	/// Udává validní hodnotu - zaškrtnutý [default] nebo odškrtnutý.
 	/// </summary>
-	public class CheckBoxValidator : BaseValidator
+	public bool ValidCheckedState
 	{
-		/// <summary>
-		/// Udává validní hodnotu - zaškrtnutý [default] nebo odškrtnutý.
-		/// </summary>
-		public bool ValidCheckedState
+		get
 		{
-			get
+			return (bool)(ViewState["ValidCheckedState"] ?? true);
+		}
+		set
+		{
+			ViewState["ValidCheckedState"] = value;
+		}
+	}
+
+	/// <summary>
+	/// CheckBox, který se bude validovat, získán z ControlToValidate.
+	/// </summary>
+	protected CheckBox CheckBoxToValidate
+	{
+		get
+		{
+			if (_checkBoxToValidate == null)
 			{
-				return (bool)(ViewState["ValidCheckedState"] ?? true);
+				_checkBoxToValidate = FindControl(this.ControlToValidate) as CheckBox;
 			}
-			set
-			{
-				ViewState["ValidCheckedState"] = value;
-			}
+
+			return _checkBoxToValidate;
+		}
+	}
+	private CheckBox _checkBoxToValidate = null;
+
+	/// <summary>
+	/// Zkontroluje, zda je validátor nastaven správně, jinak vyhodí vyjímku.
+	/// </summary>
+	protected override bool ControlPropertiesValid()
+	{
+		if (String.IsNullOrEmpty(ControlToValidate))
+		{
+			throw new HttpException(string.Format("Vlastnost ControlToValidate controlu '{0}' nesmí být prázdná.", this.ID));
 		}
 
-		/// <summary>
-		/// CheckBox, který se bude validovat, získán z ControlToValidate.
-		/// </summary>
-		protected CheckBox CheckBoxToValidate
+		if (this.CheckBoxToValidate == null)
 		{
-			get
-			{
-				if (_checkBoxToValidate == null)
-				{
-					_checkBoxToValidate = FindControl(this.ControlToValidate) as CheckBox;
-				}
-
-				return _checkBoxToValidate;
-			}
-		}
-		private CheckBox _checkBoxToValidate = null;
-
-		/// <summary>
-		/// Zkontroluje, zda je validátor nastaven správně, jinak vyhodí vyjímku.
-		/// </summary>
-		protected override bool ControlPropertiesValid()
-		{
-			if (String.IsNullOrEmpty(ControlToValidate))
-			{
-				throw new HttpException(string.Format("Vlastnost ControlToValidate controlu '{0}' nesmí být prázdná.", this.ID));
-			}
-
-			if (this.CheckBoxToValidate == null)
-			{
-				throw new HttpException("CheckBoxValidator může validovat pouze controly typu CheckBox.");
-			}
-
-			return true;
+			throw new HttpException("CheckBoxValidator může validovat pouze controly typu CheckBox.");
 		}
 
-		/// <summary>
-		/// Vyhodnotí validátor
-		/// </summary>
-		protected override bool EvaluateIsValid()
+		return true;
+	}
+
+	/// <summary>
+	/// Vyhodnotí validátor
+	/// </summary>
+	protected override bool EvaluateIsValid()
+	{
+		return CheckBoxToValidate.Checked == ValidCheckedState;
+	}
+
+	/// <summary>
+	/// Přidá renderované atributy potřebné pro klientskou validaci
+	/// </summary>
+	protected override void AddAttributesToRender(HtmlTextWriter writer)
+	{
+		base.AddAttributesToRender(writer);
+
+		if (EnableClientScript)
 		{
-			return CheckBoxToValidate.Checked == ValidCheckedState;
+			writer.AddAttribute("data-val-evaluationfunction", "CheckBoxValidatorEvaluateIsValid", false);
+			writer.AddAttribute("data-val-validCheckedState", ValidCheckedState ? "true" : "false", false);
 		}
+	}
 
-		/// <summary>
-		/// Přidá renderované atributy potřebné pro klientskou validaci
-		/// </summary>
-		protected override void AddAttributesToRender(HtmlTextWriter writer)
+	/// <summary>
+	/// Registruje script validátoru.
+	/// </summary>
+	protected override void OnPreRender(EventArgs e)
+	{
+		base.OnPreRender(e);
+
+		if (EnableClientScript)
 		{
-			base.AddAttributesToRender(writer);
-
-			if (EnableClientScript)
-			{
-				writer.AddAttribute("data-val-evaluationfunction", "CheckBoxValidatorEvaluateIsValid", false);
-				writer.AddAttribute("data-val-validCheckedState", ValidCheckedState ? "true" : "false", false);
-			}
+			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(CheckBoxValidator), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, true);
 		}
+	}
 
-		/// <summary>
-		/// Registruje script validátoru.
-		/// </summary>
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-
-			if (EnableClientScript)
-			{
-				ScriptManager.RegisterClientScriptBlock(this.Page, typeof(CheckBoxValidator), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, true);
-			}
-		}
-
-		private const string validationScript = @"
+	private const string validationScript = @"
 				function CheckBoxValidatorEvaluateIsValid(val)
 				{
 					var control = document.getElementById(val.controltovalidate);
@@ -106,5 +106,4 @@ namespace Havit.Web.UI.WebControls
 
 					return control.checked == validCheckedState;
 				}";
-	}
 }

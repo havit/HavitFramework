@@ -5,36 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
 
-namespace Havit.Web.UI
+namespace Havit.Web.UI;
+
+/// <summary>
+/// Pomocné metody pro práci s Controlem.
+/// </summary>
+internal static class ControlExtensions
 {
 	/// <summary>
-	/// Pomocné metody pro práci s Controlem.
+	/// Vrátí všechny vnořené controls, které splňují podmínku predicate. Prohledává do hloubky, avšak do INamingContainer jde pouze, pokud je to určeno parametrem traverseNestedNamingContainers.
 	/// </summary>
-	internal static class ControlExtensions
+	internal static IEnumerable<Control> FindControls(this Control control, Predicate<Control> predicate, bool traverseNestedNamingContainers)
 	{
-		/// <summary>
-		/// Vrátí všechny vnořené controls, které splňují podmínku predicate. Prohledává do hloubky, avšak do INamingContainer jde pouze, pokud je to určeno parametrem traverseNestedNamingContainers.
-		/// </summary>
-		internal static IEnumerable<Control> FindControls(this Control control, Predicate<Control> predicate, bool traverseNestedNamingContainers)
+		if (!control.HasControls())
 		{
-			if (!control.HasControls())
+			yield break;
+		}
+
+		foreach (Control nestedControl in control.Controls)
+		{
+			if (predicate(nestedControl))
 			{
-				yield break;
+				yield return nestedControl;
 			}
 
-			foreach (Control nestedControl in control.Controls)
+			if (traverseNestedNamingContainers || (!(nestedControl is INamingContainer)))
 			{
-				if (predicate(nestedControl))
+				foreach (Control foundControl in FindControls(nestedControl, predicate, traverseNestedNamingContainers))
 				{
-					yield return nestedControl;
-				}
-
-				if (traverseNestedNamingContainers || (!(nestedControl is INamingContainer)))
-				{
-					foreach (Control foundControl in FindControls(nestedControl, predicate, traverseNestedNamingContainers))
-					{
-						yield return foundControl;
-					}
+					yield return foundControl;
 				}
 			}
 		}

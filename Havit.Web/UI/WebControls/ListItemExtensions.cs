@@ -5,40 +5,39 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Extension metody k ListItem.
+/// </summary>
+public static class ListItemExtensions
 {
 	/// <summary>
-	/// Extension metody k ListItem.
+	/// Název atributu, ve kterém je uložena hodnota OptionGroup.
 	/// </summary>
-	public static class ListItemExtensions
+	internal const string OptionGroupAttributeName = "OptionGroup";
+
+	/// <summary>
+	/// Nastavuje hodnotu OptionGroup.
+	/// </summary>
+	public static void SetOptionGroup(this ListItem listItem, string value)
 	{
-		/// <summary>
-		/// Název atributu, ve kterém je uložena hodnota OptionGroup.
-		/// </summary>
-		internal const string OptionGroupAttributeName = "OptionGroup";
+		listItem.Attributes[OptionGroupAttributeName] = value;
+	}
 
-		/// <summary>
-		/// Nastavuje hodnotu OptionGroup.
-		/// </summary>
-		public static void SetOptionGroup(this ListItem listItem, string value)
-		{
-			listItem.Attributes[OptionGroupAttributeName] = value;
-		}
+	/// <summary>
+	/// Vrací hodnotu OptionGroup.
+	/// </summary>
+	public static string GetOptionGroup(this ListItem listItem)
+	{
+		return listItem.Attributes[OptionGroupAttributeName];
+	}
 
-		/// <summary>
-		/// Vrací hodnotu OptionGroup.
-		/// </summary>
-		public static string GetOptionGroup(this ListItem listItem)
-		{
-			return listItem.Attributes[OptionGroupAttributeName];
-		}
-
-		/// <summary>
-		/// "Konvertuje" kolekci ListItemCollection jako IEnumerable&lt;ListItem&gt;.
-		/// </summary>
-		public static IEnumerable<ListItem> AsEnumerable(this ListItemCollection listItems)
-		{
-			return listItems.Cast<ListItem>();
-		}
+	/// <summary>
+	/// "Konvertuje" kolekci ListItemCollection jako IEnumerable&lt;ListItem&gt;.
+	/// </summary>
+	public static IEnumerable<ListItem> AsEnumerable(this ListItemCollection listItems)
+	{
+		return listItems.Cast<ListItem>();
 	}
 }

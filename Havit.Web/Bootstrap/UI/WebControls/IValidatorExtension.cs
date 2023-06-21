@@ -5,17 +5,16 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Web.Bootstrap.UI.WebControls
+namespace Havit.Web.Bootstrap.UI.WebControls;
+
+internal interface IValidatorExtension
 {
-	internal interface IValidatorExtension
-	{
-		string ControlToValidate { get; }
-		string ControlToValidateInvalidCssClass { get; }
-		string ControlToValidateInvalidToolTipCssClass { get; }
-		string ToolTip { get; }
-		string Text { get; }
-		string ErrorMessage { get; }
-		bool ShowToolTip { get; }
-		ToolTipPosition ToolTipPosition { get; }
-	}
+	string ControlToValidate { get; }
+	string ControlToValidateInvalidCssClass { get; }
+	string ControlToValidateInvalidToolTipCssClass { get; }
+	string ToolTip { get; }
+	string Text { get; }
+	string ErrorMessage { get; }
+	bool ShowToolTip { get; }
+	ToolTipPosition ToolTipPosition { get; }
 }

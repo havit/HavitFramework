@@ -6,100 +6,99 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
 
-namespace Havit.Web.Bootstrap.UI.WebControls.Legacy
+namespace Havit.Web.Bootstrap.UI.WebControls.Legacy;
+
+/// <summary>
+/// Extended CheckBoxValidator.
+/// </summary>
+public class CheckBoxValidator : Web.UI.WebControls.CheckBoxValidator, IValidatorExtension
 {
 	/// <summary>
-	/// Extended CheckBoxValidator.
+	/// Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
 	/// </summary>
-	public class CheckBoxValidator : Web.UI.WebControls.CheckBoxValidator, IValidatorExtension
+	public bool ShowToolTip
 	{
-		/// <summary>
-		/// Shows ToolTip (or Text if ToolTip not set) as a Bootstrap ToolTip at ControlToValidate when validation fails.
-		/// </summary>
-		public bool ShowToolTip
+		get
 		{
-			get
-			{
-				return (bool)(ViewState["ShowToolTip"] ?? true);
-			}
-			set
-			{
-				ViewState["ShowToolTip"] = value;
-			}
+			return (bool)(ViewState["ShowToolTip"] ?? true);
 		}
+		set
+		{
+			ViewState["ShowToolTip"] = value;
+		}
+	}
 
-		/// <summary>
-		/// ToolTip position.
-		/// </summary>
-		[DefaultValue(ToolTipPosition.Right)]
-		public ToolTipPosition ToolTipPosition
+	/// <summary>
+	/// ToolTip position.
+	/// </summary>
+	[DefaultValue(ToolTipPosition.Right)]
+	public ToolTipPosition ToolTipPosition
+	{
+		get
 		{
-			get
-			{
-				return (ToolTipPosition)(ViewState["ToolTipPosition"] ?? ToolTipPosition.Right);
-			}
-			set
-			{
-				ViewState["ToolTipPosition"] = value;
-			}
+			return (ToolTipPosition)(ViewState["ToolTipPosition"] ?? ToolTipPosition.Right);
 		}
+		set
+		{
+			ViewState["ToolTipPosition"] = value;
+		}
+	}
 
-		/// <summary>
-		/// CssClass name which is added to ControlToValidate when validation fails.
-		/// </summary>
-		[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass)]
-		public string ControlToValidateInvalidCssClass
+	/// <summary>
+	/// CssClass name which is added to ControlToValidate when validation fails.
+	/// </summary>
+	[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass)]
+	public string ControlToValidateInvalidCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["ControlToValidateInvalidCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass);
-			}
-			set
-			{
-				ViewState["ControlToValidateInvalidCssClass"] = value;
-			}
+			return (string)(ViewState["ControlToValidateInvalidCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidCssClass);
 		}
+		set
+		{
+			ViewState["ControlToValidateInvalidCssClass"] = value;
+		}
+	}
 
-		/// <summary>
-		/// CssClass name which is added to a validation tooltip.
-		/// </summary>
-		[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidToolTipCssClass)]
-		public string ControlToValidateInvalidToolTipCssClass
+	/// <summary>
+	/// CssClass name which is added to a validation tooltip.
+	/// </summary>
+	[DefaultValue(ValidatorRenderExtender.DefaultControlToValidateInvalidToolTipCssClass)]
+	public string ControlToValidateInvalidToolTipCssClass
+	{
+		get
 		{
-			get
-			{
-				return (string)(ViewState["ControlToValidateInvalidToolTipCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidToolTipCssClass);
-			}
-			set
-			{
-				ViewState["ControlToValidateInvalidToolTipCssClass"] = value;
-			}
+			return (string)(ViewState["ControlToValidateInvalidToolTipCssClass"] ?? ValidatorRenderExtender.DefaultControlToValidateInvalidToolTipCssClass);
 		}
+		set
+		{
+			ViewState["ControlToValidateInvalidToolTipCssClass"] = value;
+		}
+	}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public CheckBoxValidator()
-		{
-			ValidatorRenderExtender.Setup(this);
-		}
+	/// <summary>
+	/// Constructor.
+	/// </summary>
+	public CheckBoxValidator()
+	{
+		ValidatorRenderExtender.Setup(this);
+	}
 
-		/// <summary>
-		/// Adds the attributes of this control to the output stream for rendering on the client.
-		/// </summary>
-		protected override void AddAttributesToRender(HtmlTextWriter writer)
-		{
-			base.AddAttributesToRender(writer);
-			ValidatorRenderExtender.AddAttributesToRender(this, writer);
-		}
+	/// <summary>
+	/// Adds the attributes of this control to the output stream for rendering on the client.
+	/// </summary>
+	protected override void AddAttributesToRender(HtmlTextWriter writer)
+	{
+		base.AddAttributesToRender(writer);
+		ValidatorRenderExtender.AddAttributesToRender(this, writer);
+	}
 
-		/// <summary>
-		/// Checks the client brower and configures the validator for compatibility prior to rendering.
-		/// </summary>
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-			ValidatorRenderExtender.OnPreRender(this);
-		}
+	/// <summary>
+	/// Checks the client brower and configures the validator for compatibility prior to rendering.
+	/// </summary>
+	protected override void OnPreRender(EventArgs e)
+	{
+		base.OnPreRender(e);
+		ValidatorRenderExtender.OnPreRender(this);
 	}
 }

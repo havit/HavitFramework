@@ -10,53 +10,53 @@ using System.Web;
 [assembly: WebResource("Havit.Web.UI.WebControls.SingleSubmitProtection.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.SingleSubmitProtection.css", "text/css")]
 
-namespace Havit.Web.UI.WebControls
-{
+namespace Havit.Web.UI.WebControls;
+
     /// <summary>
     /// Control, který zamezuje dvojímu odeslání formuláře.
     /// Při submitu překryje viditelnou část formuláře průhledným, ale neprokliknutelným, DIVem.
     /// </summary>
-	public class SingleSubmitProtection : WebControl
+public class SingleSubmitProtection : WebControl
+{
+	/// <summary>
+	/// Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
+	/// Tato konstanta se může vložit např. do Button.OnClientClick.
+	/// </summary>
+	public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
+
+	/// <summary>
+	/// Script pro zavolání clientside metody zajišťující blokování klientských operací ve stránce.
+	/// </summary>
+	public const string SetProcessingJavaScript = "SingleSubmit_SetProcessing();";
+
+	/// <summary>
+	/// Script pro zavolání clientside metody pro ukončení blokování klientských operací ve stránce.
+	/// </summary>
+	public const string ClearProcessingJavaScript = "SingleSubmit_ClearProcessing();";
+
+	/// <summary>
+	/// Prvek je založen na elementu DIV.
+	/// </summary>
+	public SingleSubmitProtection()
+		: base(HtmlTextWriterTag.Div)
 	{
-		/// <summary>
-		/// Volání JavaScriptové funkce, která zablokuje SetProcessing na SingleSubmitPage.
-		/// Tato konstanta se může vložit např. do Button.OnClientClick.
-		/// </summary>
-		public const string SetProcessingDisableJavaScript = "SingleSubmit_SetProcessing_Disable();";
+	}
 
-		/// <summary>
-		/// Script pro zavolání clientside metody zajišťující blokování klientských operací ve stránce.
-		/// </summary>
-		public const string SetProcessingJavaScript = "SingleSubmit_SetProcessing();";
+	/// <summary>
+    /// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
+    /// </summary>
+    /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. </param>
+    protected override void OnPreRender(EventArgs e)
+	{
+		base.OnPreRender(e);
 
-		/// <summary>
-		/// Script pro zavolání clientside metody pro ukončení blokování klientských operací ve stránce.
-		/// </summary>
-		public const string ClearProcessingJavaScript = "SingleSubmit_ClearProcessing();";
+		ScriptManager currentScriptManager = ScriptManager.GetCurrent(this.Page);
 
-		/// <summary>
-		/// Prvek je založen na elementu DIV.
-		/// </summary>
-		public SingleSubmitProtection()
-			: base(HtmlTextWriterTag.Div)
-		{
-		}
+		// Styly i javascript registrujeme i v případě, kdy Enabled == false. To z toho důvodu, protože ve stránkách mohou být použity
+		// klienské skripty, které vyžadují přítomnost knihovny. Například SetProcessingDisableJavaScript.
+		// Pokud by nebyl javascript zaregistrován, docházelo by k pádu takového klienského volání.
 
-		/// <summary>
-	    /// Raises the <see cref="E:System.Web.UI.Control.PreRender"/> event.
-	    /// </summary>
-	    /// <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data. </param>
-	    protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-
-			ScriptManager currentScriptManager = ScriptManager.GetCurrent(this.Page);
-
-			// Styly i javascript registrujeme i v případě, kdy Enabled == false. To z toho důvodu, protože ve stránkách mohou být použity
-			// klienské skripty, které vyžadují přítomnost knihovny. Například SetProcessingDisableJavaScript.
-			// Pokud by nebyl javascript zaregistrován, docházelo by k pádu takového klienského volání.
-
-			SingleSubmitProtection.RegisterStylesheets(this.Page);
+		SingleSubmitProtection.RegisterStylesheets(this.Page);
 
             // Registruje klientské skripty pro zamezení opakovaného odeslání stránky.
             ScriptManager.RegisterClientScriptResource(
@@ -64,33 +64,33 @@ namespace Havit.Web.UI.WebControls
                 typeof(SingleSubmitProtection),
                 "Havit.Web.UI.WebControls.SingleSubmitProtection.js");
 
-			if (this.Enabled)
+		if (this.Enabled)
+		{
+			// zaregistruje javascript pro OnSubmit
+			// javascript se neregistruje pro async postback, protože by se skript jednotlivými callbacky přidával a přidával
+			if ((currentScriptManager == null) || (!currentScriptManager.IsInAsyncPostBack))
 			{
-				// zaregistruje javascript pro OnSubmit
-				// javascript se neregistruje pro async postback, protože by se skript jednotlivými callbacky přidával a přidával
-				if ((currentScriptManager == null) || (!currentScriptManager.IsInAsyncPostBack))
-				{
-					ScriptManager.RegisterOnSubmitStatement(
-						this.Page,
-						typeof(SingleSubmitProtection),
-						"HidePage",
-						"if (!_SingleSubmit_IsRecursive) return SingleSubmit_OnSubmit();\n\n");
-				}
+				ScriptManager.RegisterOnSubmitStatement(
+					this.Page,
+					typeof(SingleSubmitProtection),
+					"HidePage",
+					"if (!_SingleSubmit_IsRecursive) return SingleSubmit_OnSubmit();\n\n");
+			}
 
-				// zajištění mizení progress panelu po async postbacku
-				if ((currentScriptManager != null) && currentScriptManager.EnablePartialRendering && currentScriptManager.IsInAsyncPostBack)
-				{
-					ScriptManager.RegisterStartupScript(
-						this.Page,
-						typeof(SingleSubmitProtection),
-						"SingleSubmit_Startup",
-						ClearProcessingJavaScript,
-						true);
-				}
+			// zajištění mizení progress panelu po async postbacku
+			if ((currentScriptManager != null) && currentScriptManager.EnablePartialRendering && currentScriptManager.IsInAsyncPostBack)
+			{
+				ScriptManager.RegisterStartupScript(
+					this.Page,
+					typeof(SingleSubmitProtection),
+					"SingleSubmit_Startup",
+					ClearProcessingJavaScript,
+					true);
 			}
 		}
+	}
 
-		/// <summary>
+	/// <summary>
         /// Zaregistruje css.
         /// </summary>
         public static void RegisterStylesheets(Page page)
@@ -111,5 +111,4 @@ namespace Havit.Web.UI.WebControls
                 }
             }
         }
-	}
 }

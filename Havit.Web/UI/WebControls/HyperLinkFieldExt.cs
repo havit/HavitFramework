@@ -3,31 +3,30 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Rozšířená verze <see cref="System.Web.UI.WebControls.HyperLinkField"/>.
+/// </summary>
+public class HyperLinkFieldExt : HyperLinkField, IIdentifiableField
 {
 	/// <summary>
-	/// Rozšířená verze <see cref="System.Web.UI.WebControls.HyperLinkField"/>.
+	/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
 	/// </summary>
-	public class HyperLinkFieldExt : HyperLinkField, IIdentifiableField
+	public string ID
 	{
-		/// <summary>
-		/// Identifikátor fieldu na který se lze odkazovat pomocí <see cref="GridViewExt.FindColumn(string)"/>.
-		/// </summary>
-		public string ID
+		get
 		{
-			get
+			object tmp = ViewState["ID"];
+			if (tmp != null)
 			{
-				object tmp = ViewState["ID"];
-				if (tmp != null)
-				{
-					return (string)tmp;
-				}
-				return String.Empty;
+				return (string)tmp;
 			}
-			set
-			{
-				ViewState["ID"] = value;
-			}
+			return String.Empty;
+		}
+		set
+		{
+			ViewState["ID"] = value;
 		}
 	}
 }

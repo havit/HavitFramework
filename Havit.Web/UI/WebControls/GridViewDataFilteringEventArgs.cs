@@ -6,30 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.UI.WebControls
+namespace Havit.Web.UI.WebControls;
+
+/// <summary>
+/// Argumenty události GridViewDataFiltering.
+/// </summary>
+public class GridViewDataFilteringEventArgs : EventArgs
 {
 	/// <summary>
-	/// Argumenty události GridViewDataFiltering.
+	/// Data, která jsou bindována na grid.
 	/// </summary>
-	public class GridViewDataFilteringEventArgs : EventArgs
+	public IEnumerable Data { get; set; }
+
+	/// <summary>
+	/// Filtrační řádek gridu.
+	/// </summary>
+	public GridViewRow FilterRow { get; private set; }
+
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public GridViewDataFilteringEventArgs(IEnumerable data, GridViewRow filterRow)
 	{
-		/// <summary>
-		/// Data, která jsou bindována na grid.
-		/// </summary>
-		public IEnumerable Data { get; set; }
-
-		/// <summary>
-		/// Filtrační řádek gridu.
-		/// </summary>
-		public GridViewRow FilterRow { get; private set; }
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public GridViewDataFilteringEventArgs(IEnumerable data, GridViewRow filterRow)
-		{
-			this.Data = data;
-			this.FilterRow = filterRow;
-		}
+		this.Data = data;
+		this.FilterRow = filterRow;
 	}
 }

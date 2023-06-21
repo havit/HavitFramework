@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.TimeServices
+namespace Havit.Services.TimeServices;
+
+/// <summary>
+/// Služba vracející aktuální čas a aktuální datum (bez času).
+/// </summary>
+public interface ITimeService
 {
 	/// <summary>
-	/// Služba vracející aktuální čas a aktuální datum (bez času).
+	/// Vrací aktuální čas.
 	/// </summary>
-	public interface ITimeService
-	{
-		/// <summary>
-		/// Vrací aktuální čas.
-		/// </summary>
-		DateTime GetCurrentTime();
+	DateTime GetCurrentTime();
 
-		/// <summary>
-		/// Vrací aktuální datum (bez času).
-		/// </summary>
-		DateTime GetCurrentDate();
-	}
+	/// <summary>
+	/// Vrací aktuální datum (bez času).
+	/// </summary>
+	DateTime GetCurrentDate();
 }

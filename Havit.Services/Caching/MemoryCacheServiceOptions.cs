@@ -1,13 +1,12 @@
-﻿namespace Havit.Services.Caching
+﻿namespace Havit.Services.Caching;
+
+/// <summary>
+/// Konfigurace MemoryCacheService.
+/// </summary>
+public class MemoryCacheServiceOptions
 {
 	/// <summary>
-	/// Konfigurace MemoryCacheService.
+	/// Indikuje, zda má být použita podpora pro cache dependencies.
 	/// </summary>
-	public class MemoryCacheServiceOptions
-	{
-		/// <summary>
-		/// Indikuje, zda má být použita podpora pro cache dependencies.
-		/// </summary>
-		public bool UseCacheDependenciesSupport { get; set; } = false;
-	}
+	public bool UseCacheDependenciesSupport { get; set; } = false;
 }

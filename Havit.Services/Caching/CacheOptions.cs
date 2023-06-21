@@ -1,133 +1,132 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Havit.Services.Caching
+namespace Havit.Services.Caching;
+
+/// <summary>
+/// Parametry pro uložení položky v cache.
+/// </summary>
+public class CacheOptions
 {
 	/// <summary>
-	/// Parametry pro uložení položky v cache.
+	/// Doba, po které má být položka vyhozena z cache (od okamžiku přidání).
 	/// </summary>
-	public class CacheOptions
+	public TimeSpan? AbsoluteExpiration
 	{
-		/// <summary>
-		/// Doba, po které má být položka vyhozena z cache (od okamžiku přidání).
-		/// </summary>
-		public TimeSpan? AbsoluteExpiration
+		get
 		{
-			get
-			{
-				return absoluteExpiration;
-			}
-			set
-			{
-				ThrowIfFrozen();
-				absoluteExpiration = value;
-			}
+			return absoluteExpiration;
 		}
-		private TimeSpan? absoluteExpiration;
-
-		/// <summary>
-		/// Doba, po které má být položka vyhozena z cache (od posledního přístupu k položce).
-		/// </summary>
-		public TimeSpan? SlidingExpiration
+		set
 		{
-			get
-			{
-				return slidingExpiration;
-			}
-			set
-			{
-				ThrowIfFrozen();
-				slidingExpiration = value;
-			}
+			ThrowIfFrozen();
+			absoluteExpiration = value;
 		}
-		private TimeSpan? slidingExpiration;
+	}
+	private TimeSpan? absoluteExpiration;
 
-		/// <summary>
-		/// Priorita položky v cache.
-		/// </summary>
-		public CacheItemPriority Priority
+	/// <summary>
+	/// Doba, po které má být položka vyhozena z cache (od posledního přístupu k položce).
+	/// </summary>
+	public TimeSpan? SlidingExpiration
+	{
+		get
 		{
-			get
-			{
-				return priority;
-			}
-			set
-			{
-				ThrowIfFrozen();
-				priority = value;
-			}
+			return slidingExpiration;
 		}
-		private CacheItemPriority priority = CacheItemPriority.Normal;
-
-		/// <summary>
-		/// Odhadovaná velikost položky v cache (použito jen pro IMemoryCache, bezrozměrná jednotka).
-		/// </summary>
-		public int? Size
+		set
 		{
-			get
-			{
-				return size;
-			}
-			set
-			{
-				ThrowIfFrozen();
-				size = value;
-			}
+			ThrowIfFrozen();
+			slidingExpiration = value;
 		}
-		private int? size;
+	}
+	private TimeSpan? slidingExpiration;
 
-		/// <summary>
-		/// Cache dependencies - Klíče, na kterých je položka závislá.
-		/// </summary>
-		public string[] CacheDependencyKeys
+	/// <summary>
+	/// Priorita položky v cache.
+	/// </summary>
+	public CacheItemPriority Priority
+	{
+		get
 		{
-			get
-			{
-				return cacheDependencyKeys;
-			}
-			set
-			{
-				ThrowIfFrozen();
-				cacheDependencyKeys = value;
-			}
+			return priority;
 		}
-		private string[] cacheDependencyKeys;
-
-		/// <summary>
-		/// Vytvoří kopii cache options.
-		/// Pokud je zdrojová cache options uzamčena pro změny, kopie uzamčena nebude.
-		/// </summary>
-		public CacheOptions Clone()
+		set
 		{
-			return new CacheOptions
-			{
-				AbsoluteExpiration = this.AbsoluteExpiration,
-				SlidingExpiration = this.SlidingExpiration,
-				Priority = this.Priority,
-				Size = this.Size,
-				CacheDependencyKeys = this.CacheDependencyKeys
-			};
+			ThrowIfFrozen();
+			priority = value;
 		}
+	}
+	private CacheItemPriority priority = CacheItemPriority.Normal;
 
-		/// <summary>
-		/// Zamkne kolekci vůči změnám. Od toho okamžiku není možné změnit položky v kolekci.
-		/// </summary>
-		[EditorBrowsable(EditorBrowsableState.Advanced)]
-		public void Freeze()
+	/// <summary>
+	/// Odhadovaná velikost položky v cache (použito jen pro IMemoryCache, bezrozměrná jednotka).
+	/// </summary>
+	public int? Size
+	{
+		get
 		{
-			isFrozen = true;
+			return size;
 		}
-		private bool isFrozen = false;
-
-		/// <summary>
-		/// Pokud je nastaven příznak isFrozen, vyhodí výjimku InvalidOperationException.
-		/// </summary>
-		private void ThrowIfFrozen()
+		set
 		{
-			if (this.isFrozen)
-			{
-				throw new InvalidOperationException("CacheOptions are frozen, cannot be modified.");
-			}
+			ThrowIfFrozen();
+			size = value;
+		}
+	}
+	private int? size;
+
+	/// <summary>
+	/// Cache dependencies - Klíče, na kterých je položka závislá.
+	/// </summary>
+	public string[] CacheDependencyKeys
+	{
+		get
+		{
+			return cacheDependencyKeys;
+		}
+		set
+		{
+			ThrowIfFrozen();
+			cacheDependencyKeys = value;
+		}
+	}
+	private string[] cacheDependencyKeys;
+
+	/// <summary>
+	/// Vytvoří kopii cache options.
+	/// Pokud je zdrojová cache options uzamčena pro změny, kopie uzamčena nebude.
+	/// </summary>
+	public CacheOptions Clone()
+	{
+		return new CacheOptions
+		{
+			AbsoluteExpiration = this.AbsoluteExpiration,
+			SlidingExpiration = this.SlidingExpiration,
+			Priority = this.Priority,
+			Size = this.Size,
+			CacheDependencyKeys = this.CacheDependencyKeys
+		};
+	}
+
+	/// <summary>
+	/// Zamkne kolekci vůči změnám. Od toho okamžiku není možné změnit položky v kolekci.
+	/// </summary>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	public void Freeze()
+	{
+		isFrozen = true;
+	}
+	private bool isFrozen = false;
+
+	/// <summary>
+	/// Pokud je nastaven příznak isFrozen, vyhodí výjimku InvalidOperationException.
+	/// </summary>
+	private void ThrowIfFrozen()
+	{
+		if (this.isFrozen)
+		{
+			throw new InvalidOperationException("CacheOptions are frozen, cannot be modified.");
 		}
 	}
 }

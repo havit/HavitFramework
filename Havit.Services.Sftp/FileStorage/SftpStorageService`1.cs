@@ -1,19 +1,18 @@
 ﻿using Havit.Services.FileStorage;
 
-namespace Havit.Services.Sftp.FileStorage
+namespace Havit.Services.Sftp.FileStorage;
+
+/// <summary>
+/// Úložiště souborů jako klient SFTP serveru.
+/// </summary>
+public class SftpStorageService<TFileStorageContext> : SftpStorageService, IFileStorageService<TFileStorageContext>
+	where TFileStorageContext : FileStorageContext
 {
 	/// <summary>
-	/// Úložiště souborů jako klient SFTP serveru.
+	/// Konstruktor.
 	/// </summary>
-	public class SftpStorageService<TFileStorageContext> : SftpStorageService, IFileStorageService<TFileStorageContext>
-		where TFileStorageContext : FileStorageContext
+	public SftpStorageService(SftpStorageServiceOptions<TFileStorageContext> options) : base(options)
 	{
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public SftpStorageService(SftpStorageServiceOptions<TFileStorageContext> options) : base(options)
-		{
-			// NOOP
-		}
+		// NOOP
 	}
 }

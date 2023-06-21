@@ -4,31 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.FileStorage
+namespace Havit.Services.FileStorage;
+
+/// <summary>
+/// Detailed file information.
+/// </summary>
+public class FileInfo
 {
 	/// <summary>
-	/// Detailed file information.
+	/// File name.
 	/// </summary>
-	public class FileInfo
-	{
-		/// <summary>
-		/// File name.
-		/// </summary>
-		public string Name { get; set; }
+	public string Name { get; set; }
 
-		/// <summary>
-		/// Date of last modification.
-		/// </summary>
-		public DateTime LastModifiedUtc { get; set; }
+	/// <summary>
+	/// Date of last modification.
+	/// </summary>
+	public DateTime LastModifiedUtc { get; set; }
 
-		/// <summary>
-		/// Size of file. In bytes.
-		/// </summary>
-		public long Size { get; set; }
+	/// <summary>
+	/// Size of file. In bytes.
+	/// </summary>
+	public long Size { get; set; }
 
-		/// <summary>
-		/// Content Type.
-		/// </summary>
-		public string ContentType { get; set; }
-	}
+	/// <summary>
+	/// Content Type.
+	/// </summary>
+	public string ContentType { get; set; }
 }

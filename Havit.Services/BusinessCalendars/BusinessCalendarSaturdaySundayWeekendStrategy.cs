@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Havit.Services.BusinessCalendars
+namespace Havit.Services.BusinessCalendars;
+
+public class BusinessCalendarSaturdaySundayWeekendStrategy : IIsWeekendStrategy
 {
-	public class BusinessCalendarSaturdaySundayWeekendStrategy : IIsWeekendStrategy
+	public bool IsWeekend(DateTime date)
 	{
-		public bool IsWeekend(DateTime date)
-		{
-			return (date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday);
-		}
+		return (date.DayOfWeek == DayOfWeek.Saturday) || (date.DayOfWeek == DayOfWeek.Sunday);
 	}
 }

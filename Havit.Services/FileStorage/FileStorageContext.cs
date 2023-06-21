@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.FileStorage
+namespace Havit.Services.FileStorage;
+
+public abstract class FileStorageContext
 {
-	public abstract class FileStorageContext
-	{
-	}
 }

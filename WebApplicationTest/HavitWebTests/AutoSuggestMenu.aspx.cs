@@ -15,38 +15,37 @@ using Havit.BusinessLayerTest;
 using Havit.Business.Query;
 using System.Linq;
 
-namespace Havit.WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests;
+
+public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
 {
-	public partial class AutoSuggestMenu_aspx : System.Web.UI.Page
+	public int Counter
 	{
-		public int Counter
+		get => (int)(ViewState["Counter"] ?? 0);
+		set => ViewState["Counter"] = value;
+	}
+
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
+		Counter += 1;
+
+		TimestampLabel.Text = Convert.ToString(DateTime.Now);
+		CounterLabel.Text = Counter.ToString();
+		
+		SubjektLabel.Text = SubjektASM.SelectedValue;
+		
+		AsyncLabel.Text = Page.IsPostBack
+			? (ScriptManager.GetCurrent(this).IsInAsyncPostBack ? "Async PostBack" : "Classic PostBack")
+			: "GET";
+
+		if (!Page.IsPostBack)
 		{
-			get => (int)(ViewState["Counter"] ?? 0);
-			set => ViewState["Counter"] = value;
-		}
+			MyRepeater.DataSource = new int[] { 1, 2, 3 };
+			MyRepeater.DataBind();
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-			Counter += 1;
-
-			TimestampLabel.Text = Convert.ToString(DateTime.Now);
-			CounterLabel.Text = Counter.ToString();
-			
-			SubjektLabel.Text = SubjektASM.SelectedValue;
-			
-			AsyncLabel.Text = Page.IsPostBack
-				? (ScriptManager.GetCurrent(this).IsInAsyncPostBack ? "Async PostBack" : "Classic PostBack")
-				: "GET";
-
-			if (!Page.IsPostBack)
-			{
-				MyRepeater.DataSource = new int[] { 1, 2, 3 };
-				MyRepeater.DataBind();
-
-				MyGridView.DataSource = new int[] { 1, 2, 3 };
-				MyGridView.DataBind();
-			}
+			MyGridView.DataSource = new int[] { 1, 2, 3 };
+			MyGridView.DataBind();
 		}
 	}
 }

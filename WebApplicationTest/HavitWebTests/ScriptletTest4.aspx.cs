@@ -9,30 +9,29 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace Havit.WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests;
+
+public partial class ScriptletTest4 : System.Web.UI.Page
 {
-	public partial class ScriptletTest4 : System.Web.UI.Page
+	protected override void OnInit(EventArgs e)
 	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+		base.OnInit(e);
 
-			ShowButton.Click += ShowButton_Click;
-			HideButton.Click += HideButton_Click;
-		}
+		ShowButton.Click += ShowButton_Click;
+		HideButton.Click += HideButton_Click;
+	}
 
-		private void ShowButton_Click(object sender, EventArgs e)
-		{
-			HideButton.Visible = true;
-			ShowButton.Visible = false;
-			MyPanel.Visible = true;
-		}
+	private void ShowButton_Click(object sender, EventArgs e)
+	{
+		HideButton.Visible = true;
+		ShowButton.Visible = false;
+		MyPanel.Visible = true;
+	}
 
-		private void HideButton_Click(object sender, EventArgs e)
-		{
-			HideButton.Visible = false;
-			ShowButton.Visible = true;
-			MyPanel.Visible = false;
-		}
+	private void HideButton_Click(object sender, EventArgs e)
+	{
+		HideButton.Visible = false;
+		ShowButton.Visible = true;
+		MyPanel.Visible = false;
 	}
 }

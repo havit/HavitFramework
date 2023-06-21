@@ -12,48 +12,47 @@ using System.Web.UI.HtmlControls;
 using Havit.BusinessLayerTest;
 using Havit.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitEnterpriseWebTests
+namespace Havit.WebApplicationTest.HavitEnterpriseWebTests;
+
+public partial class EnterpriseDropDownListTest : System.Web.UI.Page
 {
-	public partial class EnterpriseDropDownListTest : System.Web.UI.Page
+	protected Havit.Web.UI.WebControls.EnterpriseGridView Test1GV;
+	protected Havit.Web.UI.WebControls.EnterpriseGridView Test2GV;
+	protected Repeater TestRepeater;
+	protected EnterpriseDropDownList AutoPostBackEDDL;
+	protected Label AutoPostBackResultLabel;
+
+	protected override void OnInit(EventArgs e)
 	{
-		protected Havit.Web.UI.WebControls.EnterpriseGridView Test1GV;
-		protected Havit.Web.UI.WebControls.EnterpriseGridView Test2GV;
-		protected Repeater TestRepeater;
-		protected EnterpriseDropDownList AutoPostBackEDDL;
-		protected Label AutoPostBackResultLabel;
+		base.OnInit(e);
+		AutoPostBackEDDL.SelectedIndexChanged += new EventHandler(AutoPostBackEDDL_SelectedIndexChanged);
+		Test1GV.DataBinding += new EventHandler(TestGV_DataBinding);
+		Test2GV.DataBinding += new EventHandler(TestGV_DataBinding);
+	}
 
-		protected override void OnInit(EventArgs e)
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
+
+		if (!Page.IsPostBack)
 		{
-			base.OnInit(e);
-			AutoPostBackEDDL.SelectedIndexChanged += new EventHandler(AutoPostBackEDDL_SelectedIndexChanged);
-			Test1GV.DataBinding += new EventHandler(TestGV_DataBinding);
-			Test2GV.DataBinding += new EventHandler(TestGV_DataBinding);
+			AutoPostBackEDDL.DataSource = Role.GetAll();
+			AutoPostBackEDDL.DataBind();
 		}
+		Test1GV.DataBind();
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+		TestRepeater.DataSource = Subjekt.GetAll();
+		TestRepeater.DataBind();
+	}
 
-			if (!Page.IsPostBack)
-			{
-				AutoPostBackEDDL.DataSource = Role.GetAll();
-				AutoPostBackEDDL.DataBind();
-			}
-			Test1GV.DataBind();
+	private void AutoPostBackEDDL_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		AutoPostBackResultLabel.Text = ((Role)AutoPostBackEDDL.SelectedObject).Symbol;
+	}
 
-			TestRepeater.DataSource = Subjekt.GetAll();
-			TestRepeater.DataBind();
-		}
+	private void TestGV_DataBinding(object sender, EventArgs e)
+	{
+		((Havit.Web.UI.WebControls.EnterpriseGridView)sender).DataSource = Subjekt.GetAll().Take(3).ToList();
 
-		private void AutoPostBackEDDL_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			AutoPostBackResultLabel.Text = ((Role)AutoPostBackEDDL.SelectedObject).Symbol;
-		}
-
-		private void TestGV_DataBinding(object sender, EventArgs e)
-		{
-			((Havit.Web.UI.WebControls.EnterpriseGridView)sender).DataSource = Subjekt.GetAll().Take(3).ToList();
-
-		}
 	}
 }

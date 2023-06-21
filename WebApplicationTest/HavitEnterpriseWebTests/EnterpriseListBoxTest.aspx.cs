@@ -4,9 +4,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitEnterpriseWebTests
+namespace Havit.WebApplicationTest.HavitEnterpriseWebTests;
+
+public partial class EnterpriseListBoxTest : System.Web.UI.Page
 {
-	public partial class EnterpriseListBoxTest : System.Web.UI.Page
-	{
-	}
 }

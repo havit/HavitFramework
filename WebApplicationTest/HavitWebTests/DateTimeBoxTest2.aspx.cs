@@ -5,28 +5,27 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests;
+
+public partial class DateTimeBoxTest2 : System.Web.UI.Page
 {
-	public partial class DateTimeBoxTest2 : System.Web.UI.Page
+	protected override void OnInit(EventArgs e)
 	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			ShowButton.Click += ShowButton_Click;
-		}
+		base.OnInit(e);
+		ShowButton.Click += ShowButton_Click;
+	}
 
-		protected override void OnLoad(EventArgs e)
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
+		if (!Page.IsPostBack)
 		{
-			base.OnLoad(e);
-			if (!Page.IsPostBack)
-			{
-				HiddenPanel.DataBind();
-			}
+			HiddenPanel.DataBind();
 		}
+	}
 
-		private void ShowButton_Click(object sender, EventArgs e)
-		{
-			HiddenPanel.Visible = true;
-		}
+	private void ShowButton_Click(object sender, EventArgs e)
+	{
+		HiddenPanel.Visible = true;
 	}
 }

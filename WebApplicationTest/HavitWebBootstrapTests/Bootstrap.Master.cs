@@ -5,9 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests;
+
+public partial class Bootstrap : System.Web.UI.MasterPage
 {
-	public partial class Bootstrap : System.Web.UI.MasterPage
-	{
-	}
 }

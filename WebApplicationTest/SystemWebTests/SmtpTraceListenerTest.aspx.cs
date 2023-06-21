@@ -8,44 +8,43 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.SystemWebTests
+namespace Havit.WebApplicationTest.SystemWebTests;
+
+public partial class SmtpTraceListenerTest : System.Web.UI.Page
 {
-	public partial class SmtpTraceListenerTest : System.Web.UI.Page
+	protected override void OnInit(EventArgs e)
 	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+		base.OnInit(e);
 
-			ExceptionCodeButton.Click += ExceptionCodeButton_Click;
-			ExceptionBackgroundThreadButton.Click += ExceptionBackgroundThreadButton_Click;
-			ExceptionTaskButton.Click += ExceptionTaskButton_Click;
+		ExceptionCodeButton.Click += ExceptionCodeButton_Click;
+		ExceptionBackgroundThreadButton.Click += ExceptionBackgroundThreadButton_Click;
+		ExceptionTaskButton.Click += ExceptionTaskButton_Click;
+	}
+
+	private void ExceptionCodeButton_Click(object sender, EventArgs e)
+	{
+		DoTrace(ExceptionCodeButton.Text);
+	}
+
+	private void ExceptionBackgroundThreadButton_Click(object sender, EventArgs e)
+	{
+		new Thread(() => { DoTrace(ExceptionBackgroundThreadButton.Text); }).Start();
+	}
+
+	private void ExceptionTaskButton_Click(object sender, EventArgs e)
+	{
+		Task.Factory.StartNew(() => { DoTrace(ExceptionTaskButton.Text); });			
+	}
+
+	private static void DoTrace(string message)
+	{
+		try
+		{
+			throw new ApplicationException(message);
 		}
-
-		private void ExceptionCodeButton_Click(object sender, EventArgs e)
+		catch (Exception exception)
 		{
-			DoTrace(ExceptionCodeButton.Text);
-		}
-
-		private void ExceptionBackgroundThreadButton_Click(object sender, EventArgs e)
-		{
-			new Thread(() => { DoTrace(ExceptionBackgroundThreadButton.Text); }).Start();
-		}
-
-		private void ExceptionTaskButton_Click(object sender, EventArgs e)
-		{
-			Task.Factory.StartNew(() => { DoTrace(ExceptionTaskButton.Text); });			
-		}
-
-		private static void DoTrace(string message)
-		{
-			try
-			{
-				throw new ApplicationException(message);
-			}
-			catch (Exception exception)
-			{
-				ExceptionTracer.Default.TraceException(exception);
-			}
+			ExceptionTracer.Default.TraceException(exception);
 		}
 	}
 }

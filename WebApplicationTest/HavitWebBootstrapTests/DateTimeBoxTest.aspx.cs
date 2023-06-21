@@ -7,10 +7,9 @@ using System.Web.UI.WebControls;
 
 using Havit.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebBootstrapTests
-{
-	public partial class DateTimeBoxTest : System.Web.UI.Page
-	{
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests;
 
-	}
+public partial class DateTimeBoxTest : System.Web.UI.Page
+{
+
 }

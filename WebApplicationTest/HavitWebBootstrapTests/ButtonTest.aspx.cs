@@ -5,9 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests;
+
+public partial class ButtonTest : System.Web.UI.Page
 {
-	public partial class ButtonTest : System.Web.UI.Page
-	{
-	}
 }

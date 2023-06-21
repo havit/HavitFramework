@@ -7,35 +7,35 @@ using System.Web.UI.WebControls;
 
 using Havit.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests;
+
+using Havit.BusinessLayerTest;
+
+public partial class GridViewExtTest : System.Web.UI.Page
 {
-	using Havit.BusinessLayerTest;
-
-	public partial class GridViewExtTest : System.Web.UI.Page
+	protected override void OnInit(EventArgs e)
 	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			MainGV.DataBinding += MainGV_DataBinding;
-			MainGV.GetInsertRowDataItem += MainGV_GetInsertRowDataItem;
-		}
+		base.OnInit(e);
+		MainGV.DataBinding += MainGV_DataBinding;
+		MainGV.GetInsertRowDataItem += MainGV_GetInsertRowDataItem;
+	}
 
-		protected override void OnLoad(EventArgs e)
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
+		if (!Page.IsPostBack)
 		{
-			base.OnLoad(e);
-			if (!Page.IsPostBack)
-			{
-				BindValues();
-			}
+			BindValues();
 		}
+	}
 
-		private void BindValues()
-		{
-			MainGV.SetRequiresDatabinding();
-		}
+	private void BindValues()
+	{
+		MainGV.SetRequiresDatabinding();
+	}
 
-		private void MainGV_DataBinding(object sender, EventArgs e)
-		{
+	private void MainGV_DataBinding(object sender, EventArgs e)
+	{
             if (mainGVDataBindingCalled)
             {
                 throw new ApplicationException("Necheme v jednom requestu více databindingů (testujeme VirtualItemsCount a vliv na modaleditorextender)!");
@@ -50,8 +50,7 @@ namespace Havit.WebApplicationTest.HavitWebBootstrapTests
         private bool mainGVDataBindingCalled = false;
 
         private object MainGV_GetInsertRowDataItem()
-		{
-			return Subjekt.CreateObject();
-		}
+	{
+		return Subjekt.CreateObject();
 	}
 }

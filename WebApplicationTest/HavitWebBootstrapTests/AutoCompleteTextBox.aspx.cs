@@ -5,9 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests;
+
+public partial class AutoCompleteTextBox : System.Web.UI.Page
 {
-	public partial class AutoCompleteTextBox : System.Web.UI.Page
-	{
-	}
 }

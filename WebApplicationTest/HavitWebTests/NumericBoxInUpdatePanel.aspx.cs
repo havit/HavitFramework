@@ -5,30 +5,29 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests;
+
+public partial class NumericBoxInUpdatePanel : System.Web.UI.Page
 {
-	public partial class NumericBoxInUpdatePanel : System.Web.UI.Page
+	protected override void OnInit(EventArgs e)
 	{
-		protected override void OnInit(EventArgs e)
+		base.OnInit(e);
+
+		AsyncPostButton.Click += AsyncPostButton_Click;
+	}
+
+	protected override void OnLoad(EventArgs e)
+	{
+		base.OnLoad(e);
+
+		if (!IsPostBack)
 		{
-			base.OnInit(e);
-
-			AsyncPostButton.Click += AsyncPostButton_Click;
+			NumericBoxInUP.Visible = false;
 		}
+	}
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			if (!IsPostBack)
-			{
-				NumericBoxInUP.Visible = false;
-			}
-		}
-
-		private void AsyncPostButton_Click(object sender, EventArgs e)
-		{
-			NumericBoxInUP.Visible = true;
-		}
+	private void AsyncPostButton_Click(object sender, EventArgs e)
+	{
+		NumericBoxInUP.Visible = true;
 	}
 }

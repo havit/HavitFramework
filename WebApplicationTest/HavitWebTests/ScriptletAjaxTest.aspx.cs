@@ -9,23 +9,22 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-namespace Havit.WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests;
+
+public partial class ScriptletAjaxTest1 : System.Web.UI.Page
 {
-	public partial class ScriptletAjaxTest1 : System.Web.UI.Page
+	protected override void OnLoad(EventArgs e)
 	{
-		protected override void OnLoad(EventArgs e)
+		base.OnLoad(e);
+
+		if (!Page.IsPostBack)
 		{
-			base.OnLoad(e);
+			TestRepeater.DataSource = System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.MonthNames;
+			TestRepeater.DataBind();
 
-			if (!Page.IsPostBack)
-			{
-				TestRepeater.DataSource = System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.MonthNames;
-				TestRepeater.DataBind();
+			TestGridView.DataSource = System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.MonthNames;
+			TestGridView.DataBind();
 
-				TestGridView.DataSource = System.Threading.Thread.CurrentThread.CurrentUICulture.DateTimeFormat.MonthNames;
-				TestGridView.DataBind();
-
-			}
 		}
 	}
 }

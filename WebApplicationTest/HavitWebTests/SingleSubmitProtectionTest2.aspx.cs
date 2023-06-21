@@ -6,13 +6,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.WebApplicationTest
+namespace Havit.WebApplicationTest;
+
+public partial class SingleSubmitProtectionTest2 : System.Web.UI.Page
 {
-	public partial class SingleSubmitProtectionTest2 : System.Web.UI.Page
+	protected void Page_Load(object sender, EventArgs e)
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			Thread.Sleep(2500);
-		}
+		Thread.Sleep(2500);
 	}
 }

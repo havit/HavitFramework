@@ -12,45 +12,44 @@ using System.Web.UI.HtmlControls;
 using Havit.BusinessLayerTest;
 using System.Diagnostics;
 
-namespace Havit.WebApplicationTest.HavitWebTests
+namespace Havit.WebApplicationTest.HavitWebTests;
+
+public partial class NumericBoxTest : System.Web.UI.Page
 {
-	public partial class NumericBoxTest : System.Web.UI.Page
+	protected override void OnInit(EventArgs e)
 	{
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			ExtractButton.Click += ExtractButton_Click;
-		}
+		base.OnInit(e);
+		ExtractButton.Click += ExtractButton_Click;
+	}
 
-		private void ExtractButton_Click(object sender, EventArgs e)
-		{			
-			DataClass data = new DataClass();
-			MyFormView.ExtractValues(data);
-			Debugger.Break();
-		}
+	private void ExtractButton_Click(object sender, EventArgs e)
+	{			
+		DataClass data = new DataClass();
+		MyFormView.ExtractValues(data);
+		Debugger.Break();
+	}
 
-		protected override void OnLoad(EventArgs e)
+	protected override void OnLoad(EventArgs e)
+	{
+		if (!Page.IsPostBack)
 		{
-			if (!Page.IsPostBack)
-			{
-				MyFormView.DataSource = new DataClass();
-				MyFormView.DataBind();
-			}
+			MyFormView.DataSource = new DataClass();
+			MyFormView.DataBind();
 		}
+	}
 
-		protected override void OnPreRender(EventArgs e)
+	protected override void OnPreRender(EventArgs e)
+	{
+		base.OnPreRender(e);
+		if (Page.IsPostBack)
 		{
-			base.OnPreRender(e);
-			if (Page.IsPostBack)
-			{
-				CallBackButton.Text = Page.IsValid.ToString();
-			}
+			CallBackButton.Text = Page.IsValid.ToString();
 		}
+	}
 
-		public class DataClass
-		{
-			public int IntegerValue { get; set; }
-			public int? NullableIntegerValue { get; set; }
-		}
+	public class DataClass
+	{
+		public int IntegerValue { get; set; }
+		public int? NullableIntegerValue { get; set; }
 	}
 }

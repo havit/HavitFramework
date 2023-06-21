@@ -6,14 +6,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.Bootstrap.UI.WebControls;
 
-namespace Havit.WebApplicationTest.HavitWebBootstrapTests
+namespace Havit.WebApplicationTest.HavitWebBootstrapTests;
+
+public partial class NavbarTest : System.Web.UI.Page
 {
-	public partial class NavbarTest : System.Web.UI.Page
+	protected override void OnLoad(EventArgs e)
 	{
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-			FirstNavbar.DataBind();
-		}
+		base.OnLoad(e);
+		FirstNavbar.DataBind();
 	}
 }

@@ -5,14 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Havit.Web.Bootstrap.Tutorial.Templates
+namespace Havit.Web.Bootstrap.Tutorial.Templates;
+
+public partial class Main : System.Web.UI.MasterPage
 {
-	public partial class Main : System.Web.UI.MasterPage
+	protected override void OnPreRender(EventArgs e)
 	{
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
-			TopPH.Visible = TopCPH.HasControls();
-		}
+		base.OnPreRender(e);
+		TopPH.Visible = TopCPH.HasControls();
 	}
 }

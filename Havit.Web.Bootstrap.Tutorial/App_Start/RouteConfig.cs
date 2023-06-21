@@ -4,15 +4,14 @@ using System.Web;
 using System.Web.Routing;
 using Microsoft.AspNet.FriendlyUrls;
 
-namespace Havit.Web.Bootstrap.Tutorial
-{
+namespace Havit.Web.Bootstrap.Tutorial;
+
     public static class RouteConfig
-	{
-		public static void RegisterRoutes(RouteCollection routes)
+{
+	public static void RegisterRoutes(RouteCollection routes)
         {
             var settings = new FriendlyUrlSettings();
             settings.AutoRedirectMode = RedirectMode.Permanent;
             routes.EnableFriendlyUrls(settings);
-		}
 	}
 }

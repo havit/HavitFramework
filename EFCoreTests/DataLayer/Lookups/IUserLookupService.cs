@@ -1,9 +1,8 @@
 ﻿using Havit.EFCoreTests.Model;
 
-namespace Havit.EFCoreTests.DataLayer.Lookups
+namespace Havit.EFCoreTests.DataLayer.Lookups;
+
+public interface IUserLookupService
 {
-	public interface IUserLookupService
-	{
-		User GetUserByUsername(string username);
-	}
+	User GetUserByUsername(string username);
 }

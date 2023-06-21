@@ -7,8 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HangfireWeb.Pages
-{
+namespace HangfireWeb.Pages;
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
@@ -29,4 +29,3 @@ namespace HangfireWeb.Pages
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
     }
-}

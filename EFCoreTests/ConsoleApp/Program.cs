@@ -38,68 +38,67 @@ using Microsoft.Extensions.Hosting;
 using System.Threading;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-namespace ConsoleApp1
+namespace ConsoleApp1;
+
+public static class Program
 {
-	public static class Program
+	public static void Main(string[] args)
 	{
-		public static void Main(string[] args)
+		var host = Host.CreateDefaultBuilder(args)
+			.ConfigureAppConfiguration(configurationBuilder =>
+				configurationBuilder.AddJsonFile("appsettings.ConsoleApp.json", optional: false)
+			)
+			.ConfigureLogging((hostingContext, logging) => logging
+			.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] "))
+			.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
+			.Build();
+
+		UpdateDatabase(host.Services);
+		Debug(host.Services);
+	}
+
+	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
+	{
+		services.WithEntityPatternsInstaller()
+			.AddDataLayer(typeof(IPersonRepository).Assembly)
+			.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
+				optionsBuilder
+					.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
+					.EnableSensitiveDataLogging(true))
+			//.UseInMemoryDatabase("ConsoleApp")
+			.AddEntityPatterns()
+			.AddLookupService<IUserLookupService, UserLookupService>();
+
+		services.AddSingleton<ITimeService, ServerTimeService>();
+		services.AddSingleton<ICacheService, MemoryCacheService>();
+		services.AddSingleton<IOptions<MemoryCacheOptions>, OptionsManager<MemoryCacheOptions>>();
+		services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
+		services.AddSingleton<IMemoryCache, MemoryCache>();
+	}
+
+	private static void UpdateDatabase(IServiceProvider serviceProvider)
+	{
+		using (var scope = serviceProvider.CreateScope())
 		{
-			var host = Host.CreateDefaultBuilder(args)
-				.ConfigureAppConfiguration(configurationBuilder =>
-					configurationBuilder.AddJsonFile("appsettings.ConsoleApp.json", optional: false)
-				)
-				.ConfigureLogging((hostingContext, logging) => logging
-				.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] "))
-				.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
-				.Build();
-
-			UpdateDatabase(host.Services);
-			Debug(host.Services);
+			//scope.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
+			scope.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
+			scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>();
 		}
+	}
 
-		private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
-		{
-			services.WithEntityPatternsInstaller()
-				.AddDataLayer(typeof(IPersonRepository).Assembly)
-				.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
-					optionsBuilder
-						.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
-						.EnableSensitiveDataLogging(true))
-				//.UseInMemoryDatabase("ConsoleApp")
-				.AddEntityPatterns()
-				.AddLookupService<IUserLookupService, UserLookupService>();
-
-			services.AddSingleton<ITimeService, ServerTimeService>();
-			services.AddSingleton<ICacheService, MemoryCacheService>();
-			services.AddSingleton<IOptions<MemoryCacheOptions>, OptionsManager<MemoryCacheOptions>>();
-			services.AddSingleton(typeof(IOptionsFactory<MemoryCacheOptions>), new OptionsFactory<MemoryCacheOptions>(Enumerable.Empty<IConfigureOptions<MemoryCacheOptions>>(), Enumerable.Empty<IPostConfigureOptions<MemoryCacheOptions>>()));
-			services.AddSingleton<IMemoryCache, MemoryCache>();
-		}
-
-		private static void UpdateDatabase(IServiceProvider serviceProvider)
+	private static void Debug(IServiceProvider serviceProvider)
+	{
+		Stopwatch sw = Stopwatch.StartNew();
+		for (int i = 0; i < 10_000; i++)
 		{
 			using (var scope = serviceProvider.CreateScope())
 			{
-				//scope.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
-				scope.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
-				scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>();
+				var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
+
+				repository.GetObject(1);
 			}
 		}
-
-		private static void Debug(IServiceProvider serviceProvider)
-		{
-			Stopwatch sw = Stopwatch.StartNew();
-			for (int i = 0; i < 10_000; i++)
-			{
-				using (var scope = serviceProvider.CreateScope())
-				{
-					var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
-
-					repository.GetObject(1);
-				}
-			}
-			Console.WriteLine(sw.ElapsedMilliseconds);
-		}
-
+		Console.WriteLine(sw.ElapsedMilliseconds);
 	}
+
 }

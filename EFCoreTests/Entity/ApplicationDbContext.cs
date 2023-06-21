@@ -4,25 +4,24 @@ using Havit.EFCoreTests.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Havit.EFCoreTests.Entity
+namespace Havit.EFCoreTests.Entity;
+
+public class ApplicationDbContext : Havit.Data.EntityFrameworkCore.DbContext
 {
-	public class ApplicationDbContext : Havit.Data.EntityFrameworkCore.DbContext
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public ApplicationDbContext(DbContextOptions options) : base(options)
 	{
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public ApplicationDbContext(DbContextOptions options) : base(options)
-		{
-			// NOOP
-		}
+		// NOOP
+	}
 
-		/// <inheritdoc />
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-		{
-			base.CustomizeModelCreating(modelBuilder);
+	/// <inheritdoc />
+	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+	{
+		base.CustomizeModelCreating(modelBuilder);
 
-			modelBuilder.RegisterModelFromAssembly(typeof(Havit.EFCoreTests.Model.Person).Assembly);
-			modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
-		}
+		modelBuilder.RegisterModelFromAssembly(typeof(Havit.EFCoreTests.Model.Person).Assembly);
+		modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 	}
 }

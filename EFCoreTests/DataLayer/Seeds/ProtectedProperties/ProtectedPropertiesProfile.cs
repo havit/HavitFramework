@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties
+namespace Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;
+
+public class ProtectedPropertiesProfile : DataSeedProfile
 {
-	public class ProtectedPropertiesProfile : DataSeedProfile
-	{
-	}
 }

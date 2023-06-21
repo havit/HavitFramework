@@ -2,8 +2,8 @@
 
 #nullable disable
 
-namespace Havit.EFCoreTests.Entity.Migrations
-{
+namespace Havit.EFCoreTests.Entity.Migrations;
+
     /// <inheritdoc />
     public partial class StateAndLocalization2 : Migration
     {
@@ -34,4 +34,3 @@ namespace Havit.EFCoreTests.Entity.Migrations
                 column: "ParentId");
         }
     }
-}

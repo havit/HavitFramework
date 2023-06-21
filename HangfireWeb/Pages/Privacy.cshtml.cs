@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HangfireWeb.Pages
-{
+namespace HangfireWeb.Pages;
+
     public class PrivacyModel : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
@@ -21,4 +21,3 @@ namespace HangfireWeb.Pages
         {
         }
     }
-}

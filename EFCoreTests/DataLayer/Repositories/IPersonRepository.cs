@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using Havit.Data.Patterns.Repositories;
 using Havit.EFCoreTests.Model;
 
-namespace Havit.EFCoreTests.DataLayer.Repositories
-{
-	public partial interface IPersonRepository
-	{
+namespace Havit.EFCoreTests.DataLayer.Repositories;
 
-	}
+public partial interface IPersonRepository
+{
+
 }

@@ -10,10 +10,9 @@ using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.EFCoreTests.Model;
 
-namespace Havit.EFCoreTests.DataLayer.Repositories
-{
-	public partial class PersonDbRepository : IPersonRepository
-	{
+namespace Havit.EFCoreTests.DataLayer.Repositories;
 
-	}
+public partial class PersonDbRepository : IPersonRepository
+{
+
 }

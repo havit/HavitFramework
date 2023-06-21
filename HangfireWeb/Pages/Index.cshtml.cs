@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HangfireWeb.Pages
-{
+namespace HangfireWeb.Pages;
+
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
@@ -22,4 +22,3 @@ namespace HangfireWeb.Pages
 
         }
     }
-}

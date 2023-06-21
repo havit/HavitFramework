@@ -5,14 +5,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.HangfireJobs.Jobs
+namespace Havit.HangfireJobs.Jobs;
+
+public class JobTwo : IJobTwo
 {
-	public class JobTwo : IJobTwo
+	public Task ExecuteAsync(CancellationToken cancellationToken)
 	{
-		public Task ExecuteAsync(CancellationToken cancellationToken)
-		{
-			Console.WriteLine("Job two");
-			return Task.CompletedTask;
-		}
+		Console.WriteLine("Job two");
+		return Task.CompletedTask;
 	}
 }

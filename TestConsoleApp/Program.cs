@@ -6,17 +6,16 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace TestConsoleApp
+namespace TestConsoleApp;
+
+public class Program
 {
-	public class Program
+	public static void Main()
 	{
-		public static void Main()
+		string[] strings = { "a.txt", "b.txt", "c.TXt", "d.TXT" };
+		foreach (string s in strings.Where(item => RegexPatterns.IsFileWildcardMatch(item.ToLower(), "*.TXT".ToLower())))
 		{
-			string[] strings = { "a.txt", "b.txt", "c.TXt", "d.TXT" };
-			foreach (string s in strings.Where(item => RegexPatterns.IsFileWildcardMatch(item.ToLower(), "*.TXT".ToLower())))
-			{
-				Console.WriteLine(s);
-			}
+			Console.WriteLine(s);
 		}
 	}
 }

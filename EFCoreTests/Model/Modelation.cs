@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.EFCoreTests.Model
-{
-	public class Modelation
-	{
-		public int Id { get; set; }
+namespace Havit.EFCoreTests.Model;
 
-		public BusinessCase BusinessCase { get; set; }
-		public int BusinessCaseId { get; set; }
-	}
+public class Modelation
+{
+	public int Id { get; set; }
+
+	public BusinessCase BusinessCase { get; set; }
+	public int BusinessCaseId { get; set; }
 }

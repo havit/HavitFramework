@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Havit.Tests.GoPay.Matchers
-{
+namespace Havit.Tests.GoPay.Matchers;
+
     /// <summary>
     /// Matches requests on request content
     /// </summary>
@@ -28,12 +28,11 @@ namespace Havit.Tests.GoPay.Matchers
         /// <returns>true if the request was matched; false otherwise</returns>
         public bool Matches(System.Net.Http.HttpRequestMessage message)
         {
-	        if (message.Content == null)
-	        {
-				return false;
-			}
+        if (message.Content == null)
+        {
+			return false;
+		}
             string actualContent = message.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             return actualContent == content;
         }
     }
-}

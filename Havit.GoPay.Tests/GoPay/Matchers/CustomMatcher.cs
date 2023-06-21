@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace Havit.Tests.GoPay.Matchers
-{
+namespace Havit.Tests.GoPay.Matchers;
+
     /// <summary>
     /// Matches requests using a custom delegate
     /// </summary>
@@ -19,10 +19,10 @@ namespace Havit.Tests.GoPay.Matchers
         /// <param name="matcher">The matcher delegate</param>
         public CustomMatcher(Func<HttpRequestMessage, bool> matcher)
         {
-	        if (matcher == null)
-	        {
-				throw new ArgumentNullException(nameof(matcher));
-			}
+        if (matcher == null)
+        {
+			throw new ArgumentNullException(nameof(matcher));
+		}
                 
             this.matcher = matcher;
         }
@@ -37,4 +37,3 @@ namespace Havit.Tests.GoPay.Matchers
             return matcher(message);
         }
     }
-}

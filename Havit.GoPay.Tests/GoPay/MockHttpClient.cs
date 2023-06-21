@@ -7,30 +7,29 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Tests.GoPay
+namespace Havit.Tests.GoPay;
+
+public class MockHttpClient : HttpClient
 {
-	public class MockHttpClient : HttpClient
+	private readonly Dictionary<Uri, HttpResponseMessage> fakeResponses = new Dictionary<Uri, HttpResponseMessage>();
+
+	public void AddFakeResponse(Uri uri, HttpResponseMessage responseMessage)
 	{
-		private readonly Dictionary<Uri, HttpResponseMessage> fakeResponses = new Dictionary<Uri, HttpResponseMessage>();
+		fakeResponses.Add(uri, responseMessage);
+	}
 
-		public void AddFakeResponse(Uri uri, HttpResponseMessage responseMessage)
+	public new virtual async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+	{
+		return await Task.Run(() =>
 		{
-			fakeResponses.Add(uri, responseMessage);
-		}
-
-		public new virtual async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-		{
-			return await Task.Run(() =>
+			if (fakeResponses.ContainsKey(request.RequestUri))
 			{
-				if (fakeResponses.ContainsKey(request.RequestUri))
-				{
-					return fakeResponses[request.RequestUri];
-				}
-				else
-				{
-					return new HttpResponseMessage(HttpStatusCode.NotFound) { RequestMessage = request };
-				}
-			}, cancellationToken);
-		}
+				return fakeResponses[request.RequestUri];
+			}
+			else
+			{
+				return new HttpResponseMessage(HttpStatusCode.NotFound) { RequestMessage = request };
+			}
+		}, cancellationToken);
 	}
 }

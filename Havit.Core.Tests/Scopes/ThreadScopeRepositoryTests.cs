@@ -2,8 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
-namespace Havit.Tests.Scopes
-{
+namespace Havit.Tests.Scopes;
+
     [TestClass]
     public class ThreadScopeRepositoryTests
     {
@@ -64,4 +64,3 @@ namespace Havit.Tests.Scopes
         }
 
     }
-}

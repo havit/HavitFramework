@@ -3,79 +3,78 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 
-namespace Havit.Tests
+namespace Havit.Tests;
+
+[TestClass]
+public class MathExtTests
 {
-	[TestClass]
-	public class MathExtTests
+	[TestMethod]
+	public void MathExt_IsInteger_ReturnsFalseForNull()
 	{
-		[TestMethod]
-		public void MathExt_IsInteger_ReturnsFalseForNull()
-		{
-			// arange
-			string text = null;
-			bool expected = false;
+		// arange
+		string text = null;
+		bool expected = false;
 
-			// act
-			var actual = Havit.MathExt.IsInteger(text);
+		// act
+		var actual = Havit.MathExt.IsInteger(text);
 
-			// assert
-			Assert.AreEqual(expected, actual);
-		}
+		// assert
+		Assert.AreEqual(expected, actual);
+	}
 
-		[TestMethod]
-		public void MathExt_IsInteger_ReturnsTrueForPositiveInteger()
-		{
-			// arrange
-			string text = "156";
-			bool expected = true;
+	[TestMethod]
+	public void MathExt_IsInteger_ReturnsTrueForPositiveInteger()
+	{
+		// arrange
+		string text = "156";
+		bool expected = true;
 
-			// act
-			var actual = Havit.MathExt.IsInteger(text);
+		// act
+		var actual = Havit.MathExt.IsInteger(text);
 
-			// assert
-			Assert.AreEqual(expected, actual);
-		}
+		// assert
+		Assert.AreEqual(expected, actual);
+	}
 
-		[TestMethod]
-		public void MathExt_IsInteger_ReturnsTrueForNegativeInteger()
-		{
-			// arrange
-			string text = "-156";
-			bool expected = true;
+	[TestMethod]
+	public void MathExt_IsInteger_ReturnsTrueForNegativeInteger()
+	{
+		// arrange
+		string text = "-156";
+		bool expected = true;
 
-			// act
-			var actual = Havit.MathExt.IsInteger(text);
+		// act
+		var actual = Havit.MathExt.IsInteger(text);
 
-			// assert
-			Assert.AreEqual(expected, actual);
-		}
+		// assert
+		Assert.AreEqual(expected, actual);
+	}
 
-		[TestMethod]
-		public void MathExt_IsIntegerTest_ReturnsFalseForEmptyString()
-		{
-			// arrange
-			string text = String.Empty;
-			bool expected = false;
+	[TestMethod]
+	public void MathExt_IsIntegerTest_ReturnsFalseForEmptyString()
+	{
+		// arrange
+		string text = String.Empty;
+		bool expected = false;
 
-			// act
-			var actual = Havit.MathExt.IsInteger(text);
+		// act
+		var actual = Havit.MathExt.IsInteger(text);
 
-			// assert
-			Assert.AreEqual(expected, actual);
-		}
+		// assert
+		Assert.AreEqual(expected, actual);
+	}
 
-		[TestMethod]
-		public void MathExt_IsIntegerTest_ReturnsFalseForInvalidValue()
-		{
-			// arrange
-			string text = "10.";
-			bool expected = false;
+	[TestMethod]
+	public void MathExt_IsIntegerTest_ReturnsFalseForInvalidValue()
+	{
+		// arrange
+		string text = "10.";
+		bool expected = false;
 
-			// act
-			var actual = Havit.MathExt.IsInteger(text);
+		// act
+		var actual = Havit.MathExt.IsInteger(text);
 
-			// assert
-			Assert.AreEqual(expected, actual);
-		}
+		// assert
+		Assert.AreEqual(expected, actual);
 	}
 }

@@ -11,8 +11,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.GoogleAnalytics.Tests.Measurements
-{
+namespace Havit.GoogleAnalytics.Tests.Measurements;
+
     [TestClass]
     public class GoogleAnalyticsMeasurementApiClientTests
     {
@@ -257,4 +257,3 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
             return configMock.Object;
         }
     }
-}

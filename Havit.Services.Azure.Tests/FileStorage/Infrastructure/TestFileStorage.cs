@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure
+namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure;
+
+public class TestFileStorage : FileStorageContext
 {
-	public class TestFileStorage : FileStorageContext
-	{
-	}
 }

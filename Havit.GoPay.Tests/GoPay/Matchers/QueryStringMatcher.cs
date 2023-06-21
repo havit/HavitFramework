@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Havit.Tests.GoPay.Matchers
-{
+namespace Havit.Tests.GoPay.Matchers;
+
     /// <summary>
     /// Matches requests on querystring values
     /// </summary>
@@ -54,10 +54,9 @@ namespace Havit.Tests.GoPay.Matchers
                 .ToList();
         }
 
-	    private static string UrlDecode(string urlEncodedValue)
+    private static string UrlDecode(string urlEncodedValue)
         {
             string tmp = urlEncodedValue.Replace("+", "%20");
             return Uri.UnescapeDataString(tmp);
         }
     }
-}

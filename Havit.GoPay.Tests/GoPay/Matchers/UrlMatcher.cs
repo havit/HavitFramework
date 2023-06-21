@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace Havit.Tests.GoPay.Matchers
-{
+namespace Havit.Tests.GoPay.Matchers;
+
     /// <summary>
     /// Matches requests on their URL
     /// </summary>
@@ -20,10 +20,10 @@ namespace Havit.Tests.GoPay.Matchers
         public UrlMatcher(string url)
         {
             Uri uri;
-	        if (Uri.TryCreate(url, UriKind.Absolute, out uri))
-	        {
-				url = uri.AbsoluteUri;
-			}
+        if (Uri.TryCreate(url, UriKind.Absolute, out uri))
+        {
+			url = uri.AbsoluteUri;
+		}
 
             this.url = url;
         }
@@ -35,10 +35,10 @@ namespace Havit.Tests.GoPay.Matchers
         /// <returns>true if the request was matched; false otherwise</returns>
         public bool Matches(HttpRequestMessage message)
         {
-	        if (String.IsNullOrEmpty(url) || url == "*")
-	        {
-				return true;
-			}
+        if (String.IsNullOrEmpty(url) || url == "*")
+        {
+			return true;
+		}
 
             string matchUrl = GetUrlToMatch(message.RequestUri);
 
@@ -47,17 +47,17 @@ namespace Havit.Tests.GoPay.Matchers
 
             string[] matchParts = url.Split(new[] { '*' }, StringSplitOptions.RemoveEmptyEntries);
 
-	        if (matchParts.Length == 0)
-	        {
-				return true;
-			}
+        if (matchParts.Length == 0)
+        {
+			return true;
+		}
 
             if (!startsWithWildcard)
             {
-	            if (!matchUrl.StartsWith(matchParts[0]))
-	            {
-					return false;
-				}
+            if (!matchUrl.StartsWith(matchParts[0]))
+            {
+				return false;
+			}
             }
 
             int position = 0;
@@ -66,10 +66,10 @@ namespace Havit.Tests.GoPay.Matchers
             {
                 position = matchUrl.IndexOf(matchPart, position);
 
-	            if (position == -1)
-	            {
-					return false;
-				}
+            if (position == -1)
+            {
+				return false;
+			}
 
                 position += matchPart.Length;
             }
@@ -93,4 +93,3 @@ namespace Havit.Tests.GoPay.Matchers
             return source;
         }
     }
-}

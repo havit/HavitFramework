@@ -3,8 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit.Tests.Scopes
-{
+namespace Havit.Tests.Scopes;
+
     [TestClass]
     public class LocalAsyncScopeRepositoryTests
     {
@@ -133,4 +133,3 @@ namespace Havit.Tests.Scopes
         }
 
     }
-}

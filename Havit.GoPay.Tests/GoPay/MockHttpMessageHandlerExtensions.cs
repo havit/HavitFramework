@@ -6,75 +6,74 @@ using System.Text;
 using System.Threading.Tasks;
 using Havit.Tests.GoPay.Matchers;
 
-namespace Havit.Tests.GoPay
+namespace Havit.Tests.GoPay;
+
+/// <summary>
+/// Provides extension methods for <see cref="T:MockHttpMessageHandler"/>
+/// </summary>
+public static class MockHttpMessageHandlerExtensions
 {
 	/// <summary>
-	/// Provides extension methods for <see cref="T:MockHttpMessageHandler"/>
+	/// Adds a backend definition 
 	/// </summary>
-	public static class MockHttpMessageHandlerExtensions
+	/// <param name="handler">The source handler</param>
+	/// <param name="method">The HTTP method to match</param>
+	/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
+	/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
+	public static MockedRequest When(this MockHttpMessageHandler handler, HttpMethod method, string url)
 	{
-		/// <summary>
-		/// Adds a backend definition 
-		/// </summary>
-		/// <param name="handler">The source handler</param>
-		/// <param name="method">The HTTP method to match</param>
-		/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
-		/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
-		public static MockedRequest When(this MockHttpMessageHandler handler, HttpMethod method, string url)
-		{
-			MockedRequest message = new MockedRequest(url);
-			message.With(new MethodMatcher(method));
+		MockedRequest message = new MockedRequest(url);
+		message.With(new MethodMatcher(method));
 
-			handler.AddBackendDefinition(message);
+		handler.AddBackendDefinition(message);
 
-			return message;
-		}
+		return message;
+	}
 
-		/// <summary>
-		/// Adds a backend definition 
-		/// </summary>
-		/// <param name="handler">The source handler</param>
-		/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
-		/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
-		public static MockedRequest When(this MockHttpMessageHandler handler, string url)
-		{
-			MockedRequest message = new MockedRequest(url);
+	/// <summary>
+	/// Adds a backend definition 
+	/// </summary>
+	/// <param name="handler">The source handler</param>
+	/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
+	/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
+	public static MockedRequest When(this MockHttpMessageHandler handler, string url)
+	{
+		MockedRequest message = new MockedRequest(url);
 
-			handler.AddBackendDefinition(message);
+		handler.AddBackendDefinition(message);
 
-			return message;
-		}
+		return message;
+	}
 
-		/// <summary>
-		/// Adds a request expectation
-		/// </summary>
-		/// <param name="handler">The source handler</param>
-		/// <param name="method">The HTTP method to match</param>
-		/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
-		/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
-		public static MockedRequest Expect(this MockHttpMessageHandler handler, HttpMethod method, string url)
-		{
-			MockedRequest message = new MockedRequest(url);
-			message.With(new MethodMatcher(method));
+	/// <summary>
+	/// Adds a request expectation
+	/// </summary>
+	/// <param name="handler">The source handler</param>
+	/// <param name="method">The HTTP method to match</param>
+	/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
+	/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
+	public static MockedRequest Expect(this MockHttpMessageHandler handler, HttpMethod method, string url)
+	{
+		MockedRequest message = new MockedRequest(url);
+		message.With(new MethodMatcher(method));
 
-			handler.AddRequestExpectation(message);
+		handler.AddRequestExpectation(message);
 
-			return message;
-		}
+		return message;
+	}
 
-		/// <summary>
-		/// Adds a request expectation
-		/// </summary>
-		/// <param name="handler">The source handler</param>
-		/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
-		/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
-		public static MockedRequest Expect(this MockHttpMessageHandler handler, string url)
-		{
-			MockedRequest message = new MockedRequest(url);
+	/// <summary>
+	/// Adds a request expectation
+	/// </summary>
+	/// <param name="handler">The source handler</param>
+	/// <param name="url">The URL (absolute or relative, may contain * wildcards) to match</param>
+	/// <returns>The <see cref="T:MockedRequest"/> instance</returns>
+	public static MockedRequest Expect(this MockHttpMessageHandler handler, string url)
+	{
+		MockedRequest message = new MockedRequest(url);
 
-			handler.AddRequestExpectation(message);
+		handler.AddRequestExpectation(message);
 
-			return message;
-		}
+		return message;
 	}
 }

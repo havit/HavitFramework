@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace Havit.Tests.GoPay.Matchers
-{
+namespace Havit.Tests.GoPay.Matchers;
+
     /// <summary>
     /// Matches requests based on their HTTP method
     /// </summary>
@@ -32,4 +32,3 @@ namespace Havit.Tests.GoPay.Matchers
             return message.Method == this.method;
         }
     }
-}

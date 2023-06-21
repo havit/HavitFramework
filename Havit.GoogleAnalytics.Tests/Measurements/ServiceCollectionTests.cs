@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Tests.Measurements
-{
+namespace Havit.GoogleAnalytics.Tests.Measurements;
+
     [TestClass]
     public class ServiceCollectionTests
     {
@@ -23,4 +23,3 @@ namespace Havit.GoogleAnalytics.Tests.Measurements
             Assert.IsNotNull(client);
         }
     }
-}

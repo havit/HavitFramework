@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Tests.Scopes.Instrastructure
-{
+namespace Havit.Tests.Scopes.Instrastructure;
+
     internal class TestAsyncLocalScope : Scope<object>
     {
         private static readonly IScopeRepository<object> repository = new AsyncLocalScopeRepository<object>();
@@ -23,4 +23,3 @@ namespace Havit.Tests.Scopes.Instrastructure
             }
         }
     }
-}

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Tests.Scopes.Instrastructure
-{
+namespace Havit.Tests.Scopes.Instrastructure;
+
     internal class TestThreadScope : Scope<object>
     {
         private static readonly IScopeRepository<object> repository = new ThreadScopeRepository<object>();
@@ -35,4 +35,3 @@ namespace Havit.Tests.Scopes.Instrastructure
             }
         }
     }
-}

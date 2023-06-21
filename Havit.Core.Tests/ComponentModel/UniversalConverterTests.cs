@@ -5,85 +5,85 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Havit.Tests.ComponentModel
+namespace Havit.Tests.ComponentModel;
+
+[TestClass]
+public class UniversalConverterTests
 {
-	[TestClass]
-	public class UniversalConverterTests
+	[TestMethod]
+	public void UniversalConverter_TryConvertTo()
 	{
-		[TestMethod]
-		public void UniversalConverter_TryConvertTo()
-		{
-			object result;
-			bool success;
+		object result;
+		bool success;
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("A", typeof(int), out result);
-			Assert.IsFalse(success);
-			Assert.IsNull(result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("A", typeof(int), out result);
+		Assert.IsFalse(success);
+		Assert.IsNull(result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(int), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5, (int)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(int), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5, (int)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(int?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5, (int?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(int?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5, (int?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(decimal), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5M, (decimal)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(decimal), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5M, (decimal)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(decimal?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5M, (decimal?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("5", typeof(decimal?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5M, (decimal?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(int), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5, (int)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(int), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5, (int)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(int?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5, (int?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(int?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5, (int?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(decimal), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5M, (decimal)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(decimal), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5M, (decimal)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(decimal?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5M, (decimal?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5, typeof(decimal?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5M, (decimal?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(int), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5, (int)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(int), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5, (int)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(int?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5, (int?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(int?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5, (int?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(decimal), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5M, (decimal)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(decimal), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5M, (decimal)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(decimal?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(5M, (decimal?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(5M, typeof(decimal?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(5M, (decimal?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(null, typeof(int?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(null, (int?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(null, typeof(int?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(null, (int?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(null, typeof(decimal?), out result);
-			Assert.IsTrue(success);
-			Assert.AreEqual(null, (decimal?)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(null, typeof(decimal?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(null, (decimal?)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("1/2/2013", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-US"));
-			Assert.IsTrue(success);
-			Assert.AreEqual(new DateTime(2013, 1, 2), (DateTime)result);
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("1/2/2013", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-US"));
+		Assert.IsTrue(success);
+		Assert.AreEqual(new DateTime(2013, 1, 2), (DateTime)result);
 
-			success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("1/2/2013", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-GB"));
-			Assert.IsTrue(success);
-			Assert.AreEqual(new DateTime(2013, 2, 1), (DateTime)result);
-		}
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("1/2/2013", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-GB"));
+		Assert.IsTrue(success);
+		Assert.AreEqual(new DateTime(2013, 2, 1), (DateTime)result);
+	}
 
         [TestMethod]
         public void UniversalConverter_TryConvertTo_Generic()
@@ -159,4 +159,3 @@ namespace Havit.Tests.ComponentModel
             Assert.AreEqual(new DateTime(2013, 2, 1), result17);
         }
     }
-}

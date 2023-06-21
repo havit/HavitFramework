@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.Tests.FileStorage.Infrastructure
+namespace Havit.Services.Tests.FileStorage.Infrastructure;
+
+public sealed class TestFileStorage : FileStorageContext
 {
-	public sealed class TestFileStorage : FileStorageContext
-	{
-	}
 }

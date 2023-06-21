@@ -9,29 +9,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.Tests.FileStorage
+namespace Havit.Services.Tests.FileStorage;
+
+[TestClass]
+public class FileStorageWrappingServiceTests
 {
-	[TestClass]
-	public class FileStorageWrappingServiceTests
+	[TestMethod]
+	public void FileStorageWrappingService_DependencyInjectionContainerIntegration()
 	{
-		[TestMethod]
-		public void FileStorageWrappingService_DependencyInjectionContainerIntegration()
-		{
-			// Tento test testuje spíše než podmínky v sekci Assert to, jakým způsobem lze v aplikaci pohodlně vytvořit (nebo z důvodu zpětné kompatibility ponechat)
-			// aplikační služby pro použití se file storage services.
+		// Tento test testuje spíše než podmínky v sekci Assert to, jakým způsobem lze v aplikaci pohodlně vytvořit (nebo z důvodu zpětné kompatibility ponechat)
+		// aplikační služby pro použití se file storage services.
 
-			// Arrange
-			ServiceCollection services = new ServiceCollection();
-			services.AddFileStorageWrappingService<IApplicationFileStorageService, ApplicationFileStorageService, TestUnderlyingFileStorage>();
-			services.AddFileSystemStorageService<TestUnderlyingFileStorage>(Path.GetTempPath());
-			var serviceProvider = services.BuildServiceProvider();
+		// Arrange
+		ServiceCollection services = new ServiceCollection();
+		services.AddFileStorageWrappingService<IApplicationFileStorageService, ApplicationFileStorageService, TestUnderlyingFileStorage>();
+		services.AddFileSystemStorageService<TestUnderlyingFileStorage>(Path.GetTempPath());
+		var serviceProvider = services.BuildServiceProvider();
 
-			// Act
-			var service = serviceProvider.GetService<IApplicationFileStorageService>();
+		// Act
+		var service = serviceProvider.GetService<IApplicationFileStorageService>();
 
-			// Assert
-			Assert.IsNotNull(service);
-			Assert.IsInstanceOfType(service, typeof(ApplicationFileStorageService));
-		}
+		// Assert
+		Assert.IsNotNull(service);
+		Assert.IsInstanceOfType(service, typeof(ApplicationFileStorageService));
 	}
 }

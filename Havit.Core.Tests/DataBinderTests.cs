@@ -5,43 +5,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Tests
-{
+namespace Havit.Tests;
+
     [TestClass]
-	public class DataBinderTests
+public class DataBinderTests
     {
-		[TestMethod]
-		public void DataBinderExt_SetValue_PublicProperty()
-		{
-			// arrange
-			var obj = new MyClass();
+	[TestMethod]
+	public void DataBinderExt_SetValue_PublicProperty()
+	{
+		// arrange
+		var obj = new MyClass();
 
-			// act
-			DataBinderExt.SetValue(obj, "MyPublicProperty", 1);
+		// act
+		DataBinderExt.SetValue(obj, "MyPublicProperty", 1);
 
-			// assert
-			Assert.AreEqual(1, obj.MyPublicProperty);
-		}
+		// assert
+		Assert.AreEqual(1, obj.MyPublicProperty);
+	}
 
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void DataBinderExt_SetValue_ProtectedSetterProperty() 
-		{
-			// arrange
-			var obj = new MyClass();
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException))]
+	public void DataBinderExt_SetValue_ProtectedSetterProperty() 
+	{
+		// arrange
+		var obj = new MyClass();
 
-			// act
-			DataBinderExt.SetValue(obj, "MyPropertyWithProtectedSetter", 1);
+		// act
+		DataBinderExt.SetValue(obj, "MyPropertyWithProtectedSetter", 1);
 
-			// assert
-			Assert.AreEqual(1, obj.MyPropertyWithProtectedSetter);
-		}
+		// assert
+		Assert.AreEqual(1, obj.MyPropertyWithProtectedSetter);
+	}
 
-		private class MyClass
-		{
-			public int MyPublicProperty { get; set; }
-			public int MyPropertyWithProtectedSetter { get; protected set; }
-		}
+	private class MyClass
+	{
+		public int MyPublicProperty { get; set; }
+		public int MyPropertyWithProtectedSetter { get; protected set; }
+	}
         
     }
-}

@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Tests.ValueSerializers
-{
+namespace Havit.GoogleAnalytics.Tests.ValueSerializers;
+
     [TestClass]
     public class EnumValueSerializerTests
     {
@@ -35,4 +35,3 @@ namespace Havit.GoogleAnalytics.Tests.ValueSerializers
             OtherValue
         }
     }
-}

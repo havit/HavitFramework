@@ -2,33 +2,32 @@
 using Microsoft.Extensions.Configuration;
 using System;
 
-namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure
+namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure;
+
+public static class AzureStorageConnectionStringHelper
 {
-	public static class AzureStorageConnectionStringHelper
+	public static string GetConnectionString() => AzureBlobStorageConnectionStringLazy.Value;
+
+	private static Lazy<string> AzureBlobStorageConnectionStringLazy = new Lazy<string>(() =>
 	{
-		public static string GetConnectionString() => AzureBlobStorageConnectionStringLazy.Value;
+		var config = new ConfigurationBuilder()
+			.AddEnvironmentVariables()
+			.Build();
+		string connectionString = config.GetConnectionString("AzureStorage");
 
-		private static Lazy<string> AzureBlobStorageConnectionStringLazy = new Lazy<string>(() =>
+		if (connectionString is null)
 		{
-			var config = new ConfigurationBuilder()
-				.AddEnvironmentVariables()
+			config = new ConfigurationBuilder()
+				.AddAzureKeyVault(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential())
 				.Build();
-			string connectionString = config.GetConnectionString("AzureStorage");
+			connectionString = config.GetConnectionString("AzureStorage");
+		}
 
-			if (connectionString is null)
-			{
-				config = new ConfigurationBuilder()
-					.AddAzureKeyVault(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential())
-					.Build();
-				connectionString = config.GetConnectionString("AzureStorage");
-			}
+		if (connectionString is null)
+		{
+			throw new InvalidOperationException("Couldn't find Azure storage connection string in the configuration.");
+		}
 
-			if (connectionString is null)
-			{
-				throw new InvalidOperationException("Couldn't find Azure storage connection string in the configuration.");
-			}
-
-			return connectionString;
-		});
-	}
+		return connectionString;
+	});
 }

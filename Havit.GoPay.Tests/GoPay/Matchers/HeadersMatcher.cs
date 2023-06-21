@@ -5,8 +5,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace Havit.Tests.GoPay.Matchers
-{
+namespace Havit.Tests.GoPay.Matchers;
+
     /// <summary>
     /// Matches a request based on its request headers
     /// </summary>
@@ -46,15 +46,15 @@ namespace Havit.Tests.GoPay.Matchers
         {
             IEnumerable<string> values;
 
-	        if (!messageHeader.TryGetValues(matchHeader.Key, out values))
-	        {
-				return false;
-			}
+        if (!messageHeader.TryGetValues(matchHeader.Key, out values))
+        {
+			return false;
+		}
 
             return values.Any(v => v == matchHeader.Value);
         }
 
-	    private static IEnumerable<KeyValuePair<string, string>> ParseHeaders(string headers)
+    private static IEnumerable<KeyValuePair<string, string>> ParseHeaders(string headers)
         {
             List<KeyValuePair<string, string>> headerPairs = new List<KeyValuePair<string, string>>();
 
@@ -64,17 +64,17 @@ namespace Havit.Tests.GoPay.Matchers
 
                 while (line != null)
                 {
-	                if (line.Trim().Length == 0)
-	                {
-						break;
-					}
+                if (line.Trim().Length == 0)
+                {
+					break;
+				}
 
                     string[] parts = StringUtil.Split(line, ':', 2);
 
-	                if (parts.Length != 2)
-	                {
-						throw new ArgumentException("Invalid header: " + line);
-					} 
+                if (parts.Length != 2)
+                {
+					throw new ArgumentException("Invalid header: " + line);
+				} 
 
                     headerPairs.Add(new KeyValuePair<string, string>(parts[0], parts[1].TrimStart(' ')));
 
@@ -85,4 +85,3 @@ namespace Havit.Tests.GoPay.Matchers
             return headerPairs;
         }
     }
-}

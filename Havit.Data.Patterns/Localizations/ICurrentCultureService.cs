@@ -1,21 +1,20 @@
 ﻿using System.Globalization;
 
-namespace Havit.Data.Patterns.Localizations
+namespace Havit.Data.Patterns.Localizations;
+
+/// <summary>
+/// Služba pro poskytnutí aktuální Culture/UICulture.
+/// </summary>
+public interface ICurrentCultureService
 {
 	/// <summary>
-	/// Služba pro poskytnutí aktuální Culture/UICulture.
+	/// Vrací aktuální Culture.
 	/// </summary>
-	public interface ICurrentCultureService
-	{
-		/// <summary>
-		/// Vrací aktuální Culture.
-		/// </summary>
-		CultureInfo GetCurrentCulture();
+	CultureInfo GetCurrentCulture();
 
-		/// <summary>
-		/// Vrací aktuální UICulture.
-		/// </summary>
-		// ReSharper disable once InconsistentNaming
-		CultureInfo GetCurrentUICulture();
-	}
+	/// <summary>
+	/// Vrací aktuální UICulture.
+	/// </summary>
+	// ReSharper disable once InconsistentNaming
+	CultureInfo GetCurrentUICulture();
 }

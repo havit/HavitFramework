@@ -1,8 +1,7 @@
-﻿namespace Havit.Data.Patterns.DataEntries
+﻿namespace Havit.Data.Patterns.DataEntries;
+
+internal class EntryIdentification
 {
-	internal class EntryIdentification
-	{
-		public int Id { get; set; }
-		public string Symbol { get; set; }
-	}
+	public int Id { get; set; }
+	public string Symbol { get; set; }
 }

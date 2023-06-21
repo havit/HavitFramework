@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Patterns.DataSeeds
+namespace Havit.Data.Patterns.DataSeeds;
+
+/// <summary>
+/// Factory pro IDataSeedPersister.
+/// </summary>
+public interface IDataSeedPersisterFactory
 {
 	/// <summary>
-	/// Factory pro IDataSeedPersister.
+	/// Vytváří/vrací IDataSeedPersister.
 	/// </summary>
-	public interface IDataSeedPersisterFactory
-	{
-		/// <summary>
-		/// Vytváří/vrací IDataSeedPersister.
-		/// </summary>
-		IDataSeedPersister CreateService();
+	IDataSeedPersister CreateService();
 
-		/// <summary>
-		/// Uvolňuje službu.
-		/// </summary>
-		void ReleaseService(IDataSeedPersister service);
-	}
+	/// <summary>
+	/// Uvolňuje službu.
+	/// </summary>
+	void ReleaseService(IDataSeedPersister service);
 }

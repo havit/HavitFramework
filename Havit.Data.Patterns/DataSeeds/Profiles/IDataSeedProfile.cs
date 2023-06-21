@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Havit.Data.Patterns.DataSeeds.Profiles
-{
+namespace Havit.Data.Patterns.DataSeeds.Profiles;
+
     /// <summary>
     /// Profil pro seedování dat.
     /// Slouží k možnosti mít v aplikací více možných profilů, například pro testování či ladění různých funkcionalit.
@@ -19,4 +19,3 @@ namespace Havit.Data.Patterns.DataSeeds.Profiles
         /// </summary>
         IEnumerable<Type> GetPrerequisiteProfiles();
     }
-}

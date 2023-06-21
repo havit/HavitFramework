@@ -1,23 +1,21 @@
 ﻿using Glimpse.Core.Message;
 
-namespace Havit.Data.Entity.Glimpse.Model
+namespace Havit.Data.Entity.Glimpse.Model;
+
+/// <summary>
+/// Timeline category for DbConnector.
+/// </summary>
+public static class DbCommandTimelineCategory
 {
 	/// <summary>
 	/// Timeline category for DbConnector.
 	/// </summary>
-	public static class DbCommandTimelineCategory
+	public static TimelineCategoryItem TimelineCategory
 	{
-		/// <summary>
-		/// Timeline category for DbConnector.
-		/// </summary>
-		public static TimelineCategoryItem TimelineCategory
+		get
 		{
-			get
-			{
-				return _timelineCategory;
-			}
+			return _timelineCategory;
 		}
-		private static readonly TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbCommand", "#30A000", "#30D000");
 	}
-
+	private static readonly TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbCommand", "#30A000", "#30D000");
 }

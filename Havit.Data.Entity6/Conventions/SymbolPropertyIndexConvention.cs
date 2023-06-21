@@ -4,25 +4,24 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using Havit.Data.Entity.Internal;
 using Havit.Data.Entity.ModelConfiguration.Edm;
 
-namespace Havit.Data.Entity.Conventions
+namespace Havit.Data.Entity.Conventions;
+
+/// <summary>
+/// Zajišťuje existenci indexu na sloupci Symbol, pokud existuje.	
+/// </summary>
+public class SymbolPropertyIndexConvention : IStoreModelConvention<EdmProperty>
 {
 	/// <summary>
-	/// Zajišťuje existenci indexu na sloupci Symbol, pokud existuje.	
+	/// Aplikuje konvenci na model.
 	/// </summary>
-	public class SymbolPropertyIndexConvention : IStoreModelConvention<EdmProperty>
+	public void Apply(EdmProperty member, DbModel model)
 	{
-		/// <summary>
-		/// Aplikuje konvenci na model.
-		/// </summary>
-		public void Apply(EdmProperty member, DbModel model)
+		if (member.Name == "Symbol")
 		{
-			if (member.Name == "Symbol")
+			if (!member.DeclaringType.IsConventionSuppressed(typeof(SymbolPropertyIndexConvention)) && !member.IsConventionSuppressed(typeof(SymbolPropertyIndexConvention)))
 			{
-				if (!member.DeclaringType.IsConventionSuppressed(typeof(SymbolPropertyIndexConvention)) && !member.IsConventionSuppressed(typeof(SymbolPropertyIndexConvention)))
-				{
-					IndexHelper.AddIndex(member, true);
-				}
+				IndexHelper.AddIndex(member, true);
 			}
 		}
+	}
     }
-}

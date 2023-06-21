@@ -1,8 +1,7 @@
 ﻿using Havit.Data.Entity;
 
-namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Entity
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Entity;
+
+internal class TestDbContext : DbContext
 {
-	internal class TestDbContext : DbContext
-	{
-	}
 }

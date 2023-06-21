@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer.Seeds
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer.Seeds;
+
+public class TestProfile : DataSeedProfile
 {
-	public class TestProfile : DataSeedProfile
-	{
-	}
 }

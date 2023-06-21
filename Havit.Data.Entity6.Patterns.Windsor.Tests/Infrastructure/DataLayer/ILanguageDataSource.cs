@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Model;
 using Havit.Data.Patterns.DataSources;
 
-namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer;
+
+public interface ILanguageDataSource : IDataSource<Language>
 {
-	public interface ILanguageDataSource : IDataSource<Language>
-	{
-	}
 }

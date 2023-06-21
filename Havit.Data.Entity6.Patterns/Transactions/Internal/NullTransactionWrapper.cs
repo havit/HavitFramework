@@ -5,19 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Patterns.Transactions.Internal
+namespace Havit.Data.Entity.Patterns.Transactions.Internal;
+
+/// <summary>
+/// Implementace vůbec neřeší spuštění v transakci.
+/// </summary>
+public class NullTransactionWrapper : ITransactionWrapper
 {
 	/// <summary>
-	/// Implementace vůbec neřeší spuštění v transakci.
+	/// Spustí předanou akci.
 	/// </summary>
-	public class NullTransactionWrapper : ITransactionWrapper
+	public void ExecuteWithTransaction(Action action)
 	{
-		/// <summary>
-		/// Spustí předanou akci.
-		/// </summary>
-		public void ExecuteWithTransaction(Action action)
-		{
-			action();
-		}
+		action();
 	}
 }

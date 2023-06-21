@@ -16,66 +16,65 @@ using Glimpse.Core.SerializationConverter;
 using Havit.Data.Entity.Glimpse.DbCommandInterception;
 using Havit.Data.Entity.Glimpse.Model;
 
-namespace Havit.Data.Entity.Glimpse.Inspectors
+namespace Havit.Data.Entity.Glimpse.Inspectors;
+
+/// <summary>
+/// Zpracovává položky DbCommandLogItem do DbCommandMessage.
+/// </summary>
+public class DbCommandLogItemInspector : IInspector, IDisposable
 {
-	/// <summary>
-	/// Zpracovává položky DbCommandLogItem do DbCommandMessage.
-	/// </summary>
-	public class DbCommandLogItemInspector : IInspector, IDisposable
+	private IMessageBroker messageBroker;
+	private Func<IExecutionTimer> timerStrategy;
+	private DbCommandLoggingInterceptor dbCommandLoggingInterceptor;
+
+	public void Setup(IInspectorContext context)
 	{
-		private IMessageBroker messageBroker;
-		private Func<IExecutionTimer> timerStrategy;
-		private DbCommandLoggingInterceptor dbCommandLoggingInterceptor;
+		messageBroker = context.MessageBroker;
+		timerStrategy = context.TimerStrategy;
 
-		public void Setup(IInspectorContext context)
-		{
-			messageBroker = context.MessageBroker;
-			timerStrategy = context.TimerStrategy;
+		context.MessageBroker.Subscribe<DbCommandLogItem>(ProcessMessage);
 
-			context.MessageBroker.Subscribe<DbCommandLogItem>(ProcessMessage);
-
-			dbCommandLoggingInterceptor = new DbCommandLoggingInterceptor(messageBroker);
+		dbCommandLoggingInterceptor = new DbCommandLoggingInterceptor(messageBroker);
             DbInterception.Add(dbCommandLoggingInterceptor);
-		}
+	}
 
-		private void ProcessMessage(DbCommandLogItem dbCommandLogItem)
+	private void ProcessMessage(DbCommandLogItem dbCommandLogItem)
+	{
+		DateTime now = DateTime.Now;
+		DbCommandMessage message = new DbCommandMessage();
+
+		IExecutionTimer timer = null;
+		if (timerStrategy != null)
 		{
-			DateTime now = DateTime.Now;
-			DbCommandMessage message = new DbCommandMessage();
-
-			IExecutionTimer timer = null;
-			if (timerStrategy != null)
+			timer = timerStrategy();
+			if (timer != null)
 			{
-				timer = timerStrategy();
-				if (timer != null)
-				{
-					TimerResult timePoint = timer.Point();
-					message.Offset = new TimeSpan(timePoint.Offset.Ticks - dbCommandLogItem.DurationTicks);
-				}
+				TimerResult timePoint = timer.Point();
+				message.Offset = new TimeSpan(timePoint.Offset.Ticks - dbCommandLogItem.DurationTicks);
+			}
 
-				message.Operation = dbCommandLogItem.Operation;
-				message.CommandText = dbCommandLogItem.Command.CommandText;
-				foreach (DbParameter dbParameter in dbCommandLogItem.Command.Parameters)
-				{
-					message.CommandParameters.Add(DbParameterData.Create(dbParameter));
-				}
-				message.Result = dbCommandLogItem.Result;
-				message.IsAsync = dbCommandLogItem.IsAsync;
+			message.Operation = dbCommandLogItem.Operation;
+			message.CommandText = dbCommandLogItem.Command.CommandText;
+			foreach (DbParameter dbParameter in dbCommandLogItem.Command.Parameters)
+			{
+				message.CommandParameters.Add(DbParameterData.Create(dbParameter));
+			}
+			message.Result = dbCommandLogItem.Result;
+			message.IsAsync = dbCommandLogItem.IsAsync;
 
                 message.StartTime = now - message.Duration;
-				message.Duration = new TimeSpan(dbCommandLogItem.DurationTicks);
+			message.Duration = new TimeSpan(dbCommandLogItem.DurationTicks);
 
-				messageBroker.Publish(message);
-			}
+			messageBroker.Publish(message);
 		}
+	}
 
-		public void Dispose()
+	public void Dispose()
+	{
+		if (dbCommandLoggingInterceptor != null)
 		{
-			if (dbCommandLoggingInterceptor != null)
-			{
-				DbInterception.Remove(dbCommandLoggingInterceptor);
-				dbCommandLoggingInterceptor = null;
-			}
+			DbInterception.Remove(dbCommandLoggingInterceptor);
+			dbCommandLoggingInterceptor = null;
 		}
 	}
 }

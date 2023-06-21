@@ -8,18 +8,17 @@ using Glimpse.Core.Extensibility;
 
 using Havit.Data.Entity.Glimpse.DbCommandInterception;
 
-namespace Havit.Data.Entity.Glimpse.SerializationConverters
+namespace Havit.Data.Entity.Glimpse.SerializationConverters;
+
+/// <summary>
+/// Formátuje DbDataReaderResult k zobrazení.
+/// </summary>
+internal class DbDataReaderResultSerializationConverter : SerializationConverter<DbDataReaderResult>
 {
-	/// <summary>
-	/// Formátuje DbDataReaderResult k zobrazení.
-	/// </summary>
-	internal class DbDataReaderResultSerializationConverter : SerializationConverter<DbDataReaderResult>
+	public override object Convert(DbDataReaderResult dbDataReaderResult)
 	{
-		public override object Convert(DbDataReaderResult dbDataReaderResult)
-		{
-			return (dbDataReaderResult.RecordsCount == null)
-				? String.Empty
-				: String.Format("{0} record{1}", dbDataReaderResult.RecordsCount.Value, (dbDataReaderResult.RecordsCount.Value == 1) ? "" : "s");
-		}
+		return (dbDataReaderResult.RecordsCount == null)
+			? String.Empty
+			: String.Format("{0} record{1}", dbDataReaderResult.RecordsCount.Value, (dbDataReaderResult.RecordsCount.Value == 1) ? "" : "s");
 	}
 }

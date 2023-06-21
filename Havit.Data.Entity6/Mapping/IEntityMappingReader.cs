@@ -7,10 +7,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Mapping
+namespace Havit.Data.Entity.Mapping;
+
+public interface IEntityMappingReader
 {
-	public interface IEntityMappingReader
-	{
-		List<MappedEntity> GetMappedEntities(DbContext dbContext);
-	}
+	List<MappedEntity> GetMappedEntities(DbContext dbContext);
 }

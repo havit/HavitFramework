@@ -1,13 +1,12 @@
 ﻿using Havit.Model.Localizations;
 
-namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Model
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Model;
+
+public class Language : ILanguage
 {
-	public class Language : ILanguage
-	{
-		public int Id { get; set; }
+	public int Id { get; set; }
 
-		public string Culture { get; }
+	public string Culture { get; }
 
-		public string UiCulture { get; }
-	}
+	public string UiCulture { get; }
 }

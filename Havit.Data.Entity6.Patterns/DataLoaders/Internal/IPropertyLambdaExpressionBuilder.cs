@@ -1,13 +1,12 @@
-﻿namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
+﻿namespace Havit.Data.Entity.Patterns.DataLoaders.Internal;
+
+/// <summary>
+/// Konstruuje PropertyLambdaExpression.
+/// </summary>
+public interface IPropertyLambdaExpressionBuilder
 {
 	/// <summary>
-	/// Konstruuje PropertyLambdaExpression.
+	/// Vrací PropertyLambdaExpression pro získání vlastnosti propertyName dané TEntity.
 	/// </summary>
-	public interface IPropertyLambdaExpressionBuilder
-	{
-		/// <summary>
-		/// Vrací PropertyLambdaExpression pro získání vlastnosti propertyName dané TEntity.
-		/// </summary>
-		PropertyLambdaExpression<TEntity, TProperty> Build<TEntity, TProperty>(string propertyName);
-	}
+	PropertyLambdaExpression<TEntity, TProperty> Build<TEntity, TProperty>(string propertyName);
 }

@@ -1,24 +1,23 @@
 ﻿using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.Entity.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories
+namespace Havit.Data.Entity.CodeGenerator.Actions.Repositories;
+
+public class DbRepositoryBaseGeneratedFileNamingService : FileNamingServiceBase<RepositoryModel>
 {
-	public class DbRepositoryBaseGeneratedFileNamingService : FileNamingServiceBase<RepositoryModel>
+	public DbRepositoryBaseGeneratedFileNamingService(IProject project)
+		: base(project)
 	{
-		public DbRepositoryBaseGeneratedFileNamingService(IProject project)
-			: base(project)
-		{
-			
-		}
+		
+	}
 
-		protected override string GetClassName(RepositoryModel model)
-		{
-			return model.DbRepositoryBaseName;
-		}
+	protected override string GetClassName(RepositoryModel model)
+	{
+		return model.DbRepositoryBaseName;
+	}
 
-		protected override string GetNamespaceName(RepositoryModel model)
-		{
-			return model.NamespaceName;
-		}
+	protected override string GetNamespaceName(RepositoryModel model)
+	{
+		return model.NamespaceName;
 	}
 }

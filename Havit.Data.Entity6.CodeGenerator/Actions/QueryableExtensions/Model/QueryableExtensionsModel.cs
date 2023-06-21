@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model
+namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
+
+public class QueryableExtensionsModel
 {
-	public class QueryableExtensionsModel
-	{
-		public string NamespaceName { get; set; }
-		public List<string> ModelClassesFullNames { get; set; }
-	}
+	public string NamespaceName { get; set; }
+	public List<string> ModelClassesFullNames { get; set; }
 }

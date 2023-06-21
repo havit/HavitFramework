@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace Havit.Data.Entity.Patterns.Tests.Infrastructure
+namespace Havit.Data.Entity.Patterns.Tests.Infrastructure;
+
+public class ItemWithDeleted
 {
-	public class ItemWithDeleted
-	{
-		public int Id { get; set; }
-		public DateTime? Deleted { get; set; }
-	}
+	public int Id { get; set; }
+	public DateTime? Deleted { get; set; }
 }

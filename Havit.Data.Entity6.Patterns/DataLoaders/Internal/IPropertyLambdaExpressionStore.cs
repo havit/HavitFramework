@@ -1,18 +1,17 @@
-﻿namespace Havit.Data.Entity.Patterns.DataLoaders.Internal
+﻿namespace Havit.Data.Entity.Patterns.DataLoaders.Internal;
+
+/// <summary>
+/// Úložiště PropertyLambdaExpression.
+/// </summary>
+public interface IPropertyLambdaExpressionStore
 {
 	/// <summary>
-	/// Úložiště PropertyLambdaExpression.
+	/// Vrací PropertyLambdaExpression, pokud v úložiští existuje.
 	/// </summary>
-	public interface IPropertyLambdaExpressionStore
-	{
-		/// <summary>
-		/// Vrací PropertyLambdaExpression, pokud v úložiští existuje.
-		/// </summary>
-		bool TryGet<TEntity, TProperty>(string propertyName, out PropertyLambdaExpression<TEntity, TProperty> result);
+	bool TryGet<TEntity, TProperty>(string propertyName, out PropertyLambdaExpression<TEntity, TProperty> result);
 
-		/// <summary>
-		/// Uloží PropertyLambdaExpression do úložiště.
-		/// </summary>
-		void Store<TEntity, TProperty>(string propertyName, PropertyLambdaExpression<TEntity, TProperty> propertyLambdaExpression);
-	}
+	/// <summary>
+	/// Uloží PropertyLambdaExpression do úložiště.
+	/// </summary>
+	void Store<TEntity, TProperty>(string propertyName, PropertyLambdaExpression<TEntity, TProperty> propertyLambdaExpression);
 }

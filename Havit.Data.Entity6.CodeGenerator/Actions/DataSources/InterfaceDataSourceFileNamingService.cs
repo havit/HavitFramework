@@ -1,24 +1,23 @@
 ﻿using Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model;
 using Havit.Data.Entity.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources
+namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources;
+
+public class InterfaceDataSourceFileNamingService : FileNamingServiceBase<InterfaceDataSourceModel>
 {
-	public class InterfaceDataSourceFileNamingService : FileNamingServiceBase<InterfaceDataSourceModel>
+	public InterfaceDataSourceFileNamingService(IProject project)
+		: base(project)
 	{
-		public InterfaceDataSourceFileNamingService(IProject project)
-			: base(project)
-		{
-			
-		}
+		
+	}
 
-		protected override string GetClassName(InterfaceDataSourceModel model)
-		{
-			return model.InterfaceDataSourceName;
-		}
+	protected override string GetClassName(InterfaceDataSourceModel model)
+	{
+		return model.InterfaceDataSourceName;
+	}
 
-		protected override string GetNamespaceName(InterfaceDataSourceModel model)
-		{
-			return model.NamespaceName;
-		}
+	protected override string GetNamespaceName(InterfaceDataSourceModel model)
+	{
+		return model.NamespaceName;
 	}
 }

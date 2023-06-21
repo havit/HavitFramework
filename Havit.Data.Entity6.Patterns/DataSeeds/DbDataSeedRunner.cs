@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Patterns.DataSeeds
-{
+namespace Havit.Data.Entity.Patterns.DataSeeds;
+
     /// <inheritdoc />
     public class DbDataSeedRunner : DataSeedRunner
     {
@@ -30,4 +30,3 @@ namespace Havit.Data.Entity.Patterns.DataSeeds
             });
         }
     }
-}

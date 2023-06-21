@@ -9,84 +9,83 @@ using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.EntityValidation
+namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.EntityValidation;
+
+[TestClass]
+public class EntityValidationRunnerTests
 {
-	[TestClass]
-	public class EntityValidationRunnerTests
+	[TestMethod]
+	public void EntityValidationRunner_Validate()
 	{
-		[TestMethod]
-		public void EntityValidationRunner_Validate()
+		// Arrange
+		Entity entityInserting = new Entity();
+		Entity entityUpdating = new Entity();
+		Entity entityDeleting = new Entity();
+
+		Mock<IEntityValidator<Entity>> entityValidatorMock = new Mock<IEntityValidator<Entity>>(MockBehavior.Strict);
+		entityValidatorMock.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(Enumerable.Empty<string>());
+
+		Mock<IEntityValidator<object>> entityValidatorMock2 = new Mock<IEntityValidator<object>>(MockBehavior.Strict);
+		entityValidatorMock2.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<object>())).Returns(Enumerable.Empty<string>());
+
+		Mock<IEntityValidatorsFactory> entityValidatorsFactoryMock = new Mock<IEntityValidatorsFactory>(MockBehavior.Strict);
+		entityValidatorsFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IEntityValidator<object>> { entityValidatorMock2.Object });
+		entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
+
+		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
+
+		// Act
+		runner.Validate(new Changes
 		{
-			// Arrange
-			Entity entityInserting = new Entity();
-			Entity entityUpdating = new Entity();
-			Entity entityDeleting = new Entity();
+			Inserts = new object[] { entityInserting },
+			Updates = new object[] { entityUpdating },
+			Deletes = new object[] { entityDeleting }
+		});
 
-			Mock<IEntityValidator<Entity>> entityValidatorMock = new Mock<IEntityValidator<Entity>>(MockBehavior.Strict);
-			entityValidatorMock.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(Enumerable.Empty<string>());
+		// Assert
+		entityValidatorsFactoryMock.Verify(m => m.Create<Entity>(), Times.AtLeastOnce);
+		entityValidatorsFactoryMock.Verify(m => m.Create<object>(), Times.AtLeastOnce);
 
-			Mock<IEntityValidator<object>> entityValidatorMock2 = new Mock<IEntityValidator<object>>(MockBehavior.Strict);
-			entityValidatorMock2.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<object>())).Returns(Enumerable.Empty<string>());
+		entityValidatorMock.Verify(m => m.Validate(ChangeType.Insert, entityInserting), Times.Once);
+		entityValidatorMock.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
+		entityValidatorMock.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);
+		entityValidatorMock.Verify(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
+		
+		entityValidatorMock2.Verify(m => m.Validate(ChangeType.Insert, entityInserting), Times.Once);
+		entityValidatorMock2.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
+		entityValidatorMock2.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);
+		entityValidatorMock2.Verify(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<object>()), Times.Exactly(3));
+	}
 
-			Mock<IEntityValidatorsFactory> entityValidatorsFactoryMock = new Mock<IEntityValidatorsFactory>(MockBehavior.Strict);
-			entityValidatorsFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IEntityValidator<object>> { entityValidatorMock2.Object });
-			entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
+	[TestMethod]
+	[ExpectedException(typeof(ValidationFailedException))]
+	public void EntityValidationRunner_Validate_ThrowsExceptionWhenValidationFails()
+	{
+		// Arrange
+		Entity entityInserting = new Entity();
 
-			EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
+		Mock<IEntityValidator<Entity>> entityValidatorMock = new Mock<IEntityValidator<Entity>>(MockBehavior.Strict);
+		entityValidatorMock.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(new List<string> { "Some validation error." });
 
-			// Act
-			runner.Validate(new Changes
-			{
-				Inserts = new object[] { entityInserting },
-				Updates = new object[] { entityUpdating },
-				Deletes = new object[] { entityDeleting }
-			});
+		Mock<IEntityValidatorsFactory> entityValidatorsFactoryMock = new Mock<IEntityValidatorsFactory>(MockBehavior.Strict);
+		entityValidatorsFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IEntityValidator<object>> { });
+		entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
 
-			// Assert
-			entityValidatorsFactoryMock.Verify(m => m.Create<Entity>(), Times.AtLeastOnce);
-			entityValidatorsFactoryMock.Verify(m => m.Create<object>(), Times.AtLeastOnce);
+		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
-			entityValidatorMock.Verify(m => m.Validate(ChangeType.Insert, entityInserting), Times.Once);
-			entityValidatorMock.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
-			entityValidatorMock.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);
-			entityValidatorMock.Verify(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
-			
-			entityValidatorMock2.Verify(m => m.Validate(ChangeType.Insert, entityInserting), Times.Once);
-			entityValidatorMock2.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
-			entityValidatorMock2.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);
-			entityValidatorMock2.Verify(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<object>()), Times.Exactly(3));
-		}
-
-		[TestMethod]
-		[ExpectedException(typeof(ValidationFailedException))]
-		public void EntityValidationRunner_Validate_ThrowsExceptionWhenValidationFails()
+		// Act
+		runner.Validate(new Changes
 		{
-			// Arrange
-			Entity entityInserting = new Entity();
+			Inserts = new object[] { entityInserting },
+			Updates = new object[] { },
+			Deletes = new object[] { }
+		});
 
-			Mock<IEntityValidator<Entity>> entityValidatorMock = new Mock<IEntityValidator<Entity>>(MockBehavior.Strict);
-			entityValidatorMock.Setup(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(new List<string> { "Some validation error." });
+		// Assert by method attribute
+	}
 
-			Mock<IEntityValidatorsFactory> entityValidatorsFactoryMock = new Mock<IEntityValidatorsFactory>(MockBehavior.Strict);
-			entityValidatorsFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IEntityValidator<object>> { });
-			entityValidatorsFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IEntityValidator<Entity>> { entityValidatorMock.Object });
+	public class Entity
+	{
 
-			EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
-
-			// Act
-			runner.Validate(new Changes
-			{
-				Inserts = new object[] { entityInserting },
-				Updates = new object[] { },
-				Deletes = new object[] { }
-			});
-
-			// Assert by method attribute
-		}
-
-		public class Entity
-		{
-
-		}
 	}
 }

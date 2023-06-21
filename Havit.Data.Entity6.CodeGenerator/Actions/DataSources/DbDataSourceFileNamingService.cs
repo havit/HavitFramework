@@ -1,24 +1,23 @@
 ﻿using Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model;
 using Havit.Data.Entity.CodeGenerator.Services;
 
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources
+namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources;
+
+public class DbDataSourceFileNamingService : FileNamingServiceBase<DbDataSourceModel>
 {
-	public class DbDataSourceFileNamingService : FileNamingServiceBase<DbDataSourceModel>
+	public DbDataSourceFileNamingService(IProject project)
+		: base(project)
 	{
-		public DbDataSourceFileNamingService(IProject project)
-			: base(project)
-		{
-			
-		}
+		
+	}
 
-		protected override string GetClassName(DbDataSourceModel model)
-		{
-			return model.DbDataSourceClassName;
-		}
+	protected override string GetClassName(DbDataSourceModel model)
+	{
+		return model.DbDataSourceClassName;
+	}
 
-		protected override string GetNamespaceName(DbDataSourceModel model)
-		{
-			return model.NamespaceName;
-		}
+	protected override string GetNamespaceName(DbDataSourceModel model)
+	{
+		return model.NamespaceName;
 	}
 }

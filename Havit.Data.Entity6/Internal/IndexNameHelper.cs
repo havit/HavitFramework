@@ -4,47 +4,46 @@ using System.Linq;
 using System.Text;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Data.Entity.Internal
+namespace Havit.Data.Entity.Internal;
+
+/// <summary>
+/// Pomocné metody pro pojmenování indexů.
+/// </summary>
+internal static class IndexNameHelper
 {
+	private static int indexNameMaxLengthExceededCounter = 0;
+
 	/// <summary>
-	/// Pomocné metody pro pojmenování indexů.
+	/// Vygeneruje název indexu pro index obsahující zadané sloupce a volitelnou unikánost hodnot.
 	/// </summary>
-	internal static class IndexNameHelper
+	public static string GetIndexName(EdmProperty[] columns, bool unique)
 	{
-		private static int indexNameMaxLengthExceededCounter = 0;
+		Contract.Requires<ArgumentNullException>(columns != null, nameof(columns));
+		Contract.Requires<ArgumentException>(columns.Length > 0, nameof(columns));
 
-		/// <summary>
-		/// Vygeneruje název indexu pro index obsahující zadané sloupce a volitelnou unikánost hodnot.
-		/// </summary>
-		public static string GetIndexName(EdmProperty[] columns, bool unique)
+		StringBuilder indexNameBuilder = new StringBuilder();
+		if (unique)
 		{
-			Contract.Requires<ArgumentNullException>(columns != null, nameof(columns));
-			Contract.Requires<ArgumentException>(columns.Length > 0, nameof(columns));
-
-			StringBuilder indexNameBuilder = new StringBuilder();
-			if (unique)
-			{
-				indexNameBuilder.Append("U");
-			}
-			indexNameBuilder.Append("IDX_");
+			indexNameBuilder.Append("U");
+		}
+		indexNameBuilder.Append("IDX_");
             indexNameBuilder.Append(columns.First().DeclaringType.Name);
 
-			foreach (EdmProperty property in columns)
-			{
-				indexNameBuilder.Append("_");
-				indexNameBuilder.Append(property.Name);
-			}
+		foreach (EdmProperty property in columns)
+		{
+			indexNameBuilder.Append("_");
+			indexNameBuilder.Append(property.Name);
+		}
 
-			if (indexNameBuilder.Length <= 128)
-			{
-				return indexNameBuilder.ToString();
-			}
-			else
-			{
-				indexNameMaxLengthExceededCounter += 1;
-				string suffix = indexNameMaxLengthExceededCounter.ToString("D4");
-				return indexNameBuilder.ToString().Left(128 - suffix.Length) + suffix;
-			}
+		if (indexNameBuilder.Length <= 128)
+		{
+			return indexNameBuilder.ToString();
+		}
+		else
+		{
+			indexNameMaxLengthExceededCounter += 1;
+			string suffix = indexNameMaxLengthExceededCounter.ToString("D4");
+			return indexNameBuilder.ToString().Left(128 - suffix.Length) + suffix;
 		}
 	}
 }

@@ -7,24 +7,23 @@ using System.Threading.Tasks;
 using Havit.Data.Entity.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
 
-namespace Havit.Data.Entity.Tests.Infrastructure
+namespace Havit.Data.Entity.Tests.Infrastructure;
+
+internal class ValidatingDbContext : DbContext
 {
-	internal class ValidatingDbContext : DbContext
+	static ValidatingDbContext()
 	{
-		static ValidatingDbContext()
-		{
-			System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<ValidatingDbContext>());
-		}
+		System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<ValidatingDbContext>());
+	}
 
-		public ValidatingDbContext() : base(DatabaseNameHelper.GetDatabaseNameForUnitTest("Havit.Data.Entity6.Tests"))
-		{
-		}
+	public ValidatingDbContext() : base(DatabaseNameHelper.GetDatabaseNameForUnitTest("Havit.Data.Entity6.Tests"))
+	{
+	}
 
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
+	protected override void OnModelCreating(DbModelBuilder modelBuilder)
+	{
+		base.OnModelCreating(modelBuilder);
 
-			modelBuilder.RegisterEntityType(typeof(ValidatedEntity));
-		}
+		modelBuilder.RegisterEntityType(typeof(ValidatedEntity));
 	}
 }

@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Havit.Data.Entity.Mapping
-{
-	[DebuggerDisplay("{Type.FullName,nq}")]
-	public class MappedEntity
-	{
-		public Type Type { get; set; }
+namespace Havit.Data.Entity.Mapping;
 
-		public List<MappedProperty> DeclaredProperties { get; set; }		
-	}
+[DebuggerDisplay("{Type.FullName,nq}")]
+public class MappedEntity
+{
+	public Type Type { get; set; }
+
+	public List<MappedProperty> DeclaredProperties { get; set; }		
 }

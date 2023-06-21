@@ -7,19 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Tests.Validators.Infrastructure.Model
-{
-	public class EntryWithGeneratedPrimaryKeyAndWithSymbol
-	{		
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+namespace Havit.Data.Entity.Tests.Validators.Infrastructure.Model;
 
-		[MaxLength(50)]
-		public string Symbol { get; set; }
+public class EntryWithGeneratedPrimaryKeyAndWithSymbol
+{		
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public int Id { get; set; }
 
-		public enum Entry
-		{
-			One, Two, Three
-		}
+	[MaxLength(50)]
+	public string Symbol { get; set; }
+
+	public enum Entry
+	{
+		One, Two, Three
 	}
 }

@@ -1,7 +1,6 @@
-﻿namespace Havit.Data.Entity.CodeGenerator.Services
+﻿namespace Havit.Data.Entity.CodeGenerator.Services;
+
+public interface IFileNamingService<TModel>
 {
-	public interface IFileNamingService<TModel>
-	{
-		string GetFilename(TModel model);
-	}
+	string GetFilename(TModel model);
 }

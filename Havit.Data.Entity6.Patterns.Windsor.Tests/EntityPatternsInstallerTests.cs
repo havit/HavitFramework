@@ -28,128 +28,127 @@ using Havit.Services.TimeServices;
 using Havit.TestHelpers.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Entity6.Patterns.Windsor.Tests
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests;
+
+[TestClass]
+public class EntityPatternsInstallerTests
 {
-	[TestClass]
-	public class EntityPatternsInstallerTests
+	[TestMethod]
+	public void EntityPatternsInstaller_RegisteredComponentsShouldHaveRegisteredDependencies()
 	{
-		[TestMethod]
-		public void EntityPatternsInstaller_RegisteredComponentsShouldHaveRegisteredDependencies()
-		{
-			// Arrange + Act
-			var container = CreateAndSetupWindsorContainer();
+		// Arrange + Act
+		var container = CreateAndSetupWindsorContainer();
 
-			// Assert
-			MisconfiguredComponentsHelper.AssertMisconfiguredComponents(container);
+		// Assert
+		MisconfiguredComponentsHelper.AssertMisconfiguredComponents(container);
+	}
+
+	[TestMethod]
+	public void EntityPatternsInstaller_RegisteredComponentsShouldNotHaveLifestyleMismatches()
+	{
+		// Arrange + Act
+		var container = CreateAndSetupWindsorContainer();
+
+		// Assert
+		PotentialLifestyleMismatchesHelper.AssertPotentialLifestyleMismatches(container, cm => cm.Implementation != typeof(TypedFactoryInterceptor));
+	}
+
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<ILanguageService>();
+			container.Resolve<ILocalizationService>();
+		}
+		// Assert
+		// no exception was thrown
+	}
+
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<IDataLoader>();
 		}
 
-		[TestMethod]
-		public void EntityPatternsInstaller_RegisteredComponentsShouldNotHaveLifestyleMismatches()
-		{
-			// Arrange + Act
-			var container = CreateAndSetupWindsorContainer();
+		// Assert
+		// no exception was thrown
+	}
 
-			// Assert
-			PotentialLifestyleMismatchesHelper.AssertPotentialLifestyleMismatches(container, cm => cm.Implementation != typeof(TypedFactoryInterceptor));
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<IUnitOfWork>();
 		}
 
-		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()
-		{
-			// Arrange
-			var container = CreateAndSetupWindsorContainer();
+		// Assert
+		// no exception was thrown
+	}
 
-			// Act
-			using (container.BeginScope())
-			{
-				container.Resolve<ILanguageService>();
-				container.Resolve<ILocalizationService>();
-			}
-			// Assert
-			// no exception was thrown
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<IDataSeedRunner>();
 		}
 
-		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterDataLoaderAndDependencies()
-		{
-			// Arrange
-			var container = CreateAndSetupWindsorContainer();
-
-			// Act
-			using (container.BeginScope())
-			{
-				container.Resolve<IDataLoader>();
-			}
-
-			// Assert
-			// no exception was thrown
-		}
-
-		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterUnitOfWorkAndDependencies()
-		{
-			// Arrange
-			var container = CreateAndSetupWindsorContainer();
-
-			// Act
-			using (container.BeginScope())
-			{
-				container.Resolve<IUnitOfWork>();
-			}
-
-			// Assert
-			// no exception was thrown
-		}
-
-		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterDataSeedRunnerAndDependencies()
-		{
-			// Arrange
-			var container = CreateAndSetupWindsorContainer();
-
-			// Act
-			using (container.BeginScope())
-			{
-				container.Resolve<IDataSeedRunner>();
-			}
-
-			// Assert
-			// no exception was thrown
-		}
+		// Assert
+		// no exception was thrown
+	}
 
 
-		[TestMethod]
-		public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
-		{
-			// Arrange
-			WindsorContainer container = CreateAndSetupWindsorContainer();
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterBeforeCommitProcessorsServicesAndDependencies()
+	{
+		// Arrange
+		WindsorContainer container = CreateAndSetupWindsorContainer();
 
-			// Act
-			IBeforeCommitProcessorsFactory factory = container.Resolve<IBeforeCommitProcessorsFactory>();
-			container.Resolve<IBeforeCommitProcessorsRunner>();
-			factory.Create<Language>();
-			factory.Create<object>();
+		// Act
+		IBeforeCommitProcessorsFactory factory = container.Resolve<IBeforeCommitProcessorsFactory>();
+		container.Resolve<IBeforeCommitProcessorsRunner>();
+		factory.Create<Language>();
+		factory.Create<object>();
 
-			// Assert
-			// no exception was thrown and...
-		}
+		// Assert
+		// no exception was thrown and...
+	}
 
-		private static WindsorContainer CreateAndSetupWindsorContainer()
-		{
-			WindsorContainer container = new WindsorContainer();
-			container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
+	private static WindsorContainer CreateAndSetupWindsorContainer()
+	{
+		WindsorContainer container = new WindsorContainer();
+		container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
 
-			container.AddFacility<TypedFactoryFacility>();
-			container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
-			container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = l => l.Scoped() })
-				.RegisterEntityPatterns()
-				.RegisterDbContext<TestDbContext>()
-				.RegisterLocalizationServices<Language>()
-				.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
+		container.AddFacility<TypedFactoryFacility>();
+		container.Register(Component.For(typeof(IServiceFactory<>)).AsFactory());
+		container.WithEntityPatternsInstaller(new ComponentRegistrationOptions { GeneralLifestyle = l => l.Scoped() })
+			.RegisterEntityPatterns()
+			.RegisterDbContext<TestDbContext>()
+			.RegisterLocalizationServices<Language>()
+			.RegisterDataLayer(typeof(ILanguageDataSource).Assembly);
 
-			container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
+		container.Register(Component.For<ITimeService>().ImplementedBy<ServerTimeService>().LifestyleSingleton());
 
-			return container;
-		}
+		return container;
 	}
 }

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Tests.Validators.Infrastructure.Model
-{
+namespace Havit.Data.Entity.Tests.Validators.Infrastructure.Model;
+
     public class InvalidNameOfPrimaryKey
     {
         [Key]
@@ -17,4 +17,3 @@ namespace Havit.Data.Entity.Tests.Validators.Infrastructure.Model
         public int ExternalId { get; set; }
 
     }
-}

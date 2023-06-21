@@ -1,7 +1,6 @@
-﻿namespace Havit.Data.Entity.CodeGenerator.Services
+﻿namespace Havit.Data.Entity.CodeGenerator.Services;
+
+public interface ITemplateFactory<TModel>
 {
-	public interface ITemplateFactory<TModel>
-	{
-		ITemplate CreateTemplate(TModel model);
-	}
+	ITemplate CreateTemplate(TModel model);
 }

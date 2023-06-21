@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Model
+namespace Havit.Data.Entity.Model;
+
+/// <summary>
+/// Informace o naposledy spuštěné verzi seedování dat v daném profilu.
+/// </summary>
+public class DataSeedVersion
 {
-	/// <summary>
-	/// Informace o naposledy spuštěné verzi seedování dat v daném profilu.
-	/// </summary>
-	public class DataSeedVersion
-	{
         /// <summary>
         /// Název profilu
         /// </summary>
@@ -19,10 +19,9 @@ namespace Havit.Data.Entity.Model
         [MaxLength(250)]
         public string ProfileName { get; set; }
 
-		/// <summary>
-		/// Naposledy spuštěná verze seedování dat v daném profilu.
-		/// </summary>
-		[MaxLength]
-		public string Version { get; set; }
-	}
+	/// <summary>
+	/// Naposledy spuštěná verze seedování dat v daném profilu.
+	/// </summary>
+	[MaxLength]
+	public string Version { get; set; }
 }

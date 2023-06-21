@@ -10,22 +10,22 @@ using System.Reflection;
 using Havit.Data.Entity.Mapping.Internal;
 using Havit.Data.Entity.Model;
 
-namespace Havit.Data.Entity.Validators
+namespace Havit.Data.Entity.Validators;
+
+/// <summary>
+/// Kontroluje pravidla modelu.
+/// Pro použití např. v unit testu.
+/// </summary>
+public class ModelValidator
 {
 	/// <summary>
 	/// Kontroluje pravidla modelu.
-	/// Pro použití např. v unit testu.
 	/// </summary>
-	public class ModelValidator
+	/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
+	public string Validate(DbContext dbContext)
 	{
-		/// <summary>
-		/// Kontroluje pravidla modelu.
-		/// </summary>
-		/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
-		public string Validate(DbContext dbContext)
-		{
             return Validate(dbContext, new ValidationRules());
-		}
+	}
 
         /// <summary>
         /// Kontroluje pravidla modelu s možnosti zapnout či vypnout konkrétní pravidla.
@@ -100,94 +100,93 @@ namespace Havit.Data.Entity.Validators
         /// Kontroluje, že žádná vlastnost nekončí na "ID" (kapitálkami).
         /// </summary>
         internal IEnumerable<string> CheckIdPascalCaseNamingConvention(RegisteredEntity entityMap)
+	{
+		foreach (var property in entityMap.Properties)
 		{
-			foreach (var property in entityMap.Properties)
+			if (property.PropertyName.EndsWith("ID", false, CultureInfo.InvariantCulture))
 			{
-				if (property.PropertyName.EndsWith("ID", false, CultureInfo.InvariantCulture))
-				{
-					yield return $"Class {entityMap.Type.Name} has a property {property.PropertyName} which ends with 'ID' but expected is 'Id'.";
-				}
+				yield return $"Class {entityMap.Type.Name} has a property {property.PropertyName} which ends with 'ID' but expected is 'Id'.";
 			}
 		}
+	}
 
-		/// <summary>
-		/// Kontroluje, že všechny stringové vlastnosti mají uvedenu maximální délku.
-		/// </summary>
-		internal IEnumerable<string> CheckStringsHaveMaxLengths(RegisteredEntity entityMap)
+	/// <summary>
+	/// Kontroluje, že všechny stringové vlastnosti mají uvedenu maximální délku.
+	/// </summary>
+	internal IEnumerable<string> CheckStringsHaveMaxLengths(RegisteredEntity entityMap)
+	{
+		foreach (var property in entityMap.Properties)
 		{
-			foreach (var property in entityMap.Properties)
+			if (property.Type == typeof(string))
 			{
-				if (property.Type == typeof(string))
+				MaxLengthAttribute maxLengthAttribute = entityMap.Type.GetProperty(property.PropertyName).GetCustomAttribute<MaxLengthAttribute>();
+				if (maxLengthAttribute == null)
 				{
-					MaxLengthAttribute maxLengthAttribute = entityMap.Type.GetProperty(property.PropertyName).GetCustomAttribute<MaxLengthAttribute>();
-					if (maxLengthAttribute == null)
+					yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} without known maximum length, MaxLengthAttribute on property is expected.";
+				}
+				else
+				{
+					if (maxLengthAttribute.Length == 0)
 					{
-						yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} without known maximum length, MaxLengthAttribute on property is expected.";
+						yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with zero value, it is expected to be greater then 0 (or -1 as 'max allowable').";
 					}
-					else
+					// -1 == MaxAllowableLength --> NOOP
+					if (maxLengthAttribute.Length < -1) 
 					{
-						if (maxLengthAttribute.Length == 0)
-						{
-							yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with zero value, it is expected to be greater then 0 (or -1 as 'max allowable').";
-						}
-						// -1 == MaxAllowableLength --> NOOP
-						if (maxLengthAttribute.Length < -1) 
-						{
-							yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with negative value, it is expected to be greater then 0 (or -1 as 'max allowable').";
-						}
+						yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with negative value, it is expected to be greater then 0 (or -1 as 'max allowable').";
 					}
 				}
 			}
 		}
+	}
 
-		/// <summary>
-		/// Kontroluje, že nejsou použity nested classes.
-		/// </summary>
-		internal IEnumerable<string> CheckSupportedNestedTypes(RegisteredEntity entityMap)
+	/// <summary>
+	/// Kontroluje, že nejsou použity nested classes.
+	/// </summary>
+	internal IEnumerable<string> CheckSupportedNestedTypes(RegisteredEntity entityMap)
+	{
+		Type[] nestedTypes = entityMap.Type.GetNestedTypes();
+
+		foreach (Type nestedType in nestedTypes)
 		{
-			Type[] nestedTypes = entityMap.Type.GetNestedTypes();
-
-			foreach (Type nestedType in nestedTypes)
+			if (!(nestedType.IsEnum && nestedType.Name == "Entry"))
 			{
-				if (!(nestedType.IsEnum && nestedType.Name == "Entry"))
-				{
-					yield return $"Class {entityMap.Type.Name} has a unsupported nested type {nestedType.Name}. Only enum type Entry is supported.";
-				}
+				yield return $"Class {entityMap.Type.Name} has a unsupported nested type {nestedType.Name}. Only enum type Entry is supported.";
 			}
 		}
+	}
 
-		/// <summary>
-		/// Kontroluje, že nejsou použity nested classes.
-		/// </summary>
-		internal IEnumerable<string> CheckForeignKeyForNavigationProperties(RegisteredEntity entityMap)
+	/// <summary>
+	/// Kontroluje, že nejsou použity nested classes.
+	/// </summary>
+	internal IEnumerable<string> CheckForeignKeyForNavigationProperties(RegisteredEntity entityMap)
+	{
+		foreach (RegisteredProperty navigationProperty in entityMap.Properties.Where(item => item.IsNavigationProperty))
 		{
-			foreach (RegisteredProperty navigationProperty in entityMap.Properties.Where(item => item.IsNavigationProperty))
+			if (navigationProperty.ForeignKey == null)
 			{
-				if (navigationProperty.ForeignKey == null)
-				{
-					yield return $"Class {entityMap.Type.Name} has a navigation property {navigationProperty.PropertyName} but no foreign key.";
-				}
+				yield return $"Class {entityMap.Type.Name} has a navigation property {navigationProperty.PropertyName} but no foreign key.";
 			}
 		}
+	}
 
-		internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(RegisteredEntity entityMap)
+	internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(RegisteredEntity entityMap)
+	{
+		bool hasEntryEnum = entityMap.Type.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
+
+		if (hasEntryEnum)
 		{
-			bool hasEntryEnum = entityMap.Type.GetNestedTypes().Any(nestedType => nestedType.IsEnum && (nestedType.Name == "Entry"));
+			bool pkWithIdentity = entityMap.HasDatabaseGeneratedIdentity;
+			bool symbolExists = entityMap.Properties.Any(item => item.PropertyName == "Symbol");
 
-			if (hasEntryEnum)
+			if (pkWithIdentity && !symbolExists)
 			{
-				bool pkWithIdentity = entityMap.HasDatabaseGeneratedIdentity;
-				bool symbolExists = entityMap.Properties.Any(item => item.PropertyName == "Symbol");
+				yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and without column Symbol (unable to pair items).";
+			}
 
-				if (pkWithIdentity && !symbolExists)
-				{
-					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key with identity and without column Symbol (unable to pair items).";
-				}
-
-				if (!pkWithIdentity && symbolExists)
-				{
-					yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key without identity and with column Symbol (ambiguous pairing fields).";
-				}
+			if (!pkWithIdentity && symbolExists)
+			{
+				yield return $"Class {entityMap.Type.Name} has Enum mapped to table with primary key without identity and with column Symbol (ambiguous pairing fields).";
 			}
 		}
 	}

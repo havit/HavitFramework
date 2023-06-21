@@ -19,21 +19,20 @@ using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Repositories;
 
-namespace Havit.Data.Entity.Patterns.Windsor
+namespace Havit.Data.Entity.Patterns.Windsor;
+
+/// <summary>
+/// Extension metody pro IWindsorContainer. Pro získání installeru Havit.Data.Entity.Patterns a souvisejících služeb.
+/// </summary>
+public static class WindsorContainerExtensionMethods
 {
 	/// <summary>
-	/// Extension metody pro IWindsorContainer. Pro získání installeru Havit.Data.Entity.Patterns a souvisejících služeb.
+	/// Vrátí installer pro Havit.Data.Entity.Patterns a souvisejících služeb.
 	/// </summary>
-	public static class WindsorContainerExtensionMethods
+	/// <param name="container">Windsor container.</param>
+	/// <param name="componentRegistrationOptions">Konfigurace registrace komponent.</param>
+	public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IWindsorContainer container, ComponentRegistrationOptions componentRegistrationOptions)
 	{
-		/// <summary>
-		/// Vrátí installer pro Havit.Data.Entity.Patterns a souvisejících služeb.
-		/// </summary>
-		/// <param name="container">Windsor container.</param>
-		/// <param name="componentRegistrationOptions">Konfigurace registrace komponent.</param>
-		public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IWindsorContainer container, ComponentRegistrationOptions componentRegistrationOptions)
-		{
-			return new EntityPatternsInstaller(container, componentRegistrationOptions);
-		}
+		return new EntityPatternsInstaller(container, componentRegistrationOptions);
 	}
 }

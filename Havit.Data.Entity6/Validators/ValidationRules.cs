@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Entity.Validators
-{
+namespace Havit.Data.Entity.Validators;
+
     /// <summary>
     /// Pravidla, která model validator spustí.
     /// Ve výchozím stavu jsou zapnuta všechna pravidla.
@@ -50,4 +50,3 @@ namespace Havit.Data.Entity.Validators
         public bool CheckSymbolVsPrimaryKeyForEntries { get; set; } = true;
 
     }
-}

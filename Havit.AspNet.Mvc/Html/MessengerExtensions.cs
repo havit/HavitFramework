@@ -8,23 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Havit.AspNet.Mvc.Html
+namespace Havit.AspNet.Mvc.Html;
+
+/// <summary>
+/// Extension metods for Messenger.
+/// </summary>
+public static class MessengerExtensions
 {
 	/// <summary>
-	/// Extension metods for Messenger.
+	/// Renders HTML for messenger.
 	/// </summary>
-	public static class MessengerExtensions
+	public static MvcHtmlString Messenger(this HtmlHelper helper)
 	{
-		/// <summary>
-		/// Renders HTML for messenger.
-		/// </summary>
-		public static MvcHtmlString Messenger(this HtmlHelper helper)
-		{
-			IMessageStorage messageStorage = new SessionMessageStorage(helper.ViewContext.HttpContext);
-			IMessageRenderer messageRenderer = new ToastrMessageRenderer(messageStorage);
-			MvcHtmlString result = messageRenderer.Render();
-			messageStorage.ClearMessages();
-			return result;
-		}
+		IMessageStorage messageStorage = new SessionMessageStorage(helper.ViewContext.HttpContext);
+		IMessageRenderer messageRenderer = new ToastrMessageRenderer(messageStorage);
+		MvcHtmlString result = messageRenderer.Render();
+		messageStorage.ClearMessages();
+		return result;
 	}
 }

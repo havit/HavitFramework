@@ -4,20 +4,20 @@ using System.Linq;
 using Havit.AspNetCore.ExceptionMonitoring.Processors;
 using Microsoft.Extensions.Logging;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.Services
-{
-	/// <summary>
-	/// Exception monitoring.
-	/// Zpracuje výjimku předáním exception monitoring processorům.
-	/// </summary>
+namespace Havit.AspNetCore.ExceptionMonitoring.Services;
+
+/// <summary>
+/// Exception monitoring.
+/// Zpracuje výjimku předáním exception monitoring processorům.
+/// </summary>
     public class ExceptionMonitoringService : IExceptionMonitoringService
     {
         private readonly IExceptionMonitoringProcessor[] exceptionMonitoringProcessors;
         private readonly ILogger<ExceptionMonitoringService> logger;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
         public ExceptionMonitoringService(IEnumerable<IExceptionMonitoringProcessor> exceptionMonitoringProcessors, ILogger<ExceptionMonitoringService> logger)
         {
             this.exceptionMonitoringProcessors = exceptionMonitoringProcessors.ToArray();
@@ -55,14 +55,13 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Services
             }
         }
 
-		/// <summary>
-		/// Vrací true, pokud se má výjimka zpracovávat (předávat procesorům).
-		/// Vždy vrací true, ale umožňuje potomkům chování předefinovat.
-		/// </summary>
+	/// <summary>
+	/// Vrací true, pokud se má výjimka zpracovávat (předávat procesorům).
+	/// Vždy vrací true, ale umožňuje potomkům chování předefinovat.
+	/// </summary>
         protected virtual bool ShouldHandleException(Exception exception)
         {
             return true;
         }
 
     }
-}

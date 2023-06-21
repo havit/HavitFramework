@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Havit.AspNetCore.Mvc.ErrorToJson.Services
+namespace Havit.AspNetCore.Mvc.ErrorToJson.Services;
+
+/// <summary>
+/// Provides object result for exception.
+/// </summary>
+public interface IErrorToJsonService
 {
 	/// <summary>
-	/// Provides object result for exception.
+	/// Returns object data for exception. If no response specified, returns null.
 	/// </summary>
-	public interface IErrorToJsonService
-	{
-		/// <summary>
-		/// Returns object data for exception. If no response specified, returns null.
-		/// </summary>
-		ResultData GetResultData(Exception exception);
-	}
+	ResultData GetResultData(Exception exception);
 }

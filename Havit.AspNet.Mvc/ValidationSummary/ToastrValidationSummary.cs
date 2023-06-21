@@ -6,42 +6,41 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Havit.Web;
 
-namespace Havit.AspNet.Mvc.ValidationSummary
+namespace Havit.AspNet.Mvc.ValidationSummary;
+
+/// <summary>
+/// Validation summary represented by toastr javascript library.
+/// </summary>
+public class ToastrValidationSummary : IValidationSummary
 {
+	private readonly List<ModelError> modelErrors;
+
 	/// <summary>
-	/// Validation summary represented by toastr javascript library.
+	/// Initializes a new instance of the <see cref="ToastrValidationSummary"/> class.
 	/// </summary>
-	public class ToastrValidationSummary : IValidationSummary
+	/// <param name="modelErrors">The model errors.</param>
+	public ToastrValidationSummary(List<ModelError> modelErrors)
 	{
-		private readonly List<ModelError> modelErrors;
+		this.modelErrors = modelErrors;
+	}
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ToastrValidationSummary"/> class.
-		/// </summary>
-		/// <param name="modelErrors">The model errors.</param>
-		public ToastrValidationSummary(List<ModelError> modelErrors)
+	/// <summary>
+	/// Returns validation summary prepared to render into page.
+	/// </summary>
+	public MvcHtmlString Render()
+	{
+		StringBuilder sb = new StringBuilder();
+
+		foreach (ModelError modelError in modelErrors)
 		{
-			this.modelErrors = modelErrors;
+			string encodedMessage = HttpUtilityExt.HtmlEncode(modelError.ErrorMessage, HtmlEncodeOptions.None);
+			sb.AppendLine(encodedMessage);
 		}
 
-		/// <summary>
-		/// Returns validation summary prepared to render into page.
-		/// </summary>
-		public MvcHtmlString Render()
-		{
-			StringBuilder sb = new StringBuilder();
+		TagBuilder builder = new TagBuilder("script");
+		builder.Attributes.Add("type", "text/javascript");
+		builder.InnerHtml = "toastr.error(\"" + sb.ToString().TrimEnd().Replace("\n", "<br />").Replace("\r", "") + "\");";
 
-			foreach (ModelError modelError in modelErrors)
-			{
-				string encodedMessage = HttpUtilityExt.HtmlEncode(modelError.ErrorMessage, HtmlEncodeOptions.None);
-				sb.AppendLine(encodedMessage);
-			}
-
-			TagBuilder builder = new TagBuilder("script");
-			builder.Attributes.Add("type", "text/javascript");
-			builder.InnerHtml = "toastr.error(\"" + sb.ToString().TrimEnd().Replace("\n", "<br />").Replace("\r", "") + "\");";
-
-			return new MvcHtmlString(builder.ToString());
-		}
+		return new MvcHtmlString(builder.ToString());
 	}
 }

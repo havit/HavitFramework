@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers
-{
+namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
+
     internal class UnobservedTaskExceptionHandler
     {
         private static UnobservedTaskExceptionHandler ExceptionHandler { get; set; }
@@ -36,4 +36,3 @@ namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers
             exceptionMonitoringService.HandleException(e.Exception);
         }
     }
-}

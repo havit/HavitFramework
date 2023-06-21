@@ -7,53 +7,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.Middlewares
+namespace Havit.AspNetCore.ExceptionMonitoring.Middlewares;
+
+/// <summary>
+/// Middleware to report failed requests.
+/// </summary>
+public class ExceptionMonitoringMiddleware
 {
+	private readonly RequestDelegate next;
+	private ILogger<ExceptionMonitoringMiddleware> logger;
+	private readonly IExceptionMonitoringService exceptionMonitoringService;
+
 	/// <summary>
-	/// Middleware to report failed requests.
+	/// Constructor.
 	/// </summary>
-	public class ExceptionMonitoringMiddleware
+	public ExceptionMonitoringMiddleware(RequestDelegate next, ILogger<ExceptionMonitoringMiddleware> logger, IExceptionMonitoringService exceptionMonitoringService)
 	{
-		private readonly RequestDelegate next;
-		private ILogger<ExceptionMonitoringMiddleware> logger;
-		private readonly IExceptionMonitoringService exceptionMonitoringService;
+		this.next = next;
+		this.logger = logger;
+		this.exceptionMonitoringService = exceptionMonitoringService;
+	}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public ExceptionMonitoringMiddleware(RequestDelegate next, ILogger<ExceptionMonitoringMiddleware> logger, IExceptionMonitoringService exceptionMonitoringService)
+	/// <summary>
+	/// Template method for the middleware pattern.
+	/// </summary>
+	public async Task Invoke(HttpContext context)
+	{
+		try
 		{
-			this.next = next;
-			this.logger = logger;
-			this.exceptionMonitoringService = exceptionMonitoringService;
+			// call the next middleware
+			await next(context);
 		}
-
-		/// <summary>
-		/// Template method for the middleware pattern.
-		/// </summary>
-		public async Task Invoke(HttpContext context)
+		catch (Exception exception)
 		{
+			logger.LogDebug(exception, "Monitoring exception.");
+			
 			try
 			{
-				// call the next middleware
-				await next(context);
+				exceptionMonitoringService.HandleException(exception);
 			}
-			catch (Exception exception)
+			catch (Exception handleExceptionException)
 			{
-				logger.LogDebug(exception, "Monitoring exception.");
-				
-				try
-				{
-					exceptionMonitoringService.HandleException(exception);
-				}
-				catch (Exception handleExceptionException)
-				{
-					logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
-				}
-
-				// re-throw the original exception
-				throw;
+				logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
 			}
+
+			// re-throw the original exception
+			throw;
 		}
 	}
 }

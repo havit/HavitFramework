@@ -9,12 +9,12 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.Processors
-{
-	/// <summary>
-	/// Exception procesor zasílající výjimku na email.
+namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
+
+/// <summary>
+/// Exception procesor zasílající výjimku na email.
     /// Zajiští, aby nedošlo k zaslání stejné chyby opakovaně (v časovém okně).
-	/// </summary>
+/// </summary>
     public class BufferingSmtpExceptionMonitoringProcessor : SmtpExceptionMonitoringProcessor
     {
         private readonly ILogger<BufferingSmtpExceptionMonitoringProcessor> logger;
@@ -31,10 +31,10 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
             this.options = options.Value;
         }
 
-		/// <summary>
-		/// Zpravuje výjimku zaslanou do exception monitoringu.
-		/// Odesílá výjimku na email.
-		/// </summary>
+	/// <summary>
+	/// Zpravuje výjimku zaslanou do exception monitoringu.
+	/// Odesílá výjimku na email.
+	/// </summary>
         protected override void ProcessExceptionCore(Exception exception)
         {
             if (ShouldProcessException(exception))
@@ -105,4 +105,3 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
         }
 
     }
-}

@@ -2,8 +2,8 @@
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers
-{
+namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
+
     internal class AppDomainUnhandledExceptionHandler
     {
         private readonly IExceptionMonitoringService exceptionMonitoringService;
@@ -38,4 +38,3 @@ namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers
             }
         }
     }
-}

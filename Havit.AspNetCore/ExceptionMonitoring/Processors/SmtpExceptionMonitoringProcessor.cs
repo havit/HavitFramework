@@ -7,48 +7,48 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.Processors
-{
+namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
+
     /// <summary>
     /// Exception procesor zasílající výjimku na email.
     /// </summary>
     public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
     {
         private readonly IExceptionFormatter exceptionFormatter;
-		private readonly ILogger<SmtpExceptionMonitoringProcessor> logger;
-		private readonly SmtpExceptionMonitoringOptions options;
+	private readonly ILogger<SmtpExceptionMonitoringProcessor> logger;
+	private readonly SmtpExceptionMonitoringOptions options;
 
         private int _mailCounter = 0;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
         public SmtpExceptionMonitoringProcessor(IExceptionFormatter exceptionFormatter, IOptions<SmtpExceptionMonitoringOptions> options, ILogger<SmtpExceptionMonitoringProcessor> logger)
         {
             this.exceptionFormatter = exceptionFormatter;
-			this.logger = logger;
-			this.options = options.Value;
+		this.logger = logger;
+		this.options = options.Value;
         }
 
-		/// <summary>
-		/// Zpracuje výjimku zaslanou do exception monitoringu.
-		/// Odesílá výjimku na email.
-		/// </summary>
+	/// <summary>
+	/// Zpracuje výjimku zaslanou do exception monitoringu.
+	/// Odesílá výjimku na email.
+	/// </summary>
         public void ProcessException(Exception exception)
         {
-			bool enabled = options.Enabled;
+		bool enabled = options.Enabled;
 
-			logger.LogTrace(enabled ? "SmtpExceptionMonitoringProcessor enabled." : "SmtpExceptionMonitoringProcessor disabled.");
+		logger.LogTrace(enabled ? "SmtpExceptionMonitoringProcessor enabled." : "SmtpExceptionMonitoringProcessor disabled.");
 
-			if (enabled)
+		if (enabled)
             {
                 ProcessExceptionCore(exception);
             }
         }
 
         /// <summary>
-		/// Zpracuje výjimku zaslanou do exception monitoringu.
-		/// Odesílá výjimku na email.
+	/// Zpracuje výjimku zaslanou do exception monitoringu.
+	/// Odesílá výjimku na email.
         /// </summary>
         protected virtual void ProcessExceptionCore(Exception exception)
         {
@@ -92,17 +92,17 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
             return mailMessage;
         }
 
-		/// <summary>
-		/// Vratí odesílatele emailu.
-		/// </summary>
+	/// <summary>
+	/// Vratí odesílatele emailu.
+	/// </summary>
         protected virtual MailAddress GetMailMessageFrom(Exception exception)
         {
             return new MailAddress(options.From);
         }
 
-	    /// <summary>
-	    /// Vratí adresáta emailu.
-	    /// </summary>
+    /// <summary>
+    /// Vratí adresáta emailu.
+    /// </summary>
         protected virtual List<MailAddress> GetMailMessageTo(Exception exception)
         {
             List<MailAddress> result = new List<MailAddress>();
@@ -118,9 +118,9 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
             return result;
         }
 
-	    /// <summary>
-	    /// Vratí předmět emailu.
-	    /// </summary>
+    /// <summary>
+    /// Vratí předmět emailu.
+    /// </summary>
         protected virtual string GetMailMessageSubject(Exception exception)
         {
             string message = exception.Message;
@@ -140,9 +140,8 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors
             return $"{options.Subject}: {message} (#{counter})";
         }
 
-		/// <summary>
-		/// Vrátí text emailu.
-		/// </summary>
+	/// <summary>
+	/// Vrátí text emailu.
+	/// </summary>
         protected virtual string GetMailMessageBody(Exception exception) => exceptionFormatter.FormatException(exception);
     }
-}

@@ -5,18 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Havit.AspNet.Mvc.Messenger
+namespace Havit.AspNet.Mvc.Messenger;
+
+/// <summary>
+/// Defines messenger for showing messages.
+/// </summary>
+public interface IMessenger
 {
 	/// <summary>
-	/// Defines messenger for showing messages.
+	/// Adds the message.
 	/// </summary>
-	public interface IMessenger
-	{
-		/// <summary>
-		/// Adds the message.
-		/// </summary>
-		/// <param name="text">The text of message.</param>
-		/// <param name="messageType">Type of the message.</param>
-		void AddMessage(string text, MessageType messageType = MessageType.Success);
-	}
+	/// <param name="text">The text of message.</param>
+	/// <param name="messageType">Type of the message.</param>
+	void AddMessage(string text, MessageType messageType = MessageType.Success);
 }

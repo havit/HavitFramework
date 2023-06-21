@@ -7,27 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Havit.AspNet.Mvc.Html
+namespace Havit.AspNet.Mvc.Html;
+
+/// <summary>
+/// Extension metody pro validaci.
+/// </summary>
+public static class ValidationExtensions
 {
 	/// <summary>
-	/// Extension metody pro validaci.
+	/// Vyrenderuje validation summary zobrazené pomocí Toastru.
 	/// </summary>
-	public static class ValidationExtensions
+	public static MvcHtmlString ToastrValidationSummary(this HtmlHelper htmlHelper)
 	{
-		/// <summary>
-		/// Vyrenderuje validation summary zobrazené pomocí Toastru.
-		/// </summary>
-		public static MvcHtmlString ToastrValidationSummary(this HtmlHelper htmlHelper)
+		if (htmlHelper.ViewData.ModelState.IsValid)
 		{
-			if (htmlHelper.ViewData.ModelState.IsValid)
-			{
-				return null;
-			}
-
-			List<ModelError> modelErrors = htmlHelper.ViewContext.ViewData.ModelState.SelectMany(item => item.Value.Errors).ToList();
-
-			IValidationSummary validationSummary = new ToastrValidationSummary(modelErrors);
-			return validationSummary.Render();
+			return null;
 		}
+
+		List<ModelError> modelErrors = htmlHelper.ViewContext.ViewData.ModelState.SelectMany(item => item.Value.Errors).ToList();
+
+		IValidationSummary validationSummary = new ToastrValidationSummary(modelErrors);
+		return validationSummary.Render();
 	}
 }

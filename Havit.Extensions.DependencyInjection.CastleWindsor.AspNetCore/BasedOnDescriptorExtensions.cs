@@ -4,8 +4,8 @@ using System.Text;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor.MsDependencyInjection;
 
-namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
-{
+namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore;
+
     /// <summary>
     /// Extension metody k BasedOnDescriptor.
     /// </summary>
@@ -19,4 +19,3 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
             return basedOnDescriptor.Configure(c => c.LifestylePerAspNetCoreRequest());            
         }
     }
-}

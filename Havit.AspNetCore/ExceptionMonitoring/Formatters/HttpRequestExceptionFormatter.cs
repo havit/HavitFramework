@@ -5,26 +5,26 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
-{
-	/// <summary>
-	/// Formatter výjimky s popisem prostředí http serveru.
-	/// </summary>
+namespace Havit.AspNetCore.ExceptionMonitoring.Formatters;
+
+/// <summary>
+/// Formatter výjimky s popisem prostředí http serveru.
+/// </summary>
     public class HttpRequestExceptionFormatter : IExceptionFormatter
     {
         private readonly IHttpContextAccessor httpContextAccessor;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
         public HttpRequestExceptionFormatter(IHttpContextAccessor httpContextAccessor = null)
         {
             this.httpContextAccessor = httpContextAccessor;
         }
 
-		/// <summary>
-		/// Vrátí text reprezentující lidsky čitelné informace o výjimce (a http requestu a http contextu).
-		/// </summary>
+	/// <summary>
+	/// Vrátí text reprezentující lidsky čitelné informace o výjimce (a http requestu a http contextu).
+	/// </summary>
         public string FormatException(Exception exception)
         {
             StringBuilder sb = new StringBuilder();
@@ -55,23 +55,23 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
 
         private void AppendRequestInformation(StringBuilder sb, HttpContext context)
         {
-			sb.AppendLine("Request information");
-			if (context == null)
-			{				
-				sb.AppendLine("No request information available.");
-			}
-			else
-			{
-				AppendValueLine(sb, "Request URL", () => context.Request.Path);
-				AppendValueLine(sb, "Request verb", () => context.Request.Method);
-				AppendValueLine(sb, "User host address", () => context.Connection.RemoteIpAddress.ToString());
-				AppendValueLine(sb, "Username", () => context.User.Identity.Name);
-				AppendValueLine(sb, "IsAuthenticated", () => context.User.Identity.IsAuthenticated.ToString());
-				AppendValueLine(sb, "AuthenticationType", () => context.User.Identity.AuthenticationType);
-				AppendValueLine(sb, "Client URI", () => context.Request.Headers["hx-client-uri"], skipIfNullOrEmpty: true);
-				AppendValueLine(sb, "Referer", () => context.Request.Headers["Referer"]);
-				AppendValueLine(sb, "User agent", () => context.Request.Headers["User-Agent"]);
-			}
+		sb.AppendLine("Request information");
+		if (context == null)
+		{				
+			sb.AppendLine("No request information available.");
+		}
+		else
+		{
+			AppendValueLine(sb, "Request URL", () => context.Request.Path);
+			AppendValueLine(sb, "Request verb", () => context.Request.Method);
+			AppendValueLine(sb, "User host address", () => context.Connection.RemoteIpAddress.ToString());
+			AppendValueLine(sb, "Username", () => context.User.Identity.Name);
+			AppendValueLine(sb, "IsAuthenticated", () => context.User.Identity.IsAuthenticated.ToString());
+			AppendValueLine(sb, "AuthenticationType", () => context.User.Identity.AuthenticationType);
+			AppendValueLine(sb, "Client URI", () => context.Request.Headers["hx-client-uri"], skipIfNullOrEmpty: true);
+			AppendValueLine(sb, "Referer", () => context.Request.Headers["Referer"]);
+			AppendValueLine(sb, "User agent", () => context.Request.Headers["User-Agent"]);
+		}
             //AppendValueLine(sb, "Culture", () => context.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name);
             //AppendValueLine(sb, "UI Culture", () => context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture.Name);
             sb.AppendLine();
@@ -143,11 +143,10 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters
             {
                 value = "(exception)";
             }
-			if (skipIfNullOrEmpty && String.IsNullOrEmpty(value))
-			{
-				return;
-			}
+		if (skipIfNullOrEmpty && String.IsNullOrEmpty(value))
+		{
+			return;
+		}
             sb.AppendLine("    " + key + ": " + value);
         }
     }
-}

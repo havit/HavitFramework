@@ -8,34 +8,33 @@ using System.Web;
 using System.Web.Mvc;
 using Havit.Web.Management;
 
-namespace Havit.AspNet.Mvc
+namespace Havit.AspNet.Mvc;
+
+/// <summary>
+/// Zajišťuje zpracování neobsloužené výjimky v aplikaci (controller, view, atp.).
+/// </summary>
+/// <remarks>
+/// Ke zpracování výjimek dochází pouze v případě, že jsou povoleny custom errors (HttpContext.IsCustomErrorEnabled). Tím se snažíme neřešit chyby při lokálním vývoji.
+/// Výjimka je odeslána healthmonitoringem a označena jako zpracovaná.
+/// Attribut dále zajistí zobrazení view "Error".
+/// </remarks>
+public class HandleErrorHmAttribute : HandleErrorAttribute
 {
 	/// <summary>
-	/// Zajišťuje zpracování neobsloužené výjimky v aplikaci (controller, view, atp.).
+	/// Called when an exception occurs.
 	/// </summary>
-	/// <remarks>
-	/// Ke zpracování výjimek dochází pouze v případě, že jsou povoleny custom errors (HttpContext.IsCustomErrorEnabled). Tím se snažíme neřešit chyby při lokálním vývoji.
-	/// Výjimka je odeslána healthmonitoringem a označena jako zpracovaná.
-	/// Attribut dále zajistí zobrazení view "Error".
-	/// </remarks>
-	public class HandleErrorHmAttribute : HandleErrorAttribute
+	public override void OnException(ExceptionContext context)
 	{
-		/// <summary>
-		/// Called when an exception occurs.
-		/// </summary>
-		public override void OnException(ExceptionContext context)
+		base.OnException(context);
+
+		if (context.HttpContext.IsCustomErrorEnabled)
 		{
-			base.OnException(context);
+			new WebRequestErrorEventExt(context.Exception.Message, this, context.Exception, HttpContext.Current).Raise();
 
-			if (context.HttpContext.IsCustomErrorEnabled)
-			{
-				new WebRequestErrorEventExt(context.Exception.Message, this, context.Exception, HttpContext.Current).Raise();
-
-				context.ExceptionHandled = true;
-				context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				context.HttpContext.Response.TrySkipIisCustomErrors = true;
-				context.Result = new ViewResult { ViewName = "Error" };
-			}
+			context.ExceptionHandled = true;
+			context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+			context.HttpContext.Response.TrySkipIisCustomErrors = true;
+			context.Result = new ViewResult { ViewName = "Error" };
 		}
 	}
 }

@@ -5,40 +5,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.AspNetCore.Mvc.ErrorToJson.Services
+namespace Havit.AspNetCore.Mvc.ErrorToJson.Services;
+
+/// <summary>
+/// Provides object result for exception.
+/// </summary>
+public class ErrorToJsonService : IErrorToJsonService
 {
+	private ErrorToJsonConfiguration configuration;
+
 	/// <summary>
-	/// Provides object result for exception.
+	/// Constructor.
 	/// </summary>
-	public class ErrorToJsonService : IErrorToJsonService
+	public ErrorToJsonService(ErrorToJsonConfiguration configuration)
 	{
-		private ErrorToJsonConfiguration configuration;
+		this.configuration = configuration;
+	}
 
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public ErrorToJsonService(ErrorToJsonConfiguration configuration)
+	/// <inheritdoc />
+	public ResultData GetResultData(Exception exception)
+	{
+		var mappingItem = this.configuration.FindMapping(exception);
+		if (mappingItem != null)
 		{
-			this.configuration = configuration;
-		}
+			object result = mappingItem.ResultSelector(exception);
+			bool markExceptionAsHandled = mappingItem.MarkExceptionAsHandledFunc(exception);
 
-		/// <inheritdoc />
-		public ResultData GetResultData(Exception exception)
-		{
-			var mappingItem = this.configuration.FindMapping(exception);
-			if (mappingItem != null)
+			return new ResultData
 			{
-				object result = mappingItem.ResultSelector(exception);
-				bool markExceptionAsHandled = mappingItem.MarkExceptionAsHandledFunc(exception);
-
-				return new ResultData
-				{
-					Data = result,
-					StatusCode = mappingItem.StatusCodeSelector(exception),
-					ExceptionHandled = markExceptionAsHandled
-				};
-			}
-			return null;
+				Data = result,
+				StatusCode = mappingItem.StatusCodeSelector(exception),
+				ExceptionHandled = markExceptionAsHandled
+			};
 		}
+		return null;
 	}
 }

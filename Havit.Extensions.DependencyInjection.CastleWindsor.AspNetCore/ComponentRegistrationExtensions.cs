@@ -3,8 +3,8 @@ using Castle.MicroKernel.Registration.Lifestyle;
 using Castle.Windsor.MsDependencyInjection;
 using System;
 
-namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
-{
+namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore;
+
     /// <summary>
     /// Extension metody k ComponentRegistration&lt;TService&gt;.
     /// </summary>
@@ -19,4 +19,3 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor.AspNetCore
             return componentRegistration.LifeStyle.PerAspNetCoreRequest();
         }
     }
-}

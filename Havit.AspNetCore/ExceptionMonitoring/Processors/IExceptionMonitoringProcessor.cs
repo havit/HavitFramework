@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Havit.AspNetCore.ExceptionMonitoring.Processors
-{
-	/// <summary>
-	/// Exception Monitoring Processor.
-	/// </summary>
+namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
+
+/// <summary>
+/// Exception Monitoring Processor.
+/// </summary>
     public interface IExceptionMonitoringProcessor
     {
-		/// <summary>
-		/// Zpracuje výjimku zaslanou do exception monitoringu.
-		/// </summary>
+	/// <summary>
+	/// Zpracuje výjimku zaslanou do exception monitoringu.
+	/// </summary>
         void ProcessException(Exception exception);
     }
-}

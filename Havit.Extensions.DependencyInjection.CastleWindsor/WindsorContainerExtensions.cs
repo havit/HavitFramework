@@ -11,8 +11,8 @@ using Havit.Extensions.DependencyInjection.Abstractions;
 using Havit.Extensions.DependencyInjection.Scanners;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Havit.Extensions.DependencyInjection.CastleWindsor
-{
+namespace Havit.Extensions.DependencyInjection.CastleWindsor;
+
     /// <summary>
     /// Extension metody k IWindsorContainer.
     /// </summary>
@@ -48,7 +48,7 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="componentRegistrationConfigurer">(Volitelné.) Custom configurace pro registrované služby.</param>
         public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string[] profiles, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null, Action<ComponentRegistration> componentRegistrationConfigurer = null)
         {
-			Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
+		Contract.Requires<ArgumentNullException>(profiles != null, nameof(profiles));
 
             foreach (string profile in profiles)
             {
@@ -70,10 +70,10 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
         /// <param name="componentRegistrationConfigurer">(Volitelné.) Custom configurace pro registrované služby.</param>
         public static void InstallByServiceAttribute(this IWindsorContainer container, Assembly assembly, string profile, Func<LifestyleGroup<object>, ComponentRegistration<object>> scopedLifetimeConfigurer = null, Action<ComponentRegistration> componentRegistrationConfigurer = null)
         {
-			Contract.Requires<ArgumentNullException>(container != null, nameof(container));
-			Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));
+		Contract.Requires<ArgumentNullException>(container != null, nameof(container));
+		Contract.Requires<ArgumentNullException>(assembly != null, nameof(assembly));
 
-			TypeServiceAttributeInfo[] servicesToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
+		TypeServiceAttributeInfo[] servicesToRegister = AssemblyScanner.GetTypesWithServiceAttribute(assembly, profile);
 
             foreach (var serviceToRegister in servicesToRegister)
             {
@@ -84,12 +84,12 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
                     descriptor = descriptor.WithServiceDefaultInterfaces();
                 }
                 else
-				{
+			{
                     descriptor = descriptor.WithServices(serviceTypes);
                 }
                 descriptor = descriptor.ApplyLifestyle(serviceToRegister.ServiceAttribute.Lifetime, scopedLifetimeConfigurer);
                 if (componentRegistrationConfigurer != null)
-				{
+			{
                     descriptor = descriptor.Configure(componentRegistrationConfigurer);
                 }
                 container.Register(descriptor);
@@ -116,4 +116,3 @@ namespace Havit.Extensions.DependencyInjection.CastleWindsor
             }
         }        
     }
-}

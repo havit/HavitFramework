@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.Language.
+/// </summary>
+public partial class LanguageCollection : LanguageCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Language.
-	/// </summary>
-	public partial class LanguageCollection : LanguageCollectionBase
-	{
-		
-	}
+	
 }

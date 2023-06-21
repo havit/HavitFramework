@@ -10,82 +10,81 @@ using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties;
+
+/// <summary>
+/// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
+/// </summary>
+public class StoredProcedureMsDescriptionPropertyAnnotationProvider : ModelExtensionAnnotationProvider<StoredProcedureModelExtension>
 {
-	/// <summary>
-	/// Warning! If annotation structure (name or value) is changed (as part of breaking change), don't forget to update/rewrite tests.
-	/// </summary>
-	public class StoredProcedureMsDescriptionPropertyAnnotationProvider : ModelExtensionAnnotationProvider<StoredProcedureModelExtension>
+	private readonly XmlCommentFileCache xmlCommentFileCache = new XmlCommentFileCache();
+
+	protected override List<IAnnotation> GetAnnotations(StoredProcedureModelExtension dbAnnotation, MemberInfo memberInfo)
 	{
-		private readonly XmlCommentFileCache xmlCommentFileCache = new XmlCommentFileCache();
-
-		protected override List<IAnnotation> GetAnnotations(StoredProcedureModelExtension dbAnnotation, MemberInfo memberInfo)
+		if (memberInfo is MethodInfo methodInfo)
 		{
-			if (memberInfo is MethodInfo methodInfo)
+			string summary = GetSummaryXmlCommentTagForMethod(methodInfo);
+			if (summary != null)
 			{
-				string summary = GetSummaryXmlCommentTagForMethod(methodInfo);
-				if (summary != null)
+				return ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 				{
-					return ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
-					{
-						{ "MS_Description", summary }
-					}, dbAnnotation.ProcedureName).ToList();
-				}
+					{ "MS_Description", summary }
+				}, dbAnnotation.ProcedureName).ToList();
 			}
-
-			return new List<IAnnotation>();
 		}
 
-		protected override List<StoredProcedureModelExtension> GetModelExtensions(List<IAnnotation> annotations)
+		return new List<IAnnotation>();
+	}
+
+	protected override List<StoredProcedureModelExtension> GetModelExtensions(List<IAnnotation> annotations)
+	{
+		return new List<StoredProcedureModelExtension>();
+	}
+
+	private string GetSummaryXmlCommentTagForMethod(MethodInfo methodInfo)
+	{
+		var xmlFile = xmlCommentFileCache.GetOrLoadXmlCommentFile(methodInfo.DeclaringType.Assembly);
+		if (xmlFile == null)
 		{
-			return new List<StoredProcedureModelExtension>();
+			return null;
 		}
 
-		private string GetSummaryXmlCommentTagForMethod(MethodInfo methodInfo)
+		return xmlFile.FindMethod(methodInfo)?.Summary;
+	}
+
+
+	private class XmlCommentFileCache
+	{
+		private readonly Dictionary<string, XmlCommentFile> files = new Dictionary<string, XmlCommentFile>();
+		private readonly XmlCommentParser xmlCommentParser = new XmlCommentParser();
+
+		public XmlCommentFile GetOrLoadXmlCommentFile(Assembly assembly)
 		{
-			var xmlFile = xmlCommentFileCache.GetOrLoadXmlCommentFile(methodInfo.DeclaringType.Assembly);
-			if (xmlFile == null)
+			string xmlFile = GetXmlCommentsFileFromAssembly(assembly);
+			if (string.IsNullOrEmpty(xmlFile))
 			{
 				return null;
 			}
 
-			return xmlFile.FindMethod(methodInfo)?.Summary;
-		}
-
-
-		private class XmlCommentFileCache
-		{
-			private readonly Dictionary<string, XmlCommentFile> files = new Dictionary<string, XmlCommentFile>();
-			private readonly XmlCommentParser xmlCommentParser = new XmlCommentParser();
-
-			public XmlCommentFile GetOrLoadXmlCommentFile(Assembly assembly)
+			if (files.TryGetValue(xmlFile, out var file))
 			{
-				string xmlFile = GetXmlCommentsFileFromAssembly(assembly);
-				if (string.IsNullOrEmpty(xmlFile))
-				{
-					return null;
-				}
-
-				if (files.TryGetValue(xmlFile, out var file))
-				{
-					return file;
-				}
-
-				var document = XDocument.Load(xmlFile);
-
-				file = xmlCommentParser.ParseFile(document);
-				files[xmlFile] = file;
-
 				return file;
 			}
 
-			private static string GetXmlCommentsFileFromAssembly(Assembly assembly)
-			{
-				var assemblyFile = new FileInfo(new Uri(assembly.Location).LocalPath);
-				var xmlFile = $"{Path.GetFileNameWithoutExtension(assemblyFile.Name)}.xml";
-				return assemblyFile.Directory?.GetFiles(xmlFile).FirstOrDefault()?.FullName;
-			}
+			var document = XDocument.Load(xmlFile);
+
+			file = xmlCommentParser.ParseFile(document);
+			files[xmlFile] = file;
+
+			return file;
 		}
 
+		private static string GetXmlCommentsFileFromAssembly(Assembly assembly)
+		{
+			var assemblyFile = new FileInfo(new Uri(assembly.Location).LocalPath);
+			var xmlFile = $"{Path.GetFileNameWithoutExtension(assemblyFile.Name)}.xml";
+			return assemblyFile.Directory?.GetFiles(xmlFile).FirstOrDefault()?.FullName;
+		}
 	}
+
 }

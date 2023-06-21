@@ -4,72 +4,71 @@ using System.Text;
 
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Business.Query
+namespace Havit.Business.Query;
+
+/// <summary>
+/// Vytváří podmínky testující rozsah datumů.
+/// </summary>
+public static class DateRangeCondition
 {
 	/// <summary>
-	/// Vytváří podmínky testující rozsah datumů.
+	/// Vytvoří podmínku testující, zda je datum v intervalu datumů.
 	/// </summary>
-	public static class DateRangeCondition
+	public static Condition Create(IOperand operand, DateTime? date1, DateTime? date2)
 	{
-		/// <summary>
-		/// Vytvoří podmínku testující, zda je datum v intervalu datumů.
-		/// </summary>
-		public static Condition Create(IOperand operand, DateTime? date1, DateTime? date2)
+		Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+
+		if ((date1 == null) && (date2 == null))
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
-
-			if ((date1 == null) && (date2 == null))
-			{
-				return EmptyCondition.Create();
-			}
-
-			if ((date1 != null) && (date2 != null))
-			{
-				return new TernaryCondition("({0} >= {1} and {0} <= {2})", operand, ValueOperand.Create(date1.Value), ValueOperand.Create(date2.Value));
-			}
-
-			if (date1 != null)
-			{
-				return DateCondition.Create(operand, ComparisonOperator.GreaterOrEquals, date1.Value);
-			}
-
-			//if (date2 != null)
-			//{
-			return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value);
-			//}
-
+			return EmptyCondition.Create();
 		}
 
-		/// <summary>
-		/// Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
-		/// Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
-		/// Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
-		/// je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt;= DATUM(date2).
-		/// </summary>
-		public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
+		if ((date1 != null) && (date2 != null))
 		{
-			Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
-
-			if ((date1 == null) && (date2 == null))
-			{
-				return EmptyCondition.Create();
-			}
-
-			if ((date1 != null) && (date2 != null))
-			{
-				return new TernaryCondition("({0} >= {1} and {0} < {2})", operand, ValueOperand.Create(date1.Value.Date), ValueOperand.Create(date2.Value.Date.AddDays(1)));
-			}
-
-			if (date1 != null)
-			{
-				return DateCondition.Create(operand, ComparisonOperator.GreaterOrEquals, date1.Value.Date);
-			}
-
-			//if (date2 != null)
-			//{
-			return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value.Date.AddDays(1));
-			//}
-
+			return new TernaryCondition("({0} >= {1} and {0} <= {2})", operand, ValueOperand.Create(date1.Value), ValueOperand.Create(date2.Value));
 		}
+
+		if (date1 != null)
+		{
+			return DateCondition.Create(operand, ComparisonOperator.GreaterOrEquals, date1.Value);
+		}
+
+		//if (date2 != null)
+		//{
+		return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value);
+		//}
+
+	}
+
+	/// <summary>
+	/// Vytvoří podmínku testující, zda je den data (datumu) v intervalu dnů datumů.
+	/// Zajišťuje, aby hodnota operandu byla větší nebo rovna datu date1 a aby byla menší než půlnoc konce date2.
+	/// Jinými slovy: Argumenty moho obsahovat datum a čas, ale testuje se jen datum bez času. Potom 
+	/// je zajišťováno: DATUM(date1) &lt;= DATUM(operand) &lt;= DATUM(date2).
+	/// </summary>
+	public static Condition CreateDays(IOperand operand, DateTime? date1, DateTime? date2)
+	{
+		Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
+
+		if ((date1 == null) && (date2 == null))
+		{
+			return EmptyCondition.Create();
+		}
+
+		if ((date1 != null) && (date2 != null))
+		{
+			return new TernaryCondition("({0} >= {1} and {0} < {2})", operand, ValueOperand.Create(date1.Value.Date), ValueOperand.Create(date2.Value.Date.AddDays(1)));
+		}
+
+		if (date1 != null)
+		{
+			return DateCondition.Create(operand, ComparisonOperator.GreaterOrEquals, date1.Value.Date);
+		}
+
+		//if (date2 != null)
+		//{
+		return DateCondition.Create(operand, ComparisonOperator.Lower, date2.Value.Date.AddDays(1));
+		//}
+
 	}
 }

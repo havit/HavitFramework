@@ -1,18 +1,17 @@
-﻿namespace Havit.Business.BusinessLayerGenerator.Helpers.Types
+﻿namespace Havit.Business.BusinessLayerGenerator.Helpers.Types;
+
+/// <summary>
+/// Typ výčtu tabulky.
+/// </summary>
+public enum EnumMode
 {
 	/// <summary>
-	/// Typ výčtu tabulky.
+	/// Žádný výčet.
 	/// </summary>
-	public enum EnumMode
-	{
-		/// <summary>
-		/// Žádný výčet.
-		/// </summary>
-		NoEnum,
+	NoEnum,
 
-		/// <summary>
-		/// Položky ve třídě simulující výčet.
-		/// </summary>
-		EnumClass
-	}
+	/// <summary>
+	/// Položky ve třídě simulující výčet.
+	/// </summary>
+	EnumClass
 }

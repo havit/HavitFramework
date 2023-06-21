@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Měna.
+/// </summary>
+public partial class Currency : CurrencyBase
 {
-	/// <summary>
-	/// Měna.
-	/// </summary>
-	public partial class Currency : CurrencyBase
-	{
-		
-	}
+	
 }

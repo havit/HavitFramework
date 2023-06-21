@@ -3,79 +3,78 @@ using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.Business.BusinessLayerGenerator.Generators
+namespace Havit.Business.BusinessLayerGenerator.Generators;
+
+public static class DatabaseRulesChecker
 {
-	public static class DatabaseRulesChecker
+	/// <summary>
+	/// Ověří pravidla nad tabulkou.
+	/// </summary>
+	public static void CheckRules(Database database)
 	{
-		/// <summary>
-		/// Ověří pravidla nad tabulkou.
-		/// </summary>
-		public static void CheckRules(Database database)
-		{
-			CheckNamespace(database);
-			CheckDefinedTypes(database);
-		}
+		CheckNamespace(database);
+		CheckDefinedTypes(database);
+	}
 
-		/// <summary>
-		/// Ověří existenci pravidla pro namespace.
-		/// </summary>
-		private static void CheckNamespace(Database database)
+	/// <summary>
+	/// Ověří existenci pravidla pro namespace.
+	/// </summary>
+	private static void CheckNamespace(Database database)
+	{
+		if (String.IsNullOrEmpty(ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromDatabase(), "Namespace")))
 		{
-			if (String.IsNullOrEmpty(ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromDatabase(), "Namespace")))
+			ConsoleHelper.WriteLineWarning("Databáze: Není zadán namespace. ");
+			if (!String.IsNullOrEmpty(GeneratorSettings.Namespace))
 			{
-				ConsoleHelper.WriteLineWarning("Databáze: Není zadán namespace. ");
-				if (!String.IsNullOrEmpty(GeneratorSettings.Namespace))
-				{
-					ConsoleHelper.WriteLineWarning("Použije se namespace z příkazové řádky.");
-				}
-			}
-			else
-			{
-				if (!String.IsNullOrEmpty(GeneratorSettings.Namespace))
-				{
-					ConsoleHelper.WriteLineWarning("Databáze obsahuje namespace, namespace z příkazové řádky bude ignorován.");
-				}
+				ConsoleHelper.WriteLineWarning("Použije se namespace z příkazové řádky.");
 			}
 		}
-
-		private static void CheckDefinedTypes(Database database)
+		else
 		{
-			if (!CheckDefinedClrIntArray(database) || !CheckDefinedIntArrayTableType(database))
+			if (!String.IsNullOrEmpty(GeneratorSettings.Namespace))
 			{
-				// nezapisujeme jako samostatný warning, protože jde jen o dodatečnou informaci
-				// zápis warningu by zvýšil počet warningů v summary na konci
-				ConsoleHelper.WriteLineWithColor(Console.Error, ConsoleHelper.WarningColor, @"SQL Skripty na přechod z SQL 2005 na SQL 2008 a další jsou k dispozici ve složce \\topol.havit.local\Library\SQL.");
+				ConsoleHelper.WriteLineWarning("Databáze obsahuje namespace, namespace z příkazové řádky bude ignorován.");
 			}
 		}
+	}
 
-		private static bool CheckDefinedClrIntArray(Database database)
+	private static void CheckDefinedTypes(Database database)
+	{
+		if (!CheckDefinedClrIntArray(database) || !CheckDefinedIntArrayTableType(database))
 		{
-			UserDefinedType dataType = database.UserDefinedTypes["IntArray"];
-			//if ((dataType == null) && (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServer2005))
-			//{
-			//	ConsoleHelper.WriteLineWarning("Nebyl nalezen CLR datový typ IntArray a target platform je SQL Server 2005.");
-			//	return false;
-			//}
+			// nezapisujeme jako samostatný warning, protože jde jen o dodatečnou informaci
+			// zápis warningu by zvýšil počet warningů v summary na konci
+			ConsoleHelper.WriteLineWithColor(Console.Error, ConsoleHelper.WarningColor, @"SQL Skripty na přechod z SQL 2005 na SQL 2008 a další jsou k dispozici ve složce \\topol.havit.local\Library\SQL.");
+		}
+	}
 
-			if ((dataType != null) && (GeneratorSettings.TargetPlatform >= TargetPlatform.SqlServer2008))
-			{
-				ConsoleHelper.WriteLineWarning("Byl nalezen CLR datový typ IntArray, ale pro target platform s SQL Server 2008 (a novější) jej nepoužíváme.");
-				return false;
-			}
+	private static bool CheckDefinedClrIntArray(Database database)
+	{
+		UserDefinedType dataType = database.UserDefinedTypes["IntArray"];
+		//if ((dataType == null) && (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServer2005))
+		//{
+		//	ConsoleHelper.WriteLineWarning("Nebyl nalezen CLR datový typ IntArray a target platform je SQL Server 2005.");
+		//	return false;
+		//}
 
-			return true;
+		if ((dataType != null) && (GeneratorSettings.TargetPlatform >= TargetPlatform.SqlServer2008))
+		{
+			ConsoleHelper.WriteLineWarning("Byl nalezen CLR datový typ IntArray, ale pro target platform s SQL Server 2008 (a novější) jej nepoužíváme.");
+			return false;
 		}
 
-		private static bool CheckDefinedIntArrayTableType(Database database)
-		{
-			UserDefinedTableType dataType = database.UserDefinedTableTypes["IntTable"];
-			if ((dataType == null) && (GeneratorSettings.TargetPlatform >= TargetPlatform.SqlServer2008))
-			{
-				ConsoleHelper.WriteLineWarning("Nebyl nalezen datový typ IntTable, který je pro target platform SQL Server 2008 (a novější) vyžadován.");
-				return false;
-			}
+		return true;
+	}
 
-			return true;
+	private static bool CheckDefinedIntArrayTableType(Database database)
+	{
+		UserDefinedTableType dataType = database.UserDefinedTableTypes["IntTable"];
+		if ((dataType == null) && (GeneratorSettings.TargetPlatform >= TargetPlatform.SqlServer2008))
+		{
+			ConsoleHelper.WriteLineWarning("Nebyl nalezen datový typ IntTable, který je pro target platform SQL Server 2008 (a novější) vyžadován.");
+			return false;
 		}
+
+		return true;
 	}
 }

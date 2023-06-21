@@ -15,10 +15,9 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+public partial class ObjednavkaSepsani : ObjednavkaSepsaniBase
 {
-	public partial class ObjednavkaSepsani : ObjednavkaSepsaniBase
-	{
-		
-	}
+	
 }

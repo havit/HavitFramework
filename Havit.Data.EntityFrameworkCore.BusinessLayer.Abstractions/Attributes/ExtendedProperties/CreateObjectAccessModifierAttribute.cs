@@ -3,34 +3,33 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+
+/// <summary>
+/// ExtendedProperty pro "CreateObjectAccessModifier".
+/// </summary>
+[AttributeUsage(AttributeTargets.Class)]
+public class CreateObjectAccessModifierAttribute : ExtendedPropertiesAttribute
 {
 	/// <summary>
-	/// ExtendedProperty pro "CreateObjectAccessModifier".
+	/// Access modifier pro metodu Create Object.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Class)]
-	public class CreateObjectAccessModifierAttribute : ExtendedPropertiesAttribute
+	public string AccessModifier { get; }
+
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public CreateObjectAccessModifierAttribute(string accessModifier)
 	{
-		/// <summary>
-		/// Access modifier pro metodu Create Object.
-		/// </summary>
-		public string AccessModifier { get; }
+		AccessModifier = accessModifier;
+	}
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public CreateObjectAccessModifierAttribute(string accessModifier)
+	/// <inheritdoc />
+	public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
+	{
+		return new Dictionary<string, string>
 		{
-			AccessModifier = accessModifier;
-		}
-
-		/// <inheritdoc />
-		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
-		{
-			return new Dictionary<string, string>
-			{
-				{ "CreateObjectAccessModifier", AccessModifier }
-			};
-		}
+			{ "CreateObjectAccessModifier", AccessModifier }
+		};
 	}
 }

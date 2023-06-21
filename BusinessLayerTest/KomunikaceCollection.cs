@@ -15,13 +15,12 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.Komunikace.
+/// </summary>
+public partial class KomunikaceCollection : KomunikaceCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Komunikace.
-	/// </summary>
-	public partial class KomunikaceCollection : KomunikaceCollectionBase
-	{
-		
-	}
+	
 }

@@ -3,40 +3,39 @@ using System.Collections.Generic;
 using System.Text;
 using Havit.Scopes;
 
-namespace Havit.Business
+namespace Havit.Business;
+
+/// <summary>
+/// <see cref="Scope{T}"/> pro <see cref="IdentityMap"/>.
+/// </summary>
+public class IdentityMapScope : Scope<IdentityMap>
 {
 	/// <summary>
-	/// <see cref="Scope{T}"/> pro <see cref="IdentityMap"/>.
+	/// Repository pro uložení scopů IdentityMap.
+	/// Implementováno jako WebApplicationScopeRepository pro .NET Framework a jako AsyncLocalScopeRepository pro .NET Core. Prozatím bez možnosti nastavení.
 	/// </summary>
-	public class IdentityMapScope : Scope<IdentityMap>
-	{
-		/// <summary>
-		/// Repository pro uložení scopů IdentityMap.
-		/// Implementováno jako WebApplicationScopeRepository pro .NET Framework a jako AsyncLocalScopeRepository pro .NET Core. Prozatím bez možnosti nastavení.
-		/// </summary>
 #if NETFRAMEWORK
-		private static readonly IScopeRepository<IdentityMap> repository = new Havit.Business.Scopes.WebApplicationScopeRepository<IdentityMap>();
+	private static readonly IScopeRepository<IdentityMap> repository = new Havit.Business.Scopes.WebApplicationScopeRepository<IdentityMap>();
 #endif
 #if NETSTANDARD
-		private static readonly IScopeRepository<IdentityMap> repository = new AsyncLocalScopeRepository<IdentityMap>();
+	private static readonly IScopeRepository<IdentityMap> repository = new AsyncLocalScopeRepository<IdentityMap>();
 #endif
 
-		/// <summary>
-		/// Vrátí IdentityMapu pro aktuální scope.
-		/// </summary>
-		public static IdentityMap Current
+	/// <summary>
+	/// Vrátí IdentityMapu pro aktuální scope.
+	/// </summary>
+	public static IdentityMap Current
+	{
+		get
 		{
-			get
-			{
-				return GetCurrent(repository);
-			}
+			return GetCurrent(repository);
 		}
+	}
 
-		/// <summary>
-		/// Vytvoří <see cref="IdentityMapScope"/> obalující novou <see cref="IdentityMap"/>.
-		/// </summary>
-		public IdentityMapScope() : base(new IdentityMap(), repository)
-		{
-		}
+	/// <summary>
+	/// Vytvoří <see cref="IdentityMapScope"/> obalující novou <see cref="IdentityMap"/>.
+	/// </summary>
+	public IdentityMapScope() : base(new IdentityMap(), repository)
+	{
 	}
 }

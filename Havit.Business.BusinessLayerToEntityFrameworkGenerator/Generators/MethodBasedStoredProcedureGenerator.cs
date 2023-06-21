@@ -9,9 +9,9 @@ using Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
 using Microsoft.SqlServer.Management.Smo;
 using NamespaceHelper = Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers.NamingConventions.NamespaceHelper;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
-{
-	public static class MethodBasedStoredProcedureGenerator
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators;
+
+public static class MethodBasedStoredProcedureGenerator
     {
         public static void Generate(List<DbStoredProcedure> storedProcedure, GeneratedModel model, CsprojFile modelCsprojFile)
         {
@@ -43,12 +43,12 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
                 WriteNamespaceClassConstructorBegin(codeWriter, entityClass, spClassName);
 
                 foreach ((DbStoredProcedure dbStoredProcedure, int index) in fileGroup.Select((sp, i) => (sp, i)))
+			{
+				if (index > 0)
 				{
-					if (index > 0)
-					{
-						codeWriter.WriteLine();
-					}
-					WriteMethodBegin(codeWriter, dbStoredProcedure);
+					codeWriter.WriteLine();
+				}
+				WriteMethodBegin(codeWriter, dbStoredProcedure);
                     WriteProcedureStatement(codeWriter, dbStoredProcedure);
                     WriteMethodEnd(codeWriter);
                 }
@@ -68,10 +68,10 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             writer.WriteLine("using System.Collections.Generic;");
             writer.WriteLine("using System.Linq;");
             writer.WriteLine("using System.Text;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes;");
-			writer.WriteLine("using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;");
-			writer.WriteLine("using static Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes.DataLoadPowerType;");
-			writer.WriteLine("using ResultType = Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes.StoredProcedureResultType;");
+		writer.WriteLine("using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes;");
+		writer.WriteLine("using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;");
+		writer.WriteLine("using static Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes.DataLoadPowerType;");
+		writer.WriteLine("using ResultType = Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes.StoredProcedureResultType;");
             if (entityClass != null)
             {
                 writer.WriteLine($"using {entityClass.Namespace};");
@@ -85,73 +85,73 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             writer.WriteLine("namespace " + String.Format("{0}.StoredProcedures", NamespaceHelper.GetDefaultNamespace("Entity")));
             writer.WriteLine("{");
 
-	        if (entityClass != null)
-	        {
-				writer.WriteLine(String.Format("[Attach(nameof({0}))]", entityClass.Name));
-	        }
+        if (entityClass != null)
+        {
+			writer.WriteLine(String.Format("[Attach(nameof({0}))]", entityClass.Name));
+        }
             writer.WriteLine(String.Format("public class {0} : StoredProcedureModelExtender", spClassName));
             writer.WriteLine("{");
         }
 
         private static void WriteMethodBegin(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
-	        string comment = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MS_Description");
-			if (!String.IsNullOrEmpty(comment))
+        string comment = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MS_Description");
+		if (!String.IsNullOrEmpty(comment))
+		{
+			writer.WriteCommentSummary(comment);
+		}
+
+		string methodName = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodName");
+		if (!String.IsNullOrEmpty(methodName))
+		{
+			if (methodName == dbStoredProcedure.Name)
 			{
-				writer.WriteCommentSummary(comment);
+				writer.WriteLine(String.Format("[MethodName(nameof({0}))]", methodName));
 			}
-
-			string methodName = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodName");
-			if (!String.IsNullOrEmpty(methodName))
+			else
 			{
-				if (methodName == dbStoredProcedure.Name)
-				{
-					writer.WriteLine(String.Format("[MethodName(nameof({0}))]", methodName));
-				}
-				else
-				{
-					writer.WriteLine(String.Format("[MethodName(\"{0}\")]", methodName));
-				}
+				writer.WriteLine(String.Format("[MethodName(\"{0}\")]", methodName));
 			}
+		}
 
-			string result = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("Result");
-	        if (!String.IsNullOrEmpty(result))
-	        {
-				writer.WriteLine(String.Format("[Result(ResultType.{0})]", result));
-	        }
+		string result = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("Result");
+        if (!String.IsNullOrEmpty(result))
+        {
+			writer.WriteLine(String.Format("[Result(ResultType.{0})]", result));
+        }
 
-			string resultTypeTable = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("ResultTypeTable");
-			if (!String.IsNullOrEmpty(resultTypeTable))
-			{
-				writer.WriteLine(String.Format("[ResultTypeTable(\"{0}\")]", resultTypeTable));
-			}
-			string dataLoadPower = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("DataLoadPower");
-	        if (!String.IsNullOrEmpty(dataLoadPower))
-			{
-				writer.WriteLine(String.Format("[DataLoadPower({0})]", dataLoadPower));
-	        }
+		string resultTypeTable = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("ResultTypeTable");
+		if (!String.IsNullOrEmpty(resultTypeTable))
+		{
+			writer.WriteLine(String.Format("[ResultTypeTable(\"{0}\")]", resultTypeTable));
+		}
+		string dataLoadPower = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("DataLoadPower");
+        if (!String.IsNullOrEmpty(dataLoadPower))
+		{
+			writer.WriteLine(String.Format("[DataLoadPower({0})]", dataLoadPower));
+        }
 
-	        string methodAccessModifier = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodAccessModifier");
-	        if (!String.IsNullOrEmpty(methodAccessModifier))
-			{
-				writer.WriteLine(String.Format("[MethodAccessModifier(\"{0}\")]", methodAccessModifier));
-	        }
+        string methodAccessModifier = dbStoredProcedure.StoredProcedure.GetStringExtendedProperty("MethodAccessModifier");
+        if (!String.IsNullOrEmpty(methodAccessModifier))
+		{
+			writer.WriteLine(String.Format("[MethodAccessModifier(\"{0}\")]", methodAccessModifier));
+        }
 
-	        bool? isIgnored  = dbStoredProcedure.StoredProcedure.GetBoolExtendedProperty("Ignored");
-	        if (isIgnored == true)
-			{
-				writer.WriteLine("[Ignored]");
-	        }
+        bool? isIgnored  = dbStoredProcedure.StoredProcedure.GetBoolExtendedProperty("Ignored");
+        if (isIgnored == true)
+		{
+			writer.WriteLine("[Ignored]");
+        }
 
-			writer.WriteLine(String.Format("public StoredProcedureModelExtension {0}()", dbStoredProcedure.Name));
+		writer.WriteLine(String.Format("public StoredProcedureModelExtension {0}()", dbStoredProcedure.Name));
             writer.WriteLine("{");
         }
 
         private static void WriteProcedureStatement(CodeWriter writer, DbStoredProcedure dbStoredProcedure)
         {
-	        string directoryName = Path.GetDirectoryName(dbStoredProcedure.GeneratedFile).Replace(Path.DirectorySeparatorChar, '.').Replace("Entity.", "");
-	        var resourceName = String.Format("{0}.{1}.{2}", NamespaceHelper.GetDefaultNamespace("Entity"), directoryName, Path.GetFileName(dbStoredProcedure.GeneratedFile));
-	        writer.WriteLine($"return Procedure(\"{resourceName}\");");
+        string directoryName = Path.GetDirectoryName(dbStoredProcedure.GeneratedFile).Replace(Path.DirectorySeparatorChar, '.').Replace("Entity.", "");
+        var resourceName = String.Format("{0}.{1}.{2}", NamespaceHelper.GetDefaultNamespace("Entity"), directoryName, Path.GetFileName(dbStoredProcedure.GeneratedFile));
+        writer.WriteLine($"return Procedure(\"{resourceName}\");");
         }
 
         private static void WriteMethodEnd(CodeWriter writer)
@@ -165,4 +165,3 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             writer.WriteLine("}");
         }
     }
-}

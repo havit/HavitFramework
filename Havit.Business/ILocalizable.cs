@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 
-namespace Havit.Business
+namespace Havit.Business;
+
+/// <summary>
+/// Rozhraní označující lokalizovaný objekt.
+/// </summary>
+public interface ILocalizable
 {
 	/// <summary>
-	/// Rozhraní označující lokalizovaný objekt.
+	/// Lokalizace.
 	/// </summary>
-	public interface ILocalizable
-	{
-		/// <summary>
-		/// Lokalizace.
-		/// </summary>
-		ILocalizationCollection Localizations { get; }
-	
-		/// <summary>
-		/// Vytvoří položku lokalizace pro daný jazyk.
-		/// </summary>
-		BusinessObjectBase CreateLocalization(ILanguage language);
+	ILocalizationCollection Localizations { get; }
 
-	}
+	/// <summary>
+	/// Vytvoří položku lokalizace pro daný jazyk.
+	/// </summary>
+	BusinessObjectBase CreateLocalization(ILanguage language);
+
 }

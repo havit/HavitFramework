@@ -9,204 +9,203 @@ using Havit.BusinessLayerTest;
 using Havit.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Business.Tests
+namespace Havit.Business.Tests;
+
+[TestClass]
+public class BusinessObject_PersistenceTests
 {
-	[TestClass]
-	public class BusinessObject_PersistenceTests
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException))]
+	public void BusinessObject_Load_ThrowsExceptionForNotExistingObject()
 	{
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void BusinessObject_Load_ThrowsExceptionForNotExistingObject()
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				Role.GetObject(-999).Load();
-			}
+			Role.GetObject(-999).Load();
 		}
+	}
 
-		[TestMethod]
-		public void BusinessObject_TryLoad_ReturnsTrueForGhostOfExistingObjectAndForLoadedObject()
+	[TestMethod]
+	public void BusinessObject_TryLoad_ReturnsTrueForGhostOfExistingObjectAndForLoadedObject()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				Role role = Role.GetObject(0);
-				Assert.IsTrue(role.TryLoad());
-				Assert.IsTrue(role.TryLoad());
-			}
+			Role role = Role.GetObject(0);
+			Assert.IsTrue(role.TryLoad());
+			Assert.IsTrue(role.TryLoad());
 		}
+	}
 
-		[TestMethod]
-		public void BusinessObject_TryLoad_ReturnsFalseForNotExistingObject()
+	[TestMethod]
+	public void BusinessObject_TryLoad_ReturnsFalseForNotExistingObject()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				Role role = Role.GetObject(999);
-				Assert.IsFalse(role.TryLoad());
-			}
+			Role role = Role.GetObject(999);
+			Assert.IsFalse(role.TryLoad());
 		}
+	}
 
-		[TestMethod]
-		public void BusinessObject_TryLoad_WithTransaction_ReloadsObject()
+	[TestMethod]
+	public void BusinessObject_TryLoad_WithTransaction_ReloadsObject()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				// Arrange
-				Uzivatel uzivatel = Uzivatel.CreateObject();
-				uzivatel.Username = Guid.NewGuid().ToString();
-				uzivatel.Save();
+			// Arrange
+			Uzivatel uzivatel = Uzivatel.CreateObject();
+			uzivatel.Username = Guid.NewGuid().ToString();
+			uzivatel.Save();
 
-				DbParameter parameter = DbConnector.Default.ProviderFactory.CreateParameter();
-				parameter.ParameterName = "@UzivatelID";
-				parameter.DbType = System.Data.DbType.Int32;
-				parameter.Direction = System.Data.ParameterDirection.Input;
-				parameter.Value = uzivatel.ID;
+			DbParameter parameter = DbConnector.Default.ProviderFactory.CreateParameter();
+			parameter.ParameterName = "@UzivatelID";
+			parameter.DbType = System.Data.DbType.Int32;
+			parameter.Direction = System.Data.ParameterDirection.Input;
+			parameter.Value = uzivatel.ID;
 
-				DbCommand cmd = DbConnector.Default.ProviderFactory.CreateCommand();
-				cmd.CommandText = "UPDATE Uzivatel SET Email = 'hfw@havit.local' WHERE UzivatelID = @UzivatelID";
-				cmd.Parameters.Add(parameter);
+			DbCommand cmd = DbConnector.Default.ProviderFactory.CreateCommand();
+			cmd.CommandText = "UPDATE Uzivatel SET Email = 'hfw@havit.local' WHERE UzivatelID = @UzivatelID";
+			cmd.Parameters.Add(parameter);
 
-				DbConnector.Default.ExecuteNonQuery(cmd);
+			DbConnector.Default.ExecuteNonQuery(cmd);
 
-				// Předpoklad:
-				Assert.AreEqual(String.Empty, uzivatel.Email);
+			// Předpoklad:
+			Assert.AreEqual(String.Empty, uzivatel.Email);
 
-				// Act
-				DbConnector.Default.ExecuteTransaction(transaction => uzivatel.TryLoad(transaction));
+			// Act
+			DbConnector.Default.ExecuteTransaction(transaction => uzivatel.TryLoad(transaction));
 
-				// Assert
-				Assert.AreEqual("hfw@havit.local", uzivatel.Email);
-				
-				// Cleanup
-				uzivatel.Delete();
-			}
+			// Assert
+			Assert.AreEqual("hfw@havit.local", uzivatel.Email);
+			
+			// Cleanup
+			uzivatel.Delete();
 		}
+	}
 
-		[TestMethod]
-		public void BusinessObject_TryLoad_WithoutTransaction_DoesNotReloadObject()
+	[TestMethod]
+	public void BusinessObject_TryLoad_WithoutTransaction_DoesNotReloadObject()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				// Arrange
-				Uzivatel uzivatel = Uzivatel.CreateObject();
-				uzivatel.Username = Guid.NewGuid().ToString();
-				uzivatel.Save();
+			// Arrange
+			Uzivatel uzivatel = Uzivatel.CreateObject();
+			uzivatel.Username = Guid.NewGuid().ToString();
+			uzivatel.Save();
 
-				DbParameter parameter = DbConnector.Default.ProviderFactory.CreateParameter();
-				parameter.ParameterName = "@UzivatelID";
-				parameter.DbType = System.Data.DbType.Int32;
-				parameter.Direction = System.Data.ParameterDirection.Input;
-				parameter.Value = uzivatel.ID;
+			DbParameter parameter = DbConnector.Default.ProviderFactory.CreateParameter();
+			parameter.ParameterName = "@UzivatelID";
+			parameter.DbType = System.Data.DbType.Int32;
+			parameter.Direction = System.Data.ParameterDirection.Input;
+			parameter.Value = uzivatel.ID;
 
-				DbCommand cmd = DbConnector.Default.ProviderFactory.CreateCommand();
-				cmd.CommandText = "UPDATE Uzivatel SET Email = 'hfw@havit.local' WHERE UzivatelID = @UzivatelID";
-				cmd.Parameters.Add(parameter);
+			DbCommand cmd = DbConnector.Default.ProviderFactory.CreateCommand();
+			cmd.CommandText = "UPDATE Uzivatel SET Email = 'hfw@havit.local' WHERE UzivatelID = @UzivatelID";
+			cmd.Parameters.Add(parameter);
 
-				DbConnector.Default.ExecuteNonQuery(cmd);
+			DbConnector.Default.ExecuteNonQuery(cmd);
 
-				// Předpoklad:
-				Assert.AreEqual(String.Empty, uzivatel.Email);
+			// Předpoklad:
+			Assert.AreEqual(String.Empty, uzivatel.Email);
 
-				// Act
-				uzivatel.TryLoad();
+			// Act
+			uzivatel.TryLoad();
 
-				// Assert
-				Assert.AreEqual(String.Empty, uzivatel.Email);
+			// Assert
+			Assert.AreEqual(String.Empty, uzivatel.Email);
 
-				// Cleanup
-				uzivatel.Delete();
-			}
+			// Cleanup
+			uzivatel.Delete();
 		}
+	}
 
-		[TestMethod]
-		public void BusinessObject_Delete_DeletesObjectAlreadySavedInTheSameTransaction()
+	[TestMethod]
+	public void BusinessObject_Delete_DeletesObjectAlreadySavedInTheSameTransaction()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
+			int originalCount = Subjekt.GetAll().Count;
+			Subjekt subjekt = Subjekt.CreateObject();
+			subjekt.Nazev = "test";
+			subjekt.Save();
+			DbConnector.Default.ExecuteTransaction(transaction =>
 			{
-				int originalCount = Subjekt.GetAll().Count;
+				subjekt.Nazev = "test2";
+				subjekt.Save(transaction);
+				subjekt.Delete(transaction);
+			});
+			int newCount = Subjekt.GetAll().Count;
+			Assert.AreEqual(originalCount, newCount);
+		}
+	}
+
+	[TestMethod]
+	public void BusinessObject_Delete_DoesNotCallCheckConstraint()
+	{
+		using (new IdentityMapScope())
+		{
+			DbConnector.Default.ExecuteTransaction(transaction =>
+			{
 				Subjekt subjekt = Subjekt.CreateObject();
-				subjekt.Nazev = "test";
-				subjekt.Save();
-				DbConnector.Default.ExecuteTransaction(transaction =>
+				subjekt.Save(transaction);
+				string s = "";
+				while (s.Length <= Subjekt.Properties.Nazev.MaximumLength)
 				{
-					subjekt.Nazev = "test2";
-					subjekt.Save(transaction);
-					subjekt.Delete(transaction);
-				});
-				int newCount = Subjekt.GetAll().Count;
-				Assert.AreEqual(originalCount, newCount);
-			}
+					s = s + "0";
+				}
+
+				subjekt.Nazev = s;
+				subjekt.Delete(transaction);
+			});
 		}
+	}
 
-		[TestMethod]
-		public void BusinessObject_Delete_DoesNotCallCheckConstraint()
+	/// <summary>
+	/// Nový objekt ukládá cyklický graf, kde sám by měl být minimal-insertován od jiného objektu, který je Update.
+	/// </summary>
+	[TestMethod]
+	public void BusinessObject_Save_SupportsCyclicUpdateWithInsert()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				DbConnector.Default.ExecuteTransaction(transaction =>
-				{
-					Subjekt subjekt = Subjekt.CreateObject();
-					subjekt.Save(transaction);
-					string s = "";
-					while (s.Length <= Subjekt.Properties.Nazev.MaximumLength)
-					{
-						s = s + "0";
-					}
+			Subjekt s = Subjekt.CreateObject();
+			s.Save();
 
-					subjekt.Nazev = s;
-					subjekt.Delete(transaction);
-				});
-			}
+			Komunikace k1 = Komunikace.CreateObject();
+			k1.Subjekt = s;
+			s.Komunikace.Add(k1);
+			k1.Save();
+
+			ObjednavkaSepsani o1 = ObjednavkaSepsani.CreateObject();
+			k1.ObjednavkaSepsani = o1;
+			k1.Save();
+
+			Komunikace k2 = Komunikace.CreateObject();
+			k2.Subjekt = s;
+			s.Komunikace.Add(k2);
+
+			o1.StornoKomunikace = k2;
+			k2.Save();
+
+			Assert.IsFalse(k2.IsDirty);
+			Assert.IsFalse(k2.IsNew);
+			Assert.IsFalse(o1.IsDirty);
 		}
+	}
 
-		/// <summary>
-		/// Nový objekt ukládá cyklický graf, kde sám by měl být minimal-insertován od jiného objektu, který je Update.
-		/// </summary>
-		[TestMethod]
-		public void BusinessObject_Save_SupportsCyclicUpdateWithInsert()
+	/// <summary>
+	/// Pokud máme objekt, na který jsou navázané další objekty, otestujeme možnost smazání.
+	/// </summary>
+	[TestMethod]
+	public void BusinessObject_Delete_SupportsDeletingObjectWithSavingChanges()
+	{
+		using (new IdentityMapScope())
 		{
-			using (new IdentityMapScope())
-			{
-				Subjekt s = Subjekt.CreateObject();
-				s.Save();
+			Uzivatel uzivatel = Uzivatel.CreateObject();
+			uzivatel.Username = DateTime.Now.Ticks.ToString("0");
+			uzivatel.Role.Add(Role.GetAll().First());
+			uzivatel.Save();
 
-				Komunikace k1 = Komunikace.CreateObject();
-				k1.Subjekt = s;
-				s.Komunikace.Add(k1);
-				k1.Save();
-
-				ObjednavkaSepsani o1 = ObjednavkaSepsani.CreateObject();
-				k1.ObjednavkaSepsani = o1;
-				k1.Save();
-
-				Komunikace k2 = Komunikace.CreateObject();
-				k2.Subjekt = s;
-				s.Komunikace.Add(k2);
-
-				o1.StornoKomunikace = k2;
-				k2.Save();
-
-				Assert.IsFalse(k2.IsDirty);
-				Assert.IsFalse(k2.IsNew);
-				Assert.IsFalse(o1.IsDirty);
-			}
-		}
-
-		/// <summary>
-		/// Pokud máme objekt, na který jsou navázané další objekty, otestujeme možnost smazání.
-		/// </summary>
-		[TestMethod]
-		public void BusinessObject_Delete_SupportsDeletingObjectWithSavingChanges()
-		{
-			using (new IdentityMapScope())
-			{
-				Uzivatel uzivatel = Uzivatel.CreateObject();
-				uzivatel.Username = DateTime.Now.Ticks.ToString("0");
-				uzivatel.Role.Add(Role.GetAll().First());
-				uzivatel.Save();
-
-				uzivatel.Role.Clear();
-				uzivatel.Delete();
-			}
+			uzivatel.Role.Clear();
+			uzivatel.Delete();
 		}
 	}
 }

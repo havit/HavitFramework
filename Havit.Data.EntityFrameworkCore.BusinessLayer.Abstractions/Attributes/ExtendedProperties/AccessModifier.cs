@@ -1,28 +1,27 @@
-﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+
+/// <summary>
+/// Hodnoty pre modifikátory prístupu
+/// </summary>
+public enum AccessModifier
 {
 	/// <summary>
-	/// Hodnoty pre modifikátory prístupu
+	/// Public
 	/// </summary>
-	public enum AccessModifier
-	{
-		/// <summary>
-		/// Public
-		/// </summary>
-		Public,
+	Public,
 
-		/// <summary>
-		/// Internal
-		/// </summary>
-		Internal,
+	/// <summary>
+	/// Internal
+	/// </summary>
+	Internal,
 
-		/// <summary>
-		/// Protected
-		/// </summary>
-		Protected,
+	/// <summary>
+	/// Protected
+	/// </summary>
+	Protected,
 
-		/// <summary>
-		/// Private
-		/// </summary>
-		Private
-	}
+	/// <summary>
+	/// Private
+	/// </summary>
+	Private
 }

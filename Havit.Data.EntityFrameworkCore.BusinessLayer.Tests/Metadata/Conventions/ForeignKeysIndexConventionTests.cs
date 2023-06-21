@@ -3,62 +3,61 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Conventions;
+
+[TestClass]
+public class ForeignKeysIndexConventionTests
 {
-	[TestClass]
-	public class ForeignKeysIndexConventionTests
+	private class TestEntity
 	{
-		private class TestEntity
-		{
-			public int Id { get; set; }
+		public int Id { get; set; }
 
-			public string StringProperty { get; set; }
+		public string StringProperty { get; set; }
+	}
+
+	/// <summary>
+	/// Bug #55136
+	/// </summary>
+	[TestMethod]
+	public void ForeignKeysIndexConvention_PropertyAnnotationNullValue_InitializingModel_DoesNotThrowException()
+	{
+		var dbContext = new TestDbContext(builder =>
+		{
+			builder.Entity<TestEntity>().Property(x => x.StringProperty).HasDefaultValue(null);
+		});
+
+		_ = dbContext.Model;
+	}
+
+	/// <summary>
+	/// Bug #55136
+	/// </summary>
+	[TestMethod]
+	public void ForeignKeysIndexConvention_EntityAnnotationNullValue_InitializingModel_DoesNotThrowException()
+	{
+		var dbContext = new TestDbContext(builder =>
+		{
+			builder.Entity<TestEntity>()
+			.ToTable(t => t
+				.HasComment("Abc")
+				.HasComment(null));
+		});
+
+		_ = dbContext.Model;
+	}
+
+	private class TestDbContext : Tests.TestDbContext
+	{
+		public TestDbContext(Action<ModelBuilder> onModelCreating = default)
+			: base(onModelCreating)
+		{
 		}
 
-		/// <summary>
-		/// Bug #55136
-		/// </summary>
-		[TestMethod]
-		public void ForeignKeysIndexConvention_PropertyAnnotationNullValue_InitializingModel_DoesNotThrowException()
+		protected override BusinessLayerDbContextSettings CreateDbContextSettings()
 		{
-			var dbContext = new TestDbContext(builder =>
-			{
-				builder.Entity<TestEntity>().Property(x => x.StringProperty).HasDefaultValue(null);
-			});
-
-			_ = dbContext.Model;
-		}
-
-		/// <summary>
-		/// Bug #55136
-		/// </summary>
-		[TestMethod]
-		public void ForeignKeysIndexConvention_EntityAnnotationNullValue_InitializingModel_DoesNotThrowException()
-		{
-			var dbContext = new TestDbContext(builder =>
-			{
-				builder.Entity<TestEntity>()
-				.ToTable(t => t
-					.HasComment("Abc")
-					.HasComment(null));
-			});
-
-			_ = dbContext.Model;
-		}
-
-		private class TestDbContext : Tests.TestDbContext
-		{
-			public TestDbContext(Action<ModelBuilder> onModelCreating = default)
-				: base(onModelCreating)
-			{
-			}
-
-			protected override BusinessLayerDbContextSettings CreateDbContextSettings()
-			{
-				var settings = base.CreateDbContextSettings();
-				settings.UseForeignKeysIndexConvention = true;
-				return settings;
-			}
+			var settings = base.CreateDbContextSettings();
+			settings.UseForeignKeysIndexConvention = true;
+			return settings;
 		}
 	}
 }

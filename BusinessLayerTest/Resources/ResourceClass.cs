@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest.Resources
+namespace Havit.BusinessLayerTest.Resources;
+
+/// <summary>
+/// Třída resources (globální slovník, stránka, atp.)
+/// </summary>
+public partial class ResourceClass : ResourceClassBase
 {
-	/// <summary>
-	/// Třída resources (globální slovník, stránka, atp.)
-	/// </summary>
-	public partial class ResourceClass : ResourceClassBase
-	{
-		
-	}
+	
 }

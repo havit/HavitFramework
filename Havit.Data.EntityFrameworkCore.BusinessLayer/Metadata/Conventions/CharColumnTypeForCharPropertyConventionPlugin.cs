@@ -4,17 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
+
+/// <summary>
+/// Registruje CharColumnTypeForCharPropertyConvention do ConventionSetu.
+/// </summary>
+internal class CharColumnTypeForCharPropertyConventionPlugin : IConventionSetPlugin
 {
-	/// <summary>
-	/// Registruje CharColumnTypeForCharPropertyConvention do ConventionSetu.
-	/// </summary>
-	internal class CharColumnTypeForCharPropertyConventionPlugin : IConventionSetPlugin
+	public ConventionSet ModifyConventions(ConventionSet conventionSet)
 	{
-		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{
-			conventionSet.PropertyAddedConventions.Add(new CharColumnTypeForCharPropertyConvention());
-			return conventionSet;
-		}
+		conventionSet.PropertyAddedConventions.Add(new CharColumnTypeForCharPropertyConvention());
+		return conventionSet;
 	}
 }

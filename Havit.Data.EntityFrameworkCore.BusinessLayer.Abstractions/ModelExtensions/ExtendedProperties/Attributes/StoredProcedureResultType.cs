@@ -1,33 +1,32 @@
-﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes;
+
+/// <summary>
+/// Určuje typ výsledku, který se má z metody volající stored proceduru vrátit.
+/// </summary>
+public enum StoredProcedureResultType
 {
 	/// <summary>
-	/// Určuje typ výsledku, který se má z metody volající stored proceduru vrátit.
+	/// Nevrací žádný výsledek (void).
 	/// </summary>
-	public enum StoredProcedureResultType
-	{
-		/// <summary>
-		/// Nevrací žádný výsledek (void).
-		/// </summary>
-		None,
+	None,
 
-		/// <summary>
-		/// Object vrací nejvýše jeden objekt nebo null, pokud není z uložené procedury vrácen žádný záznam.
-		/// </summary>
-		Object,
+	/// <summary>
+	/// Object vrací nejvýše jeden objekt nebo null, pokud není z uložené procedury vrácen žádný záznam.
+	/// </summary>
+	Object,
 
-		/// <summary>
-		/// Collection vrací kolekci objektů.
-		/// </summary>
-		Collection,
+	/// <summary>
+	/// Collection vrací kolekci objektů.
+	/// </summary>
+	Collection,
 
-		/// <summary>
-		/// DataTable vrací netypovou datovou tabulku.
-		/// </summary>
-		DataTable,
+	/// <summary>
+	/// DataTable vrací netypovou datovou tabulku.
+	/// </summary>
+	DataTable,
 
-		/// <summary>
-		/// DataSet vrací netypový DataSet.
-		/// </summary>
-		DataSet
-	}
+	/// <summary>
+	/// DataSet vrací netypový DataSet.
+	/// </summary>
+	DataSet
 }

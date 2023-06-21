@@ -4,17 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
+
+/// <summary>
+/// Registruje NamespaceExtendedPropertyConvention do ConventionSetu.
+/// </summary>
+internal class NamespaceExtendedPropertyConventionPlugin : IConventionSetPlugin
 {
-	/// <summary>
-	/// Registruje NamespaceExtendedPropertyConvention do ConventionSetu.
-	/// </summary>
-	internal class NamespaceExtendedPropertyConventionPlugin : IConventionSetPlugin
+	public ConventionSet ModifyConventions(ConventionSet conventionSet)
 	{
-		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{
-			conventionSet.KeyAddedConventions.Add(new NamespaceExtendedPropertyConvention());
-			return conventionSet;
-		}
+		conventionSet.KeyAddedConventions.Add(new NamespaceExtendedPropertyConvention());
+		return conventionSet;
 	}
 }

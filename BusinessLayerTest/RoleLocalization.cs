@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Lokalizace objektu Havit.BusinessLayerTest.Role.
+/// </summary>
+public partial class RoleLocalization : RoleLocalizationBase
 {
-	/// <summary>
-	/// Lokalizace objektu Havit.BusinessLayerTest.Role.
-	/// </summary>
-	public partial class RoleLocalization : RoleLocalizationBase
-	{
-		
-	}
+	
 }

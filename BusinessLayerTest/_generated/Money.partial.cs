@@ -17,30 +17,29 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Třída reprezentující peněžní částky s měnou.
+/// </summary>
+public partial class Money : MoneyBase
 {
+	#region Constructors
 	/// <summary>
-	/// Třída reprezentující peněžní částky s měnou.
+	/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 	/// </summary>
-	public partial class Money : MoneyBase
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+	public Money() : base()
 	{
-		#region Constructors
-		/// <summary>
-		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
-		/// </summary>
-		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		public Money() : base()
-		{
-		}
-		
-		/// <summary>
-		/// Inicializuje třídu money zadanými hodnotami.
-		/// </summary>
-		[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-		public Money(decimal? amount, Currency currency) : base(amount, currency)
-		{
-		}
-		#endregion
-		
 	}
+	
+	/// <summary>
+	/// Inicializuje třídu money zadanými hodnotami.
+	/// </summary>
+	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+	public Money(decimal? amount, Currency currency) : base(amount, currency)
+	{
+	}
+	#endregion
+	
 }

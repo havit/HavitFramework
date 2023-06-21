@@ -1,7 +1,7 @@
 ﻿using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.Business.BusinessLayerGenerator.Helpers
-{
+namespace Havit.Business.BusinessLayerGenerator.Helpers;
+
     public class ExtendedPropertiesKey
     {
         public string ClassDesc { get; set; }
@@ -47,4 +47,3 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers
         }
 
     }
-}

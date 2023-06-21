@@ -17,35 +17,34 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
-{
-	/// <summary>
-	/// Test pro money.
-	/// </summary>
-	public partial class CenikItem : CenikItemBase
-	{
-		public new Decimal CenaAmount
-		{
-			get
-			{
-				return base.CenaAmount;
-			}
-			set
-			{
-				base.CenaAmount = value;
-			}
-		}
+namespace Havit.BusinessLayerTest;
 
-		public new Currency CenaCurrency
+/// <summary>
+/// Test pro money.
+/// </summary>
+public partial class CenikItem : CenikItemBase
+{
+	public new Decimal CenaAmount
+	{
+		get
 		{
-			get
-			{
-				return base.CenaCurrency;
-			}
-			set
-			{
-				base.CenaCurrency = value;
-			}
+			return base.CenaAmount;
+		}
+		set
+		{
+			base.CenaAmount = value;
+		}
+	}
+
+	public new Currency CenaCurrency
+	{
+		get
+		{
+			return base.CenaCurrency;
+		}
+		set
+		{
+			base.CenaCurrency = value;
 		}
 	}
 }

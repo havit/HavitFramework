@@ -1,18 +1,17 @@
-﻿namespace Havit.Business
+﻿namespace Havit.Business;
+
+/// <summary>
+/// Režim funkce objektů.
+/// </summary>
+public enum ConnectionMode
 {
 	/// <summary>
-	/// Režim funkce objektů.
+	/// Klasický běžný "connected" business objekt.
 	/// </summary>
-	public enum ConnectionMode
-	{
-		/// <summary>
-		/// Klasický běžný "connected" business objekt.
-		/// </summary>
-		Connected = 1,
+	Connected = 1,
 
-		/// <summary>
-		/// Disconnected business objekt pro účely testování.
-		/// </summary>
-		Disconnected = 2
-	}
+	/// <summary>
+	/// Disconnected business objekt pro účely testování.
+	/// </summary>
+	Disconnected = 2
 }

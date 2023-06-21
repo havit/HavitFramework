@@ -8,43 +8,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer;
+
+/// <summary>
+/// Extension metody k DbContextOptionsBuilder.
+/// </summary>
+public static class DbContextOptionsBuilderExtensions
 {
 	/// <summary>
-	/// Extension metody k DbContextOptionsBuilder.
+	/// Zajistí použití dané implementace IConventionSetPlugin.
 	/// </summary>
-	public static class DbContextOptionsBuilderExtensions
+	/// <remarks>
+	/// Jak to funguje:
+	/// - Pro instalaci konvencí potřebujeme do service collection dostat třídu implementující IConventionSetPlugin, tato třída bude nastavovat ConventionSet.
+	/// - Jinými slovy, jednotlivé konvence nejsou v service collection, avšak jsou tam třídy, které konvence instalují do ConventionSetu.
+	/// 
+	/// - DbContext v OnConfiguring získává DbContextOptionsBuilder.
+	/// - Tento DbContextOptionsBuilder (bohužel explicitně) implementuje interface IDbContextOptionsBuilderInfrastructure.
+	/// - Tento interface poskytuje metodu pro zaregistrování extension - třídy, službičky, která má možnost ovlivnit ServiceCollection DbContextu.
+	/// - ConventionSetPluginServiceInstallerExtension registrujeme pod IConventionSetPlugin do service collection.
+	/// </remarks>
+	public static void UseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder)
+		where TConventionSetPlugin : class, IConventionSetPlugin
 	{
-		/// <summary>
-		/// Zajistí použití dané implementace IConventionSetPlugin.
-		/// </summary>
-		/// <remarks>
-		/// Jak to funguje:
-		/// - Pro instalaci konvencí potřebujeme do service collection dostat třídu implementující IConventionSetPlugin, tato třída bude nastavovat ConventionSet.
-		/// - Jinými slovy, jednotlivé konvence nejsou v service collection, avšak jsou tam třídy, které konvence instalují do ConventionSetu.
-		/// 
-		/// - DbContext v OnConfiguring získává DbContextOptionsBuilder.
-		/// - Tento DbContextOptionsBuilder (bohužel explicitně) implementuje interface IDbContextOptionsBuilderInfrastructure.
-		/// - Tento interface poskytuje metodu pro zaregistrování extension - třídy, službičky, která má možnost ovlivnit ServiceCollection DbContextu.
-		/// - ConventionSetPluginServiceInstallerExtension registrujeme pod IConventionSetPlugin do service collection.
-		/// </remarks>
-		public static void UseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder)
-			where TConventionSetPlugin : class, IConventionSetPlugin
-		{
-			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new ConventionSetPluginServiceInstallerExtension<TConventionSetPlugin>());
-		}
+		((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new ConventionSetPluginServiceInstallerExtension<TConventionSetPlugin>());
+	}
 
-		/// <summary>
-		/// Zajistí podmíněné použití dané implementace IConventionSetPlugin.
-		/// Pro více informací viz UseConventionSetPlugin.
-		/// </summary>
-		public static void ConditionalyUseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder, Func<bool> predicate)
-			where TConventionSetPlugin : class, IConventionSetPlugin
+	/// <summary>
+	/// Zajistí podmíněné použití dané implementace IConventionSetPlugin.
+	/// Pro více informací viz UseConventionSetPlugin.
+	/// </summary>
+	public static void ConditionalyUseConventionSetPlugin<TConventionSetPlugin>(this DbContextOptionsBuilder optionsBuilder, Func<bool> predicate)
+		where TConventionSetPlugin : class, IConventionSetPlugin
+	{
+		if (predicate())
 		{
-			if (predicate())
-			{
-				optionsBuilder.UseConventionSetPlugin<TConventionSetPlugin>();
-			}
+			optionsBuilder.UseConventionSetPlugin<TConventionSetPlugin>();
 		}
 	}
 }

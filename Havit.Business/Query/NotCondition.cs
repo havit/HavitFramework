@@ -5,14 +5,14 @@ using System.Text;
 
 using Havit.Data.SqlServer;
 
-namespace Havit.Business.Query
-{
+namespace Havit.Business.Query;
+
     /// <summary>
     /// Podmínka, která neguje vnitřní (kompozitní) podmínky.
     /// </summary>
     public class NotCondition : Condition
     {
-	    /// <summary>
+    /// <summary>
         /// Podmínky, které jsou negovány. Mezi podmínkami je operátor AND.
         /// </summary>
         public ConditionList Conditions
@@ -42,10 +42,10 @@ namespace Havit.Business.Query
         /// <summary>
         /// Přidá část SQL příkaz pro sekci WHERE.
         /// </summary>
-		public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
+	public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)
         {
-			Debug.Assert(command != null);
-			Debug.Assert(whereBuilder != null);
+		Debug.Assert(command != null);
+		Debug.Assert(whereBuilder != null);
 
             if (IsEmptyCondition())
             {
@@ -73,4 +73,3 @@ namespace Havit.Business.Query
             return new NotCondition(conditions);
         }
     }
-}

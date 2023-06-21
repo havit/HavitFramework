@@ -8,81 +8,80 @@ using System.Threading.Tasks;
 using System.Web;
 using Havit.Scopes;
 
-namespace Havit.Business.Scopes
+namespace Havit.Business.Scopes;
+
+/// <summary>
+/// Repository implementující scope jako HttpContext.
+/// Pro případy, kdy není HttpContext k dispozici (použití v Tasks, apod.) používá ThreadScopeRepository.
+/// </summary>
+/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
+public class WebApplicationScopeRepository<T> : IScopeRepository<T>
+	where T : class
 {
 	/// <summary>
-	/// Repository implementující scope jako HttpContext.
-	/// Pro případy, kdy není HttpContext k dispozici (použití v Tasks, apod.) používá ThreadScopeRepository.
+	/// Úložiště scopes k HttpContextům.
 	/// </summary>
-	/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
-	public class WebApplicationScopeRepository<T> : IScopeRepository<T>
-		where T : class
+	private readonly ConcurrentDictionary<HttpContext, Scope<T>> _data = new ConcurrentDictionary<HttpContext, Scope<T>>();
+
+	/// <summary>
+	/// ThreadScopeRepository pro případy scopes mimo HttpContext.
+	/// </summary>		
+	private readonly ThreadScopeRepository<T> threadScopeRepository = new ThreadScopeRepository<T>();
+
+	/// <summary>
+	/// Vrátí hodnotu aktuálního scope.
+	/// </summary>
+	public Scope<T> GetCurrentScope()
 	{
-		/// <summary>
-		/// Úložiště scopes k HttpContextům.
-		/// </summary>
-		private readonly ConcurrentDictionary<HttpContext, Scope<T>> _data = new ConcurrentDictionary<HttpContext, Scope<T>>();
-
-		/// <summary>
-		/// ThreadScopeRepository pro případy scopes mimo HttpContext.
-		/// </summary>		
-		private readonly ThreadScopeRepository<T> threadScopeRepository = new ThreadScopeRepository<T>();
-
-		/// <summary>
-		/// Vrátí hodnotu aktuálního scope.
-		/// </summary>
-		public Scope<T> GetCurrentScope()
+		HttpContext context = HttpContext.Current;
+		if (context != null)
 		{
-			HttpContext context = HttpContext.Current;
-			if (context != null)
+			Scope<T> result;
+			if (_data.TryGetValue(context, out result))
 			{
-				Scope<T> result;
-				if (_data.TryGetValue(context, out result))
-				{
-					return result;
-				}
-				else
-				{
-					return null;
-				}
+				return result;
 			}
 			else
 			{
-				return threadScopeRepository.GetCurrentScope();
+				return null;
 			}
 		}
-
-		/// <summary>
-		/// Nastaví hodnotu aktuálního scope.
-		/// </summary>
-		public void SetCurrentScope(Scope<T> value)
+		else
 		{
-			HttpContext context = HttpContext.Current;
-			if (context != null)
-			{
-				_data.AddOrUpdate(context, (missingKey) => value, (existingKey, existingValue) => value);
-			}
-			else
-			{
-				threadScopeRepository.SetCurrentScope(value);
-			}
+			return threadScopeRepository.GetCurrentScope();
 		}
+	}
 
-		/// <summary>
-		/// Zruší scope.
-		/// </summary>
-		public void RemoveCurrentScope()
+	/// <summary>
+	/// Nastaví hodnotu aktuálního scope.
+	/// </summary>
+	public void SetCurrentScope(Scope<T> value)
+	{
+		HttpContext context = HttpContext.Current;
+		if (context != null)
 		{
-			HttpContext context = HttpContext.Current;
-			if (context != null)
-			{
-				Scope<T> value;
-				_data.TryRemove(context, out value);
-			}
-			else
-			{
-				threadScopeRepository.RemoveCurrentScope();
-			}
+			_data.AddOrUpdate(context, (missingKey) => value, (existingKey, existingValue) => value);
+		}
+		else
+		{
+			threadScopeRepository.SetCurrentScope(value);
+		}
+	}
+
+	/// <summary>
+	/// Zruší scope.
+	/// </summary>
+	public void RemoveCurrentScope()
+	{
+		HttpContext context = HttpContext.Current;
+		if (context != null)
+		{
+			Scope<T> value;
+			_data.TryRemove(context, out value);
+		}
+		else
+		{
+			threadScopeRepository.RemoveCurrentScope();
 		}
 	}
 }

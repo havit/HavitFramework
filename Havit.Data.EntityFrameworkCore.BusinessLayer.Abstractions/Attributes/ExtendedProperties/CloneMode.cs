@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+
+/// <summary>
+/// Určuje režim klonování prvků kolekce při klonování objektu. Kolekce typu 1:N nepodporují klonování typu Shallow.
+/// </summary>
+public enum CloneMode
 {
 	/// <summary>
-	/// Určuje režim klonování prvků kolekce při klonování objektu. Kolekce typu 1:N nepodporují klonování typu Shallow.
+	/// Prvky se neklonují.
 	/// </summary>
-	public enum CloneMode
-	{
-		/// <summary>
-		/// Prvky se neklonují.
-		/// </summary>
-		No,
+	No,
 
-		/// <summary>
-		/// Připojí se prvky originálu (budou tak sdílené, vhodné jen pro M:N kolekce).
-		/// </summary>
-		Shallow,
+	/// <summary>
+	/// Připojí se prvky originálu (budou tak sdílené, vhodné jen pro M:N kolekce).
+	/// </summary>
+	Shallow,
 
-		/// <summary>
-		/// Připojí se klony prvků originálu.
-		/// </summary>
-		Deep
-	}
+	/// <summary>
+	/// Připojí se klony prvků originálu.
+	/// </summary>
+	Deep
 }

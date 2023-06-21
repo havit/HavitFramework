@@ -5,35 +5,34 @@ using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.Business.BusinessLayerGenerator.Generators
+namespace Havit.Business.BusinessLayerGenerator.Generators;
+
+public static class Converters
 {
-	public static class Converters
+	public static void WriteConverters(CodeWriter writer, Table table)
 	{
-		public static void WriteConverters(CodeWriter writer, Table table)
+		List<Column> list = new List<Column>();
+		foreach (Column column in TableHelper.GetNotIgnoredColumns(table))
 		{
-			List<Column> list = new List<Column>();
-			foreach (Column column in TableHelper.GetNotIgnoredColumns(table))
+			if (TypeHelper.IsNonstandardType(column))
 			{
-				if (TypeHelper.IsNonstandardType(column))
+				string converter = TypeHelper.GetNonstandarPropertyTypeConverterName(column);
+				if (!String.IsNullOrEmpty(converter))
 				{
-					string converter = TypeHelper.GetNonstandarPropertyTypeConverterName(column);
-					if (!String.IsNullOrEmpty(converter))
-					{
-						list.Add(column);
-					}
+					list.Add(column);
 				}
 			}
+		}
 
-			if (list.Count > 0)
+		if (list.Count > 0)
+		{
+			writer.WriteOpenRegion("Type converters (static)");
+
+			foreach (Column column in list)
 			{
-				writer.WriteOpenRegion("Type converters (static)");
-
-				foreach (Column column in list)
-				{
-					writer.WriteLine(String.Format("private static {0} {1} = new {0}();", TypeHelper.GetNonstandarPropertyTypeConverterName(column), ConverterHelper.GetFieldConvertorName(column)));
-				}
-				writer.WriteCloseRegion();
+				writer.WriteLine(String.Format("private static {0} {1} = new {0}();", TypeHelper.GetNonstandarPropertyTypeConverterName(column), ConverterHelper.GetFieldConvertorName(column)));
 			}
+			writer.WriteCloseRegion();
 		}
 	}
 }

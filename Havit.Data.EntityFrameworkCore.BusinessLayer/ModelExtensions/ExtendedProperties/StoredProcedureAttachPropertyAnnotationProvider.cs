@@ -7,34 +7,33 @@ using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties;
+
+public class StoredProcedureAttachPropertyAnnotationProvider : ModelExtensionAnnotationProvider<StoredProcedureModelExtension>
 {
-	public class StoredProcedureAttachPropertyAnnotationProvider : ModelExtensionAnnotationProvider<StoredProcedureModelExtension>
+	protected override List<IAnnotation> GetAnnotations(StoredProcedureModelExtension dbAnnotation, MemberInfo memberInfo)
 	{
-		protected override List<IAnnotation> GetAnnotations(StoredProcedureModelExtension dbAnnotation, MemberInfo memberInfo)
+		string attachedEntityName = GetAttachedEntityName(memberInfo);
+		if (attachedEntityName != null)
 		{
-			string attachedEntityName = GetAttachedEntityName(memberInfo);
-			if (attachedEntityName != null)
+			return ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
 			{
-				return ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForProcedure(new Dictionary<string, string>()
-				{
-					{ "Attach", attachedEntityName }
-				}, dbAnnotation.ProcedureName).ToList();
-			}
-
-			return new List<IAnnotation>();
+				{ "Attach", attachedEntityName }
+			}, dbAnnotation.ProcedureName).ToList();
 		}
 
-		protected override List<StoredProcedureModelExtension> GetModelExtensions(List<IAnnotation> annotations)
-		{
-			return new List<StoredProcedureModelExtension>();
-		}
+		return new List<IAnnotation>();
+	}
 
-		private static string GetAttachedEntityName(MemberInfo method)
-		{
-			AttachAttribute attachAttribute = method.DeclaringType.GetCustomAttributes<AttachAttribute>().FirstOrDefault();
+	protected override List<StoredProcedureModelExtension> GetModelExtensions(List<IAnnotation> annotations)
+	{
+		return new List<StoredProcedureModelExtension>();
+	}
 
-			return attachAttribute?.EntityName;
-		}
+	private static string GetAttachedEntityName(MemberInfo method)
+	{
+		AttachAttribute attachAttribute = method.DeclaringType.GetCustomAttributes<AttachAttribute>().FirstOrDefault();
+
+		return attachAttribute?.EntityName;
 	}
 }

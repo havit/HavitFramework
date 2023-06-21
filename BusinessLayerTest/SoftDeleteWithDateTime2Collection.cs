@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.SoftDeleteWithDateTime2.
+/// </summary>
+public partial class SoftDeleteWithDateTime2Collection : SoftDeleteWithDateTime2CollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.SoftDeleteWithDateTime2.
-	/// </summary>
-	public partial class SoftDeleteWithDateTime2Collection : SoftDeleteWithDateTime2CollectionBase
-	{
-		
-	}
+	
 }

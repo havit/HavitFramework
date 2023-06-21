@@ -1,32 +1,31 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Helpers;
+
+public static class EfCoreAccessor
 {
-	public static class EfCoreAccessor
+	private static IServiceProvider serviceProvider;
+
+	static EfCoreAccessor()
 	{
-		private static IServiceProvider serviceProvider;
+		InitEfCore();
+	}
 
-		static EfCoreAccessor()
+	private static void InitEfCore()
+	{
+		var serviceCollection = new ServiceCollection();
+		serviceCollection.AddEntityFrameworkSqlServer();
+		serviceProvider = new DefaultServiceProviderFactory().CreateServiceProvider(serviceCollection);
+	}
+
+	public static TResult Use<T, TResult>(Func<T, TResult> func)
+	{
+		using (IServiceScope scope = serviceProvider.CreateScope())
 		{
-			InitEfCore();
-		}
+			var service = scope.ServiceProvider.GetService<T>();
 
-		private static void InitEfCore()
-		{
-			var serviceCollection = new ServiceCollection();
-			serviceCollection.AddEntityFrameworkSqlServer();
-			serviceProvider = new DefaultServiceProviderFactory().CreateServiceProvider(serviceCollection);
-		}
-
-		public static TResult Use<T, TResult>(Func<T, TResult> func)
-		{
-			using (IServiceScope scope = serviceProvider.CreateScope())
-			{
-				var service = scope.ServiceProvider.GetService<T>();
-
-				return func(service);
-			}
+			return func(service);
 		}
 	}
 }

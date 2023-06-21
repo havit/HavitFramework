@@ -2,37 +2,36 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes;
+
+/// <summary>
+/// Atribut pro nastavení extended property ResultTypeTable na uložené proceduře.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+public class ResultTypeTableAttribute : ModelExtensionExtendedPropertiesAttribute
 {
+	/// <inheritdoc />
+	public override string ObjectType { get; } = "PROCEDURE";
+
 	/// <summary>
-	/// Atribut pro nastavení extended property ResultTypeTable na uložené proceduře.
+	/// Určuje typ výsledku, který se má z metody volající stored proceduru vrátit.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Method)]
-	public class ResultTypeTableAttribute : ModelExtensionExtendedPropertiesAttribute
+	public string ResultTypeTable { get; }
+
+	/// <summary>
+	/// Konštruktor.
+	/// </summary>
+	public ResultTypeTableAttribute(string resultTableType)
 	{
-		/// <inheritdoc />
-		public override string ObjectType { get; } = "PROCEDURE";
+		ResultTypeTable = resultTableType;
+	}
 
-		/// <summary>
-		/// Určuje typ výsledku, který se má z metody volající stored proceduru vrátit.
-		/// </summary>
-		public string ResultTypeTable { get; }
-
-		/// <summary>
-		/// Konštruktor.
-		/// </summary>
-		public ResultTypeTableAttribute(string resultTableType)
+	/// <inheritdoc />
+	public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
+	{
+		return new Dictionary<string, string>
 		{
-			ResultTypeTable = resultTableType;
-		}
-
-		/// <inheritdoc />
-		public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo)
-		{
-			return new Dictionary<string, string>
-			{
-				{ "ResultTypeTable", ResultTypeTable }
-			};
-		}
+			{ "ResultTypeTable", ResultTypeTable }
+		};
 	}
 }

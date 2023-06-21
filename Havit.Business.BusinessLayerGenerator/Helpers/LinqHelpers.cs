@@ -2,27 +2,26 @@
 using System.Collections.Generic;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.Business.BusinessLayerGenerator.Helpers
+namespace Havit.Business.BusinessLayerGenerator.Helpers;
+
+/// <summary>
+/// Metody pro usnadnění práce se třídami, které nepodporují LINQ (resp. neimplementují IEnumerable), ačkoliv by klidně.
+/// </summary>
+public static class LinqHelpers
 {
 	/// <summary>
-	/// Metody pro usnadnění práce se třídami, které nepodporují LINQ (resp. neimplementují IEnumerable), ačkoliv by klidně.
+	/// AsEnumerable pro ForeignKeyCollection.
 	/// </summary>
-	public static class LinqHelpers
+	public static IEnumerable<ForeignKey> AsEnumerable(this ForeignKeyCollection foreignKeyCollection)
 	{
-		/// <summary>
-		/// AsEnumerable pro ForeignKeyCollection.
-		/// </summary>
-		public static IEnumerable<ForeignKey> AsEnumerable(this ForeignKeyCollection foreignKeyCollection)
+		if (foreignKeyCollection == null)
 		{
-			if (foreignKeyCollection == null)
-			{
-				throw new ArgumentNullException("foreignKeyCollection");
-			}
+			throw new ArgumentNullException("foreignKeyCollection");
+		}
 
-			foreach (ForeignKey fk in foreignKeyCollection)
-			{
-				yield return fk;
-			}
+		foreach (ForeignKey fk in foreignKeyCollection)
+		{
+			yield return fk;
 		}
 	}
 }

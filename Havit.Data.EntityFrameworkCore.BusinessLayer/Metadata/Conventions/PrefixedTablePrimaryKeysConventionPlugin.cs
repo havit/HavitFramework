@@ -4,17 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
+
+/// <summary>
+/// Registruje PrefixedTablePrimaryKeysConvention do ConventionSetu.
+/// </summary>
+internal class PrefixedTablePrimaryKeysConventionPlugin : IConventionSetPlugin
 {
-	/// <summary>
-	/// Registruje PrefixedTablePrimaryKeysConvention do ConventionSetu.
-	/// </summary>
-	internal class PrefixedTablePrimaryKeysConventionPlugin : IConventionSetPlugin
+	public ConventionSet ModifyConventions(ConventionSet conventionSet)
 	{
-		public ConventionSet ModifyConventions(ConventionSet conventionSet)
-		{
-			conventionSet.KeyAddedConventions.Add(new PrefixedTablePrimaryKeysConvention());
-			return conventionSet;
-		}
+		conventionSet.KeyAddedConventions.Add(new PrefixedTablePrimaryKeysConvention());
+		return conventionSet;
 	}
 }

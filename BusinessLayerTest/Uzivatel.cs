@@ -13,13 +13,12 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Uživatel.
+/// </summary>
+public partial class Uzivatel : UzivatelBase
 {
-	/// <summary>
-	/// Uživatel.
-	/// </summary>
-	public partial class Uzivatel : UzivatelBase
-	{
-		
-	}
+	
 }

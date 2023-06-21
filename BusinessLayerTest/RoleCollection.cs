@@ -13,13 +13,12 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.Role.
+/// </summary>
+public partial class RoleCollection : RoleCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Role.
-	/// </summary>
-	public partial class RoleCollection : RoleCollectionBase
-	{
-		
-	}
+	
 }

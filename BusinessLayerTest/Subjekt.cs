@@ -13,13 +13,12 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
-{
-	/// <summary>
-	/// Subjekt.
-	/// </summary>
-	public partial class Subjekt : SubjektBase
-	{
+namespace Havit.BusinessLayerTest;
 
-	}
+/// <summary>
+/// Subjekt.
+/// </summary>
+public partial class Subjekt : SubjektBase
+{
+
 }

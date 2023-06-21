@@ -17,10 +17,9 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+public partial class SoftDeleteWithDateTime2 : SoftDeleteWithDateTime2Base
 {
-	public partial class SoftDeleteWithDateTime2 : SoftDeleteWithDateTime2Base
-	{
-		
-	}
+	
 }

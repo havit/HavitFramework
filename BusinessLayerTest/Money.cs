@@ -17,10 +17,9 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+public partial class Money : MoneyBase
 {
-	public partial class Money : MoneyBase
-	{
-		
-	}
+	
 }

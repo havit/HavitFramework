@@ -13,13 +13,12 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.Uzivatel.
+/// </summary>
+public partial class UzivatelCollection : UzivatelCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Uzivatel.
-	/// </summary>
-	public partial class UzivatelCollection : UzivatelCollectionBase
-	{
-		
-	}
+	
 }

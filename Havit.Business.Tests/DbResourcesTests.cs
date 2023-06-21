@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Business.Tests
-{
+namespace Havit.Business.Tests;
+
     [TestClass]
     public class DbResourcesTests
     {
@@ -35,4 +35,3 @@ namespace Havit.Business.Tests
             }
         }
     }
-}

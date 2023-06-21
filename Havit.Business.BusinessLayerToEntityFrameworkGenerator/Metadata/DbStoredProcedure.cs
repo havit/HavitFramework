@@ -1,7 +1,7 @@
 ﻿using Microsoft.SqlServer.Management.Smo;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
-{
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata;
+
     public class DbStoredProcedure
     {
         public string Name { get; set; }
@@ -10,8 +10,7 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Metadata
 
         public string EntityName { get; set; }
 
-	    public string GeneratedFile { get; set; }
+    public string GeneratedFile { get; set; }
 
         public StoredProcedure StoredProcedure { get; set; }
     }
-}

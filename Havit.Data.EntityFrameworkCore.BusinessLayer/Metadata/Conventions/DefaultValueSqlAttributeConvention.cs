@@ -12,24 +12,23 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions
+namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
+
+/// <summary>
+/// Konvence nastavuje hodnotu z atributu <see cref="DefaultValueAttribute"/> jako DefaultValueSql, pokud dosud žádná výchozí hodnota nebyla nastavena.
+/// </summary>
+public class DefaultValueSqlAttributeConvention : PropertyAttributeConventionBase<DefaultValueSqlAttribute>
 {
-	/// <summary>
-	/// Konvence nastavuje hodnotu z atributu <see cref="DefaultValueAttribute"/> jako DefaultValueSql, pokud dosud žádná výchozí hodnota nebyla nastavena.
-	/// </summary>
-	public class DefaultValueSqlAttributeConvention : PropertyAttributeConventionBase<DefaultValueSqlAttribute>
+	public DefaultValueSqlAttributeConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
 	{
-		public DefaultValueSqlAttributeConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
-		{
-		}
+	}
 
-		protected override void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, DefaultValueSqlAttribute attribute, MemberInfo clrMember, IConventionContext context)
-		{
-			// Systémové tabulky - nemá cenu řešit, nebudou mít attribut.
-			// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
+	protected override void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, DefaultValueSqlAttribute attribute, MemberInfo clrMember, IConventionContext context)
+	{
+		// Systémové tabulky - nemá cenu řešit, nebudou mít attribut.
+		// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
 
-			propertyBuilder.HasDefaultValueSql(attribute.Value, fromDataAnnotation: true /* DataAnnotation */);
-			propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: true /* DataAnnotation */); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
-		}
+		propertyBuilder.HasDefaultValueSql(attribute.Value, fromDataAnnotation: true /* DataAnnotation */);
+		propertyBuilder.ValueGenerated(Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.Never, fromDataAnnotation: true /* DataAnnotation */); // https://stackoverflow.com/questions/40655968/how-to-force-default-values-in-an-insert-with-entityframework-core
 	}
 }

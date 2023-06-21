@@ -15,13 +15,12 @@ using Havit.Data.SqlTypes;
 using Havit.Business;
 using Havit.Business.Query;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.ObjednavkaSepsani.
+/// </summary>
+public partial class ObjednavkaSepsaniCollection : ObjednavkaSepsaniCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.ObjednavkaSepsani.
-	/// </summary>
-	public partial class ObjednavkaSepsaniCollection : ObjednavkaSepsaniCollectionBase
-	{
-		
-	}
+	
 }

@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.Currency.
+/// </summary>
+public partial class CurrencyCollection : CurrencyCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Currency.
-	/// </summary>
-	public partial class CurrencyCollection : CurrencyCollectionBase
-	{
-		
-	}
+	
 }

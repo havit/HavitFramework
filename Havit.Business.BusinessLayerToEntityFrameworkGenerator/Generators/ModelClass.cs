@@ -16,8 +16,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Management.Smo;
 using CloneMode = Havit.Business.BusinessLayerGenerator.Helpers.CloneMode;
 
-namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
-{
+namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators;
+
     public static class ModelClass
     {
         public static GeneratedModelClass Generate(GeneratedModelClass modelClass, CsprojFile modelCsprojFile)
@@ -431,9 +431,9 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
 
                 string codeDefaultValue = GetCodeDefaultValue(column, type);
 
-				if (!string.IsNullOrEmpty(column.ComputedText))
-				{
-	                writer.WriteLine("[SuppressConvention(ConventionIdentifiers.StringPropertiesDefaultValueConvention)]");
+			if (!string.IsNullOrEmpty(column.ComputedText))
+			{
+                writer.WriteLine("[SuppressConvention(ConventionIdentifiers.StringPropertiesDefaultValueConvention)]");
                 }
 
                 if (!string.IsNullOrEmpty(codeDefaultValue))
@@ -617,4 +617,3 @@ namespace Havit.Business.BusinessLayerToEntityFrameworkGenerator.Generators
             writer.WriteLine("}");
         }
     }
-}

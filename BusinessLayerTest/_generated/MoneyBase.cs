@@ -17,31 +17,30 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest
+namespace Havit.BusinessLayerTest;
+
+/// <summary>
+/// Třída reprezentující peněžní částky s měnou.
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
+[System.Diagnostics.DebuggerDisplay("{GetType().FullName,nq} (Amount={Amount, nq}, Currency={Currency == null ? \"null\" : Currency.ID.ToString(), nq})")]
+public class MoneyBase : Havit.Business.MoneyImplementationBase<Currency, Money>
 {
+	
+	#region Constructors
 	/// <summary>
-	/// Třída reprezentující peněžní částky s měnou.
+	/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 	/// </summary>
-	[System.CodeDom.Compiler.GeneratedCode("Havit.BusinessLayerGenerator", "1.0")]
-	[System.Diagnostics.DebuggerDisplay("{GetType().FullName,nq} (Amount={Amount, nq}, Currency={Currency == null ? \"null\" : Currency.ID.ToString(), nq})")]
-	public class MoneyBase : Havit.Business.MoneyImplementationBase<Currency, Money>
+	public MoneyBase() : base()
 	{
-		
-		#region Constructors
-		/// <summary>
-		/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
-		/// </summary>
-		public MoneyBase() : base()
-		{
-		}
-		
-		/// <summary>
-		/// Inicializuje třídu money zadanými hodnotami.
-		/// </summary>
-		public MoneyBase(decimal? amount, Currency currency) : base(amount, currency)
-		{
-		}
-		#endregion
-		
 	}
+	
+	/// <summary>
+	/// Inicializuje třídu money zadanými hodnotami.
+	/// </summary>
+	public MoneyBase(decimal? amount, Currency currency) : base(amount, currency)
+	{
+	}
+	#endregion
+	
 }

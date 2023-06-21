@@ -17,13 +17,12 @@ using Havit.Data;
 using Havit.Data.SqlServer;
 using Havit.Data.SqlTypes;
 
-namespace Havit.BusinessLayerTest.Resources
+namespace Havit.BusinessLayerTest.Resources;
+
+/// <summary>
+/// Kolekce business objektů typu Havit.BusinessLayerTest.Resources.ResourceItemLocalization.
+/// </summary>
+public partial class ResourceItemLocalizationCollection : ResourceItemLocalizationCollectionBase
 {
-	/// <summary>
-	/// Kolekce business objektů typu Havit.BusinessLayerTest.Resources.ResourceItemLocalization.
-	/// </summary>
-	public partial class ResourceItemLocalizationCollection : ResourceItemLocalizationCollectionBase
-	{
-		
-	}
+	
 }

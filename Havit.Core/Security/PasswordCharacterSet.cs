@@ -2,31 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Security
+namespace Havit.Security;
+
+/// <summary>
+/// Sada znaků, z níž <see cref="PasswordGenerator"/> vybírá znaky pro generování hesla.
+/// </summary>
+public enum PasswordCharacterSet
 {
 	/// <summary>
-	/// Sada znaků, z níž <see cref="PasswordGenerator"/> vybírá znaky pro generování hesla.
+	/// Pouze malá písmena.
 	/// </summary>
-	public enum PasswordCharacterSet
-	{
-		/// <summary>
-		/// Pouze malá písmena.
-		/// </summary>
-		LowerCaseLetters,
+	LowerCaseLetters,
 
-		/// <summary>
-		/// Velká a malá písmena.
-		/// </summary>
-		Letters,
+	/// <summary>
+	/// Velká a malá písmena.
+	/// </summary>
+	Letters,
 
-		/// <summary>
-		/// Písmena (velká i malá) a číslice.
-		/// </summary>
-		LettersAndDigits,
+	/// <summary>
+	/// Písmena (velká i malá) a číslice.
+	/// </summary>
+	LettersAndDigits,
 
-		/// <summary>
-		/// Písmena (velká i malá), číslice a speciální znaky.
-		/// </summary>
-		LettersDigitsAndSpecialCharacters
-	}
+	/// <summary>
+	/// Písmena (velká i malá), číslice a speciální znaky.
+	/// </summary>
+	LettersDigitsAndSpecialCharacters
 }

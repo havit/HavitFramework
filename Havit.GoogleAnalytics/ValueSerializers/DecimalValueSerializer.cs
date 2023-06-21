@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.ValueSerializers
-{
+namespace Havit.GoogleAnalytics.ValueSerializers;
+
     internal class DecimalValueSerializer : IValueSerializer
     {
         public bool CanSerialize(object value)
@@ -18,4 +18,3 @@ namespace Havit.GoogleAnalytics.ValueSerializers
             return decimalValue.ToString("F", CultureInfo.InvariantCulture);
         }
     }
-}

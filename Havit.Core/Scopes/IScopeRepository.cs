@@ -4,29 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Scopes
+namespace Havit.Scopes;
+
+/// <summary>
+/// Interface pro třídy implementující scope repository - repository umožňující uložit a načíst hodnotu do scope.
+/// </summary>
+/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
+public interface IScopeRepository<T>
+	where T : class
 {
 	/// <summary>
-	/// Interface pro třídy implementující scope repository - repository umožňující uložit a načíst hodnotu do scope.
+	/// Vrátí hodnotu aktuálního scope.
 	/// </summary>
-	/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
-	public interface IScopeRepository<T>
-		where T : class
-	{
-		/// <summary>
-		/// Vrátí hodnotu aktuálního scope.
-		/// </summary>
-		Scope<T> GetCurrentScope();
+	Scope<T> GetCurrentScope();
 
-		/// <summary>
-		/// Nastaví hodnotu aktuálního scope.
-		/// </summary>
-		void SetCurrentScope(Scope<T> scope);
+	/// <summary>
+	/// Nastaví hodnotu aktuálního scope.
+	/// </summary>
+	void SetCurrentScope(Scope<T> scope);
 
-		/// <summary>
-		/// Zruší scope.
-		/// </summary>
-		void RemoveCurrentScope();
+	/// <summary>
+	/// Zruší scope.
+	/// </summary>
+	void RemoveCurrentScope();
 
-	}
 }

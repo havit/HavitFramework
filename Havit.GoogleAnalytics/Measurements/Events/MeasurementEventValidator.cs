@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements.Events
-{
+namespace Havit.GoogleAnalytics.Measurements.Events;
+
     internal class MeasurementEventValidator : GoogleAnalyticsMeasurementValidatorBase<MeasurementEvent>
     {
         public void Validate(MeasurementEvent model)
@@ -21,4 +21,3 @@ namespace Havit.GoogleAnalytics.Measurements.Events
             }
         }
     }
-}

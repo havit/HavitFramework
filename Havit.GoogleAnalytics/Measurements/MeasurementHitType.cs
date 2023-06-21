@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements
-{
+namespace Havit.GoogleAnalytics.Measurements;
+
     /// <summary>
     /// The type of hit.
     /// </summary>
@@ -28,4 +28,3 @@ namespace Havit.GoogleAnalytics.Measurements
         [ParameterValue("item")]
         Item
     }
-}

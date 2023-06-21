@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Implementation of <see cref="IHttpRequestSender"/> using HttpClient
     /// </summary>
@@ -32,4 +32,3 @@ namespace Havit.GoogleAnalytics
             return new HttpClient();
         }
     }
-}

@@ -1,16 +1,15 @@
 ﻿using Newtonsoft.Json;
 
-namespace Havit.GoPay.DataObjects
+namespace Havit.GoPay.DataObjects;
+
+/// <summary>
+/// Dodatečný atribut k měně, kterou banka používá
+/// </summary>
+public class GoPayCurrencyItem
 {
 	/// <summary>
-	/// Dodatečný atribut k měně, kterou banka používá
+	/// Stav symbolizující zda banka podporuje online převod
 	/// </summary>
-	public class GoPayCurrencyItem
-	{
-		/// <summary>
-		/// Stav symbolizující zda banka podporuje online převod
-		/// </summary>
-		[JsonProperty("isOnline")]
-		public bool IsOnline { get; set; }
-	}
+	[JsonProperty("isOnline")]
+	public bool IsOnline { get; set; }
 }

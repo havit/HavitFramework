@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Threading
-{
+namespace Havit.Data.Threading;
+
     /// <summary>
     /// Options for database-locked critical section.
     /// </summary>
@@ -35,4 +35,3 @@ namespace Havit.Data.Threading
         /// </summary>
         public int LockTimeoutMs { get; set; } = -1;
     }
-}

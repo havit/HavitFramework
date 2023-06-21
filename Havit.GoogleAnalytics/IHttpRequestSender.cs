@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Abstracted http client
     /// </summary>
@@ -19,4 +19,3 @@ namespace Havit.GoogleAnalytics
         /// <returns>Awaitable task</returns>
         Task PostAsync(string requestUri, HttpContent content);
     }
-}

@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements.DependencyInjection
-{
+namespace Havit.GoogleAnalytics.Measurements.DependencyInjection;
+
     /// <summary>
     /// Static extension class for <see cref="IServiceCollection"/> extensions
     /// </summary>
@@ -22,4 +22,3 @@ namespace Havit.GoogleAnalytics.Measurements.DependencyInjection
                 .AddTransient<IGoogleAnalyticsMeasurementApiClient, GoogleAnalyticsMeasurementApiClient>();
         }
     }
-}

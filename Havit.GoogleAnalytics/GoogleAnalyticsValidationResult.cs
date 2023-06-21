@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     internal class GoogleAnalyticsValidationResult
     {
         public string MemberName { get; set; }
@@ -14,4 +14,3 @@ namespace Havit.GoogleAnalytics
             return $"{MemberName}: {Message}";
         }
     }
-}

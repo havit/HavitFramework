@@ -4,47 +4,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.TransientErrorHandling
+namespace Havit.Data.TransientErrorHandling;
+
+/// <summary>
+/// Provádí akci s opakováním v případě selhání.
+/// </summary>
+internal static class TransientErrorHandler
 {
 	/// <summary>
-	/// Provádí akci s opakováním v případě selhání.
+	/// Provádí danou akci, opakování se řídí výchozí TransientErrorRetryPolicy.
 	/// </summary>
-	internal static class TransientErrorHandler
+	public static TResult ExecuteAction<TResult>(Func<TResult> action, Func<bool> actionShouldRetry)
 	{
-		/// <summary>
-		/// Provádí danou akci, opakování se řídí výchozí TransientErrorRetryPolicy.
-		/// </summary>
-		public static TResult ExecuteAction<TResult>(Func<TResult> action, Func<bool> actionShouldRetry)
-		{
-			return ExecuteAction(action, actionShouldRetry, new TransientErrorRetryPolicy());
-		}
+		return ExecuteAction(action, actionShouldRetry, new TransientErrorRetryPolicy());
+	}
 
-		/// <summary>
-		/// Provádí danou akci, opakování se řídí předanou danou RetryPolicy.
-		/// </summary>
-		public static TResult ExecuteAction<TResult>(Func<TResult> action, Func<bool> actionShouldRetry, IRetryPolicy retryPolicy)
+	/// <summary>
+	/// Provádí danou akci, opakování se řídí předanou danou RetryPolicy.
+	/// </summary>
+	public static TResult ExecuteAction<TResult>(Func<TResult> action, Func<bool> actionShouldRetry, IRetryPolicy retryPolicy)
+	{
+		int attemptNumber = 0;
+		while (true)
 		{
-			int attemptNumber = 0;
-			while (true)
+			try
 			{
-				try
-				{
-					attemptNumber += 1;
+				attemptNumber += 1;
                     return action();
-				}
-				catch (Exception exception)
+			}
+			catch (Exception exception)
+			{
+				RetryPolicyInfo retryPolicyInfo = retryPolicy.GetRetryPolicyInfo(attemptNumber, exception);
+
+				if (!actionShouldRetry() || !retryPolicyInfo.RetryAttempt)
 				{
-					RetryPolicyInfo retryPolicyInfo = retryPolicy.GetRetryPolicyInfo(attemptNumber, exception);
+					throw;
+				}
 
-					if (!actionShouldRetry() || !retryPolicyInfo.RetryAttempt)
-					{
-						throw;
-					}
-
-					if (retryPolicyInfo.DelayBeforeRetry > 0)
-					{
-						Task.Delay(retryPolicyInfo.DelayBeforeRetry).Wait();
-					}
+				if (retryPolicyInfo.DelayBeforeRetry > 0)
+				{
+					Task.Delay(retryPolicyInfo.DelayBeforeRetry).Wait();
 				}
 			}
 		}

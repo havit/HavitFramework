@@ -7,8 +7,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Default serializer
     /// </summary>
@@ -138,4 +138,3 @@ namespace Havit.GoogleAnalytics
             return true;
         }
     }
-}

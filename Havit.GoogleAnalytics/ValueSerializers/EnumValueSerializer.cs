@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.ValueSerializers
-{
+namespace Havit.GoogleAnalytics.ValueSerializers;
+
     internal class EnumValueSerializer : IValueSerializer
     {
         public bool CanSerialize(object value)
@@ -27,4 +27,3 @@ namespace Havit.GoogleAnalytics.ValueSerializers
             return attribute?.Value;
         }
     }
-}

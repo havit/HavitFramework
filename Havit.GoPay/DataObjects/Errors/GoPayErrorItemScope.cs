@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.GoPay.DataObjects.Errors
+namespace Havit.GoPay.DataObjects.Errors;
+
+/// <summary>
+/// Rozsah chyby
+/// </summary>
+public enum GoPayErrorItemScope
 {
 	/// <summary>
-	/// Rozsah chyby
+	/// Field error
 	/// </summary>
-	public enum GoPayErrorItemScope
-	{
-		/// <summary>
-		/// Field error
-		/// </summary>
-		F,
+	F,
 
-		/// <summary>
-		/// Global error
-		/// </summary>
-		G
-	}
+	/// <summary>
+	/// Global error
+	/// </summary>
+	G
 }

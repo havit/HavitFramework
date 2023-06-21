@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements
-{
+namespace Havit.GoogleAnalytics.Measurements;
+
     internal class GoogleAnalyticsMeasurementValidatorBase<TModel> : GoogleAnalyticsValidatorBase<TModel>
         where TModel : MeasurementModelBase
     {
@@ -25,4 +25,3 @@ namespace Havit.GoogleAnalytics.Measurements
             return validationResults;
         }
     }
-}

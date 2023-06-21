@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     internal abstract class GoogleAnalyticsValidatorBase<TModel>
     {
         protected virtual IEnumerable<GoogleAnalyticsValidationResult> ValidateInternal(TModel model)
@@ -22,4 +22,3 @@ namespace Havit.GoogleAnalytics
             }
         }
     }
-}

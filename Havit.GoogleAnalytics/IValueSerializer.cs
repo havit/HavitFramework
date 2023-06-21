@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Serializer for Google Analytics
     /// </summary>
@@ -23,4 +23,3 @@ namespace Havit.GoogleAnalytics
         /// <returns>Serialized <paramref name="value"/> into string</returns>
         string Serialize(object value);
     }
-}

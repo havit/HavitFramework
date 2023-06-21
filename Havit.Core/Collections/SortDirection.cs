@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Collections
+namespace Havit.Collections;
+
+/// <summary>
+/// Určuje směr řazení.
+/// </summary>
+public enum SortDirection
 {
 	/// <summary>
-	/// Určuje směr řazení.
+	/// Vzestupné.
 	/// </summary>
-	public enum SortDirection
-	{
-		/// <summary>
-		/// Vzestupné.
-		/// </summary>
-		Ascending,
+	Ascending,
 
-		/// <summary>
-		/// Sestupné.
-		/// </summary>
-		Descending
-	}
+	/// <summary>
+	/// Sestupné.
+	/// </summary>
+	Descending
 }

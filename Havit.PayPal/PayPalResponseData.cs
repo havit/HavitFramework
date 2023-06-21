@@ -5,36 +5,35 @@ using System.Text;
 using System.Web;
 using System.Collections.Specialized;
 
-namespace Havit.PayPal
+namespace Havit.PayPal;
+
+/// <summary>
+/// Třída pro data přicházející v odpovědi z PayPal-u.
+/// </summary>
+public class PayPalResponseData : NameValueCollection
 {
 	/// <summary>
-	/// Třída pro data přicházející v odpovědi z PayPal-u.
+	/// Contructor.
 	/// </summary>
-	public class PayPalResponseData : NameValueCollection
+	public PayPalResponseData(string result)
 	{
-		/// <summary>
-		/// Contructor.
-		/// </summary>
-		public PayPalResponseData(string result)
-		{
-			Decode(result);
-		}
+		Decode(result);
+	}
 
-		/// <summary>
-		/// Dekódování NVP řetezce.
-		/// </summary>
-		private void Decode(string nvpString)
+	/// <summary>
+	/// Dekódování NVP řetezce.
+	/// </summary>
+	private void Decode(string nvpString)
+	{
+		Clear();
+		foreach (string nvp in nvpString.Split('&'))
 		{
-			Clear();
-			foreach (string nvp in nvpString.Split('&'))
+			string[] tokens = nvp.Split('=');
+			if (tokens.Length >= 2)
 			{
-				string[] tokens = nvp.Split('=');
-				if (tokens.Length >= 2)
-				{
-					string name = HttpUtility.UrlDecode(tokens[0]);
-					string value = HttpUtility.UrlDecode(tokens[1]);
-					Add(name, value);
-				}
+				string name = HttpUtility.UrlDecode(tokens[0]);
+				string value = HttpUtility.UrlDecode(tokens[1]);
+				Add(name, value);
 			}
 		}
 	}

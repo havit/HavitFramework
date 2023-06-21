@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Attribute that defines key for the property it is used on
     /// </summary>
@@ -24,4 +24,3 @@ namespace Havit.GoogleAnalytics
             Name = name;
         }
     }
-}

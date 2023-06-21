@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Interface of the serializer for Google Analytics models
     /// </summary>
@@ -19,4 +19,3 @@ namespace Havit.GoogleAnalytics
         /// <returns>Serialized key-value collection of properties of the model</returns>
         List<KeyValuePair<string, string>> SerializeModel<TModel>(TModel model);
     }
-}

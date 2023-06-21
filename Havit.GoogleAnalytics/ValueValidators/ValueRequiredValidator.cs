@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.ValueValidators
-{
+namespace Havit.GoogleAnalytics.ValueValidators;
+
     internal class ValueRequiredValidator
     {
         public static bool Validate(object value, MemberInfo memberInfo)
@@ -36,4 +36,3 @@ namespace Havit.GoogleAnalytics.ValueValidators
             return memberInfo.GetCustomAttribute<RequiredAttribute>() != null;
         }
     }
-}

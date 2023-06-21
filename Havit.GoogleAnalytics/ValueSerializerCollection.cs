@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Static holder for collection of default <see cref="IValueSerializer"/>
     /// </summary>
@@ -25,4 +25,3 @@ namespace Havit.GoogleAnalytics
             };
         }
     }
-}

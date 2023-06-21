@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements.Events
-{
+namespace Havit.GoogleAnalytics.Measurements.Events;
+
     /// <summary>
     /// Event Tracking.
     /// </summary>
@@ -48,4 +48,3 @@ namespace Havit.GoogleAnalytics.Measurements.Events
         [ParameterName("ev")]
         public virtual int? Value { get; set; }
     }
-}

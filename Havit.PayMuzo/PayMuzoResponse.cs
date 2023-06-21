@@ -4,75 +4,74 @@ using System.Text;
 using System.Collections.Specialized;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Havit.PayMuzo
+namespace Havit.PayMuzo;
+
+/// <summary>
+/// Třída pro strong-type reprezentaci odpovědí z PayMUZO.
+/// </summary>
+public abstract class PayMuzoResponse
 {
 	/// <summary>
-	/// Třída pro strong-type reprezentaci odpovědí z PayMUZO.
+	/// Podpis.
 	/// </summary>
-	public abstract class PayMuzoResponse
+	public string Digest
 	{
-		/// <summary>
-		/// Podpis.
-		/// </summary>
-		public string Digest
+		get
 		{
-			get
-			{
-				return _digest;
-			}
-			protected set
-			{
-				_digest = value;
-			}
+			return _digest;
 		}
-		private string _digest;
-
-		/// <summary>
-		/// Primární návratový kód.
-		/// </summary>
-		public PayMuzoPrimaryReturnCode PrimaryReturnCode
+		protected set
 		{
-			get { return _primaryReturnCode; }
-			protected set { _primaryReturnCode = value; }
+			_digest = value;
 		}
-		private PayMuzoPrimaryReturnCode _primaryReturnCode;
+	}
+	private string _digest;
 
-		/// <summary>
-		/// Sekundární návratový kód.
-		/// </summary>
-		public PayMuzoSecondaryReturnCode SecondaryReturnCode
-		{
-			get { return _secondaryReturnCode; }
-			protected set { _secondaryReturnCode = value; }
-		}
-		private PayMuzoSecondaryReturnCode _secondaryReturnCode;
+	/// <summary>
+	/// Primární návratový kód.
+	/// </summary>
+	public PayMuzoPrimaryReturnCode PrimaryReturnCode
+	{
+		get { return _primaryReturnCode; }
+		protected set { _primaryReturnCode = value; }
+	}
+	private PayMuzoPrimaryReturnCode _primaryReturnCode;
 
-		/// <summary>
-		/// Data v normalizované podobě (správné pořadí, všechny parametry).
-		/// </summary>
-		public PayMuzoRequestData NormalizedRawData
-		{
-			protected set { _normalizedRawData = value; }
-			get { return _normalizedRawData; }
-		}
-		private PayMuzoRequestData _normalizedRawData;
+	/// <summary>
+	/// Sekundární návratový kód.
+	/// </summary>
+	public PayMuzoSecondaryReturnCode SecondaryReturnCode
+	{
+		get { return _secondaryReturnCode; }
+		protected set { _secondaryReturnCode = value; }
+	}
+	private PayMuzoSecondaryReturnCode _secondaryReturnCode;
 
-		/// <summary>
-		/// Gets a value indicating whether this instance is digest URL encoded.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
-		/// </value>
-		public abstract bool IsDigestUrlEncoded { get; }
+	/// <summary>
+	/// Data v normalizované podobě (správné pořadí, všechny parametry).
+	/// </summary>
+	public PayMuzoRequestData NormalizedRawData
+	{
+		protected set { _normalizedRawData = value; }
+		get { return _normalizedRawData; }
+	}
+	private PayMuzoRequestData _normalizedRawData;
 
-		/// <summary>
-		/// Ověří správnost podpisu.
-		/// </summary>
-		/// <param name="certificate">certifikát, vůči kterému má být podpis ověřen (veřejný klíč PayMUZO)</param>
-		/// <returns><c>true, pokud je podpis korektní</c>, jinak <c>false</c></returns>
-		public bool VerifyDigest(X509Certificate2 certificate)
-		{
-			return PayMuzoHelper.VerifyDigest(this.NormalizedRawData.GetPipedRawData(), this.Digest, certificate, this.IsDigestUrlEncoded);
-		}
+	/// <summary>
+	/// Gets a value indicating whether this instance is digest URL encoded.
+	/// </summary>
+	/// <value>
+	/// 	<c>true</c> if this instance is digest URL encoded; otherwise, <c>false</c>.
+	/// </value>
+	public abstract bool IsDigestUrlEncoded { get; }
+
+	/// <summary>
+	/// Ověří správnost podpisu.
+	/// </summary>
+	/// <param name="certificate">certifikát, vůči kterému má být podpis ověřen (veřejný klíč PayMUZO)</param>
+	/// <returns><c>true, pokud je podpis korektní</c>, jinak <c>false</c></returns>
+	public bool VerifyDigest(X509Certificate2 certificate)
+	{
+		return PayMuzoHelper.VerifyDigest(this.NormalizedRawData.GetPipedRawData(), this.Digest, certificate, this.IsDigestUrlEncoded);
 	}
 }

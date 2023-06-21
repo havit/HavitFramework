@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Threading
-{
+namespace Havit.Data.Threading;
+
     /// <summary>
     /// The exception that is thrown when an attempt is made to lock on SQL server resource, but the attempt was not successful.
     /// </summary>
@@ -33,4 +33,3 @@ namespace Havit.Data.Threading
         {
         }
     }
-}

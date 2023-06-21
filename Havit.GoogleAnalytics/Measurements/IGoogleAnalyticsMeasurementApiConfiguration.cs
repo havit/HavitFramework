@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements
-{
+namespace Havit.GoogleAnalytics.Measurements;
+
     /// <summary>
     /// Configuration for the <see cref="IGoogleAnalyticsMeasurementApiClient"/>
     /// </summary>
@@ -22,4 +22,3 @@ namespace Havit.GoogleAnalytics.Measurements
         /// </remarks>
         string GoogleAnalyticsTrackingId { get; }
     }
-}

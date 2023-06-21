@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.ValueSerializers
-{
+namespace Havit.GoogleAnalytics.ValueSerializers;
+
     internal class BooleanValueSerializer : IValueSerializer
     {
         public bool CanSerialize(object value)
@@ -20,4 +20,3 @@ namespace Havit.GoogleAnalytics.ValueSerializers
             };
         }
     }
-}

@@ -6,58 +6,57 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Havit
+namespace Havit;
+
+/// <summary>
+/// Rozšiřující metody pro CultureInfo.
+/// </summary>
+public static class CultureInfoExt
 {
 	/// <summary>
-	/// Rozšiřující metody pro CultureInfo.
+	/// Vykoná metodu v kontextu s culture. Vrací návratovou hodnotu metody.
 	/// </summary>
-	public static class CultureInfoExt
+	/// <remarks>
+	/// Culture je pro aktuální thread po vykonání metody obnovena.
+	/// </remarks>
+	/// <param name="culture">CultureInfo v jehož kontextu chceme, aby se metoda vykonala.</param>
+	/// <param name="methodDelegate">Metoda, která se vykoná v kontextu CultureInfo. Návratová hodnota předané metody je vrácena touto metodou.</param>
+	public static TResult ExecuteMethod<TResult>(this CultureInfo culture, Func<TResult> methodDelegate)
 	{
-		/// <summary>
-		/// Vykoná metodu v kontextu s culture. Vrací návratovou hodnotu metody.
-		/// </summary>
-		/// <remarks>
-		/// Culture je pro aktuální thread po vykonání metody obnovena.
-		/// </remarks>
-		/// <param name="culture">CultureInfo v jehož kontextu chceme, aby se metoda vykonala.</param>
-		/// <param name="methodDelegate">Metoda, která se vykoná v kontextu CultureInfo. Návratová hodnota předané metody je vrácena touto metodou.</param>
-		public static TResult ExecuteMethod<TResult>(this CultureInfo culture, Func<TResult> methodDelegate)
+		CultureInfo oldCulture = Thread.CurrentThread.CurrentCulture;
+		CultureInfo oldUICulture = Thread.CurrentThread.CurrentUICulture;
+		TResult result;
+
+		try
 		{
-			CultureInfo oldCulture = Thread.CurrentThread.CurrentCulture;
-			CultureInfo oldUICulture = Thread.CurrentThread.CurrentUICulture;
-			TResult result;
+			Thread.CurrentThread.CurrentCulture = culture;
+			Thread.CurrentThread.CurrentUICulture = culture;
 
-			try
-			{
-				Thread.CurrentThread.CurrentCulture = culture;
-				Thread.CurrentThread.CurrentUICulture = culture;
-
-				result = methodDelegate();
-			}
-			finally
-			{
-				Thread.CurrentThread.CurrentCulture = oldCulture;
-				Thread.CurrentThread.CurrentUICulture = oldUICulture;
-			}
-
-			return result;
+			result = methodDelegate();
+		}
+		finally
+		{
+			Thread.CurrentThread.CurrentCulture = oldCulture;
+			Thread.CurrentThread.CurrentUICulture = oldUICulture;
 		}
 
-		/// <summary>
-		/// Vykoná metodu v kontextu s culture.
-		/// </summary>
-		/// <remarks>
-		/// Culture je pro aktuální thread po vykonání metody obnovena.
-		/// </remarks>
-		/// <param name="culture">CultureInfo v jehož kontextu chceme aby se metoda vykonala.</param>
-		/// <param name="methodDelegate">Metoda, která se vykoná v kontextu CultureInfo.</param>
-		public static void ExecuteMethod(this CultureInfo culture, Action methodDelegate)
+		return result;
+	}
+
+	/// <summary>
+	/// Vykoná metodu v kontextu s culture.
+	/// </summary>
+	/// <remarks>
+	/// Culture je pro aktuální thread po vykonání metody obnovena.
+	/// </remarks>
+	/// <param name="culture">CultureInfo v jehož kontextu chceme aby se metoda vykonala.</param>
+	/// <param name="methodDelegate">Metoda, která se vykoná v kontextu CultureInfo.</param>
+	public static void ExecuteMethod(this CultureInfo culture, Action methodDelegate)
+	{
+		ExecuteMethod<object>(culture, () =>
 		{
-			ExecuteMethod<object>(culture, () =>
-			{
-				methodDelegate();
-				return null;
-			});
-		}
+			methodDelegate();
+			return null;
+		});
 	}
 }

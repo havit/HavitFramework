@@ -1,18 +1,17 @@
-﻿namespace Havit.GoPay.DataObjects
+﻿namespace Havit.GoPay.DataObjects;
+
+/// <summary>
+/// Dodatečné parametry platby
+/// </summary>
+public class GoPayAdditionalParameter
 {
 	/// <summary>
-	/// Dodatečné parametry platby
+	/// Název parametru
 	/// </summary>
-	public class GoPayAdditionalParameter
-	{
-		/// <summary>
-		/// Název parametru
-		/// </summary>
-		public string Name { get; set; }
+	public string Name { get; set; }
 
-		/// <summary>
-		/// Hodnota volitelného parametru
-		/// </summary>
-		public string Value { get; set; }
-	}
+	/// <summary>
+	/// Hodnota volitelného parametru
+	/// </summary>
+	public string Value { get; set; }
 }

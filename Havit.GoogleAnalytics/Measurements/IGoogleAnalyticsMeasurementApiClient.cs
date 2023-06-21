@@ -6,16 +6,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.GoogleAnalytics.Measurements
-{
+namespace Havit.GoogleAnalytics.Measurements;
+
     /// <summary>
     /// https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
     /// </summary>
     public interface IGoogleAnalyticsMeasurementApiClient
     {
         /// <summary>
-		/// Use custom serializer. Default is <see cref="PropertyNameAttributeSerializer"/>
-		/// </summary>
+	/// Use custom serializer. Default is <see cref="PropertyNameAttributeSerializer"/>
+	/// </summary>
         void UseCustomSerializer(IGoogleAnalyticsModelSerializer modelSerializer);
 
         /// <summary>
@@ -40,4 +40,3 @@ namespace Havit.GoogleAnalytics.Measurements
         Task TrackTransactionAsync<TModel>(TModel transactionModel, IEnumerable<MeasurementTransactionItemVM> transactionItems)
             where TModel : MeasurementTransaction;
     }
-}

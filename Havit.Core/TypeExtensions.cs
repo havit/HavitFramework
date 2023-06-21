@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit
+namespace Havit;
+
+/// <summary>
+/// Extension metody k Type.
+/// </summary>
+public static class TypeExtensions
 {
 	/// <summary>
-	/// Extension metody k Type.
+	/// Vrací true, pokud daný typ implementuje daný interface.
 	/// </summary>
-	public static class TypeExtensions
+	public static bool ImplementsInterface(this Type type, Type interfaceType)
 	{
-		/// <summary>
-		/// Vrací true, pokud daný typ implementuje daný interface.
-		/// </summary>
-		public static bool ImplementsInterface(this Type type, Type interfaceType)
-		{
-			return type.GetInterfaces().Any(typeInterfaceType => typeInterfaceType == interfaceType);
-		}
+		return type.GetInterfaces().Any(typeInterfaceType => typeInterfaceType == interfaceType);
 	}
 }

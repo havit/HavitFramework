@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements
-{
+namespace Havit.GoogleAnalytics.Measurements;
+
     /// <summary>
     /// This class contains required parameters for each measurement hit
     /// </summary>
@@ -104,4 +104,3 @@ namespace Havit.GoogleAnalytics.Measurements
             target.CustomMetrics = CustomMetrics;
         }
     }
-}

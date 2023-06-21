@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.GoogleAnalytics
-{
+namespace Havit.GoogleAnalytics;
+
     /// <summary>
     /// Attribute that defines value for the enum
     /// </summary>
@@ -23,4 +23,3 @@ namespace Havit.GoogleAnalytics
             Value = value;
         }
     }
-}

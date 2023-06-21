@@ -3,42 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Havit.PayPal
+namespace Havit.PayPal;
+
+/// <summary>
+/// Enum popisující typ PayPal page, která se má zobrazit uživateli po příchodu na PayPal.
+/// </summary>
+public enum PayPalLandingPage
 {
 	/// <summary>
-	/// Enum popisující typ PayPal page, která se má zobrazit uživateli po příchodu na PayPal.
+	/// Billing (nalevo bude možnost platit kartou s možností vytvoření PayPal účtu a napravo bude dialog pro přihlášení).
 	/// </summary>
-	public enum PayPalLandingPage
-	{
-		/// <summary>
-		/// Billing (nalevo bude možnost platit kartou s možností vytvoření PayPal účtu a napravo bude dialog pro přihlášení).
-		/// </summary>
-		Billing,
-
-		/// <summary>
-		/// Zobrazí se pouze formulář na přihlášení.
-		/// </summary>
-		Login
-	}
+	Billing,
 
 	/// <summary>
-	/// Pomocná třída na práci s enumem PayPalLandingPage.
+	/// Zobrazí se pouze formulář na přihlášení.
 	/// </summary>
-	public static class PayPalLandingPageHelper
+	Login
+}
+
+/// <summary>
+/// Pomocná třída na práci s enumem PayPalLandingPage.
+/// </summary>
+public static class PayPalLandingPageHelper
+{
+	/// <summary>
+	/// Contructor.
+	/// </summary>
+	public static string GetPayPalLandingPageCode(PayPalLandingPage landingPage)
 	{
-		/// <summary>
-		/// Contructor.
-		/// </summary>
-		public static string GetPayPalLandingPageCode(PayPalLandingPage landingPage)
+		switch (landingPage)
 		{
-			switch (landingPage)
-			{
-				case PayPalLandingPage.Billing:
-					return "Billing";
-				case PayPalLandingPage.Login:
-				default:
-					return "Login";
-			}
+			case PayPalLandingPage.Billing:
+				return "Billing";
+			case PayPalLandingPage.Login:
+			default:
+				return "Login";
 		}
 	}
 }

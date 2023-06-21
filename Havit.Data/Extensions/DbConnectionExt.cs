@@ -6,26 +6,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Havit.Data.TransientErrorHandling;
 
-namespace Havit.Data.Extensions
+namespace Havit.Data.Extensions;
+
+/// <summary>
+/// Extension methody k DbConnection.
+/// </summary>
+internal static class DbConnectionExt
 {
 	/// <summary>
-	/// Extension methody k DbConnection.
+	/// Otevírá databázové spojení. V případě neúspěchu z důvodu transientní chyby pokus o otevření opakuje.
 	/// </summary>
-	internal static class DbConnectionExt
+	public static void OpenWithRetry(this DbConnection connection)
 	{
-		/// <summary>
-		/// Otevírá databázové spojení. V případě neúspěchu z důvodu transientní chyby pokus o otevření opakuje.
-		/// </summary>
-		public static void OpenWithRetry(this DbConnection connection)
-		{
-			TransientErrorHandler.ExecuteAction<object>(
-				() =>
-				{
-					connection.Open();
-					return null;
-				},
-				() => true // vždy můžeme opakovat
-			);
-		}
+		TransientErrorHandler.ExecuteAction<object>(
+			() =>
+			{
+				connection.Open();
+				return null;
+			},
+			() => true // vždy můžeme opakovat
+		);
 	}
 }

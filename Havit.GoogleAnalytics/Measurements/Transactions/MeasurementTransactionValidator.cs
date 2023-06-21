@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
-namespace Havit.GoogleAnalytics.Measurements.Transactions
-{
+namespace Havit.GoogleAnalytics.Measurements.Transactions;
+
     internal class MeasurementTransactionValidator : GoogleAnalyticsMeasurementValidatorBase<MeasurementTransaction>
     {
         public void Validate(MeasurementTransaction model)
@@ -21,4 +21,3 @@ namespace Havit.GoogleAnalytics.Measurements.Transactions
             }
         }
     }
-}

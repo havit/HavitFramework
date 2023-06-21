@@ -1,8 +1,8 @@
 ﻿using Havit.Data.Configuration.Git.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.Configuration.Git.Tests
-{
+namespace Havit.Data.Configuration.Git.Tests;
+
     [TestClass]
     public class HeadFileGitRepositoryProviderTests
     {
@@ -39,4 +39,3 @@ namespace Havit.Data.Configuration.Git.Tests
             Assert.AreEqual("feature/my-super-cool-feature", branchName);
         }
     }
-}

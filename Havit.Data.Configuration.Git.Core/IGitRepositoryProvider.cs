@@ -1,13 +1,12 @@
-﻿namespace Havit.Data.Configuration.Git.Core
+﻿namespace Havit.Data.Configuration.Git.Core;
+
+/// <summary>
+/// Abstraction for retrieving current branch in a specified Git repository.
+/// </summary>
+public interface IGitRepositoryProvider
 {
 	/// <summary>
-	/// Abstraction for retrieving current branch in a specified Git repository.
+	/// Returns current branch in Git repository of referencing project.
 	/// </summary>
-	public interface IGitRepositoryProvider
-	{
-		/// <summary>
-		/// Returns current branch in Git repository of referencing project.
-		/// </summary>
-		string GetBranch(string path);
-	}
+	string GetBranch(string path);
 }

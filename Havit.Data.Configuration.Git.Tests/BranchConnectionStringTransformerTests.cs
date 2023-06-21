@@ -2,8 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Configuration.Git.Tests
-{
+namespace Havit.Data.Configuration.Git.Tests;
+
     [TestClass]
     public class BranchConnectionStringTransformerTests
     {
@@ -68,4 +68,3 @@ namespace Havit.Data.Configuration.Git.Tests
             return new BranchConnectionStringTransformer(Mock.Of<IGitRepositoryProvider>(f => f.GetBranch(It.IsAny<string>()) == currentBranchName));
         }
     }
-}

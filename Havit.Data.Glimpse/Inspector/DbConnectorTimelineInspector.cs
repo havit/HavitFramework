@@ -13,61 +13,60 @@ using Glimpse.Core.SerializationConverter;
 using Havit.Data.Glimpse.Message;
 using Havit.Data.Trace;
 
-namespace Havit.Data.Glimpse.Inspector
+namespace Havit.Data.Glimpse.Inspector;
+
+/// <summary>
+/// Writes DbConnector messages to timeline.
+/// </summary>
+public class DbConnectorTimelineInspector : IInspector
 {
 	/// <summary>
-	/// Writes DbConnector messages to timeline.
+	/// Message broker.
 	/// </summary>
-	public class DbConnectorTimelineInspector : IInspector
+	protected IMessageBroker MessageBroker { get; private set; }
+
+	/// <summary>
+	/// Timer - strategy pattern.
+	/// </summary>
+	protected Func<IExecutionTimer> TimerStrategy { get; private set; }
+
+	/// <summary>
+	/// Sets up inspector.
+	/// </summary>
+	public void Setup(IInspectorContext context)
 	{
-		/// <summary>
-		/// Message broker.
-		/// </summary>
-		protected IMessageBroker MessageBroker { get; private set; }
+		this.MessageBroker = context.MessageBroker;
+		this.TimerStrategy = context.TimerStrategy;
+		context.MessageBroker.Subscribe<DbCommandTraceData>(ProcessMessage);
+	}
 
-		/// <summary>
-		/// Timer - strategy pattern.
-		/// </summary>
-		protected Func<IExecutionTimer> TimerStrategy { get; private set; }
+	/// <summary>
+	/// Writes dbCommandTraceData to timeline.
+	/// </summary>
+	private void ProcessMessage(DbCommandTraceData dbCommandTraceData)
+	{
+		DateTime now = DateTime.Now;
 
-		/// <summary>
-		/// Sets up inspector.
-		/// </summary>
-		public void Setup(IInspectorContext context)
+		IExecutionTimer timer = null;
+		if (this.TimerStrategy != null)
 		{
-			this.MessageBroker = context.MessageBroker;
-			this.TimerStrategy = context.TimerStrategy;
-			context.MessageBroker.Subscribe<DbCommandTraceData>(ProcessMessage);
+			timer = this.TimerStrategy();
 		}
 
-		/// <summary>
-		/// Writes dbCommandTraceData to timeline.
-		/// </summary>
-		private void ProcessMessage(DbCommandTraceData dbCommandTraceData)
+		ITimelineMessage message = new DbConnectorTimelineMessage();
+
+		message.EventCategory = DbConnectorTimelineCategory.TimelineCategory;
+		message.EventName = dbCommandTraceData.Operation;
+		message.EventSubText = dbCommandTraceData.CommandText;
+		message.Duration = new TimeSpan(dbCommandTraceData.DurationTicks);
+
+		if (timer != null)
 		{
-			DateTime now = DateTime.Now;
-
-			IExecutionTimer timer = null;
-			if (this.TimerStrategy != null)
-			{
-				timer = this.TimerStrategy();
-			}
-
-			ITimelineMessage message = new DbConnectorTimelineMessage();
-
-			message.EventCategory = DbConnectorTimelineCategory.TimelineCategory;
-			message.EventName = dbCommandTraceData.Operation;
-			message.EventSubText = dbCommandTraceData.CommandText;
-			message.Duration = new TimeSpan(dbCommandTraceData.DurationTicks);
-
-			if (timer != null)
-			{
-				TimerResult timePoint = timer.Point();
-				message.Offset = new TimeSpan(timePoint.Offset.Ticks - dbCommandTraceData.DurationTicks);
-				message.StartTime = now - message.Duration;
-			}
-
-			this.MessageBroker.Publish(message);
+			TimerResult timePoint = timer.Point();
+			message.Offset = new TimeSpan(timePoint.Offset.Ticks - dbCommandTraceData.DurationTicks);
+			message.StartTime = now - message.Duration;
 		}
+
+		this.MessageBroker.Publish(message);
 	}
 }

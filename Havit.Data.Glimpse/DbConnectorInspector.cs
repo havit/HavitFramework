@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Glimpse
-{
-	/// <summary>
+namespace Havit.Data.Glimpse;
+
+/// <summary>
     /// The implementation of <see cref="IInspector"/> for capturing DbConnectorEvent messages.
     /// </summary>
     public class DbConnectorInspector : IInspector
@@ -24,7 +24,6 @@ namespace Havit.Data.Glimpse
         /// </remarks>
         public void Setup(IInspectorContext context)
         {
-			// NOOP
+		// NOOP
         }
     }
-}

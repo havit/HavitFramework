@@ -7,88 +7,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Glimpse
+namespace Havit.Data.Glimpse;
+
+/// <summary>
+/// Trace listener for DbConnector command execution trace source.
+/// </summary>
+public class DbConnectorTraceListener : System.Diagnostics.TraceListener
 {
-	/// <summary>
-	/// Trace listener for DbConnector command execution trace source.
-	/// </summary>
-	public class DbConnectorTraceListener : System.Diagnostics.TraceListener
+	internal IMessageBroker MessageBroker
 	{
-		internal IMessageBroker MessageBroker
+		get
 		{
-			get
+			if (messageBroker == null)
 			{
-				if (messageBroker == null)
-				{
 #pragma warning disable 0618
-					messageBroker = GlimpseConfiguration.GetConfiguredMessageBroker();
+				messageBroker = GlimpseConfiguration.GetConfiguredMessageBroker();
 #pragma warning restore 0618
-				}
-				return messageBroker;
 			}
-			set
-			{
-				messageBroker = value;
-			}
+			return messageBroker;
 		}
-		private IMessageBroker messageBroker;
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public DbConnectorTraceListener()
+		set
 		{
+			messageBroker = value;
 		}
+	}
+	private IMessageBroker messageBroker;
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public DbConnectorTraceListener(string initializeData) 
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public DbConnectorTraceListener()
+	{
+	}
+
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public DbConnectorTraceListener(string initializeData) 
         {
         }
 
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public DbConnectorTraceListener(IMessageBroker messageBroker)
-		{
-			MessageBroker = messageBroker;
-		}
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public DbConnectorTraceListener(IMessageBroker messageBroker)
+	{
+		MessageBroker = messageBroker;
+	}
 
-		/// <summary>
-		/// For DbCommandTraceData in data, writes data to iMessageBroker to display in DbConnectorTab.
-		/// </summary>
-		public override void TraceData(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, object data)
-		{
-			base.TraceData(eventCache, source, eventType, id, data);
+	/// <summary>
+	/// For DbCommandTraceData in data, writes data to iMessageBroker to display in DbConnectorTab.
+	/// </summary>
+	public override void TraceData(System.Diagnostics.TraceEventCache eventCache, string source, System.Diagnostics.TraceEventType eventType, int id, object data)
+	{
+		base.TraceData(eventCache, source, eventType, id, data);
 
-			if ((data != null) && (data is DbCommandTraceData))
+		if ((data != null) && (data is DbCommandTraceData))
+		{
+			IMessageBroker iMessageBroker = MessageBroker;
+			if (iMessageBroker != null)
 			{
-				IMessageBroker iMessageBroker = MessageBroker;
-				if (iMessageBroker != null)
+				lock (iMessageBroker) // viz TFS 14220 - zdá se, že metoda publish není thread safe
 				{
-					lock (iMessageBroker) // viz TFS 14220 - zdá se, že metoda publish není thread safe
-					{
-						iMessageBroker.Publish((DbCommandTraceData)data);
-					}
+					iMessageBroker.Publish((DbCommandTraceData)data);
 				}
 			}
 		}
+	}
 
-		/// <summary>
-		/// Does nothing (NOOP).
-		/// </summary>
-		public override void Write(string message)
-		{
-			// NOOP
-		}
+	/// <summary>
+	/// Does nothing (NOOP).
+	/// </summary>
+	public override void Write(string message)
+	{
+		// NOOP
+	}
 
-		/// <summary>
-		/// Does nothing (NOOP).
-		/// </summary>
-		public override void WriteLine(string message)
-		{
-			// NOOP
-		}
+	/// <summary>
+	/// Does nothing (NOOP).
+	/// </summary>
+	public override void WriteLine(string message)
+	{
+		// NOOP
 	}
 }

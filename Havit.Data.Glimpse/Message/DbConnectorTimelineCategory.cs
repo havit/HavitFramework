@@ -6,24 +6,22 @@ using System.Threading.Tasks;
 
 using Glimpse.Core.Message;
 
-namespace Havit.Data.Glimpse.Message
+namespace Havit.Data.Glimpse.Message;
+
+/// <summary>
+/// Timeline category for DbConnector.
+/// </summary>
+public static class DbConnectorTimelineCategory
 {
 	/// <summary>
 	/// Timeline category for DbConnector.
 	/// </summary>
-	public static class DbConnectorTimelineCategory
+	public static TimelineCategoryItem TimelineCategory
 	{
-		/// <summary>
-		/// Timeline category for DbConnector.
-		/// </summary>
-		public static TimelineCategoryItem TimelineCategory
+		get
 		{
-			get
-			{
-				return _timelineCategory;
-			}
+			return _timelineCategory;
 		}
-		private static readonly TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbConnector", "#233D91", "#118DD5");
 	}
-
+	private static readonly TimelineCategoryItem _timelineCategory = new TimelineCategoryItem("DbConnector", "#233D91", "#118DD5");
 }

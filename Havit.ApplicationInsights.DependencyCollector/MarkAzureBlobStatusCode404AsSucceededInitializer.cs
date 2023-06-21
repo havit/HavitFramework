@@ -3,8 +3,8 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace Havit.ApplicationInsights.DependencyCollector
-{
+namespace Havit.ApplicationInsights.DependencyCollector;
+
     /// <summary>
     /// Ty DependencyTelemetry, které jsou typu Azure blob a zároveň mají result code 404, označí jako succeeded.
     /// Slouží k aplikacím, které používají blob.Exists(), aby requesty s návratovou hodnotu 404 pro neexistující blob nebyly označeny jako failed (success==false).
@@ -45,4 +45,3 @@ namespace Havit.ApplicationInsights.DependencyCollector
         }
     }
     
-}

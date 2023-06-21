@@ -3,8 +3,8 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace Havit.ApplicationInsights.DependencyCollector
-{
+namespace Havit.ApplicationInsights.DependencyCollector;
+
     /// <summary>
     /// Ignoruje (neposílá) úspěšně dokončené DependencyTelemetry, které nemají přiřazeno ParentId.
     /// </summary>
@@ -36,4 +36,3 @@ namespace Havit.ApplicationInsights.DependencyCollector
         }
     }
     
-}

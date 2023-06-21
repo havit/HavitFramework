@@ -6,49 +6,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.Glimpse.SerializationConverters
-{
+namespace Havit.Data.Glimpse.SerializationConverters;
+
    /// <summary>
     /// The <see cref="ISerializationConverter"/> implementation responsible converting SqlDataRecord[] representation's into strings.
     /// </summary>
  	public class SqlDataRecordArrayConverter : ISerializationConverter
+{
+	/// <summary>
+	/// Gets the supported types the converter will be invoked for.
+	/// </summary>
+	/// <value>
+	/// The supported type is SqlDataRecord[] (array of SqlDataRecord).
+	/// </value>
+	public IEnumerable<Type> SupportedTypes
 	{
-		/// <summary>
-		/// Gets the supported types the converter will be invoked for.
-		/// </summary>
-		/// <value>
-		/// The supported type is SqlDataRecord[] (array of SqlDataRecord).
-		/// </value>
-		public IEnumerable<Type> SupportedTypes
+		get
 		{
-			get
-			{
-				yield return typeof(SqlDataRecord[]);
-			}
+			yield return typeof(SqlDataRecord[]);
 		}
+	}
 
-		/// <summary>
-		/// Converts the specified SqlDataRecord[] into string.
-		/// </summary>
-		public object Convert(object data)
+	/// <summary>
+	/// Converts the specified SqlDataRecord[] into string.
+	/// </summary>
+	public object Convert(object data)
+	{
+		SqlDataRecord[] sqlDataRecords = data as SqlDataRecord[];
+
+		if (sqlDataRecords != null)
 		{
-			SqlDataRecord[] sqlDataRecords = data as SqlDataRecord[];
-
-			if (sqlDataRecords != null)
+			if ((sqlDataRecords.Length > 0) && (sqlDataRecords[0].FieldCount == 1))
 			{
-				if ((sqlDataRecords.Length > 0) && (sqlDataRecords[0].FieldCount == 1))
-				{
-					return String.Join(", ", sqlDataRecords.Select(sqlDataRecord => sqlDataRecord.GetValue(0).ToString()));
-				}
-				else
-				{
-					return sqlDataRecords.ToString();
-				}
+				return String.Join(", ", sqlDataRecords.Select(sqlDataRecord => sqlDataRecord.GetValue(0).ToString()));
 			}
 			else
 			{
-				return null;
+				return sqlDataRecords.ToString();
 			}
+		}
+		else
+		{
+			return null;
 		}
 	}
 }

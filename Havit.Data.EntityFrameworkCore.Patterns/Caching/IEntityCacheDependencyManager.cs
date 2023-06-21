@@ -3,16 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching
+namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
+
+/// <summary>
+/// Třída zajišťující invalidaci závislostí v cache.
+/// </summary>
+public interface IEntityCacheDependencyManager
 {
 	/// <summary>
-	/// Třída zajišťující invalidaci závislostí v cache.
+	/// Invaliduje závislosti změněných entit.
 	/// </summary>
-	public interface IEntityCacheDependencyManager
-	{
-		/// <summary>
-		/// Invaliduje závislosti změněných entit.
-		/// </summary>
-		void InvalidateDependencies(Changes changes);
-	}
+	void InvalidateDependencies(Changes changes);
 }

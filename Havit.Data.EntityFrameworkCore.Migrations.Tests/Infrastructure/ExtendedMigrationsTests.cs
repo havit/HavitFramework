@@ -7,57 +7,56 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure;
+
+/// <summary>
+/// Tests for extended migrations infrastructure.
+/// </summary>
+[TestClass]
+public class ExtendedMigrationsTests
 {
 	/// <summary>
-	/// Tests for extended migrations infrastructure.
+	/// Tests, whether multiple invocations of <see cref="InfrastructureExtensions.UseExtendedMigrationsInfrastructure"/> 
+	/// does not mess up previously registered instances of <see cref="IMigrationOperationSqlGenerator"/>.
 	/// </summary>
-	[TestClass]
-	public class ExtendedMigrationsTests
+	[TestMethod]
+	public void InfrastructureExtensions_RegisteringInfrastructureMultipleTimes_ExtensionContainsAllMigrationOperationGenerators()
 	{
-		/// <summary>
-		/// Tests, whether multiple invocations of <see cref="InfrastructureExtensions.UseExtendedMigrationsInfrastructure"/> 
-		/// does not mess up previously registered instances of <see cref="IMigrationOperationSqlGenerator"/>.
-		/// </summary>
-		[TestMethod]
-		public void InfrastructureExtensions_RegisteringInfrastructureMultipleTimes_ExtensionContainsAllMigrationOperationGenerators()
+		static void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			static void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-			{
-				optionsBuilder.UseExtendedMigrationsInfrastructure();
+			optionsBuilder.UseExtendedMigrationsInfrastructure();
 
-				IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+			IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
-				builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
-					.WithGeneratorType<FirstMigrationOperationSqlGenerator>());
+			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
+				.WithGeneratorType<FirstMigrationOperationSqlGenerator>());
 
-				optionsBuilder.UseExtendedMigrationsInfrastructure();
+			optionsBuilder.UseExtendedMigrationsInfrastructure();
 
-				builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
-					.WithGeneratorType<SecondMigrationOperationSqlGenerator>());
-			}
-
-			using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
-			{
-				_ = dbContext.Model;
-
-				var generatorTypes = dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.ToArray();
-
-				Assert.AreEqual(2, generatorTypes.Length);
-
-				CollectionAssert.Contains(generatorTypes, typeof(FirstMigrationOperationSqlGenerator));
-				CollectionAssert.Contains(generatorTypes, typeof(SecondMigrationOperationSqlGenerator));
-			}
+			builder.AddOrUpdateExtension(optionsBuilder.Options.FindExtension<CompositeMigrationsSqlGeneratorExtension>()
+				.WithGeneratorType<SecondMigrationOperationSqlGenerator>());
 		}
 
-		// ReSharper disable once ClassNeverInstantiated.Local
-		private class FirstMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
+		using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
 		{
-		}
+			_ = dbContext.Model;
 
-		// ReSharper disable once ClassNeverInstantiated.Local
-		private class SecondMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
-		{
+			var generatorTypes = dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.ToArray();
+
+			Assert.AreEqual(2, generatorTypes.Length);
+
+			CollectionAssert.Contains(generatorTypes, typeof(FirstMigrationOperationSqlGenerator));
+			CollectionAssert.Contains(generatorTypes, typeof(SecondMigrationOperationSqlGenerator));
 		}
+	}
+
+	// ReSharper disable once ClassNeverInstantiated.Local
+	private class FirstMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
+	{
+	}
+
+	// ReSharper disable once ClassNeverInstantiated.Local
+	private class SecondMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
+	{
 	}
 }

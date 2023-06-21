@@ -1,41 +1,40 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
 
-namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+
+public abstract class ProjectBase : IProject
 {
-	public abstract class ProjectBase : IProject
+	protected XDocument Content { get; }
+
+	public string Filename { get; }
+
+	protected ProjectBase(string filename, XDocument content)
 	{
-		protected XDocument Content { get; }
+		Filename = filename;
+		Content = content;
+	}
 
-		public string Filename { get; }
+	public abstract void AddOrUpdate(string filename);
 
-		protected ProjectBase(string filename, XDocument content)
-		{
-			Filename = filename;
-			Content = content;
-		}
+	public abstract string[] GetUnusedGeneratedFiles();
 
-		public abstract void AddOrUpdate(string filename);
+	public abstract void RemoveUnusedGeneratedFiles();
 
-		public abstract string[] GetUnusedGeneratedFiles();
+	public abstract void SaveChanges();
 
-		public abstract void RemoveUnusedGeneratedFiles();
+	public abstract string GetProjectRootNamespace();
 
-		public abstract void SaveChanges();
+	public string GetProjectRootPath()
+	{
+		return System.IO.Path.GetDirectoryName(Filename);
+	}
 
-		public abstract string GetProjectRootNamespace();
-
-		public string GetProjectRootPath()
-		{
-			return System.IO.Path.GetDirectoryName(Filename);
-		}
-
-		protected string GetProjectRootNamespaceCore(XNamespace @namespace)
-		{
-			return (string)Content.Root
-				.Elements(@namespace + "PropertyGroup")
-				.Elements(@namespace + "RootNamespace")
-				.FirstOrDefault();
-		}
+	protected string GetProjectRootNamespaceCore(XNamespace @namespace)
+	{
+		return (string)Content.Root
+			.Elements(@namespace + "PropertyGroup")
+			.Elements(@namespace + "RootNamespace")
+			.FirstOrDefault();
 	}
 }

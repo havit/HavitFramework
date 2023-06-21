@@ -1,10 +1,9 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions
+﻿namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+
+/// <summary>
+/// Marker interface pre objekt, ktorý vytvára <see cref="IModelExtension"/> objekty.
+/// </summary>
+public interface IModelExtender
 {
-	/// <summary>
-	/// Marker interface pre objekt, ktorý vytvára <see cref="IModelExtension"/> objekty.
-	/// </summary>
-	public interface IModelExtender
-	{
-		// marker interface
-	}
+	// marker interface
 }

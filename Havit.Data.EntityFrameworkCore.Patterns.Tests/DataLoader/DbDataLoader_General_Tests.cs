@@ -14,26 +14,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
+
+[TestClass]
+public class DbDataLoader_General_Tests : DbDataLoaderTestsBase
 {
-	[TestClass]
-	public class DbDataLoader_General_Tests : DbDataLoaderTestsBase
+	[TestMethod]
+	public void DbDataLoader_Load_SkipsNullEntities()
 	{
-		[TestMethod]
-		public void DbDataLoader_Load_SkipsNullEntities()
-		{
-			// Arrange
-			SeedOneToManyTestData();
+		// Arrange
+		SeedOneToManyTestData();
 
-			DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
-			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext), Mock.Of<ILogger<DbDataLoader>>(MockBehavior.Loose /* umožníme použití bez setupu */));
+		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext), Mock.Of<ILogger<DbDataLoader>>(MockBehavior.Loose /* umožníme použití bez setupu */));
 
-			// Act
-			dataLoader.Load((Child)null, c => c.Parent);
-			dataLoader.LoadAll(new Child[] { null }, c => c.Parent);
+		// Act
+		dataLoader.Load((Child)null, c => c.Parent);
+		dataLoader.LoadAll(new Child[] { null }, c => c.Parent);
 
-			// Assert: No exception was thrown
-		}
+		// Assert: No exception was thrown
 	}
 }

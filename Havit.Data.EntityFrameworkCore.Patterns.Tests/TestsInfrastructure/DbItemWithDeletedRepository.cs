@@ -5,13 +5,12 @@ using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+
+public class DbItemWithDeletedRepository : DbRepository<ItemWithDeleted>
 {
-	public class DbItemWithDeletedRepository : DbRepository<ItemWithDeleted>
+	public DbItemWithDeletedRepository(IDbContext dbContext, IEntityKeyAccessor<ItemWithDeleted, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
 	{
-		public DbItemWithDeletedRepository(IDbContext dbContext, IEntityKeyAccessor<ItemWithDeleted, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-			: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
-		{
-		}
 	}
 }

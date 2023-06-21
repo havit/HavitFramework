@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
-{
-	public class IdWithPoorlyNamedForeignKey
-	{
-		public int Id { get; set; }
+namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 
-		public IdWithPoorlyNamedForeignKey ForeignKey { get; set; }
-		public int ForeignKeyCode { get; set; } // is a foreign key
-	}
+public class IdWithPoorlyNamedForeignKey
+{
+	public int Id { get; set; }
+
+	public IdWithPoorlyNamedForeignKey ForeignKey { get; set; }
+	public int ForeignKeyCode { get; set; } // is a foreign key
 }

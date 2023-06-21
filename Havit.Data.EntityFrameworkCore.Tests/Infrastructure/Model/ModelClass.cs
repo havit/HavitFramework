@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model;
+
+public class ModelClass
 {
-	public class ModelClass
-	{
-		public int Id { get; set; }
+	public int Id { get; set; }
 
-		[MaxLength(100)]
-		public string Name { get; set; }
+	[MaxLength(100)]
+	public string Name { get; set; }
 
-		public OwnedClass OwnedClass { get; set; }
-	}
+	public OwnedClass OwnedClass { get; set; }
 }

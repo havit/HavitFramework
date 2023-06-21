@@ -1,19 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
+
+public class EntryWithPrimaryKeyAndWithSymbol
 {
-	public class EntryWithPrimaryKeyAndWithSymbol
+	[DatabaseGenerated(DatabaseGeneratedOption.None)]
+	public int Id { get; set; }
+
+	[MaxLength(50)]
+	public string Symbol { get; set; }
+
+	public enum Entry
 	{
-		[DatabaseGenerated(DatabaseGeneratedOption.None)]
-		public int Id { get; set; }
-
-		[MaxLength(50)]
-		public string Symbol { get; set; }
-
-		public enum Entry
-		{
-			One, Two, Three
-		}
+		One, Two, Three
 	}
 }

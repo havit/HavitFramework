@@ -1,28 +1,27 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Attributes
+﻿namespace Havit.Data.EntityFrameworkCore.Attributes;
+
+/// <summary>
+/// Priorita položky v cache.
+/// </summary>
+public enum CacheItemPriority
 {
 	/// <summary>
-	/// Priorita položky v cache.
+	/// Low.
 	/// </summary>
-	public enum CacheItemPriority
-	{
-		/// <summary>
-		/// Low.
-		/// </summary>
-		Low,
+	Low,
 
-		/// <summary>
-		/// Normal.
-		/// </summary>
-		Normal,
+	/// <summary>
+	/// Normal.
+	/// </summary>
+	Normal,
 
-		/// <summary>
-		/// High.
-		/// </summary>
-		High,
+	/// <summary>
+	/// High.
+	/// </summary>
+	High,
 
-		/// <summary>
-		/// NotRemovable.
-		/// </summary>
-		NotRemovable
-	}
+	/// <summary>
+	/// NotRemovable.
+	/// </summary>
+	NotRemovable
 }

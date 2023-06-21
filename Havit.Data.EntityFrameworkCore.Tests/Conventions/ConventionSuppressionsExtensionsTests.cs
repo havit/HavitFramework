@@ -9,70 +9,69 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.Conventions
+namespace Havit.Data.EntityFrameworkCore.Tests.Conventions;
+
+[TestClass]
+public class ConventionSuppressionsExtensionsTests
 {
-	[TestClass]
-	public class ConventionSuppressionsExtensionsTests
+	private const string TestCustomConventionIdentifier = nameof(TestCustomConventionIdentifier);
+
+	[TestMethod]
+	public void ConventionSuppressionsExtensionsTest_IsConventionSuppressed_ReturnsTrueForSuppressedConventions()
 	{
-		private const string TestCustomConventionIdentifier = nameof(TestCustomConventionIdentifier);
+		// Arrange
+		DbContext dbContext = new TestDbContext();
 
-		[TestMethod]
-		public void ConventionSuppressionsExtensionsTest_IsConventionSuppressed_ReturnsTrueForSuppressedConventions()
+		// Act in DbContext
+
+		// Assert
+		Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
+		Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
+	}
+
+	[TestMethod]
+	public void ConventionSuppressionsExtensionsTest_IsConventionSuppressed_ReturnsFalseForNotSuppressedConventions()
+	{
+		// Arrange
+		DbContext dbContext = new TestDbContext();
+
+		// Act in DbContext
+
+		// Assert
+		Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
+		Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
+	}
+
+	public class TestDbContext : DbContext
+	{
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			// Arrange
-			DbContext dbContext = new TestDbContext();
-
-			// Act in DbContext
-
-			// Assert
-			Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
-			Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
+			base.OnConfiguring(optionsBuilder);
+			optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
 		}
 
-		[TestMethod]
-		public void ConventionSuppressionsExtensionsTest_IsConventionSuppressed_ReturnsFalseForNotSuppressedConventions()
+		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
 		{
-			// Arrange
-			DbContext dbContext = new TestDbContext();
+			base.CustomizeModelCreating(modelBuilder);
 
-			// Act in DbContext
-
-			// Assert
-			Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
-			Assert.IsFalse(dbContext.Model.FindEntityType(typeof(EntityWithoutSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
+			// Act
+			modelBuilder.Entity<EntityWithoutSuppression>();
+			modelBuilder.Entity<EntityWithSuppression>();
 		}
+	}
 
-		public class TestDbContext : DbContext
-		{
-			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-			{
-				base.OnConfiguring(optionsBuilder);
-				optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
-			}
-
-			protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-			{
-				base.CustomizeModelCreating(modelBuilder);
-
-				// Act
-				modelBuilder.Entity<EntityWithoutSuppression>();
-				modelBuilder.Entity<EntityWithSuppression>();
-			}
-		}
+	[SuppressConvention(TestCustomConventionIdentifier)]
+	public class EntityWithSuppression
+	{
+		public int Id { get; set; }
 
 		[SuppressConvention(TestCustomConventionIdentifier)]
-		public class EntityWithSuppression
-		{
-			public int Id { get; set; }
+		public string Value { get; set; }
+	}
 
-			[SuppressConvention(TestCustomConventionIdentifier)]
-			public string Value { get; set; }
-		}
-
-		public class EntityWithoutSuppression
-		{
-			public int Id { get; set; }
-			public string Value { get; set; }
-		}
+	public class EntityWithoutSuppression
+	{
+		public int Id { get; set; }
+		public string Value { get; set; }
 	}
 }

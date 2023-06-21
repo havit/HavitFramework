@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity
-{
-	public class EmptyDbContext : DbContext
-	{
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
+namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 
-			optionsBuilder.UseSqlServer("fake");
-		}
+public class EmptyDbContext : DbContext
+{
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		base.OnConfiguring(optionsBuilder);
+
+		optionsBuilder.UseSqlServer("fake");
 	}
 }

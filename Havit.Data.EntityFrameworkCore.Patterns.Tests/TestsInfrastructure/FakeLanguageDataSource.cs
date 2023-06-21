@@ -1,11 +1,10 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+
+public class FakeLanguageDataSource : FakeDataSource<Language>
 {
-	public class FakeLanguageDataSource : FakeDataSource<Language>
+	public FakeLanguageDataSource(params Language[] data) : base(data)
 	{
-		public FakeLanguageDataSource(params Language[] data) : base(data)
-		{
-		}
 	}
 }

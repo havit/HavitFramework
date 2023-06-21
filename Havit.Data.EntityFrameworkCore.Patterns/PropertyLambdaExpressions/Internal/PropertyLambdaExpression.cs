@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal
+namespace Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
+
+/// <summary>
+/// Lambda expression jako expression tree a zkompilovaný.
+/// </summary>
+public class PropertyLambdaExpression<TEntity, TProperty>
 {
 	/// <summary>
-	/// Lambda expression jako expression tree a zkompilovaný.
+	/// Lambda expression jako expression tree.
 	/// </summary>
-	public class PropertyLambdaExpression<TEntity, TProperty>
+	public Expression<Func<TEntity, TProperty>> LambdaExpression { get; }
+
+	/// <summary>
+	/// Zkompilovaný lambda expression .
+	/// </summary>
+	public Func<TEntity, TProperty> LambdaCompiled { get; }
+
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public PropertyLambdaExpression(Expression<Func<TEntity, TProperty>> lambdaExpression, Func<TEntity, TProperty> lambdaCompiled)
 	{
-		/// <summary>
-		/// Lambda expression jako expression tree.
-		/// </summary>
-		public Expression<Func<TEntity, TProperty>> LambdaExpression { get; }
-
-		/// <summary>
-		/// Zkompilovaný lambda expression .
-		/// </summary>
-		public Func<TEntity, TProperty> LambdaCompiled { get; }
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public PropertyLambdaExpression(Expression<Func<TEntity, TProperty>> lambdaExpression, Func<TEntity, TProperty> lambdaCompiled)
-		{
-			this.LambdaExpression = lambdaExpression;
-			this.LambdaCompiled = lambdaCompiled;
-		}
+		this.LambdaExpression = lambdaExpression;
+		this.LambdaCompiled = lambdaCompiled;
 	}
 }

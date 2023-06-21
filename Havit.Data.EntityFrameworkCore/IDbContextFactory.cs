@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore
+namespace Havit.Data.EntityFrameworkCore;
+
+/// <summary>
+/// Factory pro vytvoření instance IDbContextu.
+/// </summary>
+public interface IDbContextFactory
 {
 	/// <summary>
-	/// Factory pro vytvoření instance IDbContextu.
+	/// Vytvoří novou instanci IDbContext. Je zodpovědností volajícího, aby provedl úklid instance (dispose)!
 	/// </summary>
-	public interface IDbContextFactory
-	{
-		/// <summary>
-		/// Vytvoří novou instanci IDbContext. Je zodpovědností volajícího, aby provedl úklid instance (dispose)!
-		/// </summary>
-		IDbContext CreateDbContext();
-	}
+	IDbContext CreateDbContext();
 }

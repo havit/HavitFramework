@@ -1,7 +1,6 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
+﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
+
+public class Role
 {
-	public class Role
-	{
-		public int Id { get; set; }
-	}
+	public int Id { get; set; }
 }

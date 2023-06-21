@@ -3,23 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore
+namespace Havit.Data.EntityFrameworkCore;
+
+/// <inheritdoc />
+public class DbContextFactory<TDbContext> : IDbContextFactory
+	where TDbContext : Havit.Data.EntityFrameworkCore.DbContext
 {
-	/// <inheritdoc />
-	public class DbContextFactory<TDbContext> : IDbContextFactory
-		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext
+	private readonly IDbContextFactory<TDbContext> dbContextFactory;
+
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public DbContextFactory(IDbContextFactory<TDbContext> dbContextFactory)
 	{
-		private readonly IDbContextFactory<TDbContext> dbContextFactory;
-
-		/// <summary>
-		/// Konstruktor.
-		/// </summary>
-		public DbContextFactory(IDbContextFactory<TDbContext> dbContextFactory)
-		{
-			this.dbContextFactory = dbContextFactory;
-		}
-
-		/// <inheritdoc />
-		public IDbContext CreateDbContext() => dbContextFactory.CreateDbContext();
+		this.dbContextFactory = dbContextFactory;
 	}
+
+	/// <inheritdoc />
+	public IDbContext CreateDbContext() => dbContextFactory.CreateDbContext();
 }

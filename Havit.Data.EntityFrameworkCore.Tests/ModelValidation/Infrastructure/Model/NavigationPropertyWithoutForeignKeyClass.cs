@@ -1,9 +1,8 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
-{
-	public class NavigationPropertyWithoutForeignKeyClass
-	{
-		public int Id { get; set; }
+﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 
-		public NavigationPropertyWithoutForeignKeyClass NavigationProperty { get; set; }
-	}
+public class NavigationPropertyWithoutForeignKeyClass
+{
+	public int Id { get; set; }
+
+	public NavigationPropertyWithoutForeignKeyClass NavigationProperty { get; set; }
 }

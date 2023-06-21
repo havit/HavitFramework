@@ -1,7 +1,6 @@
-﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+
+public interface ITemplate
 {
-	public interface ITemplate
-	{
-		string TransformText(); // pro zjednodušení použijeme metodu genetovanou T4kou.
-	}
+	string TransformText(); // pro zjednodušení použijeme metodu genetovanou T4kou.
 }

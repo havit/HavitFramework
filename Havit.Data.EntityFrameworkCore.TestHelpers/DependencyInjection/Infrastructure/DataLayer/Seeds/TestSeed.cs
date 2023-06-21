@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer.Seeds
+namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer.Seeds;
+
+public class TestSeed : DataSeed<TestProfile>
 {
-	public class TestSeed : DataSeed<TestProfile>
+	public override void SeedData()
 	{
-		public override void SeedData()
-		{
-			// NOOP
-		}
+		// NOOP
 	}
 }

@@ -1,16 +1,15 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
+
+/// <summary>
+/// Nedělá nic.
+/// </summary>
+public class NullDistributedLookupDataInvalidationService : IDistributedLookupDataInvalidationService
 {
 	/// <summary>
 	/// Nedělá nic.
 	/// </summary>
-	public class NullDistributedLookupDataInvalidationService : IDistributedLookupDataInvalidationService
+	public void Invalidate(string storageKey)
 	{
-		/// <summary>
-		/// Nedělá nic.
-		/// </summary>
-		public void Invalidate(string storageKey)
-		{
-			// NOOP
-		}
+		// NOOP
 	}
 }

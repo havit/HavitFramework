@@ -1,50 +1,49 @@
 ﻿using System.IO;
 
-namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+
+public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 {
-	public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
+	private readonly IProject project;
+
+	protected FileNamingServiceBase(IProject project)
 	{
-		private readonly IProject project;
+		this.project = project;
+	}
 
-		protected FileNamingServiceBase(IProject project)
+	protected virtual bool UseGeneratedFolder
+	{
+		get { return true; }
+	}
+
+	protected abstract string GetClassName(TModel model);
+	protected abstract string GetNamespaceName(TModel model);
+
+	public virtual string GetFilename(TModel model)
+	{
+		string namespaceName = GetNamespaceName(model);
+		bool useGeneratedFolder = this.UseGeneratedFolder;
+		string className = GetClassName(model);
+
+		string projectRootPath = project.GetProjectRootPath();
+		string projectRootNamespace = project.GetProjectRootNamespace();
+
+		string namespaceFolder;
+		if (namespaceName.StartsWith(projectRootNamespace))
 		{
-			this.project = project;
+			namespaceFolder = namespaceName.Substring(projectRootNamespace.Length).Trim('.').Replace('.', Path.DirectorySeparatorChar);
+		}
+		else
+		{
+			namespaceFolder = namespaceName.Replace('.', Path.DirectorySeparatorChar);
 		}
 
-		protected virtual bool UseGeneratedFolder
-		{
-			get { return true; }
-		}
+		string classFilename = className + ".cs";
 
-		protected abstract string GetClassName(TModel model);
-		protected abstract string GetNamespaceName(TModel model);
-
-		public virtual string GetFilename(TModel model)
-		{
-			string namespaceName = GetNamespaceName(model);
-			bool useGeneratedFolder = this.UseGeneratedFolder;
-			string className = GetClassName(model);
-
-			string projectRootPath = project.GetProjectRootPath();
-			string projectRootNamespace = project.GetProjectRootNamespace();
-
-			string namespaceFolder;
-			if (namespaceName.StartsWith(projectRootNamespace))
-			{
-				namespaceFolder = namespaceName.Substring(projectRootNamespace.Length).Trim('.').Replace('.', Path.DirectorySeparatorChar);
-			}
-			else
-			{
-				namespaceFolder = namespaceName.Replace('.', Path.DirectorySeparatorChar);
-			}
-
-			string classFilename = className + ".cs";
-
-			return Path.Combine(
-				projectRootPath,
-				useGeneratedFolder ? "_generated" : "",
-				namespaceFolder,
-				classFilename);
-		}
+		return Path.Combine(
+			projectRootPath,
+			useGeneratedFolder ? "_generated" : "",
+			namespaceFolder,
+			classFilename);
 	}
 }

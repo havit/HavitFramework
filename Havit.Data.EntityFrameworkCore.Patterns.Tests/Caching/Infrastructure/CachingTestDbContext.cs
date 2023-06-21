@@ -5,38 +5,37 @@ using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
 using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+
+public class CachingTestDbContext : DbContext
 {
-	public class CachingTestDbContext : DbContext
+	public CachingTestDbContext()
 	{
-		public CachingTestDbContext()
-		{
-		}
+	}
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseInMemoryDatabase(nameof(CachingTestDbContext));
-		}
+		optionsBuilder.UseInMemoryDatabase(nameof(CachingTestDbContext));
+	}
 
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-		{
-			base.CustomizeModelCreating(modelBuilder);
+	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+	{
+		base.CustomizeModelCreating(modelBuilder);
 
-			// Entity
-			modelBuilder.Entity<LoginAccount>();
-			modelBuilder.Entity<Role>();
+		// Entity
+		modelBuilder.Entity<LoginAccount>();
+		modelBuilder.Entity<Role>();
 
-			// 1:N
-			modelBuilder.Entity<Master>().Ignore(master => master.Children);
-			modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
+		// 1:N
+		modelBuilder.Entity<Master>().Ignore(master => master.Children);
+		modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
 
-			// M:N
-			modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
+		// M:N
+		modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
 
-			// 1:1
-			modelBuilder.Entity<ClassB>().HasOne(classB => classB.ClassA).WithOne(c => c.ClassB);
-		}
+		// 1:1
+		modelBuilder.Entity<ClassB>().HasOne(classB => classB.ClassA).WithOne(c => c.ClassB);
 	}
 }

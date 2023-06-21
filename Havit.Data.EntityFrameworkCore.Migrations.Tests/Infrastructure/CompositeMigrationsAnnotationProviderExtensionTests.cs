@@ -6,47 +6,46 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure
+namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure;
+
+/// <summary>
+/// Tests involving <see cref="CompositeMigrationsAnnotationProviderExtension"/>, e.g. registration of required services, resolving etc.
+/// </summary>
+[TestClass]
+public class CompositeMigrationsAnnotationProviderExtensionTests
 {
 	/// <summary>
-	/// Tests involving <see cref="CompositeMigrationsAnnotationProviderExtension"/>, e.g. registration of required services, resolving etc.
+	/// Tests whether registering same <see cref="IMigrationsAnnotationProvider"/> into <see cref="CompositeMigrationsAnnotationProvider"/>
+	/// does not produce duplicate types.
 	/// </summary>
-	[TestClass]
-	public class CompositeMigrationsAnnotationProviderExtensionTests
+	[TestMethod]
+	public void CompositeMigrationsAnnotationProvider_RegisterSameProviderTwice_ProviderIsRegisteredOnlyOnce()
 	{
-		/// <summary>
-		/// Tests whether registering same <see cref="IMigrationsAnnotationProvider"/> into <see cref="CompositeMigrationsAnnotationProvider"/>
-		/// does not produce duplicate types.
-		/// </summary>
-		[TestMethod]
-		public void CompositeMigrationsAnnotationProvider_RegisterSameProviderTwice_ProviderIsRegisteredOnlyOnce()
+		static void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			static void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-			{
-				optionsBuilder.UseExtendedMigrationsInfrastructure();
+			optionsBuilder.UseExtendedMigrationsInfrastructure();
 
-				IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
+			IDbContextOptionsBuilderInfrastructure builder = optionsBuilder;
 
-				builder.AddOrUpdateExtension(optionsBuilder.Options
-					.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
-					.WithAnnotationProvider<FakeMigrationsAnnotationProvider>()
-					.WithAnnotationProvider<FakeMigrationsAnnotationProvider>());
-			}
-
-			using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
-			{
-				_ = dbContext.Model;
-
-				Assert.AreEqual(1, dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.Count(type => type == typeof(FakeMigrationsAnnotationProvider)));
-			}
+			builder.AddOrUpdateExtension(optionsBuilder.Options
+				.FindExtension<CompositeMigrationsAnnotationProviderExtension>()
+				.WithAnnotationProvider<FakeMigrationsAnnotationProvider>()
+				.WithAnnotationProvider<FakeMigrationsAnnotationProvider>());
 		}
 
-		private class FakeMigrationsAnnotationProvider : MigrationsAnnotationProvider
+		using (var dbContext = new ExtendedMigrationsTestDbContext(OnConfiguring))
 		{
-			public FakeMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies)
-				: base(dependencies)
-			{
-			}
+			_ = dbContext.Model;
+
+			Assert.AreEqual(1, dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.Count(type => type == typeof(FakeMigrationsAnnotationProvider)));
+		}
+	}
+
+	private class FakeMigrationsAnnotationProvider : MigrationsAnnotationProvider
+	{
+		public FakeMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies)
+			: base(dependencies)
+		{
 		}
 	}
 }

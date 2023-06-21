@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
+
+public class ExternalIdWithNoForeignKey
 {
-	public class ExternalIdWithNoForeignKey
-	{
-		public int Id { get; set; }
-		public int SomethinhWithExternalId { get; set; } // is not a foreign key and it is correct
-	}
+	public int Id { get; set; }
+	public int SomethinhWithExternalId { get; set; } // is not a foreign key and it is correct
 }

@@ -1,39 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+
+public class DataLoaderTestDbContext : Havit.Data.EntityFrameworkCore.DbContext
 {
-	public class DataLoaderTestDbContext : Havit.Data.EntityFrameworkCore.DbContext
+	public DbSet<Master> Master { get; set; }
+	public DbSet<Child> Child { get; set; }
+
+	public DbSet<LoginAccount> LoginAccount { get; set; }
+	public DbSet<Role> Role { get; set; }
+	public DbSet<Membership> Membership { get; set; }
+
+	public DbSet<HiearchyItem> HiearchyItem { get; set; }
+
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		public DbSet<Master> Master { get; set; }
-		public DbSet<Child> Child { get; set; }
+		base.OnConfiguring(optionsBuilder);
 
-		public DbSet<LoginAccount> LoginAccount { get; set; }
-		public DbSet<Role> Role { get; set; }
-		public DbSet<Membership> Membership { get; set; }
+		optionsBuilder.UseInMemoryDatabase(nameof(DataLoaderTestDbContext));
+	}
 
-		public DbSet<HiearchyItem> HiearchyItem { get; set; }
+	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+	{
+		base.CustomizeModelCreating(modelBuilder);
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
+		// 1:N
+		modelBuilder.Entity<Master>().Ignore(master => master.Children);
+		modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
 
-			optionsBuilder.UseInMemoryDatabase(nameof(DataLoaderTestDbContext));
-		}
+		// M:N
+		modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
 
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-		{
-			base.CustomizeModelCreating(modelBuilder);
-
-			// 1:N
-			modelBuilder.Entity<Master>().Ignore(master => master.Children);
-			modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
-
-			// M:N
-			modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
-
-			// Hierarchy
-			modelBuilder.Entity<HiearchyItem>().HasMany(parent => parent.Children).WithOne(child => child.Parent);
-		}
+		// Hierarchy
+		modelBuilder.Entity<HiearchyItem>().HasMany(parent => parent.Children).WithOne(child => child.Parent);
 	}
 }

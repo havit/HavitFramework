@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching
+namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching;
+
+/// <summary>
+/// Installer cachovací strategie.
+/// </summary>
+public interface ICachingInstaller
 {
 	/// <summary>
-	/// Installer cachovací strategie.
+	/// Zaregistruje služby.
 	/// </summary>
-	public interface ICachingInstaller
-	{
-		/// <summary>
-		/// Zaregistruje služby.
-		/// </summary>
-		public void Install(IServiceCollection serviceCollection);
-	}
+	public void Install(IServiceCollection serviceCollection);
 }

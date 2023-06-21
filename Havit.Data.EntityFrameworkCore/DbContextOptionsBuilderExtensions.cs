@@ -6,39 +6,38 @@ using Havit.Data.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Havit.Data.EntityFrameworkCore
+namespace Havit.Data.EntityFrameworkCore;
+
+/// <summary>
+/// Extension metody k DbContextOptionsBuilder.
+/// </summary>
+public static class DbContextOptionsBuilderExtensions
 {
 	/// <summary>
-	/// Extension metody k DbContextOptionsBuilder.
+	/// Zajistí použití frameworkových konvencí.
 	/// </summary>
-	public static class DbContextOptionsBuilderExtensions
+	public static DbContextOptionsBuilder UseFrameworkConventions(this DbContextOptionsBuilder optionsBuilder, Action<FrameworkConventionSetOptionsBuilder> frameworkConventionSetOptionsBuilder = null)
 	{
-		/// <summary>
-		/// Zajistí použití frameworkových konvencí.
-		/// </summary>
-		public static DbContextOptionsBuilder UseFrameworkConventions(this DbContextOptionsBuilder optionsBuilder, Action<FrameworkConventionSetOptionsBuilder> frameworkConventionSetOptionsBuilder = null)
+		if (optionsBuilder.Options.FindExtension<FrameworkConventionSetOptionsExtension>() == null)
 		{
-			if (optionsBuilder.Options.FindExtension<FrameworkConventionSetOptionsExtension>() == null)
-			{
-				((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FrameworkConventionSetOptionsExtension());
-			}
-
-			frameworkConventionSetOptionsBuilder?.Invoke(new FrameworkConventionSetOptionsBuilder(optionsBuilder));
-
-			return optionsBuilder;
+			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FrameworkConventionSetOptionsExtension());
 		}
 
-		/// <summary>
-		/// Zajistí použití migrátoru chráněného databázovým zámkem před paralelním spuštěním.
-		/// </summary>
-		public static DbContextOptionsBuilder UseDbLockedMigrator(this DbContextOptionsBuilder optionsBuilder)
+		frameworkConventionSetOptionsBuilder?.Invoke(new FrameworkConventionSetOptionsBuilder(optionsBuilder));
+
+		return optionsBuilder;
+	}
+
+	/// <summary>
+	/// Zajistí použití migrátoru chráněného databázovým zámkem před paralelním spuštěním.
+	/// </summary>
+	public static DbContextOptionsBuilder UseDbLockedMigrator(this DbContextOptionsBuilder optionsBuilder)
+	{
+		if (optionsBuilder.Options.FindExtension<DbLockedMigratorInstallerExtension>() == null)
 		{
-			if (optionsBuilder.Options.FindExtension<DbLockedMigratorInstallerExtension>() == null)
-			{
-				((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new DbLockedMigratorInstallerExtension());
-			}
-			return optionsBuilder;
+			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new DbLockedMigratorInstallerExtension());
 		}
+		return optionsBuilder;
 	}
 }
 

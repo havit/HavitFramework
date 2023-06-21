@@ -11,14 +11,13 @@ using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 
-namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer
-{
-	public class LanguageRepository : DbRepository<Language>, ILanguageRepository
-	{
-		public LanguageRepository(IDbContext dbContext, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-			: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
-		{
+namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
 
-		}
+public class LanguageRepository : DbRepository<Language>, ILanguageRepository
+{
+	public LanguageRepository(IDbContext dbContext, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	{
+
 	}
 }

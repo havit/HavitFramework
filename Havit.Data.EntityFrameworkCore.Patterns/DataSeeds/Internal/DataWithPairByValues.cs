@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
+
+internal class DataWithPairByValues<TEntity>
+	where TEntity : class
 {
-	internal class DataWithPairByValues<TEntity>
-		where TEntity : class
-	{
-		public TEntity OriginalItem { get; set; }
-		public PairByValues PairByValues { get; set; }
-	}
+	public TEntity OriginalItem { get; set; }
+	public PairByValues PairByValues { get; set; }
 }

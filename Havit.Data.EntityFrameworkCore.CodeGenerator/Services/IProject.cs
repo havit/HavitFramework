@@ -1,19 +1,18 @@
-﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+
+public interface IProject
 {
-	public interface IProject
-	{
-		string Filename { get; }
+	string Filename { get; }
 
-		void AddOrUpdate(string filename);
+	void AddOrUpdate(string filename);
 
-		void RemoveUnusedGeneratedFiles();
+	void RemoveUnusedGeneratedFiles();
 
-		string[] GetUnusedGeneratedFiles();
+	string[] GetUnusedGeneratedFiles();
 
-		void SaveChanges();
+	void SaveChanges();
 
-		string GetProjectRootNamespace();
+	string GetProjectRootNamespace();
 
-		string GetProjectRootPath();
-	}
+	string GetProjectRootPath();
 }

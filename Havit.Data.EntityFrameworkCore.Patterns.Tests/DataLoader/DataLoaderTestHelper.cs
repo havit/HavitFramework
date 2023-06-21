@@ -14,24 +14,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
+
+public static class DataLoaderTestHelper
 {
-	public static class DataLoaderTestHelper
+	public static DbDataLoader CreateDataLoader(IDbContext dbContext = null, IEntityCacheManager entityCacheManager = null)
 	{
-		public static DbDataLoader CreateDataLoader(IDbContext dbContext = null, IEntityCacheManager entityCacheManager = null)
+		if (dbContext == null)
 		{
-			if (dbContext == null)
-			{
-				dbContext = new DataLoaderTestDbContext();
-			}
-
-			if (entityCacheManager == null)
-			{
-				entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext);
-			}
-
-			Mock<ILogger<DbDataLoader>> loggerMock = new Mock<ILogger<DbDataLoader>>(MockBehavior.Loose); // dovolíme použití loggeru bez setupu
-			return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext), loggerMock.Object);
+			dbContext = new DataLoaderTestDbContext();
 		}
+
+		if (entityCacheManager == null)
+		{
+			entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext);
+		}
+
+		Mock<ILogger<DbDataLoader>> loggerMock = new Mock<ILogger<DbDataLoader>>(MockBehavior.Loose); // dovolíme použití loggeru bez setupu
+		return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext), loggerMock.Object);
 	}
 }

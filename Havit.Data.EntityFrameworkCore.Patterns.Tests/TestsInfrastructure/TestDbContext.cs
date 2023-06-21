@@ -1,39 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+
+public class TestDbContext : DbContext
 {
-	public class TestDbContext : DbContext
+	private bool useInMemoryDatabase = false;
+
+	public TestDbContext()
 	{
-		private bool useInMemoryDatabase = false;
+		useInMemoryDatabase = true;
+	}
 
-		public TestDbContext()
+	public TestDbContext(DbContextOptions options) : base(options)
+	{
+		useInMemoryDatabase = false;
+	}
+
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		base.OnConfiguring(optionsBuilder);
+
+		if (useInMemoryDatabase)
 		{
-			useInMemoryDatabase = true;
+			optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
 		}
+	}
 
-		public TestDbContext(DbContextOptions options) : base(options)
-		{
-			useInMemoryDatabase = false;
-		}
+	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
+	{
+		base.CustomizeModelCreating(modelBuilder);
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
-
-			if (useInMemoryDatabase)
-			{
-				optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
-			}
-		}
-
-		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)
-		{
-			base.CustomizeModelCreating(modelBuilder);
-
-			modelBuilder.Entity(typeof(ItemWithDeleted));
-			modelBuilder.Entity(typeof(ItemWithNullableProperty));
-			modelBuilder.Entity(typeof(Language));
-			modelBuilder.Entity(typeof(ManyToMany)).HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
-		}
+		modelBuilder.Entity(typeof(ItemWithDeleted));
+		modelBuilder.Entity(typeof(ItemWithNullableProperty));
+		modelBuilder.Entity(typeof(Language));
+		modelBuilder.Entity(typeof(ManyToMany)).HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
 	}
 }

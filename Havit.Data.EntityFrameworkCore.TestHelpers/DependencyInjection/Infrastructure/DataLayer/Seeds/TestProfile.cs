@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer.Seeds
+namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer.Seeds;
+
+public class TestProfile : DataSeedProfile
 {
-	public class TestProfile : DataSeedProfile
-	{
-	}
 }

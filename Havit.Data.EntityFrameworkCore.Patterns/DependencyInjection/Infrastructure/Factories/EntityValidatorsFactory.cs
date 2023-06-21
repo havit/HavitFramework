@@ -4,21 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories
+namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
+
+internal class EntityValidatorsFactory : IEntityValidatorsFactory
 {
-	internal class EntityValidatorsFactory : IEntityValidatorsFactory
+	private readonly IServiceProvider serviceProvider;
+
+	public EntityValidatorsFactory(IServiceProvider serviceProvider)
 	{
-		private readonly IServiceProvider serviceProvider;
+		this.serviceProvider = serviceProvider;
+	}
 
-		public EntityValidatorsFactory(IServiceProvider serviceProvider)
-		{
-			this.serviceProvider = serviceProvider;
-		}
-
-		public IEnumerable<IEntityValidator<TEntity>> Create<TEntity>()
-			where TEntity : class
-		{
-			return serviceProvider.GetRequiredService<IEnumerable<IEntityValidator<TEntity>>>();
-		}
+	public IEnumerable<IEntityValidator<TEntity>> Create<TEntity>()
+		where TEntity : class
+	{
+		return serviceProvider.GetRequiredService<IEnumerable<IEntityValidator<TEntity>>>();
 	}
 }

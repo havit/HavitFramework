@@ -4,22 +4,21 @@ using System.Collections.Immutable;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 
-namespace Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes
+namespace Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes;
+
+public class FakeModelExtensionsAssembly : IModelExtensionsAssembly
 {
-	public class FakeModelExtensionsAssembly : IModelExtensionsAssembly
+	public IReadOnlyCollection<TypeInfo> ModelExtenders { get; }
+
+	public Assembly Assembly => typeof(FakeModelExtensionsAssembly).Assembly;
+
+	public FakeModelExtensionsAssembly(IEnumerable<TypeInfo> modelExtenders)
 	{
-		public IReadOnlyCollection<TypeInfo> ModelExtenders { get; }
+		ModelExtenders = modelExtenders.ToImmutableArray();
+	}
 
-		public Assembly Assembly => typeof(FakeModelExtensionsAssembly).Assembly;
-
-		public FakeModelExtensionsAssembly(IEnumerable<TypeInfo> modelExtenders)
-		{
-			ModelExtenders = modelExtenders.ToImmutableArray();
-		}
-
-		public IModelExtender CreateModelExtender(TypeInfo modelExtenderClass)
-		{
-			return (IModelExtender)Activator.CreateInstance(modelExtenderClass);
-		}
+	public IModelExtender CreateModelExtender(TypeInfo modelExtenderClass)
+	{
+		return (IModelExtender)Activator.CreateInstance(modelExtenderClass);
 	}
 }

@@ -1,12 +1,11 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
-{
-	public class WithNestedEnumOtherClass
-	{
-		public int Id { get; set; }
+﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 
-		public enum Other
-		{
-			One, Two, Three
-		}
+public class WithNestedEnumOtherClass
+{
+	public int Id { get; set; }
+
+	public enum Other
+	{
+		One, Two, Three
 	}
 }

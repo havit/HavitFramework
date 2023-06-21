@@ -9,197 +9,196 @@ using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources;
+
+[TestClass]
+public class DbDataSourceTest
 {
-	[TestClass]
-	public class DbDataSourceTest
+	[TestMethod]
+	public void DbDataSource_DataWithDeleted_IncludesDeleted()
 	{
-		[TestMethod]
-		public void DbDataSource_DataWithDeleted_IncludesDeleted()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();
 
-			// Assert
-			Assert.AreEqual(2, result.Count);
-		}
+		// Assert
+		Assert.AreEqual(2, result.Count);
+	}
 
-		[TestMethod]
-		public void DbDataSource_Data_ExcludesDeleted()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public void DbDataSource_Data_ExcludesDeleted()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			List<ItemWithDeleted> result = dataSource.Data.ToList();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		List<ItemWithDeleted> result = dataSource.Data.ToList();
 
-			// Assert
-			Assert.AreEqual(1, result.Count);
-		}
+		// Assert
+		Assert.AreEqual(1, result.Count);
+	}
 
-		[TestMethod]
-		public async Task DbDataSource_DataList_ExcludesDeleted()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public async Task DbDataSource_DataList_ExcludesDeleted()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			List<ItemWithDeleted> result = await dataSource.Data.ToListAsync();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		List<ItemWithDeleted> result = await dataSource.Data.ToListAsync();
 
-			// Assert
-			Assert.AreEqual(1, result.Count);
-		}
+		// Assert
+		Assert.AreEqual(1, result.Count);
+	}
 
-		[TestMethod]
-		public void DbDataSource_DataCount_ExcludesDeleted()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public void DbDataSource_DataCount_ExcludesDeleted()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			int result = dataSource.Data.Count();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		int result = dataSource.Data.Count();
 
-			// Assert
-			Assert.AreEqual(1, result);
-		}
+		// Assert
+		Assert.AreEqual(1, result);
+	}
 
-		[TestMethod]
-		public async Task DbDataSource_DataCountAsync_ExcludesDeleted()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public async Task DbDataSource_DataCountAsync_ExcludesDeleted()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			int result = await dataSource.Data.CountAsync();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		int result = await dataSource.Data.CountAsync();
 
-			// Assert
-			Assert.AreEqual(1, result);
-		}
+		// Assert
+		Assert.AreEqual(1, result);
+	}
 
-		[TestMethod]
-		public void DbDataSource_IsReusable()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public void DbDataSource_IsReusable()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			int count1 = dataSource.Data.Count();
-			int count2 = dataSource.Data.Count();
-			int count3 = dataSource.Data.Count();
-			int count4 = dataSource.DataIncludingDeleted.Count();
-			int count5 = dataSource.DataIncludingDeleted.Count();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		int count1 = dataSource.Data.Count();
+		int count2 = dataSource.Data.Count();
+		int count3 = dataSource.Data.Count();
+		int count4 = dataSource.DataIncludingDeleted.Count();
+		int count5 = dataSource.DataIncludingDeleted.Count();
 
-			// Assert
-			Assert.AreEqual(1, count1);
-			Assert.AreEqual(1, count2);
-			Assert.AreEqual(1, count3);
-			Assert.AreEqual(2, count4);
-			Assert.AreEqual(2, count5);
-		}
+		// Assert
+		Assert.AreEqual(1, count1);
+		Assert.AreEqual(1, count2);
+		Assert.AreEqual(1, count3);
+		Assert.AreEqual(2, count4);
+		Assert.AreEqual(2, count5);
+	}
 
-		[TestMethod]
-		public void DbDataSource_DeletedObjectAreNotLoaded()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public void DbDataSource_DeletedObjectAreNotLoaded()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
-			ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
+		ItemWithDeleted deletedItem = new ItemWithDeleted { Deleted = DateTime.Now };
+		ItemWithDeleted notDeletedItem = new ItemWithDeleted { Deleted = null };
 
-			dbContext.Set<ItemWithDeleted>().Add(deletedItem);
-			dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(deletedItem);
+		dbContext.Set<ItemWithDeleted>().Add(notDeletedItem);
 
-			dbContext.SaveChanges();
+		dbContext.SaveChanges();
 
-			// Act
-			dbContext = new TestDbContext(); // nový context pro novou identity map (a dbSets.Local).
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			int count = dataSource.Data.Count();
-			List<ItemWithDeleted> items = dataSource.Data.ToList();
+		// Act
+		dbContext = new TestDbContext(); // nový context pro novou identity map (a dbSets.Local).
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		int count = dataSource.Data.Count();
+		List<ItemWithDeleted> items = dataSource.Data.ToList();
 
-			// Assert
-			Assert.AreEqual(1, count);
-			Assert.AreEqual(1, items.Count);
-			Assert.AreEqual(1, dbContext.Set<ItemWithDeleted>().Local.Count);
-		}
+		// Assert
+		Assert.AreEqual(1, count);
+		Assert.AreEqual(1, items.Count);
+		Assert.AreEqual(1, dbContext.Set<ItemWithDeleted>().Local.Count);
+	}
 
-		[TestMethod]
-		public async Task DbDataSource_SupportsToListAsync()
-		{
-			// Arrange
-			TestDbContext dbContext = new TestDbContext();
-			dbContext.Database.DropCreate();
+	[TestMethod]
+	public async Task DbDataSource_SupportsToListAsync()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		dbContext.Database.DropCreate();
 
-			// Act
-			DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-			await dataSource.Data.ToListAsync();
+		// Act
+		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
+		await dataSource.Data.ToListAsync();
 
-			// Assert
-			// not throwing exception is enough
-		}
+		// Assert
+		// not throwing exception is enough
 	}
 }

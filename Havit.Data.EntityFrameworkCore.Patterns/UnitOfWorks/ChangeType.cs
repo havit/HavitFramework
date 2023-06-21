@@ -1,23 +1,22 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+
+/// <summary>
+/// Typ změny.
+/// </summary>
+public enum ChangeType
 {
 	/// <summary>
-	/// Typ změny.
+	/// Insert
 	/// </summary>
-	public enum ChangeType
-	{
-		/// <summary>
-		/// Insert
-		/// </summary>
-		Insert,
+	Insert,
 
-		/// <summary>
-		/// Update
-		/// </summary>
-		Update,
+	/// <summary>
+	/// Update
+	/// </summary>
+	Update,
 
-		/// <summary>
-		/// Delete
-		/// </summary>
-		Delete
-	}
+	/// <summary>
+	/// Delete
+	/// </summary>
+	Delete
 }

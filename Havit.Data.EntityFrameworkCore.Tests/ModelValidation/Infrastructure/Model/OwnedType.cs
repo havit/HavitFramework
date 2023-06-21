@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
+namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
+
+[Owned]
+public class OwnedType
 {
-	[Owned]
-	public class OwnedType
-	{
-		public string Name { get; set; }
-	}
+	public string Name { get; set; }
 }

@@ -1,9 +1,8 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model
-{
-	public class NavigationPropertyByOwnedType
-	{
-		public int Id { get; set; }
+﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 
-		public OwnedType Owned { get; set; }
-	}
+public class NavigationPropertyByOwnedType
+{
+	public int Id { get; set; }
+
+	public OwnedType Owned { get; set; }
 }

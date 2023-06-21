@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure
+namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+
+public class TestDbContextFactory : IDbContextFactory
 {
-	public class TestDbContextFactory : IDbContextFactory
+	public IDbContext CreateDbContext()
 	{
-		public IDbContext CreateDbContext()
-		{
-			return new TestDbContext();
-		}
+		return new TestDbContext();
 	}
 }

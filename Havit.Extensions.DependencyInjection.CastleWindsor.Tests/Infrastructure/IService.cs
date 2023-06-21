@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Extensions.DependencyInjection.CastleWindsor.Tests.Infrastructure
+namespace Havit.Extensions.DependencyInjection.CastleWindsor.Tests.Infrastructure;
+
+public interface IService
 {
-	public interface IService
-	{
-	}
 }

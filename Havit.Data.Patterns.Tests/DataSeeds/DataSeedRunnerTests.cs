@@ -8,125 +8,124 @@ using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Havit.Data.Patterns.Tests.DataSeeds
+namespace Havit.Data.Patterns.Tests.DataSeeds;
+
+[TestClass]
+public class DataSeedRunnerTests
 {
-	[TestClass]
-	public class DataSeedRunnerTests
+	[TestMethod]
+	public void DataSeedPersister_SeedData_CallsSeedDataOnAllDataSeeds()
 	{
-		[TestMethod]
-		public void DataSeedPersister_SeedData_CallsSeedDataOnAllDataSeeds()
-		{
-			// Arrange
-		    Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>(MockBehavior.Strict);
-		    dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
-		    dataSeedMock.Setup(m => m.GetPrerequisiteDataSeeds()).Returns(Enumerable.Empty<Type>());
-		    dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
+		// Arrange
+	    Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>(MockBehavior.Strict);
+	    dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
+	    dataSeedMock.Setup(m => m.GetPrerequisiteDataSeeds()).Returns(Enumerable.Empty<Type>());
+	    dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
 
-			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
-			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
-			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
-			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
+		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
+		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
-			
-			// Act
-			runner.SeedData<DefaultProfile>();
-
-			// Assert
-			dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
-		}
+		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 		
-	    [TestMethod]
-	    public void DataSeedPersister_SeedData_CallsSeedDataOnPrerequisiteProfile()
-	    {
-			// Arrange
-	        Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>(MockBehavior.Strict);
-	        dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
-			dataSeedMock.Setup(m => m.GetPrerequisiteDataSeeds()).Returns(Enumerable.Empty<Type>());
-			dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
+		// Act
+		runner.SeedData<DefaultProfile>();
 
-			Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		// Assert
+		dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
+	}
+	
+    [TestMethod]
+    public void DataSeedPersister_SeedData_CallsSeedDataOnPrerequisiteProfile()
+    {
+		// Arrange
+        Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>(MockBehavior.Strict);
+        dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
+		dataSeedMock.Setup(m => m.GetPrerequisiteDataSeeds()).Returns(Enumerable.Empty<Type>());
+		dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
 
-			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
-			dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
-			dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
+		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
 
-	        DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
+		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-	        // Act
-	        runner.SeedData<ProfileWithPrerequisite>();
+        DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-	        // Assert
-	        dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
-	    }
-		
+        // Act
+        runner.SeedData<ProfileWithPrerequisite>();
+
+        // Assert
+        dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
+    }
+	
         [TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void DataSeedPersister_SeedData_ThrowsExceptionWhenCycleInPrerequisities()
-		{
-			// Arrange
-			DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
-			DataSeedCycleB dataSeedCycleB = new DataSeedCycleB();
+	[ExpectedException(typeof(InvalidOperationException))]
+	public void DataSeedPersister_SeedData_ThrowsExceptionWhenCycleInPrerequisities()
+	{
+		// Arrange
+		DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
+		DataSeedCycleB dataSeedCycleB = new DataSeedCycleB();
 
-			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-			// Act
-			runner.SeedData<DefaultProfile>();
+		// Act
+		runner.SeedData<DefaultProfile>();
 
-			// Assert by method attribute
-		}
-		
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void DataSeedPersister_SeedData_ThrowsExceptionWhenPrerequisiteIsItself()
-		{
-			// Arrange
-			DataSeedDependentOnItself dataSeedDependentOnItself = new DataSeedDependentOnItself();
+		// Assert by method attribute
+	}
+	
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException))]
+	public void DataSeedPersister_SeedData_ThrowsExceptionWhenPrerequisiteIsItself()
+	{
+		// Arrange
+		DataSeedDependentOnItself dataSeedDependentOnItself = new DataSeedDependentOnItself();
 
-			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-			// Act
-			runner.SeedData<DefaultProfile>();
+		// Act
+		runner.SeedData<DefaultProfile>();
 
-			// Assert by method attribute
-		}
-		
-		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
-		public void DataSeedPersister_SeedData_ThrowsExceptionWhenOneTypeUsedMoreTimes()
-		{
-			// Arrange
-			Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
+		// Assert by method attribute
+	}
+	
+	[TestMethod]
+	[ExpectedException(typeof(ArgumentException))]
+	public void DataSeedPersister_SeedData_ThrowsExceptionWhenOneTypeUsedMoreTimes()
+	{
+		// Arrange
+		Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
 
-			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-			// Act
-			runner.SeedData<DefaultProfile>();
+		// Act
+		runner.SeedData<DefaultProfile>();
 
-			// Assert by method attribute
-		}
+		// Assert by method attribute
+	}
 
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void DataSeedPersister_SeedData_ThrowsExceptionWhenPrerequisiteNotFound()
-		{
-			// Arrange
-			DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException))]
+	public void DataSeedPersister_SeedData_ThrowsExceptionWhenPrerequisiteNotFound()
+	{
+		// Arrange
+		DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
 
-			Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
-			DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-			// Act
-			runner.SeedData<DefaultProfile>();
+		// Act
+		runner.SeedData<DefaultProfile>();
 
-			// Assert by method attribute
-		}
+		// Assert by method attribute
 	}
 }

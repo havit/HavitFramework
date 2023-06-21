@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Extensions.DependencyInjection.Tests.Infrastructure
+namespace Havit.Extensions.DependencyInjection.Tests.Infrastructure;
+
+/// <summary>
+/// Implementuje jeden interface - IService.
+/// </summary>
+[Service(Profile = nameof(MyService))]
+public class MyService : IService
 {
-	/// <summary>
-	/// Implementuje jeden interface - IService.
-	/// </summary>
-	[Service(Profile = nameof(MyService))]
-	public class MyService : IService
-	{
-	}
 }

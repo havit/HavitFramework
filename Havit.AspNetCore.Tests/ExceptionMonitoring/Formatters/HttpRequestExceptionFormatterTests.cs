@@ -7,26 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Formatters
-{
-	[TestClass]
-	public class HttpRequestExceptionFormatterTests
-	{
-		[TestMethod]
-		public void HttpRequestExceptionFormatter_CanBeUsedWithoutHttpContextAccessorDependency()
-		{
-			// Arrange
-			ServiceCollection services = new ServiceCollection();
-			services.AddTransient<IExceptionFormatter, HttpRequestExceptionFormatter>();
-			using (ServiceProvider serviceProvider = services.BuildServiceProvider())
-			{
-				// Act
-				var service = serviceProvider.GetRequiredService<IExceptionFormatter>();
-				service.FormatException(new ApplicationException());
+namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Formatters;
 
-				// Assert
-				// no exception was thrown
-			}
+[TestClass]
+public class HttpRequestExceptionFormatterTests
+{
+	[TestMethod]
+	public void HttpRequestExceptionFormatter_CanBeUsedWithoutHttpContextAccessorDependency()
+	{
+		// Arrange
+		ServiceCollection services = new ServiceCollection();
+		services.AddTransient<IExceptionFormatter, HttpRequestExceptionFormatter>();
+		using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+		{
+			// Act
+			var service = serviceProvider.GetRequiredService<IExceptionFormatter>();
+			service.FormatException(new ApplicationException());
+
+			// Assert
+			// no exception was thrown
 		}
 	}
 }

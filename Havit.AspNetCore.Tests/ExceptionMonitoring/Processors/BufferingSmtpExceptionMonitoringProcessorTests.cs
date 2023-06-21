@@ -11,8 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Processors
-{
+namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Processors;
+
     [TestClass]
     public class BufferingSmtpExceptionMonitoringProcessorTests
     {
@@ -119,4 +119,3 @@ namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Processors
         }
 
     }
-}

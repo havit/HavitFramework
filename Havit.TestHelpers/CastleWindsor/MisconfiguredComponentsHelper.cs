@@ -10,6 +10,7 @@ using System.Text;
 
 namespace Havit.TestHelpers.CastleWindsor;
 
+
 public static class MisconfiguredComponentsHelper
 {
 	public static void AssertMisconfiguredComponents(IWindsorContainer container)

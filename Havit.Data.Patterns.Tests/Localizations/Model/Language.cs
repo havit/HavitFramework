@@ -5,39 +5,38 @@ using System.Text;
 using System.Threading.Tasks;
 using Havit.Model.Localizations;
 
-namespace Havit.Data.Patterns.Tests.Localizations.Model
+namespace Havit.Data.Patterns.Tests.Localizations.Model;
+
+public class Language : ILanguage
 {
-	public class Language : ILanguage
+	public int Id { get; set; }
+
+	public string Culture { get; set; }
+
+	public string UiCulture { get; set; }
+
+	public override bool Equals(object obj)
 	{
-		public int Id { get; set; }
+		return this.Equals(obj as Language);
+	}
 
-		public string Culture { get; set; }
+	protected bool Equals(Language other)
+	{
+		return Id == other?.Id;
+	}
 
-		public string UiCulture { get; set; }
+	public override int GetHashCode()
+	{
+		return Id;
+	}
 
-		public override bool Equals(object obj)
-		{
-			return this.Equals(obj as Language);
-		}
+	public static bool operator ==(Language left, Language right)
+	{
+		return Equals(left, right);
+	}
 
-		protected bool Equals(Language other)
-		{
-			return Id == other?.Id;
-		}
-
-		public override int GetHashCode()
-		{
-			return Id;
-		}
-
-		public static bool operator ==(Language left, Language right)
-		{
-			return Equals(left, right);
-		}
-
-		public static bool operator !=(Language left, Language right)
-		{
-			return !Equals(left, right);
-		}
+	public static bool operator !=(Language left, Language right)
+	{
+		return !Equals(left, right);
 	}
 }

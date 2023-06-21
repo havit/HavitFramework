@@ -11,8 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.AspNetCore.Tests.ExceptionMonitoring.ExceptionMonitoringApplicationBuilderExtensions
-{
+namespace Havit.AspNetCore.Tests.ExceptionMonitoring.ExceptionMonitoringApplicationBuilderExtensions;
+
     [TestClass]
     public class ExceptionMonitoringServiceCollectionExtensionsTests
     {
@@ -35,4 +35,3 @@ namespace Havit.AspNetCore.Tests.ExceptionMonitoring.ExceptionMonitoringApplicat
             Assert.IsInstanceOfType(serviceProvider.GetService<IExceptionMonitoringProcessor>(), typeof(BufferingSmtpExceptionMonitoringProcessor));
         }
     }
-}

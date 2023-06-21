@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Extensions.DependencyInjection.Tests.Infrastructure
+namespace Havit.Extensions.DependencyInjection.Tests.Infrastructure;
+
+public interface IGenericService<T1, T2>
 {
-	public interface IGenericService<T1, T2>
-	{
-	}
 }

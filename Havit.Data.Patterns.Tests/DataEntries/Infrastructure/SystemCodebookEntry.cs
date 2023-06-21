@@ -1,15 +1,14 @@
-﻿namespace Havit.Data.Patterns.Tests.DataEntries.Infrastructure
+﻿namespace Havit.Data.Patterns.Tests.DataEntries.Infrastructure;
+
+public class SystemCodebookEntry
 {
-	public class SystemCodebookEntry
+	public int Id { get; set; }
+
+	public string Nazev { get; set; }
+
+	public enum Entry
 	{
-		public int Id { get; set; }
-
-		public string Nazev { get; set; }
-
-		public enum Entry
-		{
-			First = 1,
-			Second = 2
-		}
+		First = 1,
+		Second = 2
 	}
 }

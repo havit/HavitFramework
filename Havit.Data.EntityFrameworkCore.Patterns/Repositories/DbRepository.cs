@@ -65,6 +65,14 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// </summary>
 	protected IEntityCacheManager EntityCacheManager { get; }
 
+	#region Compiled Queries (static)
+	private static Func<DbContext, int, TEntity> getObjectQuery;
+	private static Func<DbContext, int, CancellationToken, Task<TEntity>> getObjectAsyncQuery;
+	private static Func<DbContext, int[], TEntity> getObjectInQuery;
+	private static Func<DbContext, IEnumerable<TEntity>> getAllQuery;
+	private static Func<DbContext, IAsyncEnumerable<TEntity>> getAllAsyncQuery;
+	#endregion
+
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
@@ -102,8 +110,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			var query = GetEqualsQuery(id, nameof(GetObject));
-			result = query.FirstOrDefault();
+			getObjectQuery ??= CompiledQueryBuilder.CreateCompiledGetObjectQuery<TEntity>(entityKeyAccessor);
+			result = getObjectQuery((DbContext)dbContext, id);
 
 			if (result != null)
 			{
@@ -141,8 +149,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			var query = GetEqualsQuery(id, nameof(GetObjectAsync));
-			result = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+			getObjectAsyncQuery ??= CompiledQueryBuilder.CreateCompiledGetObjectAsyncQuery<TEntity>(entityKeyAccessor);
+			result = await getObjectAsyncQuery((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
 
 			if (result != null)
 			{
@@ -299,7 +307,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
-				allData = DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAll))).WhereNotDeleted(SoftDeleteManager).ToArray();
+				getAllQuery ??= CompiledQueryBuilder.CreateCompiledGetAllQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				allData = getAllQuery((DbContext)dbContext).ToArray();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
@@ -338,8 +347,9 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			}
 			else
 			{
-				// pokd ne, načtene data a uložíme klíče do cache
-				allData = await DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAllAsync))).WhereNotDeleted(SoftDeleteManager).ToArrayAsync(cancellationToken).ConfigureAwait(false);
+				// pokud ne, načtene data a uložíme klíče do cache
+				getAllAsyncQuery ??= CompiledQueryBuilder.CreateCompiledGetAllAsyncQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				allData = await getAllAsyncQuery((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
@@ -355,21 +365,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 	private TEntity[] _all;
 
-	/// <summary>
-	/// Vrací dotaz pro GetObject/GetObjectAsync.
-	/// </summary>
-	private IQueryable<TEntity> GetEqualsQuery(int id, string tagMemberName)
-	{
-		ValueHolder valueHolder = new ValueHolder { Id = id };
-		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-		Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
-				Expression.Equal(
-				Expression.Property(parameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName()),
-				Expression.Property(Expression.Constant(valueHolder), nameof(ValueHolder.Id))),
-			parameter);
-		return DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), tagMemberName)).Where(expression);
-	}
 
+	// TODO: Odstranit
 	/// <summary>
 	/// Vrací dotaz pro GetObjects/GetObjectsAsync.
 	/// </summary>
@@ -453,11 +450,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			: String.Format("Objects {0} with keys {1} not found.", typeof(TEntity).Name, String.Join(", ", missingIds.Select(item => item.ToString())));
 
 		throw new Havit.Data.Patterns.Exceptions.ObjectNotFoundException(exceptionText);
-	}
-
-	private class ValueHolder
-	{
-		public int Id { get; set; }
 	}
 
 }

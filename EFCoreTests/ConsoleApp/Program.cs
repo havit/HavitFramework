@@ -42,7 +42,7 @@ namespace ConsoleApp1;
 
 public static class Program
 {
-	public static void Main(string[] args)
+	public static async Task Main(string[] args)
 	{
 		var host = Host.CreateDefaultBuilder(args)
 			.ConfigureAppConfiguration(configurationBuilder =>
@@ -54,7 +54,7 @@ public static class Program
 			.Build();
 
 		UpdateDatabase(host.Services);
-		Debug(host.Services);
+		await DebugAsync(host.Services);
 	}
 
 	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
@@ -86,16 +86,17 @@ public static class Program
 		}
 	}
 
-	private static void Debug(IServiceProvider serviceProvider)
+	private static async Task DebugAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
 	{
 		Stopwatch sw = Stopwatch.StartNew();
-		for (int i = 0; i < 10_000; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			using (var scope = serviceProvider.CreateScope())
 			{
 				var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
+				//repository.GetObject(i+1);
 
-				repository.GetObject(1);
+				await repository.GetObjectAsync(((i + 1) * 5) + 1);
 			}
 		}
 		Console.WriteLine(sw.ElapsedMilliseconds);

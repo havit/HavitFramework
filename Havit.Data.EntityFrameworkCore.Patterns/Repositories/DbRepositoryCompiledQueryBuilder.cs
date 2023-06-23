@@ -11,14 +11,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 
-// TODO: Přejmenovat na DbRepositoryCompiledQueryBuilder (nebo tak nějak), prostě svázat s DbRepository.
-internal static class CompiledQueryBuilder
+internal class DbRepositoryCompiledQueryBuilder
 {
-	private static MethodInfo firstOrDefaultMethod;
-	private static MethodInfo whereMethod;
-	private static MethodInfo dbContextSetMethod;
+	public static DbRepositoryCompiledQueryBuilder Default { get; } = new DbRepositoryCompiledQueryBuilder();
 
-	internal static Func<DbContext, int, TEntity> CreateCompiledGetObjectQuery<TEntity>(IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
+	internal MethodInfo firstOrDefaultMethod;
+	internal MethodInfo whereMethod;
+	internal MethodInfo dbContextSetMethod;
+	internal MethodInfo tagWithMethod;
+
+	public Func<DbContext, int, TEntity> CreateCompiledGetObjectQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
 		EnsureMethodInfos();
@@ -35,7 +37,10 @@ internal static class CompiledQueryBuilder
 				// dbContext.Set<TEntity>().Where(item => item.Id = @id).FirstOrDefault()
 				Expression.Call(null, firstOrDefaultMethod.MakeGenericMethod(typeof(TEntity)), // .FirstOrDefault
 					Expression.Call(null, whereMethod.MakeGenericMethod(typeof(TEntity)), // Where(...)
-						Expression.Call(dbContextParameter, dbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()					
+						Expression.Call(null, tagWithMethod.MakeGenericMethod(typeof(TEntity)), // TagWith(...)
+							Expression.Call(dbContextParameter, dbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()
+							Expression.Constant(QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObject)))
+						), // TagWith
 						Expression.Lambda<Func<TEntity, bool>>( // item => item.Id == @id
 							Expression.Equal( // ==
 								Expression.Property(itemParameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName()), // item.Id
@@ -52,7 +57,7 @@ internal static class CompiledQueryBuilder
 		return EF.CompileQuery<DbContext, int, TEntity>(expression);
 	}
 
-	internal static Func<DbContext, int, CancellationToken, Task<TEntity>> CreateCompiledGetObjectAsyncQuery<TEntity>(IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
+	public Func<DbContext, int, CancellationToken, Task<TEntity>> CreateCompiledGetObjectAsyncQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
 		EnsureMethodInfos();
@@ -63,44 +68,46 @@ internal static class CompiledQueryBuilder
 
 		ParameterExpression itemParameter = Expression.Parameter(typeof(TEntity), "item");
 
-		// TODO: QueryTag!
-
 		Expression<Func<DbContext, int, CancellationToken, TEntity>> expression = Expression.Lambda<Func<DbContext, int, CancellationToken, TEntity>>(
 			body:
-				// dbContext.Set<TEntity>().Where(item => item.Id = @id).FirstOrDefault()
+				// dbContext.Set<TEntity>().TagWith(...).Where(item => item.Id = @id).FirstOrDefault()
 				Expression.Call(null, firstOrDefaultMethod.MakeGenericMethod(typeof(TEntity)), // .FirstOrDefault
 					Expression.Call(null, whereMethod.MakeGenericMethod(typeof(TEntity)), // Where(...)
-						Expression.Call(dbContextParameter, dbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()					
+						Expression.Call(null, tagWithMethod.MakeGenericMethod(typeof(TEntity)), // TagWith(...)
+							Expression.Call(dbContextParameter, dbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()
+							Expression.Constant(QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObject)))
+						), // TagWith
 						Expression.Lambda<Func<TEntity, bool>>( // item => item.Id == @id
 							Expression.Equal( // ==
 								Expression.Property(itemParameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName()), // item.Id
 								idParameter // @id
 							),
 							itemParameter
-						)
-					)
-				),
-				// parameters:
-				dbContextParameter,
-				idParameter,
-				cancellationTokenParameter);
+						) // /Lambda
+					) // /Where
+				), // /FirstOrDefault
+			// parameters:
+			dbContextParameter,
+			idParameter,
+			cancellationTokenParameter
+		); // /Lambda
 
 		return EF.CompileAsyncQuery<DbContext, int, TEntity>(expression);
 	}
 
-	internal static Func<DbContext, IEnumerable<TEntity>> CreateCompiledGetAllQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager)
+	public Func<DbContext, IEnumerable<TEntity>> CreateCompiledGetAllQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager)
 		where TEntity : class
 	{
 		return EF.CompileQuery<DbContext, IEnumerable<TEntity>>((DbContext dbContext) => dbContext.Set<TEntity>().TagWith(QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetAll))).WhereNotDeleted(softDeleteManager));
 	}
 
-	internal static Func<DbContext, IAsyncEnumerable<TEntity>> CreateCompiledGetAllAsyncQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager)
+	public Func<DbContext, IAsyncEnumerable<TEntity>> CreateCompiledGetAllAsyncQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager)
 		where TEntity : class
 	{
 		return EF.CompileAsyncQuery<DbContext, TEntity>((DbContext dbContext) => dbContext.Set<TEntity>().TagWith(QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetAllAsync))).WhereNotDeleted(softDeleteManager));
 	}
 
-	internal static void CreateCompiledAsyncQuery()
+	internal void CreateCompiledAsyncQuery()
 	{
 		EnsureMethodInfos();
 
@@ -109,11 +116,11 @@ internal static class CompiledQueryBuilder
 
 	}
 
-	private static void EnsureMethodInfos()
+	internal void EnsureMethodInfos()
 	{
 		if (firstOrDefaultMethod == null)
 		{
-			lock (typeof(CompiledQueryBuilder))
+			lock (typeof(DbRepositoryCompiledQueryBuilder))
 			{
 				if (firstOrDefaultMethod == null)
 				{
@@ -144,6 +151,9 @@ internal static class CompiledQueryBuilder
 						 .SingleOrDefault();
 
 					dbContextSetMethod = typeof(DbContext).GetMethod(nameof(DbContext.Set), 1, BindingFlags.Instance | BindingFlags.Public, null, new Type[] { }, null);
+
+					tagWithMethod = typeof(EntityFrameworkQueryableExtensions).GetMethod("TagWith");
+
 				}
 			}
 		}

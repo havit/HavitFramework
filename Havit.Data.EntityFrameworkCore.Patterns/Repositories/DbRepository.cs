@@ -110,7 +110,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			getObjectQuery ??= CompiledQueryBuilder.CreateCompiledGetObjectQuery<TEntity>(entityKeyAccessor);
+			getObjectQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetObjectQuery<TEntity>(this.GetType(), entityKeyAccessor);
 			result = getObjectQuery((DbContext)dbContext, id);
 
 			if (result != null)
@@ -149,7 +149,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			getObjectAsyncQuery ??= CompiledQueryBuilder.CreateCompiledGetObjectAsyncQuery<TEntity>(entityKeyAccessor);
+			getObjectAsyncQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetObjectAsyncQuery<TEntity>(this.GetType(), entityKeyAccessor);
 			result = await getObjectAsyncQuery((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
 
 			if (result != null)
@@ -307,7 +307,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
-				getAllQuery ??= CompiledQueryBuilder.CreateCompiledGetAllQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				getAllQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetAllQuery<TEntity>(this.GetType(), SoftDeleteManager);
 				allData = getAllQuery((DbContext)dbContext).ToArray();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
@@ -348,7 +348,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
-				getAllAsyncQuery ??= CompiledQueryBuilder.CreateCompiledGetAllAsyncQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				getAllAsyncQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetAllAsyncQuery<TEntity>(this.GetType(), SoftDeleteManager);
 				allData = await getAllAsyncQuery((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}

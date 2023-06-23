@@ -18,7 +18,7 @@ using Moq;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories;
 
 [TestClass]
-public class DbRepositoryTest
+public class DbRepositoryTests
 {
 	[TestMethod]
 	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]

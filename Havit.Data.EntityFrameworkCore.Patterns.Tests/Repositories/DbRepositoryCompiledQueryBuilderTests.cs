@@ -19,10 +19,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
 
 		// Assert
-		Assert.IsNotNull(compiledQueryBuilder.whereMethod);
-		Assert.IsNotNull(compiledQueryBuilder.firstOrDefaultMethod);
-		Assert.IsNotNull(compiledQueryBuilder.tagWithMethod);
-		Assert.IsNotNull(compiledQueryBuilder.dbContextSetMethod);
+		Assert.IsNotNull(compiledQueryBuilder.WhereMethod);
+		Assert.IsNotNull(compiledQueryBuilder.FirstOrDefaultMethod);
+		Assert.IsNotNull(compiledQueryBuilder.TagWithMethod);
+		Assert.IsNotNull(compiledQueryBuilder.DbContextSetMethod);
 	}
 
 	[TestMethod]

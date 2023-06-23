@@ -13,11 +13,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 
 internal class DbRepositoryCompiledQueryBuilder
 {
-	internal MethodInfo firstOrDefaultMethod;
-	internal MethodInfo whereMethod;
-	internal MethodInfo dbContextSetMethod;
-	internal MethodInfo tagWithMethod;
-	internal MethodInfo containsMethod;
+	// JK: Ačkoliv bych chtěl fieldy nechat cammelCase, SA1307 (The name of a public or internal field in C# does not begin with an upper-case letter) mě nutí k PascalCase.
+	internal MethodInfo FirstOrDefaultMethod;
+	internal MethodInfo WhereMethod;
+	internal MethodInfo DbContextSetMethod;
+	internal MethodInfo TagWithMethod;
+	internal MethodInfo ContainsMethod;
 
 	internal DbRepositoryCompiledQueryBuilder()
 	{
@@ -76,10 +77,10 @@ internal class DbRepositoryCompiledQueryBuilder
 		ParameterExpression itemParameter = Expression.Parameter(typeof(TEntity), "item");
 
 		// dbContext.Set<TEntity>().TagWith(...).Where(item => item.Id = @id).FirstOrDefault()
-		return Expression.Call(null, firstOrDefaultMethod.MakeGenericMethod(typeof(TEntity)), // .FirstOrDefault
-			Expression.Call(null, whereMethod.MakeGenericMethod(typeof(TEntity)), // Where(...)
-				Expression.Call(null, tagWithMethod.MakeGenericMethod(typeof(TEntity)), // TagWith(...)
-					Expression.Call(dbContextParameter, dbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()
+		return Expression.Call(null, FirstOrDefaultMethod.MakeGenericMethod(typeof(TEntity)), // .FirstOrDefault
+			Expression.Call(null, WhereMethod.MakeGenericMethod(typeof(TEntity)), // Where(...)
+				Expression.Call(null, TagWithMethod.MakeGenericMethod(typeof(TEntity)), // TagWith(...)
+					Expression.Call(dbContextParameter, DbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()
 					Expression.Constant(tagName)
 				), // TagWith
 				Expression.Lambda<Func<TEntity, bool>>( // item => item.Id == @id
@@ -146,13 +147,13 @@ internal class DbRepositoryCompiledQueryBuilder
 	{
 		ParameterExpression itemParameter = Expression.Parameter(typeof(TEntity), "item");
 
-		return Expression.Call(null, whereMethod.MakeGenericMethod(typeof(TEntity)), // Where(...)
-			Expression.Call(null, tagWithMethod.MakeGenericMethod(typeof(TEntity)), // TagWith(...)
-				Expression.Call(dbContextParameter, dbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()
+		return Expression.Call(null, WhereMethod.MakeGenericMethod(typeof(TEntity)), // Where(...)
+			Expression.Call(null, TagWithMethod.MakeGenericMethod(typeof(TEntity)), // TagWith(...)
+				Expression.Call(dbContextParameter, DbContextSetMethod.MakeGenericMethod(typeof(TEntity))), //dbContext.Set<TEntity>()
 				Expression.Constant(tagName)
 			), // TagWith
 			Expression.Lambda<Func<TEntity, bool>>( // @ids.Contains(item => item.Id)
-				Expression.Call(null, containsMethod.MakeGenericMethod(typeof(int)),
+				Expression.Call(null, ContainsMethod.MakeGenericMethod(typeof(int)),
 					idsParameter,
 					Expression.Property(itemParameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName())
 				),
@@ -181,13 +182,13 @@ internal class DbRepositoryCompiledQueryBuilder
 
 	private void EnsureMethodInfos()
 	{
-		if (firstOrDefaultMethod == null)
+		if (FirstOrDefaultMethod == null)
 		{
 			lock (typeof(DbRepositoryCompiledQueryBuilder))
 			{
-				if (firstOrDefaultMethod == null)
+				if (FirstOrDefaultMethod == null)
 				{
-					firstOrDefaultMethod = typeof(Queryable).GetMethods()
+					FirstOrDefaultMethod = typeof(Queryable).GetMethods()
 						 .Where(method => method.Name == "FirstOrDefault")
 						 .Select(method => new { Method = method, Parameters = method.GetParameters() })
 						 .Where(item => item.Parameters.Length == 1
@@ -196,7 +197,7 @@ internal class DbRepositoryCompiledQueryBuilder
 						 .Select(item => item.Method)
 						 .Single();
 
-					whereMethod = typeof(Queryable).GetMethods()
+					WhereMethod = typeof(Queryable).GetMethods()
 						 .Where(method => method.Name == nameof(Queryable.Where))
 						 .Select(method => new { Method = method, Parameters = method.GetParameters() })
 						 .Where(item => item.Parameters.Length == 2
@@ -213,7 +214,7 @@ internal class DbRepositoryCompiledQueryBuilder
 						 .Select(item => item.Method)
 						 .Single();
 
-					containsMethod = typeof(System.Linq.Enumerable)
+					ContainsMethod = typeof(System.Linq.Enumerable)
 						.GetMethods(BindingFlags.Public | BindingFlags.Static)
 							.Where(m => m.Name == nameof(Enumerable.Contains))
 							.Select(m => new
@@ -226,9 +227,9 @@ internal class DbRepositoryCompiledQueryBuilder
 							.Select(x => x.Method)
 							.Single();
 
-					dbContextSetMethod = typeof(DbContext).GetMethod(nameof(DbContext.Set), 1, BindingFlags.Instance | BindingFlags.Public, null, new Type[] { }, null);
+					DbContextSetMethod = typeof(DbContext).GetMethod(nameof(DbContext.Set), 1, BindingFlags.Instance | BindingFlags.Public, null, new Type[] { }, null);
 
-					tagWithMethod = typeof(EntityFrameworkQueryableExtensions).GetMethod("TagWith");
+					TagWithMethod = typeof(EntityFrameworkQueryableExtensions).GetMethod("TagWith");
 
 				}
 			}

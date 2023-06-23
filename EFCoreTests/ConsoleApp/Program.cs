@@ -95,11 +95,11 @@ public static class Program
 			{
 				var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
 				repository.GetObject(1);
-				await repository.GetObjectAsync(2);
+				await repository.GetObjectAsync(2, cancellationToken);
 				repository.GetObjects(3, 4);
-				await repository.GetObjectsAsync(new int[] { 5, 6 });
+				await repository.GetObjectsAsync(new int[] { 5, 6 }, cancellationToken);
 				//repository.GetAll();
-				await repository.GetAllAsync();
+				await repository.GetAllAsync(cancellationToken);
 			}
 		}
 		Console.WriteLine(sw.ElapsedMilliseconds);

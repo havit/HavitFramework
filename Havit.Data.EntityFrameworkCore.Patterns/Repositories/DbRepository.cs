@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -65,14 +64,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// </summary>
 	protected IEntityCacheManager EntityCacheManager { get; }
 
-	#region Compiled Queries (static)
-	private static Func<DbContext, int, TEntity> getObjectQuery;
-	private static Func<DbContext, int, CancellationToken, Task<TEntity>> getObjectAsyncQuery;
-	private static Func<DbContext, int[], TEntity> getObjectInQuery;
-	private static Func<DbContext, IEnumerable<TEntity>> getAllQuery;
-	private static Func<DbContext, IAsyncEnumerable<TEntity>> getAllAsyncQuery;
-	#endregion
-
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
@@ -110,8 +101,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			getObjectQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetObjectQuery<TEntity>(this.GetType(), entityKeyAccessor);
-			result = getObjectQuery((DbContext)dbContext, id);
+			Func<DbContext, int, TEntity> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			result = query((DbContext)dbContext, id);
 
 			if (result != null)
 			{
@@ -149,8 +140,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			getObjectAsyncQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetObjectAsyncQuery<TEntity>(this.GetType(), entityKeyAccessor);
-			result = await getObjectAsyncQuery((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
+			Func<DbContext, int, CancellationToken, Task<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			result = await query((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
 
 			if (result != null)
 			{
@@ -206,8 +197,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 		if (idsToLoad.Count > 0)
 		{
-			var query = GetInQuery(idsToLoad.ToArray(), nameof(GetObjects));
-			var loadedObjects = query.ToList();
+			Func<DbContext, int[], IEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectsCompiledQuery(this.GetType(), entityKeyAccessor);
+			List<TEntity> loadedObjects = query((DbContext)dbContext, idsToLoad.ToArray()).ToList();
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
@@ -265,8 +256,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 		if (idsToLoad.Count > 0)
 		{
-			var query = GetInQuery(idsToLoad.ToArray(), nameof(GetObjectsAsync));
-			var loadedObjects = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+			Func<DbContext, int[], IAsyncEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectsAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			List<TEntity> loadedObjects = await query((DbContext)dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
@@ -307,8 +298,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
-				getAllQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetAllQuery<TEntity>(this.GetType(), SoftDeleteManager);
-				allData = getAllQuery((DbContext)dbContext).ToArray();
+				Func<DbContext, IEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				allData = query((DbContext)dbContext).ToArray();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
@@ -348,8 +339,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
-				getAllAsyncQuery ??= DbRepositoryCompiledQueryBuilder.Default.CreateCompiledGetAllAsyncQuery<TEntity>(this.GetType(), SoftDeleteManager);
-				allData = await getAllAsyncQuery((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
+				Func<DbContext, IAsyncEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				allData = await query((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
@@ -365,35 +356,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 	private TEntity[] _all;
 
-
-	// TODO: Odstranit
-	/// <summary>
-	/// Vrací dotaz pro GetObjects/GetObjectsAsync.
-	/// </summary>
-	private IQueryable<TEntity> GetInQuery(int[] ids, string tagMemberName)
-	{
-		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
-		Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
-				Expression.Call(
-				null,
-				typeof(System.Linq.Enumerable)
-						.GetMethods(BindingFlags.Public | BindingFlags.Static)
-						 .Where(m => m.Name == nameof(Enumerable.Contains))
-						 .Select(m => new
-						 {
-							 Method = m,
-							 Params = m.GetParameters(),
-							 Args = m.GetGenericArguments()
-						 })
-						 .Where(x => x.Params.Length == 2)
-						 .Select(x => x.Method)
-						 .Single()
-						.MakeGenericMethod(typeof(int)),
-				Expression.Constant(ids),
-				Expression.Property(parameter, typeof(TEntity), entityKeyAccessor.GetEntityKeyPropertyName())),
-			parameter);
-		return DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), tagMemberName)).Where(expression);
-	}
 
 	/// <summary>
 	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.

@@ -94,9 +94,12 @@ public static class Program
 			using (var scope = serviceProvider.CreateScope())
 			{
 				var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
-				//repository.GetObject(i+1);
-
-				await repository.GetObjectAsync(((i + 1) * 5) + 1);
+				repository.GetObject(1);
+				await repository.GetObjectAsync(2);
+				repository.GetObjects(3, 4);
+				await repository.GetObjectsAsync(new int[] { 5, 6 });
+				//repository.GetAll();
+				await repository.GetAllAsync();
 			}
 		}
 		Console.WriteLine(sw.ElapsedMilliseconds);

@@ -40,6 +40,7 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí danou stránku dané velikosti dle Query.
 	/// </summary>
+	[Obsolete($"Replaced by {nameof(GetPage)} method which contains optimized use of {nameof(Count)} method.")]
 	protected List<TQueryResultItem> SelectPage(int pageIndex, int pageSize)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
@@ -51,6 +52,7 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí danou stránku dané velikosti dle Query.
 	/// </summary>
+	[Obsolete($"Replaced by {nameof(GetPageAsync)} method which contains optimized use of {nameof(Count)} method.")]
 	protected Task<List<TQueryResultItem>> SelectPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
@@ -60,8 +62,31 @@ public abstract class QueryBase<TQueryResultItem>
 	}
 
 	/// <summary>
+	/// Vrátí danou stránku dat a počet záznamů dle Query.
+	/// </summary>
+	protected DataFragment<TQueryResultItem> GetPage(int pageIndex, int pageSize)
+	{
+		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
+		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
+
+		return GetDataFragment(pageIndex * pageSize, pageSize);
+	}
+
+	/// <summary>
+	/// Vrátí danou stránku dat a počet záznamů dle Query.
+	/// </summary>
+	protected async Task<DataFragment<TQueryResultItem>> GetPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+	{
+		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
+		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
+
+		return await GetDataFragmentAsync(pageIndex * pageSize, pageSize, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Vrátí fragment dat dle Query.
 	/// </summary>
+	[Obsolete($"Replaced by {nameof(GetDataFragment)} method which contains optimized use of {nameof(Count)} method.")]
 	protected List<TQueryResultItem> SelectDataFragment(int startIndex, int? count)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0);
@@ -83,6 +108,7 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí fragment dat dle Query.
 	/// </summary>
+	[Obsolete($"Replaced by {nameof(GetDataFragment)} method which contains optimized use of {nameof(Count)} method.")]
 	protected Task<List<TQueryResultItem>> SelectDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0);
@@ -102,9 +128,61 @@ public abstract class QueryBase<TQueryResultItem>
 	}
 
 	/// <summary>
+	/// Vrátí fragment dat a počet záznamů dle Query.
+	/// </summary>
+	protected DataFragment<TQueryResultItem> GetDataFragment(int startIndex, int? count)
+	{
+		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
+
+		IQueryable<TQueryResultItem> query = Query();
+		if (startIndex > 0)
+		{
+			query = query.Skip(startIndex);
+		}
+		if (count != null)
+		{
+			query = query.Take(count.Value);
+		}
+
+		var data = query.ToList();
+
+		return new DataFragment<TQueryResultItem>()
+		{
+			Data = data,
+			TotalCount = Count(startIndex, count, data.Count)
+		};
+	}
+
+	/// <summary>
+	/// Vrátí fragment dat a počet záznamů dle Query.
+	/// </summary>
+	protected async Task<DataFragment<TQueryResultItem>> GetDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
+	{
+		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
+
+		IQueryable<TQueryResultItem> query = Query();
+		if (startIndex > 0)
+		{
+			query = query.Skip(startIndex);
+		}
+		if (count != null)
+		{
+			query = query.Take(count.Value);
+		}
+
+		var data = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+		return new DataFragment<TQueryResultItem>()
+		{
+			Data = data,
+			TotalCount = await CountAsync(startIndex, count, data.Count, cancellationToken).ConfigureAwait(false)
+		};
+	}
+
+	/// <summary>
 	/// Vrátí počet objektů odpovídajících Query.
 	/// </summary>
-	protected int Count()
+	protected virtual int Count()
 	{
 		return Query().Count();
 	}
@@ -112,9 +190,37 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí počet objektů odpovídajících Query.
 	/// </summary>
-	protected Task<int> CountAsync(CancellationToken cancellationToken = default)
+	protected virtual Task<int> CountAsync(CancellationToken cancellationToken = default)
 	{
 		return Query().CountAsync(cancellationToken);
+	}
+
+	// Spočítáme určit celkový počet záznamů, avšak ideálně omezit volání CountAsync, pokud není nezbytné.
+	// Vycházíme z tohoto
+	// - Pokud jsme neomezili počet záznamů k načtení (count == 0), pak máme v data načtena všechna data (od startIndexu dále).
+	// - Pokud jsme se omezili na počet záznamů (jen určitou stránku) a zároveň se nám načetlo méně záznamů, než je velikost stránky,
+	//   pak jsme právě načetli poslední stránku (poslední segment dat od startIndexu).
+	// - A zároveň, pokud jsme v tomto případě nenačetli žádný záznam a zároveň jsme za první stranou (startIndex > 0),
+	//   pak se ptáme na stránku (segment) "někde za koncem" a nevíme o počtu záznamů nic.
+	//   (Pokud je startIndex nulový i data.Count nulové, pak nejsou k dispozici žádná data.)
+	private bool IsCallCountRequired(int startIndex, int? count, int dataCount)
+	{
+		bool canUseDataCount = ((count == null) || ((count != null) && (dataCount < count) && ((dataCount > 0) || (startIndex == 0))));
+		return !canUseDataCount;
+	}
+
+	internal int Count(int startIndex, int? count, int dataCount)
+	{
+		return IsCallCountRequired(startIndex, count, dataCount)
+			? Count()
+			: (startIndex + dataCount); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
+	}
+
+	internal async ValueTask<int> CountAsync(int startIndex, int? count, int dataCount, CancellationToken cancellationToken = default)
+	{
+		return IsCallCountRequired(startIndex, count, dataCount)
+			? await CountAsync(cancellationToken)
+			: (startIndex + dataCount); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
 	}
 
 	/// <summary>

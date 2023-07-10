@@ -144,12 +144,15 @@ public abstract class QueryBase<TQueryResultItem>
 			query = query.Take(count.Value);
 		}
 
-		var data = query.ToList();
+		List<TQueryResultItem> data = query.ToList();
+		int totalCount = IsCallCountRequired(startIndex, count, data.Count)
+				? query.Count()
+				: (startIndex + data.Count); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
 
 		return new DataFragment<TQueryResultItem>()
 		{
 			Data = data,
-			TotalCount = Count(startIndex, count, data.Count)
+			TotalCount = totalCount
 		};
 	}
 
@@ -170,19 +173,22 @@ public abstract class QueryBase<TQueryResultItem>
 			query = query.Take(count.Value);
 		}
 
-		var data = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+		List<TQueryResultItem> data = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+		int totalCount = IsCallCountRequired(startIndex, count, data.Count)
+			? await query.CountAsync(cancellationToken).ConfigureAwait(false)
+			: (startIndex + data.Count); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
 
 		return new DataFragment<TQueryResultItem>()
 		{
 			Data = data,
-			TotalCount = await CountAsync(startIndex, count, data.Count, cancellationToken).ConfigureAwait(false)
+			TotalCount = totalCount
 		};
 	}
 
 	/// <summary>
 	/// Vrátí počet objektů odpovídajících Query.
 	/// </summary>
-	protected virtual int Count()
+	protected int Count()
 	{
 		return Query().Count();
 	}
@@ -190,7 +196,7 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí počet objektů odpovídajících Query.
 	/// </summary>
-	protected virtual Task<int> CountAsync(CancellationToken cancellationToken = default)
+	protected Task<int> CountAsync(CancellationToken cancellationToken = default)
 	{
 		return Query().CountAsync(cancellationToken);
 	}
@@ -203,24 +209,10 @@ public abstract class QueryBase<TQueryResultItem>
 	// - A zároveň, pokud jsme v tomto případě nenačetli žádný záznam a zároveň jsme za první stranou (startIndex > 0),
 	//   pak se ptáme na stránku (segment) "někde za koncem" a nevíme o počtu záznamů nic.
 	//   (Pokud je startIndex nulový i data.Count nulové, pak nejsou k dispozici žádná data.)
-	private bool IsCallCountRequired(int startIndex, int? count, int dataCount)
+	internal static bool IsCallCountRequired(int startIndex, int? count, int dataCount)
 	{
 		bool canUseDataCount = ((count == null) || ((count != null) && (dataCount < count) && ((dataCount > 0) || (startIndex == 0))));
 		return !canUseDataCount;
-	}
-
-	internal int Count(int startIndex, int? count, int dataCount)
-	{
-		return IsCallCountRequired(startIndex, count, dataCount)
-			? Count()
-			: (startIndex + dataCount); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
-	}
-
-	internal async ValueTask<int> CountAsync(int startIndex, int? count, int dataCount, CancellationToken cancellationToken = default)
-	{
-		return IsCallCountRequired(startIndex, count, dataCount)
-			? await CountAsync(cancellationToken)
-			: (startIndex + dataCount); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
 	}
 
 	/// <summary>

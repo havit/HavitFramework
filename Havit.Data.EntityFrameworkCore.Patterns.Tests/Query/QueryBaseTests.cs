@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 using Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,5 +34,22 @@ public class QueryBaseTests
 
 		// Assert
 		Assert.AreEqual(expectedIsCallCountRequired, isCallCountRequired);
+	}
+
+	[TestMethod]
+	public void QueryBase_GetDataFragment_ReturnsCorrentTotalCount()
+	{
+		// Arrange
+		const int totalCount = 100;
+
+		Mock<QueryBase<int>> m = new Mock<QueryBase<int>>(MockBehavior.Strict);
+		m.Setup(m => m.Query()).Returns(() => Enumerable.Range(0, totalCount).AsQueryable());
+		var queryBaseInstance = m.Object;
+
+		// Act
+		var dataFragment = queryBaseInstance.GetDataFragment(0, 20);
+
+		// Assert
+		Assert.AreEqual(totalCount, dataFragment.TotalCount);
 	}
 }

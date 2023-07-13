@@ -19,7 +19,7 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Definuje Query.
 	/// </summary>
-	protected abstract IQueryable<TQueryResultItem> Query();
+	protected internal abstract IQueryable<TQueryResultItem> Query();
 
 	/// <summary>
 	/// Vrátí všechny objekty dle Query.
@@ -130,23 +130,25 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí fragment dat a počet záznamů dle Query.
 	/// </summary>
-	protected DataFragment<TQueryResultItem> GetDataFragment(int startIndex, int? count)
+	protected internal DataFragment<TQueryResultItem> GetDataFragment(int startIndex, int? count)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
 
-		IQueryable<TQueryResultItem> query = Query();
+		IQueryable<TQueryResultItem> originalQuery = Query();
+		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;
+
 		if (startIndex > 0)
 		{
-			query = query.Skip(startIndex);
+			fragmentQuery = fragmentQuery.Skip(startIndex);
 		}
 		if (count != null)
 		{
-			query = query.Take(count.Value);
+			fragmentQuery = fragmentQuery.Take(count.Value);
 		}
 
-		List<TQueryResultItem> data = query.ToList();
+		List<TQueryResultItem> data = fragmentQuery.ToList();
 		int totalCount = IsCallCountRequired(startIndex, count, data.Count)
-				? query.Count()
+				? originalQuery.Count()
 				: (startIndex + data.Count); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
 
 		return new DataFragment<TQueryResultItem>()
@@ -159,23 +161,24 @@ public abstract class QueryBase<TQueryResultItem>
 	/// <summary>
 	/// Vrátí fragment dat a počet záznamů dle Query.
 	/// </summary>
-	protected async Task<DataFragment<TQueryResultItem>> GetDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
+	protected internal async Task<DataFragment<TQueryResultItem>> GetDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
 
-		IQueryable<TQueryResultItem> query = Query();
+		IQueryable<TQueryResultItem> originalQuery = Query();
+		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;
 		if (startIndex > 0)
 		{
-			query = query.Skip(startIndex);
+			fragmentQuery = fragmentQuery.Skip(startIndex);
 		}
 		if (count != null)
 		{
-			query = query.Take(count.Value);
+			fragmentQuery = fragmentQuery.Take(count.Value);
 		}
 
-		List<TQueryResultItem> data = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+		List<TQueryResultItem> data = await fragmentQuery.ToListAsync(cancellationToken).ConfigureAwait(false);
 		int totalCount = IsCallCountRequired(startIndex, count, data.Count)
-			? await query.CountAsync(cancellationToken).ConfigureAwait(false)
+			? await originalQuery.CountAsync(cancellationToken).ConfigureAwait(false)
 			: (startIndex + data.Count); // výkonová zkratka - pokud víme, kolik záznamů je celkem, nemusíme volat Count do databáze
 
 		return new DataFragment<TQueryResultItem>()

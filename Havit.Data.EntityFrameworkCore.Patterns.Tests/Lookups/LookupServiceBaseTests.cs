@@ -140,12 +140,12 @@ public class LookupServiceBaseTests
 
 		// provedeme aktualizaci uzivatele
 		uzivatele.Add(uzivatel2); // pro dostupnost uživatele v Repository
-		var changes = new Changes
+
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { uzivatel2 },
-			Updates = new object[] { },
-			Deletes = new object[] { }
-		};
+			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(Uzivatel), Entity = uzivatel2 },
+		});
+
 		uzivatelLookupService.Invalidate(changes);
 
 		// po aktualizaci uživatele podle nového emailu najdeme
@@ -171,12 +171,10 @@ public class LookupServiceBaseTests
 		Assert.IsNull(uzivatelLookupService.GetUzivatelByEmail(uzivatel1.Email));
 
 		// provedeme aktualizaci uzivatele
-		var changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { },
-			Updates = new object[] { uzivatel1 },
-			Deletes = new object[] { }
-		};
+			new Change { ChangeType = ChangeType.Update, ClrType = typeof(Uzivatel), Entity = uzivatel1 }
+		});
 		uzivatelLookupService.Invalidate(changes);
 
 		// po aktualizaci uživatele podle nového emailu již najdeme
@@ -197,12 +195,12 @@ public class LookupServiceBaseTests
 
 		// provedeme aktualizaci uzivatele
 		uzivatele.Remove(uzivatel); // pro (ne)dostupnost uživatele Repository
-		var changes = new Changes
+
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { },
-			Updates = new object[] { },
-			Deletes = new object[] { uzivatel }
-		};
+			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(Uzivatel), Entity = uzivatel }
+		});
+
 		uzivatelLookupService.Invalidate(changes);
 
 		// po aktualizaci uživatele podle nového emailu najdeme

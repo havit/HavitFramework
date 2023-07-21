@@ -30,13 +30,15 @@ public class EntityValidationRunnerTests
 
 		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
-		// Act
-		runner.Validate(new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { entityInserting },
-			Updates = new object[] { entityUpdating },
-			Deletes = new object[] { entityDeleting }
+			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), Entity = entityInserting },
+			new Change { ChangeType = ChangeType.Update, ClrType = typeof(Entity), Entity = entityUpdating },
+			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(Entity), Entity = entityDeleting }
 		});
+
+		// Act
+		runner.Validate(changes);
 
 		// Assert
 		entityValidatorsFactoryMock.Verify(m => m.Create<Entity>(), Times.AtLeastOnce);
@@ -69,13 +71,13 @@ public class EntityValidationRunnerTests
 
 		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
-		// Act
-		runner.Validate(new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { entityInserting },
-			Updates = new object[] { },
-			Deletes = new object[] { }
+			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), Entity = entityInserting }
 		});
+
+		// Act
+		runner.Validate(changes);
 
 		// Assert by method attribute
 	}

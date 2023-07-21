@@ -31,16 +31,15 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
 
-		var changeGroups = changes.Inserts.Select(item => new { Change = ChangeType.Insert, Entity = item })
-			.Concat(changes.Updates.Select(item => new { Change = ChangeType.Update, Entity = item }))
-			.Concat(changes.Deletes.Select(item => new { Change = ChangeType.Delete, Entity = item }))
-			.GroupBy(item => item.Entity.GetType(), (type, groupChanges) => new { Type = type, Changes = groupChanges })
+		var changeGroups = changes
+			.Where(change => change.ClrType != null)
+			.GroupBy(change => change.ClrType, (entityType, entityTypeChanges) => new { Type = entityType, Changes = entityTypeChanges })
 			.ToList();
 
 		foreach (var changeGroup in changeGroups)
 		{
 			List<object> supportedProcessors = new List<object>();
-			// předpokládáme použití s Castle Windsor. Jeho factory (z pochopitelných důvodů) pri IBeforeCommitProcessor<Entity> neresolvuje processor pro případného předka, např. náš SetCreatedToInsertingEntitiesBeforeCommitProcessor pro IBeforeCommitProcessor<Entity>.
+			// Factory pro IBeforeCommitProcessor<Entity> nevrací processory pro případné předky, musíme proto zajistit zde podporu pro before commitprocessory předků.
 			Type type = changeGroup.Type;
 			while (type != null)
 			{
@@ -52,7 +51,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 			MethodInfo runMethod = beforeCommitProcessorType.GetMethod(nameof(IBeforeCommitProcessor<object>.Run));
 			foreach (var change in changeGroup.Changes)
 			{
-				supportedProcessors.ForEach(processor => runMethod.Invoke(processor, new object[] { change.Change, change.Entity }));
+				supportedProcessors.ForEach(processor => runMethod.Invoke(processor, new object[] { change.ChangeType, change.Entity }));
 			}
 		}
 	}

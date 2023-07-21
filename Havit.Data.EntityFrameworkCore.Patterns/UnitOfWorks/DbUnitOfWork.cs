@@ -11,6 +11,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 
@@ -150,25 +151,36 @@ public class DbUnitOfWork : IUnitOfWork
 		// Umožníme tak klientskému programátorovi změnit stav entity, např. pro kompenzaci konfliktu při ukládání entity (DbConcurencyUpdateException).
 		// Avšak stále používáme updateRegistrations, protože PerformAddForUpdate z výkonových důvodů nemění stav trackovaných entit (viz komentář v PerformAddForUpdate).
 
-		var inserts = DbContext.GetObjectsInState(EntityState.Added, suppressDetectChanges: false);
-		var deletes = DbContext.GetObjectsInState(EntityState.Deleted, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */);
-
 		// Pro získání updates v následujícím kódu je podstatné, že proběhl changetracker.
 		// Konkrétně, že reálně změněné entity jsou ve stavu Modified a nikoliv Unchanged, jak je nechává PerformAddForUpdate.
+
+		EntityEntry[] entityEntries = DbContext.GetEntries(suppressDetectChanges: false).Where(item => (item.State == EntityState.Added) || (item.State == EntityState.Modified) || (item.State == EntityState.Deleted)).ToArray();
 
 		// Abychom umožnili kompenzaci konfliktu na entitě ve stavu Modified, potřebujeme také aby entita zmizela z kolekce updateRegistrations.
 		// Tím se pro ni přestanou volat BeforeCommitProcessory.
 
-		var modified = DbContext.GetObjectsInState(EntityState.Modified, suppressDetectChanges: true /* pokud je zapnutý changetracker (jako že je), byl již spuštěn v rámci předchozího volání */);
-		updateRegistrations.ExceptWith(modified); // Entity, o kterých již víme, že jsou ve stavu Modified, odebereme z kolekce updateRegistrations, protože víme, že se nám v běžném kódu budou stále vracet z changetrackeru dle předchozího řádku.
-		var updates = modified.Concat(updateRegistrations).ToArray(); // díky ExceptWith na předchozím řádku nemají kolekce žádný průnik a tak můžeme použít Concat a ne výkonově dražší Union.
+		var modifiedEntities = entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity).ToArray();
+		// Entity, o kterých již víme, že jsou ve stavu Modified, odebereme z kolekce updateRegistrations, protože víme, že se nám v běžném kódu budou stále vracet z changetrackeru dle předchozího řádku.
+		// Zároveň tak zajistíme, že updateRegistrations nemají žádný průnik s entityEntries (.Entry) a tak můžeme níže bezpečně použít Concat bez rizika vzniku duplicit.
+		updateRegistrations.ExceptWith(modifiedEntities);
 
-		return new Changes
+		var changesFromEntries = entityEntries.Select(entry => new Change
 		{
-			Inserts = inserts,
-			Updates = updates,
-			Deletes = deletes
-		};
+			ChangeType = (ChangeType)entry.State,
+			ClrType = entry.Metadata.ClrType,
+			EntityType = entry.Metadata,
+			Entity = entry.Entity,
+		});
+
+		var changesFromUpdateRegistrations = updateRegistrations.Select(item => new Change()
+		{
+			ChangeType = ChangeType.Update,
+			ClrType = item.GetType(),
+			EntityType = DbContext.Model.FindEntityType(item.GetType()),
+			Entity = item
+		});
+
+		return new Changes(changesFromEntries.Concat(changesFromUpdateRegistrations));
 	}
 
 	/// <summary>

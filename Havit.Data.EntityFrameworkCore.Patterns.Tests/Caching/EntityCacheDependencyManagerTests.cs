@@ -38,12 +38,10 @@ public class EntityCacheDependencyManagerTests
 
 		EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 
-		Changes changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[0],
-			Updates = new object[] { loginAccount },
-			Deletes = new object[0],
-		};
+			new Change { ChangeType = ChangeType.Update, ClrType = typeof(LoginAccount), Entity = loginAccount }
+		});
 
 		// Act
 		entityCacheManager.InvalidateDependencies(changes);

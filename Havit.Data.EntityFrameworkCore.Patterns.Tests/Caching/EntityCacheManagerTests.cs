@@ -265,12 +265,10 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[0],
-			Updates = new object[] { loginAccount },
-			Deletes = new object[0]
-		};
+			new Change { ChangeType = ChangeType.Update, ClrType = typeof(LoginAccount), Entity = loginAccount }
+		});
 
 		// Act
 		entityCacheManager.Invalidate(changes);
@@ -303,12 +301,10 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { loginAccount },
-			Updates = new object[0],
-			Deletes = new object[0]
-		};
+			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(LoginAccount), Entity = loginAccount }
+		});
 
 		// Act
 		entityCacheManager.Invalidate(changes);
@@ -348,12 +344,10 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[0],
-			Updates = new object[0],
-			Deletes = new object[] { loginAccount },
-		};
+			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(LoginAccount), Entity = loginAccount }
+		});
 
 		// Act
 		entityCacheManager.Invalidate(changes);
@@ -374,12 +368,11 @@ public class EntityCacheManagerTests
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
 
-		Changes changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[0],
-			Updates = new object[0],
-			Deletes = new object[] { membership }
-		};
+			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(Membership), Entity = membership }
+		});
+
 		// Act
 		entityCacheManager.Invalidate(changes);
 
@@ -398,12 +391,11 @@ public class EntityCacheManagerTests
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
 
-		Changes changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[0],
-			Updates = new object[] { child },
-			Deletes = new object[0]
-		};
+			new Change { ChangeType = ChangeType.Update, ClrType = typeof(Child), Entity = child }
+		});
+
 		// Act
 		entityCacheManager.Invalidate(changes);
 

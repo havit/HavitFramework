@@ -197,27 +197,11 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		HashSet<Type> typesToInvalidateGetAll = new HashSet<Type>();
 
-		if (changes.Inserts.Length > 0)
+		foreach (var change in changes)
 		{
-			foreach (var insertedEntity in changes.Inserts)
+			if (change.ClrType != null)
 			{
-				InvalidateEntityWithCollectionsInternal(ChangeType.Insert, insertedEntity, typesToInvalidateGetAll);
-			}
-		}
-
-		if (changes.Updates.Length > 0)
-		{
-			foreach (var updatedEntity in changes.Updates)
-			{
-				InvalidateEntityWithCollectionsInternal(ChangeType.Update, updatedEntity, typesToInvalidateGetAll);
-			}
-		}
-
-		if (changes.Deletes.Length > 0)
-		{
-			foreach (var deletedEntity in changes.Deletes)
-			{
-				InvalidateEntityWithCollectionsInternal(ChangeType.Delete, deletedEntity, typesToInvalidateGetAll);
+				InvalidateEntityWithCollectionsInternal(change.ChangeType, change.Entity, typesToInvalidateGetAll);
 			}
 		}
 

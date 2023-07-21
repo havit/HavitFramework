@@ -40,27 +40,11 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 
 		HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey = new HashSet<Type>();
 
-		if (changes.Inserts.Length > 0)
+		foreach (var change in changes)
 		{
-			foreach (var insertedEntity in changes.Inserts)
+			if (change.ClrType != null)
 			{
-				InvalidateEntityDependencies(ChangeType.Insert, insertedEntity, typesToInvalidateAnySaveCacheDependencyKey);
-			}
-		}
-
-		if (changes.Updates.Length > 0)
-		{
-			foreach (var updatedEntity in changes.Updates)
-			{
-				InvalidateEntityDependencies(ChangeType.Update, updatedEntity, typesToInvalidateAnySaveCacheDependencyKey);
-			}
-		}
-
-		if (changes.Deletes.Length > 0)
-		{
-			foreach (var deletedEntity in changes.Deletes)
-			{
-				InvalidateEntityDependencies(ChangeType.Delete, deletedEntity, typesToInvalidateAnySaveCacheDependencyKey);
+				InvalidateEntityDependencies(change.ChangeType, change.Entity, typesToInvalidateAnySaveCacheDependencyKey);
 			}
 		}
 

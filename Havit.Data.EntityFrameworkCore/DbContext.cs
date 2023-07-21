@@ -179,19 +179,12 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	}
 
 	/// <summary>
-	/// Vrátí objekty v daném stavu.
-	/// </summary>
-	object[] IDbContext.GetObjectsInState(EntityState state, bool suppressDetectChanges)
-	{
-		return ((IDbContext)this).GetObjectsInStates(new EntityState[] { state }, suppressDetectChanges: suppressDetectChanges);
-	}
-
-	/// <summary>
 	/// Vrátí objekty v daných stavech.
 	/// </summary>
-	object[] IDbContext.GetObjectsInStates(EntityState[] states, bool suppressDetectChanges)
+	EntityEntry[] IDbContext.GetEntries(bool suppressDetectChanges)
 	{
-		Func<object[]> getObjectInStatesFunc = () => this.ChangeTracker.Entries().Where(entry => states.Contains(entry.State)).Select(item => item.Entity).ToArray();
+		EntityEntry[] getObjectInStatesFunc() => this.ChangeTracker.Entries().ToArray();
+
 		return suppressDetectChanges
 			? ExecuteWithoutAutoDetectChanges(getObjectInStatesFunc)
 			: getObjectInStatesFunc();

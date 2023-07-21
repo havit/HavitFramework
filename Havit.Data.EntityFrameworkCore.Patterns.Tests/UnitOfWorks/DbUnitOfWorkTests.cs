@@ -128,9 +128,7 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Deletes.Length, "Deletes contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Inserts.Length, "Inserts contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Updates.Length, "Updates contains a registered change.");
+		Assert.AreEqual(0, allKnownChanges.Count(), "Changes contains a registered change.");
 	}
 
 	[TestMethod]
@@ -153,9 +151,7 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Deletes.Length, "Deletes contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Inserts.Length, "Inserts contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Updates.Length, "Updates contains a registered change.");
+		Assert.AreEqual(0, allKnownChanges.Count(), "Changes contains a registered change.");
 	}
 
 	[TestMethod]

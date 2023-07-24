@@ -193,15 +193,18 @@ public class EntityCacheManager : IEntityCacheManager
 	}
 
 	/// <inheritdoc />
-	public void Invalidate(Changes changes)
+	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
+		HashSet<string> cacheKeysToInvalidate = new HashSet<string>();
+		HashSet<object> entitiesToUpdateInCache = new HashSet<object>();
+
 		HashSet<Type> typesToInvalidateGetAll = new HashSet<Type>();
 
 		foreach (var change in changes)
 		{
 			if (change.ClrType != null)
 			{
-				InvalidateEntityWithCollectionsInternal(change.ChangeType, change.Entity, typesToInvalidateGetAll);
+				PrepareCacheInvalidation_EntityWithCollectionsInternal(change.ChangeType, change.Entity, typesToInvalidateGetAll, cacheKeysToInvalidate, entitiesToUpdateInCache);
 			}
 		}
 
@@ -209,11 +212,34 @@ public class EntityCacheManager : IEntityCacheManager
 		// zároveň máme zajištěno, že ji provádíme jen pro podporované typy (tj. neprovádíme pro M:N třídy)
 		foreach (Type typeToInvalidateGetAll in typesToInvalidateGetAll)
 		{
-			InvalidateGetAllInternal(typeToInvalidateGetAll);
+			PrepareCacheInvalidation_GetAllInternal(typeToInvalidateGetAll, cacheKeysToInvalidate);
 		}
+
+		return new CacheInvalidationOperation(() =>
+		{
+			// odstraníme položky z cache
+			cacheService.RemoveAll(cacheKeysToInvalidate);
+
+			// aktualizujeme v cache změněné entity
+			foreach (object entityToUpdateInCache in entitiesToUpdateInCache)
+			{
+				// protože je metoda StoreEntity generická, musíme přes reflexi
+				try
+				{
+					this.GetType()
+						.GetMethod(nameof(StoreEntity))
+						.MakeGenericMethod(entityToUpdateInCache.GetType())
+						.Invoke(this, new[] { entityToUpdateInCache });
+				}
+				catch (TargetInvocationException targetInvocationException)
+				{
+					ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+				}
+			}
+		});
 	}
 
-	private void InvalidateEntityWithCollectionsInternal(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateGetAll)
+	private void PrepareCacheInvalidation_EntityWithCollectionsInternal(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateGetAll, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
 	{
 		Contract.Requires(entity != null);
 
@@ -227,7 +253,7 @@ public class EntityCacheManager : IEntityCacheManager
 		if (entityKeyValues.Length > 1)
 		{
 			// odebereme všechny prvky, které mohou mít objekt v kolekci
-			InvalidateCollectionsInternal(entityType, entity);
+			PrepareCacheInvalidation_CollectionsInternal(entityType, entity, cacheKeysToInvalidate);
 
 			// GetAll a GetEntity není nutné řešit, objekty reprezentující vztah ManyToMany se do cache nedostávají
 		}
@@ -235,13 +261,13 @@ public class EntityCacheManager : IEntityCacheManager
 		{
 			object entityKeyValue = entityKeyValues.Single();
 
-			InvalidateEntityAndStoreEntityInternal(changeType, entityType, entity, entityKeyValue);
-			InvalidateCollectionsInternal(entityType, entity);
+			PrepareCacheInvalidation_EntityInternal(changeType, entityType, entity, entityKeyValue, cacheKeysToInvalidate, entitiesToUpdateInCache);
+			PrepareCacheInvalidation_CollectionsInternal(entityType, entity, cacheKeysToInvalidate);
 			typesToInvalidateGetAll.Add(entityType);
 		}
 	}
 
-	private void InvalidateEntityAndStoreEntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey)
+	private void PrepareCacheInvalidation_EntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 		if (entityCacheSupportDecision.ShouldCacheEntity(entity))
@@ -249,29 +275,18 @@ public class EntityCacheManager : IEntityCacheManager
 			if (changeType != ChangeType.Insert)
 			{
 				// nové entity nemohou být v cache, neinvalidujeme
-				cacheService.Remove(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
+				cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
 			}
 
 			if (changeType != ChangeType.Delete)
 			{
-				// když už objekt máme, můžeme jej uložit do cache
-				// protože je metoda StoreEntity generická, musíme přes reflexi
-				try
-				{
-					this.GetType()
-						.GetMethod(nameof(StoreEntity))
-						.MakeGenericMethod(entityType)
-						.Invoke(this, new[] { entity });
-				}
-				catch (TargetInvocationException targetInvocationException)
-				{
-					ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
-				}
+				// když už objekt máme, můžeme jej uložit do cache / aktualizovat v cache
+				entitiesToUpdateInCache.Add(entity);
 			}
 		}
 	}
 
-	private void InvalidateCollectionsInternal(Type entityType, object entity)
+	private void PrepareCacheInvalidation_CollectionsInternal(Type entityType, object entity, HashSet<string> cacheKeysToInvalidate)
 	{
 		var referencingCollections = referencingCollectionsService.GetReferencingCollections(entityType);
 		foreach (var referencingCollection in referencingCollections)
@@ -287,18 +302,18 @@ public class EntityCacheManager : IEntityCacheManager
 				{
 					// z hodnoty cizího klíče získáme klíč pro cachování property objektu s daným klíčem
 					// a odebereme jej z cache
-					cacheService.Remove(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, foreignKeyValue, referencingCollection.CollectionPropertyName));
+					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, foreignKeyValue, referencingCollection.CollectionPropertyName));
 				}
 			}
 		}
 	}
 
-	private void InvalidateGetAllInternal(Type type)
+	private void PrepareCacheInvalidation_GetAllInternal(Type type, HashSet<string> cacheKeysToInvalidate)
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 		if (entityCacheSupportDecision.ShouldCacheAllKeys(type))
 		{
-			cacheService.Remove(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
+			cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
 		}
 	}
 }

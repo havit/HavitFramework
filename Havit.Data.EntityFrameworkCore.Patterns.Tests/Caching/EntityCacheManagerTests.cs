@@ -244,7 +244,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_InvalidateEntity_RemovesEntityAndAllKeysOnUpdate()
+	public void EntityCacheManager_CacheInvalidation_RemovesEntityAndAllKeysOnUpdate()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -271,7 +271,7 @@ public class EntityCacheManagerTests
 		});
 
 		// Act
-		entityCacheManager.Invalidate(changes);
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
 		cacheServiceMock.Verify(m => m.Remove(entityCacheKey), Times.Once);
@@ -280,7 +280,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_InvalidateEntity_DoesNotRemoveEntityButRemovesAllKeysOnInsert()
+	public void EntityCacheManager_CacheInvalidation_DoesNotRemoveEntityButRemovesAllKeysOnInsert()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -307,7 +307,7 @@ public class EntityCacheManagerTests
 		});
 
 		// Act
-		entityCacheManager.Invalidate(changes);
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
 		cacheServiceMock.Verify(m => m.Remove(entityCacheKey), Times.Never);
@@ -318,7 +318,7 @@ public class EntityCacheManagerTests
 
 	// Bug #44100: Cachování - EntityCacheManager se s invalidací snaží uložit do cache i právě mazanou entitu
 	[TestMethod]
-	public void EntityCacheManager_InvalidateEntity_DoesNotStoreDeletedEntity()
+	public void EntityCacheManager_CacheInvalidation_DoesNotStoreDeletedEntity()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -350,7 +350,7 @@ public class EntityCacheManagerTests
 		});
 
 		// Act
-		entityCacheManager.Invalidate(changes);
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
 		cacheServiceMock.Verify(m => m.Add(entityCacheKey, It.IsAny<object>(), It.IsAny<CacheOptions>()), Times.Never);
@@ -359,7 +359,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_InvalidateEntity_SupportsManyToMany()
+	public void EntityCacheManager_CacheInvalidation_SupportsManyToManyByTwoOneToManyRelationships()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -374,14 +374,14 @@ public class EntityCacheManagerTests
 		});
 
 		// Act
-		entityCacheManager.Invalidate(changes);
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
 		// no exception was thrown
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_InvalidateEntity_SupportsNotRequiredForeignKeyWithNullValue()
+	public void EntityCacheManager_CacheInvalidation_SupportsNotRequiredForeignKeyWithNullValue()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -397,7 +397,7 @@ public class EntityCacheManagerTests
 		});
 
 		// Act
-		entityCacheManager.Invalidate(changes);
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
 		// no exception was thrown

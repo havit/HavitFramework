@@ -73,11 +73,10 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	}
 
 	/// <summary>
-	/// Nic nedělá, neinvaliduje.
+	/// Nic nedělá, neinvaliduje (vrací vždy null).	
 	/// </summary>
-	public void Invalidate(Changes changes)
+	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
-		// NOOP
+		return null;
 	}
-
 }

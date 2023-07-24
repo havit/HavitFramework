@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -30,33 +29,40 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 	}
 
 	/// <inheritdoc />
-	public void InvalidateDependencies(Changes changes)
+	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
 		if (!cacheService.SupportsCacheDependencies)
 		{
 			// závislosti nemohou být použity
-			return;
+			return null;
 		}
 
+
+		HashSet<string> cacheKeysToInvalidate = new HashSet<string>();
 		HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey = new HashSet<Type>();
 
 		foreach (var change in changes)
 		{
 			if (change.ClrType != null)
 			{
-				InvalidateEntityDependencies(change.ChangeType, change.Entity, typesToInvalidateAnySaveCacheDependencyKey);
+				InvalidateEntityDependencies(change.ChangeType, change.Entity, typesToInvalidateAnySaveCacheDependencyKey, cacheKeysToInvalidate);
 			}
 		}
 
 		foreach (Type typeToInvalidateAnySaveCacheDependencyKey in typesToInvalidateAnySaveCacheDependencyKey)
 		{
 			// Pro omezení zasílání informace o Remove při distribuované cache invalidujeme AnySave jen jednou pro každý typ.
-			InvalidateAnySaveCacheDependencyKeyInternal(typeToInvalidateAnySaveCacheDependencyKey);
+			InvalidateAnySaveCacheDependencyKeyInternal(typeToInvalidateAnySaveCacheDependencyKey, cacheKeysToInvalidate);
 		}
+
+		return new CacheInvalidationOperation(() =>
+		{
+			cacheService.RemoveAll(cacheKeysToInvalidate);
+		});
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private void InvalidateEntityDependencies(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey)
+	private void InvalidateEntityDependencies(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey, HashSet<string> cacheKeysToInvalidate)
 	{
 		Contract.Requires(entity != null);
 
@@ -74,7 +80,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 			if (changeType != ChangeType.Insert)
 			{
 				// na nových záznamech nemohou být závislosti, neinvalidujeme
-				InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue);
+				InvalidateSaveCacheDependencyKeyInternal(entityType, entityKeyValue, cacheKeysToInvalidate);
 			}
 
 			// invalidaci AnySave uděláme jen jednou pro každý typ (omezíme tak množství zpráv předávaných při případné distribuované invalidaci)
@@ -83,15 +89,15 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey)
+	private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey, HashSet<string> cacheKeysToInvalidate)
 	{
-		cacheService.Remove(entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
+		cacheKeysToInvalidate.Add(entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private void InvalidateAnySaveCacheDependencyKeyInternal(Type entityType)
+	private void InvalidateAnySaveCacheDependencyKeyInternal(Type entityType, HashSet<string> cacheKeysToInvalidate)
 	{
-		cacheService.Remove(entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
+		cacheKeysToInvalidate.Add(entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
 	}
 
 }

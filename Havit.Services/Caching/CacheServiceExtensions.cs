@@ -36,4 +36,16 @@ public static class CacheServiceExtensions
 			return false;
 		}
 	}
+
+	/// <summary>
+	/// Odstraní z cache položky pro všechny předané klíče.
+	/// Až budeme chtít umět předávat všechny klíče naráz (pro performance) pro invalidaci distribuované cache, přesuneme tuto metodu do ICacheService.
+	/// </summary>
+	public static void RemoveAll(this ICacheService cacheService, IEnumerable<string> cacheKeys)
+	{
+		foreach (string cacheKey in cacheKeys)
+		{
+			cacheService.Remove(cacheKey);
+		}
+	}
 }

@@ -74,10 +74,12 @@ public class DbUnitOfWork : IUnitOfWork
 
 		Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
 		entityValidationRunner.Validate(allKnownChanges);
+		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
+
 		DbContext.SaveChanges();
 
 		ClearRegistrationHashSets();
-		InvalidateEntityCache(allKnownChanges);
+		cacheInvalidationOperation?.Invalidate();
 		lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 
 		AfterCommit();
@@ -94,10 +96,12 @@ public class DbUnitOfWork : IUnitOfWork
 
 		Changes allKnownChanges = GetAllKnownChanges(); // ptáme se na změny znovu, runnery mohli seznam objektů k uložení změnit
 		entityValidationRunner.Validate(allKnownChanges);
+		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
 
 		await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
 		ClearRegistrationHashSets();
-		InvalidateEntityCache(allKnownChanges);
+		cacheInvalidationOperation?.Invalidate();
 		lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 
 		AfterCommit();
@@ -297,9 +301,17 @@ public class DbUnitOfWork : IUnitOfWork
 	/// <summary>
 	/// Oznámí k invalidaci cache všechny změněné objekty.
 	/// </summary>
-	protected virtual void InvalidateEntityCache(Changes allKnownChanges)
+	protected virtual CacheInvalidationOperation PrepareCacheInvalidation(Changes allKnownChanges)
 	{
-		EntityCacheManager.Invalidate(allKnownChanges);
-		EntityCacheDependencyManager.InvalidateDependencies(allKnownChanges);
+		var prepareToInvalidate1 = EntityCacheManager.PrepareCacheInvalidation(allKnownChanges);
+		var prepareToInvalidate2 = EntityCacheDependencyManager.PrepareCacheInvalidation(allKnownChanges);
+
+		return ((prepareToInvalidate1 != null) || (prepareToInvalidate2 != null))
+			? new CacheInvalidationOperation(() =>
+				{
+					prepareToInvalidate1?.Invalidate();
+					prepareToInvalidate2?.Invalidate();
+				})
+			: null;
 	}
 }

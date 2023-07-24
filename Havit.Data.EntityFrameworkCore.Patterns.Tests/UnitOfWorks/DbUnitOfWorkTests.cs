@@ -388,7 +388,7 @@ public class DbUnitOfWorkTests
 	private IEntityCacheDependencyManager CreateEntityCacheDependencyManager()
 	{
 		Mock<IEntityCacheDependencyManager> mockEntityCacheDependencyManager = new Mock<IEntityCacheDependencyManager>(MockBehavior.Strict);
-		mockEntityCacheDependencyManager.Setup(m => m.InvalidateDependencies(It.IsAny<Changes>()));
+		mockEntityCacheDependencyManager.Setup(m => m.PrepareCacheInvalidation(It.IsAny<Changes>())).Returns((CacheInvalidationOperation)null);
 
 		return mockEntityCacheDependencyManager.Object;
 	}

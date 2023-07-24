@@ -19,7 +19,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 public class EntityCacheDependencyManagerTests
 {
 	[TestMethod]
-	public void EntityCacheDpendencyManager_InvalidateEntity_RemovesDependencies()
+	public void EntityCacheDpendencyManager_CacheInvalidation_RemovesDependencies()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -44,7 +44,7 @@ public class EntityCacheDependencyManagerTests
 		});
 
 		// Act
-		entityCacheManager.InvalidateDependencies(changes);
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
 		cacheServiceMock.Verify(m => m.Remove(saveCacheDependencyKey), Times.Once);

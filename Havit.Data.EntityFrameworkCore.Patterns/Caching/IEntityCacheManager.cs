@@ -30,7 +30,7 @@ public interface IEntityCacheManager
 	/// <summary>
 	/// Přijme notifikaci o změně entit a zajistí jejich invalidaci v cache.
 	/// </summary>
-	void Invalidate(Changes changes);
+	CacheInvalidationOperation PrepareCacheInvalidation(Changes changes);
 
 	/// <summary>
 	/// Pokusí se z cache načíst kolekci dané entity. Pokud je kolekce entity v cache nalezena a vrácena, vrací true. Jinak false. 

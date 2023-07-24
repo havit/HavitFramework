@@ -23,7 +23,7 @@ public class Changes : IEnumerable<Change>
 	/// <summary>
 	/// Registrované objekty pro Insert. Pro zpětnou kompatibilitu.
 	/// </summary>
-	[Obsolete("Changes samotné je nyní IEnumerable<Change>, obsahuje nejen entity, ale i informace k nim." )]
+	[Obsolete("Changes samotné je nyní IEnumerable<Change>, obsahuje nejen entity, ale i informace k nim.")]
 	public object[] Inserts => this.Where(item => item.ChangeType == ChangeType.Insert).Select(item => item.Entity).ToArray();
 
 	/// <summary>

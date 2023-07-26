@@ -5,14 +5,8 @@ using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Services.TimeServices;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups;
 
@@ -143,7 +137,13 @@ public class LookupServiceBaseTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(Uzivatel), Entity = uzivatel2 },
+			new Change
+			{
+				ChangeType = ChangeType.Insert,
+				ClrType = typeof(Uzivatel),
+				EntityType = null, // pro účely testu není třeba
+				Entity = uzivatel2
+			}
 		});
 
 		uzivatelLookupService.Invalidate(changes);
@@ -173,7 +173,13 @@ public class LookupServiceBaseTests
 		// provedeme aktualizaci uzivatele
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Update, ClrType = typeof(Uzivatel), Entity = uzivatel1 }
+			new Change
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(Uzivatel),
+				EntityType = null, // pro účely testu není třeba
+				Entity = uzivatel1
+			}
 		});
 		uzivatelLookupService.Invalidate(changes);
 
@@ -198,7 +204,13 @@ public class LookupServiceBaseTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(Uzivatel), Entity = uzivatel }
+			new Change
+			{
+				ChangeType = ChangeType.Delete,
+				ClrType = typeof(Uzivatel),
+				EntityType = null, // pro účely testu není třeba
+				Entity = uzivatel
+			}
 		});
 
 		uzivatelLookupService.Invalidate(changes);

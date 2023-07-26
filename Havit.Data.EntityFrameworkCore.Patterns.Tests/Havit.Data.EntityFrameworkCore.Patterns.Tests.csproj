@@ -4,6 +4,7 @@
 	<TargetFramework>net7.0</TargetFramework>
 	<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
 	<NoWarn>($NoWarn);EF1001</NoWarn>
+	<ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

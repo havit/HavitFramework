@@ -3,15 +3,9 @@ using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using Havit.Services;
 using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 
@@ -40,7 +34,13 @@ public class EntityCacheDependencyManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Update, ClrType = typeof(LoginAccount), Entity = loginAccount }
+			new Change
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(LoginAccount),
+				EntityType = dbContext.Model.FindEntityType(typeof(LoginAccount)),
+				Entity = loginAccount
+			}
 		});
 
 		// Act

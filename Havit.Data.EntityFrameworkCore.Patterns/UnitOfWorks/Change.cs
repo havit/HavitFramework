@@ -25,7 +25,7 @@ public class Change
 	/// <summary>
 	/// Typ měněné entity. Umožní získat informaci pro SkipNavigation entitu (entitu reprezentující vazbu many-to-many pomocí třídy (I)Dictionary).
 	/// </summary>
-	internal IEntityType EntityType { get; init; }
+	public required IEntityType EntityType { get; init; }
 
 	/// <summary>
 	/// Měněná entita.

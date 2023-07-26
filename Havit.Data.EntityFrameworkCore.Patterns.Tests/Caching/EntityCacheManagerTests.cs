@@ -2,16 +2,10 @@
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using Havit.Services;
 using Havit.Services.Caching;
 using Havit.Services.TestHelpers.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 
@@ -127,7 +121,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenarion_Store_And_TryGet()
+	public void EntityCacheManager_Scenario_Store_And_TryGet()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -156,7 +150,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenarion_StoreAllKeys_And_TryGetAllKeys()
+	public void EntityCacheManager_Scenario_StoreAllKeys_And_TryGetAllKeys()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -176,7 +170,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenarion_OneToMany_StoreCollection_And_TryGetCollection()
+	public void EntityCacheManager_Scenario_OneToMany_StoreCollection_And_TryGetCollection()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -213,7 +207,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenarion_ManyToMany_StoreCollection_And_TryGetCollection()
+	public void EntityCacheManager_Scenario_ManyToMany_StoreCollection_And_TryGetCollection()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -267,7 +261,13 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Update, ClrType = typeof(LoginAccount), Entity = loginAccount }
+			new Change
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(LoginAccount),
+				EntityType = dbContext.Model.FindEntityType(typeof(LoginAccount)),
+				Entity = loginAccount
+			}
 		});
 
 		// Act
@@ -303,7 +303,13 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(LoginAccount), Entity = loginAccount }
+			new Change
+			{
+				ChangeType = ChangeType.Insert,
+				ClrType = typeof(LoginAccount),
+				EntityType = dbContext.Model.FindEntityType(typeof(LoginAccount)),
+				Entity = loginAccount
+			}
 		});
 
 		// Act
@@ -346,7 +352,13 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(LoginAccount), Entity = loginAccount }
+			new Change
+			{
+				ChangeType = ChangeType.Delete,
+				ClrType = typeof(LoginAccount),
+				EntityType = dbContext.Model.FindEntityType(typeof(LoginAccount)),
+				Entity = loginAccount
+			}
 		});
 
 		// Act
@@ -370,7 +382,12 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(Membership), Entity = membership }
+			new Change
+			{
+				ChangeType = ChangeType.Delete,
+				ClrType = typeof(Membership),
+				EntityType = dbContext.Model.FindEntityType(typeof(Membership)),
+				Entity = membership }
 		});
 
 		// Act
@@ -393,7 +410,13 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Update, ClrType = typeof(Child), Entity = child }
+			new Change
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(Child),
+				EntityType = dbContext.Model.FindEntityType(typeof(Child)),
+				Entity = child
+			}
 		});
 
 		// Act

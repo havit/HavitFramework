@@ -4,12 +4,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Services.Caching;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 
@@ -48,7 +42,7 @@ public static class CachingTestHelper
 		}
 
 		IPropertyLambdaExpressionManager propertyLambdaExpressionManager = new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder());
-		IReferencingCollectionsService referencingCollectionStore = new ReferencingCollectionsService(new ReferencingCollectionsStorage(), dbContext);
+		IReferencingNavigationsService referencingCollectionStore = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
 
 		return new EntityCacheManager(
 			cacheService,

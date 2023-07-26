@@ -1,11 +1,14 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
@@ -24,17 +27,11 @@ using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 
@@ -110,8 +107,8 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 
 		services.TryAddTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
 		services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
-		services.TryAddTransient<IReferencingCollectionsService, ReferencingCollectionsService>();
-		services.TryAddSingleton<IReferencingCollectionsStorage, ReferencingCollectionsStorage>();
+		services.TryAddTransient<IReferencingNavigationsService, ReferencingNavigationsService>();
+		services.TryAddSingleton<IReferencingNavigationsStorage, ReferencingNavigationsStorage>();
 		services.TryAddTransient<ICollectionTargetTypeService, CollectionTargetTypeService>();
 		services.TryAddSingleton<ICollectionTargetTypeStorage, CollectionTargetTypeStorage>();
 		services.TryAddSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();

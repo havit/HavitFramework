@@ -1,21 +1,18 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.ExceptionServices;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
-using Havit.Services;
 using Havit.Services.Caching;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.ExceptionServices;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -35,14 +32,14 @@ public class EntityCacheManager : IEntityCacheManager
 	private readonly IEntityCacheKeyGenerator entityCacheKeyGenerator;
 	private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 	private readonly IDbContext dbContext;
-	private readonly IReferencingCollectionsService referencingCollectionsService;
+	private readonly IReferencingNavigationsService referencingNavigationsService;
 	private readonly IEntityKeyAccessor entityKeyAccessor;
 	private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingCollectionsService referencingCollectionsService)
+	public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingNavigationsService referencingNavigationsService)
 	{
 		this.cacheService = cacheService;
 		this.entityCacheSupportDecision = entityCacheSupportDecision;
@@ -51,7 +48,7 @@ public class EntityCacheManager : IEntityCacheManager
 		this.entityKeyAccessor = entityKeyAccessor;
 		this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 		this.dbContext = dbContext;
-		this.referencingCollectionsService = referencingCollectionsService;
+		this.referencingNavigationsService = referencingNavigationsService;
 	}
 
 	/// <inheritdoc />
@@ -202,10 +199,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 		foreach (var change in changes)
 		{
-			if (change.ClrType != null)
-			{
-				PrepareCacheInvalidation_EntityWithCollectionsInternal(change.ChangeType, change.Entity, typesToInvalidateGetAll, cacheKeysToInvalidate, entitiesToUpdateInCache);
-			}
+			PrepareCacheInvalidation_EntityWithCollectionsInternal(change, typesToInvalidateGetAll, cacheKeysToInvalidate, entitiesToUpdateInCache);
 		}
 
 		// invalidaci GetAll uděláme jen jednou pro každý typ (omezíme tak množství zpráv předávaných při případné distribuované invalidaci)
@@ -239,70 +233,70 @@ public class EntityCacheManager : IEntityCacheManager
 		});
 	}
 
-	private void PrepareCacheInvalidation_EntityWithCollectionsInternal(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateGetAll, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
+	private void PrepareCacheInvalidation_EntityWithCollectionsInternal(Change change, HashSet<Type> typesToInvalidateGetAll, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
 	{
-		Contract.Requires(entity != null);
-
 		// invalidate entity cache
-		Type entityType = entity.GetType();
 
-		object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
+		object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(change.Entity);
 
-		// entity se složeným klíčem (ManyToMany)
-		// TODO: Ověřit si, že jde o ManyToMany, nejen o složený klíč
+		// Entity se složeným klíčem (ManyToMany jakožto dekomponovaný vztah i skip navigation)
 		if (entityKeyValues.Length > 1)
 		{
 			// odebereme všechny prvky, které mohou mít objekt v kolekci
-			PrepareCacheInvalidation_CollectionsInternal(entityType, entity, cacheKeysToInvalidate);
+			PrepareCacheInvalidation_NavigationsInternal(change, cacheKeysToInvalidate);
 
-			// GetAll a GetEntity není nutné řešit, objekty reprezentující vztah ManyToMany se do cache nedostávají
+			// GetAll a GetEntity není nutné řešit, objekty reprezentující vztah asiciační třídu pro dekomponovaný vztah ManyToMany se do cache nedostávají
 		}
 		else
 		{
 			object entityKeyValue = entityKeyValues.Single();
 
-			PrepareCacheInvalidation_EntityInternal(changeType, entityType, entity, entityKeyValue, cacheKeysToInvalidate, entitiesToUpdateInCache);
-			PrepareCacheInvalidation_CollectionsInternal(entityType, entity, cacheKeysToInvalidate);
-			typesToInvalidateGetAll.Add(entityType);
+			PrepareCacheInvalidation_EntityInternal(change, entityKeyValue, cacheKeysToInvalidate, entitiesToUpdateInCache);
+			PrepareCacheInvalidation_NavigationsInternal(change, cacheKeysToInvalidate);
+
+			if (change.EntityType.ClrType != null)
+			{
+				typesToInvalidateGetAll.Add(change.EntityType.ClrType);
+			}
 		}
 	}
 
-	private void PrepareCacheInvalidation_EntityInternal(ChangeType changeType, Type entityType, object entity, object entityKey, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
+	private void PrepareCacheInvalidation_EntityInternal(Change change, object entityKey, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
-		if (entityCacheSupportDecision.ShouldCacheEntity(entity))
+		if (entityCacheSupportDecision.ShouldCacheEntity(change.Entity))
 		{
-			if (changeType != ChangeType.Insert)
+			if (change.ChangeType != ChangeType.Insert)
 			{
 				// nové entity nemohou být v cache, neinvalidujeme
-				cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetEntityCacheKey(entityType, entityKey));
+				cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetEntityCacheKey(change.EntityType.ClrType, entityKey));
 			}
 
-			if (changeType != ChangeType.Delete)
+			if (change.ChangeType != ChangeType.Delete)
 			{
 				// když už objekt máme, můžeme jej uložit do cache / aktualizovat v cache
-				entitiesToUpdateInCache.Add(entity);
+				entitiesToUpdateInCache.Add(change.Entity);
 			}
 		}
 	}
 
-	private void PrepareCacheInvalidation_CollectionsInternal(Type entityType, object entity, HashSet<string> cacheKeysToInvalidate)
+	private void PrepareCacheInvalidation_NavigationsInternal(Change change, HashSet<string> cacheKeysToInvalidate)
 	{
-		var referencingCollections = referencingCollectionsService.GetReferencingCollections(entityType);
-		foreach (var referencingCollection in referencingCollections)
+		var referencingNavigations = referencingNavigationsService.GetReferencingNavigations(change.EntityType);
+		foreach (var referencingNavigation in referencingNavigations)
 		{
 			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 			// Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
-			if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingCollection.EntityType, referencingCollection.CollectionPropertyName))
+			if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingNavigation.EntityType, referencingNavigation.NavigationPropertyName))
 			{
 				// získáme hodnotu cizího klíče
-				object foreignKeyValue = referencingCollection.GetForeignKeyValue(dbContext, entity);
+				object foreignKeyValue = referencingNavigation.GetForeignKeyValue(dbContext, change.Entity);
 				// pokud hodnotu cizího klíče máme, tedy máme kolekci, kterou potřebujeme invalidovat
 				if (foreignKeyValue != null)
 				{
 					// z hodnoty cizího klíče získáme klíč pro cachování property objektu s daným klíčem
 					// a odebereme jej z cache
-					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingCollection.EntityType, foreignKeyValue, referencingCollection.CollectionPropertyName));
+					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingNavigation.EntityType, foreignKeyValue, referencingNavigation.NavigationPropertyName));
 				}
 			}
 		}

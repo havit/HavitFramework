@@ -280,6 +280,86 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
+	public void EntityCacheManager_CacheInvalidation_RemovesCollectionWhenForeignKeyChanged()
+	{
+		// Arrange
+		CachingTestDbContext dbContext = new CachingTestDbContext();
+		Child child = new Child { Id = 1, ParentId = 2 };
+		dbContext.Attach(child);
+
+		Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+		cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
+		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
+		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
+
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		string collectionCacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
+
+		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+			dbContext: dbContext,
+			cacheService: cacheServiceMock.Object,
+			entityCacheKeyGenerator: entityCacheKeyGenerator);
+
+		Changes changes = new Changes(new[]
+		{
+			new FakeChange
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(Child),
+				EntityType = dbContext.Model.FindEntityType(typeof(Child)),
+				Entity = child,
+				OriginalValues = new Dictionary<string, object> { { nameof(Child.ParentId), 1 } } // původní hodnota je 1, nová 2 (viz child.ParentId)
+			}
+		});
+
+		// Act
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
+
+		// Assert
+		cacheServiceMock.Verify(m => m.Remove(collectionCacheKey), Times.Once);
+	}
+
+	[TestMethod]
+	public void EntityCacheManager_CacheInvalidation_DoesNotRemoveCollectionWhenForeignKeyNotChanged()
+	{
+		// Arrange
+		CachingTestDbContext dbContext = new CachingTestDbContext();
+		Child child = new Child { Id = 1, ParentId = 2 };
+		dbContext.Attach(child);
+
+		Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+		cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
+		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
+		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
+
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		string collectionCacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
+
+		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
+			dbContext: dbContext,
+			cacheService: cacheServiceMock.Object,
+			entityCacheKeyGenerator: entityCacheKeyGenerator);
+
+		Changes changes = new Changes(new[]
+		{
+			new FakeChange
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(Child),
+				EntityType = dbContext.Model.FindEntityType(typeof(Child)),
+				Entity = child,
+				OriginalValues = new Dictionary<string, object> { { nameof(Child.ParentId), 2 } } // původní i nová 2 (viz child.ParentId)
+			}
+		});
+
+		// Act
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
+
+		// Assert
+		cacheServiceMock.Verify(m => m.Remove(collectionCacheKey), Times.Never);
+	}
+
+	[TestMethod]
 	public void EntityCacheManager_CacheInvalidation_DoesNotRemoveEntityButRemovesAllKeysOnInsert()
 	{
 		// Arrange

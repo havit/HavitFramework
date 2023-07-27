@@ -129,6 +129,7 @@ public class EntityCacheManager : IEntityCacheManager
 		where TPropertyItem : class
 	{
 		// TODO JK: Implementovat podporu back-reference
+		// TODO JK: Implementovat podporu many-to-many
 
 		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
@@ -177,7 +178,7 @@ public class EntityCacheManager : IEntityCacheManager
 		where TPropertyItem : class
 	{
 		// TODO JK: Implementovat podporu back-reference
-
+		// TODO JK: Implementovat podporu many-to-many
 		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
 			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);

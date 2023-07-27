@@ -1,11 +1,8 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -36,7 +33,6 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 			// závislosti nemohou být použity
 			return null;
 		}
-
 
 		HashSet<string> cacheKeysToInvalidate = new HashSet<string>();
 		HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey = new HashSet<Type>();

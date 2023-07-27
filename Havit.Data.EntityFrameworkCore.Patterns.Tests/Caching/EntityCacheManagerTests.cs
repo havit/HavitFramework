@@ -261,7 +261,7 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Update,
 				ClrType = typeof(LoginAccount),
@@ -303,7 +303,7 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Insert,
 				ClrType = typeof(LoginAccount),
@@ -352,7 +352,7 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Delete,
 				ClrType = typeof(LoginAccount),
@@ -382,12 +382,14 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Delete,
 				ClrType = typeof(Membership),
 				EntityType = dbContext.Model.FindEntityType(typeof(Membership)),
-				Entity = membership }
+				Entity = membership,
+				OriginalValues = new Dictionary<string, object> { { nameof(Membership.LoginAccountId), 1 }, { nameof(Membership.RoleId), 1 } }
+			}
 		});
 
 		// Act
@@ -410,12 +412,13 @@ public class EntityCacheManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Update,
 				ClrType = typeof(Child),
 				EntityType = dbContext.Model.FindEntityType(typeof(Child)),
-				Entity = child
+				Entity = child,
+				OriginalValues = new Dictionary<string, object> { { nameof(Child.ParentId), 1 } }
 			}
 		});
 

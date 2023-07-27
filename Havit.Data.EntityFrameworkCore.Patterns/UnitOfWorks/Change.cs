@@ -6,12 +6,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 /// <summary>
 /// Reprezentuje změnu v datech.
 /// </summary>
-public class Change
+public abstract class Change
 {
 	/// <summary>
 	/// Typ změny.
 	/// </summary>
 	public required ChangeType ChangeType { get; init; }
+
+	/// <summary>
+	/// Měněná entita.
+	/// </summary>
+	public required object Entity { get; init; }
 
 	/// <summary>
 	/// Typ měněné entity, pokud jde o entitu.
@@ -28,7 +33,21 @@ public class Change
 	public required IEntityType EntityType { get; init; }
 
 	/// <summary>
-	/// Měněná entita.
+	/// Vrací aktuální hodnotu pro danou vlastnost.
 	/// </summary>
-	public required object Entity { get; init; }
+	/// <remarks>
+	/// Použití v abstraktní třídě umožňuje implementaci pomocí EF Core (EntityEntry)
+	/// a zároveň "fake" implementaci pro unit-testy.
+	/// </remarks>
+	public abstract object GetCurrentValue(IProperty property);
+
+	/// <summary>
+	/// Vrací původní hodnotu (hodnotu načtenou z db před provedením změny) pro danou vlastnost.
+	/// </summary>
+	/// <remarks>
+	/// Použití v abstraktní třídě umožňuje implementaci pomocí EF Core (EntityEntry)
+	/// a zároveň "fake" implementaci pro unit-testy.
+	/// </remarks>
+
+	public abstract object GetOriginalValue(IProperty property);
 }

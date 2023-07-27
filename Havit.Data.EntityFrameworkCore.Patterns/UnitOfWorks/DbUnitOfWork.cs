@@ -168,19 +168,21 @@ public class DbUnitOfWork : IUnitOfWork
 		// Zároveň tak zajistíme, že updateRegistrations nemají žádný průnik s entityEntries (.Entry) a tak můžeme níže bezpečně použít Concat bez rizika vzniku duplicit.
 		updateRegistrations.ExceptWith(modifiedEntities);
 
-		var changesFromEntries = entityEntries.Select(entry => new Change
+		var changesFromEntries = entityEntries.Select(entry => new EntityChange
 		{
 			ChangeType = (ChangeType)entry.State,
 			ClrType = entry.Metadata.ClrType,
 			EntityType = entry.Metadata,
+			EntityEntry = entry,
 			Entity = entry.Entity,
 		});
 
-		var changesFromUpdateRegistrations = updateRegistrations.Select(item => new Change()
+		var changesFromUpdateRegistrations = updateRegistrations.Select(item => new EntityChange()
 		{
 			ChangeType = ChangeType.Update,
 			ClrType = item.GetType(),
 			EntityType = DbContext.Model.FindEntityType(item.GetType()),
+			EntityEntry = DbContext.GetEntry(item, suppressDetectChanges: true),
 			Entity = item
 		});
 

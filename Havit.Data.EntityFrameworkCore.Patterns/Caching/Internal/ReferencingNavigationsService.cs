@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
@@ -80,8 +75,8 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 				return new ReferencingNavigation
 				{
 					EntityType = navigation.ForeignKey.PrincipalEntityType.ClrType,
-					GetForeignKeyValue = (dbContext2, entity) => dbContext2.GetEntry(entity, suppressDetectChanges: true).CurrentValues[property],
-					NavigationPropertyName = navigation.ForeignKey.PrincipalToDependent.Name
+					NavigationPropertyName = navigation.ForeignKey.PrincipalToDependent.Name,
+					SourceEntityForeignKeyProperty = property
 				};
 			}).ToList();
 	}
@@ -103,8 +98,8 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 				return new ReferencingNavigation
 				{
 					EntityType = navigation.Inverse.DeclaringEntityType.ClrType,
-					GetForeignKeyValue = (dbContext2, entity) => dbContext2.GetEntry(entity, suppressDetectChanges: true).CurrentValues[property],
-					NavigationPropertyName = navigation.Inverse.Name
+					NavigationPropertyName = navigation.Inverse.Name,
+					SourceEntityForeignKeyProperty = property
 				};
 			})
 			.ToList();
@@ -135,8 +130,8 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 				return new ReferencingNavigation
 				{
 					EntityType = skipNavigation.DeclaringEntityType.ClrType,
-					GetForeignKeyValue = (dbContext2, entity) => dbContext2.GetEntry(entity, suppressDetectChanges: true).CurrentValues[property],
-					NavigationPropertyName = skipNavigation.Name
+					NavigationPropertyName = skipNavigation.Name,
+					SourceEntityForeignKeyProperty = property
 				};
 			})
 			.ToList();

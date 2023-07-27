@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
@@ -137,7 +138,7 @@ public class LookupServiceBaseTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Insert,
 				ClrType = typeof(Uzivatel),
@@ -173,7 +174,7 @@ public class LookupServiceBaseTests
 		// provedeme aktualizaci uzivatele
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Update,
 				ClrType = typeof(Uzivatel),
@@ -204,7 +205,7 @@ public class LookupServiceBaseTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Delete,
 				ClrType = typeof(Uzivatel),

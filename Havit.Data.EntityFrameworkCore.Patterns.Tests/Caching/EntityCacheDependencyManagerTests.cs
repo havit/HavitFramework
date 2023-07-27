@@ -34,7 +34,7 @@ public class EntityCacheDependencyManagerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change
+			new FakeChange
 			{
 				ChangeType = ChangeType.Update,
 				ClrType = typeof(LoginAccount),

@@ -24,8 +24,8 @@ public class ReferencingNavigationsServiceTests
 
 		// Assert
 		Assert.AreEqual(1, referencingNavigations.Count);
-		Assert.IsTrue(referencingNavigations.Single().EntityType == typeof(Master));
-		Assert.IsTrue(referencingNavigations.Single().NavigationPropertyName == nameof(Master.Children));
+		Assert.AreSame(typeof(Master), referencingNavigations.Single().EntityType);
+		Assert.AreEqual(nameof(Master.Children), referencingNavigations.Single().NavigationPropertyName);
 	}
 
 	[TestMethod]
@@ -40,8 +40,8 @@ public class ReferencingNavigationsServiceTests
 
 		// Assert
 		Assert.AreEqual(1, referencingNavigations.Count);
-		Assert.IsTrue(referencingNavigations.Single().EntityType == typeof(ClassManyToManyA));
-		Assert.IsTrue(referencingNavigations.Single().NavigationPropertyName == nameof(ClassManyToManyA.Items));
+		Assert.AreSame(typeof(ClassManyToManyA), referencingNavigations.Single().EntityType);
+		Assert.AreEqual(nameof(ClassManyToManyA.Items), referencingNavigations.Single().NavigationPropertyName);
 	}
 
 	[TestMethod]
@@ -56,8 +56,8 @@ public class ReferencingNavigationsServiceTests
 
 		// Assert
 		Assert.AreEqual(1, referencingNavigations.Count);
-		Assert.IsTrue(referencingNavigations.Single().EntityType == typeof(ClassOneToOneA));
-		Assert.IsTrue(referencingNavigations.Single().NavigationPropertyName == nameof(ClassOneToOneA.ClassB));
+		Assert.AreSame(typeof(ClassOneToOneA), referencingNavigations.Single().EntityType);
+		Assert.AreEqual(nameof(ClassOneToOneA.ClassB), referencingNavigations.Single().NavigationPropertyName);
 	}
 
 	[TestMethod]

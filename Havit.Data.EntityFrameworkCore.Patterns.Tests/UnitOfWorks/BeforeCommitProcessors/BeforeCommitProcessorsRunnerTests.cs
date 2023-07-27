@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -30,9 +31,9 @@ public class BeforeCommitProcessorsRunnerTests
 
 		Changes changes = new Changes(new[]
 		{
-			new Change { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityInserting },
-			new Change { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityUpdating },
-			new Change { ChangeType = ChangeType.Delete, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityDeleting },
+			new FakeChange { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityInserting },
+			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityUpdating },
+			new FakeChange { ChangeType = ChangeType.Delete, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityDeleting },
 		});
 
 		// Act

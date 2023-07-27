@@ -254,9 +254,9 @@ public class EntityCacheManager : IEntityCacheManager
 			PrepareCacheInvalidation_EntityInternal(change, entityKeyValue, cacheKeysToInvalidate, entitiesToUpdateInCache);
 			PrepareCacheInvalidation_NavigationsInternal(change, cacheKeysToInvalidate);
 
-			if (change.EntityType.ClrType != null)
+			if (change.ClrType != null) // Podmínka je snad zbytečná. V běžném kodu není, jak by entita s nesloženým PK neměla ClrType.
 			{
-				typesToInvalidateGetAll.Add(change.EntityType.ClrType);
+				typesToInvalidateGetAll.Add(change.ClrType);
 			}
 		}
 	}
@@ -269,7 +269,7 @@ public class EntityCacheManager : IEntityCacheManager
 			if (change.ChangeType != ChangeType.Insert)
 			{
 				// nové entity nemohou být v cache, neinvalidujeme
-				cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetEntityCacheKey(change.EntityType.ClrType, entityKey));
+				cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetEntityCacheKey(change.ClrType, entityKey));
 			}
 
 			if (change.ChangeType != ChangeType.Delete)
@@ -289,14 +289,28 @@ public class EntityCacheManager : IEntityCacheManager
 			// Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
 			if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingNavigation.EntityType, referencingNavigation.NavigationPropertyName))
 			{
-				// získáme hodnotu cizího klíče
-				object foreignKeyValue = referencingNavigation.GetForeignKeyValue(dbContext, change.Entity);
-				// pokud hodnotu cizího klíče máme, tedy máme kolekci, kterou potřebujeme invalidovat
-				if (foreignKeyValue != null)
+				// získáme hodnotu cizího klíče				
+				object foreignKeyCurrentValue = change.GetCurrentValue(referencingNavigation.SourceEntityForeignKeyProperty);
+				object foreignKeyOriginalValue = change.GetOriginalValue(referencingNavigation.SourceEntityForeignKeyProperty);
+
+				bool wasChanged = !EqualityComparer<object>.Default.Equals(foreignKeyCurrentValue, foreignKeyOriginalValue);
+
+				// invalidujeme kolekci předchozího "vlastníka" pokud
+				// a) mažeme objekt
+				// b) aktualizujeme objekt a došlo k přepojení vztahu
+				// (a zároveň máme předchozí hodnotu)
+				if (((change.ChangeType == ChangeType.Delete) || ((change.ChangeType == ChangeType.Update) && wasChanged)) && (foreignKeyOriginalValue != null))
 				{
-					// z hodnoty cizího klíče získáme klíč pro cachování property objektu s daným klíčem
-					// a odebereme jej z cache
-					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingNavigation.EntityType, foreignKeyValue, referencingNavigation.NavigationPropertyName));
+					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingNavigation.EntityType, foreignKeyOriginalValue, referencingNavigation.NavigationPropertyName));
+				}
+
+				// invalidujeme kolekci aktuálního "vlastníka" pokud:
+				// a) zakládáme nový objekt
+				// b) aktualizujeme objekt a došlo k přepojení vztahu
+				// (a zároveň máme aktuální hodnotu)
+				if (((change.ChangeType == ChangeType.Insert) || ((change.ChangeType == ChangeType.Update) && wasChanged)) && (foreignKeyCurrentValue != null))
+				{
+					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingNavigation.EntityType, foreignKeyCurrentValue, referencingNavigation.NavigationPropertyName));
 				}
 			}
 		}

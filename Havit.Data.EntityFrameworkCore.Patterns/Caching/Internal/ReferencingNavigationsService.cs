@@ -122,6 +122,7 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 			// JK: Jenže EF nám vrací i skip navigace tříd, které se účastní vztahu, ale které nemají kolekci (a IsCollection je true).
 			// Nevím, jestli nerozumím dobře modelu, nebo je to bug EF Core. Předpokládám však, že kolekce musí být nějak definovaná v kódu jakožto property
 			// (neuvažujeme jiný způsob), tak si existenci property ověříme pomocí PropertyInfo.
+			// Další výskyt téhož: viz NavigationTargetTypeService.
 			.Where(foreignKey => foreignKey.GetReferencingSkipNavigations().Single().PropertyInfo != null)
 			.Select(foreignKey =>
 			{

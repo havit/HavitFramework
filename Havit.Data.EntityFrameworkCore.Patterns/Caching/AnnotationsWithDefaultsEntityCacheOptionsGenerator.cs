@@ -19,7 +19,7 @@ public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEnt
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService, AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options) : base(annotationsEntityCacheOptionsGeneratorStorage, dbContext, collectionTargetTypeService)
+	public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetTypeService collectionTargetTypeService, AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options) : base(annotationsEntityCacheOptionsGeneratorStorage, dbContext, collectionTargetTypeService)
 	{
 		this.absoluteExpiration = options.AbsoluteExpiration;
 		this.slidingExpiration = options.SlidingExpiration;

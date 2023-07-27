@@ -12,16 +12,16 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 {
 	private readonly IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage;
 	private readonly IDbContext dbContext;
-	private readonly ICollectionTargetTypeService collectionTargetTypeService;
+	private readonly INavigationTargetTypeService navigationTargetTypeService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
+	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, INavigationTargetTypeService collectionTargetTypeService)
 	{
 		this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
 		this.dbContext = dbContext;
-		this.collectionTargetTypeService = collectionTargetTypeService;
+		this.navigationTargetTypeService = collectionTargetTypeService;
 	}
 
 	/// <inheritdoc />
@@ -39,10 +39,25 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	/// <inheritdoc />
 	public virtual bool ShouldCacheEntityTypeNavigation(Type entityType, string propertyName)
 	{
-		// Tohle může fungovat pro reference, backreference & kolekce one-to-many
-		// Nebude to nejspíše fungovat dobře pro ManyToMany kolekce
-		// TODO JK: Dořešit strategii pro many-to-many (a asi i one-to-one...).
-		return ShouldCacheEntityType(collectionTargetTypeService.GetCollectionTargetType(entityType, propertyName));
+		// 1) kolekce one-to-many (např. Invoice.Items)
+		// - Kolekce Invoice.Items má být cachována, pokud jsou cachovány InvoiceItems.
+		// - Při vybavování dat z cache pro Invoice.Items je důležité, aby byly v cache k dispozici InvoiceItems.
+
+		// 2) kolekce one-to-many reprezentující dekomponovaný vztak many-to-many (např. User.Memberships)
+		// - Je jen specifické použití prvního bodu, platí tedy totéž:
+		// - Kolekce má být cachována, pokud jsou cachovány Memberships.
+		// - Při vybavování dat z cache pro User.Memberships je důležité, aby byly v cache k dispozici Memberships.		
+
+		// 3) kolekce many-to-many (např. User.Roles)
+		// - Je jen specifické použití prvního bodu, platí tedy totéž.
+		// - Jen je mezi entitami ještě "neviditelná" (SkipNavigation) entita.
+		// - Při vybavování dat z cache pro User.Roles je důležité, aby byly v cache k dispozici Roles.
+		// - SkipNavigation entitu v DbDataloaderu nějak konstruujeme...
+
+		// 4) reference one-to-one (backreference)
+		// - Opet platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
+
+		return ShouldCacheEntityType(navigationTargetTypeService.GetNavigationTargetType(entityType, propertyName));
 	}
 
 	/// <inheritdoc />

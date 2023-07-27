@@ -28,7 +28,7 @@ public static class CachingTestHelper
 
 		if (entityCacheOptionsGenerator == null)
 		{
-			entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new CollectionTargetTypeService(new CollectionTargetTypeStorage(), dbContext));
+			entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new NavigationTargetTypeService(new NavigationTargetTypeStorage(), dbContext));
 		}
 
 		if (entityCacheKeyGenerator == null)

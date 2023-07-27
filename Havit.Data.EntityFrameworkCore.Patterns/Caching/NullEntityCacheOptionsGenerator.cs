@@ -1,13 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
-using Havit.Services;
-using Havit.Services.Caching;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
+﻿using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -24,7 +15,7 @@ public class NullEntityCacheOptionsGenerator : IEntityCacheOptionsGenerator
 	}
 
 	/// <inheritdoc />
-	public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
+	public CacheOptions GetNavigationCacheOptions<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
 		return null;

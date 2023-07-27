@@ -1,9 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -33,7 +29,7 @@ public class EntityCacheKeyGenerator : IEntityCacheKeyGenerator
 	}
 
 	/// <inheritdoc />
-	public string GetCollectionCacheKey(Type entityType, object key, string propertyName)
+	public string GetNavigationCacheKey(Type entityType, object key, string propertyName)
 	{
 		return GetValueForEntity(entityType) + key.ToString() + "|" + propertyName;
 	}

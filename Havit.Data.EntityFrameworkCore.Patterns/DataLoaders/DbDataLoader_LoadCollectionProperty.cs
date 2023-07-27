@@ -1,14 +1,9 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+﻿using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
@@ -99,7 +94,7 @@ public partial class DbDataLoader
 		entitiesToLoadQuery = new List<TEntity>(entitiesToLoad.Count);
 		foreach (var entityToLoad in entitiesToLoad)
 		{
-			if (entityCacheManager.TryGetCollection<TEntity, TPropertyItem>(entityToLoad, propertyName))
+			if (entityCacheManager.TryGetNavigation<TEntity, TPropertyItem>(entityToLoad, propertyName))
 			{
 				// NOOP
 			}
@@ -145,7 +140,7 @@ public partial class DbDataLoader
 		// pozor, property zde ještě může být null
 		foreach (TEntity loadedEntity in loadedEntities)
 		{
-			entityCacheManager.StoreCollection<TEntity, TPropertyItem>(loadedEntity, propertyName);
+			entityCacheManager.StoreNavigation<TEntity, TPropertyItem>(loadedEntity, propertyName);
 		}
 	}
 

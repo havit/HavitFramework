@@ -1,16 +1,7 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
-using Havit.Services;
-using Havit.Services.Caching;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -46,15 +37,18 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	}
 
 	/// <inheritdoc />
-	public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
+	public virtual bool ShouldCacheEntityTypeNavigation(Type entityType, string propertyName)
 	{
+		// Tohle může fungovat pro reference, backreference & kolekce one-to-many
+		// Nebude to nejspíše fungovat dobře pro ManyToMany kolekce
+		// TODO JK: Dořešit strategii pro many-to-many (a asi i one-to-one...).
 		return ShouldCacheEntityType(collectionTargetTypeService.GetCollectionTargetType(entityType, propertyName));
 	}
 
 	/// <inheritdoc />
-	public virtual bool ShouldCacheEntityCollection(object entity, string propertyName)
+	public virtual bool ShouldCacheEntityNavigation(object entity, string propertyName)
 	{
-		return ShouldCacheEntityTypeCollection(entity.GetType(), propertyName);
+		return ShouldCacheEntityTypeNavigation(entity.GetType(), propertyName);
 	}
 
 	/// <inheritdoc />

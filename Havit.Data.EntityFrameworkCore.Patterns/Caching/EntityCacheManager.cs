@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+﻿using System.Data;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Metadata;
@@ -127,13 +124,15 @@ public class EntityCacheManager : IEntityCacheManager
 	}
 
 	/// <inheritdoc />
-	public bool TryGetCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+	public bool TryGetNavigation<TEntity, TPropertyItem>(TEntity entity, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		if (entityCacheSupportDecision.ShouldCacheEntityCollection(entity, propertyName))
+		// TODO JK: Implementovat podporu back-reference
+
+		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
+			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
 			if (cacheService.TryGet(cacheKey, out object cacheEntityPropertyMembersKeys))
 			{
@@ -173,19 +172,21 @@ public class EntityCacheManager : IEntityCacheManager
 	}
 
 	/// <inheritdoc />
-	public void StoreCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+	public void StoreNavigation<TEntity, TPropertyItem>(TEntity entity, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		if (entityCacheSupportDecision.ShouldCacheEntityCollection(entity, propertyName))
+		// TODO JK: Implementovat podporu back-reference
+
+		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
+			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
 			var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
 			var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
 
 			object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
-			cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetCollectionCacheOptions(entity, propertyName));
+			cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 		}
 	}
 
@@ -199,7 +200,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 		foreach (var change in changes)
 		{
-			PrepareCacheInvalidation_EntityWithCollectionsInternal(change, typesToInvalidateGetAll, cacheKeysToInvalidate, entitiesToUpdateInCache);
+			PrepareCacheInvalidation_EntityWithNavigationsInternal(change, typesToInvalidateGetAll, cacheKeysToInvalidate, entitiesToUpdateInCache);
 		}
 
 		// invalidaci GetAll uděláme jen jednou pro každý typ (omezíme tak množství zpráv předávaných při případné distribuované invalidaci)
@@ -233,7 +234,7 @@ public class EntityCacheManager : IEntityCacheManager
 		});
 	}
 
-	private void PrepareCacheInvalidation_EntityWithCollectionsInternal(Change change, HashSet<Type> typesToInvalidateGetAll, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
+	private void PrepareCacheInvalidation_EntityWithNavigationsInternal(Change change, HashSet<Type> typesToInvalidateGetAll, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
 	{
 		// invalidate entity cache
 
@@ -287,7 +288,7 @@ public class EntityCacheManager : IEntityCacheManager
 		{
 			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 			// Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
-			if (entityCacheSupportDecision.ShouldCacheEntityTypeCollection(referencingNavigation.EntityType, referencingNavigation.NavigationPropertyName))
+			if (entityCacheSupportDecision.ShouldCacheEntityTypeNavigation(referencingNavigation.EntityType, referencingNavigation.NavigationPropertyName))
 			{
 				// získáme hodnotu cizího klíče				
 				object foreignKeyCurrentValue = change.GetCurrentValue(referencingNavigation.SourceEntityForeignKeyProperty);
@@ -301,7 +302,7 @@ public class EntityCacheManager : IEntityCacheManager
 				// (a zároveň máme předchozí hodnotu)
 				if (((change.ChangeType == ChangeType.Delete) || ((change.ChangeType == ChangeType.Update) && wasChanged)) && (foreignKeyOriginalValue != null))
 				{
-					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingNavigation.EntityType, foreignKeyOriginalValue, referencingNavigation.NavigationPropertyName));
+					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetNavigationCacheKey(referencingNavigation.EntityType, foreignKeyOriginalValue, referencingNavigation.NavigationPropertyName));
 				}
 
 				// invalidujeme kolekci aktuálního "vlastníka" pokud:
@@ -310,7 +311,7 @@ public class EntityCacheManager : IEntityCacheManager
 				// (a zároveň máme aktuální hodnotu)
 				if (((change.ChangeType == ChangeType.Insert) || ((change.ChangeType == ChangeType.Update) && wasChanged)) && (foreignKeyCurrentValue != null))
 				{
-					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetCollectionCacheKey(referencingNavigation.EntityType, foreignKeyCurrentValue, referencingNavigation.NavigationPropertyName));
+					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetNavigationCacheKey(referencingNavigation.EntityType, foreignKeyCurrentValue, referencingNavigation.NavigationPropertyName));
 				}
 			}
 		}

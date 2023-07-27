@@ -1,7 +1,4 @@
 ﻿using Havit.Services.Caching;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -19,9 +16,9 @@ public interface IEntityCacheOptionsGenerator
 		where TEntity : class;
 
 	/// <summary>
-	/// Vrací cache options pro cachování kolekce dané entity.
+	/// Vrací cache options pro cachování kolekce nebo one-to-one "back-reference" dané entity.
 	/// </summary>
-	CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
+	CacheOptions GetNavigationCacheOptions<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class;
 
 	/// <summary>

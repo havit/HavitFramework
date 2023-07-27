@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
 /// Služba pro poskytnutí stringových klíčů do cache.
@@ -18,9 +12,9 @@ public interface IEntityCacheKeyGenerator
 	string GetEntityCacheKey(Type entityType, object key);
 
 	/// <summary>
-	/// Vrací klíč pro cachování prvků kolekce dané entity.
+	/// Vrací klíč pro cachování prvků kolekce nebo one-to-one "back-reference" dané entity.
 	/// </summary>
-	string GetCollectionCacheKey(Type entityType, object key, string propertyName);
+	string GetNavigationCacheKey(Type entityType, object key, string propertyName);
 
 	/// <summary>
 	/// Vrací klíč pro cachování klíčů všech entit daného typu.

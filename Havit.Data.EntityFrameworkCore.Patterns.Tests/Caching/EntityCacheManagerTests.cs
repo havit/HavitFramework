@@ -170,7 +170,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenario_OneToMany_StoreCollection_And_TryGetCollection()
+	public void EntityCacheManager_Scenario_OneToMany_StoreNavigation_And_TryGetNavigation()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -193,10 +193,10 @@ public class EntityCacheManagerTests
 		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
 		// Act
-		entityCacheManager1.StoreCollection<Master, Child>(master, nameof(Master.ChildrenIncludingDeleted));
+		entityCacheManager1.StoreNavigation<Master, Child>(master, nameof(Master.ChildrenIncludingDeleted));
 		entityCacheManager1.StoreEntity(child1);
 		entityCacheManager1.StoreEntity(child2);
-		bool success = entityCacheManager2.TryGetCollection<Master, Child>(masterResult, nameof(Master.ChildrenIncludingDeleted));
+		bool success = entityCacheManager2.TryGetNavigation<Master, Child>(masterResult, nameof(Master.ChildrenIncludingDeleted));
 
 		// Assert
 		Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
@@ -207,7 +207,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenario_ManyToMany_StoreCollection_And_TryGetCollection()
+	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -227,8 +227,8 @@ public class EntityCacheManagerTests
 		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
 		// Act
-		entityCacheManager1.StoreCollection<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
-		bool success = entityCacheManager2.TryGetCollection<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
+		entityCacheManager1.StoreNavigation<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
+		bool success = entityCacheManager2.TryGetNavigation<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
 
 		// Assert
 		Assert.IsTrue(success);
@@ -280,7 +280,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_CacheInvalidation_RemovesCollectionWhenForeignKeyChanged()
+	public void EntityCacheManager_CacheInvalidation_RemovesNavigationFromCacheWhenForeignKeyChanged()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -293,7 +293,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
 		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
-		string collectionCacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
+		string collectionCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
 			dbContext: dbContext,
@@ -320,7 +320,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_CacheInvalidation_DoesNotRemoveCollectionWhenForeignKeyNotChanged()
+	public void EntityCacheManager_CacheInvalidation_DoesNotRemoveNavigationFromCacheWhenForeignKeyNotChanged()
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
@@ -333,7 +333,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
 		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
-		string collectionCacheKey = entityCacheKeyGenerator.GetCollectionCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
+		string navigationCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
 			dbContext: dbContext,
@@ -356,7 +356,7 @@ public class EntityCacheManagerTests
 		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
 
 		// Assert
-		cacheServiceMock.Verify(m => m.Remove(collectionCacheKey), Times.Never);
+		cacheServiceMock.Verify(m => m.Remove(navigationCacheKey), Times.Never);
 	}
 
 	[TestMethod]

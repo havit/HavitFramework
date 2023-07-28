@@ -1,7 +1,8 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
 using Havit.Services.TestHelpers.Caching;
@@ -180,8 +181,7 @@ public class EntityCacheManagerTests
 		Master master = new Master { Id = 1 };
 		Child child1 = new Child { Id = 100, ParentId = 1, Parent = master };
 		Child child2 = new Child { Id = 101, ParentId = 1, Parent = master, Deleted = DateTime.Now };
-		master.ChildrenIncludingDeleted.Add(child1);
-		master.ChildrenIncludingDeleted.Add(child2);
+		master.Children = new List<Child> { child1, child2 };
 		dbContext1.Attach(master);
 
 		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
@@ -193,17 +193,17 @@ public class EntityCacheManagerTests
 		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
 		// Act
-		entityCacheManager1.StoreNavigation<Master, Child>(master, nameof(Master.ChildrenIncludingDeleted));
+		entityCacheManager1.StoreNavigation<Master, Child>(master, nameof(Master.Children));
 		entityCacheManager1.StoreEntity(child1);
 		entityCacheManager1.StoreEntity(child2);
-		bool success = entityCacheManager2.TryGetNavigation<Master, Child>(masterResult, nameof(Master.ChildrenIncludingDeleted));
+		bool success = entityCacheManager2.TryGetNavigation<Master, Child>(masterResult, nameof(Master.Children));
 
 		// Assert
 		Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
-		Assert.AreEqual(master.ChildrenIncludingDeleted.Count, masterResult.ChildrenIncludingDeleted.Count);
-		Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child1.Id));
-		Assert.IsTrue(masterResult.ChildrenIncludingDeleted.Any(child => child.Id == child2.Id));
-		Assert.AreEqual(4, master.ChildrenIncludingDeleted.Union(masterResult.ChildrenIncludingDeleted).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
+		Assert.AreEqual(master.Children.Count, masterResult.Children.Count);
+		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child1.Id));
+		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child2.Id));
+		Assert.AreEqual(4, master.Children.Union(masterResult.Children).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
 	}
 
 	[TestMethod]
@@ -332,7 +332,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
 		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
-		string collectionCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
+		string collectionCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.Children));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
 			dbContext: dbContext,
@@ -372,7 +372,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
 		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
-		string navigationCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
+		string navigationCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.Children));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
 			dbContext: dbContext,

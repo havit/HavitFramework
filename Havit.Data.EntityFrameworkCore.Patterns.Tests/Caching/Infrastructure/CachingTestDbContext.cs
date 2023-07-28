@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,17 +24,22 @@ public class CachingTestDbContext : DbContext
 		base.CustomizeModelCreating(modelBuilder);
 
 		// Entity
+
+		// OneToOne
+		modelBuilder.Entity<ClassOneToOneA>();
+		modelBuilder.Entity<ClassOneToOneB>().HasOne(classB => classB.ClassA).WithOne(c => c.ClassB);
+
+		// OneToMany
+		modelBuilder.Entity<Master>();
+		modelBuilder.Entity<Child>();
+
+		// ManyToMany as two OneToMany
 		modelBuilder.Entity<LoginAccount>();
 		modelBuilder.Entity<Role>();
-
-		// 1:N
-		modelBuilder.Entity<Master>().Ignore(master => master.Children);
-		modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
-
-		// M:N
 		modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
 
-		// 1:1
-		modelBuilder.Entity<ClassB>().HasOne(classB => classB.ClassA).WithOne(c => c.ClassB);
+		// ManyToMany
+		modelBuilder.Entity<ClassManyToManyA>().HasMany(classA => classA.Items).WithMany().UsingEntity("ClassManyToManyA_Items");
+		modelBuilder.Entity<ClassManyToManyB>();
 	}
 }

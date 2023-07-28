@@ -1,9 +1,9 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.OneToOne;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.OneToMany;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.ManyToMany;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.ManyToManyAsTwoOneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal;
 
@@ -15,7 +15,7 @@ public class NavigationTargetServiceTests
 	{
 		// Arrange
 		var navigationTargetTypeStorage = new NavigationTargetStorage();
-		var dbContext = new ReferencingNavigationsTestDbContext();
+		var dbContext = new CachingTestDbContext();
 
 		var navigationTargetService = new NavigationTargetService(navigationTargetTypeStorage, dbContext);
 

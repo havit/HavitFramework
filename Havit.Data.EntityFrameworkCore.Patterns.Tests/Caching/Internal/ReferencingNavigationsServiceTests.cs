@@ -1,10 +1,9 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.ManyToMany;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.ManyToManyAsTwoOneToMany;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.OneToMany;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal.Infrastructure.Model.OneToOne;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Internal;
 
@@ -15,7 +14,7 @@ public class ReferencingNavigationsServiceTests
 	public void ReferencingNavigationsService_GetReferencingNavigations_ContainsOneToManyCollection()
 	{
 		// Arrange
-		ReferencingNavigationsTestDbContext dbContext = new ReferencingNavigationsTestDbContext();
+		CachingTestDbContext dbContext = new CachingTestDbContext();
 		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
 
 		// Act		
@@ -34,7 +33,7 @@ public class ReferencingNavigationsServiceTests
 	public void ReferencingNavigationsService_GetReferencingNavigations_ContainsManyToManyCollection()
 	{
 		// Arrange
-		ReferencingNavigationsTestDbContext dbContext = new ReferencingNavigationsTestDbContext();
+		CachingTestDbContext dbContext = new CachingTestDbContext();
 		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
 
 		// Act
@@ -53,7 +52,7 @@ public class ReferencingNavigationsServiceTests
 	public void ReferencingNavigationsService_GetReferencingNavigations_ContainOneToOneNavigations()
 	{
 		// Arrange
-		ReferencingNavigationsTestDbContext dbContext = new ReferencingNavigationsTestDbContext();
+		CachingTestDbContext dbContext = new CachingTestDbContext();
 		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
 
 		// Act
@@ -72,7 +71,7 @@ public class ReferencingNavigationsServiceTests
 	public void ReferencingNavigationsService_GetReferencingNavigations_DoesNotContainReferences()
 	{
 		// Arrange
-		ReferencingNavigationsTestDbContext dbContext = new ReferencingNavigationsTestDbContext();
+		CachingTestDbContext dbContext = new CachingTestDbContext();
 		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
 
 		// Act

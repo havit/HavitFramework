@@ -2,7 +2,7 @@
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
 using Moq;

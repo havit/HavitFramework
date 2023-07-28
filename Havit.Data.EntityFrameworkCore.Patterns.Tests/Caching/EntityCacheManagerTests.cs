@@ -1,8 +1,10 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToMany;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
 using Havit.Services.TestHelpers.Caching;
@@ -240,40 +242,63 @@ public class EntityCacheManagerTests
 	[TestMethod]
 	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation()
 	{
-		throw new NotImplementedException();
-		//// Arrange
-		//ICacheService cacheService = new DictionaryCacheService();
+		// Arrange
+		ICacheService cacheService = new DictionaryCacheService();
 
-		//CachingTestDbContext dbContext1 = new CachingTestDbContext();
+		CachingTestDbContext dbContext1 = new CachingTestDbContext();
 
-		//LoginAccount loginAccount = new LoginAccount { Id = 1 };
-		//Membership membership = new Membership { LoginAccountId = 1, RoleId = 1234 };
-		//loginAccount.Memberships = new List<Membership> { membership };
+		ClassManyToManyA classManyToManyA = new ClassManyToManyA { Id = 1 };
+		ClassManyToManyB classManyToManyB = new ClassManyToManyB { Id = 2 };
+		classManyToManyA.Items = new List<ClassManyToManyB> { classManyToManyB };
 
-		//var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
+		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
-		//CachingTestDbContext dbContext2 = new CachingTestDbContext();
-		//LoginAccount loginAccountResult = new LoginAccount { Id = 1 };
-		//dbContext2.Attach(loginAccountResult);
+		CachingTestDbContext dbContext2 = new CachingTestDbContext();
+		ClassManyToManyA classManyToManyAResult = new ClassManyToManyA { Id = 1 };
+		dbContext2.Attach(classManyToManyAResult);
 
-		//var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
+		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
-		//// Act
-		//entityCacheManager1.StoreNavigation<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
-		//bool success = entityCacheManager2.TryGetNavigation<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
+		// Act
+		entityCacheManager1.StoreNavigation<ClassManyToManyA, ClassManyToManyB>(classManyToManyA, nameof(ClassManyToManyA.Items));
+		bool success = entityCacheManager2.TryGetNavigation<ClassManyToManyA, ClassManyToManyB>(classManyToManyAResult, nameof(ClassManyToManyA.Items));
 
-		//// Assert
-		//Assert.IsTrue(success);
-		//// TODO
-		//Assert.AreEqual(1, loginAccountResult.Memberships.Count);
-		//Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
-		//Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
+		// Assert
+		Assert.IsTrue(success);
+		Assert.AreEqual(1, classManyToManyAResult.Items.Count);
+		Assert.AreEqual(2, classManyToManyAResult.Items.Single().Id);
+		Assert.AreNotSame(classManyToManyB, classManyToManyAResult.Items.Single());
 	}
 
 	[TestMethod]
 	public void EntityCacheManager_Scenario_OneToOne_StoreNavigation_And_TryGetNavigation()
 	{
-		throw new NotImplementedException();
+		// Arrange
+		ICacheService cacheService = new DictionaryCacheService();
+
+		CachingTestDbContext dbContext1 = new CachingTestDbContext();
+
+		ClassOneToOneA classOneToOneA = new ClassOneToOneA { Id = 1 };
+		ClassOneToOneB classOneToOneB = new ClassOneToOneB { Id = 2, ClassAId = 1 };
+		classOneToOneA.ClassB = classOneToOneB;
+
+		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
+
+		CachingTestDbContext dbContext2 = new CachingTestDbContext();
+		ClassOneToOneA classOneToOneAResult = new ClassOneToOneA { Id = 1 };
+		dbContext2.Attach(classOneToOneAResult);
+
+		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
+
+		// Act
+		entityCacheManager1.StoreNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneA, nameof(ClassOneToOneA.ClassB));
+		bool success = entityCacheManager2.TryGetNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneAResult, nameof(ClassOneToOneA.ClassB));
+
+		// Assert
+		Assert.IsTrue(success);
+		Assert.IsNotNull(classOneToOneAResult.ClassB);
+		Assert.AreEqual(2, classOneToOneAResult.ClassB.Id);
+		Assert.AreNotSame(classOneToOneB, classOneToOneAResult.ClassB);
 	}
 
 	[TestMethod]

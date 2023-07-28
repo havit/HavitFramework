@@ -33,7 +33,7 @@ public static class CachingTestHelper
 
 		if (entityCacheKeyGenerator == null)
 		{
-			entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+			entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
 		}
 
 		if (cacheService == null)

@@ -1,9 +1,7 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -13,22 +11,23 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenerator
 {
 	private readonly ICacheService cacheService;
+	private readonly IEntityCacheKeyPrefixService entityCacheKeyPrefixService;
 	private static readonly object staticCacheValue = new object();
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public EntityCacheDependencyKeyGenerator(ICacheService cacheService)
+	public EntityCacheDependencyKeyGenerator(ICacheService cacheService, IEntityCacheKeyPrefixService entityCacheKeyPrefixService)
 	{
 		this.cacheService = cacheService;
+		this.entityCacheKeyPrefixService = entityCacheKeyPrefixService;
 	}
 
 	/// <inheritdoc />
 	public string GetAnySaveCacheDependencyKey(Type entityType, bool ensureInCache = true)
 	{
-		// TODO: Zkrátit názvy klíčů ala EntityCacheKeyGenerator
 		EnsureSupportsCacheDependencies();
-		string dependencyKey = entityType + "|AnySave";
+		string dependencyKey = entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + "AnySave";
 		if (ensureInCache)
 		{
 			EnsureInCache(dependencyKey);
@@ -39,9 +38,8 @@ public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenera
 	/// <inheritdoc />
 	public string GetSaveCacheDependencyKey(Type entityType, object key, bool ensureInCache = true)
 	{
-		// TODO: Zkrátit názvy klíčů ala EntityCacheKeyGenerator
 		EnsureSupportsCacheDependencies();
-		string dependencyKey = entityType + "|Save|ID=" + key.ToString();
+		string dependencyKey = entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + "Save|" + key.ToString();
 		if (ensureInCache)
 		{
 			EnsureInCache(dependencyKey);

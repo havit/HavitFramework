@@ -1,10 +1,10 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
 using Havit.Services.TestHelpers.Caching;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
@@ -250,7 +250,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
 		string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 		string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
@@ -292,7 +292,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
 		string collectionCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
@@ -332,7 +332,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
 		string navigationCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.ChildrenIncludingDeleted));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
@@ -372,7 +372,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
 		string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 		string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
@@ -421,7 +421,7 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), dbContext);
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
 		string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 		string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 

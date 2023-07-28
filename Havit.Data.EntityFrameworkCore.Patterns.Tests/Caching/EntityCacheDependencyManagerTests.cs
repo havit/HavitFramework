@@ -1,10 +1,10 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
@@ -26,11 +26,13 @@ public class EntityCacheDependencyManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(true);
 
-		EntityCacheDependencyKeyGenerator entityCacheDependencyManager = new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object);
+		var entityCacheKeyPrefixService = new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext);
+
+		EntityCacheDependencyKeyGenerator entityCacheDependencyManager = new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object, entityCacheKeyPrefixService);
 		string saveCacheDependencyKey = entityCacheDependencyManager.GetSaveCacheDependencyKey(typeof(LoginAccount), loginAccount.Id);
 		string anySaveCacheDependencyKey = entityCacheDependencyManager.GetAnySaveCacheDependencyKey(typeof(LoginAccount));
 
-		EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+		EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object, entityCacheKeyPrefixService), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 
 		Changes changes = new Changes(new[]
 		{

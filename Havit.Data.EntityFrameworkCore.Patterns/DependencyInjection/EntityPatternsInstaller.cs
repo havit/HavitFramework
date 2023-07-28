@@ -109,8 +109,8 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
 		services.TryAddTransient<IReferencingNavigationsService, ReferencingNavigationsService>();
 		services.TryAddSingleton<IReferencingNavigationsStorage, ReferencingNavigationsStorage>();
-		services.TryAddTransient<INavigationTargetTypeService, NavigationTargetTypeService>();
-		services.TryAddSingleton<INavigationTargetTypeStorage, NavigationTargetTypeStorage>();
+		services.TryAddTransient<INavigationTargetService, NavigationTargetService>();
+		services.TryAddSingleton<INavigationTargetStorage, NavigationTargetStorage>();
 		services.TryAddTransient<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
 		services.TryAddSingleton<IEntityCacheKeyPrefixStorage, EntityCacheKeyPrefixStorage>();
 		services.TryAddSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();

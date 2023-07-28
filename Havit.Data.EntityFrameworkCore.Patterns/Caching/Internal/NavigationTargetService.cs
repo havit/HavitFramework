@@ -5,30 +5,30 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 /// <inheritdoc />
-public class NavigationTargetTypeService : INavigationTargetTypeService
+public class NavigationTargetService : INavigationTargetService
 {
-	private readonly INavigationTargetTypeStorage navigationTargetTypeStorage;
+	private readonly INavigationTargetStorage navigationTargetStorage;
 	private readonly IDbContext dbContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public NavigationTargetTypeService(INavigationTargetTypeStorage navigationTargetTypeStorage, IDbContext dbContext)
+	public NavigationTargetService(INavigationTargetStorage navigationTargetStorage, IDbContext dbContext)
 	{
-		this.navigationTargetTypeStorage = navigationTargetTypeStorage;
+		this.navigationTargetStorage = navigationTargetStorage;
 		this.dbContext = dbContext;
 	}
 
 	/// <inheritdoc />
-	public Type GetNavigationTargetType(Type type, string propertyName)
+	public NavigationTarget GetNavigationTarget(Type type, string propertyName)
 	{
-		if (navigationTargetTypeStorage.Value == null)
+		if (navigationTargetStorage.Value == null)
 		{
-			lock (navigationTargetTypeStorage)
+			lock (navigationTargetStorage)
 			{
-				if (navigationTargetTypeStorage.Value == null)
+				if (navigationTargetStorage.Value == null)
 				{
-					navigationTargetTypeStorage.Value = dbContext.Model.GetApplicationEntityTypes()
+					navigationTargetStorage.Value = dbContext.Model.GetApplicationEntityTypes()
 					.SelectMany(entityType =>
 						entityType.GetNavigations().Cast<INavigationBase>()
 							.Concat(entityType.GetSkipNavigations()
@@ -36,12 +36,16 @@ public class NavigationTargetTypeService : INavigationTargetTypeService
 								.Cast<INavigationBase>()))
 					.ToDictionary(
 						navigation => new TypePropertyName(navigation.DeclaringEntityType.ClrType, navigation.Name),
-						navigation => navigation.TargetEntityType.ClrType);
+						navigation => new NavigationTarget
+						{
+							Type = navigation.TargetEntityType.ClrType,
+							IsCollection = navigation.IsCollection
+						});
 				}
 			}
 		}
 
-		if (navigationTargetTypeStorage.Value.TryGetValue(new TypePropertyName(type, propertyName), out Type result))
+		if (navigationTargetStorage.Value.TryGetValue(new TypePropertyName(type, propertyName), out NavigationTarget result))
 		{
 			return result;
 		}

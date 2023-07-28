@@ -14,16 +14,16 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 {
 	private readonly IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage;
 	private readonly IDbContext dbContext;
-	private readonly INavigationTargetTypeService collectionTargetTypeService;
+	private readonly INavigationTargetService navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetTypeService collectionTargetTypeService)
+	public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
 	{
 		this.annotationsEntityCacheOptionsGeneratorStorage = annotationsEntityCacheOptionsGeneratorStorage;
 		this.dbContext = dbContext;
-		this.collectionTargetTypeService = collectionTargetTypeService;
+		this.navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -37,7 +37,7 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 	public CacheOptions GetNavigationCacheOptions<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return GetValueForEntity(collectionTargetTypeService.GetNavigationTargetType(typeof(TEntity), propertyName));
+		return GetValueForEntity(navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName).Type);
 	}
 
 	/// <inheritdoc />

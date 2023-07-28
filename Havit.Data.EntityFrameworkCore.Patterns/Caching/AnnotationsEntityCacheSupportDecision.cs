@@ -12,16 +12,16 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 {
 	private readonly IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage;
 	private readonly IDbContext dbContext;
-	private readonly INavigationTargetTypeService navigationTargetTypeService;
+	private readonly INavigationTargetService navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, INavigationTargetTypeService collectionTargetTypeService)
+	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
 	{
 		this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
 		this.dbContext = dbContext;
-		this.navigationTargetTypeService = collectionTargetTypeService;
+		this.navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -57,7 +57,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 		// 4) reference one-to-one (backreference)
 		// - Opet platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
 
-		return ShouldCacheEntityType(navigationTargetTypeService.GetNavigationTargetType(entityType, propertyName));
+		return ShouldCacheEntityType(navigationTargetService.GetNavigationTarget(entityType, propertyName).Type);
 	}
 
 	/// <inheritdoc />

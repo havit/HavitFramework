@@ -30,13 +30,14 @@ public class EntityCacheManager : IEntityCacheManager
 	private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
 	private readonly IDbContext dbContext;
 	private readonly IReferencingNavigationsService referencingNavigationsService;
+	private readonly INavigationTargetService navigationTargetService;
 	private readonly IEntityKeyAccessor entityKeyAccessor;
 	private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingNavigationsService referencingNavigationsService)
+	public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingNavigationsService referencingNavigationsService, INavigationTargetService navigationTargetService)
 	{
 		this.cacheService = cacheService;
 		this.entityCacheSupportDecision = entityCacheSupportDecision;
@@ -46,6 +47,7 @@ public class EntityCacheManager : IEntityCacheManager
 		this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
 		this.dbContext = dbContext;
 		this.referencingNavigationsService = referencingNavigationsService;
+		this.navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -177,17 +179,28 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		// TODO JK: Implementovat podporu back-reference
-		// TODO JK: Implementovat podporu many-to-many
 		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
 			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
-			var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
-			var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
+			var navigationTarget = navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
 
-			object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
-			cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+			if (navigationTarget.IsCollection)
+			{
+				var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
+				var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
+
+				object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
+				cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+			}
+			else
+			{
+				var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
+				var entityPropertyValue = propertyLambda(entity);
+
+				object[] entityPropertyValueKeys = entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
+				cacheService.Add(cacheKey, entityPropertyValueKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+			}
 		}
 	}
 

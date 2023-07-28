@@ -121,7 +121,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenario_Store_And_TryGet()
+	public void EntityCacheManager_Scenario_StoreEntity_And_TryGetEntity()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -207,7 +207,7 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
-	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation()
+	public void EntityCacheManager_Scenario_ManyToManyAsTwoOneToMany_StoreNavigation_And_TryGetNavigation()
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -235,6 +235,45 @@ public class EntityCacheManagerTests
 		Assert.AreEqual(1, loginAccountResult.Memberships.Count);
 		Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
 		Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
+	}
+
+	[TestMethod]
+	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation()
+	{
+		throw new NotImplementedException();
+		//// Arrange
+		//ICacheService cacheService = new DictionaryCacheService();
+
+		//CachingTestDbContext dbContext1 = new CachingTestDbContext();
+
+		//LoginAccount loginAccount = new LoginAccount { Id = 1 };
+		//Membership membership = new Membership { LoginAccountId = 1, RoleId = 1234 };
+		//loginAccount.Memberships = new List<Membership> { membership };
+
+		//var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
+
+		//CachingTestDbContext dbContext2 = new CachingTestDbContext();
+		//LoginAccount loginAccountResult = new LoginAccount { Id = 1 };
+		//dbContext2.Attach(loginAccountResult);
+
+		//var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
+
+		//// Act
+		//entityCacheManager1.StoreNavigation<LoginAccount, Membership>(loginAccount, nameof(LoginAccount.Memberships));
+		//bool success = entityCacheManager2.TryGetNavigation<LoginAccount, Membership>(loginAccountResult, nameof(LoginAccount.Memberships));
+
+		//// Assert
+		//Assert.IsTrue(success);
+		//// TODO
+		//Assert.AreEqual(1, loginAccountResult.Memberships.Count);
+		//Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
+		//Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
+	}
+
+	[TestMethod]
+	public void EntityCacheManager_Scenario_OneToOne_StoreNavigation_And_TryGetNavigation()
+	{
+		throw new NotImplementedException();
 	}
 
 	[TestMethod]

@@ -28,7 +28,7 @@ public static class CachingTestHelper
 
 		if (entityCacheOptionsGenerator == null)
 		{
-			entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new NavigationTargetTypeService(new NavigationTargetTypeStorage(), dbContext));
+			entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new NavigationTargetService(new NavigationTargetStorage(), dbContext));
 		}
 
 		if (entityCacheKeyGenerator == null)
@@ -52,6 +52,7 @@ public static class CachingTestHelper
 			new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext),
 			propertyLambdaExpressionManager,
 			dbContext,
-			referencingCollectionStore);
+			referencingCollectionStore,
+			new NavigationTargetService(new NavigationTargetStorage(), dbContext));
 	}
 }

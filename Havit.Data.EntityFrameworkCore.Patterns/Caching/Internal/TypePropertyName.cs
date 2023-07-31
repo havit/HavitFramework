@@ -1,7 +1,7 @@
 ﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 /// <summary>
-/// Evidence typu entity a názvu vlastnosti pro použití jako klíč v Dictionary (<see cref="NavigationTargetTypeService"/>).
+/// Evidence typu entity a názvu vlastnosti pro použití jako klíč v Dictionary (<see cref="NavigationTargetService"/>).
 /// </summary>
 /// <param name="Type">
 /// Typ entity.

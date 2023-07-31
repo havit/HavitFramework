@@ -57,7 +57,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 		// 4) reference one-to-one (backreference)
 		// - Opet platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
 
-		return ShouldCacheEntityType(navigationTargetService.GetNavigationTarget(entityType, propertyName).Type);
+		return ShouldCacheEntityType(navigationTargetService.GetNavigationTarget(entityType, propertyName).TargetClrType);
 	}
 
 	/// <inheritdoc />

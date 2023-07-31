@@ -29,17 +29,30 @@ public class NavigationTargetService : INavigationTargetService
 				if (navigationTargetStorage.Value == null)
 				{
 					navigationTargetStorage.Value = dbContext.Model.GetApplicationEntityTypes()
-					.SelectMany(entityType =>
-						entityType.GetNavigations().Cast<INavigationBase>()
-							.Concat(entityType.GetSkipNavigations()
-								.Where(skipNavigation => skipNavigation.PropertyInfo != null)
-								.Cast<INavigationBase>()))
-					.ToDictionary(
-						navigation => new TypePropertyName(navigation.DeclaringEntityType.ClrType, navigation.Name),
-						navigation => new NavigationTarget
+					.SelectMany(entityType => entityType
+						.GetNavigations()
+						.Select(navigation => new
 						{
-							Type = navigation.TargetEntityType.ClrType,
-							IsCollection = navigation.IsCollection
+							DeclaringClrType = entityType.ClrType,
+							TargetClrType = navigation.TargetEntityType.ClrType,
+							PropertyName = navigation.Name,
+							NavigationType = GetNavigationType(navigation)
+						})
+						.Concat(entityType.GetSkipNavigations()
+								.Where(skipNavigation => skipNavigation.PropertyInfo != null)
+								.Select(skipNavigation => new
+								{
+									DeclaringClrType = entityType.ClrType,
+									TargetClrType = skipNavigation.TargetEntityType.ClrType,
+									PropertyName = skipNavigation.Name,
+									NavigationType = GetNavigationType(skipNavigation)
+								})))
+					.ToDictionary(
+						a => new TypePropertyName(a.DeclaringClrType, a.PropertyName),
+						a => new NavigationTarget
+						{
+							TargetClrType = a.TargetClrType,
+							NavigationType = a.NavigationType
 						});
 				}
 			}
@@ -53,5 +66,22 @@ public class NavigationTargetService : INavigationTargetService
 		{
 			throw new InvalidOperationException(String.Format("Target type of entity type {0} and property {1} not found.", type.FullName, propertyName));
 		}
+	}
+
+	private NavigationType GetNavigationType(IReadOnlyNavigation navigation)
+	{
+		if (navigation.ForeignKey.DeclaringEntityType == navigation.DeclaringType)
+		{
+			return NavigationType.Reference;
+		}
+
+		return navigation.IsCollection
+			? navigation.TargetEntityType.IsManyToManyEntity() ? NavigationType.ManyToManyDecomposedToOneToMany : NavigationType.OneToMany
+			: NavigationType.OneToOne;
+	}
+
+	private NavigationType GetNavigationType(IReadOnlySkipNavigation navigation)
+	{
+		return NavigationType.ManyToMany;
 	}
 }

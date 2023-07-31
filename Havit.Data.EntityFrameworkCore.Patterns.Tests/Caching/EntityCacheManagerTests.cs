@@ -150,6 +150,7 @@ public class EntityCacheManagerTests
 		Assert.AreEqual(dbContext1.Entry(role).CurrentValues.GetValue<string>(nameof(Role.Name)), dbContext2.Entry(roleResult).CurrentValues.GetValue<string>(nameof(Role.Name)));
 		Assert.AreEqual(dbContext1.Entry(role).OriginalValues.GetValue<string>(nameof(Role.Name)), dbContext2.Entry(roleResult).OriginalValues.GetValue<string>(nameof(Role.Name)));
 		Assert.AreEqual(Microsoft.EntityFrameworkCore.EntityState.Unchanged, dbContext2.Entry(roleResult).State);
+		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
 	[TestMethod]
@@ -170,6 +171,7 @@ public class EntityCacheManagerTests
 		Assert.IsTrue(success);
 		Assert.IsNotNull(allKeysResult);
 		Assert.AreSame(allKeys, allKeysResult);
+		// TODO: AssertNoChanges...
 	}
 
 	[TestMethod]
@@ -206,6 +208,7 @@ public class EntityCacheManagerTests
 		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child1.Id));
 		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child2.Id));
 		Assert.AreEqual(4, master.Children.Union(masterResult.Children).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
+		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
 	[TestMethod]
@@ -237,6 +240,7 @@ public class EntityCacheManagerTests
 		Assert.AreEqual(1, loginAccountResult.Memberships.Count);
 		Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
 		Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
+		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
 	[TestMethod]
@@ -268,6 +272,7 @@ public class EntityCacheManagerTests
 		Assert.AreEqual(1, classManyToManyAResult.Items.Count);
 		Assert.AreEqual(2, classManyToManyAResult.Items.Single().Id);
 		Assert.AreNotSame(classManyToManyB, classManyToManyAResult.Items.Single());
+		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
 	[TestMethod]
@@ -281,6 +286,8 @@ public class EntityCacheManagerTests
 		ClassOneToOneA classOneToOneA = new ClassOneToOneA { Id = 1 };
 		ClassOneToOneB classOneToOneB = new ClassOneToOneB { Id = 2, ClassAId = 1 };
 		classOneToOneA.ClassB = classOneToOneB;
+		dbContext1.Attach(classOneToOneA);
+		dbContext1.Attach(classOneToOneB);
 
 		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
@@ -292,6 +299,7 @@ public class EntityCacheManagerTests
 
 		// Act
 		entityCacheManager1.StoreNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneA, nameof(ClassOneToOneA.ClassB));
+		entityCacheManager1.StoreEntity<ClassOneToOneB>(classOneToOneB); // Store navigation necachuje entitu, avšak TryGetNavigation předpokládá, že je entita cachována
 		bool success = entityCacheManager2.TryGetNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneAResult, nameof(ClassOneToOneA.ClassB));
 
 		// Assert
@@ -299,6 +307,7 @@ public class EntityCacheManagerTests
 		Assert.IsNotNull(classOneToOneAResult.ClassB);
 		Assert.AreEqual(2, classOneToOneAResult.ClassB.Id);
 		Assert.AreNotSame(classOneToOneB, classOneToOneAResult.ClassB);
+		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
 	[TestMethod]
@@ -571,5 +580,20 @@ public class EntityCacheManagerTests
 
 		// Assert
 		// no exception was thrown
+	}
+
+	private void AssertDbContextDoesNotContainChanges(DbContext dbContext)
+	{
+		dbContext.ChangeTracker.DetectChanges();
+
+		if (dbContext.ChangeTracker
+			.Entries()
+			.Any(entry =>
+				(entry.State == Microsoft.EntityFrameworkCore.EntityState.Added)
+					|| (entry.State == Microsoft.EntityFrameworkCore.EntityState.Modified)
+					|| (entry.State == Microsoft.EntityFrameworkCore.EntityState.Deleted)))
+		{
+			Assert.Fail("DbContext contains changes which are not expected.");
+		}
 	}
 }

@@ -130,48 +130,86 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		// TODO JK: Implementovat podporu back-reference
-		// TODO JK: Implementovat podporu many-to-many
-
 		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
 			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
 			if (cacheService.TryGet(cacheKey, out object cacheEntityPropertyMembersKeys))
 			{
-				object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
+				var navigationTarget = navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
 
-				// TODO JK: Performance? Každý pokus o načtení z cache?
-				bool isManyToManyEntity = dbContext.Model.FindEntityType(typeof(TPropertyItem)).IsManyToManyEntity();
-
-				var dbSet = dbContext.Set<TPropertyItem>();
-				if (isManyToManyEntity)
+				switch (navigationTarget.NavigationType)
 				{
-					var propertyNames = entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TPropertyItem));
+					case NavigationType.OneToMany:
+						return TryGetNavigation_OneToMany<TPropertyItem>(cacheEntityPropertyMembersKeys);
 
-					foreach (object[] entityPropertyMemberKey in entityPropertyMembersKeys)
-					{
-						if (dbSet.FindTracked(entityPropertyMemberKey) == null) // už je načtený, nemůžeme volat TryGetEntity
-						{
-							TPropertyItem instance = EntityActivator.CreateInstance<TPropertyItem>();
-							for (int i = 0; i < propertyNames.Length; i++)
-							{
-								typeof(TPropertyItem).GetProperty(propertyNames[i]).SetValue(instance, entityPropertyMemberKey[i]);
-							}
-							dbSet.Attach(instance);
-						}
-					}
-					return true;
-				}
-				else
-				{
-					return entityPropertyMembersKeys.All(entityPropertyMemberKey =>
-						(dbSet.FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
-						|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey.Single(), out _));
+					case NavigationType.ManyToManyDecomposedToOneToMany:
+						return TryGetNavigation_ManyToManyDecomposedToOneToMany<TPropertyItem>(cacheEntityPropertyMembersKeys);
+
+					case NavigationType.ManyToMany:
+						return TryGetNavigation_ManyToMany<TPropertyItem>(cacheEntityPropertyMembersKeys);
+
+					case NavigationType.OneToOne:
+						return TryGetNavigation_OneToOne<TPropertyItem>(cacheEntityPropertyMembersKeys);
+
+					default: throw new InvalidOperationException("Not supported navigation type for retrieving navigations.");
 				}
 			}
 		}
 		return false;
+	}
+
+	private bool TryGetNavigation_OneToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	{
+		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
+
+		var dbSet = dbContext.Set<TPropertyItem>();
+
+		// Řekneme, že se nám podařilo odbavit z cache načtení kolekce typy OneToMany,
+		// pokud pro každý prvek, který má být v kolekci platí:
+		// 1. Buď je již načtený (trackovaný, attached)
+		// 2. Nebo se jej podařilo načíst z cache.
+		return entityPropertyMembersKeys.All(entityPropertyMemberKey =>
+			(dbSet.FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
+			|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey.Single(), out _));
+	}
+
+	private bool TryGetNavigation_ManyToManyDecomposedToOneToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	{
+		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
+
+		var dbSet = dbContext.Set<TPropertyItem>();
+		var propertyNames = entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TPropertyItem));
+
+		// Pro všechny objekty, které mají být v kolekci typu many-to-many (dekomponované na dva one-to-many)
+		// vytvoříme instanci reprezentující vazební entitu a tu nastavíme jako trackovanou.
+
+		foreach (object[] entityPropertyMemberKey in entityPropertyMembersKeys)
+		{
+			if (dbSet.FindTracked(entityPropertyMemberKey) == null) // už je načtený, nemůžeme volat TryGetEntity
+			{
+				TPropertyItem instance = EntityActivator.CreateInstance<TPropertyItem>();
+				for (int i = 0; i < propertyNames.Length; i++)
+				{
+					typeof(TPropertyItem).GetProperty(propertyNames[i]).SetValue(instance, entityPropertyMemberKey[i]);
+				}
+				dbSet.Attach(instance);
+			}
+		}
+		return true;
+	}
+
+	private bool TryGetNavigation_ManyToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	{
+		// TODO: Implementovat
+		throw new NotImplementedException();
+	}
+
+	private bool TryGetNavigation_OneToOne<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	{
+		// Pro vazbu OneToOne se prostě pokusíme získat instanci protistrany vazby.
+
+		return TryGetEntity<TPropertyItem>(((object[])cacheEntityPropertyMembersKeys).Single(), out _);
 	}
 
 	/// <inheritdoc />
@@ -185,21 +223,34 @@ public class EntityCacheManager : IEntityCacheManager
 
 			var navigationTarget = navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
 
-			if (navigationTarget.IsCollection)
+			switch (navigationTarget.NavigationType)
 			{
-				var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
-				var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
+				case NavigationType.OneToMany:
+				case NavigationType.ManyToMany:
+				case NavigationType.ManyToManyDecomposedToOneToMany:
+					{
+						var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
+						var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
 
-				object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
-				cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
-			}
-			else
-			{
-				var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
-				var entityPropertyValue = propertyLambda(entity);
+						object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
+						cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 
-				object[] entityPropertyValueKeys = entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
-				cacheService.Add(cacheKey, entityPropertyValueKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+						// V aktuálním použití DbDataLoaderem nechceme cachovat samotnou entitu, cachuje ji DbDataLoader samostatně.
+						// Avšak TryGet spoléhá, že cachována je.
+					}
+					break;
+
+				case NavigationType.OneToOne:
+					{
+						var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
+						var entityPropertyValue = propertyLambda(entity);
+
+						object[] entityPropertyValueKeys = entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
+						cacheService.Add(cacheKey, entityPropertyValueKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+					}
+					break;
+
+				default: throw new InvalidOperationException("Not supported navigation type for storing navigations.");
 			}
 		}
 	}

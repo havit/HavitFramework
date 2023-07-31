@@ -37,7 +37,7 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 	public CacheOptions GetNavigationCacheOptions<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return GetValueForEntity(navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName).Type);
+		return GetValueForEntity(navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName).TargetClrType);
 	}
 
 	/// <inheritdoc />

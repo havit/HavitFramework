@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
@@ -33,27 +32,27 @@ public class NavigationTargetService : INavigationTargetService
 						.GetNavigations()
 						.Select(navigation => new
 						{
-							DeclaringClrType = entityType.ClrType,
-							TargetClrType = navigation.TargetEntityType.ClrType,
-							PropertyName = navigation.Name,
-							NavigationType = GetNavigationType(navigation)
+							TypePropertyName = new TypePropertyName(entityType.ClrType, navigation.Name),
+							NavigationTarget = new NavigationTarget
+							{
+								TargetClrType = navigation.TargetEntityType.ClrType,
+								NavigationType = GetNavigationType(navigation),
+								PropertyInfo = navigation.PropertyInfo
+							}
 						})
 						.Concat(entityType.GetSkipNavigations()
 								.Where(skipNavigation => skipNavigation.PropertyInfo != null)
-								.Select(skipNavigation => new
-								{
-									DeclaringClrType = entityType.ClrType,
-									TargetClrType = skipNavigation.TargetEntityType.ClrType,
-									PropertyName = skipNavigation.Name,
-									NavigationType = GetNavigationType(skipNavigation)
-								})))
-					.ToDictionary(
-						a => new TypePropertyName(a.DeclaringClrType, a.PropertyName),
-						a => new NavigationTarget
+						.Select(skipNavigation => new
 						{
-							TargetClrType = a.TargetClrType,
-							NavigationType = a.NavigationType
-						});
+							TypePropertyName = new TypePropertyName(entityType.ClrType, skipNavigation.Name),
+							NavigationTarget = new NavigationTarget
+							{
+								TargetClrType = skipNavigation.TargetEntityType.ClrType,
+								NavigationType = GetNavigationType(skipNavigation),
+								PropertyInfo = skipNavigation.PropertyInfo
+							}
+						})))
+					.ToDictionary(a => a.TypePropertyName, a => a.NavigationTarget);
 				}
 			}
 		}

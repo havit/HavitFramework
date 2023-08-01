@@ -147,7 +147,7 @@ public class EntityCacheManager : IEntityCacheManager
 						return TryGetNavigation_ManyToManyDecomposedToOneToMany<TPropertyItem>(cacheEntityPropertyMembersKeys);
 
 					case NavigationType.ManyToMany:
-						return TryGetNavigation_ManyToMany<TPropertyItem>(cacheEntityPropertyMembersKeys);
+						return TryGetNavigation_ManyToMany<TPropertyItem>(navigationTarget, entity, cacheEntityPropertyMembersKeys);
 
 					case NavigationType.OneToOne:
 						return TryGetNavigation_OneToOne<TPropertyItem>(cacheEntityPropertyMembersKeys);
@@ -199,10 +199,84 @@ public class EntityCacheManager : IEntityCacheManager
 		return true;
 	}
 
-	private bool TryGetNavigation_ManyToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	private bool TryGetNavigation_ManyToMany<TPropertyItem>(NavigationTarget navigationTarget, object parentEntity, object cacheEntityPropertyMembersKeys) where TPropertyItem : class
 	{
-		// TODO: Implementovat
-		throw new NotImplementedException();
+		object[] entityPropertyMembersKeys = (object[])cacheEntityPropertyMembersKeys;
+
+		var dbSet = dbContext.Set<TPropertyItem>();
+
+		List<TPropertyItem> cachedEntities = new List<TPropertyItem>(entityPropertyMembersKeys.Length);
+		foreach (object[] entityPropertyMembersKey in entityPropertyMembersKeys)
+		{
+			var entity = dbSet.FindTracked(entityPropertyMembersKey.Single());
+			if (entity == null)
+			{
+				if (!TryGetEntity<TPropertyItem>(entityPropertyMembersKey.Single(), out entity))
+				{
+					return false;
+				}
+			}
+			cachedEntities.Add(entity);
+		}
+
+		bool hasCachedEntities = cachedEntities.Any();
+
+		if (hasCachedEntities)
+		{
+			dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
+		}
+
+		object propertyValue = navigationTarget.PropertyInfo.GetValue(parentEntity);
+		if (propertyValue == null)
+		{
+			if (!navigationTarget.PropertyInfo.CanWrite)
+			{
+				throw new InvalidOperationException($"Only collection properties with public setters can be used when the value of the collection property has null value (we need to set an instance of the collection). Check the {navigationTarget.PropertyInfo.DeclaringType.Name}.{navigationTarget.PropertyInfo.Name} property.");
+			}
+			try
+			{
+				navigationTarget.PropertyInfo.SetValue(parentEntity, cachedEntities);
+			}
+			catch (ArgumentException ae)
+			{
+				throw new InvalidOperationException($"Collections properties must be a List<>. {navigationTarget.PropertyInfo.DeclaringType.Name}.{navigationTarget.PropertyInfo.Name} property.", ae);
+			}
+			catch (TargetInvocationException ex)
+			{
+				ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+			}
+		}
+		else if (hasCachedEntities)
+		{
+			if (propertyValue is not List<TPropertyItem> propertyList)
+			{
+				throw new InvalidOperationException($"Collections properties must be a List<>. {navigationTarget.PropertyInfo.DeclaringType.Name}.{navigationTarget.PropertyInfo.Name} property.");
+			}
+
+			if (propertyList.Any())
+			{
+				propertyList.AddRange(cachedEntities.Except(propertyList));
+			}
+			else
+			{
+				propertyList.AddRange(cachedEntities);
+			}
+		}
+
+		if (hasCachedEntities)
+		{
+			dbContext.ChangeTracker.Tracked += TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
+			dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
+			dbContext.ChangeTracker.Tracked -= TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
+		}
+
+		return true;
+	}
+
+	private void TryGetNavigation_ManyToMany_ChangeTracker_Tracked(object sender, EntityTrackedEventArgs e)
+	{
+		Contract.Requires(e.Entry.State == Microsoft.EntityFrameworkCore.EntityState.Added);
+		e.Entry.State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
 	}
 
 	private bool TryGetNavigation_OneToOne<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class

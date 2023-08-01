@@ -21,41 +21,44 @@ public class NavigationTargetServiceTests
 
 		// Act & Assert
 
-		// OneToMany
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(Master), NavigationType = NavigationType.Reference },
-			navigationTargetService.GetNavigationTarget(typeof(Child), nameof(Child.Parent)));
+		NavigationTarget navigationTarget;
 
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(Child), NavigationType = NavigationType.OneToMany },
-			navigationTargetService.GetNavigationTarget(typeof(Master), nameof(Master.Children)));
+		// OneToMany
+
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(Child), nameof(Child.Parent));
+		Assert.AreEqual(typeof(Master), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
+
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(Master), nameof(Master.Children));
+		Assert.AreEqual(typeof(Child), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.OneToMany, navigationTarget.NavigationType);
 
 		// ManyToMany pomocí dekompozice do dvou OneToMany
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(Membership), NavigationType = NavigationType.ManyToManyDecomposedToOneToMany },
-			navigationTargetService.GetNavigationTarget(typeof(LoginAccount), nameof(LoginAccount.Memberships)));
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(LoginAccount), nameof(LoginAccount.Memberships));
+		Assert.AreEqual(typeof(Membership), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.ManyToManyDecomposedToOneToMany, navigationTarget.NavigationType);
 
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(LoginAccount), NavigationType = NavigationType.Reference },
-			navigationTargetService.GetNavigationTarget(typeof(Membership), nameof(Membership.LoginAccount)));
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(Membership), nameof(Membership.LoginAccount));
+		Assert.AreEqual(typeof(LoginAccount), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(Role), NavigationType = NavigationType.Reference },
-			navigationTargetService.GetNavigationTarget(typeof(Membership), nameof(Membership.Role)));
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(Membership), nameof(Membership.Role));
+		Assert.AreEqual(typeof(Role), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
 		// ManyToMany
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(ClassManyToManyB), NavigationType = NavigationType.ManyToMany },
-			navigationTargetService.GetNavigationTarget(typeof(ClassManyToManyA), nameof(ClassManyToManyA.Items)));
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(ClassManyToManyA), nameof(ClassManyToManyA.Items));
+		Assert.AreEqual(typeof(ClassManyToManyB), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.ManyToMany, navigationTarget.NavigationType);
 
 		// OneToOne
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(ClassOneToOneB), NavigationType = NavigationType.OneToOne },
-			navigationTargetService.GetNavigationTarget(typeof(ClassOneToOneA), nameof(ClassOneToOneA.ClassB)));
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(ClassOneToOneA), nameof(ClassOneToOneA.ClassB));
+		Assert.AreEqual(typeof(ClassOneToOneB), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.OneToOne, navigationTarget.NavigationType);
 
-		Assert.AreEqual(
-			new NavigationTarget { TargetClrType = typeof(ClassOneToOneA), NavigationType = NavigationType.Reference },
-			navigationTargetService.GetNavigationTarget(typeof(ClassOneToOneB), nameof(ClassOneToOneB.ClassA)));
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(ClassOneToOneB), nameof(ClassOneToOneB.ClassA));
+		Assert.AreEqual(typeof(ClassOneToOneA), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
 		// A nic víc!
 		Assert.AreEqual(8, navigationTargetTypeStorage.Value.Count());

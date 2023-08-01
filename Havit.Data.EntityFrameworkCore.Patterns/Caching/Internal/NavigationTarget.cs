@@ -1,4 +1,6 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+﻿using System.Reflection;
+
+namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 /// <summary>
 /// Informace o cíli navigace.
@@ -14,4 +16,9 @@ public record class NavigationTarget
 	/// Indukuje, zda jde o kolekci.
 	/// </summary>
 	public required NavigationType NavigationType { get; init; }
+
+	/// <summary>
+	/// Property, která reprezentuje daný vztah.
+	/// </summary>
+	public required PropertyInfo PropertyInfo { get; init; }
 }

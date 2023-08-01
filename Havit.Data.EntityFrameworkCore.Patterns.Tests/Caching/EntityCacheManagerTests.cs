@@ -160,7 +160,9 @@ public class EntityCacheManagerTests
 		ICacheService cacheService = new DictionaryCacheService();
 
 		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheService);
-		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(cacheService: cacheService);
+
+		CachingTestDbContext dbContext2 = new CachingTestDbContext();
+		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
 		object allKeys = new object(); // just a marker object
 									   // Act
@@ -171,7 +173,7 @@ public class EntityCacheManagerTests
 		Assert.IsTrue(success);
 		Assert.IsNotNull(allKeysResult);
 		Assert.AreSame(allKeys, allKeysResult);
-		// TODO: AssertNoChanges...
+		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
 	[TestMethod]
@@ -243,8 +245,10 @@ public class EntityCacheManagerTests
 		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
-	[TestMethod]
-	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation()
+	[DataTestMethod]
+	[DataRow(true, DisplayName = nameof(EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation) + " with initialized collection property")]
+	[DataRow(false, DisplayName = nameof(EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation) + " with not initialized (null) collection property")]
+	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation(bool shouldInitializeTargetCollection)
 	{
 		// Arrange
 		ICacheService cacheService = new DictionaryCacheService();
@@ -254,24 +258,37 @@ public class EntityCacheManagerTests
 		ClassManyToManyA classManyToManyA = new ClassManyToManyA { Id = 1 };
 		ClassManyToManyB classManyToManyB = new ClassManyToManyB { Id = 2 };
 		classManyToManyA.Items = new List<ClassManyToManyB> { classManyToManyB };
+		dbContext1.Attach(classManyToManyA);
+		dbContext1.Attach(classManyToManyB);
 
 		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
 
 		CachingTestDbContext dbContext2 = new CachingTestDbContext();
 		ClassManyToManyA classManyToManyAResult = new ClassManyToManyA { Id = 1 };
+		if (shouldInitializeTargetCollection)
+		{
+			classManyToManyAResult.Items = new List<ClassManyToManyB>();
+		}
+		else
+		{
+			// Precondition
+			Assert.IsNull(classManyToManyAResult.Items);
+		}
+
 		dbContext2.Attach(classManyToManyAResult);
 
 		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
 		// Act
 		entityCacheManager1.StoreNavigation<ClassManyToManyA, ClassManyToManyB>(classManyToManyA, nameof(ClassManyToManyA.Items));
+		entityCacheManager1.StoreEntity<ClassManyToManyB>(classManyToManyB);
 		bool success = entityCacheManager2.TryGetNavigation<ClassManyToManyA, ClassManyToManyB>(classManyToManyAResult, nameof(ClassManyToManyA.Items));
 
 		// Assert
 		Assert.IsTrue(success);
-		Assert.AreEqual(1, classManyToManyAResult.Items.Count);
-		Assert.AreEqual(2, classManyToManyAResult.Items.Single().Id);
-		Assert.AreNotSame(classManyToManyB, classManyToManyAResult.Items.Single());
+		Assert.AreEqual(1, classManyToManyAResult.Items?.Count);
+		Assert.AreEqual(2, classManyToManyAResult.Items?.Single().Id);
+		Assert.AreNotSame(classManyToManyB, classManyToManyAResult.Items?.Single());
 		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 

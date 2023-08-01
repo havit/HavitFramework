@@ -1,5 +1,4 @@
 ﻿using System;
-using Havit.Data.Patterns.Exceptions;
 
 namespace Havit.Data.Patterns.DataEntries;
 

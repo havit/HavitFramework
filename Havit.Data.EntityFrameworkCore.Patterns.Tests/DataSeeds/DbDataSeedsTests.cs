@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds;

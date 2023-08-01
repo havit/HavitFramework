@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;

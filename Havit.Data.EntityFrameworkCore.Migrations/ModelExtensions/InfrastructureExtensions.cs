@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;

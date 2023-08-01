@@ -5,11 +5,11 @@
 /// </summary>
 public interface IDataSeedRunDecisionStatePersister
 {
-        /// <summary>
-        /// Přečte aktuální stav.
-        /// </summary>
-        /// <returns>Aktuální stav</returns>
-        /// <param name="profileName">Název profilu, jehož stav je čten.</param>
+	/// <summary>
+	/// Přečte aktuální stav.
+	/// </summary>
+	/// <returns>Aktuální stav</returns>
+	/// <param name="profileName">Název profilu, jehož stav je čten.</param>
 	string ReadCurrentState(string profileName);
 
 	/// <summary>

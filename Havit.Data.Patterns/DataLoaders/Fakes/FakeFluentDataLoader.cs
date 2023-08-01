@@ -25,7 +25,7 @@ public class FakeFluentDataLoader<TEntity> : Havit.Data.Patterns.DataLoaders.IFl
 	/// </summary>
 	Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no default */)
 	{
-		return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());			
+		return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());
 	}
 
 	/// <summary>

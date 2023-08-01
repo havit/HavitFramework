@@ -2,7 +2,6 @@
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories;

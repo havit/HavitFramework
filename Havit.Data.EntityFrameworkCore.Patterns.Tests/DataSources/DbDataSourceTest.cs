@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources;
 

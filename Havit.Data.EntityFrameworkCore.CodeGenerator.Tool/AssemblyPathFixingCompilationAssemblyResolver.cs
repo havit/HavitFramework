@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.DependencyModel;
+﻿using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.DependencyModel.Resolution;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool;

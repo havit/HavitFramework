@@ -1,9 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Template;
@@ -18,7 +14,6 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore.Design;
-using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes;
 using Microsoft.EntityFrameworkCore;

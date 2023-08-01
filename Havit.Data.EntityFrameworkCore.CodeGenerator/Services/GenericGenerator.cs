@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 public class GenericGenerator<TModel>
 {

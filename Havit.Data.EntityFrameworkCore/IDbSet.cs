@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Havit.Data.EntityFrameworkCore;
+﻿namespace Havit.Data.EntityFrameworkCore;
 
 /// <summary>
 /// Abstrakce DbSet a jeho služeb pro možnost snadného mockování v závislostech.

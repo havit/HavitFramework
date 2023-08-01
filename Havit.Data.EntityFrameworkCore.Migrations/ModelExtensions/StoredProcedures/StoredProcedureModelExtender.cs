@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;

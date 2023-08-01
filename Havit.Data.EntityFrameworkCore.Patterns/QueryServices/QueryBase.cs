@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using Microsoft.EntityFrameworkCore;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;

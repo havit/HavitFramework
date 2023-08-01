@@ -1,11 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Attributes;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 

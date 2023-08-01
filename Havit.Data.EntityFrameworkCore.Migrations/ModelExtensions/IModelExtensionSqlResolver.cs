@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+﻿namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 
 /// <summary>
 /// Service for resolving all ALTER and DROP SQL scripts from list of <see cref="IModelExtension"/>s.

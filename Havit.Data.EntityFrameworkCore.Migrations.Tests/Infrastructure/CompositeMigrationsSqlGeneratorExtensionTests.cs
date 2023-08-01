@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 

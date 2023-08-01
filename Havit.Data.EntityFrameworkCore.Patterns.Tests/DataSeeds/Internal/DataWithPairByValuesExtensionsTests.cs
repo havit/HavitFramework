@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Internal.QueryHelpersTests;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds.Internal;
 

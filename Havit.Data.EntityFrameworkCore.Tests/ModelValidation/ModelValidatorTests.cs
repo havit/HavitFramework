@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.EntityFrameworkCore.ModelValidation;
+﻿using Havit.Data.EntityFrameworkCore.ModelValidation;
 using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;

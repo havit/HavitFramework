@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
 /// Úložiště informací k rozhodnutí o cachování entit.

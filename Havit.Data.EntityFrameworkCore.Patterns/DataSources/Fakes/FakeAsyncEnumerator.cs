@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 
 internal class FakeAsyncEnumerator<T> : IAsyncEnumerator<T>
 {

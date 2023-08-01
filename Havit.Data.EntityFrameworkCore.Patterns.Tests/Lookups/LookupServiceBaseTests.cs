@@ -6,7 +6,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Services.TimeServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups;

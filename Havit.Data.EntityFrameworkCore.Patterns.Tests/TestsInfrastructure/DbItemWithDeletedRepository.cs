@@ -2,7 +2,6 @@
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
-using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;

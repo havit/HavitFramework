@@ -62,13 +62,13 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	/// Smaže soubor se stavem. Určeno pro úklid v unit testech.
 	/// </summary>
 	internal void DeleteCurrentStateFile(string profileName)
-        {
+	{
 		fileStorageService.Delete(GetFileName(profileName));
 	}
 
-    private string GetFileName(string profileName)
-    {
-        return "DataSeedState." + profileName + ".txt";
-    }
+	private string GetFileName(string profileName)
+	{
+		return "DataSeedState." + profileName + ".txt";
+	}
 
 }

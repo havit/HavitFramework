@@ -1,6 +1,4 @@
-﻿using Havit.Model.Localizations;
-
-namespace Havit.Data.Patterns.Infrastructure;
+﻿namespace Havit.Data.Patterns.Infrastructure;
 
 /// <summary>
 /// Služba pro získávání primárního klíče modelových objektů.

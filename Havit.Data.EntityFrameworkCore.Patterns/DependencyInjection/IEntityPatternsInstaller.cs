@@ -1,7 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using System;
 using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;

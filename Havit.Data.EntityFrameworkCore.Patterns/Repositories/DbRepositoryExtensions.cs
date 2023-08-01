@@ -1,12 +1,5 @@
-﻿using Havit.Data.Patterns.Exceptions;
-using Havit.Data.Patterns.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 

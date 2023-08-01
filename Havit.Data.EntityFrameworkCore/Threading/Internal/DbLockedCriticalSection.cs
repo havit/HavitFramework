@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Common;
 using Havit.Threading;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Threading.Internal;
 

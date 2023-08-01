@@ -8,15 +8,15 @@ namespace Havit.Data.Patterns.DataSeeds;
 /// </summary>
 public interface IDataSeed
 {
-    /// <summary>
-    /// Vrátí profil, do kterého daný předpis seedování patří.
-    /// </summary>
-    Type ProfileType { get; }
-	
-        /// <summary>
-        /// Provede seedování dat.
-        /// </summary>
-        void SeedData(IDataSeedPersister dataSeedPersister);
+	/// <summary>
+	/// Vrátí profil, do kterého daný předpis seedování patří.
+	/// </summary>
+	Type ProfileType { get; }
+
+	/// <summary>
+	/// Provede seedování dat.
+	/// </summary>
+	void SeedData(IDataSeedPersister dataSeedPersister);
 
 	/// <summary>
 	/// Vrací seznam (typů) DataSeedů, na kterých je seedování závislé, tj. vrací seznam dataseedů, které musejí být zpracovány před tímto data seedem.

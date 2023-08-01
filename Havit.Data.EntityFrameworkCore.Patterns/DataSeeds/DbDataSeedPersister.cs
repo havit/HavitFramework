@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
@@ -428,6 +425,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		if (_currentDbContext == null)
 		{
 			using (var dbContext = dbContextFactory.CreateDbContext())
+			{
 				try
 				{
 					_currentDbContext = dbContext;
@@ -437,6 +435,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 				{
 					_currentDbContext = null;
 				}
+			}
 		}
 		else
 		{

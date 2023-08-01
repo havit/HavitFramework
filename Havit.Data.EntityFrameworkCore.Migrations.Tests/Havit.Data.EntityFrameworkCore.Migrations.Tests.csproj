@@ -1,24 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);1701;1702;CS1591;EF1001</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);1701;1702;CS1591;EF1001</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.0.3" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.0.3" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers\Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
+	</ItemGroup>
 
 </Project>

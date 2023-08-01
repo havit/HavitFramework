@@ -1,19 +1,10 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds;
 

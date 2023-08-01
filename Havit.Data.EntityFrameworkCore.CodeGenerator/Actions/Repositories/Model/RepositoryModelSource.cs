@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Microsoft.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Metadata;
-using System;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 

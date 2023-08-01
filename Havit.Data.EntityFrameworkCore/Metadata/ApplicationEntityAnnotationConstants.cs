@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.Metadata;
+﻿namespace Havit.Data.EntityFrameworkCore.Metadata;
 
 /// <summary>
 /// Konstanty k označení entit jako aplikační entita.

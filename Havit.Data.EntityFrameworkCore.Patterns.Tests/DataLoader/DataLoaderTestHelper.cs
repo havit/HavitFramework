@@ -5,14 +5,8 @@ using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
 

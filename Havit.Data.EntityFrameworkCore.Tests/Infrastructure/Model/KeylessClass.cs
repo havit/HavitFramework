@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model;
 

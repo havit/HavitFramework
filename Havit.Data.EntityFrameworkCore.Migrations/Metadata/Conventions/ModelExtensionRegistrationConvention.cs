@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;

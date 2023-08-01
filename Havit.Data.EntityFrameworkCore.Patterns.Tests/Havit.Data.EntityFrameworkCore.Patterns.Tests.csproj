@@ -1,27 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net7.0</TargetFramework>
-	<ImplicitUsings>true</ImplicitUsings>
-	<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
-	<NoWarn>($NoWarn);EF1001</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
+		<NoWarn>($NoWarn);EF1001</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup> 	  
-	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
-	<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-	<PackageReference Include="Moq" Version="4.18.4" />
-	<PackageReference Include="MSTest.TestAdapter" Version="3.0.3" />
-	<PackageReference Include="MSTest.TestFramework" Version="3.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.0.3" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
-	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestHelpers\Havit.Data.EntityFrameworkCore.TestHelpers.csproj" />
-	<ProjectReference Include="..\Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj" />
-	<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestHelpers\Havit.Data.EntityFrameworkCore.TestHelpers.csproj" />
+		<ProjectReference Include="..\Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj" />
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Model.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Internal;
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore;
+﻿namespace Havit.Data.EntityFrameworkCore;
 
 /// <summary>
 /// Factory pro vytvoření instance IDbContextu.

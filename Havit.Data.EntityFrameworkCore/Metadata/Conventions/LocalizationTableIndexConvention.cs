@@ -3,8 +3,6 @@ using Havit.Model.Localizations;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 

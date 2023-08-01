@@ -16,9 +16,9 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	/// </summary>
 	public DataSeedConfiguration<TEntity> Configuration { get; private set; }
 
-	#pragma warning disable SA1300 // Element must begin with upper-case letter
+#pragma warning disable IDE1006 // Naming rule violation: Prefix '_' is not expected
 	internal Dictionary<string, object> _childDataForsRegistry { get; private set; } = new Dictionary<string, object>();
-	#pragma warning restore SA1300 // Element must begin with upper-case letter
+#pragma warning restore IDE1006 // Naming rule violation: Prefix '_' is not expected
 
 	/// <summary>
 	/// Konstuktor.
@@ -60,14 +60,14 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 			Expression<Func<TEntity, object>> languageExpression = (Expression<Func<TEntity, object>>)Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "LanguageId"), typeof(object)), parameter);
 			PairBy(parentExpression, languageExpression);
 		}
-		
+
 		// (zde již nemá být "else if" - předchozí body definují výchozí párování - buď/anebo, následující definuje závislost)
 		// pokud jde o lokalizovaný záznam
 		Type localizationType = typeof(TEntity).GetInterfaces().FirstOrDefault(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(ILocalized<,>));
 		if (localizationType != null)
 		{
 			Type localizedByType = localizationType.GenericTypeArguments[0]; // typ, kterým je tento lokalizován (tj. typ prvků v kolekci Localizations).
-			
+
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 			// item => item.Localizations
 			LambdaExpression localizationsExpression = Expression.Lambda(Expression.Convert(Expression.Property(parameter, typeof(TEntity), "Localizations"), typeof(IEnumerable<>).MakeGenericType(localizedByType)), parameter);
@@ -81,7 +81,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 				localizationsExpression,
 				null
 			});
-			
+
 			AfterSave(data =>
 			{
 				dynamic seedEntity = data.SeedEntity;
@@ -91,7 +91,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 					foreach (object seedLocalization in seedEntity.Localizations)
 					{
 						DataBinderExt.SetValue(seedLocalization, "ParentId", dbEntityId);
-					}						
+					}
 				}
 			});
 		}

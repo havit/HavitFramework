@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 
 /// <summary>
 /// Factory poskytující IBeforeCommitProcessors.

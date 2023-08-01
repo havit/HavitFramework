@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Collections.Immutable;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;

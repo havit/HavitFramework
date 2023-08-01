@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+﻿namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 
 /// <inheritdoc />
 public class ModelExtensionSqlResolver : IModelExtensionSqlResolver

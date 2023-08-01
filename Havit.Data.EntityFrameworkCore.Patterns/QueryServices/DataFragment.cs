@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
 
 /// <summary>
 /// DataFragment - spojení načtených dat při omezení počtu na stránkování/segmentování s počtem celkových záznamů bez ohledu na stránkování/segmentování.

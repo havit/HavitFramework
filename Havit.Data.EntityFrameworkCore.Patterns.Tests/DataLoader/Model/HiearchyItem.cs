@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 
 public class HiearchyItem
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 // ReSharper disable once CheckNamespace

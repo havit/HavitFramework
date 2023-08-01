@@ -33,7 +33,7 @@ public class LocalizationService : ILocalizationService
 	{
 		string cultureName = currentCultureService.GetCurrentUICulture().Name;
 		ILanguage language = languageService.GetLanguage(cultureName);
-		return GetLocalization(entity, language);		
+		return GetLocalization(entity, language);
 	}
 
 	/// <summary>

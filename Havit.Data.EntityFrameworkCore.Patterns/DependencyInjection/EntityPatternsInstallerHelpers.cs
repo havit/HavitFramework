@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 
 /// <summary>
 /// Pomocné třídy pro registraci služeb do DI kontejneru.

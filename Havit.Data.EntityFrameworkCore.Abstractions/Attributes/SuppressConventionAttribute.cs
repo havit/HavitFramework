@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.Attributes;
+﻿namespace Havit.Data.EntityFrameworkCore.Attributes;
 
 /// <summary>
 /// Slouží k označení konvenve jako potlačené.

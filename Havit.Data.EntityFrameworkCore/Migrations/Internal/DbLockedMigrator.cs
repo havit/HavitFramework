@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Threading.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Threading.Internal;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

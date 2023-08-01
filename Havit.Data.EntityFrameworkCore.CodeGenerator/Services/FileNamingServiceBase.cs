@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 {

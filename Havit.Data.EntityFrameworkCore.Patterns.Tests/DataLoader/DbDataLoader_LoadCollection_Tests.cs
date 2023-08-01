@@ -7,10 +7,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Model.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
 

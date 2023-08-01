@@ -5,9 +5,6 @@ using Havit.Diagnostics.Contracts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 

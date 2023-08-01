@@ -1,7 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 using Havit.Data.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.Data.EntityFrameworkCore.Tests.Metadata.Infrastructure.Entity;
 using Havit.Data.EntityFrameworkCore.Tests.Metadata.Infrastructure.Model;

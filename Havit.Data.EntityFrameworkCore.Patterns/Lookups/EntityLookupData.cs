@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 
 /// <summary>
 /// Data evidovaná k jedné lookup službě.

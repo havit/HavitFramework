@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 

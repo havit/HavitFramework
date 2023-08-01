@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
 /// Reprezentuje operaci invalidace cache.

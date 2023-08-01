@@ -1,18 +1,13 @@
 ﻿using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks;

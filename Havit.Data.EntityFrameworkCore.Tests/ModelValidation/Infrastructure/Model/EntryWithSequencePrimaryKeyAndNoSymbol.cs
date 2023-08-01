@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
+﻿namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 
 public class EntryWithSequencePrimaryKeyAndNoSymbol
 {

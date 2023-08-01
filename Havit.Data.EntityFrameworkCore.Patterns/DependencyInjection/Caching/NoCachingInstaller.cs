@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure;
-using Havit.Services.Caching;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching;

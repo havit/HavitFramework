@@ -1,7 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 

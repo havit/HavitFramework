@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +34,7 @@ internal class DbRepositoryCompiledQueryBuilder
 					idParameter,
 					QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObject)),
 					entityKeyAccessor),
-			// parameters:
+				// parameters:
 				dbContextParameter,
 				idParameter
 		);

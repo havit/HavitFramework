@@ -1,8 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
 

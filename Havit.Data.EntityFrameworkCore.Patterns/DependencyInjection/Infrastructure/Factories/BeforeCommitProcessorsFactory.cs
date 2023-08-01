@@ -1,8 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
 

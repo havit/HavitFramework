@@ -1,8 +1,5 @@
 ﻿using Havit.Data.Patterns.DataSeeds;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
 

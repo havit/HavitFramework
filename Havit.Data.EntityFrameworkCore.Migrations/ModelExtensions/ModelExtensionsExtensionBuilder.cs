@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.Views;
 using Havit.Diagnostics.Contracts;

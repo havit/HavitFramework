@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 
 /// <summary>
 /// Úložiště lookup dat.

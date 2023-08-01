@@ -1,20 +1,10 @@
-﻿using Havit.Data.EntityFrameworkCore.Attributes;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 using Havit.Services.Caching;
 using Havit.Services.TestHelpers.Caching;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
 

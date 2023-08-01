@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 
 namespace Havit.Data.Patterns.Exceptions;
 
@@ -8,15 +7,15 @@ namespace Havit.Data.Patterns.Exceptions;
 /// </summary>
 public class ObjectNotFoundException : DataException
 {
-        /// <summary>
-        /// Konstruktor.
-        /// </summary>
-        /// <remarks>
-        /// Pro možnost použití s Moq - Throws vyžaduje typ výjimky s bez parametrickým konstruktorem.
-        /// </remarks>
-        public ObjectNotFoundException()
-        {
-        }
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	/// <remarks>
+	/// Pro možnost použití s Moq - Throws vyžaduje typ výjimky s bez parametrickým konstruktorem.
+	/// </remarks>
+	public ObjectNotFoundException()
+	{
+	}
 
 	/// <summary>
 	/// Konstruktor.

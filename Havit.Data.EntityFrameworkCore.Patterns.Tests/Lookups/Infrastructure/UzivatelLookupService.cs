@@ -1,16 +1,9 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups.Infrastructure;
 

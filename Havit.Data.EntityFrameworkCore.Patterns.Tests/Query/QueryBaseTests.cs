@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
-using Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Query;

@@ -1,9 +1,7 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 

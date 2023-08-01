@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 
 public class Child
 {

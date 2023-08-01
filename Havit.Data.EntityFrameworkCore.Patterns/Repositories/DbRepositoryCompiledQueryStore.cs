@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 

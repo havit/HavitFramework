@@ -1,7 +1,4 @@
 ﻿using Havit.Services.Caching;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 

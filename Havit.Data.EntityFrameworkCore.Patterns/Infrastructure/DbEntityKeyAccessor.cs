@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using Havit.Data.EntityFrameworkCore;
+﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
-using Havit.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 

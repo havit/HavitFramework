@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Migrations\Havit.Data.EntityFrameworkCore.Migrations.csproj" />
+	</ItemGroup>
 
 </Project>

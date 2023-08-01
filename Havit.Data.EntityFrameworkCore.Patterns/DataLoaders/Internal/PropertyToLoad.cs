@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 
 /// <summary>
 /// Informace o vlastnosti, která má byt DataLoaderem načtena.

@@ -1,10 +1,4 @@
-﻿using Havit.Diagnostics.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 
 internal class PairByValues : IEquatable<PairByValues>
 {

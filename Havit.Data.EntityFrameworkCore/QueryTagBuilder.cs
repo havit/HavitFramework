@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.EntityFrameworkCore;
+﻿namespace Havit.Data.EntityFrameworkCore;
 
 /// <summary>
 /// Sestavuje query tagy.

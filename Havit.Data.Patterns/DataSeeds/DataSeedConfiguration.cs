@@ -63,6 +63,6 @@ public class DataSeedConfiguration<TEntity>
 	public DataSeedConfiguration(TEntity[] seedData)
 	{
 		this.SeedData = seedData;
-		this.UpdateEnabled = true;			
+		this.UpdateEnabled = true;
 	}
 }

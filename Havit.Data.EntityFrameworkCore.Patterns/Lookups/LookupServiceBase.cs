@@ -6,9 +6,6 @@ using Havit.Data.Patterns.Repositories;
 using Havit.Linq;
 using Havit.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;

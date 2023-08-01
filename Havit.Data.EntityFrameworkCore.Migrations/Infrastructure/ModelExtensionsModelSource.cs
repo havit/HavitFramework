@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;

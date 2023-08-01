@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Internal;
-using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
-using Havit.Data.EntityFrameworkCore.Migrations.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Internal;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Migrations.Internal;
-using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore;
 

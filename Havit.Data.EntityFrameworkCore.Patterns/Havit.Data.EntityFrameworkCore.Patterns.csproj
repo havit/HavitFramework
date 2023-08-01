@@ -1,34 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net7.0</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <ImplicitUsings>true</ImplicitUsings>
-	<NoWarn>($NoWarn);EF1001</NoWarn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<NoWarn>($NoWarn);EF1001</NoWarn>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Patterns.Tests" />
 		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests" />
 	</ItemGroup>
-	
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	  <PackageVersion>2.7.10-pre02</PackageVersion>
-	  <Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
-	<LangVersion>latest</LangVersion>
-  </PropertyGroup>
 
-  <ItemGroup>
-	<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-	<PackageReference Include="System.Linq.Async" Version="6.0.1" />
-  </ItemGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.7.10-pre02</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
-	<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
-	<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
+		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
+		<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+	</ItemGroup>
 
 </Project>

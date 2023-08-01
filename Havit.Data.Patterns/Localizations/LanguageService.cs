@@ -1,12 +1,5 @@
 ﻿using Havit.Data.Patterns.Repositories;
 using Havit.Model.Localizations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Patterns.DataEntries;
-using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations.Internal;
 
 namespace Havit.Data.Patterns.Localizations;

@@ -1,6 +1,4 @@
 ﻿using Havit.Model.Collections.Generic;
-using System;
-using System.Collections.Generic;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
+﻿using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;

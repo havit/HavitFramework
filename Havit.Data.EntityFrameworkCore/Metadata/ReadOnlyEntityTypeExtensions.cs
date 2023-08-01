@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Metadata;
@@ -31,7 +26,8 @@ public static class ReadOnlyEntityTypeExtensions
 	}
 
 	/// <summary>
-	/// Vrací true, pokud je entita vztahovou entitou M:N vztahu.
+	/// Vrací true, pokud je entita vztahovou entitou M:N vztahu a to jak pro entitu, která je dekompozicí vztahu
+	/// many-to-many, tak "neviditelnou" skip navigation entitou.
 	/// </summary>
 	public static bool IsManyToManyEntity(this IReadOnlyEntityType entityType)
 	{

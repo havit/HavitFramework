@@ -1,11 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching;
 
@@ -16,7 +11,7 @@ public class EntityCacheKeyGeneratorTests
 	public void EntityCacheKeyGenerator_GetEntityCacheKey()
 	{
 		// Arrange
-		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), new TestDbContext());
+		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), new TestDbContext()));
 
 		// Act + Assert
 		Assert.AreEqual("EF|Language|5", entityCacheKeyGenerator.GetEntityCacheKey(typeof(Language), 5));
@@ -26,7 +21,7 @@ public class EntityCacheKeyGeneratorTests
 	public void EntityCacheKeyGenerator_GetAllKeysCacheKey()
 	{
 		// Arrange
-		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyGeneratorStorage(), new TestDbContext());
+		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), new TestDbContext()));
 
 		// Act + Assert
 		Assert.AreEqual("EF|Language|AllKeys", entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(Language)));

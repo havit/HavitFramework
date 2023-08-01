@@ -214,7 +214,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		}
 
 		// nedošlo k žádné změně sledované entity, neprovádíme žádnou invalidaci
-		if (!changes.GetAllChanges().OfType<TEntity>().Any())
+		if (!changes.Any(change => (change.IsOfType<TEntity>())))
 		{
 			return;
 		}
@@ -229,7 +229,12 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 			return;
 		}
 
-		foreach (var entity in changes.Deletes.OfType<TEntity>().Union(changes.Updates.OfType<TEntity>()))
+		var updatedAndDeletedEntities = changes
+			.Where(change => change.IsOfType<TEntity>() && ((change.ChangeType == ChangeType.Update) || change.ChangeType == ChangeType.Delete))
+			.Select(change => (TEntity)change.Entity)
+			.ToList();
+
+		foreach (var entity in updatedAndDeletedEntities)
 		{
 			// mohlo dojít ke změně na entitě (klíče, filtru)
 			// podíváme se, zda máme entitu v evidenci a pokud ano, invalidujeme ji
@@ -248,7 +253,12 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		Func<TEntity, bool> softDeleteCompiledLambda = softDeleteSupported ? softDeleteManager.GetNotDeletedCompiledLambda<TEntity>() : null;
 		Func<TEntity, bool> filterCompiledLambda = entityLookupData.FilterCompiledLambda;
 
-		foreach (var entity in changes.Inserts.OfType<TEntity>().Union(changes.Updates.OfType<TEntity>()))
+		var insertedAndUpdatedEntities = changes
+		.Where(change => change.IsOfType<TEntity>() && ((change.ChangeType == ChangeType.Update) || change.ChangeType == ChangeType.Insert))
+		.Select(change => (TEntity)change.Entity)
+		.ToList();
+
+		foreach (var entity in insertedAndUpdatedEntities)
 		{
 			// Když někdo založí příznakem smazanou entitu, pak ji použijeme tehdy, pokud používáme i deleted záznamy
 			if (!IncludeDeleted && softDeleteSupported && !softDeleteCompiledLambda(entity))

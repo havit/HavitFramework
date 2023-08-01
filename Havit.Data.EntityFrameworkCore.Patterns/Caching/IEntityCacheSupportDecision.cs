@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
 /// Rozhoduje o tom, zda bude dané entity cachována.
@@ -37,7 +33,7 @@ public interface IEntityCacheSupportDecision
 	/// Očekává se, že metody ShouldCacheEntityCollection a ShouldCacheEntityTypeCollection budou fungovat konzistentně. Pokud ne, můžeme ukládat do cache instance,
 	/// které nebudeme v cache hledat, a nebo naopak nebudeme ukládat do cache entity, avšak budeme je v cache hledat.
 	/// </remarks>
-	bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName);
+	bool ShouldCacheEntityTypeNavigation(Type entityType, string propertyName);
 
 	/// <summary>
 	/// Vrací true, pokud půže být daná kolekce dané entity cachována.
@@ -46,7 +42,7 @@ public interface IEntityCacheSupportDecision
 	/// Očekává se, že metody ShouldCacheEntityCollection a ShouldCacheEntityTypeCollection budou fungovat konzistentně. Pokud ne, můžeme ukládat do cache instance,
 	/// které nebudeme v cache hledat, a nebo naopak nebudeme ukládat do cache entity, avšak budeme je v cache hledat.
 	/// </remarks>
-	bool ShouldCacheEntityCollection(object entity, string propertyName);
+	bool ShouldCacheEntityNavigation(object entity, string propertyName);
 
 	/// <summary>
 	/// Vrací true, pokud mohou být klíče všech entita daného typu cachovány.

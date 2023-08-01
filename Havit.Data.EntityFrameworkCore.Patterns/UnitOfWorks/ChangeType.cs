@@ -1,4 +1,7 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+
+namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 
 /// <summary>
 /// Typ změny.
@@ -8,15 +11,18 @@ public enum ChangeType
 	/// <summary>
 	/// Insert
 	/// </summary>
-	Insert,
+	[DebuggerDisplay(nameof(Insert))]
+	Insert = EntityState.Added,
 
 	/// <summary>
 	/// Update
 	/// </summary>
-	Update,
+	[DebuggerDisplay(nameof(Update))]
+	Update = EntityState.Modified,
 
 	/// <summary>
 	/// Delete
 	/// </summary>
-	Delete
+	[DebuggerDisplay(nameof(Delete))]
+	Delete = EntityState.Deleted
 }

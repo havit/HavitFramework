@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
 
 public class Membership
 {

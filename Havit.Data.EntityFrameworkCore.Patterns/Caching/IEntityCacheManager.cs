@@ -1,14 +1,12 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
 /// Zajišťuje 
 /// <list>
-///		<item>cachování entit pro metody GetObject[s][Async] v repozitářích a referencí (navigations) v data loaderu,</item>
+///		<item>cachování entit pro metody GetObject[s][Async] v repozitářích a referencí v data loaderu,</item>
+///		<item>cachování kolekcí a one-to-one "back-referencí" (navigations) v data loaderu,</item>
 ///		<item>cachování klíčů objektů pro metody GetAll[Async]</item>
 /// </list>
 /// Metody se volají pro každou entitu. Je na implementaci, aby se rozhodla, zda bude danou entitu cachovat, či nikoliv.
@@ -28,21 +26,16 @@ public interface IEntityCacheManager
 		where TEntity : class;
 
 	/// <summary>
-	/// Přijme notifikaci o změně entit a zajistí jejich invalidaci v cache.
+	/// Pokusí se z cache načíst kolekci nebo one-to-one "back-referenci" dané entity. Pokud je kolekce nebo one-to-one vlastnost entity v cache nalezena a vrácena, vrací true. Jinak false. 
 	/// </summary>
-	void Invalidate(Changes changes);
-
-	/// <summary>
-	/// Pokusí se z cache načíst kolekci dané entity. Pokud je kolekce entity v cache nalezena a vrácena, vrací true. Jinak false. 
-	/// </summary>
-	bool TryGetCollection<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
+	bool TryGetNavigation<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class;
 
 	/// <summary>
 	/// Uloží do cache kolekci předané entity.
 	/// </summary>
-	void StoreCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+	void StoreNavigation<TEntity, TPropertyItem>(TEntity entity, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class;
 
@@ -57,4 +50,10 @@ public interface IEntityCacheManager
 	/// </summary>
 	void StoreAllKeys<TEntity>(object keys)
 		where TEntity : class;
+
+	/// <summary>
+	/// Přijme notifikaci o změně entit a zajistí jejich invalidaci v cache.
+	/// </summary>
+	CacheInvalidationOperation PrepareCacheInvalidation(Changes changes);
+
 }

@@ -30,6 +30,8 @@ internal class ModelValidatingDbContext : EntityFrameworkCore.DbContext
 
 		modelBuilder.Entity<IdWithPoorlyNamedForeignKey>().HasOne(item => item.ForeignKey).WithMany().HasForeignKey(item => item.ForeignKeyCode);
 
+		modelBuilder.Entity<TrueManyToManyA>().HasMany(item => item.Items).WithMany().UsingEntity("TrueManyToManyA_Items");
+
 		modelBuilder.Entity<KeylessClass>().HasNoKey(); // bez primárního klíče
 
 		modelBuilder.HasSequence<int>("EntrySequence");

@@ -1,18 +1,13 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Services.TimeServices;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups;
 
@@ -140,12 +135,18 @@ public class LookupServiceBaseTests
 
 		// provedeme aktualizaci uzivatele
 		uzivatele.Add(uzivatel2); // pro dostupnost uživatele v Repository
-		var changes = new Changes
+
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { uzivatel2 },
-			Updates = new object[] { },
-			Deletes = new object[] { }
-		};
+			new FakeChange
+			{
+				ChangeType = ChangeType.Insert,
+				ClrType = typeof(Uzivatel),
+				EntityType = null, // pro účely testu není třeba
+				Entity = uzivatel2
+			}
+		});
+
 		uzivatelLookupService.Invalidate(changes);
 
 		// po aktualizaci uživatele podle nového emailu najdeme
@@ -171,12 +172,16 @@ public class LookupServiceBaseTests
 		Assert.IsNull(uzivatelLookupService.GetUzivatelByEmail(uzivatel1.Email));
 
 		// provedeme aktualizaci uzivatele
-		var changes = new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { },
-			Updates = new object[] { uzivatel1 },
-			Deletes = new object[] { }
-		};
+			new FakeChange
+			{
+				ChangeType = ChangeType.Update,
+				ClrType = typeof(Uzivatel),
+				EntityType = null, // pro účely testu není třeba
+				Entity = uzivatel1
+			}
+		});
 		uzivatelLookupService.Invalidate(changes);
 
 		// po aktualizaci uživatele podle nového emailu již najdeme
@@ -197,12 +202,18 @@ public class LookupServiceBaseTests
 
 		// provedeme aktualizaci uzivatele
 		uzivatele.Remove(uzivatel); // pro (ne)dostupnost uživatele Repository
-		var changes = new Changes
+
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { },
-			Updates = new object[] { },
-			Deletes = new object[] { uzivatel }
-		};
+			new FakeChange
+			{
+				ChangeType = ChangeType.Delete,
+				ClrType = typeof(Uzivatel),
+				EntityType = null, // pro účely testu není třeba
+				Entity = uzivatel
+			}
+		});
+
 		uzivatelLookupService.Invalidate(changes);
 
 		// po aktualizaci uživatele podle nového emailu najdeme

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
 /// Rozhoduje, že mohou být cachovány všechny entity.
@@ -22,13 +18,13 @@ public sealed class CacheAllEntitiesEntityCacheSupportDecision : IEntityCacheSup
 	}
 
 	/// <inheritdoc/> 
-	public bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
+	public bool ShouldCacheEntityTypeNavigation(Type entityType, string propertyName)
 	{
 		return true;
 	}
 
 	/// <inheritdoc/> 
-	public bool ShouldCacheEntityCollection(object entity, string propertyName)
+	public bool ShouldCacheEntityNavigation(object entity, string propertyName)
 	{
 		return true;
 	}

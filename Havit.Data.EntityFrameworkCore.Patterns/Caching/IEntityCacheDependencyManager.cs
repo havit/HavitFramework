@@ -13,5 +13,5 @@ public interface IEntityCacheDependencyManager
 	/// <summary>
 	/// Invaliduje závislosti změněných entit.
 	/// </summary>
-	void InvalidateDependencies(Changes changes);
+	CacheInvalidationOperation PrepareCacheInvalidation(Changes changes);
 }

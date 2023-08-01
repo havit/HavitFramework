@@ -1,15 +1,9 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
-using Havit.Services;
 using Havit.Services.Caching;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -20,16 +14,16 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 {
 	private readonly IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage;
 	private readonly IDbContext dbContext;
-	private readonly ICollectionTargetTypeService collectionTargetTypeService;
+	private readonly INavigationTargetService navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
+	public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
 	{
 		this.annotationsEntityCacheOptionsGeneratorStorage = annotationsEntityCacheOptionsGeneratorStorage;
 		this.dbContext = dbContext;
-		this.collectionTargetTypeService = collectionTargetTypeService;
+		this.navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -40,10 +34,10 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 	}
 
 	/// <inheritdoc />
-	public CacheOptions GetCollectionCacheOptions<TEntity>(TEntity entity, string propertyName)
+	public CacheOptions GetNavigationCacheOptions<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return GetValueForEntity(collectionTargetTypeService.GetCollectionTargetType(typeof(TEntity), propertyName));
+		return GetValueForEntity(navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName).TargetClrType);
 	}
 
 	/// <inheritdoc />

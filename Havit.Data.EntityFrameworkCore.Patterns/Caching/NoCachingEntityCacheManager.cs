@@ -1,7 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -35,7 +32,7 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	/// Nic nedělá, nehledá v cache.
 	/// Vrací vždy false.
 	/// </summary>
-	public bool TryGetCollection<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
+	public bool TryGetNavigation<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class
 	{
@@ -45,7 +42,7 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	/// <summary>
 	/// Nic nedělá, neukládá do cache.
 	/// </summary>
-	public void StoreCollection<TEntity, TPropertyItem>(TEntity entity, string propertyName)
+	public void StoreNavigation<TEntity, TPropertyItem>(TEntity entity, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class
 	{
@@ -73,11 +70,10 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	}
 
 	/// <summary>
-	/// Nic nedělá, neinvaliduje.
+	/// Nic nedělá, neinvaliduje (vrací vždy null).	
 	/// </summary>
-	public void Invalidate(Changes changes)
+	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
-		// NOOP
+		return null;
 	}
-
 }

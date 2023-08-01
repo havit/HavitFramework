@@ -33,7 +33,6 @@ public class DefaultCachingInstaller : ICachingInstaller
 	protected virtual void RegisterEntityCacheKeyGenerator(IServiceCollection services)
 	{
 		services.TryAddTransient<IEntityCacheKeyGenerator, EntityCacheKeyGenerator>();
-		services.TryAddSingleton<IEntityCacheKeyGeneratorStorage, EntityCacheKeyGeneratorStorage>();
 	}
 
 	/// <summary>

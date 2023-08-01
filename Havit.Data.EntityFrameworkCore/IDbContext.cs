@@ -70,14 +70,14 @@ public interface IDbContext : IDisposable
 		where TEntity : class;
 
 	/// <summary>
-	/// Vrátí objekty v daných stavech.
+	/// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.
 	/// </summary>
-	object[] GetObjectsInState(EntityState state, bool suppressDetectChanges);
+	EntityEntry GetEntry(object entity, bool suppressDetectChanges);
 
 	/// <summary>
-	/// Vrátí objekty v daných stavech.
+	/// Vrátí entity entries všech zaregistrovaných entit.
 	/// </summary>
-	object[] GetObjectsInStates(EntityState[] states, bool suppressDetectChanges);
+	EntityEntry[] GetEntries(bool suppressDetectChanges);
 
 	/// <summary>
 	/// Vrací true, pokud je EF považuje vlastnost za načtenou.
@@ -90,9 +90,4 @@ public interface IDbContext : IDisposable
 	/// </summary>
 	void MarkNavigationAsLoaded<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class;
-
-	/// <summary>
-	/// Vrací EntityEntry pro danou entitu bez provedení detekce změn change trackerem.
-	/// </summary>
-	EntityEntry GetEntry(object entity, bool suppressDetectChanges);
 }

@@ -1,16 +1,7 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
-using Havit.Services;
-using Havit.Services.Caching;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -21,16 +12,16 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 {
 	private readonly IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage;
 	private readonly IDbContext dbContext;
-	private readonly ICollectionTargetTypeService collectionTargetTypeService;
+	private readonly INavigationTargetService navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, ICollectionTargetTypeService collectionTargetTypeService)
+	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
 	{
 		this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
 		this.dbContext = dbContext;
-		this.collectionTargetTypeService = collectionTargetTypeService;
+		this.navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -46,15 +37,33 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	}
 
 	/// <inheritdoc />
-	public virtual bool ShouldCacheEntityTypeCollection(Type entityType, string propertyName)
+	public virtual bool ShouldCacheEntityTypeNavigation(Type entityType, string propertyName)
 	{
-		return ShouldCacheEntityType(collectionTargetTypeService.GetCollectionTargetType(entityType, propertyName));
+		// 1) kolekce one-to-many (např. Invoice.Items)
+		// - Kolekce Invoice.Items má být cachována, pokud jsou cachovány InvoiceItems.
+		// - Při vybavování dat z cache pro Invoice.Items je důležité, aby byly v cache k dispozici InvoiceItems.
+
+		// 2) kolekce one-to-many reprezentující dekomponovaný vztak many-to-many (např. User.Memberships)
+		// - Je jen specifické použití prvního bodu, platí tedy totéž:
+		// - Kolekce má být cachována, pokud jsou cachovány Memberships.
+		// - Při vybavování dat z cache pro User.Memberships je důležité, aby byly v cache k dispozici Memberships.		
+
+		// 3) kolekce many-to-many (např. User.Roles)
+		// - Je jen specifické použití prvního bodu, platí tedy totéž.
+		// - Jen je mezi entitami ještě "neviditelná" (SkipNavigation) entita.
+		// - Při vybavování dat z cache pro User.Roles je důležité, aby byly v cache k dispozici Roles.
+		// - SkipNavigation entitu v DbDataloaderu nějak konstruujeme...
+
+		// 4) reference one-to-one (backreference)
+		// - Opet platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
+
+		return ShouldCacheEntityType(navigationTargetService.GetNavigationTarget(entityType, propertyName).TargetClrType);
 	}
 
 	/// <inheritdoc />
-	public virtual bool ShouldCacheEntityCollection(object entity, string propertyName)
+	public virtual bool ShouldCacheEntityNavigation(object entity, string propertyName)
 	{
-		return ShouldCacheEntityTypeCollection(entity.GetType(), propertyName);
+		return ShouldCacheEntityTypeNavigation(entity.GetType(), propertyName);
 	}
 
 	/// <inheritdoc />

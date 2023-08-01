@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,13 +29,15 @@ public class BeforeCommitProcessorsRunnerTests
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
-		// Act
-		runner.Run(new Changes
+		Changes changes = new Changes(new[]
 		{
-			Inserts = new object[] { entityInserting },
-			Updates = new object[] { entityUpdating },
-			Deletes = new object[] { entityDeleting }
+			new FakeChange { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityInserting },
+			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityUpdating },
+			new FakeChange { ChangeType = ChangeType.Delete, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityDeleting },
 		});
+
+		// Act
+		runner.Run(new Changes(changes));
 
 		// Assert
 		beforeCommitProcessorFactoryMock.Verify(m => m.Create<Entity>(), Times.AtLeastOnce);

@@ -113,7 +113,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		services.TryAddSingleton<INavigationTargetStorage, NavigationTargetStorage>();
 		services.TryAddTransient<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
 		services.TryAddSingleton<IEntityCacheKeyPrefixStorage, EntityCacheKeyPrefixStorage>();
-		services.TryAddSingleton<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
+		services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
 		services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 
 		return this;

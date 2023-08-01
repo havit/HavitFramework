@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Havit.Services.Ares;
+﻿namespace Havit.Services.Ares;
 
 /// <summary>
 /// Výsledek s daty z odpovědi ze služeb ARES - přehled ekonomických subjektů, přehled osob.

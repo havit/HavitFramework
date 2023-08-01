@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Services.BusinessCalendars;
+﻿namespace Havit.Services.BusinessCalendars;
 
 /// <summary>
 /// Strategie pro určení, zda je daný den víkendem.

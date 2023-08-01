@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Havit.Services.FileStorage.Infrastructure;
+﻿namespace Havit.Services.FileStorage.Infrastructure;
 
 internal class CloseReactingStreamWrapper : Stream
 {

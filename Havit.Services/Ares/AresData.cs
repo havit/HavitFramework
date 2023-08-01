@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Services.Ares;
+﻿namespace Havit.Services.Ares;
 
 /// <summary>
 /// Obálka pro data z odpovìdi ze služby ARES - Obchodní rejstřík.

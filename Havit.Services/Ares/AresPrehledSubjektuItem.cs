@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Services.Ares;
+﻿namespace Havit.Services.Ares;
 
 /// <summary>
 /// Obálka pro data z odpovìdi ze služeb ARES - přehled ekonomických subjektů, přehled osob.

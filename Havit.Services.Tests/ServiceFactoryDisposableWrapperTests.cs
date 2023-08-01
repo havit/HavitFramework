@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Services.Tests;
@@ -14,12 +13,8 @@ public class ServiceFactoryDisposableWrapperTests
 		var serviceFactory = new Mock<IServiceFactory<object>>();
 		serviceFactory.Setup(f => f.CreateService()).Returns(fakeService);
 
-#pragma warning disable S108 // Nested blocks of code should not be left empty
-#pragma warning disable SA1501 // Statement must not be on a single line
 		using (new ServiceFactoryDisposableWrapper<object>(serviceFactory.Object))
-		{ }
-#pragma warning restore SA1501 // Statement must not be on a single line
-#pragma warning restore S108 // Nested blocks of code should not be left empty
+		{ /* NOOP */ }
 
 		serviceFactory.Verify(f => f.CreateService(), Times.Once);
 	}
@@ -31,12 +26,8 @@ public class ServiceFactoryDisposableWrapperTests
 		var serviceFactory = new Mock<IServiceFactory<object>>();
 		serviceFactory.Setup(f => f.CreateService()).Returns(fakeService);
 
-#pragma warning disable S108 // Nested blocks of code should not be left empty
-#pragma warning disable SA1501 // Statement must not be on a single line
 		using (new ServiceFactoryDisposableWrapper<object>(serviceFactory.Object))
-		{ }
-#pragma warning restore SA1501 // Statement must not be on a single line
-#pragma warning restore S108 // Nested blocks of code should not be left empty
+		{ /* NOOP */ }
 
 		serviceFactory.Verify(f => f.ReleaseService(fakeService), Times.Once);
 	}

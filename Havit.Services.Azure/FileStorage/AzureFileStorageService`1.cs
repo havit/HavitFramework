@@ -1,14 +1,4 @@
-﻿using Azure;
-using Azure.Storage.Files.Shares;
-using Azure.Storage.Files.Shares.Models;
-using Havit.Diagnostics.Contracts;
-using Havit.Services.FileStorage;
-using Havit.Text.RegularExpressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Havit.Services.FileStorage;
 
 namespace Havit.Services.Azure.FileStorage;
 

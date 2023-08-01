@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Renci.SshNet;

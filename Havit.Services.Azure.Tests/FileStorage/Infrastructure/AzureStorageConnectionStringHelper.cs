@@ -1,6 +1,5 @@
 ﻿using Azure.Identity;
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 

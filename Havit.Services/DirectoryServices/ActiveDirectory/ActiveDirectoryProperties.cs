@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Services.DirectoryServices.ActiveDirectory;
+﻿namespace Havit.Services.DirectoryServices.ActiveDirectory;
 
 /// <summary>
 /// Active Directory Properties.

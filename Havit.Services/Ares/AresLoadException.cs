@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Services.Ares;
+﻿namespace Havit.Services.Ares;
 
 /// <summary>
 /// Výjimka identifikující neúspěch při čtení dat z ARESu (ARES nedostupný, timeout, atp.).

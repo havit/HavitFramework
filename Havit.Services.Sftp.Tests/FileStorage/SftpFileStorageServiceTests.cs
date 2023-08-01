@@ -1,17 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System;
 using Havit.Services.TestHelpers.FileStorage;
 using Havit.Services.Sftp.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Renci.SshNet;
 using Havit.Services.Sftp.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace Havit.Services.Sftp.Tests.FileStorage;
 
@@ -403,7 +396,7 @@ public class SftpFileStorageServiceTests
 		Assert.IsNotNull(service);
 		Assert.IsInstanceOfType(service, typeof(SftpStorageService<TestFileStorage>));
 	}
-	
+
 	private static SftpStorageService GetSftpFileStorageService(bool secondary = false)
 	{
 		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible

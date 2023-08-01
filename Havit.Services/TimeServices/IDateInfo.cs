@@ -1,5 +1,4 @@
-﻿using System;
-namespace Havit.Services.TimeServices;
+﻿namespace Havit.Services.TimeServices;
 
 /// <summary>
 /// Interface představující informace o jednom dni pro business-calendar.

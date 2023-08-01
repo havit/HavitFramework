@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Services.Ares;
+﻿namespace Havit.Services.Ares;
 
 /// <summary>
 /// Výjimka identifikující chybu vrácenou z ARESu.

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Services.DirectoryServices.ActiveDirectory;
+﻿namespace Havit.Services.DirectoryServices.ActiveDirectory;
 
 /// <summary>
 /// User info DTO.

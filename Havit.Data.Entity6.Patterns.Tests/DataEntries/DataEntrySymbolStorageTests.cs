@@ -23,7 +23,7 @@ public class DataEntrySymbolServiceTests
 			new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString() },
 			new SupportedClass { Id = 2, Symbol = SupportedClass.Entry.Second.ToString() },
 			new SupportedClass { Id = 3, Symbol = SupportedClass.Entry.Third.ToString() });
-		
+
 		// Act
 		DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
 		int id = dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.Second);
@@ -39,7 +39,7 @@ public class DataEntrySymbolServiceTests
 		// Arrange
 		FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource();
 		DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
-		
+
 		// Act
 		dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
 
@@ -79,7 +79,7 @@ public class DataEntrySymbolServiceTests
 	{
 		// Arrange
 		FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource(
-			new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString() },				
+			new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString() },
 			new SupportedClass { Id = 2, Symbol = null },
 			new SupportedClass { Id = 3, Symbol = String.Empty });
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Services.Caching;
+﻿namespace Havit.Services.Caching;
 
 /// <summary>
 /// Implementace ICacheService, která nic nedělá - nekládá do žádného úložiště.

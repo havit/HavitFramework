@@ -5,12 +5,7 @@ using Havit.Diagnostics.Contracts;
 using Havit.Services.Azure.FileStorage.Internal;
 using Havit.Services.FileStorage;
 using Havit.Text.RegularExpressions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Havit.Services.Azure.FileStorage;
 
@@ -249,7 +244,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// Nepodporuje LastModified a ContentType (ve výsledku nejsou hodnoty nastaveny).
 	/// Při používání složek je výkonově neefektivní (REST API neumí lepší variantu).
 	/// </remarks>
-	public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
+	public override IEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFiles(string searchPattern = null)
 	{
 		if (!String.IsNullOrWhiteSpace(searchPattern))
 		{
@@ -262,7 +257,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 
 		EnsureFileShare();
 
-		foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal(GetRootShareDirectoryClient(), "", prefix))
+		foreach (Havit.Services.FileStorage.FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal(GetRootShareDirectoryClient(), "", prefix))
 		{
 			if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 			{
@@ -278,7 +273,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// Nepodporuje LastModified a ContentType (ve výsledku nejsou hodnoty nastaveny).
 	/// Při používání složek je výkonově neefektivní (REST API neumí lepší variantu).
 	/// </remarks>
-	public override async IAsyncEnumerable<FileInfo> EnumerateFilesAsync(string searchPattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	public override async IAsyncEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFilesAsync(string searchPattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		if (!String.IsNullOrWhiteSpace(searchPattern))
 		{
@@ -291,7 +286,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 
 		await EnsureFileShareAsync(cancellationToken).ConfigureAwait(false);
 
-		await foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix, cancellationToken).ConfigureAwait(false))
+		await foreach (Havit.Services.FileStorage.FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync(GetRootShareDirectoryClient(), "", prefix, cancellationToken).ConfigureAwait(false))
 		{
 			if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 			{
@@ -300,7 +295,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		}
 	}
 
-	private IEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix)
+	private IEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix)
 	{
 		// speed up
 		if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
@@ -315,7 +310,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		{
 			if (!item.IsDirectory)
 			{
-				yield return new FileInfo
+				yield return new Havit.Services.FileStorage.FileInfo
 				{
 					Name = directoryPrefix + item.Name,
 					LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
@@ -340,7 +335,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		}
 	}
 
-	private async IAsyncEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	private async IAsyncEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(ShareDirectoryClient shareDirectoryClient, string directoryPrefix, string searchPrefix, [EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		// speed up
 		if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
@@ -355,7 +350,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		{
 			if (!item.IsDirectory)
 			{
-				yield return new FileInfo
+				yield return new Havit.Services.FileStorage.FileInfo
 				{
 					Name = directoryPrefix + item.Name,
 					LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
@@ -380,7 +375,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		}
 	}
 
-	private bool EnumerateFiles_FilterFileInfo(FileInfo fileInfo, string searchPattern)
+	private bool EnumerateFiles_FilterFileInfo(Havit.Services.FileStorage.FileInfo fileInfo, string searchPattern)
 	{
 		if ((searchPattern != null) && !RegexPatterns.IsFileWildcardMatch(fileInfo.Name, searchPattern))
 		{

@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="FileStorage\EmbeddedResources\file.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="FileStorage\EmbeddedResources\file.txt" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="FileStorage\EmbeddedResources\file.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="FileStorage\EmbeddedResources\file.txt" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
@@ -27,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="System.DirectoryServices" />
+		<Reference Include="System.DirectoryServices" />
 	</ItemGroup>
 
 </Project>

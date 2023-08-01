@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Runtime.CompilerServices;
 using Havit.Linq;
 using Havit.Services.FileStorage;
 using Havit.Text.RegularExpressions;
@@ -71,7 +66,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	}
 
 	/// <inheritdoc />
-	public override IEnumerable<FileInfo> EnumerateFiles(string searchPattern = null)
+	public override IEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFiles(string searchPattern = null)
 	{
 		// zamen souborova '\\' za '/', ktere lze pouzit v Azure blobu
 		searchPattern = searchPattern?.Replace("\\", "/");
@@ -79,7 +74,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
 		string prefix = EnumerableFilesGetPrefix(searchPattern);
 
-		foreach (FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal("", prefix))
+		foreach (Havit.Services.FileStorage.FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal("", prefix))
 		{
 			if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 			{
@@ -88,7 +83,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		}
 	}
 
-	private IEnumerable<FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(string directoryPrefix, string searchPrefix)
+	private IEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFiles_ListFilesInHierarchyInternal(string directoryPrefix, string searchPrefix)
 	{
 		// speed up
 		if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
@@ -117,7 +112,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 			}
 			else if (item.IsRegularFile)
 			{
-				yield return new FileInfo
+				yield return new Havit.Services.FileStorage.FileInfo
 				{
 					Name = directoryPrefix + item.Name,
 					LastModifiedUtc = item.LastWriteTimeUtc,
@@ -153,7 +148,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	//		: fullname;
 	//}
 
-	private bool EnumerateFiles_FilterFileInfo(FileInfo fileInfo, string searchPattern)
+	private bool EnumerateFiles_FilterFileInfo(Havit.Services.FileStorage.FileInfo fileInfo, string searchPattern)
 	{
 		if ((searchPattern != null) && !RegexPatterns.IsFileWildcardMatch(fileInfo.Name, searchPattern))
 		{

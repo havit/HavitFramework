@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Services.TimeServices;
+﻿namespace Havit.Services.TimeServices;
 
 /// <summary>
 /// Calculates number of days between two dates, with excluding weekends and public holidays.

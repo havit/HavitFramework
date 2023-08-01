@@ -51,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF6", "EF6", "{2C3C8291-8C0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{2E02AA74-2EA7-454D-9D09-FF4254BD0395}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		Directory.Build.props = Directory.Build.props
 		NuGet.targets = NuGet.targets

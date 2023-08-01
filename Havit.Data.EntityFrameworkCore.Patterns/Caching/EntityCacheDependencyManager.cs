@@ -67,8 +67,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 
 		object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
 
-		// entity se složeným klíčem (ManyToMany)
-		// TODO: Ověřit si, že jde o ManyToMany, nejen o složený klíč
+		// entity se složeným klíčem nepodporujeme (předpokládáme, že jediné takové jsou reprezentace vztahu ManyToMany)
 		if (entityKeyValues.Length == 1)
 		{
 			object entityKeyValue = entityKeyValues.Single();

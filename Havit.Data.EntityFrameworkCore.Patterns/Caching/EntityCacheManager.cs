@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
@@ -201,7 +200,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 	private bool TryGetNavigation_ManyToMany<TPropertyItem>(NavigationTarget navigationTarget, object parentEntity, object cacheEntityPropertyMembersKeys) where TPropertyItem : class
 	{
-		object[] entityPropertyMembersKeys = (object[])cacheEntityPropertyMembersKeys;
+		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
 		var dbSet = dbContext.Set<TPropertyItem>();
 

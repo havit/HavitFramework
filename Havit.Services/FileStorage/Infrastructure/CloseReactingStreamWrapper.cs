@@ -19,7 +19,11 @@ internal class CloseReactingStreamWrapper : Stream
 
 	public override long Length => wrappedStream.Length;
 
-	public override long Position { get => wrappedStream.Position; set => wrappedStream.Position=value; }
+	public override long Position
+	{
+		get => wrappedStream.Position;
+		set => wrappedStream.Position = value;
+	}
 
 	public override void Flush()
 	{

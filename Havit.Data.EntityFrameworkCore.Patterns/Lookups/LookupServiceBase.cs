@@ -27,7 +27,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	where TEntity : class
 {
 	private readonly IEntityLookupDataStorage lookupStorage;
-	private readonly IRepository<TEntity> repository; // TODO: Odstranit závislost? Co se používá?
+	private readonly IRepository<TEntity> repository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
 	private readonly IDbContext dbContext;
 	private readonly IEntityKeyAccessor entityKeyAccessor;
 	private readonly ISoftDeleteManager softDeleteManager;

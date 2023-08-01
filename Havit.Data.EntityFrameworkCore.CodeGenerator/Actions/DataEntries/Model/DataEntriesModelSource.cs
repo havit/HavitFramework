@@ -53,7 +53,7 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 
 	private Type GetEntriesEnum(Type type)
 	{
-		Type entriesType = type.GetNestedType("Entry"); // TODO: Duplikovaný kód
+		Type entriesType = type.GetNestedType("Entry");
 		if ((entriesType != null) && (entriesType.IsEnum))
 		{
 			return entriesType;

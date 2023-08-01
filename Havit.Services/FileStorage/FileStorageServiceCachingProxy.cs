@@ -1,12 +1,11 @@
-﻿using Havit.Services.Caching;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Havit.Services.Caching;
+using Havit.Services.FileStorage.Infrastructure;
 
 namespace Havit.Services.FileStorage;
 
@@ -240,29 +239,17 @@ public class FileStorageServiceCachingProxy : IFileStorageService
 	/// <inheritdoc />
 	public Stream OpenCreate(string fileName, string contentType)
 	{
-		try
-		{
-			return fileStorageService.OpenCreate(fileName, contentType);
-		}
-		finally
-		{
-			// TODO: Invalidovat až po uzavření streamu
-			InvalidateCacheByFileName(fileName);
-		}
+		return new CloseReactingStreamWrapper(
+			fileStorageService.OpenCreate(fileName, contentType),
+			onCloseAction: () => InvalidateCacheByFileName(fileName));
 	}
 
 	/// <inheritdoc />
 	public async Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 	{
-		try
-		{
-			return await fileStorageService.OpenCreateAsync(fileName, contentType, cancellationToken).ConfigureAwait(false);
-		}
-		finally
-		{
-			// TODO: Invalidovat až po uzavření streamu
-			InvalidateCacheByFileName(fileName);
-		}
+		return new CloseReactingStreamWrapper(
+			await fileStorageService.OpenCreateAsync(fileName, contentType, cancellationToken).ConfigureAwait(false),
+			onCloseAction: () => InvalidateCacheByFileName(fileName));
 	}
 
 	/// <inheritdoc />

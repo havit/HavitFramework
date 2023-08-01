@@ -32,7 +32,11 @@ public class NavigationTargetService : INavigationTargetService
 						.GetNavigations()
 						.Select(navigation => new
 						{
-							TypePropertyName = new TypePropertyName(entityType.ClrType, navigation.Name),
+							TypePropertyName = new TypePropertyName
+							{
+								Type = entityType.ClrType,
+								PropertyName = navigation.Name
+							},
 							NavigationTarget = new NavigationTarget
 							{
 								TargetClrType = navigation.TargetEntityType.ClrType,
@@ -44,7 +48,11 @@ public class NavigationTargetService : INavigationTargetService
 								.Where(skipNavigation => skipNavigation.PropertyInfo != null)
 						.Select(skipNavigation => new
 						{
-							TypePropertyName = new TypePropertyName(entityType.ClrType, skipNavigation.Name),
+							TypePropertyName = new TypePropertyName
+							{
+								Type = entityType.ClrType,
+								PropertyName = skipNavigation.Name
+							},
 							NavigationTarget = new NavigationTarget
 							{
 								TargetClrType = skipNavigation.TargetEntityType.ClrType,
@@ -57,7 +65,7 @@ public class NavigationTargetService : INavigationTargetService
 			}
 		}
 
-		if (navigationTargetStorage.Value.TryGetValue(new TypePropertyName(type, propertyName), out NavigationTarget result))
+		if (navigationTargetStorage.Value.TryGetValue(new TypePropertyName { Type = type, PropertyName = propertyName }, out NavigationTarget result))
 		{
 			return result;
 		}

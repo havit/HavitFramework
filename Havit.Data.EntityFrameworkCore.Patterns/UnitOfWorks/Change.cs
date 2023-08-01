@@ -48,6 +48,5 @@ public abstract class Change
 	/// Použití v abstraktní třídě umožňuje implementaci pomocí EF Core (EntityEntry)
 	/// a zároveň "fake" implementaci pro unit-testy.
 	/// </remarks>
-
 	public abstract object GetOriginalValue(IProperty property);
 }

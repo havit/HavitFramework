@@ -158,7 +158,8 @@ public class EntityCacheManager : IEntityCacheManager
 		return false;
 	}
 
-	private bool TryGetNavigation_OneToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	private bool TryGetNavigation_OneToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys)
+		where TPropertyItem : class
 	{
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
@@ -173,7 +174,8 @@ public class EntityCacheManager : IEntityCacheManager
 			|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey.Single(), out _));
 	}
 
-	private bool TryGetNavigation_ManyToManyDecomposedToOneToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	private bool TryGetNavigation_ManyToManyDecomposedToOneToMany<TPropertyItem>(object cacheEntityPropertyMembersKeys)
+		where TPropertyItem : class
 	{
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
@@ -198,7 +200,8 @@ public class EntityCacheManager : IEntityCacheManager
 		return true;
 	}
 
-	private bool TryGetNavigation_ManyToMany<TPropertyItem>(NavigationTarget navigationTarget, object parentEntity, object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	private bool TryGetNavigation_ManyToMany<TPropertyItem>(NavigationTarget navigationTarget, object parentEntity, object cacheEntityPropertyMembersKeys)
+		where TPropertyItem : class
 	{
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
@@ -278,7 +281,8 @@ public class EntityCacheManager : IEntityCacheManager
 		e.Entry.State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
 	}
 
-	private bool TryGetNavigation_OneToOne<TPropertyItem>(object cacheEntityPropertyMembersKeys) where TPropertyItem : class
+	private bool TryGetNavigation_OneToOne<TPropertyItem>(object cacheEntityPropertyMembersKeys)
+		where TPropertyItem : class
 	{
 		// Pro vazbu OneToOne se prostě pokusíme získat instanci protistrany vazby.
 

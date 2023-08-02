@@ -33,6 +33,14 @@ public class NavigationTargetServiceTests
 		Assert.AreEqual(typeof(Child), navigationTarget.TargetClrType);
 		Assert.AreEqual(NavigationType.OneToMany, navigationTarget.NavigationType);
 
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(Category), nameof(Category.Parent));
+		Assert.AreEqual(typeof(Category), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
+
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(Category), nameof(Category.Children));
+		Assert.AreEqual(typeof(Category), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.OneToMany, navigationTarget.NavigationType);
+
 		// ManyToMany pomocí dekompozice do dvou OneToMany
 		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(LoginAccount), nameof(LoginAccount.Memberships));
 		Assert.AreEqual(typeof(Membership), navigationTarget.TargetClrType);
@@ -61,6 +69,6 @@ public class NavigationTargetServiceTests
 		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
 		// A nic víc!
-		Assert.AreEqual(8, navigationTargetTypeStorage.Value.Count());
+		Assert.AreEqual(10, navigationTargetTypeStorage.Value.Count());
 	}
 }

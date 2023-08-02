@@ -77,7 +77,7 @@ public class NavigationTargetService : INavigationTargetService
 
 	private NavigationType GetNavigationType(IReadOnlyNavigation navigation)
 	{
-		if (navigation.ForeignKey.DeclaringEntityType == navigation.DeclaringType)
+		if (navigation.IsOnDependent && (navigation.ForeignKey.DeclaringEntityType == navigation.DeclaringType))
 		{
 			return NavigationType.Reference;
 		}

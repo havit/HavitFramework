@@ -32,6 +32,7 @@ public class CachingTestDbContext : DbContext
 		// OneToMany
 		modelBuilder.Entity<Master>();
 		modelBuilder.Entity<Child>();
+		modelBuilder.Entity<Category>().HasMany(c => c.Children).WithOne(c => c.Parent).HasForeignKey(c => c.ParentId);
 
 		// ManyToMany as two OneToMany
 		modelBuilder.Entity<LoginAccount>();

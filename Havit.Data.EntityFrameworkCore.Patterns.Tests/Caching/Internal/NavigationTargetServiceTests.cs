@@ -68,7 +68,15 @@ public class NavigationTargetServiceTests
 		Assert.AreEqual(typeof(ClassOneToOneA), navigationTarget.TargetClrType);
 		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(ClassOneToOneC), nameof(ClassOneToOneC.Indirect));
+		Assert.AreEqual(typeof(ClassOneToOneC), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.OneToOne, navigationTarget.NavigationType);
+
+		navigationTarget = navigationTargetService.GetNavigationTarget(typeof(ClassOneToOneC), nameof(ClassOneToOneC.Direct));
+		Assert.AreEqual(typeof(ClassOneToOneC), navigationTarget.TargetClrType);
+		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
+
 		// A nic víc!
-		Assert.AreEqual(10, navigationTargetTypeStorage.Value.Count());
+		Assert.AreEqual(12, navigationTargetTypeStorage.Value.Count());
 	}
 }

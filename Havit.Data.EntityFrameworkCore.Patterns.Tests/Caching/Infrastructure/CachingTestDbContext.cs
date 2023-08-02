@@ -28,6 +28,7 @@ public class CachingTestDbContext : DbContext
 		// OneToOne
 		modelBuilder.Entity<ClassOneToOneA>();
 		modelBuilder.Entity<ClassOneToOneB>().HasOne(classB => classB.ClassA).WithOne(c => c.ClassB);
+		modelBuilder.Entity<ClassOneToOneC>().HasOne(classC => classC.Direct).WithOne(c => c.Indirect);
 
 		// OneToMany
 		modelBuilder.Entity<Master>();

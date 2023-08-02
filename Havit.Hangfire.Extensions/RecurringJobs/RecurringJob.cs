@@ -21,11 +21,16 @@ public class RecurringJob<TJob> : IRecurringJob
 	{
 		get
 		{
-			return (typeof(TJob).IsInterface && typeof(TJob).Name.StartsWith("I"))
+			return jobId ?? ((typeof(TJob).IsInterface && typeof(TJob).Name.StartsWith("I"))
 				? typeof(TJob).Name.Substring(1)
-				: typeof(TJob).Name;
+				: typeof(TJob).Name);
+		}
+		set
+		{
+			jobId = value;
 		}
 	}
+	private string jobId;
 
 	/// <summary>
 	/// Queue name.

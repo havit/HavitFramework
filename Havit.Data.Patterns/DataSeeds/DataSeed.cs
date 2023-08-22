@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.Patterns.DataSeeds.Profiles;
+﻿using Havit.Data.Patterns.DataSeeds.Profiles;
 
 namespace Havit.Data.Patterns.DataSeeds;
 
@@ -42,7 +39,19 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	/// <summary>
 	/// Předpis seedování dat.
 	/// </summary>
-	public abstract void SeedData();
+	public virtual void SeedData()
+	{
+		// NOOP
+	}
+
+	/// <summary>
+	/// Předpis seedování dat.
+	/// </summary>
+	public virtual Task SeedDataAsync(CancellationToken cancellationToken)
+	{
+		// "NOOP"
+		return Task.CompletedTask;
+	}
 
 	/// <summary>
 	/// Vrací seznam (typů) DataSeedů, na kterých je seedování závislé, tj. vrací seznam dataseedů, které musejí být zpracovány před tímto data seedem.
@@ -93,4 +102,13 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 		this.currentDataSeedPersister = null;
 	}
 
+	/// <summary>
+	/// Provede seedování dat s persistencí.
+	/// </summary>
+	async Task IDataSeed.SeedDataAsync(IDataSeedPersister dataSeedPersister, CancellationToken cancellationToken)
+	{
+		this.currentDataSeedPersister = dataSeedPersister;
+		await SeedDataAsync(cancellationToken).ConfigureAwait(false);
+		this.currentDataSeedPersister = null;
+	}
 }

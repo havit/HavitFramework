@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.Patterns.DataSeeds.Profiles;
+﻿using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Patterns.DataSeeds;
@@ -47,9 +44,18 @@ public class DataSeedRunner : IDataSeedRunner
 	/// Provede seedování dat daného profilu.
 	/// </summary>
 	public virtual void SeedData<TDataSeedProfile>(bool forceRun = false)
-			where TDataSeedProfile : IDataSeedProfile, new()
+		where TDataSeedProfile : IDataSeedProfile, new()
 	{
 		SeedData(typeof(TDataSeedProfile), forceRun);
+	}
+
+	/// <summary>
+	/// Provede seedování dat daného profilu.
+	/// </summary>
+	public virtual async Task SeedDataAsync<TDataSeedProfile>(bool forceRun = false, CancellationToken cancellationToken = default)
+		where TDataSeedProfile : IDataSeedProfile, new()
+	{
+		await SeedDataAsync(typeof(TDataSeedProfile), forceRun).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -58,6 +64,14 @@ public class DataSeedRunner : IDataSeedRunner
 	public virtual void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	{
 		SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
+	}
+
+	/// <summary>
+	/// Provede seedování dat daného profilu.
+	/// </summary>
+	public virtual async Task SeedDataAsync(Type dataSeedProfileType, bool forceRun = false, CancellationToken cancellationToken = default)
+	{
+		await SeedProfileWithPrequisitesAsync(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>(), cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -71,15 +85,7 @@ public class DataSeedRunner : IDataSeedRunner
 			return;
 		}
 
-		// Cycle?
-		if (profileTypesStack.Contains(profileType))
-		{
-			List<Type> cycle = profileTypesStack.ToList().SkipWhile(type => type != profileType).ToList();
-			cycle.Add(profileType);
-			string cycleMessage = String.Join(" -> ", cycle.Select(type => type.Name));
-
-			throw new InvalidOperationException($"DataSeed profiles contains a cycle ({cycleMessage}).");
-		}
+		SeedProfileWithPrerequisites_DetectProfileCycle(profileType, profileTypesStack);
 
 		profileTypesStack.Push(profileType); // cycle detection
 
@@ -99,6 +105,55 @@ public class DataSeedRunner : IDataSeedRunner
 		SeedProfile(profile, profileType, forceRun);
 
 		completedProfileTypes.Add(profileType);
+	}
+
+	/// <summary>
+	/// Provede seedování profilu s prerequisitami. Řeší detekci cyklů závislostí, atp.
+	/// </summary>
+	private async Task SeedProfileWithPrequisitesAsync(Type profileType, bool forceRun, Stack<Type> profileTypesStack, List<Type> completedProfileTypes, CancellationToken cancellationToken)
+	{
+		// Already completed
+		if (completedProfileTypes.Contains(profileType))
+		{
+			return;
+		}
+
+		// Cycle?
+		SeedProfileWithPrerequisites_DetectProfileCycle(profileType, profileTypesStack);
+
+		profileTypesStack.Push(profileType); // cycle detection
+
+		IDataSeedProfile profile = Activator.CreateInstance(profileType) as IDataSeedProfile;
+		if (profile == null)
+		{
+			throw new InvalidOperationException($"Profile type {profileType.FullName} does not implement IDataSeedProfile interface.");
+		}
+
+		foreach (Type prerequisiteProfileType in profile.GetPrerequisiteProfiles())
+		{
+			await SeedProfileWithPrequisitesAsync(prerequisiteProfileType, forceRun, profileTypesStack, completedProfileTypes, cancellationToken).ConfigureAwait(false);
+		}
+
+		profileTypesStack.Pop(); // cycle detection
+
+		await SeedProfileAsync(profile, profileType, forceRun, cancellationToken).ConfigureAwait(false);
+
+		completedProfileTypes.Add(profileType);
+	}
+
+	/// <summary>
+	/// Detekuje případný cyklus v profilech, na kterých je seed závislý.
+	/// </summary>
+	private static void SeedProfileWithPrerequisites_DetectProfileCycle(Type profileType, Stack<Type> profileTypesStack)
+	{
+		if (profileTypesStack.Contains(profileType))
+		{
+			List<Type> cycle = profileTypesStack.ToList().SkipWhile(type => type != profileType).ToList();
+			cycle.Add(profileType);
+			string cycleMessage = String.Join(" -> ", cycle.Select(type => type.Name));
+
+			throw new InvalidOperationException($"DataSeed profiles contains a cycle ({cycleMessage}).");
+		}
 	}
 
 	/// <summary>
@@ -127,6 +182,31 @@ public class DataSeedRunner : IDataSeedRunner
 	}
 
 	/// <summary>
+	/// Provede seedování jednoho profilu, již bez prerequisite.
+	/// Zda se má seedování profilu skutečně spustit rozhoduje dataSeedRunDecision.
+	/// </summary>
+	private async Task SeedProfileAsync(IDataSeedProfile profile, Type profileType, bool forceRun, CancellationToken cancellationToken)
+	{
+		List<IDataSeed> dataSeedsInProfile = dataSeeds.Where(item => item.ProfileType == profileType).ToList();
+		List<Type> dataSeedsInProfileTypes = dataSeedsInProfile.Select(item => item.GetType()).ToList();
+
+		if (forceRun || dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
+		{
+			// seed profile
+			Dictionary<Type, IDataSeed> dataSeedsInProfileByType = dataSeedsInProfile.ToDictionary(item => item.GetType(), item => item);
+			List<IDataSeed> completedDataSeeds = new List<IDataSeed>();
+
+			Stack<IDataSeed> dataSeedsStack = new Stack<IDataSeed>();
+			foreach (IDataSeed dataSeed in dataSeedsInProfile)
+			{
+				await SeedServiceAsync(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds, cancellationToken).ConfigureAwait(false);
+			}
+
+			dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
+		}
+	}
+
+	/// <summary>
 	/// Provede seedování jednoho předpisu. V této metodě dochází zejména k vyhodnocení závislostí předpisů a detekci cyklů závislostí.
 	/// </summary>
 	/// <param name="dataSeed">Předpis k seedování.</param>
@@ -143,14 +223,7 @@ public class DataSeedRunner : IDataSeedRunner
 		}
 
 		// Cycle?
-		if (stack.Contains(dataSeed))
-		{
-			List<IDataSeed> cycle = stack.ToList().SkipWhile(type => type != dataSeed).ToList();
-			cycle.Add(dataSeed);
-			string cycleMessage = String.Join(" -> ", cycle.Select(type => type.GetType().Name));
-
-			throw new InvalidOperationException(String.Format("DataSeed prerequisites contains a cycle ({0}).", cycleMessage));
-		}
+		SeedService_DetectServiceCycle(dataSeed, stack);
 
 		// Prerequisites
 		stack.Push(dataSeed); // cycle detection
@@ -160,14 +233,7 @@ public class DataSeedRunner : IDataSeedRunner
 		{
 			foreach (Type prerequisiteType in prerequisiteTypes)
 			{
-				IDataSeed prerequisitedDbSeed;
-				if (!dataSeedsInProfileByType.TryGetValue(prerequisiteType, out prerequisitedDbSeed)) // neumožňujeme jako závislost použít předpis seedování dat z jiného profilu
-				{
-					throw new InvalidOperationException(String.Format("Prerequisite {0} for data seed {1} was not found. Data seeds and prerequisities must be in the same profile ({2}).",
-						prerequisiteType.Name,
-						dataSeed.GetType().Name,
-						profile.ProfileName));
-				}
+				IDataSeed prerequisitedDbSeed = SeedService_GetPrerequisite(dataSeed, profile, dataSeedsInProfileByType, prerequisiteType);
 				SeedService(prerequisitedDbSeed, stack, profile, dataSeedsInProfileByType, completedDataSeedsInProfile);
 			}
 		}
@@ -181,6 +247,78 @@ public class DataSeedRunner : IDataSeedRunner
 	}
 
 	/// <summary>
+	/// Provede seedování jednoho předpisu. V této metodě dochází zejména k vyhodnocení závislostí předpisů a detekci cyklů závislostí.
+	/// </summary>
+	/// <param name="dataSeed">Předpis k seedování.</param>
+	/// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
+	/// <param name="profile">Profil, který je seedován.</param>
+	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
+	/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
+	private async Task SeedServiceAsync(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile, CancellationToken cancellationToken)
+	{
+		// Already completed?
+		if (completedDataSeedsInProfile.Contains(dataSeed))
+		{
+			return;
+		}
+
+		// Cycle?
+		SeedService_DetectServiceCycle(dataSeed, stack);
+
+		// Prerequisites
+		stack.Push(dataSeed); // cycle detection
+
+		IEnumerable<Type> prerequisiteTypes = dataSeed.GetPrerequisiteDataSeeds();
+		if (prerequisiteTypes != null)
+		{
+			foreach (Type prerequisiteType in prerequisiteTypes)
+			{
+				IDataSeed prerequisitedDbSeed = SeedService_GetPrerequisite(dataSeed, profile, dataSeedsInProfileByType, prerequisiteType);
+				SeedService(prerequisitedDbSeed, stack, profile, dataSeedsInProfileByType, completedDataSeedsInProfile);
+			}
+		}
+
+		stack.Pop(); // cycle detection
+
+		// Seed
+		await SeedAsync(dataSeed, cancellationToken).ConfigureAwait(false);
+
+		completedDataSeedsInProfile.Add(dataSeed);
+	}
+
+	/// <summary>
+	/// Detekuje případný cyklus v seedech, na kterých je tento seed závislý.
+	/// </summary>
+	private static void SeedService_DetectServiceCycle(IDataSeed dataSeed, Stack<IDataSeed> stack)
+	{
+		if (stack.Contains(dataSeed))
+		{
+			List<IDataSeed> cycle = stack.ToList().SkipWhile(type => type != dataSeed).ToList();
+			cycle.Add(dataSeed);
+			string cycleMessage = String.Join(" -> ", cycle.Select(type => type.GetType().Name));
+
+			throw new InvalidOperationException(String.Format("DataSeed prerequisites contains a cycle ({0}).", cycleMessage));
+		}
+	}
+
+	/// <summary>
+	/// Vyhledá závislý data seed, ev. vyhodí výjimku, pokud není nalezen.
+	/// </summary>
+	private static IDataSeed SeedService_GetPrerequisite(IDataSeed dataSeed, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, Type prerequisiteType)
+	{
+		IDataSeed prerequisitedDbSeed;
+		if (!dataSeedsInProfileByType.TryGetValue(prerequisiteType, out prerequisitedDbSeed)) // neumožňujeme jako závislost použít předpis seedování dat z jiného profilu
+		{
+			throw new InvalidOperationException(String.Format("Prerequisite {0} for data seed {1} was not found. Data seeds and prerequisities must be in the same profile ({2}).",
+				prerequisiteType.Name,
+				dataSeed.GetType().Name,
+				profile.ProfileName));
+		}
+
+		return prerequisitedDbSeed;
+	}
+
+	/// <summary>
 	/// Vlastní provedení seedování dat (s persistencí).
 	/// </summary>
 	/// <param name="dataSeed">Předpis seedování dat.</param>
@@ -190,6 +328,32 @@ public class DataSeedRunner : IDataSeedRunner
 		try
 		{
 			dataSeed.SeedData(dataSeedPersister);
+			var task = dataSeed.SeedDataAsync(dataSeedPersister, CancellationToken.None);
+			if (!task.IsCompleted)
+			{
+				throw new InvalidOperationException($"Async data seeds are supported only for async {nameof(DataSeedRunner)} methods. It means you need to run data seeding using {nameof(IDataSeedRunner)}.{nameof(IDataSeedRunner.SeedDataAsync)} method when {nameof(DataSeed<DefaultProfile>)} implements (overrides) {nameof(DataSeed<DefaultProfile>.SeedDataAsync)} method.");
+			}
+		}
+		finally
+		{
+			dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
+		}
+	}
+
+	/// <summary>
+	/// Vlastní provedení seedování dat (s persistencí).
+	/// </summary>
+	/// <param name="dataSeed">Předpis seedování dat.</param>
+	/// <param name="cancellationToken">Cancellation token.</param>
+	private async Task SeedAsync(IDataSeed dataSeed, CancellationToken cancellationToken)
+	{
+		cancellationToken.ThrowIfCancellationRequested();
+
+		IDataSeedPersister dataSeedPersister = dataSeedPersisterFactory.CreateService();
+		try
+		{
+			dataSeed.SeedData(dataSeedPersister);
+			await dataSeed.SeedDataAsync(dataSeedPersister, cancellationToken).ConfigureAwait(false);
 		}
 		finally
 		{

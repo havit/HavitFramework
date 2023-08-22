@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.Patterns.DataSeeds.Profiles;
+﻿using Havit.Data.Patterns.DataSeeds.Profiles;
 
 namespace Havit.Data.Patterns.DataSeeds;
 
@@ -17,6 +16,16 @@ public interface IDataSeedRunner
 	/// <summary>
 	/// Provede seedování dat.
 	/// </summary>
+	Task SeedDataAsync<TDataSeedProfile>(bool forceRun = false, CancellationToken cancellationToken = default)
+		where TDataSeedProfile : IDataSeedProfile, new();
+
+	/// <summary>
+	/// Provede seedování dat.
+	/// </summary>
 	void SeedData(Type dataSeedProfileType, bool forceRun = false);
 
+	/// <summary>
+	/// Provede seedování dat.
+	/// </summary>
+	Task SeedDataAsync(Type dataSeedProfileType, bool forceRun = false, CancellationToken cancellationToken = default);
 }

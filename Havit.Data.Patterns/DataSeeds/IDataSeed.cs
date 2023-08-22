@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Havit.Data.Patterns.DataSeeds;
+﻿namespace Havit.Data.Patterns.DataSeeds;
 
 /// <summary>
 /// Předpis seedování dat vč. persistence.
@@ -17,6 +14,11 @@ public interface IDataSeed
 	/// Provede seedování dat.
 	/// </summary>
 	void SeedData(IDataSeedPersister dataSeedPersister);
+
+	/// <summary>
+	/// Provede seedování dat.
+	/// </summary>
+	Task SeedDataAsync(IDataSeedPersister dataSeedPersister, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Vrací seznam (typů) DataSeedů, na kterých je seedování závislé, tj. vrací seznam dataseedů, které musejí být zpracovány před tímto data seedem.

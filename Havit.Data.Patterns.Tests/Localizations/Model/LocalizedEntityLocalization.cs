@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Havit.Model.Localizations;
-
-namespace Havit.Data.Patterns.Tests.Localizations.Model;
+﻿namespace Havit.Data.Patterns.Tests.Localizations.Model;
 
 public class LocalizedEntityLocalization : ILocalization<LocalizedEntity>
 {

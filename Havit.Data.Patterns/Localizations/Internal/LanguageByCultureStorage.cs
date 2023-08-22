@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.Patterns.Localizations.Internal;
+﻿namespace Havit.Data.Patterns.Localizations.Internal;
 
 /// <summary>
 /// Úložiště párování culture na jazyk.

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 using Havit.Model.Localizations;
 
 namespace Havit.Data.Patterns.Localizations;

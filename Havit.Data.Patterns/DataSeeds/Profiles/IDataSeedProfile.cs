@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Havit.Data.Patterns.DataSeeds.Profiles;
+﻿namespace Havit.Data.Patterns.DataSeeds.Profiles;
 
 /// <summary>
 /// Profil pro seedování dat.

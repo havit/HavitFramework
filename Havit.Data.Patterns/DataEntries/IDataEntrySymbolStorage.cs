@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.Patterns.DataEntries;
+﻿namespace Havit.Data.Patterns.DataEntries;
 
 /// <summary>
 /// Párování enumů na identifikátor.

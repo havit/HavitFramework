@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.Patterns.Attributes;
+﻿namespace Havit.Data.Patterns.Attributes;
 
 /// <summary>
 /// Označuje třídy, které jsou Fake implementací.

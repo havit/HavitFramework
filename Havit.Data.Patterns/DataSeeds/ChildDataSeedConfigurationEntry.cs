@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.Patterns.DataSeeds;
+﻿namespace Havit.Data.Patterns.DataSeeds;
 
 /// <summary>
 /// Entry point pro persistenci závislých (child) data seedů.

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Havit.Data.Patterns.DataSources;
+﻿namespace Havit.Data.Patterns.DataSources;
 
 /// <summary>
 /// Datový zdroj objektů typu TSource jako IQueryable.

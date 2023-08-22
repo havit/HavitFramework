@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.Patterns.Repositories;
+﻿using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Patterns.DataEntries;

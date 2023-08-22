@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 
 namespace Havit.Data.Patterns.UnitOfWorks;

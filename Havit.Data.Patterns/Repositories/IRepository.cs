@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Havit.Data.Patterns.Repositories;
+﻿namespace Havit.Data.Patterns.Repositories;
 
 /// <summary>
 /// Repository objektů typu TEntity.

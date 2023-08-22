@@ -1,9 +1,6 @@
 ﻿using Havit.Model.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace Havit.Model.Tests.Collections.Generic;
 

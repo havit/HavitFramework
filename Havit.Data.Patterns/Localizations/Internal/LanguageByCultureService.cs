@@ -1,9 +1,6 @@
 ﻿using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Model.Localizations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Havit.Data.Patterns.Localizations.Internal;
 

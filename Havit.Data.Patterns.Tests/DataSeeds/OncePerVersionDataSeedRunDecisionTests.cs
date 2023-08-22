@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
-using Havit.Services.FileStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Model.Localizations;
+﻿using Havit.Model.Localizations;
 
 namespace Havit.Data.Patterns.Localizations.Internal;
 

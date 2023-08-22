@@ -254,6 +254,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <param name="profile">Profil, který je seedován.</param>
 	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
 	/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
+	/// <param name="cancellationToken">Cancellation token.</param>
 	private async Task SeedServiceAsync(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile, CancellationToken cancellationToken)
 	{
 		// Already completed?

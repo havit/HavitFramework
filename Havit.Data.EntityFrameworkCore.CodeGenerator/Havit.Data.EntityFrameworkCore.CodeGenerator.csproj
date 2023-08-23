@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[7.0.5,8)">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[7.0.10,8)">
 			<!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
 		</PackageReference>
 		<PackageReference Include="System.CodeDom" Version="7.0.0" />

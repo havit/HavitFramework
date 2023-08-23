@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.CodeGenerator\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj" />
     <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>

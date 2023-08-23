@@ -18,8 +18,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class PropertyWithProtectedMembersDbRepository : PropertyWithProtectedMembersDbRepositoryBase, IPropertyWithProtectedMembersRepository
 {
-	public PropertyWithProtectedMembersDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	public PropertyWithProtectedMembersDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}
 }

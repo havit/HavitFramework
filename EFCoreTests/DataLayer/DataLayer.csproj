@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.CodeGenerator\Havit.Data.EntityFrameworkCore.CodeGenerator.csproj" />
     <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
     <ProjectReference Include="..\Entity\Entity.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />

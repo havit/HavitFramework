@@ -16,9 +16,9 @@ using Havit.Data.Patterns.Infrastructure;
 namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public abstract class AddressDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.Address>
+public abstract class LanguageDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.Language>
 {
-	protected AddressDbRepositoryBase(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.Address, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+	protected LanguageDbRepositoryBase(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.Language, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}

@@ -18,8 +18,8 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class CheckedEntityDbRepository : CheckedEntityDbRepositoryBase, ICheckedEntityRepository
 {
-	public CheckedEntityDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.CheckedEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
-		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager)
+	public CheckedEntityDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.CheckedEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}
 }

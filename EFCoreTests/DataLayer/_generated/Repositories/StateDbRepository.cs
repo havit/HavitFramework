@@ -16,11 +16,10 @@ using Havit.Data.Patterns.Infrastructure;
 namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public abstract class AddressDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.Address>
+public partial class StateDbRepository : StateDbRepositoryBase, IStateRepository
 {
-	protected AddressDbRepositoryBase(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.Address, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+	public StateDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.State, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}
-
 }

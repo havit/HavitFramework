@@ -6,16 +6,16 @@ using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories;
 [TestClass]
-public class DbRepositoryCompiledQueryBuilderTests
+public class RepositoryCompiledQueryBuilderTests
 {
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_Constructor_InitializesFields()
+	public void RepositoryCompiledQueryBuilder_Constructor_InitializesFields()
 	{
 		// Arrange
 		// NOOP
 
 		// Act
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 
 		// Assert
 		Assert.IsNotNull(compiledQueryBuilder.WhereMethod);
@@ -25,10 +25,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 	}
 
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_CreateGetObjectCompiledQuery()
+	public void RepositoryCompiledQueryBuilder_CreateGetObjectCompiledQuery()
 	{
 		// Arrange
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 
 		// Act
 		var result = compiledQueryBuilder.CreateGetObjectCompiledQuery<Person>(typeof(IRepository<Person>), GetEntityKeyAccessorMock());
@@ -38,10 +38,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 	}
 
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_CreateGetObjectAsyncCompiledQuery()
+	public void RepositoryCompiledQueryBuilder_CreateGetObjectAsyncCompiledQuery()
 	{
 		// Arrange
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 
 		// Act
 		var result = compiledQueryBuilder.CreateGetObjectAsyncCompiledQuery<Person>(typeof(IRepository<Person>), GetEntityKeyAccessorMock());
@@ -51,10 +51,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 	}
 
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_CreateGetObjectsCompiledQuery()
+	public void RepositoryCompiledQueryBuilder_CreateGetObjectsCompiledQuery()
 	{
 		// Arrange
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 
 		// Act
 		var result = compiledQueryBuilder.CreateGetObjectsCompiledQuery<Person>(typeof(IRepository<Person>), GetEntityKeyAccessorMock());
@@ -64,10 +64,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 	}
 
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_CreateGetObjectsAsyncCompiledQuery()
+	public void RepositoryCompiledQueryBuilder_CreateGetObjectsAsyncCompiledQuery()
 	{
 		// Arrange
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 
 		// Act
 		var result = compiledQueryBuilder.CreateGetObjectsAsyncCompiledQuery<Person>(typeof(IRepository<Person>), GetEntityKeyAccessorMock());
@@ -77,10 +77,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 	}
 
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_CreateGetAllCompiledQuery()
+	public void RepositoryCompiledQueryBuilder_CreateGetAllCompiledQuery()
 	{
 		// Arrange
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 		var softDeleteManagerMock = new Mock<ISoftDeleteManager>(MockBehavior.Strict);
 
 		// Act
@@ -91,10 +91,10 @@ public class DbRepositoryCompiledQueryBuilderTests
 	}
 
 	[TestMethod]
-	public void DbRepositoryCompiledQueryBuilder_CreateGetAllAsyncCompiledQuery()
+	public void RepositoryCompiledQueryBuilder_CreateGetAllAsyncCompiledQuery()
 	{
 		// Arrange
-		DbRepositoryCompiledQueryBuilder compiledQueryBuilder = new DbRepositoryCompiledQueryBuilder();
+		RepositoryCompiledQueryBuilder compiledQueryBuilder = new RepositoryCompiledQueryBuilder();
 		var softDeleteManagerMock = new Mock<ISoftDeleteManager>(MockBehavior.Strict);
 
 		// Act

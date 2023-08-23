@@ -87,9 +87,11 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write(", int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteMa" +
-                    "nager, IEntityCacheManager entityCacheManager)\r\n\t\t: base(dbContext, entityKeyAcc" +
-                    "essor, dataLoader, softDeleteManager, entityCacheManager)\r\n\t{\r\n\t}\r\n}");
+            this.Write(@", int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
+	{
+	}
+}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -115,7 +117,7 @@ namespace ");
         /// <summary>
         /// The string builder that generation-time code is using to assemble generated output
         /// </summary>
-        protected System.Text.StringBuilder GenerationEnvironment
+        public System.Text.StringBuilder GenerationEnvironment
         {
             get
             {

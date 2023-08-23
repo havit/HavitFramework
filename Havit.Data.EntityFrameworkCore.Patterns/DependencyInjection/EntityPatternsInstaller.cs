@@ -113,6 +113,10 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
 		services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 
+		services.TryAddSingleton<IRepositoryQueryProvider, RepositoryQueryProvider>();
+		services.TryAddSingleton<IRepositoryQueryStore, RepositoryQueryStore>();
+		services.TryAddSingleton<IRepositoryQueryBuilder, RepositoryCompiledQueryBuilder>();
+
 		return this;
 	}
 

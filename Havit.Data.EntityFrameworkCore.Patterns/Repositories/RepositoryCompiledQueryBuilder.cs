@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 
-internal class DbRepositoryCompiledQueryBuilder
+/// <inheritdoc />
+public class RepositoryCompiledQueryBuilder : IRepositoryQueryBuilder
 {
 	// JK: Ačkoliv bych chtěl fieldy nechat cammelCase, SA1307 (The name of a public or internal field in C# does not begin with an upper-case letter) mě nutí k PascalCase.
 	internal MethodInfo FirstOrDefaultMethod;
@@ -15,11 +16,15 @@ internal class DbRepositoryCompiledQueryBuilder
 	internal MethodInfo TagWithMethod;
 	internal MethodInfo ContainsMethod;
 
-	internal DbRepositoryCompiledQueryBuilder()
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	public RepositoryCompiledQueryBuilder()
 	{
 		EnsureMethodInfos();
 	}
 
+	/// <inheritdoc />
 	public Func<DbContext, int, TEntity> CreateGetObjectCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
@@ -29,19 +34,20 @@ internal class DbRepositoryCompiledQueryBuilder
 		ParameterExpression itemParameter = Expression.Parameter(typeof(TEntity), "item");
 
 		Expression<Func<DbContext, int, TEntity>> expression = Expression.Lambda<Func<DbContext, int, TEntity>>(
-			body: GetGetObjectLambaBody<TEntity>(
+			body: GetGetObjectLambaBody(
 					dbContextParameter,
 					idParameter,
-					QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObject)),
+					QueryTagBuilder.CreateTag(repositoryType, nameof(Data.Patterns.Repositories.IRepository<object>.GetObject)),
 					entityKeyAccessor),
 				// parameters:
 				dbContextParameter,
 				idParameter
 		);
 
-		return EF.CompileQuery<DbContext, int, TEntity>(expression);
+		return EF.CompileQuery(expression);
 	}
 
+	/// <inheritdoc />
 	public Func<DbContext, int, CancellationToken, Task<TEntity>> CreateGetObjectAsyncCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
@@ -51,10 +57,10 @@ internal class DbRepositoryCompiledQueryBuilder
 
 
 		Expression<Func<DbContext, int, CancellationToken, TEntity>> expression = Expression.Lambda<Func<DbContext, int, CancellationToken, TEntity>>(
-			body: GetGetObjectLambaBody<TEntity>(
+			body: GetGetObjectLambaBody(
 					dbContextParameter,
 					idParameter,
-					QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObjectAsync)),
+					QueryTagBuilder.CreateTag(repositoryType, nameof(Data.Patterns.Repositories.IRepository<object>.GetObjectAsync)),
 					entityKeyAccessor),
 
 			// parameters:
@@ -63,9 +69,10 @@ internal class DbRepositoryCompiledQueryBuilder
 			cancellationTokenParameter
 		);
 
-		return EF.CompileAsyncQuery<DbContext, int, TEntity>(expression);
+		return EF.CompileAsyncQuery(expression);
 	}
 
+	/// <inheritdoc />
 	private Expression GetGetObjectLambaBody<TEntity>(ParameterExpression dbContextParameter, ParameterExpression idParameter, string tagName, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
@@ -89,6 +96,7 @@ internal class DbRepositoryCompiledQueryBuilder
 		); // /FirstOrDefault
 	}
 
+	/// <inheritdoc />
 	public Func<DbContext, int[], IEnumerable<TEntity>> CreateGetObjectsCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 	where TEntity : class
 	{
@@ -102,7 +110,7 @@ internal class DbRepositoryCompiledQueryBuilder
 			body: GetGetObjectsLambdaBody(
 				dbContextParameter,
 				idsParameter,
-				QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObjects)),
+				QueryTagBuilder.CreateTag(repositoryType, nameof(Data.Patterns.Repositories.IRepository<object>.GetObjects)),
 				entityKeyAccessor
 			),
 			// parameters:
@@ -110,9 +118,10 @@ internal class DbRepositoryCompiledQueryBuilder
 			idsParameter
 		);
 
-		return EF.CompileQuery<DbContext, int[], IEnumerable<TEntity>>(expression);
+		return EF.CompileQuery(expression);
 	}
 
+	/// <inheritdoc />
 	public Func<DbContext, int[], IAsyncEnumerable<TEntity>> CreateGetObjectsAsyncCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
@@ -126,7 +135,7 @@ internal class DbRepositoryCompiledQueryBuilder
 			body: GetGetObjectsLambdaBody(
 				dbContextParameter,
 				idsParameter,
-				QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetObjectsAsync)),
+				QueryTagBuilder.CreateTag(repositoryType, nameof(Data.Patterns.Repositories.IRepository<object>.GetObjectsAsync)),
 				entityKeyAccessor
 			),
 			// parameters:
@@ -134,9 +143,10 @@ internal class DbRepositoryCompiledQueryBuilder
 			idsParameter
 		);
 
-		return EF.CompileAsyncQuery<DbContext, int[], TEntity>(expression);
+		return EF.CompileAsyncQuery(expression);
 	}
 
+	/// <inheritdoc />
 	private Expression GetGetObjectsLambdaBody<TEntity>(ParameterExpression dbContextParameter, ParameterExpression idsParameter, string tagName, IEntityKeyAccessor<TEntity, int> entityKeyAccessor)
 		where TEntity : class
 	{
@@ -157,29 +167,31 @@ internal class DbRepositoryCompiledQueryBuilder
 		);
 	}
 
+	/// <inheritdoc />
 	public Func<DbContext, IEnumerable<TEntity>> CreateGetAllCompiledQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager)
 		where TEntity : class
 	{
-		return EF.CompileQuery<DbContext, TEntity>(GetAllQueryExpression<TEntity>(QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetAll)), softDeleteManager));
+		return EF.CompileQuery(GetAllQueryExpression<TEntity>(QueryTagBuilder.CreateTag(repositoryType, nameof(Data.Patterns.Repositories.IRepository<object>.GetAll)), softDeleteManager));
 	}
 
+	/// <inheritdoc />
 	public Func<DbContext, IAsyncEnumerable<TEntity>> CreateGetAllAsyncCompiledQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager)
 		where TEntity : class
 	{
-		return EF.CompileAsyncQuery<DbContext, TEntity>(GetAllQueryExpression<TEntity>(QueryTagBuilder.CreateTag(repositoryType, nameof(Havit.Data.Patterns.Repositories.IRepository<object>.GetAllAsync)), softDeleteManager));
+		return EF.CompileAsyncQuery(GetAllQueryExpression<TEntity>(QueryTagBuilder.CreateTag(repositoryType, nameof(Data.Patterns.Repositories.IRepository<object>.GetAllAsync)), softDeleteManager));
 	}
 
 	private Expression<Func<DbContext, IQueryable<TEntity>>> GetAllQueryExpression<TEntity>(string tagName, ISoftDeleteManager softDeleteManager)
 		where TEntity : class
 	{
-		return (DbContext dbContext) => dbContext.Set<TEntity>().TagWith(tagName).WhereNotDeleted(softDeleteManager);
+		return (dbContext) => dbContext.Set<TEntity>().TagWith(tagName).WhereNotDeleted(softDeleteManager);
 	}
 
 	private void EnsureMethodInfos()
 	{
 		if (FirstOrDefaultMethod == null)
 		{
-			lock (typeof(DbRepositoryCompiledQueryBuilder))
+			lock (typeof(RepositoryCompiledQueryBuilder))
 			{
 				if (FirstOrDefaultMethod == null)
 				{
@@ -209,7 +221,7 @@ internal class DbRepositoryCompiledQueryBuilder
 						 .Select(item => item.Method)
 						 .Single();
 
-					ContainsMethod = typeof(System.Linq.Enumerable)
+					ContainsMethod = typeof(Enumerable)
 						.GetMethods(BindingFlags.Public | BindingFlags.Static)
 							.Where(m => m.Name == nameof(Enumerable.Contains))
 							.Select(m => new
@@ -225,7 +237,6 @@ internal class DbRepositoryCompiledQueryBuilder
 					DbContextSetMethod = typeof(DbContext).GetMethod(nameof(DbContext.Set), 1, BindingFlags.Instance | BindingFlags.Public, null, new Type[] { }, null);
 
 					TagWithMethod = typeof(EntityFrameworkQueryableExtensions).GetMethod("TagWith");
-
 				}
 			}
 		}

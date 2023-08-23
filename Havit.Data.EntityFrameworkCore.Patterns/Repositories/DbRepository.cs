@@ -17,6 +17,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 {
 	private readonly IDbContext dbContext;
 	private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
+	private readonly IRepositoryQueryProvider repositoryQueryProvider;
 
 	/// <summary>
 	/// DataLoader pro případné využití v implementaci potomků.
@@ -62,7 +63,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager)
+	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
 	{
 		Contract.Requires<ArgumentException>(dbContext != null);
 		Contract.Requires<ArgumentException>(softDeleteManager != null);
@@ -72,6 +73,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		this.dataLoader = dataLoader;
 		this.SoftDeleteManager = softDeleteManager;
 		this.EntityCacheManager = entityCacheManager;
+		this.repositoryQueryProvider = repositoryQueryProvider;
 		this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
 	}
 
@@ -96,7 +98,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			Func<DbContext, int, TEntity> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			Func<DbContext, int, TEntity> query = repositoryQueryProvider.GetGetObjectCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
 			result = query((DbContext)dbContext, id);
 
 			if (result != null)
@@ -135,7 +137,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			Func<DbContext, int, CancellationToken, Task<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			Func<DbContext, int, CancellationToken, Task<TEntity>> query = repositoryQueryProvider.GetGetObjectAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
 			result = await query((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
 
 			if (result != null)
@@ -192,7 +194,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 		if (idsToLoad.Count > 0)
 		{
-			Func<DbContext, int[], IEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectsCompiledQuery(this.GetType(), entityKeyAccessor);
+			Func<DbContext, int[], IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsCompiledQuery(this.GetType(), entityKeyAccessor);
 			List<TEntity> loadedObjects = query((DbContext)dbContext, idsToLoad.ToArray()).ToList();
 
 			if (idsToLoad.Count != loadedObjects.Count)
@@ -251,7 +253,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 		if (idsToLoad.Count > 0)
 		{
-			Func<DbContext, int[], IAsyncEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetObjectsAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			Func<DbContext, int[], IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
 			List<TEntity> loadedObjects = await query((DbContext)dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
 
 			if (idsToLoad.Count != loadedObjects.Count)
@@ -293,7 +295,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
-				Func<DbContext, IEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
 				allData = query((DbContext)dbContext).ToArray();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
@@ -334,7 +336,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
-				Func<DbContext, IAsyncEnumerable<TEntity>> query = DbRepositoryCompiledQueryStore.Default.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
 				allData = await query((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
@@ -350,7 +352,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	}
 
 	private TEntity[] _all;
-
 
 	/// <summary>
 	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.

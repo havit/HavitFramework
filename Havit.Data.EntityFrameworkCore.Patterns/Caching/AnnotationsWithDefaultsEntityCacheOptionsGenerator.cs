@@ -33,7 +33,7 @@ public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEnt
 
 		if (result.AbsoluteExpiration == null)
 		{
-			result.SlidingExpiration = absoluteExpiration;
+			result.AbsoluteExpiration = absoluteExpiration;
 		}
 
 		if (result.SlidingExpiration == null)

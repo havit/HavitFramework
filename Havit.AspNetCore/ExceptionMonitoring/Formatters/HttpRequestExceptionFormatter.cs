@@ -54,10 +54,11 @@ public class HttpRequestExceptionFormatter : IExceptionFormatter
 		{
 			sb.AppendLine("Activity information:");
 			sb.AppendLine("    ID: " + Activity.Current.Id);
-			sb.AppendLine("    Root ID: " + Activity.Current.RootId + " (ApplicationInsights Operation Id)");
+			sb.AppendLine("    Root ID: " + Activity.Current.RootId + " (Application Insights Operation Id)");
 			sb.AppendLine("    Parent ID: " + Activity.Current.ParentId);
 			sb.AppendLine("    Operation Name: " + Activity.Current.OperationName);
 			sb.AppendLine("    Kind: " + Activity.Current.Kind);
+			sb.AppendLine();
 		}
 #endif
 	}

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using System.Net.Mail;
 using System.Globalization;
 using System.Net;
+using System.Net.Mail;
 using System.Reflection;
-using System.Threading;
-using System.Web;
-using System.Configuration;
+using System.Text;
 
 namespace Havit.Diagnostics;
 
@@ -64,7 +59,7 @@ public class SmtpTraceListener : TraceListener
 	private readonly string _smtpUsername;
 	private readonly string _smtpPassword;
 	private readonly bool? _smtpEnableSsl = false;
-	
+
 	/// <summary>
 	/// Constructor, který je volán při použití TraceListerneru z app.configu a předává se do něj hodnota atributu initializeData.
 	/// </summary>
@@ -249,13 +244,31 @@ public class SmtpTraceListener : TraceListener
 		message.AppendLine("    Thread ID: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 		message.AppendLine();
 
+		// ApplicationInsights
+#if NET6_0_OR_GREATER
+		if (Activity.Current is not null)
+		{
+			message.AppendLine("Activity information:");
+			message.AppendLine("    ID: " + Activity.Current.Id);
+			message.AppendLine("    Root ID: " + Activity.Current.RootId + " (ApplicationInsights Operation Id)");
+			message.AppendLine("    Parent ID: " + Activity.Current.ParentId);
+			message.AppendLine("    Operation Name: " + Activity.Current.OperationName);
+			message.AppendLine("    Kind: " + Activity.Current.Kind);
+		}
+#endif
+
+		message.AppendLine("Event information:");
+		message.AppendLine("    Event time: " + now.ToLocalTime().ToString(CultureInfo.InstalledUICulture));
+		message.AppendLine("    Event UTC time: " + now.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
+		message.AppendLine();
+
 		// pro konzolovky, ve webových aplikacích vrací null
 		// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		Assembly assembly = Assembly.GetEntryAssembly();
 
 		// JK: IMHO zbytečný kód.
 		// V běžném requestu máme health monitoring, netřeba se obvykle zabývat SMTP trace listenerem.
-		// Nepokrýváme asychronní kód, tasky, thready - ty nemají HttpContext.Current.
+		// Nepokrýváme asynchronní kód, tasky, thready - ty nemají HttpContext.Current.
 		// V konzolovce, atp., máme assembly.
 
 		if (assembly == null)

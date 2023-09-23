@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using Havit.Diagnostics.Contracts;
 
@@ -165,7 +163,7 @@ public class ExceptionTracer
 	{
 		Contract.Requires<ArgumentNullException>(exception != null, nameof(exception));
 
-		RunUsingTraceSource(delegate(TraceSource ts)
+		RunUsingTraceSource(delegate (TraceSource ts)
 		{
 			ts.TraceEvent(eventType, eventId, FormatException(exception));
 		});

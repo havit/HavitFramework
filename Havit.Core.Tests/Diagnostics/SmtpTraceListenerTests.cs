@@ -1,12 +1,7 @@
-﻿using Havit.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using System;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
+using Havit.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Diagnostics;
 
@@ -15,7 +10,7 @@ public class SmtpTraceListenerTests
 {
 	[TestMethod]
 	public void SmtpTraceListener_GetSmtpClient_ReturnsConfiguredSmtpClient()
-	{			
+	{
 		// Arrange
 		SmtpTraceListener smtpTraceListener = new SmtpTraceListener("smtpserver=fake;smtpport=999;smtpenablessl=true");
 
@@ -44,7 +39,7 @@ public class SmtpTraceListenerTests
 	{
 		// Act
 		new SmtpTraceListener("smtpport=999");
-		
+
 		// Assert by method attribute
 	}
 }

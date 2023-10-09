@@ -26,7 +26,7 @@ public partial class DbDataLoader : IDataLoader
 	/// Viz komentář v <see cref="LoadCollectionPropertyInternal" />.
 	/// </summary>
 	internal const int ChunkSize = DbRepository<object>.GetObjectsChunkSize;
-		
+
 	private readonly IDbContext dbContext;
 	private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 	private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;

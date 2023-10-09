@@ -5,6 +5,7 @@ using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
+using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
@@ -15,6 +16,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	 where TEntity : class
 {
+	internal const int GetObjectsChunkSize = 5_000;
+
 	private readonly IDbContext dbContext;
 	private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
 	private readonly IRepositoryQueryProvider repositoryQueryProvider;
@@ -195,7 +198,20 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		if (idsToLoad.Count > 0)
 		{
 			Func<DbContext, int[], IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsCompiledQuery(this.GetType(), entityKeyAccessor);
-			List<TEntity> loadedObjects = query((DbContext)dbContext, idsToLoad.ToArray()).ToList();
+
+			List<TEntity> loadedObjects;
+			if (idsToLoad.Count <= GetObjectsChunkSize)
+			{
+				loadedObjects = query((DbContext)dbContext, idsToLoad.ToArray()).ToList();
+			}
+			else
+			{
+				loadedObjects = new List<TEntity>();
+				foreach (int[] idsToLoadChunk in idsToLoad.Chunkify(GetObjectsChunkSize))
+				{
+					loadedObjects.AddRange(query((DbContext)dbContext, idsToLoadChunk).ToList());
+				}
+			}
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
@@ -254,7 +270,19 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		if (idsToLoad.Count > 0)
 		{
 			Func<DbContext, int[], IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
-			List<TEntity> loadedObjects = await query((DbContext)dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
+			List<TEntity> loadedObjects;
+			if (idsToLoad.Count <= GetObjectsChunkSize)
+			{
+				loadedObjects = await query((DbContext)dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
+			}
+			else
+			{
+				loadedObjects = new List<TEntity>();
+				foreach (int[] idsToLoadChunk in idsToLoad.Chunkify(GetObjectsChunkSize))
+				{
+					loadedObjects.AddRange(await query((DbContext)dbContext, idsToLoadChunk).ToListAsync(cancellationToken).ConfigureAwait(false));
+				}
+			}
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{

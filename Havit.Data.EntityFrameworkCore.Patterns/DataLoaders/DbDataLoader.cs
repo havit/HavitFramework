@@ -4,6 +4,7 @@ using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
@@ -24,8 +25,8 @@ public partial class DbDataLoader : IDataLoader
 	/// Ovlivňuje maximální počet hodnot v WHERE Id IN (...) s SQL statementu.
 	/// Viz komentář v <see cref="LoadCollectionPropertyInternal" />.
 	/// </summary>
-	private const int ChunkSize = 5000;
-
+	internal const int ChunkSize = DbRepository<object>.GetObjectsChunkSize;
+		
 	private readonly IDbContext dbContext;
 	private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 	private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;

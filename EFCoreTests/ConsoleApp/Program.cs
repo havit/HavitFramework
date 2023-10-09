@@ -103,10 +103,18 @@ public static class Program
 		//sw.Stop();
 
 		// scénář 2: načítání referencí
-		List<Person> persons = personDataSource.DataIncludingDeleted.Where(p => (p.BossId != null) && (p.BossId != 1)).ToList();
+		//List<Person> persons = personDataSource.DataIncludingDeleted.Where(p => (p.BossId != null) && (p.BossId != 1)).ToList();
+		//Stopwatch sw = Stopwatch.StartNew();
+		////dataLoader.LoadAll(persons, p => p.Boss);
+		//await dataLoader.LoadAllAsync(persons, p => p.Boss, cancellationToken);
+		//sw.Stop();
+
+		// scénář 3: XyRepository.GetObjects()
+		await personRepository.GetObjectsAsync(new int[] { 1, 3 }, cancellationToken);
+
 		Stopwatch sw = Stopwatch.StartNew();
-		//dataLoader.LoadAll(persons, p => p.Boss);
-		await dataLoader.LoadAllAsync(persons, p => p.Boss, cancellationToken);
+		//List<Person> persons = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
+		List<Person> persons = await personRepository.GetObjectsAsync(Enumerable.Range(1, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
 		sw.Stop();
 
 		Console.WriteLine("  " + sw.ElapsedMilliseconds + " ms");

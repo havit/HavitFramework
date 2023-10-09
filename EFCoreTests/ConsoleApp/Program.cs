@@ -1,42 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
+using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.EFCoreTests.Entity;
-using Havit.Services;
+using Havit.Diagnostics.Contracts;
+using Havit.EFCoreTests.DataLayer.DataSources;
+using Havit.EFCoreTests.DataLayer.Lookups;
+using Havit.EFCoreTests.DataLayer.Repositories;
+using Havit.EFCoreTests.Model;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Havit.Data.Patterns.DataLoaders;
-using Havit.EFCoreTests.Model;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching;
-using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
-using System.Transactions;
-using Havit.Data.Patterns.DataSeeds;
-using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.EFCoreTests.DataLayer.Seeds.Core;
-using System.Data.SqlClient;
-using Havit.Data.Patterns.Exceptions;
-using Havit.EFCoreTests.DataLayer.Repositories;
-using System.Linq.Expressions;
-using Havit.EFCoreTests.DataLayer.Lookups;
-using Havit.EFCoreTests.DataLayer.DataSources;
-using Havit.EFCoreTests.DataLayer.Seeds.ProtectedProperties;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Storage;
-using Havit.EFCoreTests.DataLayer.Seeds.Persons;
 using Microsoft.Extensions.Hosting;
-using System.Threading;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ConsoleApp1;
 
@@ -53,7 +39,8 @@ public static class Program
 			.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
 			.Build();
 
-		UpdateDatabase(host.Services);
+		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
+		//await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}
 
@@ -76,33 +63,53 @@ public static class Program
 		services.AddSingleton<IMemoryCache, MemoryCache>();
 	}
 
-	private static void UpdateDatabase(IServiceProvider serviceProvider)
+	private static async Task UpdateDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 	{
-		using (var scope = serviceProvider.CreateScope())
+		using var scope = serviceProvider.CreateScope();
+		await scope.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeletedAsync(cancellationToken);
+		await scope.ServiceProvider.GetRequiredService<IDbContext>().Database.MigrateAsync(cancellationToken);
+	}
+
+	private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
+	{
+		//await scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken);
+
+		for (int i = 0; i < 50000; i++)
 		{
-			//scope.ServiceProvider.GetRequiredService<IDbContext>().Database.EnsureDeleted();
-			scope.ServiceProvider.GetRequiredService<IDbContext>().Database.Migrate();
-			scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>();
+			using var scope = serviceProvider.CreateScope();
+			var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+			Person person = new Person();
+			person.Subordinates.AddRange(Enumerable.Range(0, 2).Select(i => new Person()));
+			uow.AddForInsert(person);
+			await uow.CommitAsync(cancellationToken);
 		}
 	}
 
+
 	private static async Task DebugAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
 	{
+		using var scope = serviceProvider.CreateScope();
+		var personRepository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
+		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
+		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
+
+		// scénář 1: načítání kolekcí
+		//Person person = await personRepository.GetObjectAsync(1, cancellationToken);
+		//Contract.Assert(person.BossId == null);
+
+		//Stopwatch sw = Stopwatch.StartNew();
+		//dataLoader.Load(person, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		//await dataLoader.LoadAsync(person, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
+		//sw.Stop();
+
+		// scénář 2: načítání referencí
+		List<Person> persons = personDataSource.DataIncludingDeleted.Where(p => (p.BossId != null) && (p.BossId != 1)).ToList();
 		Stopwatch sw = Stopwatch.StartNew();
-		for (int i = 0; i < 5; i++)
-		{
-			using (var scope = serviceProvider.CreateScope())
-			{
-				var repository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
-				repository.GetObject(1);
-				await repository.GetObjectAsync(2, cancellationToken);
-				repository.GetObjects(3, 4);
-				await repository.GetObjectsAsync(new int[] { 5, 6 }, cancellationToken);
-				//repository.GetAll();
-				await repository.GetAllAsync(cancellationToken);
-			}
-		}
-		Console.WriteLine(sw.ElapsedMilliseconds);
+		//dataLoader.LoadAll(persons, p => p.Boss);
+		await dataLoader.LoadAllAsync(persons, p => p.Boss, cancellationToken);
+		sw.Stop();
+
+		Console.WriteLine("  " + sw.ElapsedMilliseconds + " ms");
 	}
 
 }

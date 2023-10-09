@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -21,9 +22,27 @@ public partial class DbDataLoader
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
-			var query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
-			LogDebug("Starting reading from a database.");
-			List<TProperty> loadedProperties = query.ToList();
+			List<TProperty> loadedProperties;
+			if (foreignKeysToLoad.Count < ChunkSize)
+			{
+				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
+				LogDebug("Starting reading from a database.");
+				loadedProperties = query.ToList();
+			}
+			else
+			{
+				// viz komentář v LoadCollectionPropertyInternal
+				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunkify(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
+				LogDebug("Starting reading chunks from a database.");
+
+				loadedProperties = new List<TProperty>();
+				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				{
+					var chunkQuery = chunkQueries[chunkIndex];
+					List<TProperty> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToList();
+					loadedProperties.AddRange(loadedPropertiesChunk);
+				}
+			}
 			LogDebug("Finished reading from a database.");
 
 			LogDebug("Storing data for {0} entities to the cache.", args: loadedProperties.Count);
@@ -48,9 +67,27 @@ public partial class DbDataLoader
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
-			var query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
-			LogDebug("Starting reading from a database.");
-			List<TProperty> loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+			List<TProperty> loadedProperties;
+			if (foreignKeysToLoad.Count < ChunkSize)
+			{
+				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
+				LogDebug("Starting reading from a database.");
+				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+			}
+			else
+			{
+				// viz komentář v LoadCollectionPropertyInternal
+				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunkify(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
+				LogDebug("Starting reading chunks from a database.");
+
+				loadedProperties = new List<TProperty>();
+				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				{
+					var chunkQuery = chunkQueries[chunkIndex];
+					List<TProperty> loadedPropertiesChunk = await chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToListAsync(cancellationToken).ConfigureAwait(false);
+					loadedProperties.AddRange(loadedPropertiesChunk);
+				}
+			}
 			LogDebug("Finished reading from a database.");
 
 			LogDebug("Storing data for {0} entities to the cache.", args: loadedProperties.Count);

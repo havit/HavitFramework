@@ -23,9 +23,37 @@ public partial class DbDataLoader
 		if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
-			var query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
-			LogDebug("Starting reading from a database.");
-			List<TPropertyItem> loadedProperties = query.ToList();
+			List<TPropertyItem> loadedProperties;
+			if (entitiesToLoadQuery.Count <= ChunkSize)
+			{
+				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				LogDebug("Starting reading from a database.");
+				loadedProperties = query.ToList();
+			}
+			else
+			{
+				// V případě velkého počtu identifikátorů ve WHERE xy IN (...) můžeme dostat chybu:
+				// Internal error: An expression services limit has been reached.Please look for potentially complex expressions in your query, and try to simplify them.
+				// https://learn.microsoft.com/en-us/sql/relational-databases/errors-events/mssqlserver-8632-database-engine-error?view=sql-server-ver16
+				// (Vyskytlo se při přibližně 34000 hodnotách v Azure SQL Database, Elastic Pool 200 eDTU, každá databáze max. 100 DTU.)
+				//
+				// Snažíme se proto rozdělit identifikátory do skupin maximálně po ChunkSize prvcích.
+				// Nevýhody:
+				// - Pokud jsou identifikátory po sobě jdoucí, může se stát, že se podmínka WHERE XyId IN (...) zjednoduší na WHERE XyId >= 5001 and XyId <= 55000,  
+				//   touto úpravou však dojde ke spuštění 10 dotazů, každý s ChunkSize prvky z daného rozsahu (vzhledem k pravděpodobnosti výskytu neřešíme
+				//   více a považujeme toto za good-enough řešení).
+				// - Víceré spuštění changetrackeru (ale když už použijeme takto enormní množství dat, changetracker nás nejspíš netrápí)
+				// Zároveň se snažíme ani trochu nesnížit výkon pro běžný scénář s běžným počtem záznamů (nechceme přidat volání AddRange v dalších variantách této metody, atp.).
+				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunkify(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
+				LogDebug("Starting reading chunks from a database.");
+				loadedProperties = new List<TPropertyItem>();
+				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				{
+					var chunkQuery = chunkQueries[chunkIndex];
+					List<TPropertyItem> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToList();
+					loadedProperties.AddRange(loadedPropertiesChunk);
+				}
+			}
 			LogDebug("Finished reading from a database.");
 			LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
 			LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
@@ -55,9 +83,26 @@ public partial class DbDataLoader
 		if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
-			var query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
-			LogDebug("Starting reading from a database.");
-			List<TPropertyItem> loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+			List<TPropertyItem> loadedProperties;
+			if (entitiesToLoadQuery.Count <= ChunkSize)
+			{
+				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				LogDebug("Starting reading from a database.");
+				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+			}
+			else
+			{
+				// viz komentář v LoadCollectionPropertyInternal
+				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunkify(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
+				LogDebug("Starting reading chunks from a database.");
+				loadedProperties = new List<TPropertyItem>();
+				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				{
+					var chunkQuery = chunkQueries[chunkIndex];
+					List<TPropertyItem> loadedPropertiesChunk = await chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToListAsync(cancellationToken).ConfigureAwait(false);
+					loadedProperties.AddRange(loadedPropertiesChunk);
+				}
+			}
 			LogDebug("Finished reading from a database.");
 
 			LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);

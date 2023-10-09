@@ -16,5 +16,5 @@ public class Person
 	public List<Person> Subordinates { get; } = new List<Person>();
 
 	// TODO JK (po merge s newgendbdataloader): Neudělal jsem migraci, mám v jiné branch tutéž upravu, databáze mi přežívá
-	public DateTime? Deleted { get; set; }
+	//public DateTime? Deleted { get; set; }
 }

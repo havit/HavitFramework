@@ -19,6 +19,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 /// </summary>
 public partial class DbDataLoader : IDataLoader
 {
+	/// <summary>
+	/// Počet entit, ke kterým jsou načítána data jedním dotazem.
+	/// Ovlivňuje maximální počet hodnot v WHERE Id IN (...) s SQL statementu.
+	/// Viz komentář v <see cref="LoadCollectionPropertyInternal" />.
+	/// </summary>
+	private const int ChunkSize = 5000;
+
 	private readonly IDbContext dbContext;
 	private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 	private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;

@@ -110,14 +110,17 @@ public static class Program
 		//sw.Stop();
 
 		// scénář 3: XyRepository.GetObjects()
-		await personRepository.GetObjectsAsync(new int[] { 1, 3 }, cancellationToken);
+		//await personRepository.GetObjectsAsync(new int[] { 1, 3 }, cancellationToken);
 
-		Stopwatch sw = Stopwatch.StartNew();
-		//List<Person> persons = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
-		List<Person> persons = await personRepository.GetObjectsAsync(Enumerable.Range(1, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
-		sw.Stop();
+		//Stopwatch sw = Stopwatch.StartNew();
+		////List<Person> persons = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
+		//List<Person> persons = await personRepository.GetObjectsAsync(Enumerable.Range(1, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
+		//sw.Stop();
 
-		Console.WriteLine("  " + sw.ElapsedMilliseconds + " ms");
+		var person = personRepository.GetObject(1);
+		await dataLoader.LoadAsync(person, p => p.Subordinates, cancellationToken);
+
+		//Console.WriteLine("  " + sw.ElapsedMilliseconds + " ms");
 	}
 
 }

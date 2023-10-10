@@ -21,6 +21,9 @@ public class ApplicationDbContext : Havit.Data.EntityFrameworkCore.DbContext
 	{
 		base.CustomizeModelCreating(modelBuilder);
 
+		modelBuilder.Entity<Person>().Ignore(p => p.Subordinates);
+		modelBuilder.Entity<Person>().HasMany(p => p.SubordinatesIncludingDeleted).WithOne(p => p.Boss).HasForeignKey(p => p.BossId);
+
 		modelBuilder.RegisterModelFromAssembly(typeof(Havit.EFCoreTests.Model.Person).Assembly);
 		modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 	}

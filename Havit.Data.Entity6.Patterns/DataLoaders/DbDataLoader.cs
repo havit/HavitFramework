@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,9 +25,9 @@ public partial class DbDataLoader : IDataLoader
 	private readonly IDbContext dbContext;
 	private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
 	private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
-	
+
 	/// <summary>
-	/// Konstructor.
+	/// Konstruktor.
 	/// </summary>
 	/// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
 	/// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>
@@ -300,7 +299,7 @@ public partial class DbDataLoader : IDataLoader
 	}
 
 	/// <summary>
-	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
+	/// Zajistí načtení vlastnosti, která je referencí (není kolekcí). Voláno reflexí.
 	/// </summary>
 	private TProperty[] LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, TEntity[] entities)
 		where TEntity : class
@@ -320,7 +319,7 @@ public partial class DbDataLoader : IDataLoader
 	}
 
 	/// <summary>
-	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
+	/// Zajistí načtení vlastnosti, která je referencí (není kolekcí). Voláno reflexí.
 	/// </summary>
 	private async Task<TProperty[]> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
@@ -349,7 +348,7 @@ public partial class DbDataLoader : IDataLoader
 	{
 		var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
-	    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
+		InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
 		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
@@ -359,22 +358,22 @@ public partial class DbDataLoader : IDataLoader
 			loadQuery.Load();
 		}
 
-	    return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();
+		return entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();
 	}
 
-        /// <summary>
-        /// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
-        /// </summary>
-        private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
-				where TEntity : class
-				where TPropertyCollection : class
-				where TPropertyItem : class
+	/// <summary>
+	/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
+	/// </summary>
+	private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+			where TEntity : class
+			where TPropertyCollection : class
+			where TPropertyItem : class
 	{
 		var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName);
 
-	    InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
+		InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
-            List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
+		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
 
 		if (ids.Count > 0)
 		{
@@ -386,14 +385,14 @@ public partial class DbDataLoader : IDataLoader
 		return result;
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Vrátí seznam Id objektů, jejichž vlastnost má být načtena.
 	/// </summary>
 	protected virtual List<int> GetEntitiesIdsToLoadProperty<TEntity>(TEntity[] entities, string propertyName, bool isPropertyCollection)
 		where TEntity : class
-    {
-        IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
-	    IEnumerable<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection));			
+	{
+		IEnumerable<TEntity> entitiesNotInAddedState = entities.Where(item => dbContext.GetEntityState(item) != EntityState.Added);
+		IEnumerable<TEntity> entitiesToLoadQuery = entitiesNotInAddedState.Where(entity => !IsEntityPropertyLoaded(entity, propertyName, isPropertyCollection));
 		IEntityKeyAccessor<TEntity, int> entityKeyAccessor = new EntityKeyAccessor<TEntity>();
 		return entitiesToLoadQuery.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).Distinct().ToList();
 	}
@@ -410,7 +409,7 @@ public partial class DbDataLoader : IDataLoader
 			: dbContext.IsEntityReferenceLoaded(entity, propertyName);
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Vrátí WHERE podmínku omezující množinu záznamů dle Id.
 	/// </summary>
 	/// <param name="ids">Identifikátory objektů, které mají být ve where klauzuli.</param>
@@ -456,12 +455,12 @@ public partial class DbDataLoader : IDataLoader
 			parameter);
 	}
 
-    /// <summary>
+	/// <summary>
 	/// Vrátí dotaz načítající vlastnosti objektů s daným identifikátorem.
 	/// </summary>
 	/// <param name="propertyPath">Načítaná vlastnost.</param>
 	/// <param name="ids">Identifikátory objektů, jejichž vlastnost má být načtena.</param>
-	/// <param name="isPropertyCollection">True, pokud vlastost v propertyPath vyjadřuje kolekci.</param>
+	/// <param name="isPropertyCollection">True, pokud vlastnost v propertyPath vyjadřuje kolekci.</param>
 	private IQueryable GetLoadQuery<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath, List<int> ids, bool isPropertyCollection)
 		where TEntity : class
 	{
@@ -483,38 +482,38 @@ public partial class DbDataLoader : IDataLoader
 		return loadQuery;
 	}
 
-        /// <summary>
-        /// Entity, které jsou ve stavu Added nemá cenu dotazovat do databáze, protože tam ještě nejsou.
-        /// Tato metoda objektům ve stavu added inicializuje kolekce a nastavuje je jako Loaded.
-        /// </summary>
-    private void InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, Func<TEntity, TPropertyCollection> propertyPathLambda, string propertyName)
-        where TEntity : class
-        where TPropertyCollection : class
-        where TPropertyItem : class
-    {
-        List<TEntity> addedNonLoadedEntities = entities.Where(item => (dbContext.GetEntityState<TEntity>(item) == EntityState.Added) && !dbContext.IsEntityCollectionLoaded<TEntity>(item, propertyName)).ToList();
-        List<TEntity> addedNonLoadedEntitiesWithNullEntity = addedNonLoadedEntities.Where(item => propertyPathLambda(item) == null).ToList();
+	/// <summary>
+	/// Entity, které jsou ve stavu Added nemá cenu dotazovat do databáze, protože tam ještě nejsou.
+	/// Tato metoda objektům ve stavu added inicializuje kolekce a nastavuje je jako Loaded.
+	/// </summary>
+	private void InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, Func<TEntity, TPropertyCollection> propertyPathLambda, string propertyName)
+		where TEntity : class
+		where TPropertyCollection : class
+		where TPropertyItem : class
+	{
+		List<TEntity> addedNonLoadedEntities = entities.Where(item => (dbContext.GetEntityState<TEntity>(item) == EntityState.Added) && !dbContext.IsEntityCollectionLoaded<TEntity>(item, propertyName)).ToList();
+		List<TEntity> addedNonLoadedEntitiesWithNullEntity = addedNonLoadedEntities.Where(item => propertyPathLambda(item) == null).ToList();
 
-        if (addedNonLoadedEntitiesWithNullEntity.Count > 0)
-        {
-            if (typeof(TPropertyCollection) == typeof(List<TPropertyItem>) || typeof(TPropertyCollection) == typeof(IList<TPropertyItem>))
-            {
-                MethodInfo setter = typeof(TEntity).GetProperty(propertyName).GetSetMethod();
-                if (setter == null)
-                {
-                    throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it does not have a public setter.");
-                }
-                foreach (var item in addedNonLoadedEntitiesWithNullEntity)
-                {
-                    setter.Invoke(item, new object[] { new List<TPropertyItem>() });
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
-            }
-        }
+		if (addedNonLoadedEntitiesWithNullEntity.Count > 0)
+		{
+			if (typeof(TPropertyCollection) == typeof(List<TPropertyItem>) || typeof(TPropertyCollection) == typeof(IList<TPropertyItem>))
+			{
+				MethodInfo setter = typeof(TEntity).GetProperty(propertyName).GetSetMethod();
+				if (setter == null)
+				{
+					throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it does not have a public setter.");
+				}
+				foreach (var item in addedNonLoadedEntitiesWithNullEntity)
+				{
+					setter.Invoke(item, new object[] { new List<TPropertyItem>() });
+				}
+			}
+			else
+			{
+				throw new InvalidOperationException($"DataLoader on new objects (EntityState.Added) of type {typeof(TEntity).FullName} cannot set collection property {propertyName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
+			}
+		}
 
-        addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, true));
-    }
+		addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, true));
+	}
 }

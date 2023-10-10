@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -27,10 +26,10 @@ public class PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSub
 			if (propertyToLoad.IsCollection)
 			{
 				string propertyNameIncludingDeleted = propertyToLoad.PropertyName + "IncludingDeleted";
-				PropertyInfo propertyIncludingDeleted = propertyToLoad.SourceType.GetProperty(propertyNameIncludingDeleted);					
+				PropertyInfo propertyIncludingDeleted = propertyToLoad.SourceType.GetProperty(propertyNameIncludingDeleted);
 				if (propertyIncludingDeleted != null)
 				{
-					 Type enumerableType = typeof(IEnumerable<>).MakeGenericType(propertyToLoad.CollectionItemType);						
+					Type enumerableType = typeof(IEnumerable<>).MakeGenericType(propertyToLoad.CollectionItemType);
 					if (enumerableType.IsAssignableFrom(propertyIncludingDeleted.PropertyType))
 					{
 						propertyToLoad.PropertyName = propertyNameIncludingDeleted;

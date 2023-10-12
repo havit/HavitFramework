@@ -11,6 +11,7 @@ public static class DataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
+	[Obsolete("Use DataLoader method instead of this extension method.")]
 	public static async Task LoadAsync<TEntity>(this IDataLoader dataLoader, TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths /* no cancellation token here */)
 		where TEntity : class
 	{
@@ -20,6 +21,7 @@ public static class DataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
+	[Obsolete("Use DataLoader method instead of this extension method.")]
 	public static async Task LoadAllAsync<TEntity>(this IDataLoader dataLoader, IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths /* no cancellation token here */)
 		where TEntity : class
 	{

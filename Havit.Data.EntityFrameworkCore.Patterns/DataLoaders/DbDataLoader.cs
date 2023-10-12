@@ -76,6 +76,7 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 	{
 		Contract.Requires(propertyPaths != null);
+		Contract.Requires(propertyPaths.Length > 0);
 
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -105,6 +106,7 @@ public partial class DbDataLoader : IDataLoader
 	{
 		Contract.Requires(entities != null);
 		Contract.Requires(propertyPaths != null);
+		Contract.Requires(propertyPaths.Length > 0);
 
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -137,6 +139,7 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 	{
 		Contract.Requires(propertyPaths != null);
+		Contract.Requires(propertyPaths.Length > 0);
 
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -169,6 +172,7 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 	{
 		Contract.Requires(propertyPaths != null);
+		Contract.Requires(propertyPaths.Length > 0);
 
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{

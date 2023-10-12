@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using Havit.Model.Collections.Generic;
 
 namespace Havit.Data.Patterns.DataLoaders;
@@ -79,6 +80,16 @@ public static class FluentDataLoaderExtensions
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
 	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<FilteringCollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+		where TEntity : class
+		where TProperty : class
+	{
+		return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
+	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
+	/// </summary>
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<ObservableCollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{

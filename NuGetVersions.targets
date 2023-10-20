@@ -10,7 +10,7 @@
   <!-- Core Libraries -->
   <PropertyGroup>
 	  <HavitData_PackageVersion>2.0.30</HavitData_PackageVersion>
-	  <HavitDataSqlClientAzure_PackageVersion>2.0.6</HavitDataSqlClientAzure_PackageVersion>
+	  <HavitDataSqlClientAzure_PackageVersion>2.0.7</HavitDataSqlClientAzure_PackageVersion>
 	  <HavitDrawing_PackageVersion>2.0.30</HavitDrawing_PackageVersion>
 	  <HavitPayMuzo_PackageVersion>2.0.30</HavitPayMuzo_PackageVersion>
 	  <HavitPayPal_PackageVersion>2.0.30</HavitPayPal_PackageVersion>

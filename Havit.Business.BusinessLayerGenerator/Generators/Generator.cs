@@ -15,14 +15,6 @@ public static class Generator
 		DatabaseRulesChecker.CheckRules(database);
 
 		// nalezneme tabulky, na jejichž základě se budou generovat třídy
-		try
-		{
-			Console.BufferHeight = Int16.MaxValue - 1;
-		}
-		catch (IOException) // Powershell ISE vyhazuje výjimku
-		{
-			// NOOP
-		}
 
 		ConsoleHelper.WriteLineInfo("Vyhledávám tabulky");
 		List<Table> tables = DatabaseHelper.GetWorkingTables();

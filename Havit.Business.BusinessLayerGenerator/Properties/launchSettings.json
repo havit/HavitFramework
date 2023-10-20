@@ -20,6 +20,10 @@
     "123.AEP": {
       "commandName": "Project",
       "commandLineArgs": "-outputpath:D:\\Dev\\123.AEP\\BusinessLayer -sqlserver:sqldev.havit.local -database:AccacePayroll_master -username:development -password:development -strategy HavitCodeFirst"
+    },
+    "136.SWF": {
+      "commandName": "Project",
+      "commandLineArgs": "-outputpath:D:\\Dev\\136.SWF\\BusinessLayer -sqlserver:sqldev.havit.local -database:SolarTurbinesAccountsPayable -username:development -password:development -targetplatform:SqlServer2008 -strategy:HavitCodeFirst"
     }
   }
 }

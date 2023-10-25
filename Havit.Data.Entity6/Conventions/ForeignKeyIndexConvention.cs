@@ -26,9 +26,18 @@ public class ForeignKeyIndexConvention : IStoreModelConvention<AssociationType>
 			EdmProperty[] foreignKeyIndexProperties = association.Constraint.ToProperties.Where(property => !property.DeclaringType.IsConventionSuppressed(typeof(ForeignKeyIndexConvention)) && !property.IsConventionSuppressed(typeof(ForeignKeyIndexConvention))).ToArray();
 			if (foreignKeyIndexProperties.Any()) // jen pokud je nějaký klíč, nad kterým budeme tvořit index
 			{
-				IndexHelper.AddIndex(foreignKeyIndexProperties);
+				// ManyToMany můžeme mít definovanou ještě pomocí dekompozice do dvou OneToMany vazeb.
+				// Ani pro takovou nechceme tvořit indexy. Neřešíme jiné scénáře, v našich scénářích použití by se neměly vyskytovat.
+				EntityType parentEntityType = foreignKeyIndexProperties.First().DeclaringType as EntityType;
+				if ((parentEntityType != null) && (parentEntityType.KeyMembers.Count > 1))
+				{
+					// NOOP
+				}
+				else
+				{
+					IndexHelper.AddIndex(foreignKeyIndexProperties);
+				}
 			}
 		}
 	}
 }
-

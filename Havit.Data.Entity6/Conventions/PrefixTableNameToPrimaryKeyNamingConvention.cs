@@ -23,6 +23,7 @@ public class PrefixTableNameToPrimaryKeyNamingConvention : IStoreModelConvention
 			bool isEntity = entityTypeCSpace != null; 
 
 			if (isEntity // eliminujeme vztahové tabulky
+				&& (parentEntityType.KeyMembers.Count == 1) // nechceme vazební tabulky
 				&& (parentEntityType.KeyMembers.Contains(item))) // omezíme se jen na primární klíče
 			{
 				item.Name = parentEntityType.Name + item.Name;

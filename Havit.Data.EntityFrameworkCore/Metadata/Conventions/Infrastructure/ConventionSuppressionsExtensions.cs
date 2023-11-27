@@ -12,7 +12,7 @@ public static class ConventionSuppressionsExtensions
 	/// <summary>
 	/// Vrací true, pokud je konvence na daném objektu modelu potlačena.
 	/// </summary>
-	public static bool IsConventionSuppressed(this IReadOnlyEntityType entityType, string conventionIdentifier)
+	public static bool IsConventionSuppressed(this IReadOnlyTypeBase entityType, string conventionIdentifier)
 	{
 		return entityType.ClrType.IsConventionSuppressed(conventionIdentifier);
 	}

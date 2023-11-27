@@ -14,7 +14,7 @@ public class TestDbContext : DbContext
 			builder => builder
 				.UseStoredProcedures()
 				.UseViews());
-		optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
+		optionsBuilder.UseSqlServer(new Microsoft.Data.SqlClient.SqlConnection("Database=Dummy"));
 		optionsBuilder.EnableServiceProviderCaching(false);
 
 		// stub out Model Extender types, so all extenders in test assembly don't interfere with tests.

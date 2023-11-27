@@ -19,11 +19,4 @@ public class DbLockedCriticalSectionException : Exception
 	public DbLockedCriticalSectionException(string message, Exception innerException) : base(message, innerException)
 	{
 	}
-
-	/// <summary>
-	/// Constructor.
-	/// </summary>
-	protected DbLockedCriticalSectionException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) : base(serializationInfo, streamingContext)
-	{
-	}
 }

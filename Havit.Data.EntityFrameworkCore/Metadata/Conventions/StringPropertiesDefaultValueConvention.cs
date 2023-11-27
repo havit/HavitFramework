@@ -17,12 +17,12 @@ public class StringPropertiesDefaultValueConvention : IPropertyAddedConvention
 		IConventionProperty property = propertyBuilder.Metadata;
 
 		// Systémové tabulky nechceme změnit.
-		if (property.DeclaringEntityType.IsSystemType())
+		if (property.DeclaringType.IsSystemType())
 		{
 			return;
 		}
 
-		if (property.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.StringPropertiesDefaultValueConvention)
+		if (property.DeclaringType.IsConventionSuppressed(ConventionIdentifiers.StringPropertiesDefaultValueConvention)
 			|| property.IsConventionSuppressed(ConventionIdentifiers.StringPropertiesDefaultValueConvention))
 		{
 			return;

@@ -18,7 +18,7 @@ internal class ExtendedPropertiesRelationalAnnotationProvider : RelationalAnnota
 
 	public override IEnumerable<IAnnotation> For(ITable table, bool designTime)
 	{
-		return table.EntityTypeMappings.Select(mapping => mapping.EntityType).SelectMany(Handle);
+		return table.EntityTypeMappings.Select(mapping => mapping.TypeBase).SelectMany(Handle);
 	}
 
 	public override IEnumerable<IAnnotation> For(IRelationalModel model, bool designTime)

@@ -10,10 +10,10 @@ public static class ReadOnlyEntityTypeExtensions
 	/// <summary>
 	/// Vrací true, pokud jde o systémovou entitu, tj. entitu zaregistrovanou EF automaticky.
 	/// </summary>
-	public static bool IsSystemType(this IReadOnlyEntityType entityType)
+	public static bool IsSystemType(this IReadOnlyTypeBase type)
 	{
-		return (entityType.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion))
-			|| (entityType.ClrType == typeof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow));
+		return (type.ClrType == typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion))
+			|| (type.ClrType == typeof(Microsoft.EntityFrameworkCore.Migrations.HistoryRow));
 	}
 
 	internal static bool HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(this IReadOnlyEntityType entityType)

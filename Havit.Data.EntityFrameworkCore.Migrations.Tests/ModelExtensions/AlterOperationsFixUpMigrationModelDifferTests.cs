@@ -393,7 +393,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 
 		public override IEnumerable<IAnnotation> For(ITable table, bool designTime)
 		{
-			return table.EntityTypeMappings.First().EntityType
+			return table.EntityTypeMappings.First().TypeBase
 				.GetAnnotations()
 				.Where(a => a.Name.StartsWith(TestAnnotationPrefix));
 		}

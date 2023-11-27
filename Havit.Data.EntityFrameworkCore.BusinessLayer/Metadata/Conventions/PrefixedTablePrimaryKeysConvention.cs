@@ -33,7 +33,7 @@ public class PrefixedTablePrimaryKeysConvention : IKeyAddedConvention
 		var primaryKeysEndingId = keyBuilder.Metadata.Properties
 			.Where(property => property
 				.GetColumnName(StoreObjectIdentifier.Create(
-					property.DeclaringEntityType, StoreObjectType.Table)!.Value) == "Id")
+					property.DeclaringType, StoreObjectType.Table)!.Value) == "Id")
 			.ToArray();
 		if (primaryKeysEndingId.Length == 1)
 		{

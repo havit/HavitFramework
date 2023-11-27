@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<ImplicitUsings>true</ImplicitUsings>
 		<NoWarn>($NoWarn);EF1001</NoWarn>
@@ -17,12 +17,12 @@
 	<PropertyGroup>
 		<!-- Při povýšení je doporučeno aktualizovat i Havit.Data.EntityFrameworkCore.BusinessLayer,
 	  neboť tento balíček je obvykle distribuován zejména jako závislost Havit.Data.EntityFrameworkCore.BusinessLayer -->
-		<PackageVersion>2.7.4</PackageVersion>
+		<PackageVersion>2.8.0-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Model Extensions</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[7.0.10,8)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.0,9)" />
 	</ItemGroup>
 
 	<ItemGroup>

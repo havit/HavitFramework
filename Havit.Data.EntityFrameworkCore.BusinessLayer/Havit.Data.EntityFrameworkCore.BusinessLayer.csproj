@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>($NoWarn);1701;1702;1591;EF1001</NoWarn>
@@ -14,12 +14,12 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.7.6</PackageVersion>
+		<PackageVersion>2.8.0-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[7.0.10,8)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.0,9)" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -16,12 +16,12 @@ public class CharColumnTypeForCharPropertyConvention : IPropertyAddedConvention
 	public void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, IConventionContext<IConventionPropertyBuilder> context)
 	{
 		// Systémové tabulky nechceme změnit.
-		if (propertyBuilder.Metadata.DeclaringEntityType.IsSystemType())
+		if (propertyBuilder.Metadata.DeclaringType.IsSystemType())
 		{
 			return;
 		}
 
-		if (propertyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.CharColumnTypeForCharPropertyConvention) || propertyBuilder.Metadata.IsConventionSuppressed(ConventionIdentifiers.CharColumnTypeForCharPropertyConvention))
+		if (propertyBuilder.Metadata.DeclaringType.IsConventionSuppressed(ConventionIdentifiers.CharColumnTypeForCharPropertyConvention) || propertyBuilder.Metadata.IsConventionSuppressed(ConventionIdentifiers.CharColumnTypeForCharPropertyConvention))
 		{
 			return;
 		}

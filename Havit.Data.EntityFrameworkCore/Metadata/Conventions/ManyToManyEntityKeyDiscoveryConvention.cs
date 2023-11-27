@@ -43,7 +43,7 @@ public class ManyToManyEntityKeyDiscoveryConvention : IForeignKeyAddedConvention
 			// fromDataAnnotation: false 
 			//  - není definováno v modelu
 			//	- jinak dostaneme výjimku System.InvalidOperationException: 'Entity type 'PersonToPerson' has composite primary key defined with data annotations. To set composite primary key, use fluent API.'
-			IConventionKey newConventionKey = entityType.SetPrimaryKey(entityType.GetProperties().OrderBy(property => property.DeclaringEntityType.ClrType.GetProperties().ToList().IndexOf(property.PropertyInfo)).ToList().AsReadOnly(), fromDataAnnotation: false /* Convention */);
+			IConventionKey newConventionKey = entityType.SetPrimaryKey(entityType.GetProperties().OrderBy(property => property.DeclaringType.ClrType.GetProperties().ToList().IndexOf(property.PropertyInfo)).ToList().AsReadOnly(), fromDataAnnotation: false /* Convention */);
 		}
 	}
 }

@@ -44,7 +44,7 @@ public class ForeignKeysColumnNamesConvention : IForeignKeyAddedConvention, IFor
 				continue;
 			}
 
-			var columnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
+			var columnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringType, StoreObjectType.Table)!.Value);
 			if (columnName.EndsWith("Id"))
 			{
 				string newColumnName = columnName.Left(columnName.Length - 2 /* "Id".Length */) + "ID";

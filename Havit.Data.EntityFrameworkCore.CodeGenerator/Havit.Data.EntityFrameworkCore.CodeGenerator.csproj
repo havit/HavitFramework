@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>Havit.Data.EntityFrameworkCore.CodeGenerator</RootNamespace>
 		<ImplicitUsings>true</ImplicitUsings>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -10,15 +10,15 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.7.11</PackageVersion>
+		<PackageVersion>2.8.0-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[7.0.10,8)">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[8.0.0,9)">
 			<!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
 		</PackageReference>
-		<PackageReference Include="System.CodeDom" Version="7.0.0" />
+		<PackageReference Include="System.CodeDom" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

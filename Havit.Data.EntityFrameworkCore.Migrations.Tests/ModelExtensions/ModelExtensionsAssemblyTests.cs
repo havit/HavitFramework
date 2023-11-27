@@ -17,7 +17,7 @@ public class ModelExtensionsAssemblyTests
 		{
 			base.OnConfiguring(optionsBuilder);
 
-			optionsBuilder.UseSqlServer(new SqlConnection("Database=Dummy"));
+			optionsBuilder.UseSqlServer(new Microsoft.Data.SqlClient.SqlConnection("Database=Dummy"));
 		}
 	}
 

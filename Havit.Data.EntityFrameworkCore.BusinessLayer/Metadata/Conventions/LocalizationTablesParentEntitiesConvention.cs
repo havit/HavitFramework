@@ -55,7 +55,7 @@ public class LocalizationTablesParentEntitiesConvention : IForeignKeyAddedConven
 
 			IConventionEntityType principalEntityType = foreignKey.PrincipalEntityType;
 			IConventionProperty property = principalEntityType.FindPrimaryKey().Properties.First();
-			string pkColumnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringEntityType, StoreObjectType.Table)!.Value);
+			string pkColumnName = property.GetColumnName(StoreObjectIdentifier.Create(property.DeclaringType, StoreObjectType.Table)!.Value);
 			parentIdProperty.SetColumnName(pkColumnName, fromDataAnnotation: false /* Convention */);
 		}
 	}

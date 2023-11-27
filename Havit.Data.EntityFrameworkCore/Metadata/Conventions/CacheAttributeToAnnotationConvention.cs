@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 /// <summary>
 /// Konvence nastaví hodnoty z CacheAttribute do anotací.
 /// </summary>
-public class CacheAttributeToAnnotationConvention : EntityTypeAttributeConventionBase<CacheAttribute>
+public class CacheAttributeToAnnotationConvention : TypeAttributeConventionBase<CacheAttribute>
 {
 	/// <summary>
 	/// Název anotace určující, zda je na povoleno cachování entity.

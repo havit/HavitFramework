@@ -48,6 +48,12 @@ public class CascadeDeleteToRestrictConvention : CascadeDeleteConvention
 	protected override DeleteBehavior GetTargetDeleteBehavior(IConventionForeignKey foreignKey)
 	{
 		// Předek používá fromDataAnnotation false (tj. Convention), resp. nepoužívá žádnou hodnotu a použije se default, tj. fromDataAnnotation=false, tj. Convention.
+
+		// Pro naše účely je správnější použít DeleteBehavior.NoAction. SQL Server nemá podporu ON DELETE RESTRICT, ale jen ON DELETE NO ACTION,
+		// takže při DeleteBehavior.Restrict i DeleteBehavior.NoAction se ON DELETE NO ACTION.
+		// Nicméně změna výsledku této metody na DeleteBehavior.NoAction na efektivně neudělá nic,
+		// "jen" se při tvorbě migrace v cílové aplikaci vytvoří skript, který smaže a znovuzaloží všechny cizí klíče.
+		// Z toho důvodu nechávám hodnotu Restrict do okamžiku, než začne být NoAction potřeba.
 		return DeleteBehavior.Restrict;
 	}
 

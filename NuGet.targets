@@ -5,6 +5,8 @@
 		<Authors>HAVIT</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>logo.png</PackageIcon>
+		<!-- -->
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 
 		<!-- Error NU5104: Warning As Error: A stable release of a package should not have a prerelease dependency -->
 		<NoWarn>$(NoWarn);NU5104</NoWarn>
@@ -15,7 +17,6 @@
 	<ItemGroup>
 		<None Include="../logo.png" Pack="true" PackagePath="" Visible="false" />
 	</ItemGroup>
-
 
 	<!-- Publish NuGet -->
 	<PropertyGroup>

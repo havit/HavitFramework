@@ -12,7 +12,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>$(HavitWeb_PackageVersion)</PackageVersion>
+		<PackageVersion>2.0.37</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Web Class Library</Description>
 	</PropertyGroup>
 

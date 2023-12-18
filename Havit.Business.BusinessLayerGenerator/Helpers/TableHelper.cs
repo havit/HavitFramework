@@ -35,6 +35,7 @@ public static class TableHelper
 	{
 		return ((GeneratorSettings.Strategy == GeneratorStrategy.Exec) && table.Name.StartsWith("_"))
 			|| (GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy() && table.Name.StartsWith("__")) // __DataSeed, __EFMigrationsHistory
+			|| (table.Name == "__BLExtendedProperties")
 			|| (GeneratorSettings.Strategy.IsAnyHavitStrategy() && table.Schema.Equals("HangFire", StringComparison.OrdinalIgnoreCase))
 			|| (GetBoolExtendedProperty(table, "Ignored") ?? DatabaseHelper.GetDefaultIgnoredOnTables());
 	}

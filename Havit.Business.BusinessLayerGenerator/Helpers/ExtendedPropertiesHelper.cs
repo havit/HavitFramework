@@ -48,28 +48,59 @@ public static class ExtendedPropertiesHelper
 	{
 		if (allExtendedProperties == null)
 		{
-			SqlCommand cmd = new SqlCommand("SELECT class_desc, major_id, minor_id, name, value FROM sys.extended_properties");
+			SqlCommand cmd = new SqlCommand(@"DECLARE @result TABLE([Table] nvarchar(max), [Column] nvarchar(max), [StoredProcedure] nvarchar(max), [ExtendedProperty] nvarchar(max), [Value] nvarchar(max))
 
-			List<Tuple<ExtendedPropertiesKey, string, string>> data = new List<Tuple<ExtendedPropertiesKey, string, string>>();
+-- Extended Properties on tables 
+INSERT INTO @result
+SELECT [Tables].[name], '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+INNER JOIN [sys].[tables] [Tables] on ([ExtendedProperties].[major_id] = [Tables].[object_id])
+WHERE ([ExtendedProperties].[class] = 1) AND ([ExtendedProperties].[minor_id] = 0)
+
+-- Extended Properties on columns
+INSERT INTO @result
+SELECT [Tables].[name], [Columns].[name], '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+INNER JOIN [sys].[tables] [Tables] on ([ExtendedProperties].[major_id] = [Tables].[object_id])
+INNER JOIN [sys].[columns] [Columns] on ([Columns].[column_id] = [ExtendedProperties].[minor_id]) AND ([Columns].[object_id] = [ExtendedProperties].[major_id])
+WHERE ([ExtendedProperties].[class] = 1) AND ([ExtendedProperties].[minor_id] <> 0)
+
+-- Extended Properties on stored Procedures
+INSERT INTO @result
+SELECT '', '', [StoredProcedures].[name], [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+INNER JOIN [sys].[procedures] [StoredProcedures] on ([ExtendedProperties].[major_id] = [StoredProcedures].[object_id])
+WHERE ([ExtendedProperties].[class] = 1)
+
+-- Extended Properties on database
+INSERT INTO @result
+SELECT '', '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+WHERE ([ExtendedProperties].[class] = 0)
+
+-- Custom defined extended properties
+IF OBJECT_ID('__BLExtendedProperties') IS NOT NULL
+INSERT INTO @result
+SELECT [Table], [Column], [StoredProcedure], [ExtendedProperty], [Value]
+FROM __BLExtendedProperties
+
+SELECT * FROM @result");
+
+			List<Tuple<ExtendedPropertiesKey, KeyValuePair<string, string>>> data = new List<Tuple<ExtendedPropertiesKey, KeyValuePair<string, string>>>();
 			using (SqlDataReader dataReader = ConnectionHelper.GetDataReader(cmd))
 			{
 				while (dataReader.Read())
 				{
-					string classDesc = dataReader.GetString(0);
-					long majorId = dataReader.GetInt32(1);
-					long minorId = dataReader.GetInt32(2);
-					string name = (string)dataReader["name"];
-					object value = dataReader["value"];
+					string table = dataReader.GetString(0);
+					string column = dataReader.GetString(1);
+					string storedProcedure = dataReader.GetString(2);
+					string extendedProperty = dataReader.GetString(3);
+					string value = dataReader.GetString(4);
 
-					if (value is string)
-					{
-						name = name.Replace("_", ".");
-						var key = new ExtendedPropertiesKey(classDesc, majorId, minorId);
-						data.Add(new Tuple<ExtendedPropertiesKey, string, string>(key, name, (string)value));
-					}
+					extendedProperty = extendedProperty.Replace("_", ".");
+
+					var key = new ExtendedPropertiesKey(table, column, storedProcedure);
+					data.Add(new Tuple<ExtendedPropertiesKey, KeyValuePair<string, string>>(key, new KeyValuePair<string, string>(extendedProperty, value)));
 				}
 			}
-			allExtendedProperties = data.GroupBy(item => item.Item1 /* Key */).ToDictionary(group => group.Key, group => group.ToDictionary(item => item.Item2 /* Name */, item => item.Item3 /* Value */, StringComparer.CurrentCultureIgnoreCase));
+
+			allExtendedProperties = data.GroupBy(item => item.Item1 /* Key */).ToDictionary(group => group.Key, group => group.ToDictionary(item => item.Item2.Key, item => item.Item2.Value, StringComparer.CurrentCultureIgnoreCase));
 
 		}
 		return allExtendedProperties;

@@ -150,10 +150,16 @@ public class ModelClassSource
 
 		foreach (Column column in table.Columns.Cast<Column>().Where(c => !c.InPrimaryKey))
 		{
+			string name = PropertyHelper.GetPropertyName(column);
+			if (name == "ID")
+			{
+				name = "Id";
+			}
+
 			var entityProperty = new EntityProperty
 			{
 				Column = column,
-				Name = PropertyHelper.GetPropertyName(column, "Id")
+				Name = name
 			};
 			modelClass.Properties.Add(entityProperty);
 

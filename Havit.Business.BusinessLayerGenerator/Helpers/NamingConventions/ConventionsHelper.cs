@@ -5,7 +5,7 @@ namespace Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 public static class ConventionsHelper
 {
 	/// <summary>
-	/// Převede řetězec na cammel case formát (cammelCase). "ID" převádí na "id".
+	/// Převede řetězec na cammel case formát (cammelCase). "ID" a "Id" převádí na "id".
 	/// </summary>
 	public static string GetCammelCase(string value)
 	{

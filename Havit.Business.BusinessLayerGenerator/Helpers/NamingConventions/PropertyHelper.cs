@@ -18,7 +18,7 @@ public static class PropertyHelper
 	/// Pokud je sloupec cizím klíčema a končí na ID, je toto ID odebráno.
 	/// Jinak vrací název sloupce.
 	/// </summary>
-	public static string GetPropertyName(Column column, string primaryKeyName = "ID")
+	public static string GetPropertyName(Column column)
 	{
 		string result = (string)propertyNamesCache[column];
 
@@ -31,7 +31,7 @@ public static class PropertyHelper
 		if (column.InPrimaryKey)
 		{
 			// primární klíč má název property ID
-			result = primaryKeyName;
+			result = "ID";
 		}
 		else
 		{
@@ -42,7 +42,11 @@ public static class PropertyHelper
 			if (String.IsNullOrEmpty(result))
 			{
 				// ořízneme u cizího klíče z konce názvu sloupce ID, pokud tam je
-				if (TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("ID"))
+				if ((GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst) && TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("Id"))
+				{
+					result = column.Name.Substring(0, column.Name.Length - 2);
+				}
+				else if ((GeneratorSettings.Strategy != GeneratorStrategy.HavitEFCoreCodeFirst) && TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("ID"))
 				{
 					result = column.Name.Substring(0, column.Name.Length - 2);
 				}

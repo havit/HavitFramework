@@ -7,7 +7,7 @@ namespace Havit.Business.BusinessLayerGenerator.Csproj;
 
 public class NetCoreCsprojFile : CsprojFile
 {
-	public NetCoreCsprojFile(string filename, string generatorIdentifier, XDocument content) 
+	public NetCoreCsprojFile(string filename, string generatorIdentifier, XDocument content)
 		: base(filename, generatorIdentifier, content)
 	{
 	}
@@ -32,12 +32,12 @@ public class NetCoreCsprojFile : CsprojFile
 		return itemGroup;
 	}
 
-        public override void Ensures(string filename)
-        {
-            // new .csproj file does not need explicitly list files to compile in Compile ItemGroup
-        }
+	public override void Ensures(string filename)
+	{
+		// new .csproj file does not need explicitly list files to compile in Compile ItemGroup
+	}
 
-        protected override void SaveChangesCore()
+	protected override void SaveChangesCore()
 	{
 		File.WriteAllText(Filename, Content.ToString().Trim());
 	}

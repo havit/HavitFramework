@@ -118,7 +118,7 @@ public static class BusinessObjectSqlParameter
 			writer.WriteLine(String.Format("SqlParameter {0} = new SqlParameter(\"{1}\", SqlDbType.Structured);", sqlParameterName, collectionProperty.PropertyName));
 			writer.WriteLine(String.Format("{0}.TypeName = \"dbo.IntTable\";", sqlParameterName));
 			writer.WriteLine(String.Format("{0}.Value = IntTable.GetSqlParameterValue({1});", sqlParameterName, value));
-			writer.WriteLine(String.Format("dbCommand.Parameters.Add({0});", sqlParameterName));				
+			writer.WriteLine(String.Format("dbCommand.Parameters.Add({0});", sqlParameterName));
 		}
 		else
 		{

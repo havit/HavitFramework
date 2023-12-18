@@ -23,16 +23,16 @@ public class CodeWriter
 	/// </summary>
 	private readonly string fullPath;
 
-    private bool fileExists;
-    private string fileContent;
-    private bool fileHasByteOrderMask;
-        private readonly Task preloadFileTask;
+	private bool fileExists;
+	private string fileContent;
+	private bool fileHasByteOrderMask;
+	private readonly Task preloadFileTask;
 
 	/// <summary>
 	/// Průběžně tvořený obsah souboru
 	/// </summary>
 	private readonly StringBuilder code;
-	
+
 	private readonly bool eliminateEmptyLinesBeforeClosingParenthesis;
 
 	private int emtpyLinesBeforeClosingParenthesisCounter = 0;
@@ -42,15 +42,15 @@ public class CodeWriter
 		this.fullPath = fullPath;
 		this.code = new StringBuilder(51200);
 		this.eliminateEmptyLinesBeforeClosingParenthesis = eliminateEmptyLinesBeforeClosingParenthesis;
-	    preloadFileTask = Task.Factory.StartNew(() =>
-	    {
-	        fileExists = File.Exists(this.fullPath);
-	        if (fileExists)
-	        {
-	            fileContent = File.ReadAllText(this.fullPath);
-	            fileHasByteOrderMask = HasByteOrderMask();
-	        }
-	    });
+		preloadFileTask = Task.Factory.StartNew(() =>
+		{
+			fileExists = File.Exists(this.fullPath);
+			if (fileExists)
+			{
+				fileContent = File.ReadAllText(this.fullPath);
+				fileHasByteOrderMask = HasByteOrderMask();
+			}
+		});
 	}
 
 	/// <summary>
@@ -287,9 +287,9 @@ public class CodeWriter
 	/// </summary>
 	public void Save()
 	{
-	    preloadFileTask.Wait();
+		preloadFileTask.Wait();
 
-            if (!this.AlreadyExistsTheSame() || !fileHasByteOrderMask)
+		if (!this.AlreadyExistsTheSame() || !fileHasByteOrderMask)
 		{
 			string directory = Path.GetDirectoryName(this.fullPath);
 			if (!String.IsNullOrEmpty(directory))
@@ -297,7 +297,7 @@ public class CodeWriter
 				Directory.CreateDirectory(directory);
 			}
 
-			File.WriteAllText(this.fullPath, this.GetContent(), Encoding.UTF8);					
+			File.WriteAllText(this.fullPath, this.GetContent(), Encoding.UTF8);
 		}
 	}
 
@@ -306,15 +306,15 @@ public class CodeWriter
 	/// </summary>
 	public bool AlreadyExistsTheSame()
 	{
-	    preloadFileTask.Wait();
-            return (fileExists && (fileContent == this.GetContent()));
+		preloadFileTask.Wait();
+		return (fileExists && (fileContent == this.GetContent()));
 	}
 
 	/// <summary>
 	/// Vrací true, pokud soubor již existuje a má UTF-8 byte order mask.
 	/// </summary>
 	private bool HasByteOrderMask()
-	{            
+	{
 		byte[] utf8BOM = Encoding.UTF8.GetPreamble();
 		if (!File.Exists(this.fullPath) || (new FileInfo(this.fullPath).Length < utf8BOM.Length))
 		{

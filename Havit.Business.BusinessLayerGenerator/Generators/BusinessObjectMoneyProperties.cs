@@ -45,14 +45,14 @@ public static class BusinessObjectMoneyProperties
 		writer.WriteLine("EnsureLoaded();");
 		writer.WriteLine(String.Format("if (!{0}IsUpToDate)", moneyField));
 		writer.WriteLine("{");
-//			if (!amountColumn.Nullable)
-//			{
-			writer.WriteLine(String.Format("{0} = new {1}({2}, {3});", moneyField, moneyTypeName, PropertyHelper.GetPropertyName(amountColumn), PropertyHelper.GetPropertyName(currencyColumn)));
-//			}
-//			else
-//			{
-//				writer.WriteLine(String.Format("{0} = (({2} == null) && ({3} == null)) ? null : new {1}({2}, {3});", moneyField, moneyTypeName, PropertyHelper.GetPropertyName(amountColumn), PropertyHelper.GetPropertyName(currencyColumn)));
-//			}
+		//			if (!amountColumn.Nullable)
+		//			{
+		writer.WriteLine(String.Format("{0} = new {1}({2}, {3});", moneyField, moneyTypeName, PropertyHelper.GetPropertyName(amountColumn), PropertyHelper.GetPropertyName(currencyColumn)));
+		//			}
+		//			else
+		//			{
+		//				writer.WriteLine(String.Format("{0} = (({2} == null) && ({3} == null)) ? null : new {1}({2}, {3});", moneyField, moneyTypeName, PropertyHelper.GetPropertyName(amountColumn), PropertyHelper.GetPropertyName(currencyColumn)));
+		//			}
 
 		writer.WriteLine(String.Format("{0}IsUpToDate = true;", moneyField));
 		writer.WriteLine("}");
@@ -85,7 +85,7 @@ public static class BusinessObjectMoneyProperties
 			else
 			{
 				writer.WriteLine("if (value != null)");
-				writer.WriteLine("{");				
+				writer.WriteLine("{");
 				writer.WriteLine(String.Format("{0} = value.Amount;", PropertyHelper.GetPropertyName(amountColumn)));
 				writer.WriteLine(String.Format("{0} = value.Currency;", PropertyHelper.GetPropertyName(currencyColumn)));
 				writer.WriteLine(String.Format("{0} = value;", moneyField));

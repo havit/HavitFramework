@@ -31,7 +31,7 @@ public static class MoneyPartialClass
 		writer.WriteLine("}");
 
 		writer.WriteLine("}");
-		
+
 		writer.Save();
 	}
 }

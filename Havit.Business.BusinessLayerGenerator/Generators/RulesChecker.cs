@@ -331,7 +331,7 @@ public static class RulesChecker
 	private static void CheckCollectionForeignKeyRules(Table table)
 	{
 		foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
-		{								
+		{
 			ForeignKey referenceColumnForeignKey = (collectionProperty.JoinTable ?? collectionProperty.TargetTable).ForeignKeys.AsEnumerable().FirstOrDefault(fk => fk.Columns.Count == 1 && fk.Columns.Contains(collectionProperty.ReferenceColumn.Name));
 			if ((referenceColumnForeignKey != null)
 				&& (referenceColumnForeignKey.ReferencedTable == collectionProperty.ParentTable.Name) /* collectionProperty.ParentTable === table */
@@ -392,6 +392,6 @@ public static class RulesChecker
 			{
 				ConsoleHelper.WriteLineWarning("Tabulka ResourceItem: Sloupec Popis by měl být přejmenován na Description.");
 			}
-		}			
+		}
 	}
 }

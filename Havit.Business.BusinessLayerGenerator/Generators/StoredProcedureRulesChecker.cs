@@ -21,7 +21,7 @@ public static class StoredProcedureRulesChecker
 
 	private static void CheckRules(Table table, StoredProcedure procedure)
 	{
-		CheckDescription(table, procedure);			
+		CheckDescription(table, procedure);
 		CheckResultType(table, procedure);
 		CheckMethodName(table, procedure);
 		CheckDataLoadPower(table, procedure);

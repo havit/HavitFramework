@@ -23,7 +23,7 @@ public static class MoneyClass
 			BusinessObjectUsings.RemoveObsoleteUsings(fileName);
 		}
 		else
-		{				
+		{
 			CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(fileName));
 
 			BusinessObjectUsings.WriteUsings(writer);

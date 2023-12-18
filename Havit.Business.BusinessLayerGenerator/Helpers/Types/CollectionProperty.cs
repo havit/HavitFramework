@@ -94,7 +94,7 @@ public class CollectionProperty
 				{
 					// Historická poznámka: Dříve jsme jako default měli pro ManyToMany default Shallow, ale kód jsme pro pro Shallow negenerovali (bug).
 					// Generování shallow klonování kolekcí bylo doplněno, ale pro zpětnou kompatibilitu nastavíme CloneMode na No (tak jsme se ke kolekcím chovali dosud i přes hodnotu "Shallow").
-					cloneMode = CloneMode.No;							
+					cloneMode = CloneMode.No;
 				}
 				else
 				{

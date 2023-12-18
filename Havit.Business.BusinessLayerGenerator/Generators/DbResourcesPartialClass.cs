@@ -34,7 +34,7 @@ public static class DbResourcesPartialClass
 		WriteCurrent(writer);
 		WriteConstructors(writer);
 
-		WriteGetString(writer);			
+		WriteGetString(writer);
 		WriteGetResourceClassLanguageData(writer, table);
 		WriteGetCultureInfo(writer);
 
@@ -46,7 +46,7 @@ public static class DbResourcesPartialClass
 		writer.Save();
 	}
 
-        private static void WritePrivateFields(CodeWriter writer)
+	private static void WritePrivateFields(CodeWriter writer)
 	{
 		writer.WriteOpenRegion("Private fields");
 		writer.WriteLine("private Func<System.Globalization.CultureInfo> getCultureInfoMethod;");
@@ -151,19 +151,19 @@ public static class DbResourcesPartialClass
 
 	private static void WriteGetResourceClassLanguageData(CodeWriter writer, Table resourceClassTable)
 	{
-			string resourceClassNameColumn = ColumnHelper.FindFirstExistingColumn(resourceClassTable, "ClassName", "Name", "Nazev");
-			string resourceClassTableSchema = resourceClassTable.Schema;
-			string resourceClassTableName = resourceClassTable.Name;
-			
-			Table resourceItemTable = DatabaseHelper.FindTable("ResourceItem", "dbo");
-			string resourceItemKeyColumn = ColumnHelper.FindFirstExistingColumn(resourceItemTable, "ResourceKey", "Name", "Nazev");
-			string resourceItemTableSchema = resourceItemTable.Schema;
-			string resourceItemTableName = resourceItemTable.Name;
+		string resourceClassNameColumn = ColumnHelper.FindFirstExistingColumn(resourceClassTable, "ClassName", "Name", "Nazev");
+		string resourceClassTableSchema = resourceClassTable.Schema;
+		string resourceClassTableName = resourceClassTable.Name;
 
-			Table resourceItemTableLocalization = LocalizationHelper.GetLocalizationTable(resourceItemTable);
-			string resourceItemLocalizationNameColumn = "Value";
-			string resourceItemLocalizationTableSchema = resourceItemTableLocalization.Schema;
-			string resourceItemLocalizationTableName = resourceItemTableLocalization.Name;
+		Table resourceItemTable = DatabaseHelper.FindTable("ResourceItem", "dbo");
+		string resourceItemKeyColumn = ColumnHelper.FindFirstExistingColumn(resourceItemTable, "ResourceKey", "Name", "Nazev");
+		string resourceItemTableSchema = resourceItemTable.Schema;
+		string resourceItemTableName = resourceItemTable.Name;
+
+		Table resourceItemTableLocalization = LocalizationHelper.GetLocalizationTable(resourceItemTable);
+		string resourceItemLocalizationNameColumn = "Value";
+		string resourceItemLocalizationTableSchema = resourceItemTableLocalization.Schema;
+		string resourceItemLocalizationTableName = resourceItemTableLocalization.Name;
 
 		string commandText = String.Format(@"SELECT _rc.[{0}] as ResourceClass, _ri.[{3}] as ResourceKey, _ril.[{6}] as Value FROM [{1}].[{2}] _rc INNER JOIN [{4}].[{5}] _ri ON (_rc.[ResourceClassID] = _ri.[ResourceClassID]) INNER JOIN [{7}].[{8}] _ril ON (_ri.[ResourceItemID] = _ril.[ResourceItemID]) WHERE (_ril.[LanguageID] = @LanguageID) AND (_ril.Value IS NOT NULL);",
 			resourceClassNameColumn, // 0
@@ -177,7 +177,7 @@ public static class DbResourcesPartialClass
 			resourceItemLocalizationNameColumn, // 6
 			resourceItemLocalizationTableSchema, // 7
 			resourceItemLocalizationTableName); // 8												 
-			
+
 		writer.WriteOpenRegion("GetResourceClassesData");
 		writer.WriteCommentSummary("Načte hodnoty lokalizací pro jeden jazyk (resp. cultureInfo).");
 		writer.WriteLine("private Dictionary<string, Dictionary<string, string>> GetResourceClassesData(CultureInfo cultureInfo)");
@@ -282,11 +282,11 @@ public static class DbResourcesPartialClass
 		writer.WriteCloseRegion();
 
 	}
-	
+
 	private static void WriteResourceClassDefinition(CodeWriter writer, Table resourceClassTable, ResourceClass resourceClass, string className)
 	{
 		writer.WriteOpenRegion(resourceClass.ClassName + " (nested class)");
-		
+
 		if (!String.IsNullOrEmpty(resourceClass.Comment))
 		{
 			writer.WriteCommentSummary(resourceClass.Comment);
@@ -306,14 +306,14 @@ public static class DbResourcesPartialClass
 		writer.WriteCloseRegion();
 
 		foreach (ResourceItem resourceItem in ResourceHelper.GetResourceItems(resourceClass.ID))
-		{				
+		{
 			if (ConventionsHelper.IsValidClassName(resourceItem.Name))
 			{
 				if (resourceItem.Name == resourceClass.ClassName)
 				{
 					ConsoleHelper.WriteLineWarning("ResourceClass '{0}' obsahuje stejnojmennou ResourceKey, C# compiler nedovolí zkompilovat třídu se stejnojmennou vlastností, proto byla položka přeskočena.", resourceClass.ClassName);
 					writer.WriteLine(String.Format("// {0} (přeskočeno pro shodu s názvem třídy, což c# compiler neumožňuje.", resourceItem.Name));
-					writer.WriteLine();						
+					writer.WriteLine();
 					continue;
 				}
 

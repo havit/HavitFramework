@@ -40,7 +40,7 @@ public static class CacheHelper
 				if (i < lines.Count - 1)
 				{
 					line = line + ",";
-				}					
+				}
 				writer.WriteLine(line);
 			}
 			writer.Unindent();

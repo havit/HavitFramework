@@ -222,7 +222,7 @@ public static class IndexesBuilder
 
 		index.IndexedColumns.Add(indexedParentLocalizationColumn);
 		index.IndexedColumns.Add(indexedLanguageColumn);
-//			index.IndexedColumns.Add(indexedPrimaryKeyColumn);
+		//			index.IndexedColumns.Add(indexedPrimaryKeyColumn);
 
 		IndexHelper.CreateOrUpdate(table, index, generatorIndexes);
 	}

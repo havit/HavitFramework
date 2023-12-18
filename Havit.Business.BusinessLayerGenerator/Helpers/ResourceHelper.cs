@@ -65,22 +65,22 @@ public static class ResourceHelper
 
 			using (SqlCommand command = GetResourceItems_GetSqlCommand())
 			{
-                    using (SqlDataReader dataReader = ConnectionHelper.GetDataReader(command))
-                    {
-                        while (dataReader.Read())
-                        {
-                            int id = dataReader.GetInt32(0);
-                            string name = dataReader.GetString(1);
-                            int classID = dataReader.GetInt32(2);
+				using (SqlDataReader dataReader = ConnectionHelper.GetDataReader(command))
+				{
+					while (dataReader.Read())
+					{
+						int id = dataReader.GetInt32(0);
+						string name = dataReader.GetString(1);
+						int classID = dataReader.GetInt32(2);
 
-                            _getResourceItemsResult.Add(new ResourceItem
-                            {
-                                ID = id,
-                                Name = name,
-                                ResourceClassID = classID
-                            });
-                        }
-                    }
+						_getResourceItemsResult.Add(new ResourceItem
+						{
+							ID = id,
+							Name = name,
+							ResourceClassID = classID
+						});
+					}
+				}
 			}
 		}
 		return _getResourceItemsResult.FindAll(item => item.ResourceClassID == resourceClassID);

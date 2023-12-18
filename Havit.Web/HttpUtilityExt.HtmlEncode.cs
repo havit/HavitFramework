@@ -34,7 +34,7 @@ public static partial class HttpUtilityExt
 		for (int i = 0; i < length; i++)
 		{
 			unicodeValue = unicodeText[i];
-			switch (unicodeValue) 
+			switch (unicodeValue)
 			{
 				case '&':
 					result.Append("&amp;");
@@ -66,7 +66,7 @@ public static partial class HttpUtilityExt
 					}
 					else
 					{
-					goto default;
+						goto default;
 					}
 				case '€':
 					if (opExtendedHtmlEntities)
@@ -109,12 +109,12 @@ public static partial class HttpUtilityExt
 						goto default;
 					}
 				default:
-					if (((unicodeText[i] >= ' ') && (unicodeText[i] <= 0x007E)) 
+					if (((unicodeText[i] >= ' ') && (unicodeText[i] <= 0x007E))
 						|| opIgnoreNonASCIICharacters)
-					{ 
+					{
 						result.Append(unicodeText[i]);
-					} 
-					else 
+					}
+					else
 					{
 						result.Append("&#");
 						result.Append(unicodeValue.ToString(System.Globalization.NumberFormatInfo.InvariantInfo));

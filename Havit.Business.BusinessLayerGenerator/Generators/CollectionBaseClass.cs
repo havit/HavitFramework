@@ -34,7 +34,7 @@ public static class CollectionBaseClass
 
 		WriteClassEnd(writer);
 		WriteNamespaceEnd(writer);
-		
+
 		writer.Save();
 	}
 

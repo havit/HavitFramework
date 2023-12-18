@@ -24,7 +24,7 @@ public static class ConsoleHelper
 	public static void WriteLineError(string format, params object[] args)
 	{
 		WriteLineWithColor(Console.Error, ConsoleColor.Red, format, args);
-		ErrorCount += 1;			
+		ErrorCount += 1;
 	}
 
 	/// <summary>

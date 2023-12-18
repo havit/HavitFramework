@@ -127,7 +127,7 @@ public static class ColumnHelper
 		// speciální workaround pro ukládání stringu jako XmlDocumentu
 		if ((TypeHelper.GetFieldSystemTypeName(column) == "XmlDocument") && PropertyHelper.IsString(column))
 		{
-			return String.Format("String.IsNullOrEmpty({0}.Value) ? DBNull.Value : (object){0}.Value", PropertyHelper.GetPropertyHolderName(column));				
+			return String.Format("String.IsNullOrEmpty({0}.Value) ? DBNull.Value : (object){0}.Value", PropertyHelper.GetPropertyHolderName(column));
 		}
 
 		// ale pokud jde o retezec, tak neukládáme jako null, ale jako prázdný řetězec
@@ -194,7 +194,7 @@ public static class ColumnHelper
 		string orderby = "";
 		if (usesSorting)
 		{
-			orderby = " ORDER BY " + Regex.Replace(collectionProperty.Sorting, "(^|[^{]){([^{}]*)}", delegate(Match match)
+			orderby = " ORDER BY " + Regex.Replace(collectionProperty.Sorting, "(^|[^{]){([^{}]*)}", delegate (Match match)
 				{
 					return match.Groups[1] + "[_members].[" + match.Groups[2] + "]";
 				});
@@ -286,7 +286,7 @@ public static class ColumnHelper
 	/// Vrátí popis sloupce dle databáze nebo výchozí hodnotu.
 	/// </summary>
 	public static string GetDescription(Column column, bool suppressDefaults = false)
-	{            
+	{
 		string description = ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromColumn(column));
 
 		if (!String.IsNullOrEmpty(description))
@@ -393,7 +393,7 @@ public static class ColumnHelper
 		bool? columnSuppressForeignKeyCheck = ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromColumn(column), "CheckForeignKeyName", ((Table)column.Parent).Name + "-" + column.Name);
 		if (columnSuppressForeignKeyCheck != null)
 		{
-			 return columnSuppressForeignKeyCheck.Value;
+			return columnSuppressForeignKeyCheck.Value;
 		}
 
 		if ((column.Name == "BusinessObjectID") || (column.Name.StartsWith("External")))

@@ -109,19 +109,19 @@ public static class DatabaseHelper
 	}
 
 	/// <summary>
-        /// Vrací true, pokud databáze podporuje schéma ("dbo", apod.).
-        /// </summary>
-        public static bool IsDatabaseSchemaSupported()
-        {
+	/// Vrací true, pokud databáze podporuje schéma ("dbo", apod.).
+	/// </summary>
+	public static bool IsDatabaseSchemaSupported()
+	{
 		return true;
-        }
+	}
 
 	/// <summary>
-        /// Vratí výchozí hodnotu Ignore pro tabulky nastavenou na databázi v atributu "DefaultIgnoreOnTables".
-        /// Není-li uvedeno, vrací false (tabulky nejsou ignorovány).
-        /// </summary>
-        public static bool GetDefaultIgnoredOnTables()
-        {
-            return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromDatabase(), "DefaultIgnoredOnTables", "Databáze") ?? false;
-        }
+	/// Vratí výchozí hodnotu Ignore pro tabulky nastavenou na databázi v atributu "DefaultIgnoreOnTables".
+	/// Není-li uvedeno, vrací false (tabulky nejsou ignorovány).
+	/// </summary>
+	public static bool GetDefaultIgnoredOnTables()
+	{
+		return ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromDatabase(), "DefaultIgnoredOnTables", "Databáze") ?? false;
+	}
 }

@@ -44,7 +44,7 @@ public class CsprojFile
 	public virtual void Ensures(string filename)
 	{
 		ensuredFilenames.Add(filename);
-		
+
 		XElement itemElement = Content.Root.Elements(MSBuildNamespace + "ItemGroup").Elements(MSBuildNamespace + "Compile").Where(element => element.Attributes("Include").Any(attribute => String.Equals(filename, (string)attribute, StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault();
 
 		// abychom do kódu dostali metadata HavitBusinessLayerGenerator, tak položku, která jej nemá, odstraníme (a následně přidáme spolu s ní)

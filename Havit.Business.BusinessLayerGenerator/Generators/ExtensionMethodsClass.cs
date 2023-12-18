@@ -54,7 +54,7 @@ public static class ExtensionMethodsClass
 			writer.WriteLine("}"); // class			
 
 			writer.WriteLine("}"); // namespace
-			
+
 			writer.Save();
 		}
 	}

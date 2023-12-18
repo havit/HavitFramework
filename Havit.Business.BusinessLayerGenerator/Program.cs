@@ -35,7 +35,7 @@ internal static class Program
 			if (commandLineArguments["sqlserver"] != null)
 			{
 				ConsoleHelper.WriteLineError("Invalid connection parameters: both webconfig and sqlserver&database is specified");
-                    ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-systemmemoryspansupported:false] [-key:true] [-table:string]");
+				ConsoleHelper.WriteLineError(@"BusinessLayerGenerator.exe [-webconfig:<webconfig> | -sqlserver:<server> -database:<database> [-username:<username>] [-password:<password>]] -outputpath:<outputpath> [-namespace:<namespace>] [-strategy=Havit|Exec] [-targetplatform=SqlServer2008|SqlServer2005|SqlServerCe35] [-systemmemoryspansupported:false] [-key:true] [-table:string]");
 				return;
 			}
 
@@ -79,13 +79,13 @@ internal static class Program
 			GeneratorSettings.TargetPlatform = (TargetPlatform)Enum.Parse(typeof(TargetPlatform), commandLineArguments["targetplatform"], true);
 		}
 
-            if (!String.IsNullOrEmpty(commandLineArguments["systemmemoryspansupported"]))
-            {
-                GeneratorSettings.SystemMemorySpanSupported = bool.Parse(commandLineArguments["systemmemoryspansupported"]);
-            }
+		if (!String.IsNullOrEmpty(commandLineArguments["systemmemoryspansupported"]))
+		{
+			GeneratorSettings.SystemMemorySpanSupported = bool.Parse(commandLineArguments["systemmemoryspansupported"]);
+		}
 
 
-            if (!String.IsNullOrEmpty(commandLineArguments["collectionsavestrategy"]))
+		if (!String.IsNullOrEmpty(commandLineArguments["collectionsavestrategy"]))
 		{
 			ConsoleHelper.WriteLineWarning("Parametr CollectionSaveStrategy byl zrušen.");
 		}
@@ -108,7 +108,7 @@ internal static class Program
 		if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServer2005)
 		{
 			ConsoleHelper.WriteLineError("Target Platform SqlServer2005 již není podporován.");
-			return;				
+			return;
 		}
 
 		if (GeneratorSettings.TargetPlatform == TargetPlatform.SqlServerCe35)
@@ -130,19 +130,19 @@ internal static class Program
 			connection = new ServerConnection(GeneratorSettings.SqlServerName, GeneratorSettings.Username, GeneratorSettings.Password);
 			sqlConnection = new SqlConnection($"Data Source={GeneratorSettings.SqlServerName};Initial Catalog={GeneratorSettings.DatabaseName};User ID={GeneratorSettings.Username};Pwd={GeneratorSettings.Password}");
 		}
-		connection.AutoDisconnectMode = AutoDisconnectMode.NoAutoDisconnect;			
+		connection.AutoDisconnectMode = AutoDisconnectMode.NoAutoDisconnect;
 		connection.ApplicationName = "BusinessLayerGenerator";
 		connection.Connect();
 		sqlConnection.Open();
 
 		Server sqlServer = new Server(connection);
-            // prefetch Table + Column -> 56 sec
-            // prefetch Column -> 29 sec
-            // žádný prefetch -> 36 sec		    
+		// prefetch Table + Column -> 56 sec
+		// prefetch Column -> 29 sec
+		// žádný prefetch -> 36 sec		    
 		sqlServer.SetDefaultInitFields(typeof(Column), true);
 		sqlServer.SetDefaultInitFields(typeof(ForeignKey), true);
-		
-            Database database = sqlServer.Databases[GeneratorSettings.DatabaseName];
+
+		Database database = sqlServer.Databases[GeneratorSettings.DatabaseName];
 
 		// pokud jsme databázi nenašli, oznámíme a konříme
 		if (database == null)
@@ -153,8 +153,8 @@ internal static class Program
 
 		database.Parent.SetDefaultInitFields(true);
 
-            try
-            {
+		try
+		{
 			DatabaseHelper.Database = database;
 			ConnectionHelper.SqlConnection = sqlConnection;
 
@@ -188,7 +188,7 @@ internal static class Program
 		// pokud jsme o to byli žádání z příkazové řádky, počkáme na stisk klávesy
 		bool keyRequiredByCommandLine = commandLineArguments["key"] == "true";
 		bool keyRequiredByWarningsAndErrors = (ConsoleHelper.WarningCount > 0) || (ConsoleHelper.ErrorCount > 0);
-		
+
 		if ((ConsoleHelper.WarningCount > 0) && (ConsoleHelper.ErrorCount == 0))
 		{
 			// Pozor na sideeffect - voláním metody WriteLineWarning zvyšujeme čítač ConsoleHelper.WarningCount!

@@ -60,7 +60,7 @@ public static class IndexHelper
 	private static bool AreSame(Index index1, Index index2)
 	{
 		bool areSame = true;
-		
+
 		if ((index1.IndexedColumns.Count != index2.IndexedColumns.Count) || (index1.IsUnique != index2.IsUnique))
 		{
 			areSame = false;
@@ -81,7 +81,7 @@ public static class IndexHelper
 		{
 			List<IndexedColumn> indexColumns1 = AreSame_InitializeByIndexedColumns(index1, item => !item.IsIncluded);
 			List<IndexedColumn> indexColumns2 = AreSame_InitializeByIndexedColumns(index2, item => !item.IsIncluded);
-			
+
 			if (!AreSame(indexColumns1, indexColumns2))
 			{
 				areSame = false;
@@ -104,7 +104,7 @@ public static class IndexHelper
 		{
 			for (int i = 0; i < indexColumns1.Count; i++)
 			{
-				if (indexColumns1[i].Name != indexColumns2[i].Name)						
+				if (indexColumns1[i].Name != indexColumns2[i].Name)
 				{
 					areSame = false;
 				}

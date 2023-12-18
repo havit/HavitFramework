@@ -44,7 +44,7 @@ public static class TableHelper
 	/// Ta se pozná tak, že má právě dva sloupce a oba jsou PFK.
 	/// </summary>
 	public static bool IsJoinTable(Table table)
-	{			
+	{
 		int pfkCounter = 0;
 		foreach (Column column in table.Columns)
 		{
@@ -365,7 +365,7 @@ public static class TableHelper
 	/// </summary>
 	public static List<EnumMember> GetEnumMembers(Table table)
 	{
-            List<EnumMember> result = new List<EnumMember>();
+		List<EnumMember> result = new List<EnumMember>();
 
 		string idColumn = TableHelper.GetPrimaryKey(table).Name;
 
@@ -402,29 +402,29 @@ public static class TableHelper
 						nameColumn, // 3
 						String.IsNullOrEmpty(commentColumn) ? "" : ", [" + commentColumn + "]"))) // 4				
 		{
-                using (SqlDataReader reader = ConnectionHelper.GetDataReader(command))
-                {
-                    while (reader.Read())
-                    {
-                        int id = (int)reader[idColumn];
+			using (SqlDataReader reader = ConnectionHelper.GetDataReader(command))
+			{
+				while (reader.Read())
+				{
+					int id = (int)reader[idColumn];
 
-                        string name = (string)reader[nameColumn];
-                        string[] names = name.Trim().Split(' ');
-                        for (int i = 0; i < names.Length; i++)
-                        {
-                            names[i] = names[i].Substring(0, 1).ToUpper() + names[i].Substring(1);
-                        }
-                        name = String.Join("", names);
+					string name = (string)reader[nameColumn];
+					string[] names = name.Trim().Split(' ');
+					for (int i = 0; i < names.Length; i++)
+					{
+						names[i] = names[i].Substring(0, 1).ToUpper() + names[i].Substring(1);
+					}
+					name = String.Join("", names);
 
-                        string comment = null;
-                        if (commentColumn != null)
-                        {
-                            comment = (string)reader[commentColumn];
-                        }
+					string comment = null;
+					if (commentColumn != null)
+					{
+						comment = (string)reader[commentColumn];
+					}
 
-                        result.Add(new EnumMember(id, name, comment));
-                    }
-                }
+					result.Add(new EnumMember(id, name, comment));
+				}
+			}
 		}
 
 		return result;
@@ -498,7 +498,7 @@ public static class TableHelper
 
 		HashSet<Table> referencedTablesIncludingSelf = new HashSet<Table>();
 		// získáme všechny závislé tabulky (vč. tabulky samotné) a to včetně tranzitivních závislostí (tedy závislostí závislostí)
-		CanCacheBusinessObjectInstances_AddReferencedTables(referencedTablesIncludingSelf, table); 
+		CanCacheBusinessObjectInstances_AddReferencedTables(referencedTablesIncludingSelf, table);
 
 		// pokud jsou všechny (tranzitivně) referencované tabulky read-only, můžeme cachovat instance
 		return referencedTablesIncludingSelf.All(referencedTable => TableHelper.IsReadOnly(referencedTable));
@@ -733,20 +733,20 @@ public static class TableHelper
 	}
 
 	/// <summary>
-        /// Vrátí celý název databázové tabulky vč. názvu schématu, pokud je schéma v cílové platformě podporováno.
-        /// Pokud není podporováno, vrací jen název tabulky.
-        /// </summary>
-        public static string GetFullTableName(Table table)
-        {
-            if (DatabaseHelper.IsDatabaseSchemaSupported())
-            {
-                return String.Format("[{0}].[{1}]", table.Schema, table.Name);
-            }
-            else
-            {
-                return String.Format("[{0}]", table.Name);
-            }
-        }
+	/// Vrátí celý název databázové tabulky vč. názvu schématu, pokud je schéma v cílové platformě podporováno.
+	/// Pokud není podporováno, vrací jen název tabulky.
+	/// </summary>
+	public static string GetFullTableName(Table table)
+	{
+		if (DatabaseHelper.IsDatabaseSchemaSupported())
+		{
+			return String.Format("[{0}].[{1}]", table.Schema, table.Name);
+		}
+		else
+		{
+			return String.Format("[{0}]", table.Name);
+		}
+	}
 
 	/// <summary>
 	/// Vrátí příznak, zda se má generovat method pro klonování objektu.
@@ -771,14 +771,14 @@ public static class TableHelper
 	}
 
 	public static List<String> Script(Table table)
-    {
-        if (_tableScripts == null)
-        {
-            ScriptingOptions scriptingOptions = new ScriptingOptions();
-            scriptingOptions.BatchSize = 20;
-            scriptingOptions.AnsiPadding = false;
-            scriptingOptions.AgentJobId = false;
-            scriptingOptions.DriAll = false;
+	{
+		if (_tableScripts == null)
+		{
+			ScriptingOptions scriptingOptions = new ScriptingOptions();
+			scriptingOptions.BatchSize = 20;
+			scriptingOptions.AnsiPadding = false;
+			scriptingOptions.AgentJobId = false;
+			scriptingOptions.DriAll = false;
 			scriptingOptions.DriChecks = true;
 			scriptingOptions.DriDefaults = true;
 			scriptingOptions.DriForeignKeys = true;
@@ -786,22 +786,22 @@ public static class TableHelper
 			scriptingOptions.DriUniqueKeys = true;
 			scriptingOptions.DriWithNoCheck = true;
 			scriptingOptions.Statistics = false;
-            scriptingOptions.TargetServerVersion = SqlServerVersion.Version140;
+			scriptingOptions.TargetServerVersion = SqlServerVersion.Version140;
 
-            Urn[] tableUrns = DatabaseHelper.GetWorkingTables().Select(item => item.Urn).ToArray();
-            Server server = DatabaseHelper.Database.Parent;
-            Scripter scripter = new Scripter(server);	            
+			Urn[] tableUrns = DatabaseHelper.GetWorkingTables().Select(item => item.Urn).ToArray();
+			Server server = DatabaseHelper.Database.Parent;
+			Scripter scripter = new Scripter(server);
 
-                scripter.Options = scriptingOptions;
-            StringCollection scripts = scripter.Script(tableUrns);
-            _tableScripts = scripts.Cast<string>().Where(line => line.StartsWith("CREATE TABLE") || line.StartsWith("ALTER TABLE")).ToList();
-        }
+			scripter.Options = scriptingOptions;
+			StringCollection scripts = scripter.Script(tableUrns);
+			_tableScripts = scripts.Cast<string>().Where(line => line.StartsWith("CREATE TABLE") || line.StartsWith("ALTER TABLE")).ToList();
+		}
 
-        string createTable = $"CREATE TABLE [{table.Schema}].[{table.Name}]";
-        string alterTable = $"ALTER TABLE [{table.Schema}].[{table.Name}]";
-            return _tableScripts.Where(line => line.StartsWith(createTable) || line.StartsWith(alterTable)).ToList();
-    }
-    private static List<string> _tableScripts;
+		string createTable = $"CREATE TABLE [{table.Schema}].[{table.Name}]";
+		string alterTable = $"ALTER TABLE [{table.Schema}].[{table.Name}]";
+		return _tableScripts.Where(line => line.StartsWith(createTable) || line.StartsWith(alterTable)).ToList();
+	}
+	private static List<string> _tableScripts;
 
 	internal static List<Column> SortIfNecessary(this ColumnCollection columnCollection)
 	{
@@ -809,21 +809,21 @@ public static class TableHelper
 	}
 
 	internal static List<Column> SortIfNecessary(this List<Column> columnCollection)
-	{			
+	{
 		List<Column> result = columnCollection.Cast<Column>().ToList();
 		// Pro HavitCodeFirst strategii budeme generovat sloupce v abecedním pořadí (s výjimkou PK), abychom omezili vznik konfliktů a udělali generování s EF Core Migrations determinističtější.
 		if (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst)
 		{
 			var pkColumnsInReverseOrder = result.Where(column => column.InPrimaryKey).ToList();
 			pkColumnsInReverseOrder.ForEach(pkColumn => result.Remove(pkColumn)); // sloupce s PK se neúčastní řazení
-			
+
 			result = result.OrderBy(column => column.Name, StringComparer.InvariantCultureIgnoreCase).ToList(); // seřadíme sloupce abecedně
-			
+
 			// vložíme zpět sloupce s PK
 			pkColumnsInReverseOrder.Reverse();
 			pkColumnsInReverseOrder.ToList().ForEach(pkColumn => result.Insert(0, pkColumn)); // protože můžeme vkládat více sloupců a vkládáme je na pozici 0, vkládáme je v opačném pořadí (Reverse)
 		}
-		
+
 		return result;
 	}
 }

@@ -42,20 +42,20 @@ public static class PropertiesClassObsolete
 
 		//if (writer.AlreadyExistsTheSame())
 		//{
-			string targetFilename = FileHelper.ResolvePath(fileName);
-			File.Delete(targetFilename);					
+		string targetFilename = FileHelper.ResolvePath(fileName);
+		File.Delete(targetFilename);
 
-			// odmažeme ještě prázdnou složku
-			string folder = Path.GetDirectoryName(targetFilename);
-			if (Directory.GetFileSystemEntries(folder).Length == 0)
-			{
-				Directory.Delete(folder);						
-			}
+		// odmažeme ještě prázdnou složku
+		string folder = Path.GetDirectoryName(targetFilename);
+		if (Directory.GetFileSystemEntries(folder).Length == 0)
+		{
+			Directory.Delete(folder);
+		}
 		//}
 		//else
 		//{
 		//	ConsoleHelper.WriteLineWarning("Soubor {0} se již nepoužívá, neobsahuje ale standardní obsah. Je potřeba jej zkontrolovat a smazat ručně.", fileName);
 		//}
-		
+
 	}
 }

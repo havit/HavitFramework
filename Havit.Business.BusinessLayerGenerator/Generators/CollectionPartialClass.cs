@@ -28,7 +28,7 @@ public static class CollectionPartialClass
 
 		CollectionBaseClass.WriteClassEnd(writer);
 		CollectionBaseClass.WriteNamespaceEnd(writer);
-		
+
 		writer.Save();
 	}
 }

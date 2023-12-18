@@ -19,11 +19,11 @@ public static class Generator
 		ConsoleHelper.WriteLineInfo("Vyhledávám tabulky");
 		List<Table> tables = DatabaseHelper.GetWorkingTables();
 
-	    ConsoleHelper.WriteLineInfo("Generuji kód");
+		ConsoleHelper.WriteLineInfo("Generuji kód");
 
-            foreach (Table table in tables)
-            {
-                if (String.IsNullOrEmpty(GeneratorSettings.TableName) || (String.Compare(GeneratorSettings.TableName, table.Name, StringComparison.CurrentCultureIgnoreCase) == 0))
+		foreach (Table table in tables)
+		{
+			if (String.IsNullOrEmpty(GeneratorSettings.TableName) || (String.Compare(GeneratorSettings.TableName, table.Name, StringComparison.CurrentCultureIgnoreCase) == 0))
 			{
 				ConsoleHelper.WriteLineInfo(table.Name);
 

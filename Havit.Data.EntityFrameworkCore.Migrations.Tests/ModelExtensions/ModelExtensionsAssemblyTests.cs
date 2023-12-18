@@ -36,10 +36,12 @@ public class ModelExtensionsAssemblyTests
 	{
 		// Arrange
 		Assembly extensionsAssembly = typeof(DbContextOptionsBuilderExtensions).Assembly;
+#pragma warning disable CS0618 // Type or member is obsolete
 		var modelExtensionsAssembly = new ModelExtensionsAssembly(new CurrentDbContext(new TestDbContext()),
 			new DbContextOptionsBuilder<TestDbContext>()
 				.UseModelExtensions(b => b.ModelExtensionsAssembly(extensionsAssembly))
 				.Options);
+#pragma warning restore CS0618 // Type or member is obsolete
 
 		// Act + Assert
 		Assert.AreSame(extensionsAssembly, modelExtensionsAssembly.Assembly);

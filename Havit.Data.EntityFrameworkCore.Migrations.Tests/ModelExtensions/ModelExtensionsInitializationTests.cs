@@ -90,7 +90,9 @@ public class ModelExtensionsInitializationTests
 		{
 			base.OnConfiguring(optionsBuilder);
 
+#pragma warning disable CS0618 // Type or member is obsolete
 			optionsBuilder.UseModelExtensions(builder => builder.UseStoredProcedures());
+#pragma warning restore CS0618 // Type or member is obsolete
 
 			initializeAction?.Invoke(optionsBuilder);
 		}

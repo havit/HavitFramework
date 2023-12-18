@@ -49,10 +49,12 @@ public class ModelExtensionsAssemblyTests
 	public void ModelExtensionsAssembly_ModelExtenders_ReturnsExpectedModelExtender()
 	{
 		// Arrange
+#pragma warning disable CS0618 // Type or member is obsolete
 		var modelExtensionsAssembly = new ModelExtensionsAssembly(new CurrentDbContext(new TestDbContext()),
 			new DbContextOptionsBuilder<TestDbContext>()
 				.UseModelExtensions()
 				.Options);
+#pragma warning restore CS0618 // Type or member is obsolete
 
 		TypeInfo testModelExtenderType = typeof(TestModelExtender).GetTypeInfo();
 
@@ -64,10 +66,12 @@ public class ModelExtensionsAssemblyTests
 	public void ModelExtensionsAssembly_CreateModelExtender_ReturnsInstanceOfExpectedModelExtender()
 	{
 		// Arrange
+#pragma warning disable CS0618 // Type or member is obsolete
 		var modelExtensionsAssembly = new ModelExtensionsAssembly(new CurrentDbContext(new TestDbContext()),
 			new DbContextOptionsBuilder<TestDbContext>()
 				.UseModelExtensions()
 				.Options);
+#pragma warning restore CS0618 // Type or member is obsolete
 
 		TypeInfo testModelExtenderType = typeof(TestModelExtender).GetTypeInfo();
 

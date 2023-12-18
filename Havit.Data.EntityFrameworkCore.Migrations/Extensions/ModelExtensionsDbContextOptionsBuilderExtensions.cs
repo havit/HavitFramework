@@ -17,12 +17,14 @@ public static class ModelExtensionsDbContextOptionsBuilderExtensions
 	///
 	/// <para>V štandardnom nastavení zapne podporu pre správu uložených procedúr a pohľadov pomocou migrácii.</para>
 	/// </summary>
+	[Obsolete(@$"Metodu {nameof(UseModelExtensions)} a celé Havit.Data.EntityFrameworkCore.Migrations považujeme za ""Deprecated"". Důvodem je obtížné řešení bugu 64680, který odhalil problématické vyřešení bugu 48448, oprava je možná, ale vzhledem k nepoužívání (a zastarání) této knihovny opravu neplánujeme. (Metodu používá jen BusinessLayerDbContext kde nečekáme, že se použije k ničemu jinému, než je spuštění EF Core Migrations.)")]
 	public static DbContextOptionsBuilder UseModelExtensions(this DbContextOptionsBuilder optionsBuilder)
 		=> UseModelExtensions(optionsBuilder, builder => builder.UseStoredProcedures().UseViews());
 
 	/// <summary>
 	/// Registruje služby používané podporou pre Model Extensions. Pomocou <paramref name="setupAction"/> je možné aktivovať rôzne funkčnosti Model Extensions.
 	/// </summary>
+	[Obsolete(@$"Metodu {nameof(UseModelExtensions)} a celé Havit.Data.EntityFrameworkCore.Migrations považujeme za ""Deprecated"". Důvodem je obtížné řešení bugu 64680, který odhalil problématické vyřešení bugu 48448, oprava je možná, ale vzhledem k nepoužívání (a zastarání) této knihovny opravu neplánujeme. (Metodu používá jen BusinessLayerDbContext kde nečekáme, že se použije k ničemu jinému, než je spuštění EF Core Migrations.)")]
 	public static DbContextOptionsBuilder UseModelExtensions(
 		this DbContextOptionsBuilder optionsBuilder,
 		Action<ModelExtensionsExtensionBuilder> setupAction)

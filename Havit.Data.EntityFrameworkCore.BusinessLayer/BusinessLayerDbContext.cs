@@ -51,12 +51,14 @@ public abstract class BusinessLayerDbContext : DbContext
 			.UseStringPropertiesDefaultValueConvention(true)
 			.UseLocalizationTableIndexConvention(false));
 
+#pragma warning disable CS0618 // Type or member is obsolete
 		optionsBuilder.UseModelExtensions(builder => builder
 			.ModelExtensionsAssembly(settings.ModelExtensionsAssembly)
 			.UseStoredProcedures()
 			.UseExtendedProperties()
 			.UseBusinessLayerStoredProcedures()
 			.UseViews());
+#pragma warning restore CS0618 // Type or member is obsolete
 		optionsBuilder.UseSqlServerExtendedProperties();
 
 

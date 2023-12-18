@@ -68,11 +68,14 @@ public static class DatabaseRulesChecker
 
 	private static bool CheckDefinedIntArrayTableType(Database database)
 	{
-		UserDefinedTableType dataType = database.UserDefinedTableTypes["IntTable"];
-		if ((dataType == null) && (GeneratorSettings.TargetPlatform >= TargetPlatform.SqlServer2008))
+		if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
 		{
-			ConsoleHelper.WriteLineWarning("Nebyl nalezen datový typ IntTable, který je pro target platform SQL Server 2008 (a novější) vyžadován.");
-			return false;
+			UserDefinedTableType dataType = database.UserDefinedTableTypes["IntTable"];
+			if ((dataType == null) && (GeneratorSettings.TargetPlatform >= TargetPlatform.SqlServer2008))
+			{
+				ConsoleHelper.WriteLineWarning("Nebyl nalezen datový typ IntTable, který je pro target platform SQL Server 2008 (a novější) vyžadován.");
+				return false;
+			}
 		}
 
 		return true;

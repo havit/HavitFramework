@@ -34,8 +34,8 @@ public static class TableHelper
 	public static bool IsIgnored(Table table)
 	{
 		return ((GeneratorSettings.Strategy == GeneratorStrategy.Exec) && table.Name.StartsWith("_"))
-			|| ((GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst) && table.Name.StartsWith("__")) // __DataSeed, __EFMigrationsHistory
-			|| (((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst)) && table.Schema.Equals("HangFire", StringComparison.OrdinalIgnoreCase))
+			|| (GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy() && table.Name.StartsWith("__")) // __DataSeed, __EFMigrationsHistory
+			|| (GeneratorSettings.Strategy.IsAnyHavitStrategy() && table.Schema.Equals("HangFire", StringComparison.OrdinalIgnoreCase))
 			|| (GetBoolExtendedProperty(table, "Ignored") ?? DatabaseHelper.GetDefaultIgnoredOnTables());
 	}
 
@@ -220,24 +220,15 @@ public static class TableHelper
 			{
 				Table targetTable = LocalizationHelper.GetLocalizationTable(table);
 
-				string referenceColumnName;
-				if (LanguageHelper.IsLanguageTable(table))
-				{
-					referenceColumnName = "ParentLanguageID";
-				}
-				else
-				{
-					referenceColumnName = TableHelper.GetPrimaryKey(table).Name;
-				}
+				Column referenceColumn = LocalizationHelper.GetParentLocalizationColumn(targetTable);
 
-				Column referenceColumn = targetTable.Columns[referenceColumnName];
 				if (referenceColumn == null)
 				{
-					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' nebyl nalezen sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumnName, targetTable.Name));
+					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' nebyl nalezen sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumn.Name, targetTable.Name));
 				}
 				if (ColumnHelper.IsIgnored(referenceColumn))
 				{
-					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' byl nalezen ignorovaný sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumnName, targetTable.Name));
+					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' byl nalezen ignorovaný sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumn.Name, targetTable.Name));
 				}
 
 				string description = "Lokalizované hodnoty.";
@@ -601,7 +592,7 @@ public static class TableHelper
 
 		if (LocalizationHelper.IsLocalizationTable(table))
 		{
-			result.Add(table.Columns[TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name]);
+			result.Add(LocalizationHelper.GetParentLocalizationColumn(table));
 			result.Add(table.Columns[LocalizationHelper.LanguageForeignKeyColumnName]);
 
 			return result;
@@ -812,7 +803,7 @@ public static class TableHelper
 	{
 		List<Column> result = columnCollection.Cast<Column>().ToList();
 		// Pro HavitCodeFirst strategii budeme generovat sloupce v abecedním pořadí (s výjimkou PK), abychom omezili vznik konfliktů a udělali generování s EF Core Migrations determinističtější.
-		if (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst)
+		if (GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy())
 		{
 			var pkColumnsInReverseOrder = result.Where(column => column.InPrimaryKey).ToList();
 			pkColumnsInReverseOrder.ForEach(pkColumn => result.Remove(pkColumn)); // sloupce s PK se neúčastní řazení

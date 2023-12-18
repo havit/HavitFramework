@@ -8,15 +8,20 @@ public enum GeneratorStrategy
 	/// <summary>
 	/// Generuje na základě pravidel pro databáze Havit.
 	/// </summary>
-	Havit,
+	Havit = 1,
 
 	/// <summary>
 	/// Generuje na základě pravidel pro databáze Havit pro databáze udržované code migration.
 	/// </summary>
-	HavitCodeFirst,
+	HavitCodeFirst = 2,
+
+	/// <summary>
+	/// Generuje na základě pravidel pro databáze s konvencemi Entity Frameworku.
+	/// </summary>
+	HavitEFCoreCodeFirst = 3,
 
 	/// <summary>
 	/// Generuje na základě pravidel pro databáze společnosti Exec.
 	/// </summary>
-	Exec,
+	Exec = 999,
 }

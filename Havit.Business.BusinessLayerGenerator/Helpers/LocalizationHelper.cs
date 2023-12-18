@@ -1,4 +1,5 @@
-﻿using Havit.Business.BusinessLayerGenerator.Settings;
+﻿using System;
+using Havit.Business.BusinessLayerGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Helpers;
@@ -115,11 +116,21 @@ public static class LocalizationHelper
 			return null;
 		}
 
-		if (LanguageHelper.IsLanguageTable(table))
+		if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
 		{
-			return table.Columns["ParentLanguageID"];
+			if (LanguageHelper.IsLanguageTable(table))
+			{
+				return table.Columns["ParentLanguageID"];
+			}
+			return table.Columns[TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name];
 		}
-		return table.Columns[TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name];
+
+		if (GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst)
+		{
+			return table.Columns["ParentId"];
+		}
+
+		throw new InvalidOperationException(GeneratorSettings.Strategy.ToString());
 	}
 
 	/// <summary>

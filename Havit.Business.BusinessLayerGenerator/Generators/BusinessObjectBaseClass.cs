@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
@@ -256,7 +254,7 @@ public static class BusinessObjectBaseClass
 
 		writer.WriteCommentSummary(classComment + typeComment);
 
-		if (Settings.GeneratorSettings.Strategy != Settings.GeneratorStrategy.HavitCodeFirst)
+		if (!Settings.GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy())
 		{
 			writer.WriteCommentLine("<remarks>");
 			writer.WriteCommentLine("<code>");
@@ -1106,7 +1104,7 @@ public static class BusinessObjectBaseClass
 			string outputClause = primaryKeyUsesDefaultInsteadOfIdentity
 				? String.Format(" OUTPUT INSERTED.{0} into @inserted ({0})", primaryKeyColumn.Name) // začíná mezerou!
 				: "";
-			if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
+			if (GeneratorSettings.Strategy.IsAnyHavitStrategy())
 			{
 				if (wasFirstColumn)
 				{

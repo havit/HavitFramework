@@ -42,22 +42,28 @@ public static class RulesChecker
 	/// </summary>
 	private static void CheckPrimaryKeyNamingRules(Table table)
 	{
-		if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
+		if ((GeneratorSettings.Strategy == GeneratorStrategy.Havit) || (GeneratorSettings.Strategy == GeneratorStrategy.HavitCodeFirst))
 		{
-			return;
+			Column primaryKeyColumn = TableHelper.GetPrimaryKey(table);
+
+			if (primaryKeyColumn.Name == table.Name)
+			{
+				ConsoleHelper.WriteLineWarning("Tabulka {0}: Název primárního klíče nekončí na \"ID\".", table.Name);
+			}
+			else if (primaryKeyColumn.Name != (table.Name + "ID"))
+			{
+				ConsoleHelper.WriteLineWarning("Tabulka {0}: Název primárního klíče musí být pojmenován {0}ID.", table.Name);
+			}
 		}
 
-		Column primaryKeyColumn = TableHelper.GetPrimaryKey(table);
-
-		if (primaryKeyColumn.Name == table.Name)
+		if (GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst)
 		{
-			ConsoleHelper.WriteLineWarning("Tabulka {0}: Název primárního klíče nekončí na \"ID\".", table.Name);
+			Column primaryKeyColumn = TableHelper.GetPrimaryKey(table);
+			if (primaryKeyColumn.Name != "Id")
+			{
+				ConsoleHelper.WriteLineWarning("Tabulka {0}: Název primárního klíče musí být pojmenován Id.", table.Name);
+			}
 		}
-		else if (primaryKeyColumn.Name != (table.Name + "ID"))
-		{
-			ConsoleHelper.WriteLineWarning("Tabulka {0}: Název primárního klíče musí být pojmenován {0}ID.", table.Name);
-		}
-
 	}
 
 	/// <summary>
@@ -193,23 +199,36 @@ public static class RulesChecker
 	/// </summary>
 	private static void CheckForeignKeysNamingConvention(Table table)
 	{
+		if (!GeneratorSettings.Strategy.IsAnyHavitStrategy())
+		{
+			return;
+		}
+
 		if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
 		{
 			return;
 		}
 
+		string columnSuffix = GeneratorSettings.Strategy switch
+		{
+			GeneratorStrategy.Havit => "ID",
+			GeneratorStrategy.HavitCodeFirst => "ID",
+			GeneratorStrategy.HavitEFCoreCodeFirst => "Id",
+			_ => throw new InvalidOperationException(GeneratorSettings.Strategy.ToString())
+		};
+
 		foreach (Column column in TableHelper.GetPropertyColumns(table))
 		{
 			if (ColumnHelper.CheckForeignKeyName(column))
 			{
-				if (column.IsForeignKey && !column.Name.EndsWith("ID", StringComparison.CurrentCulture))
+				if (column.IsForeignKey && !column.Name.EndsWith(columnSuffix, StringComparison.CurrentCulture))
 				{
-					ConsoleHelper.WriteLineWarning("Tabulka {0}, Sloupec {1}: Sloupec je cizím klíčem, ale název nekončí \"ID\".", table.Name, column.Name);
+					ConsoleHelper.WriteLineWarning("Tabulka {0}, Sloupec {1}: Sloupec je cizím klíčem, ale název nekončí \"{2}\".", table.Name, column.Name, columnSuffix);
 				}
 
-				if (!column.IsForeignKey && column.Name.EndsWith("ID", StringComparison.CurrentCulture))
+				if (!column.IsForeignKey && column.Name.EndsWith(columnSuffix, StringComparison.CurrentCulture))
 				{
-					ConsoleHelper.WriteLineWarning("Tabulka {0}, Sloupec {1}: Sloupec není cizím klíčem, ale název končí \"ID\".", table.Name, column.Name);
+					ConsoleHelper.WriteLineWarning("Tabulka {0}, Sloupec {1}: Sloupec není cizím klíčem, ale název končí \"{2}\".", table.Name, column.Name, columnSuffix);
 				}
 			}
 		}

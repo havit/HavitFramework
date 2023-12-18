@@ -6,6 +6,7 @@ using System.Text;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
+using Havit.Business.BusinessLayerGenerator.Settings;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Havit.Web;
 using Microsoft.SqlServer.Management.Smo;
@@ -233,7 +234,7 @@ public static class BusinessObjectStoredProcedures
 		Table resultTypeTable = StoredProcedureHelper.GetResultTypeTable(procedure);
 
 		writer.WriteCommentSummary(ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromStoredProcedure(procedure)));
-		if (withTransactionParameter && (Settings.GeneratorSettings.Strategy != Settings.GeneratorStrategy.HavitCodeFirst))
+		if (withTransactionParameter && !Settings.GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy())
 		{
 			writer.WriteCommentLine("<remarks>");
 			writer.WriteCommentLine("<code>");

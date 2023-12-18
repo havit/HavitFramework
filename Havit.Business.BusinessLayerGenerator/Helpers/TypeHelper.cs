@@ -516,7 +516,7 @@ public static class TypeHelper
 	/// </summary>
 	public static bool IsDateOnly(DataType dataType)
 	{
-		if ((GeneratorSettings.Strategy != GeneratorStrategy.Havit) && (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst))
+		if (!GeneratorSettings.Strategy.IsAnyHavitStrategy())
 		{
 			return false;
 		}

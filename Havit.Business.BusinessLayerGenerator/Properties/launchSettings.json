@@ -24,6 +24,10 @@
     "136.SWF": {
       "commandName": "Project",
       "commandLineArgs": "-outputpath:D:\\Dev\\136.SWF\\BusinessLayer -sqlserver:sqldev.havit.local -database:SolarTurbinesAccountsPayable -username:development -password:development -targetplatform:SqlServer2008 -strategy:HavitCodeFirst"
+    },
+    "004.AUT-G2": {
+      "commandName": "Project",
+      "commandLineArgs": "-outputpath:D:\\Temp\\BLG -sqlserver:sqldev.havit.local -database:AutronicShopG2_Stage -username:development -password:development -targetplatform:SqlServer2008 -strategy:HavitEFCoreCodeFirst"
     }
   }
 }

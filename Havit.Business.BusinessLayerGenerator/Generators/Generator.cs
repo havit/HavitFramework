@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Settings;
@@ -40,7 +39,7 @@ public static class Generator
 						continue;
 					}
 
-					if (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst)
+					if (!GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy())
 					{
 						// vygenerujeme výchozí hodnoty
 						DefaultsBuilders.DefaultsBuilder.CreateDefaults(table);
@@ -72,7 +71,7 @@ public static class Generator
 
 				}
 
-				if (GeneratorSettings.Strategy != GeneratorStrategy.HavitCodeFirst)
+				if (!GeneratorSettings.Strategy.IsEntityFrameworkGeneratedDatabaseStrategy())
 				{
 					// vygenerujeme FK pro cizí klíče
 					// nebo pro kolekce...

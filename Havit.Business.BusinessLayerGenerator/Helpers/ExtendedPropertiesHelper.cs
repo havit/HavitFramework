@@ -1,9 +1,8 @@
-﻿using Microsoft.SqlServer.Management.Smo;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Helpers;
 
@@ -54,7 +53,9 @@ public static class ExtendedPropertiesHelper
 INSERT INTO @result
 SELECT [Tables].[name], '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
 INNER JOIN [sys].[tables] [Tables] on ([ExtendedProperties].[major_id] = [Tables].[object_id])
+INNER JOIN [sys].[schemas] on [Tables].[schema_id] = [schemas].[schema_id]
 WHERE ([ExtendedProperties].[class] = 1) AND ([ExtendedProperties].[minor_id] = 0)
+AND [schemas].[name] NOT LIKE '%Hangfire%'
 
 -- Extended Properties on columns
 INSERT INTO @result

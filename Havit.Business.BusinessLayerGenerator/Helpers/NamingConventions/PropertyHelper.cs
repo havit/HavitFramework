@@ -42,7 +42,7 @@ public static class PropertyHelper
 			if (String.IsNullOrEmpty(result))
 			{
 				// ořízneme u cizího klíče z konce názvu sloupce ID, pokud tam je
-				if ((GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst) && TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("Id"))
+				if ((GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst) && TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase))
 				{
 					result = column.Name.Substring(0, column.Name.Length - 2);
 				}

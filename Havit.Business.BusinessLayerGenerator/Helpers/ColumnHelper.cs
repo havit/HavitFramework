@@ -77,7 +77,7 @@ public static class ColumnHelper
 
 		foreach (ForeignKey foreignKey in ownerTable.ForeignKeys)
 		{
-			if (foreignKey.Columns.Count == 1 && foreignKey.Columns[0].Name == column.Name)
+			if (foreignKey.Columns.Count == 1 && foreignKey.Columns[0].Name.Equals(column.Name, StringComparison.InvariantCultureIgnoreCase))
 			{
 				_getForeignKeys.Add(column, foreignKey);
 				return foreignKey;

@@ -60,7 +60,7 @@ public static class ExpressionExt
 	/// <returns>
 	/// If expressions is null or contains only null values, returns null.
 	/// Otherwise, combines the expressions and returns them joined by the AND condition.
-	/// For example, for input: item => item.A, item => item.B, item => item.C returns item => item.A && item.B && item.C
+	/// For example, for input: item => item.A, item => item.B, item => item.C returns item => item.A &amp;&amp; item.B &amp;&amp; item.C
 	/// </returns>
 	public static Expression<Func<T, bool>> AndAlso<T>(params Expression<Func<T, bool>>[] expressions)
 	{

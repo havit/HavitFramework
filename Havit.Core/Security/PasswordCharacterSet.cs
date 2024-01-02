@@ -5,27 +5,27 @@ using System.Text;
 namespace Havit.Security;
 
 /// <summary>
-/// Sada znaků, z níž <see cref="PasswordGenerator"/> vybírá znaky pro generování hesla.
+/// Set of characters from which <see cref="PasswordGenerator"/> selects characters for password generation.
 /// </summary>
 public enum PasswordCharacterSet
 {
 	/// <summary>
-	/// Pouze malá písmena.
+	/// Lowercase letters only.
 	/// </summary>
 	LowerCaseLetters,
 
 	/// <summary>
-	/// Velká a malá písmena.
+	/// Uppercase and lowercase letters.
 	/// </summary>
 	Letters,
 
 	/// <summary>
-	/// Písmena (velká i malá) a číslice.
+	/// Letters (uppercase and lowercase) and digits.
 	/// </summary>
 	LettersAndDigits,
 
 	/// <summary>
-	/// Písmena (velká i malá), číslice a speciální znaky.
+	/// Letters (uppercase and lowercase), digits, and special characters.
 	/// </summary>
 	LettersDigitsAndSpecialCharacters
 }

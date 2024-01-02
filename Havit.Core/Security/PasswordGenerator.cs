@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Havit.Security;
 
 /// <summary>
-/// Generátor hesel.
+/// Password generator.
 /// </summary>
 /// <remarks>
-/// Vychází původně z http://www.codeproject.com/csharp/pwdgen.asp
+/// Originally based on http://www.codeproject.com/csharp/pwdgen.asp
 /// </remarks>
 public class PasswordGenerator
 {
 	/// <summary>
-	/// Minimální délka hesla. Default 6.
+	/// Minimum password length. Default is 6.
 	/// </summary>
 	public int MinimumLength
 	{
@@ -30,7 +29,7 @@ public class PasswordGenerator
 	private int _mininumLength;
 
 	/// <summary>
-	/// Maximální délka hesla. Default 10.
+	/// Maximum password length. Default is 10.
 	/// </summary>
 	public int MaximumLength
 	{
@@ -46,7 +45,7 @@ public class PasswordGenerator
 	private int _maximumLength;
 
 	/// <summary>
-	/// Sada znaků, z níž se mají vybírat znaky pro generované heslo.
+	/// Set of characters to select from for the generated password.
 	/// </summary>
 	public PasswordCharacterSet PasswordCharacterSet
 	{
@@ -64,7 +63,7 @@ public class PasswordGenerator
 	private int passwordCharArrayUpperBound;
 
 	/// <summary>
-	/// Indikuje, zdali se smí v heslu opakovat znaky. zdali může být některý znak v heslu vícekrát. Default <c>true</c>.
+	/// Indicates whether repeating characters are allowed in the password. Default is <c>true</c>.
 	/// </summary>
 	public bool AllowRepeatingCharacters
 	{
@@ -74,7 +73,7 @@ public class PasswordGenerator
 	private bool _allowRepeatingCharacters;
 
 	/// <summary>
-	/// Indikuje, zdali smí heslo obsahovat shluky stejných znaků. Default <c>false</c>.
+	/// Indicates whether the password can contain clusters of the same character. Default is <c>false</c>.
 	/// </summary>
 	public bool AllowConsecutiveCharacters
 	{
@@ -84,7 +83,7 @@ public class PasswordGenerator
 	private bool _allowConsecutiveCharacters;
 
 	/// <summary>
-	/// Řetězec znaků, které nechceme mít v heslu.
+	/// String of characters that we do not want in the password.
 	/// </summary>
 	public string Exclusions
 	{
@@ -100,7 +99,7 @@ public class PasswordGenerator
 	private const int LettersAndDigitsUpperBound = 61;
 
 	/// <summary>
-	/// Vytvoří instanci PasswordGeneratoru a nastaví výchozí hodnoty pro složitost generovaného hesla.
+	/// Creates an instance of PasswordGenerator and sets default values for the complexity of the generated password.
 	/// </summary>
 	public PasswordGenerator()
 	{
@@ -113,7 +112,7 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Vrátí horní index pole znaků, do kterého se smí provádět výběr pro generované heslo.
+	/// Returns the upper index of the character array from which selection can be made for the generated password.
 	/// </summary>
 	private int GetCharacterArrayUpperBound()
 	{
@@ -140,10 +139,10 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Vygeneruje náhodné číslo pomocí crypto-API.
+	/// Generates a random number using crypto-API.
 	/// </summary>
-	/// <param name="lBound">dolní mez</param>
-	/// <param name="uBound">horní mez</param>
+	/// <param name="lBound">lower bound</param>
+	/// <param name="uBound">upper bound</param>
 	protected int GetCryptographicRandomNumber(int lBound, int uBound)
 	{
 		// Assumes lBound >= 0 && lBound < uBound
@@ -169,7 +168,7 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Vrátí náhodný znak.
+	/// Returns a random character.
 	/// </summary>
 	protected char GetRandomCharacter()
 	{
@@ -183,9 +182,9 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Vygeneruje heslo složitosti dle nastaveného generátoru.
+	/// Generates a password of complexity according to the set generator.
 	/// </summary>
-	/// <returns>vygenerované heslo</returns>
+	/// <returns>generated password</returns>
 	public string Generate()
 	{
 		ValidateSettings();
@@ -203,8 +202,8 @@ public class PasswordGenerator
 
 		if ((!AllowRepeatingCharacters) && (passwordLength > passwordCharArrayUpperBound + 1))
 		{
-			// Pokud má být heslo větší, než je možný počet znaků, pak ho musíme zkrátit.
-			// Minimální délku už zajišťuje ValidateSettings();
+			// If the password is to be larger than the possible number of characters, then it must be shortened.
+			// The minimum length is already ensured by ValidateSettings();
 			passwordLength = passwordCharArrayUpperBound + 1;
 		}
 
@@ -265,7 +264,7 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Kontroluje nastavení generátoru a vyhazuje případné výjimky.
+	/// Checks the generator settings and throws exceptions if necessary.
 	/// </summary>
 	private void ValidateSettings()
 	{
@@ -288,14 +287,14 @@ public class PasswordGenerator
 	private readonly char[] pwdCharArray = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?".ToCharArray();
 
 	/// <summary>
-	/// Vygeneruje heslo složitosti dle požadovaných parametrů.
+	/// Generates a password of complexity according to the required parameters.
 	/// </summary>
-	/// <param name="minimumLength">minimální délka hesla</param>
-	/// <param name="maximumLength">maximální délka hesla</param>
-	/// <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-	/// <param name="allowRepeatingCharacters">Indikuje, zdali se smí v heslu opakovat znaky. zdali může být některý znak v heslu vícekrát.</param>
-	/// <param name="allowConsecutiveCharacters">Indikuje, zdali smí heslo obsahovat shluky stejných znaků.</param>
-	/// <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
+	/// <param name="minimumLength">minimum password length</param>
+	/// <param name="maximumLength">maximum password length</param>
+	/// <param name="passwordCharacterSet">Set of characters to select from for the generated password.</param>
+	/// <param name="allowRepeatingCharacters">Indicates whether repeating characters are allowed in the password.</param>
+	/// <param name="allowConsecutiveCharacters">Indicates whether the password can contain clusters of the same character.</param>
+	/// <returns>generated password meeting the input requirements</returns>
 	public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet, bool allowRepeatingCharacters, bool allowConsecutiveCharacters)
 	{
 		PasswordGenerator passwordGenerator = new PasswordGenerator();
@@ -309,12 +308,12 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Vygeneruje heslo složitosti dle požadovaných parametrů.
+	/// Generates a password of complexity according to the required parameters.
 	/// </summary>
-	/// <param name="minimumLength">minimální délka hesla</param>
-	/// <param name="maximumLength">maximální délka hesla</param>
-	/// <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-	/// <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
+	/// <param name="minimumLength">minimum password length</param>
+	/// <param name="maximumLength">maximum password length</param>
+	/// <param name="passwordCharacterSet">Set of characters to select from for the generated password.</param>
+	/// <returns>generated password meeting the input requirements</returns>
 	public static string Generate(int minimumLength, int maximumLength, PasswordCharacterSet passwordCharacterSet)
 	{
 		PasswordGenerator passwordGenerator = new PasswordGenerator();
@@ -326,11 +325,11 @@ public class PasswordGenerator
 	}
 
 	/// <summary>
-	/// Vygeneruje heslo složitosti dle požadovaných parametrů.
+	/// Generates a password of complexity according to the required parameters.
 	/// </summary>
-	/// <param name="length"> délka hesla</param>
-	/// <param name="passwordCharacterSet">Sada znaků, z níž se mají vybírat znaky pro generované heslo.</param>
-	/// <returns>vygenerované heslo odpovídající vstupním požadavkům</returns>
+	/// <param name="length">password length</param>
+	/// <param name="passwordCharacterSet">Set of characters to select from for the generated password.</param>
+	/// <returns>generated password meeting the input requirements</returns>
 	public static string Generate(int length, PasswordCharacterSet passwordCharacterSet)
 	{
 		PasswordGenerator passwordGenerator = new PasswordGenerator();

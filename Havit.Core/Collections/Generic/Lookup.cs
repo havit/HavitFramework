@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 namespace Havit.Collections.Generic;
 
 /// <summary>
-/// ILookup s možností přidávání a odebírání položek.
-/// Vnitřně implementován pomocí Dictionary&lt;TKey, List&lt;TElement&gt;&gt;.
+/// ILookup with the ability to add and remove items.
+/// Internally implemented using Dictionary&lt;TKey, List&lt;TElement&gt;&gt;.
 /// </summary>
-/// <typeparam name="TKey">Typ klíče.</typeparam>
-/// <typeparam name="TElement">Typ položek.</typeparam>
+/// <typeparam name="TKey">The type of the key.</typeparam>
+/// <typeparam name="TElement">The type of the elements.</typeparam>
 public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 {
 	private readonly Dictionary<TKey, List<TElement>> _dictionary;
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public Lookup() : this(null, null)
 	{
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public Lookup(IEqualityComparer<TKey> equalityComparer) : this(null, equalityComparer)
 	{
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
-	/// <param name="source">Zdrojová data, kterými se Lookup naplní.</param>
+	/// <param name="source">The source data with which the Lookup is populated.</param>
 	public Lookup(ILookup<TKey, TElement> source) : this(source, null)
 	{
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
-	/// <param name="source">Zdrojová data, kterými se Lookup naplní.</param>
-	/// <param name="equalityComparer">Comparer pro porovnání objektů.</param>
+	/// <param name="source">The source data with which the Lookup is populated.</param>
+	/// <param name="equalityComparer">The comparer used to compare objects.</param>
 	public Lookup(ILookup<TKey, TElement> source, IEqualityComparer<TKey> equalityComparer)
 	{
 		_dictionary = new Dictionary<TKey, List<TElement>>(equalityComparer);
@@ -57,7 +57,7 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	}
 
 	/// <summary>
-	/// Vrací počet položek, kontrétně počet klíčů.
+	/// Returns the number of items, specifically the number of keys.
 	/// </summary>
 	public int Count
 	{
@@ -68,9 +68,9 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	}
 
 	/// <summary>
-	/// Vrátí seznam objektů uložených pod daným klíčem.
+	/// Returns a list of objects stored under the given key.
 	/// </summary>
-	/// <param name="key">Klíč</param>
+	/// <param name="key">The key.</param>
 	public IEnumerable<TElement> this[TKey key]
 	{
 		get
@@ -86,29 +86,29 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	}
 
 	/// <summary>
-	/// Indikuje, zda je v Lookup obsažen požadovaný klíč.
+	/// Indicates whether the desired key is contained in the Lookup.
 	/// </summary>
-	/// <param name="key">Klíč</param>
+	/// <param name="key">The key.</param>
 	public bool Contains(TKey key)
 	{
 		return _dictionary.ContainsKey(key);
 	}
 
 	/// <summary>
-	/// Odstraní z kolekce daný klíč (a s tím i k němu uložené hodnoty).
+	/// Removes the given key from the collection (and with it the values stored under it).
 	/// </summary>
-	/// <param name="key">Klíč.</param>
-	/// <returns>True, pokud byl klíč odebrán, jinak false (klíč se v kolekci nevyskytoval).</returns>
+	/// <param name="key">The key.</param>
+	/// <returns>True if the key was removed, otherwise false (the key was not present in the collection).</returns>
 	public bool RemoveKey(TKey key)
 	{
 		return _dictionary.Remove(key);
 	}
 
 	/// <summary>
-	/// Pod daný klíč přidá daný objekt (element).
+	/// Adds the given object (element) under the given key.
 	/// </summary>
-	/// <param name="key">Klíč.</param>
-	/// <param name="element">Přidávaný objekt.</param>
+	/// <param name="key">The key.</param>
+	/// <param name="element">The object being added.</param>
 	public void Add(TKey key, TElement element)
 	{
 		List<TElement> list;
@@ -123,12 +123,12 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	}
 
 	/// <summary>
-	/// Odebere daný objekt od daného klíče.
-	/// Pokud je odebrán poslední objekt daného klíče, není klíč odebírán a zůstává v kolekci stále přítomen. Tj. Contains(key) bude stále vracet true! Pokud má být klíč odebrán, je potřeba zavolat metodu RemoveKey.
+	/// Removes the given object from the given key.
+	/// If the last object of the given key is removed, the key is not removed and remains present in the collection. That is, Contains(key) will still return true! If the key is to be removed, the RemoveKey method must be called.
 	/// </summary>
-	/// <param name="key">Klíč.</param>
-	/// <param name="element">Odebíraný objekt-</param>
-	/// <returns>True, pokud byl objekt odebrán, jinak false (klíč není registrován nebo pod sebou nemá odebíraný objekt).</returns>
+	/// <param name="key">The key.</param>
+	/// <param name="element">The object being removed.</param>
+	/// <returns>True if the object was removed, otherwise false (the key is not registered or does not have the object being removed under it).</returns>
 	public bool Remove(TKey key, TElement element)
 	{
 		List<TElement> list;

@@ -3,25 +3,25 @@
 namespace Havit.Linq;
 
 /// <summary>
-/// Výstup extension-metody UpdateFrom()
+/// Output of the UpdateFrom() extension method
 /// </summary>
-/// <typeparam name="TTarget">typ prvků cílové kolekce</typeparam>
+/// <typeparam name="TTarget">type of items in the target collection</typeparam>
 public class UpdateFromResult<TTarget>
 	where TTarget : class
 {
 	/// <summary>
-	/// Prvky přidávané do cílové kolekce (chybějící).
+	/// Items added to the target collection (missing).
 	/// </summary>
 	public List<TTarget> ItemsAdding { get; } = new List<TTarget>();
 
 	/// <summary>
-	/// Prvky, které se v cílové kolekci aktualizují (existující).
-	/// Při duplicitách klíčů se zde může objevit jeden prvek vícekrát - pokud je aktualizován více odpovídajícími prvky zdrojové kolekce.
+	/// Items that are updated in the target collection (existing).
+	/// In case of duplicate keys, one item may appear multiple times here - if it is updated by multiple corresponding items from the source collection.
 	/// </summary>
 	public List<TTarget> ItemsUpdating { get; } = new List<TTarget>();
 
 	/// <summary>
-	/// Prvky, které se z cílové kolekce odebírají (přebývající).
+	/// Items that are removed from the target collection (redundant).
 	/// </summary>
 	public List<TTarget> ItemsRemoving { get; } = new List<TTarget>();
 

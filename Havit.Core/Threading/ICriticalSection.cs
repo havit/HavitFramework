@@ -5,33 +5,33 @@ using System.Threading.Tasks;
 namespace Havit.Threading;
 
 /// <summary>
-/// Zajišťuje spuštění kódu kritické sekce nejvýše jedním threadem, resp. vylučuje jeho paralelní běh ve více threadech.
+/// Ensures that the code of the critical section is executed by at most one thread, or excludes its parallel execution in multiple threads.
 /// </summary>
 /// <remarks>
-/// Zajišťuje použitelnost CriticalSection&lt;TKey&gt; jako služby, což však není vyžadovaný způsob implementace.
+/// Ensures the usability of CriticalSection&lt;TKey&gt; as a service, but this is not a required implementation method.
 /// </remarks>
 public interface ICriticalSection<TKey>
 {
 	/// <summary>
-	/// Vykoná danou akci pod zámkem.
+	/// Executes the given action under the lock.
 	/// </summary>
 	/// <param name="lockValue">
-	/// Zámek. 
-	/// Na rozdíl od obyčejného locku (resp. Monitoru) provede zamčení nad jeho hodnotou nikoliv nad jeho instancí.
-	/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
+	/// Lock. 
+	/// Unlike a regular lock (or Monitor), it locks over its value, not its instance.
+	/// Therefore, the lock can be anything that correctly implements the comparison operator (string, business object, ...).
 	/// </param>
-	/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
+	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
 	void ExecuteAction(TKey lockValue, Action criticalSection);
 
 	/// <summary>
-	/// Vykoná danou akci pod zámkem.
+	/// Executes the given action under the lock.
 	/// </summary>
 	/// <param name="lockValue">
-	/// Zámek. 
-	/// Na rozdíl od obyčejného locku (resp. Monitoru) provede zamčení nad jeho hodnotou nikoliv nad jeho instancí.
-	/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
+	/// Lock. 
+	/// Unlike a regular lock (or Monitor), it locks over its value, not its instance.
+	/// Therefore, the lock can be anything that correctly implements the comparison operator (string, business object, ...).
 	/// </param>
-	/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
+	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
 	/// <param name="cancellationToken">Cancellation token.</param>
 	Task ExecuteActionAsync(TKey lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default);
 }

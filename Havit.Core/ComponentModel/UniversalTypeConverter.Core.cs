@@ -23,7 +23,7 @@ public static partial class UniversalTypeConverter
 		Contract.Requires<ArgumentNullException>(targetType != null, nameof(targetType));
 
 		bool nullableType = false;
-		// Nullable - vybalíme typ, který je zapouzdřen a tento typ budeme nadále používat jako targetType
+		// Nullable - extract the encapsulated type and continue to use this type as targetType
 		if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition())
 		{
 			nullableType = true;

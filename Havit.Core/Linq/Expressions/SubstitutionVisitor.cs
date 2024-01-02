@@ -13,7 +13,7 @@ internal class SubstitutionVisitor<TSource, TTarget, TResult> : ExpressionVisito
 	private readonly Expression<Func<TTarget, TSource>> substitution;
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public SubstitutionVisitor(Expression<Func<TSource, TResult>> expression, Expression<Func<TTarget, TSource>> substitution)
 	{
@@ -23,12 +23,12 @@ internal class SubstitutionVisitor<TSource, TTarget, TResult> : ExpressionVisito
 
 	protected override Expression VisitLambda<T>(Expression<T> node)
 	{
-		// potřebujeme zamezit tomu, aby se navštívili node.Parameters!
+		// We need to prevent node.Parameters from being visited!
 		return Expression.Lambda(Visit(node.Body), substitution.Parameters);
 	}
 
 	/// <summary>
-	/// Nahradí parametr.
+	/// Replaces the parameter.
 	/// </summary>
 	protected override Expression VisitParameter(ParameterExpression node)
 	{

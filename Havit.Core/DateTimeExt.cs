@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Havit;
 
 /// <summary>
-/// Rozšiřující funkce pro práci s daty (datumy) <see cref="DateTime"/>.	
+/// Extension methods for working with dates <see cref="DateTime"/>.	
 /// </summary>
 public static class DateTimeExt
-{		
+{
 	/// <summary>
-	/// Vrátí nejmenší (nejdřívější) ze zadaných dat.
+	/// Returns the smallest (earliest) of the specified dates.
 	/// </summary>
 	public static DateTime Min(params DateTime[] values)
 	{
@@ -20,7 +20,7 @@ public static class DateTimeExt
 	}
 
 	/// <summary>
-	/// Vrátí největší (nejposlednější) ze zadaných dat.
+	/// Returns the largest (latest) of the specified dates.
 	/// </summary>
 	public static DateTime Max(params DateTime[] values)
 	{

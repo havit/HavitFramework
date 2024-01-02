@@ -5,17 +5,17 @@ using System.Text;
 namespace Havit.Collections;
 
 /// <summary>
-/// Určuje směr řazení.
+/// Specifies the sorting direction.
 /// </summary>
 public enum SortDirection
 {
 	/// <summary>
-	/// Vzestupné.
+	/// Ascending.
 	/// </summary>
 	Ascending,
 
 	/// <summary>
-	/// Sestupné.
+	/// Descending.
 	/// </summary>
 	Descending
 }

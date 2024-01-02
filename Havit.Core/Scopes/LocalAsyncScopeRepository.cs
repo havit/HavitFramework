@@ -10,25 +10,25 @@ using System.Web;
 namespace Havit.Scopes;
 
 /// <summary>
-/// Repository implementující scope pomocí AsyncLocal&lt;T&gt;.
+/// Repository implementing scope using AsyncLocal&lt;T&gt;.
 /// </summary>
-/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
+/// <typeparam name="T">The type whose scope is stored in the repository.</typeparam>
 public class AsyncLocalScopeRepository<T> : IScopeRepository<T>
 	where T : class
 {
 	private readonly AsyncLocal<Scope<T>> storage;
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public AsyncLocalScopeRepository()
 	{
-		// inicializujeme data slot
+		// initialize the data slot
 		this.storage = new AsyncLocal<Scope<T>>();
 	}
 
 	/// <summary>
-	/// Vrátí hodnotu aktuálního scope.
+	/// Returns the value of the current scope.
 	/// </summary>
 	public Scope<T> GetCurrentScope()
 	{
@@ -36,7 +36,7 @@ public class AsyncLocalScopeRepository<T> : IScopeRepository<T>
 	}
 
 	/// <summary>
-	/// Nastaví hodnotu aktuálního scope.
+	/// Sets the value of the current scope.
 	/// </summary>
 	public void SetCurrentScope(Scope<T> scope)
 	{
@@ -44,7 +44,7 @@ public class AsyncLocalScopeRepository<T> : IScopeRepository<T>
 	}
 
 	/// <summary>
-	/// Zruší scope.
+	/// Removes the scope.
 	/// </summary>
 	public void RemoveCurrentScope()
 	{

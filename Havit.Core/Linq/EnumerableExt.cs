@@ -1,25 +1,24 @@
-﻿using Havit.Diagnostics.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Linq;
 
 /// <summary>
-/// Extension metody pro IEnumerable&lt;T&gt;.
+/// Extension methods for IEnumerable&lt;T&gt;.
 /// </summary>
 public static class EnumerableExt
 {
 	/// <summary>
-	/// Volitelně rozšíří dotaz dle source o podmínku dle predicate, pokud condition je true.
-	/// Pokud je condition false, vrátí nezměněný dotaz.
+	/// Optionally extends the query according to source with a condition based on predicate if condition is true.
+	/// If condition is false, returns the unmodified query.
 	/// </summary>
-	/// <typeparam name="TSource">Typ objektu v source.</typeparam>
-	/// <param name="source">Rozšiřovaný dotaz.</param>
-	/// <param name="condition">Podmínka určující, zda má být dotaz rozšířen o podmínku.</param>
-	/// <param name="predicate">Podmínka, která volitelně rozšiřuje dotaz.</param>
-	/// <returns>Dotaz volitelně rozšířený o podmínku.</returns>
+	/// <typeparam name="TSource">Type of object in source.</typeparam>
+	/// <param name="source">Extended query.</param>
+	/// <param name="condition">Condition determining whether to extend the query with a condition.</param>
+	/// <param name="predicate">Condition that optionally extends the query.</param>
+	/// <returns>Query optionally extended with a condition.</returns>
 	public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, bool> predicate)
 	{
 		return condition
@@ -67,8 +66,8 @@ public static class EnumerableExt
 
 	/// <summary>
 	/// Full outer join.
-	/// Na rozdíl od ostatních metod je full outer join vyhodnocen okamžitě, výsledky nejsou ovlivněny změnou 
-	/// source dat (leftSource, rightSource) za zavoláním této metody a před vlastním vyhodnocením dotazu (IEnumerable).
+	/// Unlike other methods, full outer join is evaluated immediately, results are not affected by changes 
+	/// in source data (leftSource, rightSource) after calling this method and before actual query evaluation (IEnumerable).
 	/// </summary>
 	public static IEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> leftSource,
 											 IEnumerable<TRight> rightSource,
@@ -83,9 +82,9 @@ public static class EnumerableExt
 		keys.UnionWith(rightLookup.Select(p => p.Key));
 
 		IEnumerable<TResult> result = from key in keys
-				   from xLeft in leftLookup[key].DefaultIfEmpty()
-				   from xRight in rightLookup[key].DefaultIfEmpty()
-				   select resultSelector(xLeft, xRight);
+									  from xLeft in leftLookup[key].DefaultIfEmpty()
+									  from xRight in rightLookup[key].DefaultIfEmpty()
+									  select resultSelector(xLeft, xRight);
 
 		return result.ToList();
 	}
@@ -94,16 +93,16 @@ public static class EnumerableExt
 	/// Skip last items.
 	/// </summary>
 #if NET6_0_OR_GREATER
-	// System.Linq v .NET 6 obsahuje tuto extension metodu. Při použití je pak hlášena chyba "The call is ambiguous between the following methods...".
-	// To bychom mohli vyřešit odstraněním této metody z .NET 6, nicméně to pak může přinést nepěkný aspekt, takovýto:
-	// Mějme knihovnu implementovanou pro .NET Standard 2.0, která použije tuto extension metodu SkipLast.
-	// Nicméně jako runtime projektu, který tuto knihovnu bude používat, bude zvolen .NET 6.
-	// Vše půjde bez chyb zkompilovat, ale v runtime dostaneme MissingMethodException, že metoda v assembly není.
+	// System.Linq in .NET 6 contains this extension method. When used, the error "The call is ambiguous between the following methods..." is reported.
+	// This could be resolved by removing this method from .NET 6, however, it can introduce an unpleasant aspect, such as:
+	// Consider a library implemented for .NET Standard 2.0, which uses this extension method SkipLast.
+	// However, .NET 6 is chosen as the runtime of the project using this library.
+	// Everything will compile without errors, but in runtime, we get a MissingMethodException, indicating the method is not in the assembly.
 
-	// Jako řešení volíme, aby tato metoda v .NET 6 existovala, ale nebyla extension metodou.
-	// To pak v .NET Standard 2.0 umožní použít syntactic sugar extension metody a použije se naše metoda.
-	// Při spuštění pod .NET 6 dojde k použití této metody´, metoda bude nalezena a to, že nejde o extension metodu nevadí.		
-	// Kompilace volání SkipLast(...) v .NET 6 použije extension metodu z System.Linq.Enumerable.
+	// As a solution, we choose to have this method in .NET 6, but not as an extension method.
+	// This allows us to use the syntactic sugar of the extension method in .NET Standard 2.0 and our method is used.
+	// When running under .NET 6, this method is used, it is found, and the fact that it is not an extension method does not matter.
+	// Compilation of SkipLast(...) calls in .NET 6 will use the extension method from System.Linq.Enumerable.
 	public static IEnumerable<TSource> SkipLast<TSource>(IEnumerable<TSource> source, int count)
 #else
 	public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
@@ -123,7 +122,7 @@ public static class EnumerableExt
 		{
 			IList<TSource> sourceList = (IList<TSource>)source;
 			int sourceItems = sourceList.Count;
-			
+
 			for (int i = 0; i < (sourceItems - count); i++)
 			{
 				yield return sourceList[i];
@@ -216,11 +215,11 @@ public static class EnumerableExt
 	}
 
 	/// <summary>
-	/// Rozdělí data do segmentů (chunks) o maximální velikosti dle size.
-	/// Například vstupní data o 2500 záznamech při size 1000 rozdělí do třech segmentů (chunků) - 1000, 1000 a 500 záznamů.
+	/// Splits data into segments (chunks) of maximum size according to size.
+	/// For example, input data of 2500 records at size 1000 will be split into three segments (chunks) - 1000, 1000, and 500 records.
 	/// </summary>
-	/// <param name="source">Zdrojová data.</param>
-	/// <param name="size">Velikost jednoho segmentu (chunku). Nejmenší možná hodnota he 1.</param>
+	/// <param name="source">Source data.</param>
+	/// <param name="size">Size of one segment (chunk). The smallest possible value is 1.</param>
 	public static IEnumerable<T[]> Chunkify<T>(this IEnumerable<T> source, int size)
 	{
 		Contract.Requires<ArgumentNullException>(source != null, nameof(source));
@@ -247,14 +246,14 @@ public static class EnumerableExt
 		}
 	}
 
-    /// <summary>
-    /// Indikuje, zda obsahuje kolekce všechny položky jiné kolekce.
-    /// </summary>
-    /// <param name="source">Kolekce, v níž ověřujeme existenci hodnot.</param>
-    /// <param name="lookupItems">Hodnoty, jejichž existenci ověřujeme v kolekci.</param>
-    /// <returns>True, pokud source obsahuje všechny prvky lookupItems.</returns>
-    public static bool ContainsAll<T>(this IEnumerable<T> source, IEnumerable<T> lookupItems)
-    {
-        return !lookupItems.Except(source).Any();
-    }
-    }
+	/// <summary>
+	/// Indicates whether the collection contains all items of another collection.
+	/// </summary>
+	/// <param name="source">The collection in which we verify the existence of values.</param>
+	/// <param name="lookupItems">The values whose existence we verify in the collection.</param>
+	/// <returns>True if the source contains all elements of lookupItems.</returns>
+	public static bool ContainsAll<T>(this IEnumerable<T> source, IEnumerable<T> lookupItems)
+	{
+		return !lookupItems.Except(source).Any();
+	}
+}

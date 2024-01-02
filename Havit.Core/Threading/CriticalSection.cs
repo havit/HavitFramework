@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 namespace Havit.Threading;
 
 /// <summary>
-/// Zajišťuje spuštění kódu kritické sekce nejvýše jedním threadem, resp. vylučuje jeho paralelní běh ve více threadech.
+/// Ensures that the code of the critical section is executed by at most one thread, or excludes its parallel execution in multiple threads.
 /// </summary>
 /// <remarks>
-/// I když třída díky interface usnadňuje možnost použití jako služby, není takové použití vyžadováno. 
-/// Bez obav tam, kde potřebujeme, vytvářejme instance bez DI containeru.
+/// Although the class facilitates the possibility of being used as a service thanks to the interface, such use is not required.
+/// Without hesitation, where we need to, we create instances without a DI container.
 /// </remarks>
 public class CriticalSection<TKey> : ICriticalSection<TKey>
 {
 	private readonly Dictionary<TKey, CriticalSectionLock> criticalSectionLocks;
-	internal Dictionary<TKey, CriticalSectionLock> CriticalSectionLocks => criticalSectionLocks; // pro unit testy
+	internal Dictionary<TKey, CriticalSectionLock> CriticalSectionLocks => criticalSectionLocks; // for unit tests
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public CriticalSection()
 	{
@@ -30,7 +30,7 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public CriticalSection(IEqualityComparer<TKey> comparer)
 	{
@@ -38,14 +38,14 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	}
 
 	/// <summary>
-	/// Vykoná danou akci pod zámkem.
+	/// Executes the given action under the lock.
 	/// </summary>
 	/// <param name="lockValue">
-	/// Zámek. 
-	/// Na rozdíl od obyčejného locku (resp. Monitoru) provede zamčení nad jeho hodnotou nikoliv nad jeho instancí.
-	/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
+	/// Lock. 
+	/// Unlike an ordinary lock (or Monitor), it locks over its value, not its instance.
+	/// Therefore, the lock can be anything that correctly implements the comparison operator (string, business object, ...).
 	/// </param>
-	/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
+	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
 	public void ExecuteAction(TKey lockValue, Action criticalSection)
 	{
 		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
@@ -64,14 +64,14 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	}
 
 	/// <summary>
-	/// Vykoná danou akci pod zámkem.
+	/// Executes the given action under the lock.
 	/// </summary>
 	/// <param name="lockValue">
-	/// Zámek. 
-	/// Na rozdíl od obyčejného locku (resp. Monitoru) provede zamčení nad jeho hodnotou nikoliv nad jeho instancí.
-	/// Zámkem proto může být cokoliv, co korektně implementuje operátor porovnání (string, business object, ...).		
+	/// Lock. 
+	/// Unlike an ordinary lock (or Monitor), it locks over its value, not its instance.
+	/// Therefore, the lock can be anything that correctly implements the comparison operator (string, business object, ...).
 	/// </param>
-	/// <param name="criticalSection">Kód kritické sekce vykonaný pod zámkem.</param>
+	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
 	/// <param name="cancellationToken">Cancellation token.</param>
 	public async Task ExecuteActionAsync(TKey lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default)
 	{
@@ -94,8 +94,8 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 
 	internal CriticalSectionLock GetCriticalSectionLock(TKey lockValue)
 	{
-		// Pracujeme s čítačem, musíme proto použít "globální" zámek.
-		lock (criticalSectionLocks) // použijeme dictionary pro zámek
+		// We are working with a counter, so we need to use a "global" lock.
+		lock (criticalSectionLocks) // use a dictionary for the lock
 		{
 			if (criticalSectionLocks.TryGetValue(lockValue, out CriticalSectionLock criticalSectionLock))
 			{
@@ -103,7 +103,7 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 			}
 			else
 			{
-				criticalSectionLock = new CriticalSectionLock(); // výchozí hodnota čítače je 1
+				criticalSectionLock = new CriticalSectionLock(); // the default value of the counter is 1
 				Debug.Assert(criticalSectionLock.UsageCounter == 1);
 				criticalSectionLocks.Add(lockValue, criticalSectionLock);
 			}
@@ -113,14 +113,14 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 
 	internal void ReleaseCriticalSectionLock(TKey lockValue, CriticalSectionLock criticalSectionLock)
 	{
-		// Ať už kritická sekce doběhla dobře nebo došlo k výjimce, musíme snížit čítač použití zámku.
-		// Opět pracujeme s čítačem, musíme proto použít "globální" zámek.
-		lock (criticalSectionLocks) // použijeme dictionary pro zámek
+		// Whether the critical section ran well or an exception occurred, we need to decrease the usage counter of the lock.
+		// Again, we are working with a counter, so we need to use a "global" lock.
+		lock (criticalSectionLocks) // use a dictionary for the lock
 		{
 			criticalSectionLock.UsageCounter -= 1;
 			if (criticalSectionLock.UsageCounter == 0)
 			{
-				// pokud již nikdo zámek nepoužívá, uklidíme jej
+				// if no one is using the lock anymore, we clean it up
 				criticalSectionLocks.Remove(lockValue);
 				criticalSectionLock.Semaphore.Dispose();
 			}
@@ -128,17 +128,17 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	}
 
 	/// <summary>
-	/// Nese zámek (semafor) s čítačem použití.
+	/// Holds a lock (semaphore) with a usage counter.
 	/// </summary>
 	internal class CriticalSectionLock
 	{
 		/// <summary>
-		/// Zámek (semafor).
+		/// Lock (semaphore).
 		/// </summary>
 		public SemaphoreSlim Semaphore { get; set; } = new SemaphoreSlim(1, 1);
 
 		/// <summary>
-		/// Čítač použití. Výhozí hodnota je 1.
+		/// Usage counter. The default value is 1.
 		/// </summary>
 		public int UsageCounter { get; set; } = 1;
 	}

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 namespace Havit.Collections;
 
 /// <summary>
-/// Extension metody k SortDirection.
+/// Extension methods for SortDirection.
 /// </summary>
 public static class SortDirectionExtensions
 {
 	/// <summary>
-	/// Vrátí opačný směr řazení.
+	/// Returns the opposite sorting direction.
 	/// </summary>
 	public static SortDirection Reverse(this SortDirection source)
 	{

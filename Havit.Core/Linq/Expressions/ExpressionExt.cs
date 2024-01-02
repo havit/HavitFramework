@@ -6,26 +6,26 @@ using Havit.Diagnostics.Contracts;
 namespace Havit.Linq.Expressions;
 
 /// <summary>
-/// Pomocné metody pro práci s Expression.
+/// Helper methods for working with Expression.
 /// </summary>
 public static class ExpressionExt
 {
 	/// <summary>
-	/// Vymění v expression jeden parameter druhým. Slouží například k náhradě na mujObjekt => mujObjekt.Id na item => item.Id.
+	/// Replaces one parameter with another in the expression. Used, for example, to replace mujObjekt => mujObjekt.Id with item => item.Id.
 	/// </summary>
-	/// <param name="expression">Expression, ve kterém je prováděna náhrada parametru.</param>
-	/// <param name="sourceParameter">Parametr, který má být nalezen a nahrazen.</param>
-	/// <param name="targetParameter">Parametr, kterým bude sourceParametr nahrazen.</param>
+	/// <param name="expression">The expression in which the parameter replacement is performed.</param>
+	/// <param name="sourceParameter">The parameter to be found and replaced.</param>
+	/// <param name="targetParameter">The parameter with which the source parameter will be replaced.</param>
 	public static Expression ReplaceParameter(Expression expression, ParameterExpression sourceParameter, ParameterExpression targetParameter)
 	{
 		return new ReplaceParameterVisitor(sourceParameter, targetParameter).Visit(expression);
 	}
 
 	/// <summary>
-	/// Odstraní z expression Convert, pokud je přítomen. Nahrazuje jej jen na nejvyšší úrovni.
-	/// Slouží k náhradě item => (object)item.Id na item => item.Id.
+	/// Removes the Convert from the expression, if present. Replaces it only at the highest level.
+	/// Used to replace item => (object)item.Id with item => item.Id.
 	/// </summary>
-	/// <param name="expression">Expression, ve které se Convert vyhledává.</param>
+	/// <param name="expression">The expression in which the Convert is searched.</param>
 	public static Expression RemoveConvert(this Expression expression)
 	{
 		while ((expression.NodeType == ExpressionType.Convert) || (expression.NodeType == ExpressionType.ConvertChecked))
@@ -36,31 +36,31 @@ public static class ExpressionExt
 	}
 
 	/// <summary>
-	/// Pokud máme lambda výraz (B b) => b.C, ale chceme expression tree aplikovat nad jiný objekt, ze kterého B teprve získáme (např. (A a) => a.B, pak pak upraví výraz do této podoby.
-	/// Tj. pro vstupy
+	/// If we have a lambda expression (B b) => b.C, but we want to apply the expression tree to another object from which we only get B (for example, (A a) => a.B), it modifies the expression to this form.
+	/// That is, for inputs
 	/// expression: (B b) => b.C % 2 == 0
 	/// substitution (A a) => a.B
-	/// provede náhradu parametru &quot;b&quot; v expression za &quot;a.B&quot;.
-	/// vrací (A a) => a.B.C % 2 == 0
+	/// replaces the parameter 'b' in the expression with 'a.B'.
+	/// returns (A a) => a.B.C % 2 == 0
 	/// </summary>
-	/// <typeparam name="TSource">Vstupní parametr lambda výrazu, ve kterém dojde k transformaci.</typeparam>
-	/// <typeparam name="TTarget">Vstupní parametr lambda výrazu po transformaci. </typeparam>
-	/// <typeparam name="TResult">Typ, která vrací vstupní (a výstupní) lambda výraz.</typeparam>
-	/// <param name="expression">Výraz, ve kterém dojde k substituci.</param>
-	/// <param name="substitution">Výraz, který je použit jako substituce v expression.</param>
+	/// <typeparam name="TSource">The input parameter of the lambda expression in which the transformation takes place.</typeparam>
+	/// <typeparam name="TTarget">The input parameter of the lambda expression after the transformation. </typeparam>
+	/// <typeparam name="TResult">The type returned by the input (and output) lambda expression.</typeparam>
+	/// <param name="expression">The expression in which the substitution takes place.</param>
+	/// <param name="substitution">The expression used as a substitution in the expression.</param>
 	public static Expression<Func<TTarget, TResult>> SubstituteParameter<TSource, TTarget, TResult>(Expression<Func<TSource, TResult>> expression, Expression<Func<TTarget, TSource>> substitution)
 	{
 		return (Expression<Func<TTarget, TResult>>)new SubstitutionVisitor<TSource, TTarget, TResult>(expression, substitution).Visit(expression);
 	}
 
 	/// <summary>
-	/// Vrátí výraz odpovídající podmínce AND mezi jednotlivými expressions.
+	/// Returns an expression corresponding to the condition AND between individual expressions.
 	/// </summary>
-	/// <param name="expressions">Podmínky ke spojení operátorem AND.</param>
+	/// <param name="expressions">Conditions to be combined with the AND operator.</param>
 	/// <returns>
-	/// Pokud je expressions null nebo obsahuje jen null hodnoty, vrací null.
-	/// Jinak zkombinuje výrazy a vrátí je spojené podmínkou AND.
-	/// Např. pro vstup: item => item.A, item => item.B, item => item.C vrátí item => item.A &amp;&amp; item.B &amp;&amp; item.C
+	/// If expressions is null or contains only null values, returns null.
+	/// Otherwise, combines the expressions and returns them joined by the AND condition.
+	/// For example, for input: item => item.A, item => item.B, item => item.C returns item => item.A && item.B && item.C
 	/// </returns>
 	public static Expression<Func<T, bool>> AndAlso<T>(params Expression<Func<T, bool>>[] expressions)
 	{
@@ -87,8 +87,8 @@ public static class ExpressionExt
 	}
 
 	/// <summary>
-	/// Vrací název membera (property), ke které je v expression přistupováno. Tj. pro "person => person.Age" vrací "Age".
-	/// Nejsou podporovány bohatší expression, než takto triviální.
+	/// Returns the name of the member (property) to which the expression accesses. For example, for "person => person.Age" returns "Age".
+	/// Richer expressions than this trivial one are not supported.
 	/// </summary>
 	public static string GetMemberAccessMemberName(Expression expression)
 	{

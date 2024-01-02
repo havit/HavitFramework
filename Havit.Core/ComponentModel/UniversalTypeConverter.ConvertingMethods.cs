@@ -10,8 +10,8 @@ namespace Havit.ComponentModel;
 public static partial class UniversalTypeConverter
 {
 	/// <summary>
-	/// Pokusí se provést převedení typu pomocí IConvertible.
-	/// Implementace převzata z UniversalTypeConverter.
+	/// Attempts to perform type conversion using IConvertible.
+	/// Implementation taken from UniversalTypeConverter.
 	/// </summary>
 	private static bool TryConvertByIConvertibleImplementation(object value, Type destinationType, IFormatProvider formatProvider, ref object result)
 	{
@@ -100,8 +100,8 @@ public static partial class UniversalTypeConverter
 	}
 
 	/// <summary>
-	/// Pokusí se provést převedení typu pomocí TypeConverterů.
-	/// Implementace převzata z UniversalTypeConverter.
+	/// Attempts to perform type conversion using TypeConverters.
+	/// Implementation taken from UniversalTypeConverter.
 	/// </summary>
 	private static bool TryConvertByDefaultTypeConverters(object value, Type destinationType, CultureInfo culture, ref object result)
 	{

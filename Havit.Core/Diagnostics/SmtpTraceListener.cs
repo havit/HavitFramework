@@ -9,45 +9,45 @@ using System.Text;
 namespace Havit.Diagnostics;
 
 /// <summary>
-/// TraceListener, který výstup posílá mailem.
-/// Konfigurace se provádí přes initializeData v kontruktoru, podporovány jsou hodnoty:
+/// TraceListener that sends output via email.
+/// Configuration is done through initializeData in the constructor, supported values include:
 /// <list type="bullet">
 ///		<item>
 ///			<term>subject</term>
-///			<description>Předmět zasílaného emailu.</description>
+///			<description>Subject of the email being sent.</description>
 ///		</item>
 ///		<item>
 ///			<term>to</term>
-///			<description>Adresát emailu.</description>
+///			<description>Recipient of the email.</description>
 ///		</item>
 ///		<item>
 ///			<term>from</term>
-///			<description>Odesílatel emailu.</description>
+///			<description>Sender of the email.</description>
 ///		</item>
 ///		<item>
 ///			<term>smtpServer</term>
-///			<description>Smtp server k odeslání zprávy.</description>
+///			<description>SMTP server for sending the message.</description>
 ///		</item>
 ///		<item>
 ///			<term>smtpPort</term>
-///			<description>Port, který se má použít pro komunikaci se Smtp serverem (není-li nastaveno, nepoužije se).</description>
+///			<description>Port to be used for communication with the SMTP server (if not set, it won't be used).</description>
 ///		</item>
 ///		<item>
 ///			<term>smtpUsername</term>
-///			<description>Username smtp serveru (není-li nastaveno, nepoužije se).</description>
+///			<description>Username for the SMTP server (if not set, it won't be used).</description>
 ///		</item>
 ///		<item>
 ///			<term>smtpPassword</term>
-///			<description>Heslo smtp serveru.</description>
+///			<description>Password for the SMTP server.</description>
 ///		</item>
 ///		<item>
 ///			<term>smtpEnableSsl</term>
-///			<description>Indikuje, zda se má použít SSL při připojení k smtp serveru. Výchozí hodnota je false.</description>
+///			<description>Indicates whether to use SSL when connecting to the SMTP server. The default value is false.</description>
 ///		</item>
 /// </list>
 /// </summary>
 /// <remarks>
-/// Inspirováno implementaci System.Diagnostics.XmlWriterListener.
+/// Inspired by the implementation of System.Diagnostics.XmlWriterListener.
 /// </remarks>
 public class SmtpTraceListener : TraceListener
 {
@@ -61,14 +61,14 @@ public class SmtpTraceListener : TraceListener
 	private readonly bool? _smtpEnableSsl = false;
 
 	/// <summary>
-	/// Constructor, který je volán při použití TraceListerneru z app.configu a předává se do něj hodnota atributu initializeData.
+	/// Constructor that is called when using the TraceListener from the app.config and the value of the initializeData attribute is passed to it.
 	/// </summary>
-	/// <param name="initializeData">hodnota atributu initializeData z app.config</param>
+	/// <param name="initializeData">value of the initializeData attribute from app.config</param>
 	public SmtpTraceListener(string initializeData)
 	{
 		if (initializeData == null)
 		{
-			return; // použijí se defaulty				
+			return; // defaults will be used
 		}
 
 		foreach (string arg in initializeData.Split(';'))
@@ -105,7 +105,7 @@ public class SmtpTraceListener : TraceListener
 						_smtpEnableSsl = Boolean.Parse(parameterValue);
 						break;
 					default:
-						throw new ArgumentException(String.Format("Neznámý parametr '{0}' konfigurace SmtpTraceListeneru v initializeData.", paramValue[0]/* nedávám paramenterName, protože jej chci zobrazit bez provedeného Trim a ToLower */));
+						throw new ArgumentException(String.Format("Unknown parameter '{0}' in the SmtpTraceListener configuration in initializeData.", paramValue[0]/* not providing parameterName because I want to display it without performing Trim and ToLower */));
 				}
 			}
 		}
@@ -130,9 +130,9 @@ public class SmtpTraceListener : TraceListener
 	}
 
 	/// <summary>
-	/// Interní implementace odesílání mailu.
+	/// Internal implementation of sending an email.
 	/// </summary>
-	/// <param name="message">zpráva z trace</param>
+	/// <param name="message">trace message</param>
 	private void SendMessage(string message)
 	{
 		if (String.IsNullOrEmpty(_to))
@@ -148,9 +148,9 @@ public class SmtpTraceListener : TraceListener
 		}
 		catch
 		{
-			// NOOP - nechceme, aby nám nefunkční trace-mailing zabil server
+			// NOOP - we don't want a malfunctioning trace-mailing to kill the server
 #if DEBUG
-			// při debugování nás to ale zajímá
+			// but during debugging, we are interested in it
 			throw;
 #endif
 		}
@@ -163,7 +163,7 @@ public class SmtpTraceListener : TraceListener
 	}
 
 	/// <summary>
-	/// Vrací kompletně nakonfigurovanou instanci SmtpClient pro odeslání emailu.
+	/// Returns a fully configured instance of SmtpClient for sending an email.
 	/// </summary>
 	protected internal virtual SmtpClient GetSmtpClient()
 	{
@@ -186,7 +186,7 @@ public class SmtpTraceListener : TraceListener
 	}
 
 	/// <summary>
-	/// Vrací kompletně nakonfigurovanou MailMessage k odeslání.
+	/// Returns a fully configured MailMessage ready for sending.
 	/// </summary>
 	protected virtual MailMessage GetMailMessage(string message)
 	{
@@ -212,13 +212,13 @@ public class SmtpTraceListener : TraceListener
 	}
 
 	/// <summary>
-	/// Hlavní interní implementace sestavení mailu.
+	/// The main internal implementation for composing the email.
 	/// </summary>
 	/// <param name="eventCache">A <see cref="T:System.Diagnostics.TraceEventCache"/> object that contains the current process ID, thread ID, and stack trace information.</param>
 	/// <param name="source">A name used to identify the output, typically the name of the application that generated the trace event.</param>
 	/// <param name="eventType">One of the <see cref="T:System.Diagnostics.TraceEventType"/> values specifying the type of event that has caused the trace.</param>
 	/// <param name="id">A numeric identifier for the event.</param>
-	/// <param name="data">An array of objects to emit as data. Pokud je string, obsahuje přímo text zprávy.</param>
+	/// <param name="data">An array of objects to emit as data. If it is a string, it contains the actual message text.</param>
 	private void SendTrace(TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
 	{
 		StringBuilder message = new StringBuilder();
@@ -262,42 +262,42 @@ public class SmtpTraceListener : TraceListener
 		message.AppendLine("    Event UTC time: " + now.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
 		message.AppendLine();
 
-		// pro konzolovky, ve webových aplikacích vrací null
-		// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		// For console applications, returns null in web applications
+		// Example: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		Assembly assembly = Assembly.GetEntryAssembly();
 
-		// JK: IMHO zbytečný kód.
-		// V běžném requestu máme health monitoring, netřeba se obvykle zabývat SMTP trace listenerem.
-		// Nepokrýváme asynchronní kód, tasky, thready - ty nemají HttpContext.Current.
-		// V konzolovce, atp., máme assembly.
+		// JK: In my opinion, unnecessary code.
+		// In a regular request, we have health monitoring, usually no need to deal with SMTP trace listener.
+		// We do not cover asynchronous code, tasks, threads - they don't have HttpContext.Current.
+		// In a console application, etc., we have the assembly.
 
 		if (assembly == null)
 		{
-			// Implementace vychází z https://stackoverflow.com/a/6754205/4202832
-			// Abychom nemuseli být závislí (dependency) na System.Web, nepoužijeme závislost na System.Web a proto musíme typ dohledat dynamicky.
-			// A pracovat s ním reflexí.
+			// Implementation based on https://stackoverflow.com/a/6754205/4202832
+			// To avoid being dependent on System.Web, we will not use a dependency on System.Web and therefore must dynamically find the type.
+			// And work with it using reflection.
 
-			// Implementujeme "HttpContext.Current != null" reflexí
+			// Implement "HttpContext.Current != null" using reflection
 			Type httpContextType = Type.GetType("System.Web.HttpContext, System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", throwOnError: false);
 			if (httpContextType != null)
 			{
 				PropertyInfo httpContextCurrentMember = httpContextType.GetProperty("Current", BindingFlags.Public | BindingFlags.Static);
 				object httpContextCurrent = httpContextCurrentMember.GetValue(null /* static */);
 
-				// pro requesty webových aplikací, v asynchronním tasku/threadu vrací HttpContext.Current null
+				// For requests of web applications, in an asynchronous task/thread, HttpContext.Current returns null
 				if (httpContextCurrent != null)
 				{
-					// příklad: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
-					// v precompiled aplikaci bude, co čekáme
+					// Example: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+					// In a precompiled application, it will be as expected
 
-					// Ve druhé části implementujeme "assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;".
+					// In the second part, we implement "assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;".
 					object applicationInstance = httpContextType.GetProperty("ApplicationInstance", BindingFlags.Public | BindingFlags.Instance).GetValue(httpContextCurrent);
 					assembly = applicationInstance.GetType().Assembly;
 				}
 			}
 		}
 
-		// pro asynchronní tasky/thready webových aplikací nevíme, jak získat assembly
+		// For asynchronous tasks/threads of web applications, we don’t know how to obtain the assembly
 
 		if (assembly != null)
 		{

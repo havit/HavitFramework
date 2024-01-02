@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Havit.Reflection;
 
 /// <summary>
-/// Interface, kterým se označuje typ, jehož DataBinderExt.SetValue má fungovat nestandardním způsobem.
-/// Určeno pro nastavení hodnoty business object kolekcím, jejich setter nechceme volat, ale chceme provést vyčištění a naplnění kolekce.
+/// Interface that marks the type whose DataBinderExt.SetValue should work in a non-standard way.
+/// Intended for setting the value of business object collections, where we do not want to invoke their setter, but want to perform cleaning and filling of the collection.
 /// </summary>
 public interface IDataBinderExtSetValue
 {
 	/// <summary>
-	/// Nastaví objektu hodnotu z parametru.
+	/// Sets the value of the object from the parameter.
 	/// </summary>
 	void SetValue(object value);
 }

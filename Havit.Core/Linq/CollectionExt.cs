@@ -8,32 +8,32 @@ using Havit.Diagnostics.Contracts;
 namespace Havit.Linq;
 
 /// <summary>
-/// Extension metody pro IColllection&lt;T&gt;.
+/// Extension methods for IColllection&lt;T&gt;.
 /// </summary>
 public static class CollectionExt
 {
 	/// <summary>
-	/// Sloučení kolekcí. Do existující kolekce aplikuje změny z kolekce druhé.
-	/// Použitelné pro aplikaci změn z ViewModelu do DataLayer-entities (a naopak), pro importy, atp.
+	/// Merges collections. Applies changes from the second collection to the existing collection.
+	/// Useful for applying changes from ViewModel to DataLayer-entities (and vice versa), for imports, etc.
 	/// </summary>
 	/// <remarks>
-	/// PERF: Interně používá FullOuterJoin pro výkonovou optimalizaci, nicméně z důvodu leakujících EF-fixups performance trochu degraduje kontrola <c>target.Contains</c> před přidáváním nového prvku do kolekce. Pokud by se ukázalo jako problém, dalo by se tomu pomoci přetížením, které by tuto kontrolu umělo vypnout.
-	/// Mezní situace (logika vyplývá z použití FullOuterJoin):
-	/// - Pokud je duplicita ve zdrojové kolekci, aplikují se záznamy opakovaně (v nedefinovaném pořadí).
-	/// - Pokud je duplicita v cílové kolekci, aktualizují se všechny záznamy.
-	/// - Klíče <c>null</c> se na sebe spárují.
+	/// PERF: Internally uses FullOuterJoin for performance optimization, however, due to leaking EF-fixups, the performance is slightly degraded by the <c>target.Contains</c> check before adding a new item to the collection. If this proves to be a problem, it could be improved by overloading the method that can disable this check.
+	/// Boundary situations (logic follows from the use of FullOuterJoin):
+	/// - If there is a duplicate in the source collection, the records are applied repeatedly (in an undefined order).
+	/// - If there is a duplicate in the target collection, all records are updated.
+	/// - <c>null</c> keys are paired with each other.
 	/// </remarks>
-	/// <typeparam name="TSource">typ prvků kolekce, kterou chceme aplikovat</typeparam>
-	/// <typeparam name="TTarget">typ prvků cílové kolekce, kterou aktualizujeme. Musí to být třída, jinak bychom nemohli v updateItemAction nastavovat hodnoty (bylo by potřeba ref).</typeparam>
-	/// <typeparam name="TKey">typ párovacího klíče</typeparam>
-	/// <param name="target">aktualizovaná kolekce</param>
-	/// <param name="source">kolekece s hodnotami, které chceme aplikovat</param>
-	/// <param name="targetKeySelector">selektor pro párovací klíč prvků cílové kolekce</param>
-	/// <param name="sourceKeySelector">selektor pro párovací klíč prvků zdrojové (aplikované) kolekce</param>
-	/// <param name="newItemCreateFunc">funkce pro založení nového prvku cílové kolekce (pokud bude funkce <c>null</c>, chybějící prvky ignorujeme a do <c>ItemsAdding</c> se nic nepřidá)</param>
-	/// <param name="updateItemAction">akce pro aktualizaci spárovaného prvku cílové kolekce z hodnot prvku aplikované kolekce (pokud bude akce <c>null</c>, spárované prvky neaktualizujeme a do <c>ItemsUpdating</c> se nic nepřidá)</param>
-	/// <param name="removeItemAction">akce pro odebrání prvku z aktualizované kolekce, který nebyl nalezen v aplikované kolekci (pokud bude akce <c>null</c>, přebývající prvky neodebíráme a do <c>ItemsRemoving</c> se nic nepřidá) </param>
-	/// <param name="removeItemFromCollection">indikuje, zdali má být přebývající prvek z kolekce odebrán (default <c>true</c>, pro podporu soft-deletes je možno zadat <c>false</c>). Má smysl, pouze pokud není <c>removeItemAction</c> null, jinak se ignoruje.</param>
+	/// <typeparam name="TSource">The type of the elements in the collection to be applied.</typeparam>
+	/// <typeparam name="TTarget">The type of the elements in the target collection to be updated. It must be a class, otherwise we would not be able to set values in the updateItemAction (it would require ref).</typeparam>
+	/// <typeparam name="TKey">The type of the matching key.</typeparam>
+	/// <param name="target">The updated collection.</param>
+	/// <param name="source">The collection with values to be applied.</param>
+	/// <param name="targetKeySelector">The selector for the matching key of the elements in the target collection.</param>
+	/// <param name="sourceKeySelector">The selector for the matching key of the elements in the source (applied) collection.</param>
+	/// <param name="newItemCreateFunc">The function to create a new element in the target collection (if the function is <c>null</c>, missing elements are ignored and nothing is added to <c>ItemsAdding</c>).</param>
+	/// <param name="updateItemAction">The action to update the matched element in the target collection with the values from the applied collection (if the action is <c>null</c>, matched elements are not updated and nothing is added to <c>ItemsUpdating</c>).</param>
+	/// <param name="removeItemAction">The action to remove an element from the updated collection that was not found in the applied collection (if the action is <c>null</c>, excess elements are not removed and nothing is added to <c>ItemsRemoving</c>)</param>
+	/// <param name="removeItemFromCollection">Indicates whether the excess element should be removed from the collection (default is <c>true</c>, for support of soft-deletes, <c>false</c> can be specified). Only makes sense if <c>removeItemAction</c> is not null, otherwise it is ignored.</param>
 	public static UpdateFromResult<TTarget> UpdateFrom<TSource, TTarget, TKey>(
 		this ICollection<TTarget> target,
 		IEnumerable<TSource> source,
@@ -68,10 +68,10 @@ public static class CollectionExt
 					var originalCount = target.Count;
 					var newTargetItem = newItemCreateFunc(joinedItem.Source);
 					// leaking EF fixup hell workaround :-((
-					// PERF: Pokud se počet prvků nezměnil, interpretujeme to tak, že do kolekce nový prvek "někdo jiný" nepřidal.
-					// Spoléháme na to, že drtivá většina implementací ICollection.Count je O(1).
-					// (Bohužel i s vědomím, že to není 100% spolehlivá zkratka - mohl být přidán a/nebo odebrán jiný prvek)
-					if ((target.Count == originalCount)		
+					// PERF: If the number of items did not change, we interpret it as no one else added a new item to the collection.
+					// We rely on the fact that the vast majority of ICollection.Count implementations are O(1).
+					// (Unfortunately, with the knowledge that this is not a 100% reliable shortcut - another item could have been added and/or removed)
+					if ((target.Count == originalCount)
 						|| !target.Contains(newTargetItem))
 					{
 						target.Add(newTargetItem);

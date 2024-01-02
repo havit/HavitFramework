@@ -10,28 +10,28 @@ using System.Web;
 namespace Havit.Scopes;
 
 /// <summary>
-/// Repository implementující scope jako thread data (Thread.GetData, ThreadSetData).
+/// Repository implementing scope as thread data (Thread.GetData, ThreadSetData).
 /// </summary>
-/// <typeparam name="T">Typ, jehož scope je ukládán do repository.</typeparam>
+/// <typeparam name="T">The type whose scope is stored in the repository.</typeparam>
 public class ThreadScopeRepository<T> : IScopeRepository<T>
 	where T : class
 {
 	/// <summary>
-	/// DataSlot - nepojmenovaný slot, pod kterým jsou ukládány thread data.
+	/// DataSlot - unnamed slot under which thread data is stored.
 	/// </summary>
 	private readonly LocalDataStoreSlot threadDataStoreSlot;
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public ThreadScopeRepository()
 	{
-		// inicializujeme data slot
+		// initialize the data slot
 		this.threadDataStoreSlot = Thread.AllocateDataSlot();
 	}
 
 	/// <summary>
-	/// Vrátí hodnotu aktuálního scope.
+	/// Returns the value of the current scope.
 	/// </summary>
 	public Scope<T> GetCurrentScope()
 	{
@@ -39,7 +39,7 @@ public class ThreadScopeRepository<T> : IScopeRepository<T>
 	}
 
 	/// <summary>
-	/// Nastaví hodnotu aktuálního scope.
+	/// Sets the value of the current scope.
 	/// </summary>
 	public void SetCurrentScope(Scope<T> scope)
 	{
@@ -47,7 +47,7 @@ public class ThreadScopeRepository<T> : IScopeRepository<T>
 	}
 
 	/// <summary>
-	/// Zruší scope.
+	/// Removes the scope.
 	/// </summary>
 	public void RemoveCurrentScope()
 	{

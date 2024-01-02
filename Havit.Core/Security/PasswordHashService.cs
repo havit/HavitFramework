@@ -9,52 +9,52 @@ using System.Threading.Tasks;
 namespace Havit.Security;
 
 /// <summary>
-/// Pomocné metody práci s hashi hesel.
+/// Helper methods for working with password hashes.
 /// </summary>
 public static class PasswordHashService
 {
 	/// <summary>
-	/// Generuje náhodnou sůl.
-	/// Implemnetováno pomocí PasswordGeneratoru.
+	/// Generates a random salt.
+	/// Implemented using PasswordGenerator.
 	/// </summary>
-	/// <param name="saltLength">Požadovaná délka soli (výchozí délka je 8 znaků).</param>
-	/// <param name="passwordCharacterSet">Sada znaků pro výběr soli (výchozí hodnota je PasswordCharacterSet.LettersAndDigits).</param>
+	/// <param name="saltLength">The desired length of the salt (default length is 8 characters).</param>
+	/// <param name="passwordCharacterSet">The character set for selecting the salt (default value is PasswordCharacterSet.LettersAndDigits).</param>
 	public static string CreateSalt(int saltLength = 8, PasswordCharacterSet passwordCharacterSet = PasswordCharacterSet.LettersAndDigits)
 	{
 		return PasswordGenerator.Generate(saltLength, saltLength, passwordCharacterSet, true, true);
 	}
 
 	/// <summary>
-	/// Kalkuluje hash algoritmem SHA512.
-	/// Z hodnoty sestavené z hesla a soli (a to nejprve je sůl, poté heslo) je získána UTF-16 little endien posloupnost bytů (Encoding.Unicode.GetBytes), jejíž hash je kalkulován.
-	/// Výsledek  je vrácen jako text převedením každého byte hashe do řetězce reprezentující byte v šestnáctkové soustavě (ToString("X2")).
+	/// Calculates the SHA512 hash.
+	/// The value composed of the password and salt (with the salt first, then the password) is converted to a UTF-16 little endian byte sequence (Encoding.Unicode.GetBytes), and its hash is calculated.
+	/// The result is returned as a string by converting each byte of the hash to a string representing the byte in hexadecimal format (ToString("X2")).
 	/// 
-	/// Metoda vrací stejný výsledek, jako T-SQL funkce HASHBYTES v následujícím příkladu. Před textovou hodnotou v T-SQL je potřeba uvést N, jinak dává jiný výsledek!
+	/// The method returns the same result as the T-SQL function HASHBYTES in the following example. The text value in T-SQL needs to be prefixed with N, otherwise it gives a different result!
 	/// C#: HashCalculator.ComputeSHA512HashString("password", "salt")
 	/// T-SQL: select HASHBYTES('SHA2_512', N'saltpassword')
 	/// 
 	/// HASH: ACDDA85B31ACA524AF221BF8BB635583167414180D55985294A64E48E82796627CCCAE6CA4A3C3B2B568478B0265FE62753C37119B899BE7E632D434C8B2A54E
 	/// 
-	/// Pozor, metoda díky použitému kódování vrací jinou hodnotu než "běžné" kalkulátory na webu, které používají UTF-8. Naší výhodou je kompatibilita s metodou HASHBYTES v T-SQL.
+	/// Note that the method returns a different value than "regular" calculators on the web that use UTF-8 due to the encoding used. Our advantage is compatibility with the HASHBYTES method in T-SQL.
 	/// </summary>
-	/// <param name="plainTextPassword">Heslo, jehož hash chceme získat.</param>
-	/// <param name="salt">Sůl.</param>
-	/// <returns>Kalkulovaný SHA 512 ze soli a hesla, převedený do řetězce .</returns>
+	/// <param name="plainTextPassword">The password for which we want to obtain the hash.</param>
+	/// <param name="salt">The salt.</param>
+	/// <returns>The calculated SHA512 hash from the salt and password, converted to a string.</returns>
 	public static string ComputeSHA512HashString(string plainTextPassword, string salt = "")
 	{
 		string value = salt + plainTextPassword;
-		
+
 		SHA512 sha = SHA512.Create();
 		var hash = sha.ComputeHash(Encoding.Unicode.GetBytes(value));
 		return String.Join("", hash.Select(x => x.ToString("X2")));
 	}
 
 	/// <summary>
-	/// Vrací true, pokud passwordHash odpovídá hashi zkalkulovanému z plainTextPasswordu s danou solí.
+	/// Returns true if the passwordHash corresponds to the hash calculated from the plainTextPassword with the given salt.
 	/// </summary>
-	/// <param name="plainTextPassword">Heslo, jehož hash chceme ověřit.</param>
-	/// <param name="salt">Sůl hesla, jehož hash chceme ověřit.</param>
-	/// <param name="passwordHash">Ověřovaný hash hesla.</param>
+	/// <param name="plainTextPassword">The password for which we want to verify the hash.</param>
+	/// <param name="salt">The salt of the password for which we want to verify the hash.</param>
+	/// <param name="passwordHash">The hash of the password being verified.</param>
 	public static bool VerifySHA512HashString(string plainTextPassword, string salt, string passwordHash)
 	{
 		string computedPasswordHash = ComputeSHA512HashString(plainTextPassword, salt);

@@ -8,7 +8,7 @@ internal class ReplaceParameterVisitor : ExpressionVisitor
 	private readonly ParameterExpression toParameter;
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public ReplaceParameterVisitor(ParameterExpression fromParameter, ParameterExpression toParameter)
 	{
@@ -17,7 +17,7 @@ internal class ReplaceParameterVisitor : ExpressionVisitor
 	}
 
 	/// <summary>
-	/// Nahradí parametr.
+	/// Replaces the parameter.
 	/// </summary>
 	protected override Expression VisitParameter(ParameterExpression node)
 	{

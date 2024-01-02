@@ -1,5 +1,5 @@
-﻿// Pro podporu caller argument expression bez .NET 6.0.
-// Viz https://stackoverflow.com/questions/70034586/how-can-i-use-callerargumentexpression-with-visual-studio-2022-and-net-standard
+﻿// For supporting caller argument expression without .NET 6.0.
+// See https://stackoverflow.com/questions/70034586/how-can-i-use-callerargumentexpression-with-visual-studio-2022-and-net-standard
 
 #if !NET6_0_OR_GREATER
 namespace System.Runtime.CompilerServices;

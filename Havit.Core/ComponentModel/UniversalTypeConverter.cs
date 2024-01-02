@@ -1,16 +1,12 @@
-﻿using Havit.Diagnostics.Contracts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace Havit.ComponentModel;
 
 /// <summary>
-/// Convertor datových typů.
-/// Inspirováno UniversalTypeConverterem (http://www.codeproject.com/Articles/248440/Universal-Type-Converter).
-/// Převzaty jsou konverze pomocí DefaultTypeConvertoru a IConvertible.
+/// Data type converter.
+/// Inspired by UniversalTypeConverter (http://www.codeproject.com/Articles/248440/Universal-Type-Converter).
+/// Conversions using DefaultTypeConverter and IConvertible are taken.
 /// </summary>
 public static partial class UniversalTypeConverter
 {
@@ -64,8 +60,8 @@ public static partial class UniversalTypeConverter
 	public static bool TryConvertTo<T>(object value, out T result, CultureInfo culture)
 	{
 		var success = TryConvertTo(value, typeof(T), out object objectResult, culture);
-	    result = success ? (T)objectResult : default(T);
-	    return success;
+		result = success ? (T)objectResult : default(T);
+		return success;
 	}
 
 	/// <summary>

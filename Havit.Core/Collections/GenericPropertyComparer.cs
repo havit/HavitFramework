@@ -5,28 +5,28 @@ using System.Text;
 namespace Havit.Collections;
 
 /// <summary>
-/// Porovnává hodnoty vlastností dvou objektů. Názvy vlastností jsou dodány, porovnávají se v dodaném pořadí.
-/// Názvy vlastností mohou být složené: např. "Kniha.Autor.Prijmeni".
-/// Property musí implementovat IComparable.
+/// Compares the values of properties of two objects. Property names are provided and compared in the specified order.
+/// Property names can be composite: for example, "Book.Author.LastName".
+/// The property must implement IComparable.
 /// </summary>
-/// <typeparam name="T">Typ objektu, jehož hodnoty jsou porovnávány.</typeparam>
+/// <typeparam name="T">The type of the object whose values are being compared.</typeparam>
 public class GenericPropertyComparer<T> : IComparer<T>
 {
 	private readonly IList<SortItem> sortItems;
 	private readonly Dictionary<object, IComparable>[] getValueCacheList;
 
 	/// <summary>
-	/// Vytvoří instanci compareru pro řazení dle dané property.
+	/// Creates an instance of the comparer for sorting by the specified property.
 	/// </summary>
-	/// <param name="sortItem">Určuje parametr řazení.</param>
+	/// <param name="sortItem">Specifies the sort parameter.</param>
 	public GenericPropertyComparer(SortItem sortItem) : this(new SortItem[] { sortItem })
 	{
 	}
 
 	/// <summary>
-	/// Vytvoří instanci compareru pro řazení dle kolekce vlastností.
+	/// Creates an instance of the comparer for sorting by the collection of properties.
 	/// </summary>
-	/// <param name="sortItems">Určuje parametry řazení.</param>
+	/// <param name="sortItems">Specifies the sort parameters.</param>
 	public GenericPropertyComparer(IList<SortItem> sortItems)
 	{
 		this.sortItems = sortItems;
@@ -38,23 +38,23 @@ public class GenericPropertyComparer<T> : IComparer<T>
 	}
 
 	/// <summary>
-	/// Porovná vlastnosti instancí dvou objektů.
+	/// Compares the properties of two objects.
 	/// </summary>
-	/// <param name="x">První porovnávaný objekt.</param>
-	/// <param name="y">Druhý porovnávaný objekt.</param>
-	/// <returns>-1, 0, 1 - jako Compare(T, T)</returns>
+	/// <param name="x">The first object to compare.</param>
+	/// <param name="y">The second object to compare.</param>
+	/// <returns>-1, 0, 1 - as Compare(T, T)</returns>
 	public int Compare(T x, T y)
 	{
 		return Compare(x, y, 0);
 	}
 
 	/// <summary>
-	/// Porovná vlastnosti instancí dvou objektů. Porovnávají se index-té vlastnosti uvedené ve fieldu sortItemCollection.
+	/// Compares the properties of two objects. Compares the index-th property specified in the sortItemCollection field.
 	/// </summary>
-	/// <param name="x">První porovnávaný objekt.</param>
-	/// <param name="y">Druhý porovnávaný objekt.</param>
-	/// <param name="index">Index porovnávané vlastnosti.</param>
-	/// <returns>-1, 0, 1 - jako Compare(T, T)</returns>
+	/// <param name="x">The first object to compare.</param>
+	/// <param name="y">The second object to compare.</param>
+	/// <param name="index">The index of the property to compare.</param>
+	/// <returns>-1, 0, 1 - as Compare(T, T)</returns>
 	private int Compare(object x, object y, int index)
 	{
 		if (index >= sortItems.Count)
@@ -62,7 +62,7 @@ public class GenericPropertyComparer<T> : IComparer<T>
 			return 0;
 		}
 
-		/* napsáno trochu komplikovaněji - pro přehlednost */
+		/* written a bit more complicated - for clarity */
 		IComparable value1;
 		IComparable value2;
 		if (sortItems[index].Direction == SortDirection.Ascending)
@@ -80,22 +80,22 @@ public class GenericPropertyComparer<T> : IComparer<T>
 
 		if (value1 == null && value2 == null)
 		{
-			// oboji null -> stejne
+			// both null -> equal
 			result = 0;
 		}
 		else if (value1 == null)
 		{
-			// value1 je null (value2 neni null), potom value1 < value2
+			// value1 is null (value2 is not null), then value1 < value2
 			result = -1;
 		}
 		else if (value2 == null)
 		{
-			// value2 je null (value1 neni null), potom value2 < value1
+			// value2 is null (value1 is not null), then value2 < value1
 			result = 1;
 		}
 		else /*if (value1 != null || value2 != null)*/
 		{
-			// ani jedno neni null -> porovname
+			// neither is null -> compare
 			result = value1.CompareTo(value2);
 		}
 
@@ -103,8 +103,8 @@ public class GenericPropertyComparer<T> : IComparer<T>
 	}
 
 	/// <summary>
-	/// Vrátí hodnot index-té property objektu.
-	/// Pokud je hodnota této property DBNull.Value, vrací null.
+	/// Returns the value of the index-th property of the object.
+	/// If the value of this property is DBNull.Value, returns null.
 	/// </summary>
 	private IComparable GetValue(object obj, int index)
 	{
@@ -124,7 +124,7 @@ public class GenericPropertyComparer<T> : IComparer<T>
 		{
 			object value = DataBinderExt.GetValue(obj, sortItems[index].Expression);
 
-			if (value == DBNull.Value) // pro účely srovnání budeme tvrdit, že null a DBNull.Value jsou shodné (tedy null).
+			if (value == DBNull.Value) // for comparison purposes, we will assume that null and DBNull.Value are the same (i.e., null).
 			{
 				value = null;
 			}

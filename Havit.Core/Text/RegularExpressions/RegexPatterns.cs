@@ -4,20 +4,20 @@ using System.Text.RegularExpressions;
 namespace Havit.Text.RegularExpressions;
 
 /// <summary>
-/// Typické vyhledávací vzory pro regulární výrazy.
+/// Typical search patterns for regular expressions.
 /// </summary>
 public static class RegexPatterns
 {
 	/// <summary>
-	/// Pattern pro kontrolu běžného e-mailu:
+	/// Pattern for checking a common email:
 	/// <list type="bullet">
-	///		<item>povoleny jsou pouze znaky anglické abecedy, tečky, podtržítka, pomlčky a plus</item>
-	///		<item>dva různé symboly nesmí následovat po sobě, stejné (s výjimkou tečky) mohou [test--test@test.com] projde, [test..test@test.com] neprojde</item>
-	///		<item>nesmí začínat symbolem</item>
-	///		<item>TLD musí mít 2-20 znaků (.travelersinsurance, .northwesternmutual https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) </item>
-	///		<item>v doméně smí být tečky a pomlčky, ale nesmí následovat</item>
-	///		<item>nepříjímá IP adresy</item>
-	///		<item>nepřijímá rozšířený syntax typu [Petr Novak &lt;novak@test.com&gt;]</item>
+	///     <item>only characters of the English alphabet, dots, underscores, dashes, and plus signs are allowed</item>
+	///     <item>two different symbols cannot follow each other, the same (except for a dot) can [test--test@test.com] passes, [test..test@test.com] does not pass</item>
+	///     <item>cannot start with a symbol</item>
+	///     <item>TLD must have 2-20 characters (.travelersinsurance, .northwesternmutual https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains)</item>
+	///     <item>dots and dashes are allowed in the domain, but cannot follow each other</item>
+	///     <item>does not accept IP addresses</item>
+	///     <item>does not accept extended syntax like [Petr Novak &lt;novak@test.com&gt;]</item>
 	/// </list>
 	/// </summary>
 	/// <remarks>
@@ -27,19 +27,19 @@ public static class RegexPatterns
 									+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,20}$";
 
 	/// <summary>
-	/// Pattern pro kontrolu identifikátorů.
-	/// Identifikátor musí začínat písmenem nebo podtržítkem, nesledovat mohou i číslice.
+	/// Pattern for checking identifiers.
+	/// The identifier must start with a letter or underscore, followed by letters, digits, or underscores.
 	/// </summary>
 	public const string Identifier = @"^[a-zA-Z_]{1}[a-zA-Z0-9_]+$";
 
 	/// <summary>
-	/// Pattern pro kontrolu času. 24-hodinnový formát, odělovač dvojtečka, nepovinné vteřiny. Např. 23:59:00.
-	/// Nepřijímá 24:00.
+	/// Pattern for checking time. 24-hour format, colon separator, optional seconds. For example, 23:59:00.
+	/// Does not accept 24:00.
 	/// </summary>
 	public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})$";
 
 	/// <summary>
-	/// Pattern pro kontrolu IP adresy v4.
+	/// Pattern for checking IPv4 addresses.
 	/// </summary>
 	public const string IPAddress = @"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\."
 									+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
@@ -47,30 +47,30 @@ public static class RegexPatterns
 									+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$";
 
 	/// <summary>
-	/// Pattern pro ověření celých čísel.
+	/// Pattern for checking integers.
 	/// </summary>
 	/// <remarks>
-	/// Přijímá: [1], [+15], [0], [-10], [+0]<br/>
-	/// Odmítá: [1.0], [abc], [+], [1,15]
+	/// Accepts: [1], [+15], [0], [-10], [+0]<br/>
+	/// Rejects: [1.0], [abc], [+], [1,15]
 	/// </remarks>
 	public const string Integer = @"^[-+]?\d+$";
 
 	/// <summary>
-	/// Vrátí regulární výraz pro hledání v textu.
-	/// Více o myšlence wildcardů je uvedeno u metody TextCondition.CreateWildcards.
+	/// Returns a regular expression for searching in text.
+	/// More about the wildcard idea is described in the TextCondition.CreateWildcards method.
 	/// </summary>
-	/// <param name="wildcardExpression">Text, který má být hledán a pro který se tvoří regulární výraz.</param>
+	/// <param name="wildcardExpression">The text to be searched and for which the regular expression is created.</param>
 	public static Regex GetWildcardRegex(string wildcardExpression)
 	{
 		string regexPattern = GetWildcardRegexPattern(wildcardExpression);
 		return new Regex(regexPattern, RegexOptions.IgnoreCase);
-	} 
+	}
 
 	/// <summary>
-	/// Vrátí true, pokud textToBeSearched obsahuje hledaný vzorek wildcardExpressionToSearch (s logikou wildcards - uvedena u metody CreateWildcards).
+	/// Returns true if textToBeSearched contains the searched wildcardExpressionToSearch pattern (with wildcard logic - described in the CreateWildcards method).
 	/// </summary>
-	/// <param name="wildcardExpressionToSearch">Vzorek, který je vyhledáván.</param>
-	/// <param name="textToBeSearched">Text, který je prohledáván.</param>
+	/// <param name="wildcardExpressionToSearch">The pattern being searched.</param>
+	/// <param name="textToBeSearched">The text being searched.</param>
 	public static bool IsWildcardMatch(string wildcardExpressionToSearch, string textToBeSearched)
 	{
 		string regexPattern = GetWildcardRegexPattern(wildcardExpressionToSearch);
@@ -78,13 +78,13 @@ public static class RegexPatterns
 	}
 
 	/// <summary>
-	/// Vrátí pattern pro regulární výraz na základě výrazu.
+	/// Returns a pattern for a regular expression based on the expression.
 	/// </summary>
-	/// <param name="wildcardExpression">Výraz (text), pro který se vytváří regulární výraz.</param>
+	/// <param name="wildcardExpression">The expression (text) for which the regular expression is created.</param>
 	private static string GetWildcardRegexPattern(string wildcardExpression)
 	{
 		string regexPattern = wildcardExpression;
-		regexPattern = regexPattern.Replace("\\", "\\\\"); // zdvojíme zpětná lomítka
+		regexPattern = regexPattern.Replace("\\", "\\\\"); // double backslashes
 		regexPattern = regexPattern.Replace("^", "\\^");
 		regexPattern = regexPattern.Replace("$", "\\$");
 		regexPattern = regexPattern.Replace("+", "\\+");
@@ -98,12 +98,12 @@ public static class RegexPatterns
 		regexPattern = regexPattern.Replace("]", "\\]");
 		regexPattern = regexPattern.Replace("?", "\\?");
 
-		// hvězdička je pro nás zvláštní symbol
+		// asterisk is a special symbol for us
 		regexPattern = regexPattern.Replace("*", "((.|\n)*)");
-		// hledáme od začátku
+		// searching from the beginning
 		regexPattern = "^" + regexPattern;
-		// pokud je hvězdička, pak hledáme "přesnou" shodu
-		// pokud hvezdička není, chceme, aby se hledání chovalo, jako by byla hvězdička na konci, slovy regulárních výrazů pak netřeba $ na konci.
+		// if there is an asterisk, we want an "exact" match
+		// if there is no asterisk, we want the search to behave as if there was an asterisk at the end, in the words of regular expressions, no need for $ at the end.
 		if (wildcardExpression.Contains("*"))
 		{
 			regexPattern += "$";
@@ -113,7 +113,7 @@ public static class RegexPatterns
 	}
 
 	/// <summary>
-	/// Vratí, zda název souboru odpovídá souborove masce - podpora znaku '*' a '?'. Pouzivano v CMD.
+	/// Returns whether the file name matches the file mask - supports '*' and '?' characters. Used in CMD.
 	/// </summary>
 	public static bool IsFileWildcardMatch(String fileName, String searchPattern)
 	{

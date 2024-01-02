@@ -17,11 +17,11 @@ public class FileSizeToTextService : IFileSizeToTextService
 	/// <remarks>
 	/// Internet explorer shows:
 	/// - Size in bytes up to 1023 bytes (including)
-	/// - In all other cases shows always 3 digits maximum (0.97, 1.11, 10.6, 99.9, 100, 120) when posible
+	/// - In all other cases shows always 3 digits maximum (0.97, 1.11, 10.6, 99.9, 100, 120) when possible
 	/// - Does not show trailing zeros (never 1.10)
 	/// - kilobytes, megabytes, etc. uses radix 2, not 10 (kilobyte is 1024 bytes)
 	/// - kilobytes, megabytes, etc. is shown for maximum 999 units, otherwise higher unit is used (1000 kilobytes is 0.97 MB)
-	/// - value is never rounded, alwayes trimmed (meaning Math.Floor).
+	/// - value is never rounded, always trimmed (meaning Math.Floor).
 	/// - the highest unit is gigabyte.
 	/// </remarks>
 	public string GetFileSizeToText(long size)

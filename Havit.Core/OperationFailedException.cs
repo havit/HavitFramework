@@ -10,10 +10,10 @@ namespace Havit;
 /// Exception for recoverable failures which should be presented to the user.
 /// </summary>
 /// <remarks>
-/// This exception is handled by our new UI stacks and is usualy displayed ase Messenger error.
+/// This exception is handled by our new UI stacks and is usually displayed as Messenger error.
 /// </remarks>
 public class OperationFailedException : Exception
-    {
+{
 	/// <summary>
 	/// Initializes a new instance of the OperationFailedException class with a specified error message.
 	/// </summary>

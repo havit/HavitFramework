@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 namespace Havit;
 
 /// <summary>
-/// Extension metody k DateTime.
+/// Extension methods for DateTime.
 /// </summary>
 public static class DateTimeExtension
 {
 	/// <summary>
-	/// Vrátí čas (timespan) zbývající do dalšího "celého roundingu". 
-	/// Např. pokud je rounding TimeSpan.FromHours(1), vrací čas zbývající do další celé hodiny.
-	/// Viz příklady.
+	/// Returns the time (timespan) remaining until the next "whole rounding".
+	/// For example, if the rounding is TimeSpan.FromHours(1), it returns the time remaining until the next whole hour.
+	/// See examples.
 	/// </summary>
-	/// <param name="dateTime">DateTime, od kterého se počítá.</param>
-	/// <param name="rounding">Rounding, pro který hledáme zbývající čas.</param>
+	/// <param name="dateTime">The DateTime from which to calculate.</param>
+	/// <param name="rounding">The rounding for which to find the remaining time.</param>
 	/// <example>
-	/// Pokud je rounding TimeSpan.FromHours(1), pak pro dateTime 16:40 (bez ohledu na datum) je vrácen TimeSpan.FromMinutes(20), protože zbývá 20 minut do příští celé hodiny.
-	/// Pokud je rounding TimeSpan.FromHours(1), pak pro dateTime 16:59 (bez ohledu na datum) je vrácen TimeSpan.FromMinutes(1), protože zbývá 1 minuta do příští celé hodiny.
-	/// Pokud je rounding TimeSpan.FromHours(1), pak pro dateTime 16:00 (bez ohledu na datum) je vrácen TimeSpan.FromMinutes(60), protože zbývá 60 minut do příští celé hodiny.
-	/// Pokud je rounding TimeSpan.FromMinutes(5), pak pro dateTime 16:00 (bez ohledu na datum) je vrácen TimeSpan.FromMinutes(5), protože zbývá 5 minut do příštích celých 5 minut, což je 16:05.
-	/// Pokud je rounding TimeSpan.FromMinutes(5), pak pro dateTime 16:03 (bez ohledu na datum) je vrácen TimeSpan.FromMinutes(2), protože zbývavají 2 minuty do příštích celých 5 minut, což je 16:05.
+	/// If the rounding is TimeSpan.FromHours(1), then for dateTime 16:40 (regardless of the date), TimeSpan.FromMinutes(20) is returned, because there are 20 minutes remaining until the next whole hour.
+	/// If the rounding is TimeSpan.FromHours(1), then for dateTime 16:59 (regardless of the date), TimeSpan.FromMinutes(1) is returned, because there is 1 minute remaining until the next whole hour.
+	/// If the rounding is TimeSpan.FromHours(1), then for dateTime 16:00 (regardless of the date), TimeSpan.FromMinutes(60) is returned, because there are 60 minutes remaining until the next whole hour.
+	/// If the rounding is TimeSpan.FromMinutes(5), then for dateTime 16:00 (regardless of the date), TimeSpan.FromMinutes(5) is returned, because there are 5 minutes remaining until the next whole 5 minutes, which is 16:05.
+	/// If the rounding is TimeSpan.FromMinutes(5), then for dateTime 16:03 (regardless of the date), TimeSpan.FromMinutes(2) is returned, because there are 2 minutes remaining until the next whole 5 minutes, which is 16:05.
 	/// </example>
 	public static TimeSpan GetRemainingToNext(this DateTime dateTime, TimeSpan rounding)
 	{

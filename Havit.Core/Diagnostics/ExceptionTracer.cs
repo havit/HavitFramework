@@ -5,11 +5,11 @@ using Havit.Diagnostics.Contracts;
 namespace Havit.Diagnostics;
 
 /// <summary>
-/// Třída zajišťující posílání výjimek do trace prostřednictvím TraceSource.
-/// Mimo explicitního volání lze třídu přihlásit k odběru neošetřených výjimek, včetně WinForms.
-/// Třída je dostupná pouze pro full .NET Framework (nikoliv pro .NET Standard 2.0).
+/// Class responsible for sending exceptions to trace through TraceSource.
+/// In addition to explicit calls, the class can be subscribed to handle unhandled exceptions, including WinForms.
+/// The class is available only for full .NET Framework (not for .NET Standard 2.0).
 /// <example>
-/// Příklad použití v ConsoleApplication:
+/// Example of usage in ConsoleApplication:
 /// <code>
 /// namespace ExceptionLogging
 /// {
@@ -19,14 +19,14 @@ namespace Havit.Diagnostics;
 ///			{
 ///				ExceptionTracer.Default.SubscribeToUnhandledExceptions(false);
 ///
-///				ExceptionTracer.Default.TraceException(new ArgumentNullException("param", "Chybááá!"));
+///				ExceptionTracer.Default.TraceException(new ArgumentNullException("param", "Error!"));
 ///
-///				throw new InvalidOperationException("Chybka!");
+///				throw new InvalidOperationException("Error!");
 ///			}
 ///		}
 /// }
 /// </code>
-/// Příklad použití ve WindowsApplication:
+/// Example of usage in WindowsApplication:
 /// <code>
 ///	static void Main()
 ///	{
@@ -37,7 +37,7 @@ namespace Havit.Diagnostics;
 ///		Application.Run(new Form1());
 ///	}
 /// </code>
-/// Příklad konfigurace App.config:
+/// Example of App.config configuration:
 /// <code>
 /// &lt;configuration&gt;
 ///		&lt;system.diagnostics&gt;
@@ -66,7 +66,7 @@ public class ExceptionTracer
 	private const int traceExceptionMethodDefaultEventId = 0;
 
 	/// <summary>
-	/// Jméno TraceSource, přes který se budou výjimky emitovat.
+	/// Name of the TraceSource through which exceptions will be emitted.
 	/// </summary>
 	public string TraceSourceName
 	{
@@ -82,12 +82,12 @@ public class ExceptionTracer
 	private string _traceSourceName;
 
 	/// <summary>
-	/// Název výchozího TraceSource, přes který jsou výjimky emitovány.
+	/// Name of the default TraceSource through which exceptions will be emitted.
 	/// </summary>
 	public const string DefaultTraceSourceName = "Exceptions";
 
 	/// <summary>
-	/// Výchozí ExceptionTracer směřující výstup přes TraceSource s DefaultTraceSourceName.
+	/// Default ExceptionTracer directing output through TraceSource with DefaultTraceSourceName.
 	/// </summary>
 	public static ExceptionTracer Default
 	{
@@ -114,16 +114,16 @@ public class ExceptionTracer
 	private static readonly object defaultLock = new object();
 
 	/// <summary>
-	/// Vytvoří instanci ExceptionTraceru, který bude svůj výstup směřovat přes TraceSource se zadaným jménem.
+	/// Creates an instance of ExceptionTracer that will direct its output through the TraceSource with the specified name.
 	/// </summary>
-	/// <param name="traceSourceName">jméno TraceSource, přes který se budou výjimky emitovat</param>
+	/// <param name="traceSourceName">The name of the TraceSource through which exceptions will be emitted.</param>
 	public ExceptionTracer(string traceSourceName)
 	{
 		this._traceSourceName = traceSourceName;
 	}
 
 	/// <summary>
-	/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek (event AppDomain.CurrentDomain.UnhandledException).
+	/// Subscribes the ExceptionTracer to handle all unhandled exceptions (event AppDomain.CurrentDomain.UnhandledException).
 	/// Obsolete, use method with no arguments.
 	/// </summary>
 	[Obsolete("Use SubscribeToUnhandledExceptions() with no parameters.", error: true)]
@@ -133,7 +133,7 @@ public class ExceptionTracer
 	}
 
 	/// <summary>
-	/// Přihlásí ExceptionTracer k odběru všech neobsloužených výjimek (event AppDomain.CurrentDomain.UnhandledException).
+	/// Subscribes the ExceptionTracer to handle all unhandled exceptions (event AppDomain.CurrentDomain.UnhandledException).
 	/// </summary>
 	public void SubscribeToUnhandledExceptions()
 	{
@@ -141,7 +141,7 @@ public class ExceptionTracer
 	}
 
 	/// <summary>
-	/// Obsluha události AppDomain.CurrentDomain.UnhandledException.
+	/// Handles the AppDomain.CurrentDomain.UnhandledException event.
 	/// </summary>
 	/// <param name="sender">The source of the event.</param>
 	/// <param name="e">The <see cref="System.UnhandledExceptionEventArgs"/> instance containing the event data.</param>
@@ -154,11 +154,11 @@ public class ExceptionTracer
 	}
 
 	/// <summary>
-	/// Pošle do trace zadanou výjimku.
+	/// Sends the specified exception to trace.
 	/// </summary>
-	/// <param name="exception">výjimka k zaznamenání</param>
-	/// <param name="eventType">typ události, pod kterým se má výjimka zaznamenat</param>
-	/// <param name="eventId">ID eventu, pod kterým se má výjimka zaznamenat</param>
+	/// <param name="exception">The exception to be logged.</param>
+	/// <param name="eventType">The event type under which the exception should be logged.</param>
+	/// <param name="eventId">The event ID under which the exception should be logged.</param>
 	public void TraceException(Exception exception, TraceEventType eventType, int eventId)
 	{
 		Contract.Requires<ArgumentNullException>(exception != null, nameof(exception));
@@ -170,39 +170,39 @@ public class ExceptionTracer
 	}
 
 	/// <summary>
-	/// Pošle do trace zadanou výjimku.
+	/// Sends the specified exception to trace.
 	/// </summary>
-	/// <param name="exception">výjimka k zaznamenání</param>
-	/// <param name="eventType">typ události, pod kterým se má výjimka zaznamenat</param>
+	/// <param name="exception">The exception to be logged.</param>
+	/// <param name="eventType">The event type under which the exception should be logged.</param>
 	public void TraceException(Exception exception, TraceEventType eventType)
 	{
 		TraceException(exception, eventType, traceExceptionMethodDefaultEventId);
 	}
 
 	/// <summary>
-	/// Pošle do trace zadanou výjimku.
+	/// Sends the specified exception to trace.
 	/// </summary>
-	/// <param name="exception">výjimka k zaznamenání</param>
+	/// <param name="exception">exception to be logged</param>
 	public void TraceException(Exception exception)
 	{
 		TraceException(exception, traceExceptionMethodDefaultEventType, traceExceptionMethodDefaultEventId);
 	}
 
 	/// <summary>
-	/// Naformátuje výjimku pro zápis do trace.
+	/// Formats the exception for writing to trace.
 	/// </summary>
-	/// <param name="exception">výjimka</param>
-	/// <returns>textový výstup, který se pošle do trace (informace o výjimce)</returns>
+	/// <param name="exception">The exception.</param>
+	/// <returns>The text output to be sent to trace (exception information).</returns>
 	private string FormatException(Exception exception)
 	{
-		// do budoucna je možné rozšířit objektový model o ExceptionTraceFormatter, atp.
+		// In the future, it is possible to extend the object model with ExceptionTraceFormatter, etc.
 		return exception.ToString();
 	}
 
 	/// <summary>
-	/// Vykoná akci pomocí TraceSource používaného ExceptionListenerem.
+	/// Executes an action using the TraceSource used by the ExceptionListener.
 	/// </summary>
-	/// <param name="action">akce k vykonání (delegát)</param>
+	/// <param name="action">action to be executed (delegate)</param>
 	private void RunUsingTraceSource(Action<TraceSource> action)
 	{
 		Debug.Assert(action != null);

@@ -7,19 +7,19 @@ using System.Text;
 namespace Havit.Diagnostics.Contracts;
 
 /// <summary>
-/// Výjimka vyhazovaná třídou Contract v případě nespnění podmínky contractu.
+/// Exception thrown by the Contract class when a contract condition is not met.
 /// </summary>
 public sealed class ContractException : Exception
 {
 	/// <summary>
-	/// Konstructor.
+	/// Constructor.
 	/// </summary>
 	public ContractException(string message) : base(message)
 	{
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public ContractException(string message, Exception innerException) : base(message, innerException)
 	{

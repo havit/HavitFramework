@@ -7,8 +7,8 @@ using Havit.Diagnostics.Contracts;
 namespace Havit;
 
 /// <summary>
-/// Rozšiřující funkce pro práci s textovými řetězci <see cref="System.String"/>.
-/// Třída poskytuje statické metody a konstanty, je neinstanční.
+/// Extension methods for working with <see cref="System.String"/>.
+/// Provides static methods and constants, it is non-instantiable.
 /// </summary>
 public static class StringExt
 {
@@ -20,7 +20,7 @@ public static class StringExt
 	/// <returns>string containing a specified number of characters from the left side of a string</returns>
 	public static string Left(this string str, int length)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>(length >= 0, "Argument length nesmí být menší než 0.");
+		Contract.Requires<ArgumentOutOfRangeException>(length >= 0, "Argument length must not be less than 0.");
 
 		if ((length == 0) || (str == null))
 		{
@@ -41,7 +41,7 @@ public static class StringExt
 	/// <returns>string containing a specified number of characters from the right side of a string</returns>
 	public static string Right(this string str, int length)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>(length >= 0, "Argument length nesmí být menší než 0.");
+		Contract.Requires<ArgumentOutOfRangeException>(length >= 0, "Argument length must not be less than 0.");
 
 		if ((length == 0) || (str == null))
 		{
@@ -56,12 +56,12 @@ public static class StringExt
 	}
 
 	/// <summary>
-	/// Odebere diakritiku z textu, tj. převede na text bez diakritiky.
+	/// Removes diacritics from the text, i.e. converts it to text without diacritics.
 	/// </summary>
-	/// <remarks>Odebírá veškerou diakritiku všech národních znaků obecně.</remarks>
-	/// <param name="text">Text, kterému má být diakritika odebrána.</param>
-	/// <returns>text bez diakritiky</returns>
-	public static string OdeberDiakritiku(string text)
+	/// <remarks>Removes all diacritics from all national characters in general.</remarks>
+	/// <param name="text">The text from which diacritics should be removed.</param>
+	/// <returns>text without diacritics</returns>
+	public static string RemoveDiacritics(this string text)
 	{
 		StringBuilder sb = new StringBuilder();
 
@@ -79,38 +79,47 @@ public static class StringExt
 	}
 
 	/// <summary>
-	/// Vrátí char-reprezentaci (0..9, A..F) šestnáctkové číslice (0-15).
+	/// Removes diacritics from the text, i.e. converts it to text without diacritics.
 	/// </summary>
-	/// <remarks>Z důvodu rychlosti neprovádí kontrolu rozsahu a převede např. i číslici 16 jako G.</remarks>
-	/// <param name="cislice">Číslice (0..15)</param>
-	/// <returns>char-reprezentace (0..9, A..F) šestnáctkové číslice (0-15).</returns>
-	public static char IntToHex(int cislice)
+	/// <remarks>Removes all diacritics from all national characters in general.</remarks>
+	/// <param name="text">The text from which diacritics should be removed.</param>
+	/// <returns>text without diacritics</returns>
+	// TODO [Obsolete("Use RemoveDiacritics instead.")]
+	public static string OdeberDiakritiku(string text) => RemoveDiacritics(text);
+
+	/// <summary>
+	/// Returns the char representation (0..9, A..F) of a hexadecimal digit (0-15).
+	/// </summary>
+	/// <remarks>Due to speed, it does not perform range checking and converts, for example, the digit 16 as G.</remarks>
+	/// <param name="digit">Digit (0..15)</param>
+	/// <returns>char representation (0..9, A..F) of a hexadecimal digit (0-15).</returns>
+	public static char IntToHex(int digit)
 	{
-		if (cislice <= 9)
+		if (digit <= 9)
 		{
-			return (char)((ushort)(cislice + 0x30));
+			return (char)((ushort)(digit + 0x30));
 		}
-		return (char)((ushort)((cislice - 10) + 0x61));
+		return (char)((ushort)((digit - 10) + 0x61));
 	}
 
 	/// <summary>
-	/// Normalizuje textový řetězec do podoby použitelné v URL adrese (pro SEO).
-	/// 1) Převede na malá písmena.
-	/// 2) Odebere diakritiku.
-	/// 3) vše mimo písmen a číslic nahradí za pomlčku (včetně whitespace). 
-	/// 4) potom vícenásobné pomlčky sloučí v jednu. 
-	/// 5) odebere případné pomčky na začátku a konci řetězce. 
+	/// Normalizes a text string for use in a URL address (for SEO).
+	/// 1) Converts to lowercase.
+	/// 2) Removes diacritics.
+	/// 3) replaces everything except letters and numbers with a hyphen (including whitespace).
+	/// 4) then merges multiple hyphens into one.
+	/// 5) removes any hyphens at the beginning and end of the string.
 	/// </summary>
-	/// <param name="text">vstupní text</param>
-	/// <returns>normalizovaný text pro URL (SEO)</returns>
-	public static string NormalizeForUrl(string text)
+	/// <param name="text">input text</param>
+	/// <returns>normalized text for URL (SEO)</returns>
+	public static string NormalizeForUrl(this string text)
 	{
 		text = text.ToLower();
-		text = StringExt.OdeberDiakritiku(text);
+		text = StringExt.RemoveDiacritics(text);
 		text = Regex.Replace(text, "[^A-Za-z0-9]", "-");
 		text = Regex.Replace(text, @"-{2,}", "-");
 		text = text.Trim('-');
 
 		return text;
-	} 
+	}
 }

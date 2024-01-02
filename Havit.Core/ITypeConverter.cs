@@ -5,12 +5,12 @@ using System.Text;
 namespace Havit;
 
 /// <summary>
-/// Interface pro typovou konverzi.
+/// Interface for type conversion.
 /// </summary>
 /// <remarks>
-/// Používáno např. v BL pro konverzi mezi DB typem a BL typem property.
+/// Used, for example, in BL for conversion between DB type and BL type property.
 /// </remarks>
-/// <typeparam name="T">Typ, pro který je type-converter určen.</typeparam>
+/// <typeparam name="T">The type for which the type-converter is intended.</typeparam>
 public interface ITypeConverter<T>
 {
 	/// <summary>

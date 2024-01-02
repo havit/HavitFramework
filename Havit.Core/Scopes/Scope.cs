@@ -7,36 +7,36 @@ using Havit.Diagnostics.Contracts;
 namespace Havit.Scopes;
 
 /// <summary>
-/// Thread-specific Scope obalující dosah platnosti určitého objektu (transakce, identity mapy, atp.),
-/// který je následně přístupný přes property metodu GetCurrent (metoda určena k použití v potomcích do veřejné vlastnosti Current).
+/// Thread-specific Scope wrapping the scope of a specific object (transaction, identity map, etc.),
+/// which is subsequently accessible through the GetCurrent property method (method intended for use in descendants to the public Current property).
 /// </summary>
 /// <example>
 /// <code>
 /// using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
 /// {
-    ///		Console.WriteLine(Scope.Current.SomeMethod("outer scope"));
+///		Console.WriteLine(Scope.Current.SomeMethod("outer scope"));
 /// 
-    ///		using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
+///		using (new Scope&lt;IdentityMap&gt;(new IdentityMap()))
 ///		{
-    ///			Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
+///			Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
 ///		}
-    ///		
+///		
 ///		Console.WriteLine(Scope.Current.SomeMethod("inner scope"));
 ///	}
 /// </code>
 /// </example>
 /// <remarks>
-/// Implementace vycházející z MSDN Magazine článku <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a> (již nedostupný).
+/// Implementation based on the MSDN Magazine article <a href="http://msdn.microsoft.com/msdnmag/issues/06/09/netmatters/default.aspx">Stephen Toub: Scope&lt;T&gt; and More</a> (no longer available).
 /// </remarks>
-/// <typeparam name="T">typ objektu, jehož scope řešíme</typeparam>
+/// <typeparam name="T">type of the object whose scope we are addressing</typeparam>
 public class Scope<T> : IDisposable
 	where T : class
 {
 	/// <summary>
-	/// Aktuální instance obalovaná scopem.
-	/// Určeno pro použití v potomcích pro implementaci statické vlastnosti Current.
+	/// Current instance wrapped by the scope.
+	/// Intended for use in descendants to implement the static Current property.
 	/// </summary>
-	/// <param name="scopeRepository">repository pro čtení scope</param>
+	/// <param name="scopeRepository">scope reading repository</param>
 	protected static T GetCurrent(IScopeRepository<T> scopeRepository)
 	{
 		Scope<T> scope = scopeRepository.GetCurrentScope();
@@ -44,40 +44,40 @@ public class Scope<T> : IDisposable
 	}
 
 	/// <summary>
-	/// Indikuje, zdali již proběhl Dispose třídy.
+	/// Indicates whether the class has already been disposed.
 	/// </summary>
 	private bool disposed;
 
-        /// <summary>
-        /// Indikuje, zdali je instance scopem vlastněná, tj. máme-li ji na konci scope disposovat.
-        /// </summary>
-        private readonly bool ownsInstance;
+	/// <summary>
+	/// Indicates whether the instance is owned by the scope, i.e., whether we should dispose of it at the end of the scope.
+	/// </summary>
+	private readonly bool ownsInstance;
 
 	/// <summary>
-	/// Instance, kterou scope obaluje.
+	/// The instance wrapped by the scope.
 	/// </summary>
 	private readonly T instance;
 
 	/// <summary>
-	/// Nadřazený scope v linked-listu nestovaných scope.
+	/// The parent scope in the linked list of nested scopes.
 	/// </summary>
 	private readonly Scope<T> parent;
 
 	private readonly IScopeRepository<T> scopeRepository;
 
 	/// <summary>
-	/// Vytvoří instanci třídy <see cref="Scope{T}"/> kolem instance. Instance bude při disposingu Scope též disposována.
+	/// Creates an instance of the <see cref="Scope{T}"/> class around the instance. The instance will also be disposed of when the Scope is disposed.
 	/// </summary>
-	/// <param name="instance">instance, kterou scope obaluje</param>
-	/// <param name="scopeRepository">repository pro uložení scope</param>
+	/// <param name="instance">the instance wrapped by the scope</param>
+	/// <param name="scopeRepository">scope storage repository</param>
 	protected Scope(T instance, IScopeRepository<T> scopeRepository) : this(instance, scopeRepository, true) { }
 
 	/// <summary>
-	/// Vytvoří instanci třídy <see cref="Scope{T}"/> kolem instance.
+	/// Creates an instance of the <see cref="Scope{T}"/> class around the instance.
 	/// </summary>
-	/// <param name="instance">instance, kterou scope obaluje</param>
-	/// <param name="scopeRepository">repository pro uložení scope</param>
-	/// <param name="ownsInstance">indikuje, zdali instanci vlastníme, tedy zdali ji máme s koncem scopu disposovat</param>
+	/// <param name="instance">the instance wrapped by the scope</param>
+	/// <param name="scopeRepository">scope storage repository</param>
+	/// <param name="ownsInstance">indicates whether we own the instance, i.e., whether we should dispose of it at the end of the scope</param>
 	protected Scope(T instance, IScopeRepository<T> scopeRepository, bool ownsInstance)
 	{
 		Contract.Requires<ArgumentNullException>(instance != null, nameof(instance));
@@ -86,13 +86,13 @@ public class Scope<T> : IDisposable
 		this.scopeRepository = scopeRepository;
 		this.ownsInstance = ownsInstance;
 
-		// linked-list pro nestování scopes
+		// linked list for nesting scopes
 		this.parent = scopeRepository.GetCurrentScope();
 		scopeRepository.SetCurrentScope(this);
 	}
 
 	/// <summary>
-	/// Ukončí scope a disposuje vlastněné instance.
+	/// Ends the scope and disposes of the owned instances.
 	/// </summary>
 	public void Dispose()
 	{
@@ -101,7 +101,7 @@ public class Scope<T> : IDisposable
 	}
 
 	/// <summary>
-	/// Dispose. Uvolní objekt reprezentující scope (volám metody Dispose), pokud tento scope implementuje IDisposable.
+	/// Dispose. Releases the object representing the scope (calls Dispose methods) if this scope implements IDisposable.
 	/// </summary>
 	protected virtual void Dispose(bool disposing)
 	{

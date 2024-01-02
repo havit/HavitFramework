@@ -3,42 +3,42 @@
 namespace Havit;
 
 /// <summary>
-/// Poskytuje metody týkající se základního výčtového typu System.Enum.
+/// Provides methods related to the basic enumeration type System.Enum.
 /// </summary>
 /// <remarks>
-/// Třída samostná není potomkem System.Enum, protože ze System.Enum nelze dědit.
+/// The class itself is not a descendant of System.Enum because System.Enum cannot be inherited.
 /// </remarks>
 public static class EnumExt
 {
 	/// <summary>
-	/// Vrátí hodnotu atributu [Description("...")] určité hodnoty zadaného výčtového typu.
+	/// Returns the value of the [Description("...")] attribute of a specific value of the specified enumeration type.
 	/// </summary>
-	/// <param name="enumType">výčtový typ</param>
-	/// <param name="hodnota">hodnota, jejíž Description chceme</param>
-	/// <returns>hodnota atributu [Description("...")]</returns>
-	/// <remarks>Není-li atribut Description definován, vrátí prázdný řetězec.</remarks>
+	/// <param name="enumType">Enumeration type</param>
+	/// <param name="value">Value whose Description we want</param>
+	/// <returns>Value of the [Description("...")] attribute</returns>
+	/// <remarks>If the Description attribute is not defined, it returns an empty string.</remarks>
 	/// <example>
 	///	<code>
 	/// using System.ComponentModel;<br/>
 	/// <br/>
-	/// public enum Barvy<br/>
+	/// public enum Colors<br/>
 	/// {<br/>
-	///		[Description("červená")]<br/>
-	///		Cervena,<br/>
+	///		[Description("red")]<br/>
+	///		Red,<br/>
 	///	<br/>
-	///		[Description("modrá")]<br/>
-	///		Modra<br/>
+	///		[Description("blue")]<br/>
+	///		Blue<br/>
 	///	}<br/>
 	///	</code>
 	/// </example>
-	public static string GetDescription(Type enumType, object hodnota)
+	public static string GetDescription(Type enumType, object value)
 	{
 		string strRet = "";
 
 		try
 		{
 			System.Reflection.FieldInfo objInfo =
-				enumType.GetField(System.Enum.GetName(enumType, hodnota));
+				enumType.GetField(System.Enum.GetName(enumType, value));
 
 			System.ComponentModel.DescriptionAttribute objDescription =
 				(System.ComponentModel.DescriptionAttribute)objInfo.GetCustomAttributes(typeof(System.ComponentModel.DescriptionAttribute), true)[0];
@@ -47,7 +47,7 @@ public static class EnumExt
 		}
 		catch (Exception)
 		{
-			// chybí description
+			// description is missing
 		}
 
 		return strRet;

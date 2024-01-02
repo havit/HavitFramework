@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 namespace Havit;
 
 /// <summary>
-/// Rozšiřující metody pro CultureInfo.
+/// Extension methods for CultureInfo.
 /// </summary>
 public static class CultureInfoExt
 {
 	/// <summary>
-	/// Vykoná metodu v kontextu s culture. Vrací návratovou hodnotu metody.
+	/// Executes a method in the context of a culture. Returns the method's return value.
 	/// </summary>
 	/// <remarks>
-	/// Culture je pro aktuální thread po vykonání metody obnovena.
+	/// The culture is restored for the current thread after the method is executed.
 	/// </remarks>
-	/// <param name="culture">CultureInfo v jehož kontextu chceme, aby se metoda vykonala.</param>
-	/// <param name="methodDelegate">Metoda, která se vykoná v kontextu CultureInfo. Návratová hodnota předané metody je vrácena touto metodou.</param>
+	/// <param name="culture">The CultureInfo in whose context we want the method to be executed.</param>
+	/// <param name="methodDelegate">The method to be executed in the context of the CultureInfo. The return value of the passed method is returned by this method.</param>
 	public static TResult ExecuteMethod<TResult>(this CultureInfo culture, Func<TResult> methodDelegate)
 	{
 		CultureInfo oldCulture = Thread.CurrentThread.CurrentCulture;
@@ -44,13 +44,13 @@ public static class CultureInfoExt
 	}
 
 	/// <summary>
-	/// Vykoná metodu v kontextu s culture.
+	/// Executes a method in the context of a culture.
 	/// </summary>
 	/// <remarks>
-	/// Culture je pro aktuální thread po vykonání metody obnovena.
+	/// The culture is restored for the current thread after the method is executed.
 	/// </remarks>
-	/// <param name="culture">CultureInfo v jehož kontextu chceme aby se metoda vykonala.</param>
-	/// <param name="methodDelegate">Metoda, která se vykoná v kontextu CultureInfo.</param>
+	/// <param name="culture">The CultureInfo in whose context we want the method to be executed.</param>
+	/// <param name="methodDelegate">The method to be executed in the context of the CultureInfo.</param>
 	public static void ExecuteMethod(this CultureInfo culture, Action methodDelegate)
 	{
 		ExecuteMethod<object>(culture, () =>

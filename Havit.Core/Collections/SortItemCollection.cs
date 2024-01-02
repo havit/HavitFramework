@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Havit.Collections;
 
 /// <summary>
-/// Kolekce objektů třídy SortItem.
+/// Collection of objects of the SortItem class.
 /// </summary>
 [Serializable]
 [DataContract]

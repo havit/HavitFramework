@@ -10,21 +10,21 @@ using System.Text;
 namespace Havit.Diagnostics.Contracts;
 
 /// <summary>
-/// Contracts. Metody pro zajištění podmínek v kódu za běhu aplikace.
-/// Nahrazuje standardní CodeContracts, jejichž rewriter trvá velmi dlouho.
-/// Na rozdíl od CodeContracs se z popisu chyby nedozvíme, o jakou chybu skutečně jde (není znění podmínky).
+/// Contracts. Methods for ensuring conditions in the code during application runtime.
+/// Replaces standard CodeContracts, whose rewriter takes a very long time.
+/// Unlike CodeContracts, we do not learn from the error description what the actual error is (the condition is not worded).
 /// </summary>
 public static class Contract
 {
 	/// <summary>
-	/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
+	/// If the condition is not met (the value is false), throws a ContractException.
 	/// </summary>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
 	public static void Requires([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-	public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+    public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 	{
 		if (!condition)
@@ -34,15 +34,15 @@ public static class Contract
 	}
 
 	/// <summary>
-	/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku TException.
+	/// If the condition is not met (the value is false), throws an exception of type TException.
 	/// </summary>
-	/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
+	/// <typeparam name="TException">The type of exception that is thrown if the condition is not met.</typeparam>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
 	public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-	public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+    public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		where TException : Exception
 	{
@@ -53,14 +53,14 @@ public static class Contract
 	}
 
 	/// <summary>
-	/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku ContractException.
+	/// If the condition is not met (the value is false), throws a ContractException.
 	/// </summary>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
 	public static void Assert([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-	public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+    public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 	{
 		if (!condition)
@@ -70,24 +70,24 @@ public static class Contract
 	}
 
 	/// <summary>
-	/// Pokud není podmínka condition splněna (hodnota je false), vyhodí výjimku TException.
+	/// If the condition is not met (the value is false), throws an exception of type TException.
 	/// </summary>
 	/// <remarks>
-	/// Vyhozená výjimka obsahuje zprávu ve formátu:<br />
+	/// The thrown exception contains a message in the format:<br />
 	/// <code>
 	/// Contract failed: Message<br />
 	/// Member Name: Main<br />
-	///	Source File Path: D:\Dev\MySolution\MyProject\Program.cs<br />
+	/// Source File Path: D:\Dev\MySolution\MyProject\Program.cs<br />
 	/// Source Line Number: 123<br />
 	/// </code>
 	/// </remarks>
-	/// <typeparam name="TException">Typ výjimky, která je v případě nesplnění podmínky vyhozena.</typeparam>
+	/// <typeparam name="TException">The type of exception that is thrown if the condition is not met.</typeparam>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
 	public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-	public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+    public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		where TException : Exception
 	{
@@ -123,7 +123,7 @@ public static class Contract
 	}
 
 	/// <summary>
-	/// Obalí zprávu textem "Contract failed".
+	/// Wraps the message with the text "Contract failed".
 	/// </summary>
 	private static string ConstructMessage(string message)
 	{

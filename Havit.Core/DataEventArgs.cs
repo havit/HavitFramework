@@ -6,18 +6,18 @@ using System.Text;
 namespace Havit;
 
 /// <summary>
-/// Argumenty události DataEventHandler, kterými si vyvolání události a její obsluha mohou předávat data (a to jedním i druhým směrem).
+/// Event arguments for the DataEventHandler, through which the event invocation and handling can pass data (in both directions).
 /// </summary>
-/// <typeparam name="T">Typ předávaných dat.</typeparam>
+/// <typeparam name="T">The type of the passed data.</typeparam>
 public class DataEventArgs<T> : EventArgs
 {
 	/// <summary>
-	/// Datový objekt, který se předává mezi volajícím a volaným.
+	/// The data object that is passed between the caller and the callee.
 	/// </summary>
 	public T Data { get; set; }
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public DataEventArgs()
 	{
@@ -25,7 +25,7 @@ public class DataEventArgs<T> : EventArgs
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
 	/// </summary>
 	public DataEventArgs(T data)
 	{

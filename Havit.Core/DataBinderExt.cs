@@ -11,25 +11,25 @@ using System.Text;
 namespace Havit;
 
 /// <summary>
-/// Rozšiřující funkčnost analogická k System.Web.UI.DataBinder". Navím umožňuje hodnotu do objektu i nastavit.
+/// Extends functionality similar to System.Web.UI.DataBinder. It also allows setting a value to an object.
 /// </summary>
 /// <remarks>
-/// Používá se např. pro resolvování BoundFieldExt.DataField, DropDownListExt.DataTextField, ...
+/// Used, for example, for resolving BoundFieldExt.DataField, DropDownListExt.DataTextField, ...
 /// </remarks>
 public static class DataBinderExt
 {
 	private static readonly char[] indexExprStartChars = new char[] { '[', '(' };
 
 	/// <summary>
-	/// Získá hodnotu z předaného objektu a dataField.
-	/// Vyhodnocuje s ohledem na &quot;tečkovou&quot; notaci, tedy například z objektu třídy Subjekt dokáže vrátit &quot;HlavniAdresa.Ulice&quot;.
-	/// Pokud je dataItem <c>null</c> nebo <c>DBNull.Value</c>, vrací se tato hodnota.
-	/// Pokud se při vyhodnocování &quot;po cestě&quot; získá <c>null</c> nebo <c>DBNull.Value</c>, vrací se <c>null</c>/<c>DBNull.Value</c>
-	/// (příklad: Při vyhodnocování HlavniAdresa.Ulice je HlavniAdresa <c>null</c>, pak je výsledkem metody <c>null</c>.
+	/// Gets the value from the passed object and dataField.
+	/// Evaluates with respect to the "dot" notation, for example, from an object of the Subjekt class, it can return "MainAddress.Street".
+	/// If dataItem is <c>null</c> or <c>DBNull.Value</c>, this value is returned.
+	/// If <c>null</c> or <c>DBNull.Value</c> is obtained during evaluation "along the way", <c>null</c>/<c>DBNull.Value</c> is returned
+	/// (example: When evaluating MainAddress.Street, MainAddress is <c>null</c>, then the result of the method is <c>null</c>.
 	/// </summary>
-	/// <param name="dataItem">Datový objekt, ze kterého se získává hodnota</param>
-	/// <param name="dataField">Vlastnost, jejíž hodnota je získávána.</param>
-	/// <returns>Hodnota, pokud se ji podařilo získat; jinak <c>null</c> nebo <c>DBNull.Value</c>.</returns>
+	/// <param name="dataItem">Data object from which the value is obtained</param>
+	/// <param name="dataField">Property whose value is obtained.</param>
+	/// <returns>Value if it was successfully obtained; otherwise <c>null</c> or <c>DBNull.Value</c>.</returns>
 	public static object GetValue(object dataItem, string dataField)
 	{
 		string[] expressionParts = dataField.Split('.');
@@ -56,19 +56,19 @@ public static class DataBinderExt
 			{
 				PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
 
-				// tohle skoro nic nestojí
+				// This almost costs nothing
 				System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true);
 
 				if (descriptor == null)
 				{
-					// standardní DataBinder vyhazuje HttpException, já nechci měnit typy výjimek, pro případně try/catch.
-					throw new InvalidOperationException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expression));
+					// The standard DataBinder throws an HttpException, I don't want to change the types of exceptions for possible try/catch.
+					throw new InvalidOperationException(String.Format("Failed to evaluate the expression '{0}', type '{1}' does not contain the property '{2}'.", dataField, currentDataItem.GetType().FullName, expression));
 				}
 				currentDataItem = descriptor.GetValue(currentDataItem);
 			}
 			else
 			{
-				throw new InvalidOperationException(String.Format("Nepodařilo se vyhodnotit výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expression));
+				throw new InvalidOperationException(String.Format("Failed to evaluate the expression '{0}', the part {1} contains an unsupported character.", dataField, expression));
 			}
 		}
 
@@ -76,13 +76,13 @@ public static class DataBinderExt
 	}
 
 	/// <summary>
-	/// Získá hodnotu pro zobrazení z předaného objektu a dataField a zformtátuje ji.
-	/// Viz DataBinderExt.GetValue(object dataItem, string dataField).
+	/// Gets the display value from the passed object and dataField and formats it.
+	/// See DataBinderExt.GetValue(object dataItem, string dataField).
 	/// </summary>
-	/// <param name="dataItem">Datový objekt, ze kterého se získává hodnota</param>
-	/// <param name="dataField">Vlastnost, jejíž hodnota je získávána.</param>
-	/// <param name="format">Formátovací řetězec.</param>
-	/// <returns>Hdnota, pokud se ji podařilo získat a zformátovat; jinak <c>String.Empty</c>.</returns>
+	/// <param name="dataItem">Data object from which the value is obtained</param>
+	/// <param name="dataField">Property whose value is obtained.</param>
+	/// <param name="format">Formatting string.</param>
+	/// <returns>Value if it was successfully obtained and formatted; otherwise <c>String.Empty</c>.</returns>
 	public static string GetValue(object dataItem, string dataField, string format)
 	{
 		object propertyValue = GetValue(dataItem, dataField);
@@ -98,15 +98,15 @@ public static class DataBinderExt
 	}
 
 	/// <summary>
-	/// Nastaví předanou hodnotu do předaného objektu a dataField.
-	/// Vyhodnocuje s ohledem na &quot;tečkovou&quot; notaci, tedy například objektu třídy Subjekt dokáže nastavit &quot;HlavniAdresa.Ulice&quot;.
-	/// Pokud je dataItem <c>null</c> nebo <c>DBNull.Value</c>, je vyhozena výjimka.
-	/// Pokud se při vyhodnocování &quot;po cestě&quot; získá <c>null</c> nebo <c>DBNull.Value</c>, je vyhozena výjimka.
-	/// (příklad: Při vyhodnocování HlavniAdresa.Ulice je HlavniAdresa <c>null</c>, pak je vyhozena výjimka.
+	/// Sets the passed value to the passed object and dataField.
+	/// Evaluates with respect to the "dot" notation, for example, from an object of the Subjekt class, it can set "MainAddress.Street".
+	/// If dataItem is <c>null</c> or <c>DBNull.Value</c>, an exception is thrown.
+	/// If <c>null</c> or <c>DBNull.Value</c> is obtained during evaluation "along the way", an exception is thrown.
+	/// (example: When evaluating MainAddress.Street, MainAddress is <c>null</c>, then an exception is thrown.
 	/// </summary>
-	/// <param name="dataItem">Datový objekt, do kterého se nastavuje hodnota.</param>
-	/// <param name="dataField">Vlastnost, jejíž hodnota je nastavována.</param>
-	/// <param name="value">Nastavovaná hodnota.</param>
+	/// <param name="dataItem">Data object to which the value is set.</param>
+	/// <param name="dataField">Property whose value is set.</param>
+	/// <param name="value">Value to be set.</param>
 	public static void SetValue(object dataItem, string dataField, object value)
 	{
 		Contract.Requires(dataItem != null);
@@ -122,29 +122,29 @@ public static class DataBinderExt
 			currentDataItem = GetValue(currentDataItem, expressionGetPart);
 			if (currentDataItem == null)
 			{
-				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} obsahuje null.", dataField, expressionGetPart));
+				throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the part {1} contains null.", dataField, expressionGetPart));
 			}
 
 			if (currentDataItem == DBNull.Value)
 			{
-				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} obsahuje DBNull.Value.", dataField, expressionGetPart));
+				throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the part {1} contains DBNull.Value.", dataField, expressionGetPart));
 			}
 		}
 
 		string expressionSet = expressionParts[expressionParts.Length - 1];
 		if (expressionSet.IndexOfAny(indexExprStartChars) >= 0)
 		{
-			throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', v části {1} je nepodporovaný znak.", dataField, expressionSet));
+			throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the part {1} contains an unsupported character.", dataField, expressionSet));
 		}
 
 		PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
 
-		// tohle skoro nic nestojí
+		// This almost costs nothing
 		System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expressionSet, true);
 		if (descriptor == null)
 		{
-			// standardní DataBinder vyhazuje HttpException, já nechci měnit typy výjimek, pro případně try/catch.
-			throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', typ '{1}' neobsahuje vlastnost '{2}'.", dataField, currentDataItem.GetType().FullName, expressionSet));
+			// The standard DataBinder throws an HttpException, I don't want to change the types of exceptions for possible try/catch.
+			throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', type '{1}' does not contain the property '{2}'.", dataField, currentDataItem.GetType().FullName, expressionSet));
 		}
 
 		if (typeof(IDataBinderExtSetValue).IsAssignableFrom(descriptor.PropertyType))
@@ -152,7 +152,7 @@ public static class DataBinderExt
 			IDataBinderExtSetValue dataBinderExtSetValue = (IDataBinderExtSetValue)GetValue(currentDataItem, expressionSet);
 			if (dataBinderExtSetValue == null)
 			{
-				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', část {1} má obsahovat hodnotu IDataBinderExtSetValue, ale obsahuje hodnotu null.", dataField, expressionSet));
+				throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the part {1} should contain an IDataBinderExtSetValue value, but it contains a null value.", dataField, expressionSet));
 			}
 
 			try
@@ -161,20 +161,20 @@ public static class DataBinderExt
 			}
 			catch (NotSupportedException)
 			{
-				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', IDataBinderExtSetValue nezpracoval nastavovanou hodnotu.", dataField));
+				throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', IDataBinderExtSetValue did not process the value being set.", dataField));
 			}
 		}
 		else
 		{
 			if (descriptor.IsReadOnly)
 			{
-				throw new InvalidOperationException(String.Format("Nepodařilo se nastavit hodnotu pro výraz '{0}', vlastnost '{2}' typu '{1}' je pouze ke čtení.", dataField, currentDataItem.GetType().FullName, expressionSet));
+				throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the property '{2}' of type '{1}' is read-only.", dataField, currentDataItem.GetType().FullName, expressionSet));
 			}
 
 			object targetValue;
 			if (!Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(value, descriptor.PropertyType, out targetValue))
 			{
-				throw new InvalidOperationException(String.Format(value == null ? "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu null se nepodařilo převést na typ '{3}'." : "Nepodařilo se nastavit hodnotu pro výraz '{0}', hodnotu '{1}' typu '{2}' se nepodařilo převést na typ '{3}'.",
+				throw new InvalidOperationException(String.Format(value == null ? "Failed to set the value for the expression '{0}', failed to convert the null value to type '{3}'." : "Failed to set the value for the expression '{0}', failed to convert the value '{1}' of type '{2}' to type '{3}'.",
 					dataField, // 0
 					value == null ? null : value.ToString(), // 1
 					value == null ? null : value.GetType().FullName, // 2
@@ -186,8 +186,8 @@ public static class DataBinderExt
 	}
 
 	/// <summary>
-	/// Nastaví předané hodnoty do předaného objektu.
-	/// Není zamýšleno pro použití v programátorském kódu. Voláno z frameworkových controlů.
+	/// Sets the passed values to the passed object.
+	/// Not intended for use in application code. Called from framework controls.
 	/// </summary>
 	public static void SetValues(object dataItem, IOrderedDictionary fieldValues)
 	{
@@ -206,12 +206,12 @@ public static class DataBinderExt
 
 		if (value is ICustomTypeDescriptor)
 		{
-			// pro typu implementující ICustomTypeDescriptor (DataViewRow, atp.) nemůžeme properties cachovat
+			// We cannot cache properties for types implementing ICustomTypeDescriptor (DataViewRow, etc.)
 			properties = System.ComponentModel.TypeDescriptor.GetProperties(value);
 		}
 		else
 		{
-			// pro ostatní (tj. běžné) typy můžeme cachovat properties
+			// We can cache properties for other (normal) types
 			Type currentType = value.GetType();
 			lock (getValuePropertiesCache)
 			{

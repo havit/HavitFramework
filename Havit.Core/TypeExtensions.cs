@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Havit;
 
 /// <summary>
-/// Extension metody k Type.
+/// Extension methods for Type.
 /// </summary>
 public static class TypeExtensions
 {
 	/// <summary>
-	/// Vrací true, pokud daný typ implementuje daný interface.
+	/// Returns true if the given type implements the specified interface.
 	/// </summary>
 	public static bool ImplementsInterface(this Type type, Type interfaceType)
 	{

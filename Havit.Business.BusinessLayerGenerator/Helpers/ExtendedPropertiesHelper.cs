@@ -47,38 +47,39 @@ public static class ExtendedPropertiesHelper
 	{
 		if (allExtendedProperties == null)
 		{
-			SqlCommand cmd = new SqlCommand(@"DECLARE @result TABLE([Table] nvarchar(max), [Column] nvarchar(max), [StoredProcedure] nvarchar(max), [ExtendedProperty] nvarchar(max), [Value] nvarchar(max))
+			SqlCommand cmd = new SqlCommand(@"DECLARE @result TABLE([Schema] nvarchar(max), [Table] nvarchar(max), [Column] nvarchar(max), [StoredProcedure] nvarchar(max), [ExtendedProperty] nvarchar(max), [Value] nvarchar(max))
 
 -- Extended Properties on tables 
 INSERT INTO @result
-SELECT [Tables].[name], '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+SELECT [Schemas].[Name], [Tables].[name], '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
 INNER JOIN [sys].[tables] [Tables] on ([ExtendedProperties].[major_id] = [Tables].[object_id])
-INNER JOIN [sys].[schemas] on [Tables].[schema_id] = [schemas].[schema_id]
+INNER JOIN [sys].[schemas] [Schemas] on [Tables].[schema_id] = [schemas].[schema_id]
 WHERE ([ExtendedProperties].[class] = 1) AND ([ExtendedProperties].[minor_id] = 0)
-AND [schemas].[name] NOT LIKE '%Hangfire%'
 
 -- Extended Properties on columns
 INSERT INTO @result
-SELECT [Tables].[name], [Columns].[name], '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+SELECT [Schemas].[Name], [Tables].[name], [Columns].[name], '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
 INNER JOIN [sys].[tables] [Tables] on ([ExtendedProperties].[major_id] = [Tables].[object_id])
 INNER JOIN [sys].[columns] [Columns] on ([Columns].[column_id] = [ExtendedProperties].[minor_id]) AND ([Columns].[object_id] = [ExtendedProperties].[major_id])
+INNER JOIN [sys].[schemas] [Schemas] on [Tables].[schema_id] = [schemas].[schema_id]
 WHERE ([ExtendedProperties].[class] = 1) AND ([ExtendedProperties].[minor_id] <> 0)
 
 -- Extended Properties on stored Procedures
 INSERT INTO @result
-SELECT '', '', [StoredProcedures].[name], [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+SELECT [Schemas].Name, '', '', [StoredProcedures].[name], [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
 INNER JOIN [sys].[procedures] [StoredProcedures] on ([ExtendedProperties].[major_id] = [StoredProcedures].[object_id])
+INNER JOIN [sys].[schemas] [Schemas] on [StoredProcedures].[schema_id] = [schemas].[schema_id]
 WHERE ([ExtendedProperties].[class] = 1)
 
 -- Extended Properties on database
 INSERT INTO @result
-SELECT '', '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
+SELECT '', '', '', '', [ExtendedProperties].[name], CONVERT(nvarchar(max), [value]) FROM [sys].[extended_properties] [ExtendedProperties]
 WHERE ([ExtendedProperties].[class] = 0)
 
 -- Custom defined extended properties
 IF OBJECT_ID('__BLExtendedProperties') IS NOT NULL
 INSERT INTO @result
-SELECT [Table], [Column], [StoredProcedure], [ExtendedProperty], [Value]
+SELECT [Schema], [Table], [Column], [StoredProcedure], [ExtendedProperty], [Value]
 FROM __BLExtendedProperties
 
 SELECT * FROM @result");
@@ -88,15 +89,16 @@ SELECT * FROM @result");
 			{
 				while (dataReader.Read())
 				{
-					string table = dataReader.GetString(0);
-					string column = dataReader.GetString(1);
-					string storedProcedure = dataReader.GetString(2);
-					string extendedProperty = dataReader.GetString(3);
-					string value = dataReader.GetString(4);
+					string schema = dataReader.GetString(0);
+					string table = dataReader.GetString(1);
+					string column = dataReader.GetString(2);
+					string storedProcedure = dataReader.GetString(3);
+					string extendedProperty = dataReader.GetString(4);
+					string value = dataReader.GetString(5);
 
 					extendedProperty = extendedProperty.Replace("_", ".");
 
-					var key = new ExtendedPropertiesKey(table, column, storedProcedure);
+					var key = new ExtendedPropertiesKey(schema, table, column, storedProcedure);
 					data.Add(new Tuple<ExtendedPropertiesKey, KeyValuePair<string, string>>(key, new KeyValuePair<string, string>(extendedProperty, value)));
 				}
 			}

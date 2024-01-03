@@ -77,6 +77,9 @@ public static class ColumnHelper
 
 		foreach (ForeignKey foreignKey in ownerTable.ForeignKeys)
 		{
+			// column: Microsoft.SqlServer.Management.Smo.Column
+			// foreignKey.Column[s]: Microsoft.SqlServer.Management.Smo.ForeignKeyColumn
+			// Pravděpodobně po přejmenování sloupce z XyID na XyId nějakým zázrakem (bugem?) dostáváme stále v column.Name starou hodnotu "XyID", přestože SqlManagement studio, skriptování, atp ukazují správně XyId.
 			if (foreignKey.Columns.Count == 1 && foreignKey.Columns[0].Name.Equals(column.Name, StringComparison.InvariantCultureIgnoreCase))
 			{
 				_getForeignKeys.Add(column, foreignKey);

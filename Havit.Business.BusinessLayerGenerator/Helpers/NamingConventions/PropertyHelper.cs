@@ -42,6 +42,7 @@ public static class PropertyHelper
 			if (String.IsNullOrEmpty(result))
 			{
 				// ořízneme u cizího klíče z konce názvu sloupce ID, pokud tam je
+				// TODO: Databáze EdenredPortal obsahuje cizí klíče končící "Id" i "ID".
 				if ((GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst) && TypeHelper.IsBusinessObjectReference(column) && column.Name.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase))
 				{
 					result = column.Name.Substring(0, column.Name.Length - 2);

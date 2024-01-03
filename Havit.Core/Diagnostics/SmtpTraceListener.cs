@@ -262,42 +262,42 @@ public class SmtpTraceListener : TraceListener
 		message.AppendLine("    Event UTC time: " + now.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
 		message.AppendLine();
 
-		// For console applications, returns null in web applications
-		// Example: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		// pro konzolovky, ve webových aplikacích vrací null
+		// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		Assembly assembly = Assembly.GetEntryAssembly();
 
-		// JK: In my opinion, unnecessary code.
-		// In a regular request, we have health monitoring, usually no need to deal with SMTP trace listener.
-		// We do not cover asynchronous code, tasks, threads - they don't have HttpContext.Current.
-		// In a console application, etc., we have the assembly.
+		// JK: IMHO zbytečný kód.
+		// V běžném requestu máme health monitoring, netřeba se obvykle zabývat SMTP trace listenerem.
+		// Nepokrýváme asynchronní kód, tasky, thready - ty nemají HttpContext.Current.
+		// V konzolovce, atp., máme assembly.
 
 		if (assembly == null)
 		{
-			// Implementation based on https://stackoverflow.com/a/6754205/4202832
-			// To avoid being dependent on System.Web, we will not use a dependency on System.Web and therefore must dynamically find the type.
-			// And work with it using reflection.
+			// Implementace vychází z https://stackoverflow.com/a/6754205/4202832
+			// Abychom nemuseli být závislí (dependency) na System.Web, nepoužijeme závislost na System.Web a proto musíme typ dohledat dynamicky.
+			// A pracovat s ním reflexí.
 
-			// Implement "HttpContext.Current != null" using reflection
+			// Implementujeme "HttpContext.Current != null" reflexí
 			Type httpContextType = Type.GetType("System.Web.HttpContext, System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", throwOnError: false);
 			if (httpContextType != null)
 			{
 				PropertyInfo httpContextCurrentMember = httpContextType.GetProperty("Current", BindingFlags.Public | BindingFlags.Static);
 				object httpContextCurrent = httpContextCurrentMember.GetValue(null /* static */);
 
-				// For requests of web applications, in an asynchronous task/thread, HttpContext.Current returns null
+				// pro requesty webových aplikací, v asynchronním tasku/threadu vrací HttpContext.Current null
 				if (httpContextCurrent != null)
 				{
-					// Example: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
-					// In a precompiled application, it will be as expected
+					// příklad: "App_global.asax.agdxj0ym, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"
+					// v precompiled aplikaci bude, co čekáme
 
-					// In the second part, we implement "assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;".
+					// Ve druhé části implementujeme "assembly = HttpContext.Current.ApplicationInstance.GetType().Assembly;".
 					object applicationInstance = httpContextType.GetProperty("ApplicationInstance", BindingFlags.Public | BindingFlags.Instance).GetValue(httpContextCurrent);
 					assembly = applicationInstance.GetType().Assembly;
 				}
 			}
 		}
 
-		// For asynchronous tasks/threads of web applications, we don’t know how to obtain the assembly
+		// pro asynchronní tasky/thready webových aplikací nevíme, jak získat assembly
 
 		if (assembly != null)
 		{

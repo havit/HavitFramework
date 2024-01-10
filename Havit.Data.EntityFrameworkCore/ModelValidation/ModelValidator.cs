@@ -119,7 +119,9 @@ public class ModelValidator
 	{
 		foreach (IReadOnlyProperty property in entityType.GetProperties())
 		{
-			if (property.ClrType == typeof(string) && !property.IsShadowProperty() /* !Discriminator */)
+			if (property.ClrType == typeof(string)
+				&& !property.IsShadowProperty() // nejde o Discriminator
+				&& String.IsNullOrEmpty(property.GetComputedColumnSql())) // nejde o computed column
 			{
 				MaxLengthAttribute maxLengthAttribute = property.PropertyInfo.GetCustomAttribute<MaxLengthAttribute>();
 				if (maxLengthAttribute == null)

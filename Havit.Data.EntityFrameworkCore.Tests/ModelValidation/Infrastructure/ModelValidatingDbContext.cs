@@ -36,6 +36,9 @@ internal class ModelValidatingDbContext : EntityFrameworkCore.DbContext
 
 		modelBuilder.HasSequence<int>("EntrySequence");
 		modelBuilder.Entity<EntryWithSequencePrimaryKeyAndNoSymbol>().Property(e => e.Id).HasDefaultValueSql("NEXT VALUE FOR EntrySequence");
+
+		modelBuilder.Entity<WithComputedColumns>().Property(e => e.Computed).HasComputedColumnSql("Id");
+		modelBuilder.Entity<WithComputedColumns>().Property(e => e.ComputedStored).HasComputedColumnSql("Id", stored: true);
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

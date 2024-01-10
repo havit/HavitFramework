@@ -175,6 +175,20 @@ public class ModelValidatorTests
 	}
 
 	[TestMethod]
+	public void ModelValidator_CheckStringsHaveMaxLengths_DoesNotReportMissingMaxLengthAttributeOnComputedColumns()
+	{
+		// Arrange
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+		ModelValidator modelValidator = new ModelValidator();
+
+		// Act
+		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(WithComputedColumns))).ToArray();
+
+		// Assert			
+		Assert.IsFalse(errors.Any());
+	}
+
+	[TestMethod]
 	public void ModelValidator_CheckStringsHaveMaxLengths_SupportsModelInheritance()
 	{
 		// Arrange

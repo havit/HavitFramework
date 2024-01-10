@@ -29,10 +29,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(NonIdKeyClass))).ToArray();
+		string[] errors = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(NonIdKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("has a primary key named")));
+		Assert.IsTrue(errors.Any(item => item.Contains("has a primary key named")));
 	}
 
 	[TestMethod]
@@ -43,10 +43,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
+		string[] errors = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsFalse(errors.Any());
 	}
 
 	[TestMethod]
@@ -57,10 +57,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass))).ToArray();
+		string[] errors = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(MoreInvalidKeysClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("only one is expected")));
+		Assert.IsTrue(errors.Any(item => item.Contains("only one is expected")));
 	}
 
 	[TestMethod]
@@ -71,10 +71,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
+		string[] errors = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsOneCorrectKeyClass.Any());
+		Assert.IsFalse(errors.Any());
 	}
 
 	[TestMethod]
@@ -85,10 +85,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.Model.FindEntityType(typeof(StringIdClass))).ToArray();
+		string[] errors = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.Model.FindEntityType(typeof(StringIdClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
+		Assert.IsTrue(errors.Any(item => item.Contains("type int (System.Int32) is expected")));
 	}
 
 	[TestMethod]
@@ -99,10 +99,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(CapitalIDClass))).ToArray();
+		string[] errors = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(CapitalIDClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("which ends with")));
+		Assert.IsTrue(errors.Any(item => item.Contains("which ends with")));
 	}
 
 	[TestMethod]
@@ -113,10 +113,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
+		string[] errors = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsFalse(errors.Any());
 	}
 
 	[TestMethod]
@@ -127,10 +127,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NegativeMaxLengthAttributeClass))).ToArray();
+		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NegativeMaxLengthAttributeClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("negative value")));
+		Assert.IsTrue(errors.Any(item => item.Contains("negative value")));
 	}
 
 	[TestMethod]
@@ -141,11 +141,12 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(ZeroMaxLengthAttributeClass))).ToArray();
+		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(ZeroMaxLengthAttributeClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("zero value")));
+		Assert.IsTrue(errors.Any(item => item.Contains("zero value")));
 	}
+
 	[TestMethod]
 	public void ModelValidator_CheckStringsHaveMaxLengths_ReportsMissingMaxLengthAttribute()
 	{
@@ -154,10 +155,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NoMaxLengthAttributeClass))).ToArray();
+		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(NoMaxLengthAttributeClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("MaxLengthAttribute on property is expected")));
+		Assert.IsTrue(errors.Any(item => item.Contains("MaxLengthAttribute on property is expected")));
 	}
 
 	[TestMethod]
@@ -168,10 +169,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(MaxLengthAttributeWithPositiveValueClass))).ToArray();
+		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(MaxLengthAttributeWithPositiveValueClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsFalse(errors.Any());
 	}
 
 	[TestMethod]
@@ -196,10 +197,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
+		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
 
 		// Assert			
-		Assert.AreEqual(2, errorsMoreInvalidKeysClass.Count(item => item.Contains("MaxLengthAttribute on property is expected")));
+		Assert.AreEqual(2, errors.Count(item => item.Contains("MaxLengthAttribute on property is expected")));
 	}
 
 	[TestMethod]
@@ -210,10 +211,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedClassClass))).ToArray();
+		string[] errors = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedClassClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
+		Assert.IsTrue(errors.Any(item => item.Contains("unsupported nested type")));
 	}
 
 	[TestMethod]
@@ -224,10 +225,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumOtherClass))).ToArray();
+		string[] errors = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumOtherClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
+		Assert.IsTrue(errors.Any(item => item.Contains("unsupported nested type")));
 	}
 
 	[TestMethod]
@@ -238,10 +239,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumEntryClass))).ToArray();
+		string[] errors = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.Model.FindEntityType(typeof(WithNestedEnumEntryClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsFalse(errors.Any());
 	}
 
 	[TestMethod]
@@ -252,10 +253,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithoutForeignKeyClass))).ToArray();
+		string[] errors = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithoutForeignKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("no foreign key")));
+		Assert.IsTrue(errors.Any(item => item.Contains("no foreign key")));
 	}
 
 	[TestMethod]
@@ -266,10 +267,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyByOwnedType))).ToArray();
+		string[] errors = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyByOwnedType))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any(item => item.Contains("no foreign key")));
+		Assert.IsFalse(errors.Any(item => item.Contains("no foreign key")));
 	}
 
 	[TestMethod]
@@ -280,10 +281,10 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errorsMoreInvalidKeysClass = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithForeignKeyClass))).ToArray();
+		string[] errors = modelValidator.CheckNavigationPropertiesHaveForeignKeys(modelValidatingDbContext.Model.FindEntityType(typeof(NavigationPropertyWithForeignKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsFalse(errors.Any());
 	}
 
 	[TestMethod]

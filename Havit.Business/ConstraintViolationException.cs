@@ -26,10 +26,10 @@ public class ConstraintViolationException : Exception, ISerializable
 	/// <summary>
 	/// Vytvoří instanci výjimky
 	/// </summary>
-	public ConstraintViolationException()		
+	public ConstraintViolationException()
 	{
 	}
-	
+
 	/// <summary>
 	/// Vytvoří instanci výjimky.
 	/// </summary>

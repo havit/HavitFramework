@@ -34,7 +34,7 @@ public class PropertyHolder<T> : PropertyHolderBase
 			if (!Object.Equals(_value, value) || (!IsInitialized))
 			{
 				// pokud meníme hodnotu nebo nastavujeme novou hodnotu, rekneme, ze jsme zmeneny
-				IsDirty = true;					
+				IsDirty = true;
 			}
 
 			IsInitialized = true;

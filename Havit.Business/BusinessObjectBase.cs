@@ -90,7 +90,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </summary>
 	public virtual bool IsDeleted
 	{
-		get { return _isDeleted; }			
+		get { return _isDeleted; }
 	}
 
 	private bool _isDeleted = false;
@@ -115,7 +115,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 		set { _isSaving = value; }
 	}
 	private bool _isSaving = false;
-	
+
 	/// <summary>
 	/// Indikuje, zda jde o disconnected business objekt.
 	/// </summary>
@@ -157,11 +157,11 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// Konstruktor pro nový objekt (bez perzistence v databázi).
 	/// </summary>
 	protected BusinessObjectBase(ConnectionMode connectionMode) : this(
-		NoID,		// ID
-		true,		// IsNew
-		false,		// IsDirty
+		NoID, // ID
+		true, // IsNew
+		false, // IsDirty
 		true,       // IsLoaded
-		connectionMode == ConnectionMode.Disconnected)		// IsDisconnected
+		connectionMode == ConnectionMode.Disconnected) // IsDisconnected
 	{
 		/*
 		this._id = NoID;
@@ -180,11 +180,11 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// <param name="connectionMode">režim vytvářeného objektu (connected/disconnected)</param>
 	protected BusinessObjectBase(int id, ConnectionMode connectionMode)
 		: this(
-		id,		// ID
-		false,	// IsNew
-		false,	// IsDirty
-		connectionMode == ConnectionMode.Disconnected,	// IsLoaded
-		connectionMode == ConnectionMode.Disconnected)	// IsOffline
+		id, // ID
+		false, // IsNew
+		false, // IsDirty
+		connectionMode == ConnectionMode.Disconnected, // IsLoaded
+		connectionMode == ConnectionMode.Disconnected) // IsOffline
 	{
 		Contract.Requires<InvalidOperationException>(id != NoID, "Nelze vytvořit objekt, který by nebyl nový a měl NoID.");
 
@@ -324,7 +324,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </remarks>
 	/// <param name="transaction">transakce <see cref="DbTransaction"/>, v rámci které má být objekt uložen; null, pokud bez transakce</param>
 	public virtual void Save(DbTransaction transaction)
-	{			
+	{
 		if (!IsLoaded || IsSaving)
 		{
 			return;
@@ -348,7 +348,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 		// Uložený objekt není už nový, dostal i přidělené ID.
 		// Pro generovaný kód BL je zbytečné, ten IsNew nastavuje i ve vygenerovaných
 		// metodách pro MinimalInsert a FullInsert.
-		IsNew = false; 
+		IsNew = false;
 		IsDirty = false; // uložený objekt je aktuální
 
 		if (callBeforeAfterSave)
@@ -413,7 +413,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 		{
 			throw new InvalidOperationException("Nový objekt nelze smazat.");
 		}
-		
+
 		EnsureLoaded(transaction);
 
 		if (IsDeleting)
@@ -437,7 +437,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </remarks>
 	public void Delete()
 	{
-		Delete(null);			
+		Delete(null);
 	}
 
 	/// <summary>
@@ -555,7 +555,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 		// objekty jsou si rovny, pokud mají stejný typ
 		return this.GetType() == obj.GetType();
 	}
-	
+
 	/// <summary>
 	/// Zjistí rovnost druhého objektu s instancí. Základní implementace porovná jejich ID.
 	/// </summary>
@@ -695,7 +695,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 				// Novému objektu proběhne již proběhl Init() včetně nastavení hodnot vlastnostem.
 				// Načtenému objektu byly hodnoty nastaveny v loadu.
 				// Takže objektu, který není nový a není ani načtený (ghost), zavoláme Init.
-				
+
 				Init(); // Nyní je již objekt ve stavu IsDisconnected.
 				_isLoaded = true;
 			}

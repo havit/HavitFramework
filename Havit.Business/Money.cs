@@ -233,7 +233,7 @@ public class Money<TCurrency>
 	{
 		return DivideMoney<Money<TCurrency>>(money, multiplicand);
 	}
-	
+
 	/// <summary>
 	/// Vypočte podíl částek. Např. pro výpočet poměru částek, marže, apod.
 	/// </summary>
@@ -315,17 +315,17 @@ public class Money<TCurrency>
 	/// <summary>
 	/// Vypočte podíl částek. Např. pro výpočet poměru částek, marže, apod.
 	/// </summary>
-	public static decimal DivideMoney(Money<TCurrency> dividend, Money<TCurrency> divisor)			
+	public static decimal DivideMoney(Money<TCurrency> dividend, Money<TCurrency> divisor)
 	{
 		AssertNotNull(dividend, nameof(dividend));
 		AssertNotNull(dividend.Amount, nameof(dividend) + "." + nameof(dividend.Amount));
 
 		AssertNotNull(divisor, nameof(divisor));
-		AssertNotNull(divisor.Amount, nameof(divisor) + "." + nameof(divisor.Amount));			
-		
+		AssertNotNull(divisor.Amount, nameof(divisor) + "." + nameof(divisor.Amount));
+
 		AssertSameCurrencies(dividend.Currency, divisor.Currency);
 
 		decimal result = dividend.Amount.Value / divisor.Amount.Value;
 		return result;
 	}
-}	
+}

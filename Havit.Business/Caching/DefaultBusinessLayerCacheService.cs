@@ -137,7 +137,7 @@ public class DefaultBusinessLayerCacheService : IBusinessLayerCacheService
 	/// </summary>
 	public void RemoveAllIDsFromCache(Type businessObjectType, string cacheKey)
 	{
-		cacheService.Remove(cacheKey);			
+		cacheService.Remove(cacheKey);
 	}
 
 	/// <summary>

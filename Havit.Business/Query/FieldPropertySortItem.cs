@@ -25,7 +25,7 @@ public class FieldPropertySortItem : SortItem
 		: this(property, SortDirection.Ascending)
 	{
 	}
-	
+
 	/// <summary>
 	/// Vytvoří položku řazení podle sloupce a daného pořadí.
 	/// </summary>

@@ -27,7 +27,7 @@ public static class BoolCondition
 		{
 			return new BinaryCondition(BinaryCondition.EqualsPattern, operand, ValueOperand.Create(value.Value));
 		}
-	} 
+	}
 
 	/// <summary>
 	/// Vytvoří podmínku porovnávající hodnoty dvou operandů na rovnost.

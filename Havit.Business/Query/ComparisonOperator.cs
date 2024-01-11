@@ -12,28 +12,28 @@ public enum ComparisonOperator
 	/// <summary>
 	/// Rovnost.
 	/// </summary>
-	Equals, 
-	
+	Equals,
+
 	/// <summary>
 	/// Nerovnost.
 	/// </summary>
 	NotEquals,
-	
+
 	/// <summary>
 	/// Menší.
 	/// </summary>
-	Lower, 
+	Lower,
 
 	/// <summary>
 	/// Menší nebo rovno.
 	/// </summary>
 	LowerOrEquals,
-	
+
 	/// <summary>
 	/// Větší.
 	/// </summary>
 	Greater,
-	
+
 	/// <summary>
 	/// Větší nebo rovno.
 	/// </summary>

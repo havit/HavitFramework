@@ -19,10 +19,10 @@ public class AndCondition : CompositeCondition
 	}
 
 	/// <summary>
-        /// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
-        /// </summary>
-        public static AndCondition Create(params Condition[] conditions)
-        {
-            return new AndCondition(conditions);
-        }
+	/// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+	/// </summary>
+	public static AndCondition Create(params Condition[] conditions)
+	{
+		return new AndCondition(conditions);
+	}
 }

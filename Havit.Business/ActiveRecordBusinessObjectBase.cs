@@ -36,7 +36,7 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	/// <param name="id">primární klíč objektu</param>
 	/// <param name="connectionMode">režim vytvářeného objektu (connected/disconnected)</param>
 	protected ActiveRecordBusinessObjectBase(int id, ConnectionMode connectionMode = ConnectionMode.Connected) : base(id, connectionMode)
-	{			
+	{
 		IdentityMap currentIdentityMap = IdentityMapScope.Current;
 		Contract.Assert<InvalidOperationException>(currentIdentityMap != null);
 		currentIdentityMap.Store(this);
@@ -50,10 +50,10 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	/// <param name="id">ID načítaného objektu</param>
 	/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze</param>
 	protected ActiveRecordBusinessObjectBase(int id, DataRecord record) : base(
-		id,	// ID
-		false,	// IsNew
-		false,	// IsDirty
-		false,	// IsLoaded
+		id, // ID
+		false, // IsNew
+		false, // IsDirty
+		false, // IsLoaded
 		false)  // IsOffline
 	{
 		Contract.Requires<ArgumentNullException>(record != null);
@@ -89,7 +89,7 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 
 		// Máme-li instanci ghosta a máme načíst datarecord ghosta, není co načítat.
 		if (record.DataLoadPower == DataLoadPower.Ghost)
-		{				
+		{
 			return;
 		}
 
@@ -174,7 +174,7 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	public override sealed void Save(DbTransaction transaction)
 	{
 		// vynucení transakce nad celou Save() operací (BusinessObjectBase ji pouze očekává, ale nevynucuje).
-		DbConnector.Default.ExecuteTransaction(delegate(DbTransaction myTransaction)
+		DbConnector.Default.ExecuteTransaction(delegate (DbTransaction myTransaction)
 			{
 
 				// nechceme dvojí Save v rámci jedné transakce, proto si transakci ukládáme jako scope sejvu a v rámci stejného scope vykopneme Save
@@ -221,7 +221,7 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	protected override sealed void Save_Perform(DbTransaction transaction)
 	{
 		// transakce je zajištěna v override Save(DbTransaction), zde není potřeba zakládat další
-		
+
 		if (IsNew)
 		{
 			Save_Insert_InsertRequiredForFullInsert(transaction);
@@ -342,10 +342,10 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 		IsMinimalInserting = true;
 	}
 
-        /// <summary>
-        /// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
-        /// </summary>
-        [EditorBrowsable(EditorBrowsableState.Advanced)]
-        [SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kóh ohledně insertingu je pohromadě v bloku save logiky.")]
-        protected bool IsMinimalInserting { get; set; } = false;
+	/// <summary>
+	/// Identifikuje, zda probíhá Save_Insert_InsertRequiredForMinimalInsert (nesmí se zacyklit).
+	/// </summary>
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kóh ohledně insertingu je pohromadě v bloku save logiky.")]
+	protected bool IsMinimalInserting { get; set; } = false;
 }

@@ -35,7 +35,7 @@ public sealed class IntTableOperand : IOperand
 	public static IOperand Create(int[] ids)
 	{
 		Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
-		
+
 		return new IntTableOperand(ids);
 	}
 

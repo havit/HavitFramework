@@ -26,7 +26,7 @@ public static class DateCondition
 		{
 			return CreateEquals(operand, dateTime.Value);
 		}
-	} 
+	}
 
 	/// <summary>
 	/// Vytvoří podmínku testující rovnost datumů.
@@ -36,7 +36,7 @@ public static class DateCondition
 		Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 		return CreateEquals(operand, ValueOperand.Create(dateTime));
-	} 
+	}
 
 	/// <summary>
 	/// Vytvoří podmínku testující rovnost dvou operandů.
@@ -57,7 +57,7 @@ public static class DateCondition
 		Contract.Requires<ArgumentNullException>(operand != null, nameof(operand));
 
 		return Create(operand, comparisonOperator, ValueOperand.Create(value));
-	} 
+	}
 
 	/// <summary>
 	/// Vytvoří podmínku testující hodnoty operandů.

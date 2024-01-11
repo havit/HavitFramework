@@ -69,7 +69,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 					throw new InvalidOperationException("Kolekce obsahuje duplicity.");
 				}
 			}
-			_allowDuplicates = value; 
+			_allowDuplicates = value;
 		}
 	}
 
@@ -84,8 +84,8 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	/// <exception cref="T:System.ArgumentOutOfRangeException">index is less than zero.-or-index is greater than <see cref="P:System.Collections.ObjectModel.Collection`1.Count"></see>.</exception>
 	protected override void InsertItem(int index, TItem item)
 	{
-		ThrowIfFrozen(); 
-		
+		ThrowIfFrozen();
+
 		if ((!_allowDuplicates) && (this.Contains(item)))
 		{
 			throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
@@ -123,10 +123,10 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	protected override void SetItem(int index, TItem item)
 	{
 		ThrowIfFrozen();
-		
+
 		// je zajištěno, že v režimu !AllowDuplicates kolekce neobsahuje duplikáty
 		// potom mùžeme použít IndexOf na hledání výskytu (je garantováno, že prvek je v kolekci nejvýše jednou).
-		if (!_allowDuplicates && (this.IndexOf(item) != index)) 
+		if (!_allowDuplicates && (this.IndexOf(item) != index))
 		{
 			throw new ArgumentException("Položka v kolekci již existuje (a není povoleno vkládání duplicit).");
 		}
@@ -193,7 +193,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 		}
 		else
 		{
-			LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);				
+			LoadAllRequired = this.Any(item => (item != null) && !item.IsLoaded);
 		}
 	}
 
@@ -209,7 +209,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	{
 		List<TItem> innerList = (List<TItem>)Items;
 		TItem result = null;
-		result = innerList.Find(delegate(TItem item)
+		result = innerList.Find(delegate (TItem item)
 							  {
 								  if (item.ID == id)
 								  {
@@ -314,9 +314,9 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	/// <returns>poèet odstranìných prvkù</returns>
 	public virtual int RemoveAll(Predicate<TItem> match)
 	{
-		List<TItem> innerList = (List<TItem>)Items;		
+		List<TItem> innerList = (List<TItem>)Items;
 		int itemsRemovedCount = innerList.RemoveAll(match);
-		
+
 		// vyvoláme událost informující o zmìnì kolekce, pokud nìjaké objekty byly z kolekce odstranìny
 		if (itemsRemovedCount != 0)
 		{
@@ -333,7 +333,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	/// <returns>poèet prvkù, které byly skuteènì odstranìny</returns>
 	public virtual int RemoveRange(IEnumerable<TItem> items)
 	{
-		List<TItem> innerList = (List<TItem>)Items;		
+		List<TItem> innerList = (List<TItem>)Items;
 		if (items == null)
 		{
 			throw new ArgumentNullException("items");
@@ -364,7 +364,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	public virtual void Sort(string propertyName, bool ascending)
 	{
 		List<TItem> innerList = (List<TItem>)Items;
-		innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyName, ascending ? SortDirection.Ascending : SortDirection.Descending)));			
+		innerList.Sort(new GenericPropertyComparer<TItem>(new SortItem(propertyName, ascending ? SortDirection.Ascending : SortDirection.Descending)));
 	}
 
 	/// <summary>
@@ -411,7 +411,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	{
 		DbConnector.Default.ExecuteTransaction(innerTransaction =>
 			{
-				ForEach(delegate(TItem item)
+				ForEach(delegate (TItem item)
 					{
 						item.Save(innerTransaction);
 					});
@@ -477,7 +477,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	/// Vrací true, pokud kolekce obsahuje duplicity.
 	/// </summary>		
 	private bool CheckDuplicates()
-	{			
+	{
 		// obsahuje-li kolekce ménì než dva prvky, nemùže obsahovat duplicity.
 		if (Items.Count < 2)
 		{
@@ -511,7 +511,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 		}
 
 		// nenašli jsme duplicitu
-		return false;			
+		return false;
 	}
 
 	[SuppressMessage("Havit.StyleCop.Rules.HavitRules", "HA0002:MembersOrder", Justification = "Související kód ohledně readonly kolekcí je pohromadě.")]
@@ -529,7 +529,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	{
 		if (value == null)
 		{
-			this.Clear();				
+			this.Clear();
 		}
 		else if (value is IEnumerable<BusinessObjectBase>)
 		{

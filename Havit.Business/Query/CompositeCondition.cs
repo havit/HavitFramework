@@ -23,25 +23,25 @@ public abstract class CompositeCondition : Condition
 	{
 		get { return conditions; }
 	}
-        private readonly ConditionList conditions;
+	private readonly ConditionList conditions;
 
-        /// <summary>
+	/// <summary>
 	/// Vytvoří instanci.
 	/// </summary>
 	protected CompositeCondition(string operatorBetweenOperands, params Condition[] conditions)
 	{
-            this.conditions = new ConditionList();
+		this.conditions = new ConditionList();
 		this.operatorBetweenOperands = operatorBetweenOperands;
-            if (conditions != null)
-            {
-                for (int index = 0; index < conditions.Length; index++)
-                {
-                    this.Conditions.Add(conditions[index]);
-                }
-            }
+		if (conditions != null)
+		{
+			for (int index = 0; index < conditions.Length; index++)
+			{
+				this.Conditions.Add(conditions[index]);
+			}
+		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrací true, pokud jde o prázdnou podmínku a to i v případě, že jde například o zanořené AndCondition a OrCondition bez žádných "funkčních" podmínek.
 	/// </summary>
 	public override bool IsEmptyCondition()
@@ -56,7 +56,7 @@ public abstract class CompositeCondition : Condition
 		return true;
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Poskládá členské podmínky. Mezi podmínkami (operandy) je operátor zadaný v konstruktoru.
 	/// </summary>
 	public override void GetWhereStatement(System.Data.Common.DbCommand command, StringBuilder whereBuilder, SqlServerPlatform sqlServerPlatform, CommandBuilderOptions commandBuilderOptions)

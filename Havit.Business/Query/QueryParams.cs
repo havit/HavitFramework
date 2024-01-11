@@ -107,7 +107,7 @@ public class QueryParams
 				return DataLoadPower.Ghost;
 			}
 		}
-		
+
 		return DataLoadPower.PartialLoad;
 	}
 
@@ -195,7 +195,7 @@ public class QueryParams
 		}
 
 		StringBuilder fieldsBuilder = new StringBuilder();
-		for (int i = 0; i < queryProperties.Count; i++)				
+		for (int i = 0; i < queryProperties.Count; i++)
 		{
 			if (i > 0)
 			{
@@ -218,13 +218,13 @@ public class QueryParams
 		Debug.Assert(command != null);
 
 		if (String.IsNullOrEmpty(objectInfo.DbSchema))
-            {
-                return String.Format(CultureInfo.InvariantCulture, "FROM [{0}]", objectInfo.DbTable);
-            }
-            else
-            {
-                return String.Format(CultureInfo.InvariantCulture, "FROM [{0}].[{1}]", objectInfo.DbSchema, objectInfo.DbTable);
-            }
+		{
+			return String.Format(CultureInfo.InvariantCulture, "FROM [{0}]", objectInfo.DbTable);
+		}
+		else
+		{
+			return String.Format(CultureInfo.InvariantCulture, "FROM [{0}].[{1}]", objectInfo.DbSchema, objectInfo.DbTable);
+		}
 	}
 
 	/// <summary>
@@ -246,7 +246,7 @@ public class QueryParams
 			}
 
 			if ((objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime)
-				|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.SmallDateTime) 
+				|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.SmallDateTime)
 				|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTime2)
 				|| (objectInfo.DeletedProperty.FieldType == System.Data.SqlDbType.DateTimeOffset))
 			{
@@ -265,7 +265,7 @@ public class QueryParams
 		{
 			Conditions.Remove(deletedCondition);
 		}
-					
+
 		return whereBuilder.ToString();
 	}
 

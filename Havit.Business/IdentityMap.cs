@@ -36,13 +36,13 @@ public class IdentityMap
 		Type businessObjectType = businessObject.GetType();
 		Dictionary<int, WeakReference> typeDictionary;
 		if (!types.TryGetValue(businessObjectType, out typeDictionary))
-		{			
+		{
 			typeDictionary = new Dictionary<int, WeakReference>();
 			types.Add(businessObjectType, typeDictionary);
 		}
 
 		WeakReference reference;
-		if (typeDictionary.TryGetValue(businessObject.ID, out reference))			
+		if (typeDictionary.TryGetValue(businessObject.ID, out reference))
 		{
 			if (reference.Target != null)
 			{

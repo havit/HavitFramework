@@ -10,18 +10,18 @@ namespace Havit.Business.Query;
 public class OrCondition : CompositeCondition
 {
 	/// <summary>
-        /// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
-        /// </summary>		
-        public OrCondition(params Condition[] conditions)
-            : base("OR", conditions)
-        {
-        }
+	/// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+	/// </summary>		
+	public OrCondition(params Condition[] conditions)
+		: base("OR", conditions)
+	{
+	}
 
 	/// <summary>
-        /// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
-        /// </summary>
-        public static OrCondition Create(params Condition[] conditions)
-        {
-            return new OrCondition(conditions);
-        }
+	/// Vytvoří kompozitní podmínku. Lze inicializovat sadou členských podmínek.
+	/// </summary>
+	public static OrCondition Create(params Condition[] conditions)
+	{
+		return new OrCondition(conditions);
+	}
 }

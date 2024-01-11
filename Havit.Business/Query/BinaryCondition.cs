@@ -42,7 +42,7 @@ public class BinaryCondition : UnaryCondition
 	/// <summary>
 	/// Vytvoří binární (dvojoperandovou) podmínku.
 	/// </summary>
-	public BinaryCondition(string conditionPattern, IOperand operand1, IOperand operand2) 
+	public BinaryCondition(string conditionPattern, IOperand operand1, IOperand operand2)
 		: base(conditionPattern, operand1)
 	{
 		Contract.Requires<ArgumentNullException>(operand2 != null, "operand2");

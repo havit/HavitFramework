@@ -15,7 +15,7 @@ public class PropertyChangedEventArgs : System.ComponentModel.PropertyChangedEve
 	/// Původní hodnota. 
 	/// </summary>
 	public object OldValue { get; }
-	
+
 	/// <summary>
 	/// Nová hodnota.
 	/// </summary>

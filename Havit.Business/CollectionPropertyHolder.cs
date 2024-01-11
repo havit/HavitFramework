@@ -43,7 +43,7 @@ public class CollectionPropertyHolder<CollectionType, BusinessObjectType> : Prop
 			// Díky konvenci pojmenování v předkovi zde může dojík ke zmatení: initialization vs. value initialization
 			// CheckInitialization - zkontroluje, zda byla hodnota nastavena zvenčí, nemusí být nutně ve value, to zajistí následující
 			// EnsureLazyValueInitialization - zajistí, aby se hodnota nastavená z venčí dostala do _value (a _loadedValues)
-			
+
 			CheckInitialization();
 
 			EnsureLazyValueInitialization();
@@ -122,7 +122,7 @@ public class CollectionPropertyHolder<CollectionType, BusinessObjectType> : Prop
 			// cachované readonly objekty mohou inicializovat objekt paralelně, proti čemuž se potřebujeme ochránit
 			// nechci zakládat nový zámek, použiji instanci, nezamykáme nikde nic jiného
 			// (úvaha, že bychom pro zámek použili itemIDsWithDelemiter je chybná, neboť v extrémním případě již může být null)
-			lock (this) 
+			lock (this)
 			{
 				if (itemIDsWithDelemiter != null)
 				{

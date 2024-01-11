@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using Havit.Diagnostics.Contracts;
 
@@ -63,7 +61,7 @@ public class Scope<T> : IDisposable
 	/// </summary>
 	private readonly Scope<T> parent;
 
-	private readonly IScopeRepository<T> scopeRepository;
+	private readonly IScopeRepository<T> owningScopeRepository;
 
 	/// <summary>
 	/// Creates an instance of the <see cref="Scope{T}"/> class around the instance. The instance will also be disposed of when the Scope is disposed.
@@ -83,7 +81,7 @@ public class Scope<T> : IDisposable
 		Contract.Requires<ArgumentNullException>(instance != null, nameof(instance));
 
 		this.instance = instance;
-		this.scopeRepository = scopeRepository;
+		this.owningScopeRepository = scopeRepository;
 		this.ownsInstance = ownsInstance;
 
 		// linked list for nesting scopes
@@ -109,14 +107,14 @@ public class Scope<T> : IDisposable
 		{
 			disposed = true;
 
-			Debug.Assert(this == scopeRepository.GetCurrentScope(), "Disposed out of order.");
+			Debug.Assert(this == owningScopeRepository.GetCurrentScope(), "Disposed out of order.");
 			if (parent == null)
 			{
-				scopeRepository.RemoveCurrentScope();
+				owningScopeRepository.RemoveCurrentScope();
 			}
 			else
 			{
-				scopeRepository.SetCurrentScope(parent);
+				owningScopeRepository.SetCurrentScope(parent);
 			}
 
 			if (ownsInstance)

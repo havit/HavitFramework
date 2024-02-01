@@ -92,6 +92,62 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	}
 
 	/// <summary>
+	/// Vrátí entitu na základě lookup klíče.
+	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound.
+	/// Entita je na základě klíče vrácena z repository, což umožní použít cache.
+	/// </summary>
+	/// <remarks>
+	/// Případné sestavení "lookup-data" neprobíhá asynchronně, považujeme to však za dostatečné řešení.
+	/// </remarks>
+	protected async Task<TEntity> GetEntityByLookupKeyAsync(TLookupKey lookupKey, CancellationToken cancellationToken = default)
+	{
+		return TryGetEntityKeyByLookupKey(lookupKey, out int entityKey)
+			? await repository.GetObjectAsync(entityKey, cancellationToken).ConfigureAwait(false)
+			: null;
+	}
+
+	/// <summary>
+	/// Vrátí entity na základě lookup klíčů.
+	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound, pokud nevyhazuje výjimku a entita není nalezena, prostě není ve výsledku metody.
+	/// Entity jsou na základě klíče vráceny z repository, což umožní použít cache.
+	/// </summary>
+	protected List<TEntity> GetEntitiesByLookupKeys(TLookupKey[] lookupKeys)
+	{
+		var entityKeys = lookupKeys.Select(lookupKey =>
+			{
+				bool success = TryGetEntityKeyByLookupKey(lookupKey, out int entityKey);
+				return new { Success = success, EntityKey = entityKey };
+			})
+			.Where(result => result.Success)
+			.Select(result => result.EntityKey)
+			.ToArray();
+
+		return repository.GetObjects(entityKeys);
+	}
+
+	/// <summary>
+	/// Vrátí entity na základě lookup klíčů.
+	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound, pokud nevyhazuje výjimku a entita není nalezena, prostě není ve výsledku metody.
+	/// Entity jsou na základě klíče vráceny z repository, což umožní použít cache.
+	/// </summary>
+	/// <remarks>
+	/// Případné sestavení "lookup-data" neprobíhá asynchronně, považujeme to však za dostatečné řešení.
+	/// </remarks>
+	protected async Task<List<TEntity>> GetEntitiesByLookupKeysAsync(TLookupKey[] lookupKeys, CancellationToken cancellationToken = default)
+	{
+		var entityKeys = lookupKeys.Select(lookupKey =>
+		{
+			bool success = TryGetEntityKeyByLookupKey(lookupKey, out int entityKey);
+			return new { Success = success, EntityKey = entityKey };
+		})
+			.Where(result => result.Success)
+			.Select(result => result.EntityKey)
+			.ToArray();
+
+		return await repository.GetObjectsAsync(entityKeys, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Vyhledá klíč entity entitu na základě lookup klíče.
 	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound.
 	/// Určeno pro možnost získat si více klíčů entit a následné hromadné načtení.
@@ -166,7 +222,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		}
 		catch (ArgumentException argumentException)
 		{
-			throw new InvalidOperationException("Sourda data contains duplicity.", argumentException);
+			throw new InvalidOperationException("Source data contains duplicity.", argumentException);
 		}
 
 		Dictionary<int, TLookupKey> lookupKeyByEntityKeyDictionary = !OptimizationHints.HasFlag(LookupServiceOptimizationHints.EntityIsReadOnly)

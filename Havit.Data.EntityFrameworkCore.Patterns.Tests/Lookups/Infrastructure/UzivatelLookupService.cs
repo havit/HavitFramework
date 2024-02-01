@@ -20,6 +20,21 @@ public class UzivatelLookupService : LookupServiceBase<string, Uzivatel>
 	public Uzivatel GetUzivatelByEmail(string email) => GetEntityByLookupKey(email);
 
 	/// <summary>
+	/// Vyhledá uživatele podle emailu.
+	/// </summary>
+	public Task<Uzivatel> GetUzivatelByEmailAsync(string email, CancellationToken cancellationToken = default) => GetEntityByLookupKeyAsync(email, cancellationToken);
+
+	/// <summary>
+	/// Vyhledá uživatele podle emailů.
+	/// </summary>
+	public List<Uzivatel> GetUzivateleByEmails(string[] emaily) => GetEntitiesByLookupKeys(emaily);
+
+	/// <summary>
+	/// Vyhledá uživatele podle emailů.
+	/// </summary>
+	public Task<List<Uzivatel>> GetUzivateleByEmailsAsync(string[] emaily, CancellationToken cancellationToken = default) => GetEntitiesByLookupKeysAsync(emaily, cancellationToken);
+
+	/// <summary>
 	/// Párovací klíč je email.
 	/// </summary>
 	protected override Expression<Func<Uzivatel, string>> LookupKeyExpression => uzivatel => uzivatel.Email;

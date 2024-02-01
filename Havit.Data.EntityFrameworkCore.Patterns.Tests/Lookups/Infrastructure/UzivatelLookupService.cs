@@ -22,7 +22,7 @@ public class UzivatelLookupService : LookupServiceBase<string, Uzivatel>
 	/// <summary>
 	/// Vyhledá uživatele podle emailu.
 	/// </summary>
-	public Task<Uzivatel> GetUzivatelByEmailAsync(string email, CancellationToken cancellationToken = default) => GetEntityByLookupKeyAsync(email, cancellationToken);
+	public async Task<Uzivatel> GetUzivatelByEmailAsync(string email, CancellationToken cancellationToken = default) => await GetEntityByLookupKeyAsync(email, cancellationToken);
 
 	/// <summary>
 	/// Vyhledá uživatele podle emailů.
@@ -32,7 +32,7 @@ public class UzivatelLookupService : LookupServiceBase<string, Uzivatel>
 	/// <summary>
 	/// Vyhledá uživatele podle emailů.
 	/// </summary>
-	public Task<List<Uzivatel>> GetUzivateleByEmailsAsync(string[] emaily, CancellationToken cancellationToken = default) => GetEntitiesByLookupKeysAsync(emaily, cancellationToken);
+	public async Task<List<Uzivatel>> GetUzivateleByEmailsAsync(string[] emaily, CancellationToken cancellationToken = default) => await GetEntitiesByLookupKeysAsync(emaily, cancellationToken);
 
 	/// <summary>
 	/// Párovací klíč je email.

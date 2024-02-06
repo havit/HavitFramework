@@ -16,5 +16,6 @@ public class DataEntriesModel
 		public string PropertyName { get; set; }
 		public string FieldName { get; set; }
 		public bool IsObsolete { get; set; }
+		public string ObsoleteMessage { get; set; }
 	}
 }

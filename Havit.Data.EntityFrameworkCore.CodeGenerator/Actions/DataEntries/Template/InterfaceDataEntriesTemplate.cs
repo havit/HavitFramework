@@ -57,23 +57,62 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
             
             #line default
             #line hidden
-            this.Write("\t");
             
             #line 15 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+ if (entry.IsObsolete) { 
+            
+            #line default
+            #line hidden
+            
+            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+ if (String.IsNullOrEmpty(entry.ObsoleteMessage)) { 
+            
+            #line default
+            #line hidden
+            this.Write("    [Obsolete]\r\n");
+            
+            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            this.Write("    [Obsolete(\"");
+            
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(entry.ObsoleteMessage.Replace("\"", "\\\"")));
+            
+            #line default
+            #line hidden
+            this.Write("\")]\r\n");
+            
+            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t");
+            
+            #line 22 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 15 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 22 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.PropertyName));
             
             #line default
             #line hidden
             this.Write(" { get; }\r\n");
             
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
+            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
  } 
             
             #line default
@@ -104,7 +143,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
         /// <summary>
         /// The string builder that generation-time code is using to assemble generated output
         /// </summary>
-        protected System.Text.StringBuilder GenerationEnvironment
+        public System.Text.StringBuilder GenerationEnvironment
         {
             get
             {

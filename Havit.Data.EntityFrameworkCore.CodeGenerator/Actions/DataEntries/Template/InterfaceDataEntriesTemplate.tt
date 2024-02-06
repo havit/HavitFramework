@@ -12,6 +12,13 @@ namespace <#= Model.NamespaceName #>;
 public interface <#= Model.InterfaceName #> : Havit.Data.Patterns.DataEntries.IDataEntries
 {
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
+<# if (entry.IsObsolete) { #>
+<# if (String.IsNullOrEmpty(entry.ObsoleteMessage)) { #>
+    [Obsolete]
+<# } else { #>
+    [Obsolete("<#= entry.ObsoleteMessage.Replace("\"", "\\\"") #>")]
+<# } #>
+<# } #>
 	<#= Model.ModelClassFullName #> <#= entry.PropertyName #> { get; }
 <# } #>
 }

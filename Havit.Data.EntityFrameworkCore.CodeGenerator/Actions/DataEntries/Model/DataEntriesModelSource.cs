@@ -45,7 +45,8 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 						{
 							PropertyName = item,
 							FieldName = cammelCaseNamingStrategy.GetCammelCase(item),
-							IsObsolete = IsValueObsolete(entriesEnumType, item)
+							IsObsolete = IsValueObsolete(entriesEnumType, item),
+							ObsoleteMessage = GetValueObsoleteMessage(entriesEnumType, item)
 						})
 						.ToList()
 				}).ToList();
@@ -91,5 +92,12 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 		var fi = type.GetField(value);
 		var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
 		return (attributes != null) && (attributes.Length > 0);
+	}
+
+	private static string GetValueObsoleteMessage(Type type, string value)
+	{
+		var fi = type.GetField(value);
+		var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
+		return attributes.FirstOrDefault()?.Message;
 	}
 }

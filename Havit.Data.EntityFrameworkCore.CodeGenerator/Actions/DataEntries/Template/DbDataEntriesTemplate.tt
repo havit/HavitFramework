@@ -16,9 +16,17 @@ public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntr
 <# } #>
 
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
-<# if (entry.IsObsolete) { #>	[System.Obsolete] 
+<# if (entry.IsObsolete) { #>#pragma warning disable 0618
+<# if (String.IsNullOrEmpty(entry.ObsoleteMessage)) { #>
+    [Obsolete]
+<# } else { #>
+    [Obsolete("<#= entry.ObsoleteMessage.Replace("\"", "\\\"") #>")]
+<# } #>
 <# } #>
 	public <#= Model.ModelClassFullName #> <#= entry.PropertyName #> => <#= entry.FieldName #> ??= GetEntry(<#= Model.ModelEntriesEnumerationFullName #>.<#= entry.PropertyName #>);
+<# if (entry.IsObsolete) { #>
+#pragma warning restore 0618
+<# } #>
 <# } #>
 
 <# if (Model.UseDataEntrySymbolStorage) { #>

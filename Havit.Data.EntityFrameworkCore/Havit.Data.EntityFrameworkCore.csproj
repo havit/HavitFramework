@@ -14,7 +14,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.8.1</PackageVersion>
+		<PackageVersion>2.8.2</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions</Description>
 	</PropertyGroup>
 
@@ -24,7 +24,7 @@
 				Azure.Identity 1.7.0. Ta má však známou bezpečností zranitelnost, proto zde (do vyřešení závislostí v MS balíčcích).-->
 		<PackageReference Include="Azure.Identity" Version="1.10.4" />
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.0,9)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.2,9)" />
 	</ItemGroup>
 
 	<ItemGroup>

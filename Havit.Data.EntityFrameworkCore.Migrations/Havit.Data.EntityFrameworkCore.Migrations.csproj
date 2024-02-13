@@ -17,12 +17,12 @@
 	<PropertyGroup>
 		<!-- Při povýšení je doporučeno aktualizovat i Havit.Data.EntityFrameworkCore.BusinessLayer,
 	  neboť tento balíček je obvykle distribuován zejména jako závislost Havit.Data.EntityFrameworkCore.BusinessLayer -->
-		<PackageVersion>2.8.1</PackageVersion>
+		<PackageVersion>2.8.2</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Model Extensions</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.0,9)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.2,9)" />
 	</ItemGroup>
 
 	<ItemGroup>

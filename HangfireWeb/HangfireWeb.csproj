@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>Havit.HangfireApp</AssemblyName>
 		<RootNamespace>Havit.HangfireApp</RootNamespace>
 		<UserSecretsId>600bb2a9-6f48-43f6-9b93-f3940362e1f6</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Hangfire.AspNetCore" Version="1.8.2" />
-	  <PackageReference Include="Hangfire.Console" Version="1.4.2" />
-	  <PackageReference Include="Hangfire.SqlServer" Version="1.8.2" />
+	  <PackageReference Include="Hangfire.AspNetCore" Version="1.8.10" />
+	  <PackageReference Include="Hangfire.SqlServer" Version="1.8.10" />
+	  <PackageReference Include="IdentityStream.Hangfire.Console" Version="2.0.0" />
 	  <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.5" />
 	</ItemGroup>
 

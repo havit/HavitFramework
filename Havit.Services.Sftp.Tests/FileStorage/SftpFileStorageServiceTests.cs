@@ -37,7 +37,7 @@ public class SftpFileStorageServiceTests
 	private static void CleanDirectory(SftpStorageService sftpStorageService, string directory)
 	{
 		var sftpClient = sftpStorageService.GetConnectedSftpClient();
-		List<Renci.SshNet.Sftp.SftpFile> sftpFiles = sftpClient.ListDirectory(directory).ToList();
+		List<Renci.SshNet.Sftp.ISftpFile> sftpFiles = sftpClient.ListDirectory(directory).ToList();
 		foreach (var sftpFile in sftpFiles)
 		{
 			if (sftpFile.IsRegularFile)

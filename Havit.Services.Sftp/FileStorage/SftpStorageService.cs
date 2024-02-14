@@ -91,7 +91,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 			yield break;
 		}
 
-		IEnumerable<SftpFile> sftpFiles;
+		IEnumerable<ISftpFile> sftpFiles;
 
 		try
 		{

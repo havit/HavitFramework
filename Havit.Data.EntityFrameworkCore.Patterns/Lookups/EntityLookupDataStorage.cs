@@ -36,6 +36,31 @@ public class EntityLookupDataStorage : IEntityLookupDataStorage
 	}
 
 	/// <inheritdoc />
+	public async ValueTask<EntityLookupData<TEntity, TEntityKey, TLookupKey>> GetEntityLookupDataAsync<TEntity, TEntityKey, TLookupKey>(string storageKey, Func<CancellationToken, Task<EntityLookupData<TEntity, TEntityKey, TLookupKey>>> factory, CancellationToken cancellationToken)
+	{
+		if (factory == null)
+		{
+			if (lookupTables.TryGetValue(storageKey, out object result))
+			{
+				// nemáme factory, ale našli jsme položku v dictionary
+				return (EntityLookupData<TEntity, TEntityKey, TLookupKey>)result;
+			}
+			else
+			{
+				// nemáme factory, nemáme položku v dictionary
+				return null;
+			}
+		}
+		else
+		{
+			// máme factory
+			var value = await factory(cancellationToken).ConfigureAwait(false);
+			return (EntityLookupData<TEntity, TEntityKey, TLookupKey>)lookupTables.GetOrAdd(storageKey, value);
+		}
+	}
+
+
+	/// <inheritdoc />
 	public void RemoveEntityLookupData(string storageKey)
 	{
 		lookupTables.TryRemove(storageKey, out _);

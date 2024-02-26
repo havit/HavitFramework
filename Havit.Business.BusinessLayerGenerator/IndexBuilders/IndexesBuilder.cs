@@ -170,7 +170,7 @@ public static class IndexesBuilder
 				return;
 			}
 
-			if ((orderByColumns.Count == 1) && (table.Columns[orderByColumns[0]].IsForeignKey || table.Columns[orderByColumns[0]].InPrimaryKey))
+			if ((orderByColumns.Count == 1) && (table.FindColumn(orderByColumns[0]).IsForeignKey || table.FindColumn(orderByColumns[0]).InPrimaryKey))
 			{
 				// obsahuje právě jeden index a ten je primárním nebo cizím klíčem, pak je pokryto jiným indexem
 				return;

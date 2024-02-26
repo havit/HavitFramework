@@ -13,7 +13,7 @@
   <!-- Pro různé komplikovanosti s publikováním konzolovky s použití SMO delegujeme generování do samostatného projektu. -->	
   
   <ItemGroup>
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.21.0" />
+	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.23.0" />
   </ItemGroup>
 
   <ItemGroup>

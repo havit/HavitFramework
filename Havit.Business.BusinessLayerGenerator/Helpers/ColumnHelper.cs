@@ -101,7 +101,7 @@ public static class ColumnHelper
 
 		Table table = DatabaseHelper.FindTable(foreignKey.ReferencedTable, foreignKey.ReferencedTableSchema, includeIgnored: true);
 
-		return table.Columns[foreignKey.Columns[0].ReferencedColumn];
+		return table.FindColumn(foreignKey.Columns[0].ReferencedColumn);
 	}
 
 	/// <summary>
@@ -162,7 +162,7 @@ public static class ColumnHelper
 	{
 		foreach (string columnName in columnNames)
 		{
-			if (table.Columns[columnName] != null)
+			if (table.FindColumn(columnName) != null)
 			{
 				return columnName;
 			}

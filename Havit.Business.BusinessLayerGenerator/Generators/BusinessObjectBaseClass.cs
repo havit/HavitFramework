@@ -1845,7 +1845,7 @@ public static class BusinessObjectBaseClass
 						}
 					}
 
-					Column column = table.Columns[columnName];
+					Column column = table.FindColumn(columnName);
 
 					code.Add(
 						String.Format("queryParams.OrderBy.Add({0}.Properties.{1}, SortDirection.{2});",

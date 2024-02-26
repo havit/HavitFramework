@@ -28,6 +28,19 @@ public static class TableHelper
 	}
 
 	/// <summary>
+	/// Vrací sloupec dle jména.
+	/// Vyhledávání je case-insensitive.
+	/// </summary>
+	public static Column FindColumn(this Table table, string name)
+	{
+		// Proč nepoužijeme table.Columns[name]?
+		// Protože když máme sloupec v databázi pojmenovaný "Abcd", ale dohledáváme "ABCD", pak dostaneme sloupec "ABCD", ačkoliv takto pojmenovaný neexistuje!
+		// Na vině je pravděpodobně chování schované někde za tímto řádkem: https://github.com/microsoft/sqlmanagementobjects/blob/3ae2731330f852c8ddc9ab670c6b18cf336d43ab/src/Microsoft/SqlServer/Management/Smo/SmoCollectionBase.cs#L313
+		// Proto sloupce načteme a vyhledáme až v načtených sloupcích.
+		return table.Columns.Cast<Column>().SingleOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+	}
+
+	/// <summary>
 	/// Vrací true, pokud je tabulka označena jako ignorovaná (Extended Property "Ignored").
 	/// Pokud je strategie generování kódu pro Exec, pak se ignorují i všechny tabulky začínající podtržítkem.
 	/// </summary>		
@@ -187,7 +200,7 @@ public static class TableHelper
 						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byla nalezena tabulka '{2}', která je však ignorovaná.", collectionPropertyName, table.Name, collectionTableName));
 					}
 
-					Column referenceColumn = targetTable.Columns[collectionFieldName];
+					Column referenceColumn = targetTable.Columns.Cast<Column>().SingleOrDefault(c => c.Name.Equals(collectionFieldName, StringComparison.OrdinalIgnoreCase));
 					if (referenceColumn == null)
 					{
 						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyl nalezen sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
@@ -366,7 +379,7 @@ public static class TableHelper
 		nameColumn = ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromTable(table), "EnumPropertyNameField");
 		if (nameColumn != null)
 		{
-			if (!table.Columns.Contains(nameColumn))
+			if (table.FindColumn(nameColumn) == null)
 			{
 				throw new ApplicationException(
 					String.Format("Sloupec '{0}' nebyl v tabulce '{1}' nalezen (EnumPropertyNameField).", nameColumn, table.Name));
@@ -594,7 +607,7 @@ public static class TableHelper
 		if (LocalizationHelper.IsLocalizationTable(table))
 		{
 			result.Add(LocalizationHelper.GetParentLocalizationColumn(table));
-			result.Add(table.Columns[LocalizationHelper.LanguageForeignKeyColumnName]);
+			result.Add(table.FindColumn(LocalizationHelper.LanguageForeignKeyColumnName));
 
 			return result;
 		}
@@ -614,7 +627,7 @@ public static class TableHelper
 		foreach (string field in ownerFields.Trim().Split(new char[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries))
 		{
 			string fieldName = field.Trim();
-			Column column = table.Columns[fieldName];
+			Column column = table.FindColumn(fieldName);
 
 			if (column == null)
 			{

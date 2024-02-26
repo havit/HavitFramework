@@ -88,8 +88,8 @@ public static class MoneyHelper
 	/// </summary>
 	public static bool ExistMoney(Table table, string name)
 	{
-		Column amountColumn = table.Columns[name + "Amount"];
-		Column currencyColumn = table.Columns[name + "CurrencyID"];
+		Column amountColumn = table.FindColumn(name + "Amount");
+		Column currencyColumn = table.FindColumn(name + "CurrencyID");
 
 		if ((amountColumn == null) || (currencyColumn == null))
 		{
@@ -138,7 +138,7 @@ public static class MoneyHelper
 	/// </summary>
 	public static Column GetMoneyAmountColumn(Table table, string moneyPropertyName)
 	{
-		Column column = table.Columns[moneyPropertyName + "Amount"];
+		Column column = table.FindColumn(moneyPropertyName + "Amount");
 		if ((column != null) && ColumnHelper.IsIgnored(column))
 		{
 			column = null;
@@ -151,7 +151,7 @@ public static class MoneyHelper
 	/// </summary>
 	public static Column GetMoneyCurrencyColumn(Table table, string moneyPropertyName)
 	{
-		Column column = table.Columns[moneyPropertyName + "CurrencyID"];
+		Column column = table.FindColumn(moneyPropertyName + "CurrencyID");
 		if ((column != null) && ColumnHelper.IsIgnored(column))
 		{
 			column = null;

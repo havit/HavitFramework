@@ -47,10 +47,6 @@ public static class LanguageHelper
 	{
 		Table table = GetLanguageTable();
 
-		if (table.Columns.Contains("UICulture"))
-		{
-			return table.Columns["UICulture"];
-		}
-		return null;
+		return table.FindColumn("UICulture");
 	}
 }

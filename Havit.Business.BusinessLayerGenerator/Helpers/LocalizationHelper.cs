@@ -120,14 +120,14 @@ public static class LocalizationHelper
 		{
 			if (LanguageHelper.IsLanguageTable(table))
 			{
-				return table.Columns["ParentLanguageID"];
+				return table.FindColumn("ParentLanguageID");
 			}
-			return table.Columns[TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name];
+			return table.FindColumn(TableHelper.GetPrimaryKey(LocalizationHelper.GetLocalizationParentTable(table)).Name);
 		}
 
 		if (GeneratorSettings.Strategy == GeneratorStrategy.HavitEFCoreCodeFirst)
 		{
-			return table.Columns["ParentId"];
+			return table.FindColumn("ParentId");
 		}
 
 		throw new InvalidOperationException(GeneratorSettings.Strategy.ToString());
@@ -138,6 +138,6 @@ public static class LocalizationHelper
 	/// </summary>
 	public static Column GetLanguageColumn(Table table)
 	{
-		return table.Columns[LanguageForeignKeyColumnName];
+		return table.FindColumn(LanguageForeignKeyColumnName);
 	}
 }

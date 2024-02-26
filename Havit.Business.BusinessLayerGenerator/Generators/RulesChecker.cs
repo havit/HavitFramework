@@ -239,7 +239,7 @@ public static class RulesChecker
 	/// </summary>
 	public static void CheckDeletedColumnDataTypeRule(Table table)
 	{
-		if ((table.Columns["Deleted"] != null) && (TableHelper.GetDeletedColumn(table) == null))
+		if ((table.FindColumn("Deleted") != null) && (TableHelper.GetDeletedColumn(table) == null))
 		{
 			ConsoleHelper.WriteLineWarning(String.Format("Tabulka {0}, Sloupec Deleted: Očekáván datový typ Bit, DateTime nebo SmallDateTime.", table.Name));
 		}
@@ -259,7 +259,7 @@ public static class RulesChecker
 	/// </summary>
 	private static void CheckCreatedColumnDataTypeRule(Table table)
 	{
-		Column createdColumn = table.Columns["Created"];
+		Column createdColumn = table.FindColumn("Created");
 		if (createdColumn != null)
 		{
 			if (!PropertyHelper.IsDateTime(createdColumn))
@@ -319,7 +319,7 @@ public static class RulesChecker
 		}
 
 		Column parentColumn = LocalizationHelper.GetParentLocalizationColumn(table);
-		Column languageColumn = table.Columns[LocalizationHelper.LanguageForeignKeyColumnName];
+		Column languageColumn = table.FindColumn(LocalizationHelper.LanguageForeignKeyColumnName);
 
 		if (parentColumn == null)
 		{
@@ -391,12 +391,12 @@ public static class RulesChecker
 	{
 		if (table.Name == "ResourceClass")
 		{
-			if (table.Columns["Nazev"] != null)
+			if (table.FindColumn("Nazev") != null)
 			{
 				ConsoleHelper.WriteLineWarning("Tabulka ResourceClass: Sloupec Nazev by měl být přejmenován na Name.");
 			}
 
-			if (table.Columns["Popis"] != null)
+			if (table.FindColumn("Popis") != null)
 			{
 				ConsoleHelper.WriteLineWarning("Tabulka ResourceClass: Sloupec Popis by měl být přejmenován na Description.");
 			}
@@ -407,7 +407,7 @@ public static class RulesChecker
 	{
 		if (table.Name == "ResourceItem")
 		{
-			if (table.Columns["Popis"] != null)
+			if (table.FindColumn("Popis") != null)
 			{
 				ConsoleHelper.WriteLineWarning("Tabulka ResourceItem: Sloupec Popis by měl být přejmenován na Description.");
 			}

@@ -17,7 +17,8 @@
 		-->
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.1.29]" />
 		<PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0" />
-		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.21.0" />
+		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.23.0" />
+		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="170.23.0" />
 	</ItemGroup>
 
 	<PropertyGroup>

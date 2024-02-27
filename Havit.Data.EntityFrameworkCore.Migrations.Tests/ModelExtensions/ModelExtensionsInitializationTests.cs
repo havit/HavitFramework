@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
+using Havit.Data.EntityFrameworkCore.Migrations.Extensions;
+using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
@@ -100,6 +102,13 @@ public class ModelExtensionsInitializationTests
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<DummyEntity>();
+		}
+
+
+
+		protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+		{
+			configurationBuilder.AddModelExtensionRegistrationConvention();
 		}
 	}
 }

@@ -4,5 +4,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests;
 
 internal class NoCacheModelCacheKeyFactory : IModelCacheKeyFactory
 {
-	public object Create(Microsoft.EntityFrameworkCore.DbContext context, bool designTime) => context.GetHashCode();
+	public object Create(Microsoft.EntityFrameworkCore.DbContext context, bool designTime) => context is TestDbContext testDbContext
+		? (context, designTime).GetHashCode()
+		: context.GetHashCode();
 }

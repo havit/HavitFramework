@@ -1,12 +1,10 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Havit.Diagnostics.Contracts;
 using Havit.Extensions.DependencyInjection.Abstractions;
 using Havit.Extensions.DependencyInjection.Scanners;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Havit.Extensions.DependencyInjection;
 
@@ -69,7 +67,7 @@ public static class ServiceCollectionExtensions
 			Type[] serviceTypes = serviceToRegister.ServiceAttribute.GetServiceTypes() ?? TypeInterfacesExtractor.GetInterfacesToRegister(serviceToRegister.Type);
 
 			if (serviceTypes.Length == 0)
-			{ 
+			{
 				throw new InvalidOperationException(String.Format("Type {0} implements no interface to register.", serviceToRegister.Type.FullName));
 			}
 
@@ -90,14 +88,14 @@ public static class ServiceCollectionExtensions
 			{
 				// je Scoped nebo Singleton a zároveň máme více interfaces
 				var firstInterfaceToRegister = serviceTypes.First();
-				
+
 				// registrace prvního interface
 				serviceCollection.Add(new ServiceDescriptor(firstInterfaceToRegister, serviceToRegister.Type, serviceToRegister.ServiceAttribute.Lifetime /* Scoped nebo Singleton */));
 
 				// registrace druhého a dalšího interface
 				foreach (var interfaceToRegister in serviceTypes.Skip(1) /* až od druhého */)
 				{
-					serviceCollection.AddSingleton(interfaceToRegister, sp => sp.GetRequiredService(firstInterfaceToRegister));
+					serviceCollection.AddTransient(interfaceToRegister, sp => sp.GetRequiredService(firstInterfaceToRegister));
 				}
 			}
 		}

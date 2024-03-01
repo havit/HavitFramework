@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
@@ -24,7 +25,7 @@ public partial class DbDataLoader
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
-			if (entitiesToLoadQuery.Count <= ChunkSize)
+			if ((entitiesToLoadQuery.Count <= ChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
 				LogDebug("Starting reading from a database.");
@@ -85,7 +86,7 @@ public partial class DbDataLoader
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
-			if (entitiesToLoadQuery.Count <= ChunkSize)
+			if ((entitiesToLoadQuery.Count <= ChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
 				LogDebug("Starting reading from a database.");

@@ -1,4 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ public partial class DbDataLoader
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
-			if (foreignKeysToLoad.Count < ChunkSize)
+			if ((foreignKeysToLoad.Count < ChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
 				LogDebug("Starting reading from a database.");
@@ -68,7 +69,7 @@ public partial class DbDataLoader
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
-			if (foreignKeysToLoad.Count < ChunkSize)
+			if ((foreignKeysToLoad.Count < ChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
 				LogDebug("Starting reading from a database.");

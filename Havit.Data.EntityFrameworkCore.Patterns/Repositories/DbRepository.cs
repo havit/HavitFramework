@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
@@ -200,7 +201,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			Func<DbContext, int[], IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsCompiledQuery(this.GetType(), entityKeyAccessor);
 
 			List<TEntity> loadedObjects;
-			if (idsToLoad.Count <= GetObjectsChunkSize)
+			if ((idsToLoad.Count <= GetObjectsChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
 				loadedObjects = query((DbContext)dbContext, idsToLoad.ToArray()).ToList();
 			}
@@ -271,7 +272,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		{
 			Func<DbContext, int[], IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
 			List<TEntity> loadedObjects;
-			if (idsToLoad.Count <= GetObjectsChunkSize)
+			if ((idsToLoad.Count <= GetObjectsChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
 				loadedObjects = await query((DbContext)dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
 			}

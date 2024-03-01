@@ -45,16 +45,18 @@ internal static class QueryHelpers
 				propertyAccessor.Parameters);
 		}
 
-		// v obecném případě hledáme přes IN (...)
+		// V obecném případě hledáme přes IN (...) resp. pomocí OPENJSON.
+		// Aby EF Core použil OPENJSON nemůžeme použít prosté Expression.Constant(values), ale musíme jej zabalit do Expression.Property nad wrapující třídou.
+		var listValuesHolder = new ListValuesHolder(values);
 		return (Expression<Func<TEntity, bool>>)Expression.Lambda(
 			Expression.Call(
-				Expression.Constant(values),
+				Expression.Property(Expression.Constant(listValuesHolder), nameof(ListValuesHolder.Values)),
 				typeof(List<int>).GetMethod("Contains"),
 				new List<Expression> { propertyAccessor.Body }),
 			propertyAccessor.Parameters);
 	}
 
-	// SingleValueHolder.Value a FromToValueHolder.FromValue
+	// SingleValueHolder.Value, FromToValueHolder.FromValue, FromToValueHolder.ToValue, ListValuesHolder.Values:
 	// Názvy vlastností se propisují do názvu SQL Parametrů v databázovém dotazu.
 
 	private class SingleValueHolder
@@ -76,6 +78,16 @@ internal static class QueryHelpers
 		{
 			FromValue = fromValue;
 			ToValue = toValue;
+		}
+	}
+
+	private class ListValuesHolder
+	{
+		public List<int> Values { get; }
+
+		public ListValuesHolder(List<int> values)
+		{
+			Values = values;
 		}
 	}
 }

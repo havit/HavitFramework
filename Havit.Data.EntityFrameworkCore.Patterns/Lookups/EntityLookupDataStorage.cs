@@ -57,7 +57,7 @@ public class EntityLookupDataStorage : IEntityLookupDataStorage
 		{
 			// máme factory
 
-			// Nepoužjeme GetOrAdd, protože factory pro add nemůže být "asynchronní", ale my máme "asynchronní".
+			// Nepoužijeme GetOrAdd, protože factory pro add nemůže být "asynchronní", ale my máme "asynchronní".
 			// Pokud již máme data v cache, nepotřebujeme vrátíme data bez použití factory.
 			if (_lookupTables.TryGetValue(storageKey, out var lookupTableResult))
 			{

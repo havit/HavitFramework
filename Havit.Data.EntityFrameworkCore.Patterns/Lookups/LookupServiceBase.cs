@@ -97,10 +97,12 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound.
 	/// Entita je na základě klíče vrácena z repository, což umožní použít cache.
 	/// </summary>
-	protected async Task<TEntity> GetEntityByLookupKeyAsync(TLookupKey lookupKey, CancellationToken cancellationToken = default)
+	protected async ValueTask<TEntity> GetEntityByLookupKeyAsync(TLookupKey lookupKey, CancellationToken cancellationToken = default)
 	{
 		var result = await TryGetEntityKeyByLookupKeyAsync(lookupKey, cancellationToken).ConfigureAwait(false);
-		return result.success ? await repository.GetObjectAsync(result.entityKey.Value, cancellationToken).ConfigureAwait(false) : null;
+		return result.Success
+			? await repository.GetObjectAsync(result.EntityKey, cancellationToken).ConfigureAwait(false)
+			: null;
 	}
 
 	/// <summary>
@@ -127,18 +129,17 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound, pokud nevyhazuje výjimku a entita není nalezena, prostě není ve výsledku metody.
 	/// Entity jsou na základě klíče vráceny z repository, což umožní použít cache.
 	/// </summary>
-	protected async Task<List<TEntity>> GetEntitiesByLookupKeysAsync(TLookupKey[] lookupKeys, CancellationToken cancellationToken = default)
+	protected async ValueTask<List<TEntity>> GetEntitiesByLookupKeysAsync(TLookupKey[] lookupKeys, CancellationToken cancellationToken = default)
 	{
-		List<int> entityKeys = new List<int>();
+		List<int> entityKeys = new List<int>(lookupKeys.Length);
 		foreach (var lookupKey in lookupKeys)
 		{
 			var result = await TryGetEntityKeyByLookupKeyAsync(lookupKey, cancellationToken).ConfigureAwait(false);
-			if (result.success)
+			if (result.Success)
 			{
-				entityKeys.Add(result.entityKey.Value);
+				entityKeys.Add(result.EntityKey);
 			}
 		}
-
 
 		return await repository.GetObjectsAsync(entityKeys.ToArray(), cancellationToken).ConfigureAwait(false);
 	}
@@ -148,7 +149,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound.
 	/// Určeno pro možnost získat si více klíčů entit a následné hromadné načtení.
 	/// </summary>
-	protected bool TryGetEntityKeyByLookupKey(TLookupKey lookupKey, out int entityKey)
+	private bool TryGetEntityKeyByLookupKey(TLookupKey lookupKey, out int entityKey)
 	{
 		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData(GetStorageKey(), CreateEntityLookupData);
 
@@ -174,15 +175,15 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// Není-li nalezena, řídí se chování dle ThrowExceptionWhenNotFound.
 	/// Určeno pro možnost získat si více klíčů entit a následné hromadné načtení.
 	/// </summary>
-	protected async Task<(bool success, int? entityKey)> TryGetEntityKeyByLookupKeyAsync(TLookupKey lookupKey, CancellationToken cancellationToken = default)
+	private async ValueTask<TryGetEntityKeyByLookupKeyResult> TryGetEntityKeyByLookupKeyAsync(TLookupKey lookupKey, CancellationToken cancellationToken = default)
 	{
-		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = await lookupStorage.GetEntityLookupDataAsync(GetStorageKey(), (token) => CreateEntityLookupDataAsync(token), cancellationToken).ConfigureAwait(false);
+		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = await lookupStorage.GetEntityLookupDataAsync(GetStorageKey(), CreateEntityLookupDataAsync, cancellationToken).ConfigureAwait(false);
 
 		lock (entityLookupData)
 		{
 			if (entityLookupData.EntityKeyByLookupKeyDictionary.TryGetValue(lookupKey, out int entityKey))
 			{
-				return (true, entityKey);
+				return new TryGetEntityKeyByLookupKeyResult { Success = true, EntityKey = entityKey };
 			}
 			else
 			{
@@ -190,7 +191,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 				{
 					throw new ObjectNotFoundException($"Object with key '{lookupKey}' not found. To return null instead of throwing exception, please override property {nameof(ThrowExceptionWhenNotFound)} and return false.");
 				}
-				return (false, null);
+				return new TryGetEntityKeyByLookupKeyResult { Success = false, EntityKey = default };
 			}
 		}
 	}
@@ -219,33 +220,40 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// <summary>
 	/// Factory pro EntityLookupData.
 	/// </summary>
-	private EntityLookupData<TEntity, int, TLookupKey> CreateEntityLookupData()
+	internal EntityLookupData<TEntity, int, TLookupKey> CreateEntityLookupData()
 	{
-		Expression<Func<TEntity, EntityLookupPair<int, TLookupKey>>> lambdaExpression = GetEntityLookupDataExpression();
+		IQueryable<EntityLookupPair<int, TLookupKey>> entityLookupDataQuery = GetEntityLookupDataQuery();
 
-		List<EntityLookupPair<int, TLookupKey>> pairs = GetLookupPairs(lambdaExpression);
+		string tag = QueryTagBuilder.CreateTag(this.GetType(), nameof(CreateEntityLookupData));
+		List<EntityLookupPair<int, TLookupKey>> pairs = entityLookupDataQuery
+			.TagWith(tag)
+			.ToList();
 
 		return CreateEntityLookupData(pairs);
 	}
 
 	/// <summary>
-	/// Factory pro EntityLookupData
+	/// Factory pro EntityLookupData.
 	/// </summary>
-	private async Task<EntityLookupData<TEntity, int, TLookupKey>> CreateEntityLookupDataAsync(CancellationToken cancellationToken = default)
+	/// <remarks>
+	/// Virtuální je pro možnost ji vyměnit pro účely unit testů - v testech na mockovaných datech nelze použít ToListAsync.</remarks>
+	internal virtual async Task<EntityLookupData<TEntity, int, TLookupKey>> CreateEntityLookupDataAsync(CancellationToken cancellationToken = default)
 	{
-		Expression<Func<TEntity, EntityLookupPair<int, TLookupKey>>> lambdaExpression = GetEntityLookupDataExpression();
+		IQueryable<EntityLookupPair<int, TLookupKey>> entityLookupDataQuery = GetEntityLookupDataQuery();
 
-		List<EntityLookupPair<int, TLookupKey>> pairs = await GetLookupPairsAsync(lambdaExpression, cancellationToken);
+		string tag = QueryTagBuilder.CreateTag(this.GetType(), nameof(CreateEntityLookupDataAsync));
+		List<EntityLookupPair<int, TLookupKey>> pairs = await entityLookupDataQuery
+			.ToListAsync(cancellationToken)
+			.ConfigureAwait(false);
 
 		return CreateEntityLookupData(pairs);
 	}
 
-
 	/// <summary>
-	/// Vyrobí lambda expression vracející lookup data z entity
+	/// Vyrobí query vracející lookup data z entity
 	/// </summary>
 	/// <returns></returns>
-	private Expression<Func<TEntity, EntityLookupPair<int, TLookupKey>>> GetEntityLookupDataExpression()
+	private IQueryable<EntityLookupPair<int, TLookupKey>> GetEntityLookupDataQuery()
 	{
 		string entityKeyPropertyName = entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TEntity)).Single();
 		Expression<Func<TEntity, TLookupKey>> lookupKeyExpression = LookupKeyExpression;
@@ -256,27 +264,12 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 			Expression.Bind(typeof(EntityLookupPair<int, TLookupKey>).GetProperty(nameof(EntityLookupPair<int, TLookupKey>.EntityKey)), Expression.MakeMemberAccess(expressionParameter, typeof(TEntity).GetProperty(entityKeyPropertyName))),
 			Expression.Bind(typeof(EntityLookupPair<int, TLookupKey>).GetProperty(nameof(EntityLookupPair<int, TLookupKey>.LookupKey)), ExpressionExt.ReplaceParameter(lookupKeyExpression.Body, lookupKeyExpression.Parameters[0], expressionParameter))),
 			expressionParameter);
-		return lambdaExpression;
-	}
 
-	private List<EntityLookupPair<int, TLookupKey>> GetLookupPairs(Expression<Func<TEntity, EntityLookupPair<int, TLookupKey>>> lambdaExpression)
-	{
-		string tag = QueryTagBuilder.CreateTag(this.GetType(), nameof(CreateEntityLookupData));
-		List<EntityLookupPair<int, TLookupKey>> pairs = (IncludeDeleted ? dbContext.Set<TEntity>().AsQueryable(tag) : dbContext.Set<TEntity>().AsQueryable(tag).WhereNotDeleted(softDeleteManager))
+		IQueryable<EntityLookupPair<int, TLookupKey>> pairsQuery = (IncludeDeleted ? dbContext.Set<TEntity>().AsQueryable(null) : dbContext.Set<TEntity>().AsQueryable(null).WhereNotDeleted(softDeleteManager))
 			.WhereIf(Filter != null, Filter)
-			.Select(lambdaExpression)
-			.ToList();
-		return pairs;
-	}
+			.Select(lambdaExpression);
 
-	private async Task<List<EntityLookupPair<int, TLookupKey>>> GetLookupPairsAsync(Expression<Func<TEntity, EntityLookupPair<int, TLookupKey>>> lambdaExpression, CancellationToken cancellationToken = default)
-	{
-		string tag = QueryTagBuilder.CreateTag(this.GetType(), nameof(CreateEntityLookupData));
-		List<EntityLookupPair<int, TLookupKey>> pairs = await (IncludeDeleted ? dbContext.Set<TEntity>().AsQueryable(tag) : dbContext.Set<TEntity>().AsQueryable(tag).WhereNotDeleted(softDeleteManager))
-			.WhereIf(Filter != null, Filter)
-			.Select(lambdaExpression)
-			.ToListAsync(cancellationToken);
-		return pairs;
+		return pairsQuery;
 	}
 
 	private EntityLookupData<TEntity, int, TLookupKey> CreateEntityLookupData(List<EntityLookupPair<int, TLookupKey>> pairs)
@@ -420,5 +413,11 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 			}
 		}
 		throw new NotSupportedException(item.ToString());
+	}
+
+	internal class TryGetEntityKeyByLookupKeyResult
+	{
+		public required bool Success { get; init; }
+		public required int EntityKey { get; init; }
 	}
 }

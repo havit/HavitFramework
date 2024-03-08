@@ -34,6 +34,17 @@ public class UzivatelLookupService : LookupServiceBase<string, Uzivatel>
 	/// </summary>
 	public async Task<List<Uzivatel>> GetUzivateleByEmailsAsync(string[] emaily, CancellationToken cancellationToken = default) => await GetEntitiesByLookupKeysAsync(emaily, cancellationToken);
 
+	internal override Task<EntityLookupData<Uzivatel, int, string>> CreateEntityLookupDataAsync(CancellationToken cancellationToken = default)
+	{
+		// EntityFrameworkCore poskytuje možnost použít asynchronní metody ToListAsync, apod.
+		// Tyto metody však nelze (neumíme) použít v unit testech - na mockovaných dbSetech, resp. mockovaných IQueryable
+		// nelze ToListAsync apod. použít.
+		// Proto zde vyměníme logiku asynchronního načtení dat pro účely unit testu za synchronní variantu.
+		// A ano, asynchronní způsob získání dat tak není otestován, nicméně pro podobnost se synchronní variantou
+		// "snad" není nutné toto testovat.
+		return Task.FromResult(CreateEntityLookupData());
+	}
+
 	/// <summary>
 	/// Párovací klíč je email.
 	/// </summary>

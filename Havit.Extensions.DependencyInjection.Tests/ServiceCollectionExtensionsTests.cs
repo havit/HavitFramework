@@ -78,6 +78,39 @@ public class ServiceCollectionExtensionsTests
 	}
 
 	[TestMethod]
+	public void ServiceCollectionExtensions_AddByServiceAttribute_ScopedImplementationTwoServices_ShouldResolvedAsScoped()
+	{
+		// Arrange
+		ServiceCollection services = new ServiceCollection();
+		IService firstScopeFirstService;
+		IService secondScopeFirstService;
+		ISecondService firstScopeSecondService;
+		ISecondService secondScopeSecondService;
+		// Act
+		services.AddByServiceAttribute(typeof(MyFirstAndSecondScopedService).Assembly, nameof(MyFirstAndSecondScopedService));
+		using (ServiceProvider serviceProvider = services.BuildServiceProvider())
+		{
+			using (var scope = serviceProvider.CreateScope())
+			{
+				firstScopeFirstService = scope.ServiceProvider.GetRequiredService<IFirstService>();
+				firstScopeSecondService = scope.ServiceProvider.GetRequiredService<ISecondService>();
+			}
+			using (var scope = serviceProvider.CreateScope())
+			{
+				secondScopeFirstService = scope.ServiceProvider.GetRequiredService<IFirstService>();
+				secondScopeSecondService = scope.ServiceProvider.GetRequiredService<ISecondService>();
+			}
+		}
+
+		// Assert
+		// assert: no exception was thrown
+		Assert.AreSame(firstScopeFirstService, firstScopeSecondService);
+		Assert.AreSame(secondScopeFirstService, secondScopeSecondService);
+		Assert.AreNotSame(firstScopeFirstService, secondScopeFirstService);
+		Assert.AreNotSame(firstScopeSecondService, secondScopeSecondService);
+	}
+
+	[TestMethod]
 	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void ServiceCollectionExtensions_AddByServiceAttribute_ClassWithExplicitServiceTypeDoesNotRegisterBaseInterfaces()
 	{

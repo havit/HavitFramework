@@ -1,11 +1,6 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Runtime.Caching;
-using System.Threading.Tasks;
-using Havit.Services.Caching;
-using Microsoft.Extensions.Caching.Memory;
 
-namespace Havit.Services.Ares;
+namespace Havit.Ares;
 
 // Uchova udaje z libovolneho ciselniku ARES po dobu 10 minut
 public class AresCiselnik

@@ -1,5 +1,5 @@
 ﻿
-namespace Havit.Services.Ares;
+namespace Havit.Ares;
 
 public class PlatceDphCisloUctu
 {

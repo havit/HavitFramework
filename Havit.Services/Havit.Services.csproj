@@ -27,9 +27,6 @@
 		<Reference Include="System.DirectoryServices" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
 		<Reference Include="System.Runtime.Caching" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
 		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
-		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="System.Text.Json" Version="8.0.3" />		
 		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
 

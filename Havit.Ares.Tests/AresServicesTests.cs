@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using Havit.Diagnostics.Contracts;
-using Havit.Services.Ares;
+using Havit.Ares;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Services.Tests.Ares;
+namespace Havit.Ares.Tests;
 
 [TestClass]
 public class AresServicesTests

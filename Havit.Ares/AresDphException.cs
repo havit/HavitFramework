@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Havit.Services.Ares;
+namespace Havit.Ares;
 
 /// <summary>
 /// Předek výjimek vracených z volání Nespolehlivého plátce DPH.

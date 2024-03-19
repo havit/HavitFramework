@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Havit.Services.Ares;
+namespace Havit.Ares;
 public partial class EkonomickySubjekt
 {
 	public Ares_Extension AresExtension { get; set; }

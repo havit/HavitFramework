@@ -6,7 +6,7 @@ using System.Net.Http;
 using Havit.Diagnostics.Contracts;
 using System.Diagnostics;
 
-namespace Havit.Services.Ares;
+namespace Havit.Ares;
 
 /// <summary>
 /// Třída implementující načítání dat z obchodního rejstříku (ARES) a Kontroly pro DPH z MFCR .

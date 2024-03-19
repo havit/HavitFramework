@@ -1,4 +1,4 @@
-﻿namespace Havit.Services.Ares;
+﻿namespace Havit.Ares;
 
 public enum PlatceDphStatusCode
 {

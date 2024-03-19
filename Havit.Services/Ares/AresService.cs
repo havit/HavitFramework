@@ -1,353 +1,436 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Text;
+using System.Threading;
 using System.Xml.Linq;
+using System.Net.Http;
+using Havit.Diagnostics.Contracts;
+using System.Diagnostics;
 
 namespace Havit.Services.Ares;
 
 /// <summary>
-/// Třída implementující načítání dat z obchodního rejstříku (ARES).
+/// Třída implementující načítání dat z obchodního rejstříku (ARES) a Kontroly pro DPH z MFCR .
 /// </summary>
-public class AresService
+public class AresService : IAresService
 {
-	private const string AresBasicDataRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/darv_bas.cgi?ico=";
-	private const string AresObchodniRejstrikDataRequestUrl = "http://wwwinfo.mfcr.cz/cgi-bin/ares/darv_or.cgi?ico=";
-
+	#region Inicializace
+	private const string urlAres = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest";
+	private const string urlMfcrDph = "https://adisrws.mfcr.cz/dpr/axis2/services/rozhraniCRPDPH.rozhraniCRPDPHSOAP";
+	private string DateDphTimeFormat = "yyyy-MM-dd";
 	/// <summary>
-	/// IČ subjektu, kterého údaje chceme získat.
+	/// Max počet nalezených firem při načítání dat z ARESu (podle názvu).
+	/// Implicitně 100.
 	/// </summary>
-	private string Ico { get; set; }
+	public int MaxResults { get; set; }
 
-	/// <summary>
-	/// Timeout (v milisekundách) jednoho requestu při načítání dat z ARESu.
-	/// Pokud není hodnota nastavena, není délka requestu omezována (resp. je použito standardní nastavení .NETu).
-	/// </summary>
-	public int? Timeout
+	public AresService()
 	{
-		get; set;
+		MaxResults = 100;
+	}
+
+	public AresCiselnik CiselnikPravniForma = new AresCiselnik(urlAres, "res", "PravniForma");
+	public AresCiselnik CiselnikRejstrikovySoud = new AresCiselnik(urlAres, "vr", "SoudVr");
+	public AresCiselnik CiselnikFinancniUrad = new AresCiselnik(urlAres, "ufo", "FinancniUrad");
+
+	#endregion
+
+	#region ARES2 - Public (Synchro)
+
+	/// <remarks>
+	/// Vyhledání ekonomického subjektu ARES podle zadaného iča
+	/// </remarks>
+	/// <returns>EkonomickeSubjektyResponse</returns>
+	public virtual EkonomickeSubjektyResponse GetEkonomickeSubjektyFromIco(string ico)
+	{
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse;
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyFromIco_PrepareRequest(ico);
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = urlAres;
+		EkonomickeSubjektySeznam resp = aresClient.VyhledejEkonomickeSubjekty(ekonomickeSubjektyKomplexFiltr);
+		ekonomickeSubjektyResponse = GetEkonomickeSubjekty_ProcessResponse(resp);
+		return ekonomickeSubjektyResponse;
+	}
+
+	/// <remarks>
+	/// Vyhledání ekonomického subjektu ARES podle zadaného Obchodního Jména
+	/// </remarks>
+	/// <returns>EkonomickeSubjektyResponse</returns>
+	public virtual EkonomickeSubjektyResponse GetEkonomickeSubjektyFromObchodniJmeno(string obchodniJmeno)
+	{
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse;
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyFromObchodniJmeno_PrepareRequest(obchodniJmeno);
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = urlAres;
+		EkonomickeSubjektySeznam resp = aresClient.VyhledejEkonomickeSubjekty(ekonomickeSubjektyKomplexFiltr);
+		ekonomickeSubjektyResponse = GetEkonomickeSubjekty_ProcessResponse(resp);
+		return ekonomickeSubjektyResponse;
+	}
+
+	/// <remarks>
+	/// Vyhledání ekonomického subjektu ARES podle zadaného iča nebo Názvu
+	/// </remarks>
+	/// <returns>OK</returns>
+	public virtual EkonomickeSubjektyResponse GetEkonomickeSubjektyFromIcoOrObchodniJmeno(string ico, string obchodniJmeno)
+	{
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse;
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyFromIcoOrObchodniJmeno_PrepareRequest(ico, obchodniJmeno);
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = urlAres;
+		EkonomickeSubjektySeznam resp = aresClient.VyhledejEkonomickeSubjekty(ekonomickeSubjektyKomplexFiltr);
+		ekonomickeSubjektyResponse = GetEkonomickeSubjekty_ProcessResponse(resp);
+		return ekonomickeSubjektyResponse;
+	}
+
+	/// <remarks>
+	/// Vrací strukturovanou odpověd Nespolehlivý plátce. Tj. Pouze z MFCR. Hledání dle DIC (vcetne CZ prefixu)
+	/// </remarks>
+	/// <returns>PlatceDphResponse</returns>
+	public virtual PlatceDphResponse GetPlatceDph(string dic)
+	{
+		PlatceDphResponse response = new PlatceDphResponse();
+		string xmlSOAP = GetPlatceDph_PrepareRequest(dic);
+		string resultXML = PostSoapDphRequest(urlMfcrDph, xmlSOAP);
+		return GetPlatceDph_ProcessResponse(resultXML);
+	}
+
+	/// <remarks>
+	/// Kombinuje volání ARES a DPH. Pracuje sekvenčně. Nejprve ARES. Pokud v ARESu zjistí že existuje DIC, tak volá i PlatceDph. 
+	/// </remarks>
+	/// <returns>AresDphResponse</returns>
+	public AresDphResponse GetAresAndPlatceDph(string ico)
+	{
+		AresDphResponse npResult = new AresDphResponse();
+		var ekonomickeSubjekty = GetEkonomickeSubjektyFromIco(ico);
+		if (ekonomickeSubjekty.EkonomickeSubjektyAres.Any())
+		{
+			var aktSubject = ekonomickeSubjekty.EkonomickeSubjektyAres.First();
+			npResult.AresElement = aktSubject;
+			if (aktSubject.AresExtension.IsPlatceDph && aktSubject.Dic != null && aktSubject.Dic.Length >= 10)
+			{
+				var platceDPH = GetPlatceDph(aktSubject.Dic.Right(10));
+				if (platceDPH.IsNalezeno)
+				{
+					npResult.PlatceDphElement = platceDPH;
+				}
+			}
+		}
+		return npResult;
+	}
+	#endregion
+
+	#region ARES2 - Public (Async)
+
+	/// <summary>
+	/// Vrací výsledky z ARES. Hledání dle ICO. Odpověď má pouze jeden subjekt.
+	/// </summary>
+	public async Task<EkonomickeSubjektyResponse> GetEkonomickeSubjektyFromIcoAsync(string ico, CancellationToken cancellationToken = default)
+	{
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse = new EkonomickeSubjektyResponse();
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyFromIco_PrepareRequest(ico);
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = urlAres;
+		EkonomickeSubjektySeznam resp = await aresClient.VyhledejEkonomickeSubjektyAsync(ekonomickeSubjektyKomplexFiltr).ConfigureAwait(false);
+		ekonomickeSubjektyResponse = GetEkonomickeSubjekty_ProcessResponse(resp);
+		return ekonomickeSubjektyResponse;
 	}
 
 	/// <summary>
-	/// Konstruktor.
+	/// Vrací výsledky z ARES. Hledání dle Obchodního jména. Odpověď může mít až 100 subjektů (defaultně - lze změnit via MaxResult).
 	/// </summary>
-	/// <param name="ico">IČO společnosti.</param>
-	public AresService(string ico)
+	public async Task<EkonomickeSubjektyResponse> GetEkonomickeSubjektyFromObchodniJmenoAsync(string obchodniJmeno, CancellationToken cancellationToken = default)
 	{
-		Ico = ico;
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse = new EkonomickeSubjektyResponse();
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyFromObchodniJmeno_PrepareRequest(obchodniJmeno);
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = urlAres;
+		EkonomickeSubjektySeznam resp = await aresClient.VyhledejEkonomickeSubjektyAsync(ekonomickeSubjektyKomplexFiltr).ConfigureAwait(false);
+		ekonomickeSubjektyResponse = GetEkonomickeSubjekty_ProcessResponse(resp);
+		return ekonomickeSubjektyResponse;
 	}
 
 	/// <summary>
-	/// Vrací strukturovanou odpověd z obchodního rejstříku.
+	/// Vrací strukturovanou odpověd Nespolehlivý plátce. Tj. Pouze z MFCR. Hledání dle DIC (vcetne CZ prefixu)
 	/// </summary>
-	public AresData GetData(AresRegistr rejstriky = AresRegistr.Basic | AresRegistr.ObchodniRejstrik)
+	public async Task<PlatceDphResponse> GetPlatceDphAsync(string dic, CancellationToken cancellationToken = default)
 	{
-		AresData result = new AresData();
-		List<Task> tasks = new List<Task>();
+		PlatceDphResponse platceDphResponse = new PlatceDphResponse();
+		string xmlSOAP = GetPlatceDph_PrepareRequest(dic);
+		string resultXML = await PostSoapDphRequestAsync(urlMfcrDph, xmlSOAP, cancellationToken).ConfigureAwait(false);
+		platceDphResponse = GetPlatceDph_ProcessResponse(resultXML);
+		return platceDphResponse;
+	}
 
-		if (rejstriky.HasFlag(AresRegistr.Basic))
+	/// <summary>
+	/// Vrací výsledky ze dvou volani ARES + nespolehlivyPlatce (z MFCR).  Hledání pouze dle ICO
+	/// </summary>
+	public async Task<AresDphResponse> GetAresAndPlatceDphAsync(string ico, CancellationToken cancellationToken = default)
+	{
+		AresDphResponse aresDphResponse = new AresDphResponse();
+		var ekonomickeSubjekty = await GetEkonomickeSubjektyFromIcoAsync(ico, cancellationToken).ConfigureAwait(false);
+		if (ekonomickeSubjekty.EkonomickeSubjektyAres.Any())
 		{
-			tasks.Add(Task.Factory.StartNew(LoadBasicData, result));
+			var aktSubject = ekonomickeSubjekty.EkonomickeSubjektyAres.First();
+			aresDphResponse.AresElement = aktSubject;
+			if (aktSubject.AresExtension.IsPlatceDph && aktSubject.Dic != null && aktSubject.Dic.Length >= 10)
+			{
+				aresDphResponse.PlatceDphElement = await GetPlatceDphAsync(aktSubject.Dic.Right(10), cancellationToken).ConfigureAwait(false);
+			}
 		}
+		return aresDphResponse;
+	}
+	#endregion
 
-		if (rejstriky.HasFlag(AresRegistr.ObchodniRejstrik))
+
+	#region PrepareRequest/ProcessResponse - Parts 
+	private EkonomickeSubjektyKomplexFiltr GetEkonomickeSubjektyFromIco_PrepareRequest(string ico)
+	{
+		Contract.Requires(ico != null, "Ico = Null");
+		Contract.Requires(ico.Length == 8, "Ico nemá předepsanou délku 8 znaků");
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = new EkonomickeSubjektyKomplexFiltr
 		{
-			tasks.Add(Task.Factory.StartNew(LoadObchodniRejstrikData, result));
-		}
+			Start = 0,
+			Pocet = 1,
+			Ico = new List<string>() { ico }
+		};
+		return ekonomickeSubjektyKomplexFiltr;
+	}
 
+	private EkonomickeSubjektyKomplexFiltr GetEkonomickeSubjektyFromObchodniJmeno_PrepareRequest(string obchodniJmeno)
+	{
+		Contract.Requires(obchodniJmeno != null, "ObchodniJmeno = Null");
+		Contract.Requires(obchodniJmeno.Length != 0, "ObchodniJmeno nesmí obsahovat prázdný řetězec");
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse = new EkonomickeSubjektyResponse();
+		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = new EkonomickeSubjektyKomplexFiltr
+		{
+			Start = 0,
+			Pocet = MaxResults,
+			ObchodniJmeno = obchodniJmeno
+		};
+		return ekonomickeSubjektyKomplexFiltr;
+	}
+
+	private EkonomickeSubjektyKomplexFiltr GetEkonomickeSubjektyFromIcoOrObchodniJmeno_PrepareRequest(string ico, string obchodniJmeno)
+	{
+		if (!string.IsNullOrEmpty(ico))
+		{
+			return GetEkonomickeSubjektyFromIco_PrepareRequest(ico);
+		}
+		else if (!string.IsNullOrEmpty(obchodniJmeno))
+		{
+			return GetEkonomickeSubjektyFromObchodniJmeno_PrepareRequest(obchodniJmeno);
+		}
+		else
+		{
+			Contract.Requires(true, "Parametr ObchodniJmeno nebo Ico musí být zadán.");
+			return null;
+		}
+	}
+
+	private EkonomickeSubjektyResponse GetEkonomickeSubjekty_ProcessResponse(EkonomickeSubjektySeznam ekonomickeSubjektySeznam)
+	{
+		EkonomickeSubjektyResponse ekonomickeSubjektyResponse = new EkonomickeSubjektyResponse();
+		ekonomickeSubjektyResponse.EkonomickeSubjektyAres = ekonomickeSubjektySeznam.EkonomickeSubjekty.ToList();
+		ekonomickeSubjektyResponse.PocetCelkem = ekonomickeSubjektySeznam.PocetCelkem;
+		foreach (var subjekt in ekonomickeSubjektyResponse.EkonomickeSubjektyAres)
+		{
+			AppendAresExtension(subjekt);
+		}
+		return ekonomickeSubjektyResponse;
+	}
+
+	private string GetPlatceDph_PrepareRequest(string dic, bool checkInputParamValidity = true)
+	{
+		if (checkInputParamValidity)
+		{
+			Contract.Requires(dic != null, "dic = null");
+			Contract.Requires(dic.Length == 10, "dic musí mít délku 10 znaků ");
+			Contract.Requires(dic.Substring(2).All(char.IsDigit), "dic musí obsahovat posledních 8 znaků pouze číslice");
+		}
+		string xmlSOAP = @"<?xml version=""1.0"" encoding=""utf-8""?>
+        <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"">
+            <soapenv:Body>
+                <StatusNespolehlivyPlatceRequest xmlns=""http://adis.mfcr.cz/rozhraniCRPDPH/"">
+                     <dic>ANYDIC</dic>
+                </StatusNespolehlivyPlatceRequest>
+            </soapenv:Body>
+        </soapenv:Envelope>";
+		return xmlSOAP.Replace("ANYDIC", dic);
+	}
+
+	private PlatceDphResponse GetPlatceDph_ProcessResponse(string XMLResponse)
+	{
+		PlatceDphResponse response = new PlatceDphResponse();
 		try
 		{
-			Task.WaitAll(tasks.ToArray());
-		}
-		catch (AggregateException exception)
-		{
-			// pokus o vybalení výjimky (chceme řešit jen jedinou)
-			if ((exception.InnerExceptions.Count > 0) && (exception.InnerExceptions[0] is AresBaseException))
+			XNamespace nsEnvelop = "http://schemas.xmlsoap.org/soap/envelope/";
+			XNamespace nsRozhrani = "http://adis.mfcr.cz/rozhraniCRPDPH/";
+			response.ResponseRaw = XMLResponse;
+			XDocument doc = XDocument.Parse(XMLResponse);
+			IEnumerable<XElement> childListBody = from el in doc.Root?.Descendants(nsEnvelop + "Body") select el;
+			bool isExistsStatus = false;
+			foreach (XElement elm in childListBody?.Elements(nsRozhrani + "StatusNespolehlivyPlatceResponse")?.Elements(nsRozhrani + "status"))
 			{
-				throw exception.InnerExceptions[0];
-			}
-			else
-			{
-				throw;
-			}
-		}
-
-		return result;
-	}
-
-	private void LoadBasicData(object state)
-	{
-		AresData result = (AresData)state;
-
-		string requestUrl = String.Format("{0}{1}", AresBasicDataRequestUrl, Ico);
-		XDocument aresResponseXDocument = this.GetAresResponseXDocument(requestUrl);
-
-		XNamespace aresDT = XNamespace.Get("http://wwwinfo.mfcr.cz/ares/xml_doc/schemas/ares/ares_datatypes/v_1.0.3");
-
-		// Errors
-		IEnumerable<XElement> eElements = aresResponseXDocument.Root.Elements().Elements(aresDT + "E");
-		if ((eElements != null) && (eElements.Count() > 0))
-		{
-			bool hasError = false;
-			System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
-			foreach (XElement item in eElements)
-			{
-				bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
-				if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
+				string statusCodeText = elm.Attribute("statusCode")?.Value;
+				if (statusCodeText != null)
 				{
-					// nehlásíme chybu
-					continue;
-				}
-				if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 61 - subjekt zanikl"))
-				{
-					result.SubjektZanikl = true;
-					// nehlásíme chybu
-					continue;
-				}
-				else
-				{
-					hasError = true;
-					errorMessages.Append(String.Format("{0}; ", (string)item.Elements(aresDT + "ET").SingleOrDefault()));
-				}
-			}
-
-			if (!hasError)
-			{
-				// nehlásíme chybu ani neparsujeme data - jde o prosté nenalezení záznamu
-				return;
-			}
-			else
-			{
-				throw new AresException(errorMessages.ToString());
-			}
-		}
-
-		lock (result)
-		{
-			this.ParseBasicData(aresResponseXDocument, aresDT, result);
-		}
-	}
-
-	private void ParseBasicData(XDocument aresResponse, XNamespace aresDT, AresData result)
-	{
-		// Výpis BASIC (element).
-		XElement vypisOrElement = aresResponse.Descendants(aresDT + "VBAS").FirstOrDefault();
-
-		if (vypisOrElement != null)
-		{
-			result.SubjektZanikl = false;
-			result.Ico = (string)vypisOrElement.Elements(aresDT + "ICO").FirstOrDefault();
-			result.Dic = (string)vypisOrElement.Elements(aresDT + "DIC").FirstOrDefault();
-			result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "OF").FirstOrDefault(); // obchodní firma
-
-			XElement npfElement = vypisOrElement.Elements(aresDT + "PF").Elements(aresDT + "NPF").FirstOrDefault();
-			if (npfElement != null)
-			{
-				result.PravniForma = new AresData.Classes.PravniForma()
-				{
-					Nazev = (string)npfElement
-				};
-			}
-
-			XElement adresaElement = vypisOrElement.Elements(aresDT + "AA").FirstOrDefault();
-			if (adresaElement != null)
-			{
-				result.Sidlo = new AresData.Classes.Sidlo()
-				{
-					Ulice = (string)adresaElement.Elements(aresDT + "NU").FirstOrDefault(),
-
-					CisloDoAdresy = (string)adresaElement.Elements(aresDT + "CA").FirstOrDefault(),
-					CisloPopisne = (string)adresaElement.Elements(aresDT + "CD").FirstOrDefault(),
-					CisloOrientacni = (string)adresaElement.Elements(aresDT + "CO").FirstOrDefault(),
-
-					Mesto = (string)adresaElement.Elements(aresDT + "N").FirstOrDefault(),
-					MestskaCast = (string)adresaElement.Elements(aresDT + "NCO").FirstOrDefault(),
-					Psc = (string)adresaElement.Elements(aresDT + "PSC").FirstOrDefault(),
-					Stat = (string)adresaElement.Elements(aresDT + "NS").FirstOrDefault(),
-					AdresaTextem = (string)adresaElement.Elements(aresDT + "AT").FirstOrDefault()
-				};
-			}
-		}
-	}
-
-	private void LoadObchodniRejstrikData(object state)
-	{
-		AresData result = (AresData)state;
-
-		string requestUrl = String.Format("{0}{1}", AresObchodniRejstrikDataRequestUrl, Ico);
-		XDocument aresResponseXDocument = this.GetAresResponseXDocument(requestUrl);
-
-		XNamespace aresDT = XNamespace.Get("http://wwwinfo.mfcr.cz/ares/xml_doc/schemas/ares/ares_datatypes/v_1.0.3");
-
-		// Errors
-		IEnumerable<XElement> eElements = aresResponseXDocument.Root.Elements().Elements(aresDT + "E");
-		if ((eElements != null) && (eElements.Count() > 0))
-		{
-			bool hasError = false;
-			System.Text.StringBuilder errorMessages = new System.Text.StringBuilder();
-			foreach (XElement item in eElements)
-			{
-				bool errorEK = ((int)item.Elements(aresDT + "EK").SingleOrDefault() == 1 /* Nenalezen */);
-				if (errorEK && ((string)item.Elements(aresDT + "ET").SingleOrDefault()).Contains("Chyba 71 - nenalezeno"))
-				{
-					// nehlásíme chybu
-					continue;
-				}
-				else
-				{
-					hasError = true;
-					errorMessages.Append(String.Format("{0}; ", (string)item.Elements(aresDT + "ET").SingleOrDefault()));
-				}
-			}
-
-			if (!hasError)
-			{
-				// nehlásíme chybu ani neparsujeme data - jde o prosté nenalezení záznamu
-				return;
-			}
-			else
-			{
-				throw new AresException(errorMessages.ToString());
-			}
-		}
-
-		lock (result)
-		{
-			this.ParseObchodniRejstrikData(aresResponseXDocument, aresDT, result);
-		}
-	}
-
-	private void ParseObchodniRejstrikData(XDocument aresResponse, XNamespace aresDT, AresData result)
-	{
-		// Výpis OR (element).
-		XElement vypisOrElement = aresResponse.Descendants(aresDT + "Vypis_OR").FirstOrDefault();
-
-		if (vypisOrElement != null)
-		{
-
-			XElement stavElement = vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "S").Elements(aresDT + "SSU").FirstOrDefault();
-			if (stavElement != null)
-			{
-				string stavResult = (string)stavElement;
-				if (stavResult.Equals("Aktivní"))
-				{
-					result.SubjektZanikl = false;
-				}
-				else if (stavResult.Equals("Zaniklý"))
-				{
-					result.SubjektZanikl = true;
-				}
-			}
-
-			result.Ico = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "ICO").FirstOrDefault();
-			result.NazevObchodniFirmy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "OF").FirstOrDefault(); // obchodní firma
-
-			// Registrace OR
-			XElement registraceElement = vypisOrElement.Elements(aresDT + "REG").FirstOrDefault();
-			if (registraceElement != null)
-			{
-				result.RegistraceOR = new AresData.Classes.RegistraceOR();
-
-				XElement szElement = registraceElement.Elements(aresDT + "SZ").FirstOrDefault();
-
-				if (szElement != null)
-				{
-					XElement sdElement = szElement.Elements(aresDT + "SD").FirstOrDefault();
-
-					if (sdElement != null)
+					int statusCode = -1;
+					if (int.TryParse(elm.Attribute("statusCode")?.Value.ToString(), out statusCode))
 					{
-						result.RegistraceOR.NazevSoudu = (string)sdElement.Elements(aresDT + "T").FirstOrDefault();
-						result.RegistraceOR.KodSoudu = (string)sdElement.Elements(aresDT + "K").FirstOrDefault();
-					}
-
-					result.RegistraceOR.SpisovaZnacka = (string)szElement.Elements(aresDT + "OV").FirstOrDefault();
-				}
-			}
-
-			XElement npfElement = vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "PFO").Elements(aresDT + "NPF").FirstOrDefault();
-			if (npfElement != null)
-			{
-				result.PravniForma = new AresData.Classes.PravniForma()
-				{
-					Nazev = (string)npfElement
-				};
-			}
-
-			//obchodniRejstrikResponse.StavSubjektu = (string)vbasElement.Descendants(aresDT + "SSU").FirstOrDefault();
-
-			result.Sidlo = new AresData.Classes.Sidlo()
-			{
-				Ulice = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NU").FirstOrDefault(),
-
-				CisloDoAdresy = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CA").FirstOrDefault(),
-				CisloPopisne = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CD").FirstOrDefault(),
-				CisloOrientacni = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "CO").FirstOrDefault(),
-
-				Mesto = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "N").FirstOrDefault(),
-				MestskaCast = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NCO").FirstOrDefault(),
-				Psc = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "PSC").FirstOrDefault(),
-				Stat = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "NS").FirstOrDefault(),
-				AdresaTextem = (string)vypisOrElement.Elements(aresDT + "ZAU").Elements(aresDT + "SI").Elements(aresDT + "AT").FirstOrDefault()
-			};
-
-			// statutární orgán
-			var soElement = vypisOrElement.Elements(aresDT + "SO").FirstOrDefault();
-			if (soElement != null)
-			{
-				result.StatutarniOrgan = new AresData.Classes.StatutarniOrgan();
-				var statutartniOrganTextElement = soElement.Elements(aresDT + "T").FirstOrDefault();
-				if (statutartniOrganTextElement != null)
-				{
-					result.StatutarniOrgan.Text = ((string)statutartniOrganTextElement).Trim();
-				}
-				var csoElement = soElement.Element(aresDT + "CSO");
-				if (csoElement != null)
-				{
-					var cElement = csoElement.Element(aresDT + "C");
-					if (cElement != null)
-					{
-						var foElement = cElement.Element(aresDT + "FO");
-						if (foElement != null)
+						if (statusCode >= 0 && statusCode <= 3)
 						{
-							var jmenoElement = foElement.Element(aresDT + "J");
-							if (jmenoElement != null)
-							{
-								result.StatutarniOrgan.KrestniJmeno = jmenoElement.Value;
-							}
-							var prijmeniElement = foElement.Element(aresDT + "P");
-							if (prijmeniElement != null)
-							{
-								result.StatutarniOrgan.Prijmeni = prijmeniElement.Value;
-							}
+							isExistsStatus = true;
+						}
+						else
+						{
+							throw new AresDphException("Nepovolený StatusCode " + statusCode.ToString(), PlatceDphStatusCode.BadStatusCode);
 						}
 					}
 				}
 			}
+			if (!isExistsStatus)
+			{
+				throw new AresDphException("Bad Format response XML - no exists status or Bad format", PlatceDphStatusCode.XMLError);
+			}
+			foreach (XElement elm in childListBody?.Elements(nsRozhrani + "StatusNespolehlivyPlatceResponse")?.Elements(nsRozhrani + "statusPlatceDPH"))
+			{
+				string NespolehlivyPlatce = elm.Attribute("nespolehlivyPlatce")?.Value;
+				if (NespolehlivyPlatce == "NENALEZEN")
+				{
+					response.IsNespolehlivy = true;
+					response.IsNalezeno = false;
+					return response;
+				}
+				else if (NespolehlivyPlatce == "NE")
+				{
+					response.IsNespolehlivy = false;
+					response.IsNalezeno = true;
+				}
+				else
+				{
+					response.IsNespolehlivy = true;
+					response.IsNalezeno = true;
+				}
+				response.Dic = elm.Attribute("dic")?.Value;
+				response.CisloFu = elm.Attribute("cisloFu")?.Value;
+				response.NazevFu = CiselnikFinancniUrad.GetItemValue(response.CisloFu);
+				string dtZverejneniNespolehlivostiString = elm.Attribute("datumZverejneniNespolehlivosti")?.Value;
+				if (!string.IsNullOrEmpty(dtZverejneniNespolehlivostiString))
+				{
+					DateTime datumZverejneniNespolehlivosti;
+					DateTime.TryParseExact(dtZverejneniNespolehlivostiString, DateDphTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out datumZverejneniNespolehlivosti);
+					response.NespolehlivyOd = datumZverejneniNespolehlivosti;
+				}
+				else
+				{
+					response.NespolehlivyOd = DateTime.MinValue;
+				}
+
+				foreach (var elmUcet in elm.Descendants(nsRozhrani + "ucet"))
+				{
+					PlatceDphCisloUctu cu = new PlatceDphCisloUctu();
+					DateTime datumZverejneni;
+					DateTime datumUkonceni;
+					string dtZverejneniString = elmUcet.Attribute("datumZverejneni")?.Value;
+					DateTime.TryParseExact(dtZverejneniString, DateDphTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out datumZverejneni);
+					cu.DatumZverejneni = datumZverejneni;
+					string dtUkonceniString = elmUcet.Attribute("datumUkonceni")?.Value;
+					DateTime.TryParseExact(dtUkonceniString, DateDphTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out datumUkonceni);
+					cu.DatumUkonceni = datumUkonceni;
+					var standardniUcet = elmUcet.Descendants(nsRozhrani + "standardniUcet").FirstOrDefault();
+					if (standardniUcet != null)
+					{
+						string Predcisli = standardniUcet.Attribute("predcisli")?.Value;
+						cu.Predcisli = Predcisli == null ? "" : Predcisli;
+						cu.Cislo = standardniUcet.Attribute("cislo").Value;
+						cu.KodBanky = standardniUcet.Attribute("kodBanky").Value;
+						response.CislaUctu.Add(cu);
+					}
+					var nestandardniUcet = elmUcet.Descendants(nsRozhrani + "nestandardniUcet").FirstOrDefault();
+					if (nestandardniUcet != null)
+					{
+						cu.Predcisli = "IBAN";
+						cu.Cislo = nestandardniUcet.Attribute("cislo").Value;
+						response.CislaUctu.Add(cu);
+					}
+				}
+			}
 		}
+		catch (Exception Ex)
+		{
+			throw new AresDphException("Bad Format response XML - " + Ex.Message, PlatceDphStatusCode.XMLError);
+		}
+		return response;
 	}
 
-	/// <summary>
-	/// Odešle dotaz do obchodního rejstříku pro dané IČ a vrátí odpověd jako XDocument objekt.
-	/// </summary>
-	private XDocument GetAresResponseXDocument(string requestUrl)
+	#endregion
+
+	#region ARES2 - Private
+	private void AppendAresExtension(EkonomickySubjekt ekonomickySubjekt)
 	{
-		XDocument aresResponseXDocument = null;
-
-		try
+		ekonomickySubjekt.AresExtension = new Ares_Extension();
+		ekonomickySubjekt.AresExtension.PravniFormaText = CiselnikPravniForma.GetItemValue(ekonomickySubjekt.PravniForma);
+		ekonomickySubjekt.AresExtension.FinancniUradText = CiselnikFinancniUrad.GetItemValue(ekonomickySubjekt.FinancniUrad);
+		var subjectvr = ekonomickySubjekt.DalsiUdaje.FirstOrDefault(x => x.DatovyZdroj == "vr" && x.SpisovaZnacka?.Length > 5);
+		if (subjectvr != null)
 		{
-			WebRequest aresRequest = HttpWebRequest.Create(requestUrl);
-			if (this.Timeout != null)
-			{
-				aresRequest.Timeout = this.Timeout.Value;
-			}
-
-			using (HttpWebResponse aresResponse = (HttpWebResponse)aresRequest.GetResponse())
-			{
-				aresResponseXDocument = XDocument.Load(new StreamReader(aresResponse.GetResponseStream()));
-			}
+			string[] spisovaZnackaSplit = subjectvr.SpisovaZnacka.Split('/');
+			ekonomickySubjekt.AresExtension.RejstrikovySoudText = CiselnikRejstrikovySoud.GetItemValue(spisovaZnackaSplit[spisovaZnackaSplit.Count() - 1]);
+			ekonomickySubjekt.AresExtension.SpisovaZnackaFull = subjectvr.SpisovaZnacka + " " + ekonomickySubjekt.AresExtension.RejstrikovySoudText;
 		}
-		catch (WebException e)
+		else
 		{
-			throw new AresLoadException(String.Format("Chyba \"{0}\" při pokusu o získání dat ze služby ARES ({1}).", e.Message, requestUrl));
+			ekonomickySubjekt.AresExtension.RejstrikovySoudText = "";
+			ekonomickySubjekt.AresExtension.SpisovaZnackaFull = "";
 		}
+		ekonomickySubjekt.AresExtension.SidloPscText = ekonomickySubjekt.Sidlo?.Psc.ToString("### ##");
+		ekonomickySubjekt.AresExtension.SidloAddressLine = ekonomickySubjekt.Sidlo?.TextovaAdresa?.Split(',');
+		var SidloAdsArray = ekonomickySubjekt.Sidlo?.TextovaAdresa?.ToCharArray().Where(c => !Char.IsWhiteSpace(c) && c != ',').ToArray();
+		string DorucAds = ((ekonomickySubjekt.AdresaDorucovaci?.RadekAdresy1 ?? "") + (ekonomickySubjekt.AdresaDorucovaci?.RadekAdresy2 ?? "") + (ekonomickySubjekt.AdresaDorucovaci?.RadekAdresy3 ?? "")).ToString();
+		var DorucAdsArray = DorucAds?.ToCharArray().Where(c => !Char.IsWhiteSpace(c) && c != ',').ToArray();
+		ekonomickySubjekt.AresExtension.IsDorucovaciAdresaStejna = (new string(SidloAdsArray) == new string(DorucAdsArray));
+		ekonomickySubjekt.AresExtension.IsPlatceDph = ekonomickySubjekt.SeznamRegistraci.StavZdrojeDph == "AKTIVNI";
 
-		return aresResponseXDocument;
 	}
+
+	private async Task<string> PostSoapDphRequestAsync(string url, string text, CancellationToken cancellationToken = default)
+	{
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		using (System.Net.Http.HttpContent content = new System.Net.Http.StringContent(text, Encoding.UTF8, "text/xml"))
+		using (System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Post, url))
+		{
+			request.Headers.Add("getStatusNespolehlivyPlatceRequestMessage", "");
+			request.Content = content;
+			using (System.Net.Http.HttpResponseMessage response = await httpClient.SendAsync(request, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false))
+			{
+				response.EnsureSuccessStatusCode(); // throws an Exception if 404, 500, etc.
+				return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			}
+		}
+	}
+
+	private string PostSoapDphRequest(string url, string text, CancellationToken cancellationToken = default)
+	{
+		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		using (System.Net.Http.HttpContent content = new System.Net.Http.StringContent(text, Encoding.UTF8, "text/xml"))
+		using (System.Net.Http.HttpRequestMessage request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Post, url))
+		{
+			request.Headers.Add("getStatusNespolehlivyPlatceRequestMessage", "");
+			request.Content = content;
+			using (var response = Task.Run(() => httpClient.SendAsync(request, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken)).GetAwaiter().GetResult())
+			{
+				response.EnsureSuccessStatusCode(); // throws an Exception if 404, 500, etc.
+				return Task.Run(() => response.Content.ReadAsStringAsync()).GetAwaiter().GetResult();
+			}
+		}
+	}
+
+
+	#endregion
+
+
 }

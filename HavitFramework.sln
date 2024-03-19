@@ -244,6 +244,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Sftp", "Havi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Sftp.Tests", "Havit.Services.Sftp.Tests\Havit.Services.Sftp.Tests.csproj", "{021C9914-A6B4-47F4-834A-A70365A88BA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.PersonalDataInterchange", "Havit.PersonalDataInterchange\Havit.PersonalDataInterchange.csproj", "{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -622,6 +624,10 @@ Global
 		{021C9914-A6B4-47F4-834A-A70365A88BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{021C9914-A6B4-47F4-834A-A70365A88BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{021C9914-A6B4-47F4-834A-A70365A88BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -731,6 +737,7 @@ Global
 		{76FD1FEB-DDA4-4AB2-906B-1083CEFE0C2E} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{4C012223-386E-42DE-8BFD-4F27BFB11375} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 		{021C9914-A6B4-47F4-834A-A70365A88BA2} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
+		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C} = {DB76A91F-9059-4EB3-9389-C86486BB0DFC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

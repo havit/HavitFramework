@@ -2,60 +2,55 @@
 
 namespace Havit.Ares;
 
-// Uchova udaje z libovolneho ciselniku ARES po dobu 10 minut
-public class AresCiselnik
+internal class AresCiselnik
 {
-	private string _zdrojCiselniku { get; set; }
-	private string _kodCiselniku { get; set; }
-	private string _aresUrl { get; set; }
-	public int pocetRows { get; set; }
-	public string language { get; set; }
-	private ConcurrentDictionary<string, string> anyCiselnik;
+	private readonly string _zdrojCiselniku;
+	private readonly string _kodCiselniku;
 
-	public AresCiselnik(string aresUrl, string zdrojCiselniku, string kodCiselniku)
+	private const string Language = "cs";
+	internal const string UnknownValue = "Neznámý";
+
+	private Dictionary<string, string> _aresCiselnik;
+
+	public AresCiselnik(string zdrojCiselniku, string kodCiselniku)
 	{
 		_zdrojCiselniku = zdrojCiselniku;
 		_kodCiselniku = kodCiselniku;
-		_aresUrl = aresUrl;
-		//cache = new MemoryCache(zdrojCiselniku + "-" + _kodCiselniku);
-		pocetRows = 10000;
-		language = "cs";   // Zatim pouze cesky
-		anyCiselnik = [];
 	}
 
-	public string GetItemValue(string code)
+	public string GetValue(string code, string unknownValue = UnknownValue)
 	{
-
 		if (string.IsNullOrEmpty(code))
 		{
-			return "Empty Code";
+			return unknownValue;
 		}
-		if (!anyCiselnik.Any())
+
+		EnsureCiselnik();
+
+		if (_aresCiselnik.TryGetValue(code, out var result))
 		{
-			ReadAndPrepareCiselnik();
+			return result;
 		}
-		anyCiselnik.TryGetValue(code, out var value2);
-		return value2 ?? "unknown code " + code;
+
+		return unknownValue;
 	}
 
-	private void ReadAndPrepareCiselnik()
+	private void EnsureCiselnik()
 	{
-		CiselnikyNazevnikSeznam ciselnik;
-		try
+		if (_aresCiselnik == null)
 		{
-			ciselnik = ReadAresCiselnik();
-		}
-		catch
-		{
-			throw;
-		}
-		if (ciselnik?.Ciselniky?.Count() > 0)
-		{
-			foreach (var item in ciselnik.Ciselniky.First().PolozkyCiselniku)
+			CiselnikyNazevnikSeznam ciselnikyNazevnikSeznam = ReadAresCiselnik();
+
+			_aresCiselnik = new Dictionary<string, string>();
+			if (ciselnikyNazevnikSeznam?.Ciselniky?.Count() > 0)
 			{
-				if (!anyCiselnik.ContainsKey(item.Kod))                         // V ARES číselníku se občas vyskytne 2x ta samá hodnota 
+				foreach (var item in ciselnikyNazevnikSeznam.Ciselniky.First().PolozkyCiselniku.OrderByDescending(polozkaCiselniku => polozkaCiselniku.PlatnostDo))
 				{
-					anyCiselnik.TryAdd(item.Kod, item.Nazev.First(x => x.KodJazyka == language).Nazev);
+					// V ARES číselníku se občas vyskytne 2x ta samá hodnota 
+					if (!_aresCiselnik.ContainsKey(item.Kod))
+					{
+						_aresCiselnik.Add(item.Kod, item.Nazev.First(x => x.KodJazyka == Language).Nazev);
+					}
 				}
 			}
 		}
@@ -65,14 +60,15 @@ public class AresCiselnik
 	{
 		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
 		AresRestApi aresRestApi = new AresRestApi(httpClient);
-		aresRestApi.BaseUrl = _aresUrl;
+		aresRestApi.BaseUrl = AresService.AresUrl;
 		CiselnikyZakladniFiltr filter = new CiselnikyZakladniFiltr()
 		{
 			ZdrojCiselniku = _zdrojCiselniku,
 			KodCiselniku = _kodCiselniku,
-			Pocet = pocetRows,
-			Start = 0
+			Start = 0,
+			Pocet = 10000 // Předpokládáme, že číselník nemá víc než 10000 položek (Pocet není dle API reference nullable, ale při neposlání Pocet ze swaggeru to funguje dobře.
 		};
+		// Asynchronní volání neřešíme.
 		return aresRestApi.VyhledejCiselnik(filter);
 	}
 }

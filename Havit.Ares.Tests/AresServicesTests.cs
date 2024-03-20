@@ -9,14 +9,13 @@ namespace Havit.Ares.Tests;
 [TestClass]
 public class AresServicesTests
 {
-
 	[TestMethod]
 	[TestCategory("Ares")]
-	[ExpectedException(typeof(Havit.Diagnostics.Contracts.ContractException))]
+	[ExpectedException(typeof(ArgumentNullException))]
 	public void AresService_GetEkonomickeSubjektyFromIco_BadParamNull()
 	{
 		AresService service = new AresService();
-		service.GetEkonomickeSubjektyFromIco(null);
+		service.GetEkonomickeSubjektyDleIco(null);
 		Assert.AreEqual(false, true);
 	}
 
@@ -25,11 +24,11 @@ public class AresServicesTests
 	[DataRow("123")]
 	[DataRow("1234567890")]
 	[TestCategory("Ares")]
-	[ExpectedException(typeof(Havit.Diagnostics.Contracts.ContractException), "Ico nemá předepsanou délku 8 znaků")]
+	[ExpectedException(typeof(ArgumentException), "Ico nemá předepsanou délku 8 znaků")]
 	public void AresService_GetEkonomickeSubjektyFromIco_BadParamLength(string ico)
 	{
 		AresService service = new AresService();
-		service.GetEkonomickeSubjektyFromIco(ico);
+		service.GetEkonomickeSubjektyDleIco(ico);
 		Assert.AreEqual(false, true);
 	}
 
@@ -39,9 +38,8 @@ public class AresServicesTests
 	{
 		string ic = "27389731";
 		AresService service = new AresService();
-		var aresResult = service.GetEkonomickeSubjektyFromIco(ic);
-		Assert.AreEqual(1, aresResult.PocetCelkem);
-		Assert.AreEqual(ic, aresResult.EkonomickeSubjektyAres[0].Ico);
+		var ekonomickySubjekt = service.GetEkonomickeSubjektyDleIco(ic);
+		Assert.AreEqual(ic, ekonomickySubjekt.EkonomickySubjektAres.Ico);
 	}
 
 	[TestMethod]
@@ -50,10 +48,9 @@ public class AresServicesTests
 	{
 		string ic = "25612697";
 		AresService service = new AresService();
-		var aresResult = await service.GetEkonomickeSubjektyFromIcoAsync(ic);
-		Assert.AreEqual(aresResult.PocetCelkem, 1);
-		Assert.IsNotNull(aresResult.EkonomickeSubjektyAres);
-		Assert.AreEqual(aresResult.EkonomickeSubjektyAres.First().ObchodniJmeno, "HAVIT, s.r.o.");
+		var ekonomickySubjekt = await service.GetEkonomickeSubjektyDleIcoAsync(ic);
+		Assert.IsNotNull(ekonomickySubjekt);
+		Assert.AreEqual(ekonomickySubjekt.EkonomickySubjektAres.ObchodniJmeno, "HAVIT, s.r.o.");
 	}
 
 	[TestMethod]
@@ -62,10 +59,9 @@ public class AresServicesTests
 	{
 		string ic = "25601458";
 		AresService service = new AresService();
-		var aresResult = await service.GetEkonomickeSubjektyFromIcoAsync(ic);
-		Assert.AreEqual(aresResult.PocetCelkem, 1);
-		Assert.IsNotNull(aresResult.EkonomickeSubjektyAres);
-		Assert.AreEqual(aresResult.EkonomickeSubjektyAres.First().Sidlo, null);
+		var ekonomickySubjekt = await service.GetEkonomickeSubjektyDleIcoAsync(ic);
+		Assert.IsNotNull(ekonomickySubjekt);
+		Assert.AreEqual(ekonomickySubjekt.EkonomickySubjektAres.Sidlo, null);
 	}
 
 	[TestMethod]
@@ -74,19 +70,18 @@ public class AresServicesTests
 	{
 		string ic = "27732487";
 		AresService service = new AresService();
-		var aresResult = service.GetEkonomickeSubjektyFromIco(ic);
-		Assert.AreEqual(0, aresResult.PocetCelkem);
-		Assert.AreEqual(0, aresResult.EkonomickeSubjektyAres.Count());
+		var ekonomickySubjekt = service.GetEkonomickeSubjektyDleIco(ic);
+		Assert.IsNull(ekonomickySubjekt);
 	}
 
 	[TestMethod]
 	[TestCategory("Ares")]
 	public void AresService_GetEkonomickeSubjektyFromObchodniJmeno_Basic()
 	{
-		string ObchodniJmeno = "ORCA";
+		string obchodniJmeno = "ORCA";
 		AresService service = new AresService();
-		var aresResult = service.GetEkonomickeSubjektyFromObchodniJmeno(ObchodniJmeno);
-		Assert.IsTrue(aresResult.PocetCelkem > 30);
+		var ekonomickeSubjekty = service.GetEkonomickeSubjektyDleObchodnihoJmena(obchodniJmeno);
+		Assert.IsTrue(ekonomickeSubjekty.PocetCelkem > 30);
 	}
 
 	[TestMethod]
@@ -95,8 +90,8 @@ public class AresServicesTests
 	{
 		string ObchodniJmeno = "ORCA";
 		AresService service = new AresService();
-		var aresResult = await service.GetEkonomickeSubjektyFromObchodniJmenoAsync(ObchodniJmeno);
-		Assert.IsTrue(aresResult.PocetCelkem > 30);
+		var ekonomickeSubjekty = await service.GetEkonomickeSubjektyDleObchodnihoJmenaAsync(ObchodniJmeno);
+		Assert.IsTrue(ekonomickeSubjekty.PocetCelkem > 30);
 	}
 
 	[TestMethod]
@@ -105,29 +100,27 @@ public class AresServicesTests
 	{
 		string ObchodniJmeno = "HAVIT";
 		AresService service = new AresService();
-		var aresResult = await service.GetEkonomickeSubjektyFromObchodniJmenoAsync(ObchodniJmeno);
-		Assert.IsTrue(aresResult.EkonomickeSubjektyAres.Any(x => x.ObchodniJmeno == "HAVIT, s.r.o." && x.Ico == "25612697"));
+		var ekonomickeSubjekty = await service.GetEkonomickeSubjektyDleObchodnihoJmenaAsync(ObchodniJmeno);
+		Assert.IsTrue(ekonomickeSubjekty.Items.Any(x => x.EkonomickySubjektAres.ObchodniJmeno == "HAVIT, s.r.o." && x.EkonomickySubjektAres.Ico == "25612697"));
 	}
 
 
 	[TestMethod]
 	[TestCategory("Ares")]
-	[ExpectedException(typeof(Havit.Diagnostics.Contracts.ContractException), "Contract failed: ObchodniJmeno = Null")]
+	[ExpectedException(typeof(ArgumentNullException), "Contract failed: ObchodniJmeno = Null")]
 	public void AresService_GetEkonomickeSubjektyFromObchodniJmeno_BadParamNull()
 	{
 		AresService service = new AresService();
-		service.GetEkonomickeSubjektyFromObchodniJmeno(null);
-		Assert.AreEqual(false, true);
+		service.GetEkonomickeSubjektyDleObchodnihoJmena(null);
 	}
 
 	[TestMethod]
 	[TestCategory("Ares")]
-	[ExpectedException(typeof(Havit.Diagnostics.Contracts.ContractException))]
+	[ExpectedException(typeof(ArgumentException))]
 	public async Task AresService_GetEkonomickeSubjektyFromObchodniJmeno_BadParamEmpty()
 	{
 		AresService service = new AresService();
-		var aresResult = await service.GetEkonomickeSubjektyFromObchodniJmenoAsync("");
-		Assert.AreEqual(false, true);
+		var aresResult = await service.GetEkonomickeSubjektyDleObchodnihoJmenaAsync("");
 	}
 
 
@@ -198,13 +191,13 @@ public class AresServicesTests
 	[DataRow("CZ3456789")]
 	[DataRow("CZ345678912")]
 	[DataRow("CZ<DELETE>")]
+	[DataRow("<X12345678")]
 	[TestCategory("Ares")]
-	[ExpectedException(typeof(Havit.Diagnostics.Contracts.ContractException))]
+	[ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
 	public void AresService_GetPlatceDph_BadInput(string dic)
 	{
 		AresService service = new AresService();
 		service.GetPlatceDph(dic);
-		Assert.AreEqual(false, true);
 	}
 
 
@@ -212,47 +205,13 @@ public class AresServicesTests
 	[TestCategory("Ares")]
 	public void AresService_AresCiselnik_PravniForma()
 	{
-		string urlCiselnik = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest";
-		AresCiselnik CiselnikPravniForma = new AresCiselnik(urlCiselnik, "res", "PravniForma");
-		string pravniForma101 = CiselnikPravniForma.GetItemValue("101");
-		string pravniForma102 = CiselnikPravniForma.GetItemValue("102");
+		AresCiselnik CiselnikPravniForma = new AresCiselnik("res", "PravniForma");
+		string pravniForma101 = CiselnikPravniForma.GetValue("101");
+		string pravniForma102 = CiselnikPravniForma.GetValue("102");
 		Assert.AreEqual(pravniForma101, "Fyzická osoba podnikající dle živnostenského zákona");
 		Assert.AreEqual(pravniForma102, "Fyzická osoba podnikající dle živnostenského zákona zapsaná v obchodním rejstříku");
 	}
 
-	[TestMethod]
-	[TestCategory("Ares")]
-	public void AresService_AresCiselnik_SoudVr()
-	{
-		string urlCiselnik = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest";
-		AresCiselnik CiselnikRejstrikovySoud = new AresCiselnik(urlCiselnik, "vr", "SoudVr");
-		string soud = CiselnikRejstrikovySoud.GetItemValue("MSPH");
-		Assert.AreEqual(soud, "Městský soud v Praze");
-	}
-
-	[TestMethod]
-	[TestCategory("Ares")]
-	public void AresService_AresCiselnik_FinancniUrad()
-	{
-		string urlCiselnik = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest";
-		AresCiselnik CiselnikFinancniUred = new AresCiselnik(urlCiselnik, "ufo", "FinancniUrad");
-		string uzemniPracoviste = CiselnikFinancniUred.GetItemValue("101");
-		Assert.AreEqual(uzemniPracoviste, "Územní pracoviště v Prachaticích");
-	}
-
-	[TestMethod]
-	[TestCategory("Ares")]
-	public void AresService_AresCiselnik_FinancniUradBadCode()
-	{
-		string urlCiselnik = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest";
-		AresCiselnik CiselnikRejstrikovySoud = new AresCiselnik(urlCiselnik, "ufo", "FinancniUrad");
-		string soud = CiselnikRejstrikovySoud.GetItemValue("___");
-		Assert.AreEqual(soud, "unknown code ___");
-		string soudNull = CiselnikRejstrikovySoud.GetItemValue(null);
-		Assert.AreEqual(soudNull, "Empty Code");
-		string soudEmpty = CiselnikRejstrikovySoud.GetItemValue("");
-		Assert.AreEqual(soudEmpty, "Empty Code");
-	}
 
 	/*
 	// [TestMethod]

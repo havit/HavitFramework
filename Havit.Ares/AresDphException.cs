@@ -7,17 +7,15 @@ namespace Havit.Ares;
 /// </summary>	
 public class AresDphException : ApplicationException
 {
+	public PlatceDphStatusCode Code { get; }
+
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	/// <param name="message">Exception message.</param>
-	/// <param name="code">""</param>
-	internal AresDphException(string message, PlatceDphStatusCode code)
-		: base(message)
+	internal AresDphException(string message, PlatceDphStatusCode code, Exception exception = null)
+		: base(message, exception)
 	{
 		this.Code = code;
 	}
-
-	internal PlatceDphStatusCode Code { get; }
 }
 

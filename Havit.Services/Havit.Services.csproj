@@ -15,7 +15,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.41</PackageVersion>
+		<PackageVersion>2.0.42</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Services</Description>
 		<LangVersion>default</LangVersion>
 		<NoWarn>1701;1702;1591</NoWarn>
@@ -32,7 +32,6 @@
 
 	<ItemGroup>
 		<!-- netstandard2.0 dependencies -->
-		<PackageReference Include="System.Runtime.Caching" Version="7.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 	</ItemGroup>
 	<!-- End of conditional dependencies -->
 

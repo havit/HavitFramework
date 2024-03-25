@@ -1,4 +1,6 @@
-﻿using System.Runtime.Caching;
+﻿#if NETFRAMEWORK
+
+using System.Runtime.Caching;
 
 namespace Havit.Services.Caching;
 
@@ -134,3 +136,5 @@ public class ObjectCacheService : ICacheService
 		}
 	}
 }
+
+#endif

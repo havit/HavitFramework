@@ -1,4 +1,4 @@
-﻿namespace Havit.Ares.Ares;
+﻿namespace Havit.Ares;
 
 internal class AresCiselnik
 {

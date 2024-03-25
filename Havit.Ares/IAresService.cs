@@ -1,4 +1,4 @@
-﻿namespace Havit.Ares.Ares;
+﻿namespace Havit.Ares;
 
 /// <summary>
 /// Rozhraní service pro volání ARES služeb.

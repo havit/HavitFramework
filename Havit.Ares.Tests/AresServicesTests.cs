@@ -1,6 +1,4 @@
-﻿using Havit.Ares.Ares;
-
-namespace Havit.Ares.Tests.Ares;
+﻿namespace Havit.Ares.Tests;
 
 [TestClass]
 [TestCategory("Ares")]

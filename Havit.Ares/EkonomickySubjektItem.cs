@@ -1,4 +1,4 @@
-﻿namespace Havit.Ares.Ares;
+﻿namespace Havit.Ares;
 
 /// <summary>
 /// Jeden Subjekt (sro, OSVČ, a.s., apod.) vrácená z ARESu

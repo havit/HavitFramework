@@ -3,7 +3,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using Havit.Ares.Ares;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Ares.FinancniSprava;

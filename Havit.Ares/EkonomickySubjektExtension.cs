@@ -1,4 +1,4 @@
-﻿namespace Havit.Ares.Ares;
+﻿namespace Havit.Ares;
 
 /// <summary>
 /// Vypočítané hodnoty z ARES

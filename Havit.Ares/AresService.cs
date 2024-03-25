@@ -1,6 +1,6 @@
 ﻿using Havit.Diagnostics.Contracts;
 
-namespace Havit.Ares.Ares;
+namespace Havit.Ares;
 
 /// <inheritdoc/>
 public class AresService : IAresService

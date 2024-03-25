@@ -1,9 +1,10 @@
-﻿using Havit.Ares.Ares;
+﻿/*
+using Havit.Ares;
 using Havit.Ares.FinancniSprava;
 using Havit.Diagnostics.Contracts;
 
-namespace Havit.Ares.Tests.Ares;
-/*
+namespace Havit.Ares.Tests;
+
 //[TestClass]
 public class AresZatezovyTests
 {

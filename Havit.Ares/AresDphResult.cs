@@ -1,6 +1,6 @@
 ﻿using Havit.Ares.FinancniSprava;
 
-namespace Havit.Ares.Ares;
+namespace Havit.Ares;
 
 /// <summary>
 /// Zpracovane vysledky ze dvou volani ARES + PlatceDph (z MFCR). 

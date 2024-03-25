@@ -1,4 +1,4 @@
-﻿namespace Havit.Ares.Ares;
+﻿namespace Havit.Ares;
 
 /// <summary>
 /// Základní třída vrácená z volání ARES (podle názvu).   

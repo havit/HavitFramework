@@ -1,6 +1,4 @@
-﻿using Havit.Ares.Ares;
-
-namespace Havit.Ares.FinancniSprava;
+﻿namespace Havit.Ares.FinancniSprava;
 
 /// <summary>
 /// Služba pro volání ARES a DPH.

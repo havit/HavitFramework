@@ -36,7 +36,7 @@ public class PlatceDphService : IPlatceDphService
 		Contract.Requires<ArgumentException>(dic.Length >= 10 && dic.Length <= 12, "Dic musí mít délku 10-12 znaků ");
 		Contract.Requires<ArgumentException>(Regex.IsMatch(dic, "^[a-zA-Z0-9_]*$"), "Dic musí obsahovat pouze AlfaNumerické znaky");
 		Contract.Requires<ArgumentException>(dic.Right(8).All(char.IsDigit), "Dic musí obsahovat posledních 8 znaků pouze číslice");
-		Contract.Requires<ArgumentException>(dic.Length == 10 || dic.Length > 10 && dic.Left(2).ToUpper() == "CZ", "Dic delší jak 10 znaků musí začínat CZ");
+		Contract.Requires<ArgumentException>((dic.Length == 10) || ((dic.Length > 10) && (dic.Left(2).ToUpper() == "CZ")), "Dic delší jak 10 znaků musí začínat CZ");
 		string xmlSOAP = @"<?xml version=""1.0"" encoding=""utf-8""?>
         <soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"">
             <soapenv:Body>

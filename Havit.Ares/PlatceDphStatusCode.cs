@@ -1,13 +1,20 @@
 ﻿namespace Havit.Ares;
 
+/// <summary>
+/// Typ chyby v PlatceDphException
+/// </summary>
 public enum PlatceDphStatusCode
 {
-	Ok = 0,
+	/// Chyba WebService -  příliš mnoho Dic na vstupu
 	MaxResultsExceeded = 1,
+	/// Chyba WebService -  service dočasně nefunguje
 	TechnologicalShutdown = 2,
+	/// Chyba WebService -  služba neexistuje
 	ServiceNotAvailable = 3,
+	/// HttpClient Error 
 	ConnectionError = -1,
+	/// Chyba Parsování XML odpovědi (celé XML je součástí chyby) 
 	XMLError = -2,
-	BadStatusCode = -3,
-	InputParamError = -4
+	/// Nepovolený/Neznámý status kód v odpovědi 
+	BadStatusCode = -3
 }

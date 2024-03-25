@@ -244,9 +244,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Sftp", "Havi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Sftp.Tests", "Havit.Services.Sftp.Tests\Havit.Services.Sftp.Tests.csproj", "{021C9914-A6B4-47F4-834A-A70365A88BA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Ares", "Havit.Ares\Havit.Ares.csproj", "{B9D0D6C7-DC2D-4865-A12E-BDDDC6FE256F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Ares", "Havit.Ares\Havit.Ares.csproj", "{B9D0D6C7-DC2D-4865-A12E-BDDDC6FE256F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Ares.Tests", "Havit.Ares.Tests\Havit.Ares.Tests.csproj", "{7B4FBAF8-E4F4-47FE-A38C-E72AD1D1A640}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Ares.Tests", "Havit.Ares.Tests\Havit.Ares.Tests.csproj", "{7B4FBAF8-E4F4-47FE-A38C-E72AD1D1A640}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

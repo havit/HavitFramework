@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-
-namespace Havit.Ares;
+﻿namespace Havit.Ares.Ares;
 
 internal class AresCiselnik
 {
@@ -58,7 +56,7 @@ internal class AresCiselnik
 
 	private CiselnikyNazevnikSeznam ReadAresCiselnik()
 	{
-		System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		HttpClient httpClient = new HttpClient();
 		AresRestApi aresRestApi = new AresRestApi(httpClient);
 		aresRestApi.BaseUrl = AresService.AresUrl;
 		CiselnikyZakladniFiltr filter = new CiselnikyZakladniFiltr()

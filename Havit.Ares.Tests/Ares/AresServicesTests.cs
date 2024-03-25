@@ -1,40 +1,36 @@
-﻿using System.Diagnostics;
-using System.Drawing;
-using Havit.Diagnostics.Contracts;
-using Havit.Ares;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Havit.Ares.Ares;
 
-namespace Havit.Ares.Tests;
+namespace Havit.Ares.Tests.Ares;
 
 [TestClass]
+[TestCategory("Ares")]
 public class AresServicesTests
 {
 	[TestMethod]
-	[TestCategory("Ares")]
 	[ExpectedException(typeof(ArgumentNullException))]
-	public void AresService_GetEkonomickeSubjektyFromIco_BadParamNull()
+	public void AresService_GetEkonomickeSubjektyDleIco_BadParamNull()
 	{
 		// Act
 		new AresService().GetEkonomickeSubjektyDleIco(null);
-		// Assert -> must be Exception
+
+		// Assert by method attribute
 	}
 
 	[DataTestMethod]
 	[DataRow("")]
 	[DataRow("123")]
 	[DataRow("1234567890")]
-	[TestCategory("Ares")]
 	[ExpectedException(typeof(ArgumentException), "Ico nemá předepsanou délku 8 znaků")]
-	public void AresService_GetEkonomickeSubjektyFromIco_BadParamLength(string ico)
+	public void AresService_GetEkonomickeSubjektyDleIco_BadParamLength(string ico)
 	{
 		// Act
 		new AresService().GetEkonomickeSubjektyDleIco(ico);
-		// Assert -> must be Exception
+
+		// Assert by method attribute
 	}
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	public void AresService_GetEkonomickeSubjektyFromIco_Basic()
+	public void AresService_GetEkonomickeSubjektyDleIco_Basic()
 	{
 		// Arrange
 		string ic = "27389731";
@@ -47,8 +43,7 @@ public class AresServicesTests
 	}
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	public async Task AresService_GetEkonomickeSubjektyFromIcoAsync_BasicAsync()
+	public async Task AresService_GetEkonomickeSubjektyDleIcoAsync_Basic()
 	{
 		// Arrange
 		string ic = "25612697";
@@ -58,12 +53,11 @@ public class AresServicesTests
 
 		// Assert
 		Assert.IsNotNull(ekonomickySubjekt);
-		Assert.AreEqual(ekonomickySubjekt.EkonomickySubjektAres.ObchodniJmeno, "HAVIT, s.r.o.");
+		Assert.AreEqual("HAVIT, s.r.o.", ekonomickySubjekt.EkonomickySubjektAres.ObchodniJmeno);
 	}
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	public async Task AresService_GetEkonomickeSubjektyFromIcoAsync_NemaSidlo()
+	public async Task AresService_GetEkonomickeSubjektyDleIcoAsync_NemaSidlo()
 	{
 		// Arrange
 		string ic = "25601458";
@@ -73,12 +67,11 @@ public class AresServicesTests
 
 		// Assert
 		Assert.IsNotNull(ekonomickySubjekt);
-		Assert.AreEqual(ekonomickySubjekt.EkonomickySubjektAres.Sidlo, null);
+		Assert.IsNull(ekonomickySubjekt.EkonomickySubjektAres.Sidlo);
 	}
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	public void AresService_GetEkonomickeSubjektyFromIco_SubjektZanikl()
+	public void AresService_GetEkonomickeSubjektyDleIco_SubjektZanikl()
 	{
 		// Arrange
 		string ic = "27732487";
@@ -91,8 +84,7 @@ public class AresServicesTests
 	}
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	public void AresService_GetEkonomickeSubjektyFromObchodniJmeno_Basic()
+	public void AresService_GetEkonomickeSubjektyDleObchodnihoJmena_Basic()
 	{
 		// Arrange
 		string obchodniJmeno = "ORCA";
@@ -106,8 +98,7 @@ public class AresServicesTests
 
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	public async Task AresService_GetEkonomickeSubjektyFromObchodniJmenoAsync_Basic()
+	public async Task AresService_GetEkonomickeSubjektyDleObchodnihoJmenaAsync_Basic()
 	{
 		// Arrange
 		string ObchodniJmeno = "HAVIT";
@@ -121,23 +112,23 @@ public class AresServicesTests
 
 
 	[TestMethod]
-	[TestCategory("Ares")]
-	[ExpectedException(typeof(ArgumentNullException), "Contract failed: ObchodniJmeno = Null")]
-	public void AresService_GetEkonomickeSubjektyFromObchodniJmeno_BadParamNull()
+	[ExpectedException(typeof(ArgumentNullException))]
+	public void AresService_GetEkonomickeSubjektyDleObchodnihoJmena_PrazdneObchodniJmeno()
 	{
 		// Act
 		new AresService().GetEkonomickeSubjektyDleObchodnihoJmena(null);
-		// Assert -> must be Exception
+
+		// Assert by method attribute
 	}
 
 	[TestMethod]
-	[TestCategory("Ares")]
 	[ExpectedException(typeof(ArgumentException))]
-	public async Task AresService_GetEkonomickeSubjektyFromObchodniJmenoAsync_BadParamEmpty()
+	public async Task AresService_GetEkonomickeSubjektyDleObchodnihoJmenaAsync_PrazdneObchodniJmeno()
 	{
 		// Act
-		var aresResult = await new AresService().GetEkonomickeSubjektyDleObchodnihoJmenaAsync("");
-		// Assert -> must be Exception
+		_ = await new AresService().GetEkonomickeSubjektyDleObchodnihoJmenaAsync("");
+
+		// Assert by method attribute
 	}
 
 	[DataTestMethod]
@@ -145,11 +136,10 @@ public class AresServicesTests
 	[DataRow("jedna a půl\n", "jednaapůl")]
 	[DataRow(null, null)]
 	[DataRow(null, "")]
-	[TestCategory("Ares")]
 	public void AresService_IsAddressEqual(string addresaDorucovaci, string adresaSidlo)
 	{
-		// Act / Assert
-		Assert.IsTrue(new AresService().IsAddressEqual(addresaDorucovaci, adresaSidlo));
+		// Act + Assert
+		Assert.IsTrue(AresService.IsAddressEqual(addresaDorucovaci, adresaSidlo));
 	}
 
 }

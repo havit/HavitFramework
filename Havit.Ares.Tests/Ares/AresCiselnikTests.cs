@@ -1,10 +1,12 @@
-﻿namespace Havit.Ares.Tests;
+﻿using Havit.Ares.Ares;
+
+namespace Havit.Ares.Tests.Ares;
 
 [TestClass]
 public class AresCiselnikTests
 {
 	[TestMethod]
-	public void AresService_AresCiselnik_SoudVr()
+	public void AresCiselnik_GetValue_SoudVr()
 	{
 		// Arrange
 		AresCiselnik ciselnikRejstrikovySoud = new AresCiselnik("vr", "SoudVr");
@@ -13,11 +15,11 @@ public class AresCiselnikTests
 		string soud = ciselnikRejstrikovySoud.GetValue("MSPH");
 
 		// Assert
-		Assert.AreEqual(soud, "Městský soud v Praze");
+		Assert.AreEqual("Městský soud v Praze", soud);
 	}
 
 	[TestMethod]
-	public void AresService_AresCiselnik_FinancniUrad()
+	public void AresCiselnik_GetValue_FinancniUrad()
 	{
 		// Arrange
 		AresCiselnik ciselnikFinancniUred = new AresCiselnik("ufo", "FinancniUrad");
@@ -26,11 +28,11 @@ public class AresCiselnikTests
 		string uzemniPracoviste = ciselnikFinancniUred.GetValue("101");
 
 		// Assert
-		Assert.AreEqual(uzemniPracoviste, "Územní pracoviště v Prachaticích");
+		Assert.AreEqual("Územní pracoviště v Prachaticích", uzemniPracoviste);
 	}
 
 	[TestMethod]
-	public void AresService_AresCiselnik_PravniForma()
+	public void AresCiselnik_GetValue_PravniForma()
 	{
 		// Arrange
 		AresCiselnik ciselnikPravniForma = new AresCiselnik("res", "PravniForma");
@@ -40,12 +42,12 @@ public class AresCiselnikTests
 		string pravniForma102 = ciselnikPravniForma.GetValue("102");
 
 		// Assert
-		Assert.AreEqual(pravniForma101, "Fyzická osoba podnikající dle živnostenského zákona");
-		Assert.AreEqual(pravniForma102, "Fyzická osoba podnikající dle živnostenského zákona zapsaná v obchodním rejstříku");
+		Assert.AreEqual("Fyzická osoba podnikající dle živnostenského zákona", pravniForma101);
+		Assert.AreEqual("Fyzická osoba podnikající dle živnostenského zákona zapsaná v obchodním rejstříku", pravniForma102);
 	}
 
 	[TestMethod]
-	public void AresService_AresCiselnik_FinancniUradBadCode()
+	public void AresCiselnik_GetValue_MissingCode()
 	{
 		// Arrange
 		AresCiselnik CiselnikRejstrikovySoud = new AresCiselnik("ufo", "FinancniUrad");
@@ -56,10 +58,8 @@ public class AresCiselnikTests
 		string soudEmpty = CiselnikRejstrikovySoud.GetValue("");
 
 		// Asert
-		Assert.AreEqual(soud, AresCiselnik.UnknownValue);
-		Assert.AreEqual(soudNull, AresCiselnik.UnknownValue);
-		Assert.AreEqual(soudEmpty, AresCiselnik.UnknownValue);
+		Assert.AreEqual(AresCiselnik.UnknownValue, soud);
+		Assert.AreEqual(AresCiselnik.UnknownValue, soudNull);
+		Assert.AreEqual(AresCiselnik.UnknownValue, soudEmpty);
 	}
-
-
 }

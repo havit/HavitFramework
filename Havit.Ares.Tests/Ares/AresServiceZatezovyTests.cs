@@ -1,7 +1,9 @@
-﻿using Havit.Diagnostics.Contracts;
+﻿using Havit.Ares.Ares;
+using Havit.Ares.FinancniSprava;
+using Havit.Diagnostics.Contracts;
 
-namespace Havit.Ares.Tests;
-
+namespace Havit.Ares.Tests.Ares;
+/*
 //[TestClass]
 public class AresZatezovyTests
 {
@@ -61,7 +63,7 @@ public class AresZatezovyTests
 			try
 			{
 				string AresDphInfo = ico;
-				AresDphResponse aresDphResult = new AresDphService().GetAresAndPlatceDph(subject.EkonomickySubjektAres.Ico);
+				AresDphResponse aresDphResult = new AresDphService(new AresService(), new PlatceDphService()).GetAresAndPlatceDph(subject.EkonomickySubjektAres.Ico);
 				if (aresDphResult.EkonomickySubjektItem == null)
 				{
 					AresDphInfo += "No Exists.";
@@ -76,7 +78,7 @@ public class AresZatezovyTests
 					else
 					{
 						AresDphInfo += "DPH: " + aresDphResult.PlatceDphElement.Dic;
-						AresDphInfo += " spolehlivý: " + aresDphResult.PlatceDphElement.IsSpolehlivy.ToString() + ", ";
+						AresDphInfo += " nespolehlivý: " + aresDphResult.PlatceDphElement.IsNespolehlivy.ToString() + ", ";
 					}
 					AresDphInfo += aresDphResult.EkonomickySubjektItem.EkonomickySubjektExtension.SpisovaZnackaFull + "; " + aresDphResult.EkonomickySubjektItem.EkonomickySubjektExtension.FinancniUradText + "; " + aresDphResult.EkonomickySubjektItem.EkonomickySubjektExtension.PravniFormaText;
 					System.Diagnostics.Debug.WriteLine(AresDphInfo);
@@ -84,7 +86,7 @@ public class AresZatezovyTests
 			}
 			catch (ApiException ex)
 			{
-				var result = ((Havit.Ares.ApiException<Havit.Ares.Chyba>)ex).Result;
+				var result = ((ApiException<Chyba>)ex).Result;
 				System.Diagnostics.Debug.WriteLine(result.Kod + "-" + result.SubKod);
 				System.Diagnostics.Debug.WriteLine(result.Popis);
 			}
@@ -105,7 +107,7 @@ public class AresZatezovyTests
 	[TestMethod]
 	public void TestZatezovy_NahodneIco()
 	{
-		AresDphService service = new AresDphService();
+		AresDphService service = new AresDphService(new AresService(), new PlatceDphService());
 		for (long i = 25601458; i < 25610000; i++)
 		{
 			string strIco = i.ToString("D8");
@@ -116,7 +118,7 @@ public class AresZatezovyTests
 			}
 			sum = sum % 11;
 			int lastNumber = int.Parse(strIco[7].ToString());
-			if ((lastNumber == 0 && sum == 1) || (lastNumber == 1 && sum == 0) || (lastNumber == 11 - sum))
+			if (lastNumber == 0 && sum == 1 || lastNumber == 1 && sum == 0 || lastNumber == 11 - sum)
 			{
 				try
 				{
@@ -136,7 +138,7 @@ public class AresZatezovyTests
 						else
 						{
 							AresDphInfo += "DPH: " + aresDphResult.PlatceDphElement.Dic;
-							AresDphInfo += " spolehlivý: " + aresDphResult.PlatceDphElement.IsSpolehlivy.ToString() + ", ";
+							AresDphInfo += " nespolehlivý: " + aresDphResult.PlatceDphElement.IsNespolehlivy.ToString() + ", ";
 						}
 						AresDphInfo += aresDphResult.EkonomickySubjektItem.EkonomickySubjektExtension.SpisovaZnackaFull + "; " + aresDphResult.EkonomickySubjektItem.EkonomickySubjektExtension.FinancniUradText + "; " + aresDphResult.EkonomickySubjektItem.EkonomickySubjektExtension.PravniFormaText;
 						System.Diagnostics.Debug.WriteLine(AresDphInfo);
@@ -144,7 +146,7 @@ public class AresZatezovyTests
 				}
 				catch (ApiException ex)
 				{
-					var result = ((Havit.Ares.ApiException<Havit.Ares.Chyba>)ex).Result;
+					var result = ((ApiException<Chyba>)ex).Result;
 					System.Diagnostics.Debug.WriteLine(result.Kod + "-" + result.SubKod);
 					System.Diagnostics.Debug.WriteLine(result.Popis);
 				}
@@ -179,7 +181,7 @@ public class AresZatezovyTests
 		}
 		catch (ApiException ex)
 		{
-			var result = ((Havit.Ares.ApiException<Havit.Ares.Chyba>)ex).Result;
+			var result = ((ApiException<Chyba>)ex).Result;
 			System.Diagnostics.Debug.WriteLine(result.Kod + "-" + result.SubKod);
 			System.Diagnostics.Debug.WriteLine(result.Popis);
 		}
@@ -193,3 +195,4 @@ public class AresZatezovyTests
 		}
 	}
 }
+*/

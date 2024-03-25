@@ -1,6 +1,6 @@
-﻿
-namespace Havit.Ares;
+﻿using Havit.Ares.Ares;
 
+namespace Havit.Ares.FinancniSprava;
 
 /// <summary>
 /// Služba pro volání ARES a DPH.
@@ -10,15 +10,10 @@ public interface IAresDphService
 	/// <summary>
 	/// Kombinuje volání ARES a DPH. Hledá sekvenčně.  Nejprve ARES. Pokud v ARESu zjistí že je plátce DPH, tak volá i PlatceDph.
 	/// </summary>
-	/// <param name="ico"></param>
-	/// <returns>AresDphResponse</returns>
 	AresDphResponse GetAresAndPlatceDph(string ico);
 
 	/// <summary>
 	/// Kombinuje volání ARES a DPH. Hledá sekvenčně.  Nejprve ARES. Pokud v ARESu zjistí že je plátce DPH, tak volá i PlatceDph. Asynchronní varianta.
 	/// </summary>
-	/// <param name="ico"></param>
-	/// <param name="cancellationToken"></param>
-	/// <returns>AresDphResponse</returns>
 	Task<AresDphResponse> GetAresAndPlatceDphAsync(string ico, CancellationToken cancellationToken = default);
 }

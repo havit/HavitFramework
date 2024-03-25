@@ -1,12 +1,6 @@
-﻿using System.Globalization;
-using System.Text;
-using System.Threading;
-using System.Xml.Linq;
-using System.Net.Http;
-using Havit.Diagnostics.Contracts;
-using System.Diagnostics;
+﻿using Havit.Diagnostics.Contracts;
 
-namespace Havit.Ares;
+namespace Havit.Ares.Ares;
 
 /// <inheritdoc/>
 public class AresService : IAresService
@@ -21,12 +15,11 @@ public class AresService : IAresService
 	private AresCiselnik _ciselnikRejstrikovySoud = new AresCiselnik("vr", "SoudVr");
 	private AresCiselnik _ciselnikFinancniUrad = new AresCiselnik("ufo", "FinancniUrad");
 
-
 	/// <inheritdoc/>
 	public EkonomickySubjektItem GetEkonomickeSubjektyDleIco(string ico)
 	{
 		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyDleIco_PrepareRequest(ico);
-		using System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		using HttpClient httpClient = new HttpClient();
 		AresRestApi aresClient = new AresRestApi(httpClient);
 		aresClient.BaseUrl = AresUrl;
 		EkonomickeSubjektySeznam resp = aresClient.VyhledejEkonomickeSubjekty(ekonomickeSubjektyKomplexFiltr);
@@ -39,7 +32,7 @@ public class AresService : IAresService
 	public async Task<EkonomickySubjektItem> GetEkonomickeSubjektyDleIcoAsync(string ico, CancellationToken cancellationToken = default)
 	{
 		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyDleIco_PrepareRequest(ico);
-		using System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		using HttpClient httpClient = new HttpClient();
 		AresRestApi aresClient = new AresRestApi(httpClient);
 		aresClient.BaseUrl = AresUrl;
 		EkonomickeSubjektySeznam resp = await aresClient.VyhledejEkonomickeSubjektyAsync(ekonomickeSubjektyKomplexFiltr).ConfigureAwait(false);
@@ -52,7 +45,7 @@ public class AresService : IAresService
 	public EkonomickeSubjektyResult GetEkonomickeSubjektyDleObchodnihoJmena(string obchodniJmeno, int maxResult = DefaultMaxResults)
 	{
 		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyDleObchodnihoJmena_PrepareRequest(obchodniJmeno, maxResult);
-		using System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		using HttpClient httpClient = new HttpClient();
 		AresRestApi aresClient = new AresRestApi(httpClient);
 		aresClient.BaseUrl = AresUrl;
 		EkonomickeSubjektySeznam resp = aresClient.VyhledejEkonomickeSubjekty(ekonomickeSubjektyKomplexFiltr);
@@ -64,15 +57,13 @@ public class AresService : IAresService
 	public async Task<EkonomickeSubjektyResult> GetEkonomickeSubjektyDleObchodnihoJmenaAsync(string obchodniJmeno, int maxResults = DefaultMaxResults, CancellationToken cancellationToken = default)
 	{
 		EkonomickeSubjektyKomplexFiltr ekonomickeSubjektyKomplexFiltr = GetEkonomickeSubjektyDleObchodnihoJmena_PrepareRequest(obchodniJmeno, maxResults);
-		using System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
+		using HttpClient httpClient = new HttpClient();
 		AresRestApi aresClient = new AresRestApi(httpClient);
 		aresClient.BaseUrl = AresUrl;
 		EkonomickeSubjektySeznam resp = await aresClient.VyhledejEkonomickeSubjektyAsync(ekonomickeSubjektyKomplexFiltr).ConfigureAwait(false);
 		EkonomickeSubjektyResult ekonomickeSubjektyResponse = GetEkonomickeSubjekty_ProcessResponse(resp);
 		return ekonomickeSubjektyResponse;
 	}
-
-
 
 	private EkonomickeSubjektyKomplexFiltr GetEkonomickeSubjektyDleIco_PrepareRequest(string ico)
 	{
@@ -147,10 +138,10 @@ public class AresService : IAresService
 	/// <param name="AdresaDorucovaci"></param>
 	/// <param name="AdresaSidlo"></param>
 	/// <returns>true/false.</returns>
-	internal protected bool IsAddressEqual(string AdresaSidlo, string AdresaDorucovaci)
+	internal static bool IsAddressEqual(string AdresaSidlo, string AdresaDorucovaci)
 	{
-		var SidloAdsArray = (AdresaSidlo ?? "").ToCharArray().Where(c => !Char.IsWhiteSpace(c) && c != ',').ToArray();
-		var DorucAdsArray = (AdresaDorucovaci ?? "").ToCharArray().Where(c => !Char.IsWhiteSpace(c) && c != ',').ToArray();
-		return (new string(SidloAdsArray) == new string(DorucAdsArray));
+		var SidloAdsArray = (AdresaSidlo ?? "").ToCharArray().Where(c => !char.IsWhiteSpace(c) && c != ',').ToArray();
+		var DorucAdsArray = (AdresaDorucovaci ?? "").ToCharArray().Where(c => !char.IsWhiteSpace(c) && c != ',').ToArray();
+		return new string(SidloAdsArray) == new string(DorucAdsArray);
 	}
 }

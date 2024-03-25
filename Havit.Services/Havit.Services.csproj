@@ -26,7 +26,7 @@
 		<!-- net48 dependencies -->
 		<Reference Include="System.DirectoryServices" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
 		<Reference Include="System.Runtime.Caching" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
-		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />		
+		<Reference Include="System.Web" Pack="false" Condition="'$(TargetFramework)' == 'net48'" />
 		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
 

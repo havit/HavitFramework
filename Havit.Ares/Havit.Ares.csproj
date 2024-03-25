@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Ares.Tests" />
+	</ItemGroup>
+
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.1</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Ares Class Library</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.Json" Version="8.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+	</ItemGroup>
+</Project>

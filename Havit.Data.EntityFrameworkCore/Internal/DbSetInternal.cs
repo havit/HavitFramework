@@ -44,9 +44,6 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 			: dbSet;
 	}
 
-	/// <inheritdoc />
-	public DbSet<TEntity> AsDbSet() => dbSet;
-
 	/// <summary>
 	/// Vyhledá entitu v načtených (trackovaných objektech). Pokud objekt není nalezen, vrací null.
 	/// </summary>

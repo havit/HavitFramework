@@ -19,11 +19,6 @@ public interface IDbSet<TEntity>
 	IQueryable<TEntity> AsQueryable(string queryTag);
 
 	/// <summary>
-	/// Vrátí podkladový DbSet. Určeno pro zpřístupnění extension metod nad <see cref="DbSet{TEntity}"/>, viz metody v <see cref="RelationalQueryableExtensions"/>.
-	/// </summary>
-	DbSet<TEntity> AsDbSet();
-
-	/// <summary>
 	/// Vyhledá entitu v načtených (trackovaných objektech). Pokud objekt není nalezen, vrací null.
 	/// </summary>
 	TEntity FindTracked(params object[] keyValues);

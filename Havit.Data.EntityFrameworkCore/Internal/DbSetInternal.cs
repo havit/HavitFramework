@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+#if BENCHMARKING
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+#endif
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -14,6 +17,9 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 	private readonly DbSet<TEntity> dbSet;
 	private readonly Lazy<IKey> primaryKeyLazy;
 	private readonly Lazy<IStateManager> stateManagerLazy;
+#if BENCHMARKING
+	private readonly Lazy<LocalView<TEntity>> localViewLazy;
+#endif
 
 	/// <summary>
 	/// Konstruktor.
@@ -25,6 +31,9 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 #pragma warning disable EF1001 // Internal EF Core API usage.
 		this.stateManagerLazy = new Lazy<IStateManager>(() => dbContext.GetService<IStateManager>(), LazyThreadSafetyMode.None);
 #pragma warning restore EF1001 // Internal EF Core API usage.
+#if BENCHMARKING
+		this.localViewLazy = new Lazy<LocalView<TEntity>>(() => dbContext.ExecuteWithoutAutoDetectChanges(() => dbSet.Local));
+#endif
 	}
 
 	/// <inheritdoc />
@@ -47,6 +56,18 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 		return (TEntity)stateManagerLazy.Value.TryGetEntry(primaryKeyLazy.Value, keyValues)?.Entity;
 #pragma warning restore EF1001 // Internal EF Core API usage.
 	}
+
+#if BENCHMARKING
+	internal TEntity UsingLocal_FindEntry<TKey>(TKey key)
+	{
+		return localViewLazy.Value.FindEntry(key)?.Entity;
+	}
+
+	internal TEntity UsingLocal_FindEntryUntyped(params object[] keyValues)
+	{
+		return localViewLazy.Value.FindEntryUntyped(keyValues)?.Entity;
+	}
+#endif
 
 	/// <inheritdoc />
 	public void Add(TEntity entity)

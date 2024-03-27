@@ -149,7 +149,11 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 	/// </summary>
+#if BENCHMARKING
 	internal TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
+#else
+	private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
+#endif
 	{
 		if (ChangeTracker.AutoDetectChangesEnabled)
 		{

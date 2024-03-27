@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Tests" />
+		<InternalsVisibleTo Include="BenchmarkApp" />
 	</ItemGroup>
 
 	<!-- NuGet -->

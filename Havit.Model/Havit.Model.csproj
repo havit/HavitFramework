@@ -4,6 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<ImplicitUsings>true</ImplicitUsings>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<!-- NuGet -->

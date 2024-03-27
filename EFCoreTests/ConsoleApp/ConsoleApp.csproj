@@ -1,37 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>Havit.EFCoreTests.ConsoleApp</AssemblyName>
-    <RootNamespace>Havit.EFCoreTests.ConsoleApp</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>Havit.EFCoreTests.ConsoleApp</AssemblyName>
+		<RootNamespace>Havit.EFCoreTests.ConsoleApp</RootNamespace>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="appsettings.ConsoleApp.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="appsettings.ConsoleApp.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="appsettings.ConsoleApp.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.ConsoleApp.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
-    <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+		<ProjectReference Include="..\DataLayer\DataLayer.csproj" />
+		<ProjectReference Include="..\Model\Model.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>Havit.EFCoreTests.DataLayer</AssemblyName>
-    <RootNamespace>Havit.EFCoreTests.DataLayer</RootNamespace>
-	<CopyLocalLockFileAssemblies>True</CopyLocalLockFileAssemblies>
-	<ImplicitUsings>true</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>Havit.EFCoreTests.DataLayer</AssemblyName>
+		<RootNamespace>Havit.EFCoreTests.DataLayer</RootNamespace>
+		<CopyLocalLockFileAssemblies>True</CopyLocalLockFileAssemblies>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
-    <ProjectReference Include="..\Entity\Entity.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+		<ProjectReference Include="..\Entity\Entity.csproj" />
+		<ProjectReference Include="..\Model\Model.csproj" />
+	</ItemGroup>
 
 </Project>

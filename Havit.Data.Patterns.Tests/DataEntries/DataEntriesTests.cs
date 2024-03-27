@@ -10,7 +10,7 @@ namespace Havit.Data.Patterns.Tests.DataEntries;
 [TestClass]
 public class DataEntriesTests
 {
-	[TestMethod]		
+	[TestMethod]
 	[SuppressMessage("SonicLint", "S1481", Justification = "Výsledek získání hodnoty vlastnosti je potřeba nějak zpracovat, zde jej ukládáme do proměné, která úmyslně není použita.")]
 	[SuppressMessage("SonicLint", "S1854", Justification = "Uložení do proměné je zvolený způsob zpracování výsledku získání hodnoty vlastnosti.")]
 	public void DbDataEntries_GetEntry_UsesDataEntrySymbolServiceAndRepository()

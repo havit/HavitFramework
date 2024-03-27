@@ -14,6 +14,8 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	private List<Action> afterSaveChangesActions;
 
+	private Dictionary<Type, object> _dbSetsDictionary;
+
 	/// <summary>
 	/// Konstruktor. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext()"/>.
 	/// </summary>
@@ -147,7 +149,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 	/// </summary>
-	private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
+	internal TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
 	{
 		if (ChangeTracker.AutoDetectChangesEnabled)
 		{
@@ -198,7 +200,15 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	IDbSet<TEntity> IDbContext.Set<TEntity>()
 	{
-		return new DbSetInternal<TEntity>(this);
+		_dbSetsDictionary ??= new Dictionary<Type, object>();
+		if (_dbSetsDictionary.TryGetValue(typeof(TEntity), out var foundDbSet))
+		{
+			return (IDbSet<TEntity>)foundDbSet;
+		}
+
+		var dbSetInternal = new DbSetInternal<TEntity>(this);
+		_dbSetsDictionary.Add(typeof(TEntity), dbSetInternal);
+		return dbSetInternal;
 	}
 
 	/// <summary>

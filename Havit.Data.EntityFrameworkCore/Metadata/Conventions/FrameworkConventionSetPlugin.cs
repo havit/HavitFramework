@@ -9,38 +9,39 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 /// </summary>
 public class FrameworkConventionSetPlugin : IConventionSetPlugin
 {
-	private readonly IDbContextOptions options;
-	private readonly ProviderConventionSetBuilderDependencies conventionSetBuilderDependencies;
+	private readonly IDbContextOptions _options;
+	private readonly ProviderConventionSetBuilderDependencies _conventionSetBuilderDependencies;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public FrameworkConventionSetPlugin(IDbContextOptions options, ProviderConventionSetBuilderDependencies conventionSetBuilderDependencies)
 	{
-		this.options = options;
-		this.conventionSetBuilderDependencies = conventionSetBuilderDependencies;
+		this._options = options;
+		this._conventionSetBuilderDependencies = conventionSetBuilderDependencies;
 	}
 
 	/// <inheritdoc />
 	public ConventionSet ModifyConventions(ConventionSet conventionSet)
 	{
-		var extension = options.FindExtension<FrameworkConventionSetOptionsExtension>();
+		var extension = _options.FindExtension<FrameworkConventionSetOptionsExtension>();
 
 		if (extension.CacheAttributeToAnnotationConventionEnabled)
 		{
-			conventionSet.Add(new CacheAttributeToAnnotationConvention(conventionSetBuilderDependencies));
+			conventionSet.Add(new CacheAttributeToAnnotationConvention(_conventionSetBuilderDependencies));
 		}
 
 		if (extension.CascadeDeleteToRestrictConventionEnabled)
 		{
-			// ponecháme vestavěnou CascadeDeleteConvention a přebijeme ji pomocí CascadeDeleteToRestrictConvention
-			CascadeDeleteToRestrictConvention convention = new CascadeDeleteToRestrictConvention(conventionSetBuilderDependencies);
+			conventionSet.Remove(typeof(SqlServerOnDeleteConvention));
+
+			CascadeDeleteToRestrictConvention convention = new CascadeDeleteToRestrictConvention(_conventionSetBuilderDependencies);
 			conventionSet.Add(convention);
 		}
 
 		if (extension.DataTypeAttributeConventionEnabled)
 		{
-			conventionSet.Add(new DataTypeAttributeConvention(conventionSetBuilderDependencies));
+			conventionSet.Add(new DataTypeAttributeConvention(_conventionSetBuilderDependencies));
 		}
 
 		if (extension.ManyToManyEntityKeyDiscoveryConventionEnabled)

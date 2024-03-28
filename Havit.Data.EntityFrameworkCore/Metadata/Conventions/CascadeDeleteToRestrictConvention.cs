@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 /// <summary>
 /// Všem cizím klíčům s nastaví DeleteBehavior na Restrict, čímž se zamezí kaskádnímu delete.
 /// </summary>
-public class CascadeDeleteToRestrictConvention : CascadeDeleteConvention
+public class CascadeDeleteToRestrictConvention : CascadeDeleteConvention, ISkipNavigationForeignKeyChangedConvention, IEntityTypeAnnotationChangedConvention
 {
 	/// <summary>
 	/// Konstructor.
@@ -42,6 +42,40 @@ public class CascadeDeleteToRestrictConvention : CascadeDeleteConvention
 		}
 
 		base.ProcessForeignKeyRequirednessChanged(relationshipBuilder, context);
+	}
+
+	/// <inheritdoc />
+	public virtual void ProcessEntityTypeAnnotationChanged(IConventionEntityTypeBuilder entityTypeBuilder, string name, IConventionAnnotation annotation, IConventionAnnotation oldAnnotation, IConventionContext<IConventionAnnotation> context)
+	{
+		// Systémové tabulky nechceme změnit (byť zde ani nemá cenu řešit)
+		if (entityTypeBuilder.Metadata.IsSystemType())
+		{
+			return;
+		}
+
+		foreach (IConventionForeignKey declaredForeignKey in entityTypeBuilder.Metadata.GetDeclaredForeignKeys())
+		{
+			DeleteBehavior targetDeleteBehavior = GetTargetDeleteBehavior(declaredForeignKey);
+			if (declaredForeignKey.DeleteBehavior != targetDeleteBehavior)
+			{
+				declaredForeignKey.Builder.OnDelete(targetDeleteBehavior);
+			}
+		}
+	}
+
+	/// <inheritdoc />
+	public virtual void ProcessSkipNavigationForeignKeyChanged(IConventionSkipNavigationBuilder skipNavigationBuilder, IConventionForeignKey foreignKey, IConventionForeignKey oldForeignKey, IConventionContext<IConventionForeignKey> context)
+	{
+		// Systémové tabulky nechceme změnit (byť zde ani nemá cenu řešit)
+		if (skipNavigationBuilder.Metadata.DeclaringEntityType.IsSystemType())
+		{
+			return;
+		}
+
+		if (foreignKey != null && foreignKey.IsInModel)
+		{
+			foreignKey.Builder.OnDelete(GetTargetDeleteBehavior(foreignKey));
+		}
 	}
 
 	/// <inheritdoc />

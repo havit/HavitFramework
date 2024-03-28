@@ -10,6 +10,7 @@
 
 		<!-- Error NU5104: Warning As Error: A stable release of a package should not have a prerelease dependency -->
 		<NoWarn>$(NoWarn);NU5104</NoWarn>
+		<PackageReadmeFile Condition="Exists('README.md')">README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,7 +19,7 @@
 	</ItemGroup>
 
 	<!-- Publish NuGet -->
-	<PropertyGroup>
+	<PropertyGroup>		
 		<NuGetPublishFolder Condition="'$(NuGetPublishFolder)' == ''">PublicNuGets</NuGetPublishFolder>
 		<PackageOutputPath Condition="'$(PublishDirectory)' != ''">$(PublishDirectory)\$(NuGetPublishFolder)</PackageOutputPath>
 	</PropertyGroup>
@@ -37,5 +38,16 @@
 
 	<Target Name="HavitCheckPackageVersionIsSet" BeforeTargets="GenerateNuspec" AfterTargets="_CalculateInputsOutputsForPack" Condition=" $(GeneratePackageOnBuild) == 'true' ">
 		<Error Text="Nuget package version not set." Condition="$(PackageVersion) == '$(VersionPrefix)'"  />
+	</Target>
+
+	<!-- zdroj: https://dev.to/j_sakamoto/writing-a-nuget-package-release-notes-in-an-outside-of-a-csproj-file-3f94 -->
+	<!-- nepodporuje markdown -->
+	<Target Name="HavitPreparePackageReleaseNotesFromFile" BeforeTargets="GenerateNuspec" Condition="Exists('RELEASENOTES.txt')">
+		<ReadLinesFromFile File="RELEASENOTES.txt" >
+			<Output TaskParameter="Lines" ItemName="ReleaseNoteLines"/>
+		</ReadLinesFromFile>
+		<PropertyGroup>
+			<PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>
+		</PropertyGroup>
 	</Target>
 </Project>

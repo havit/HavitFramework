@@ -1,0 +1,16 @@
+﻿v2.8.5 (28.3.2024)
+• CascadeDeleteToRestrictConvention - oprava nastavování DeleteBehavior.Restrict i na tříchách mapovaných pomocí ToTable(...)
+• `DbContext.Set<TEntity>()` - mikrooptimalizace pro opakované volání
+• `IDbSet<TEntity>().FindAsync(...)` - metoda odebrána, nebyla nikde použita
+
+v2.8.2 (14.2.2024)
+• Aktualizace na EF Core 8.0.2
+
+2.8.1 (10.1.2024)
+• ModelValidator nyní nevyžaduje `MaxLengthAttribute` na comptuted sloupcích
+
+2.8.0 (29.11.2023)
+• Aktualizace na EF Core 8
+
+8.11
+• Changed – Add icons and fix metadata for NuGet packages.

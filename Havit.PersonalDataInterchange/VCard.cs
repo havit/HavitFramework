@@ -101,20 +101,21 @@ public class VCard : VDocumentBase
 	/// <param name="writer">The stream writer</param>
 	public override void WriteToStream(StreamWriter writer)
 	{
+		var charset = writer.Encoding.WebName?.ToUpper();
 		writer.WriteLine("BEGIN:VCARD");
 		writer.WriteLine($"VERSION:{Version.ToString().Replace(',', '.')}");
-		writer.WriteLine($"N;CHARSET=windows-1250:{N.LastName};{N.FirstName};{N.MiddleName};{N.Title};{N.Suffix}");
+		writer.WriteLine($"N;CHARSET={charset}:{N.LastName};{N.FirstName};{N.MiddleName};{N.Title};{N.Suffix}");
 		if (!string.IsNullOrEmpty(FN))
 		{
-			writer.WriteLine($"FN;CHARSET=windows-1250:{FN}");
+			writer.WriteLine($"FN;CHARSET={charset}:{FN}");
 		}
 		if (!string.IsNullOrEmpty(Title))
 		{
-			writer.WriteLine($"TITLE;CHARSET=windows-1250:{Title}");
+			writer.WriteLine($"TITLE;CHARSET={charset}:{Title}");
 		}
 		if (!string.IsNullOrEmpty(Org))
 		{
-			writer.WriteLine($"ORG;CHARSET=windows-1250:{Org}");
+			writer.WriteLine($"ORG;CHARSET={charset}:{Org}");
 		}
 		if (!string.IsNullOrEmpty(EmailPref))
 		{
@@ -148,28 +149,28 @@ public class VCard : VDocumentBase
 		{
 			if (IsAdrWorkAsQuotedPrintable)
 			{
-				writer.WriteLine($"ADR;WORK;PREF;CHARSET=windows-1250;ENCODING=QUOTED-PRINTABLE:;;{AdrWork}");
+				writer.WriteLine($"ADR;WORK;PREF;CHARSET={charset};ENCODING=QUOTED-PRINTABLE:;;{AdrWork}");
 			}
 			else
 			{
-				writer.WriteLine($"ADR;WORK;PREF;CHARSET=windows-1250:;;{AdrWork}");
+				writer.WriteLine($"ADR;WORK;PREF;CHARSET={charset}:;;{AdrWork}");
 			}
 		}
 		if (!string.IsNullOrEmpty(AdrHome))
 		{
 			if (IsAdrHomeAsQuotedPrintable)
 			{
-				writer.WriteLine($"ADR;HOME;CHARSET=windows-1250;ENCODING=QUOTED-PRINTABLE:;;{AdrHome}");
+				writer.WriteLine($"ADR;HOME;CHARSET={charset};ENCODING=QUOTED-PRINTABLE:;;{AdrHome}");
 			}
 			else
 			{
-				writer.WriteLine($"ADR;HOME;CHARSET=windows-1250:;;{AdrHome}");
+				writer.WriteLine($"ADR;HOME;CHARSET={charset}:;;{AdrHome}");
 			}
 		}
 		if (!string.IsNullOrEmpty(Note))
 		{
 			string encodedNote = Note.Replace("=", "=3D").Replace("\r\n", "=0D=0A");
-			writer.WriteLine($"NOTE;CHARSET=windows-1250;ENCODING=QUOTED-PRINTABLE:{encodedNote}");
+			writer.WriteLine($"NOTE;CHARSET={charset};ENCODING=QUOTED-PRINTABLE:{encodedNote}");
 		}
 		writer.WriteLine("END:VCARD");
 	}

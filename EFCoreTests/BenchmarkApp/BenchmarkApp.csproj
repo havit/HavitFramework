@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>

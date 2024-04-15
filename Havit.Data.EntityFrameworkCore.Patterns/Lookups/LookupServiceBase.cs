@@ -5,6 +5,7 @@ using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Linq;
 using Havit.Linq.Expressions;
+using Havit.Threading;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System.Linq.Expressions;
@@ -27,6 +28,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvalidationService
 	where TEntity : class
 {
+	private static readonly CriticalSection<Type> s_criticalSection = new CriticalSection<Type>();
+
 	private readonly IEntityLookupDataStorage lookupStorage;
 	private readonly IRepository<TEntity> repository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
 	private readonly IDbContext dbContext;
@@ -151,7 +154,16 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// </summary>
 	private bool TryGetEntityKeyByLookupKey(TLookupKey lookupKey, out int entityKey)
 	{
-		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData(GetStorageKey(), CreateEntityLookupData);
+		string storageKey = GetStorageKey();
+		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, int, TLookupKey>(storageKey);
+		if (entityLookupData == null)
+		{
+			s_criticalSection.ExecuteAction(this.GetType(), () =>
+			{
+				entityLookupData = CreateEntityLookupData();
+			});
+			lookupStorage.StoreEntityLookupData(storageKey, entityLookupData);
+		}
 
 		lock (entityLookupData)
 		{
@@ -177,7 +189,16 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// </summary>
 	private async ValueTask<TryGetEntityKeyByLookupKeyResult> TryGetEntityKeyByLookupKeyAsync(TLookupKey lookupKey, CancellationToken cancellationToken = default)
 	{
-		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = await lookupStorage.GetEntityLookupDataAsync(GetStorageKey(), CreateEntityLookupDataAsync, cancellationToken).ConfigureAwait(false);
+		string storageKey = GetStorageKey();
+		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, int, TLookupKey>(storageKey);
+		if (entityLookupData == null)
+		{
+			await s_criticalSection.ExecuteActionAsync(this.GetType(), async () =>
+			{
+				entityLookupData = await CreateEntityLookupDataAsync().ConfigureAwait(false);
+			}, cancellationToken).ConfigureAwait(false);
+			lookupStorage.StoreEntityLookupData(storageKey, entityLookupData);
+		}
 
 		lock (entityLookupData)
 		{
@@ -335,7 +356,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		// musí předcházet opuštění v případě neexistence lookup dat
 		distributedLookupDataInvalidationService.Invalidate(GetStorageKey());
 
-		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, int, TLookupKey>(GetStorageKey(), null);
+		EntityLookupData<TEntity, int, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, int, TLookupKey>(GetStorageKey());
 		if (entityLookupData == null)
 		{
 			// nemáme sestaven lookupTable, není co invalidovat (avšak distrubuovanou invalidaci nutno řešit, proto předchází tomuto bloku kódu).

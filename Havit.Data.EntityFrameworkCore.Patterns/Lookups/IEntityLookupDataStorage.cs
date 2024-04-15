@@ -7,20 +7,17 @@ public interface IEntityLookupDataStorage
 {
 	/// <summary>
 	/// Vrátí lookup data pro konzumenta.
-	/// Pokud nejsou data k dispozici, jsou založena prostřednictvím factory (pokud je factory null, nejsou založena a metoda vrací null).
+	/// Pokud nejsou data k dispozici, vrací null.
 	/// </summary>
 	/// <param name="storageKey">Klíč, pod jakým jsou lookup data v evidenci.</param>
-	/// <param name="factory">Pokud nejsou lookup data v evidenci, factory je založí.</param>
-	EntityLookupData<TEntity, TEntityKey, TLookupKey> GetEntityLookupData<TEntity, TEntityKey, TLookupKey>(string storageKey, Func<EntityLookupData<TEntity, TEntityKey, TLookupKey>> factory);
+	EntityLookupData<TEntity, TEntityKey, TLookupKey> GetEntityLookupData<TEntity, TEntityKey, TLookupKey>(string storageKey);
 
 	/// <summary>
-	/// Vrátí lookup data pro konzumenta.
-	/// Pokud nejsou data k dispozici, jsou založena prostřednictvím factory (pokud je factory null, nejsou založena a metoda vrací null).
+	/// Uloží lookup data pro konzumenta.
 	/// </summary>
 	/// <param name="storageKey">Klíč, pod jakým jsou lookup data v evidenci.</param>
-	/// <param name="factory">Pokud nejsou lookup data v evidenci, factory je založí.</param>
-	/// <param name="cancellationToken">Cancellation token použitý ve factory</param>
-	ValueTask<EntityLookupData<TEntity, TEntityKey, TLookupKey>> GetEntityLookupDataAsync<TEntity, TEntityKey, TLookupKey>(string storageKey, Func<CancellationToken, Task<EntityLookupData<TEntity, TEntityKey, TLookupKey>>> factory, CancellationToken cancellationToken = default);
+	/// <param name="entityLookupData">Storage k uložení.</param>
+	void StoreEntityLookupData<TEntity, TEntityKey, TLookupKey>(string storageKey, EntityLookupData<TEntity, TEntityKey, TLookupKey> entityLookupData);
 
 	/// <summary>
 	/// Odstraní data evidované pro konzumenta.

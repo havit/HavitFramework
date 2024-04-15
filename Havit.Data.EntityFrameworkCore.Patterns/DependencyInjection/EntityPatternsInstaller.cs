@@ -239,7 +239,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		where TImplementation : class, TService
 		where TLookupDataInvalidationService : ILookupDataInvalidationService
 	{
-		services.TryAddSingleton<IEntityLookupDataStorage, EntityLookupDataStorage>();
+		services.TryAddSingleton<IEntityLookupDataStorage, CacheEntityLookupDataStorage>();
 		services.AddServices(new Type[] { typeof(TService), typeof(ILookupDataInvalidationService) }, typeof(TLookupDataInvalidationService), ServiceLifetime.Transient);
 
 		return this;

@@ -373,7 +373,7 @@ public class LookupServiceBaseTests
 		Mock<IDbContext> dbContextMock = new Mock<IDbContext>(MockBehavior.Strict);
 		dbContextMock.Setup(m => m.Set<Uzivatel>()).Returns(dbSetUzivatelMock.Object);
 
-		var uzivatelLookupService = new UzivatelLookupService(new EntityLookupDataStorage(), uzivatelRepositoryMock.Object, dbContextMock.Object, entityKeyAccessorMock.Object, new SoftDeleteManager(new ServerTimeService()));
+		var uzivatelLookupService = new UzivatelLookupService(new DictionaryEntityLookupDataStorage(), uzivatelRepositoryMock.Object, dbContextMock.Object, entityKeyAccessorMock.Object, new SoftDeleteManager(new ServerTimeService()));
 		uzivatelLookupService.SetThrowExceptionWhenNotFound(false);
 		return uzivatelLookupService;
 	}

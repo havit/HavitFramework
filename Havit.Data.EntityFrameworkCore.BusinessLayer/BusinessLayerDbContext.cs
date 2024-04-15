@@ -1,7 +1,13 @@
-﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+﻿using System;
+using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions;
+using Havit.Data.EntityFrameworkCore.Migrations.Extensions;
+using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
+using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer;
 
@@ -82,5 +88,10 @@ public abstract class BusinessLayerDbContext : DbContext
 		optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTableIndexConventionPlugin>(() => settings.LocalizationTableIndexConvention);
 
 		optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => settings.UseXmlCommentsForDescriptionPropertyConvention);
+	}
+
+	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+	{
+		configurationBuilder.AddModelExtensionRegistrationConvention();
 	}
 }

@@ -21,14 +21,12 @@ public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
 	/// <summary>
 	/// Constructor
 	/// </summary>
-	public ModelExtensionRegistrationConvention(
-		IModelExtensionsAssembly modelExtensionsAssembly,
-		IModelExtensionAnnotationProvider modelExtensionAnnotationProvider)
+	public ModelExtensionRegistrationConvention(IServiceProvider serviceProvider)
 	{
-		Contract.Requires<ArgumentNullException>(modelExtensionsAssembly != null);
+		//Contract.Requires<ArgumentNullException>(modelExtensionsAssembly != null);
 
-		this.modelExtensionsAssembly = modelExtensionsAssembly;
-		this.modelExtensionAnnotationProvider = modelExtensionAnnotationProvider;
+		this.modelExtensionsAssembly = (IModelExtensionsAssembly)serviceProvider.GetService(typeof(IModelExtensionsAssembly));
+		this.modelExtensionAnnotationProvider = (IModelExtensionAnnotationProvider)serviceProvider.GetService(typeof(IModelExtensionAnnotationProvider));
 	}
 
 	/// <inheritdoc />

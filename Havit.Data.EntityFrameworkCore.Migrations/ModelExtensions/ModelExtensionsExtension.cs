@@ -5,6 +5,7 @@ using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -152,17 +153,6 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 		}
 
 		services.TryAddScoped<IModelExtensionsAssembly, ModelExtensionsAssembly>();
-
-		// explicitly don't add IConventionSetPlugin, we want to use registration convention only manually in ModelExtensionsModelSource
-		// see ModelExtensionsModelSource an bug #48448
-		services.TryAddScoped<ModelExtensionRegistrationConventionPlugin, ModelExtensionRegistrationConventionPlugin>();
-
-		// replacing IModelSource fixes bug #48448
-		// - only add annotations used by Model Extensions to main DbContext model
-		// - IModelSource is supposed to be singleton, we need to scope for each DbContext
-		//   (see relevant classes such as ScopeBridgingModelSource and ModelExtensionsModelSource)
-		services.ReplaceCoreService<IModelSource, ScopeBridgingModelSource>();
-		services.TryAddScoped<IScopedModelSource, ModelExtensionsModelSource>();
 	}
 
 	/// <inheritdoc />

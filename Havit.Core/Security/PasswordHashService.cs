@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Security;
 
@@ -44,7 +41,7 @@ public static class PasswordHashService
 	{
 		string value = salt + plainTextPassword;
 
-		SHA512 sha = SHA512.Create();
+		using SHA512 sha = SHA512.Create();
 		var hash = sha.ComputeHash(Encoding.Unicode.GetBytes(value));
 		return String.Join("", hash.Select(x => x.ToString("X2")));
 	}

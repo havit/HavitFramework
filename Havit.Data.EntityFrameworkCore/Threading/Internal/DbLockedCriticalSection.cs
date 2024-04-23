@@ -140,6 +140,14 @@ public class DbLockedCriticalSection : ICriticalSection<string>
 
 	private void ReleaseLock(string lockValue, DbConnection sqlConnection)
 	{
+		if (sqlConnection.State == System.Data.ConnectionState.Closed)
+		{
+			// Pokud je spojení zavřené, nemůžeme na něm spouštět dotazy do datábáze.
+			// Pokud je spojení zavřené, jsme si jisti, že zámek byl uvolněn, takže nemusíme nic dělat.
+			// JK: Jak se stane, že je spojení zavřené, je mi záhadou. Stává se jen v testech na build serveru, jinak se nepodařilo zreprodukovat.
+			return;
+		}
+
 		using (DbCommand command = ReleaseLock_PrepareCommand(lockValue, sqlConnection))
 		{
 			command.ExecuteNonQuery();
@@ -148,6 +156,14 @@ public class DbLockedCriticalSection : ICriticalSection<string>
 
 	private async Task ReleaseLockAsync(string lockValue, DbConnection sqlConnection)
 	{
+		if (sqlConnection.State == System.Data.ConnectionState.Closed)
+		{
+			// Pokud je spojení zavřené, nemůžeme na něm spouštět dotazy do datábáze.
+			// Pokud je spojení zavřené, jsme si jisti, že zámek byl uvolněn, takže nemusíme nic dělat.
+			// JK: Jak se stane, že je spojení zavřené, je mi záhadou. Stává se jen v testech na build serveru, jinak se nepodařilo zreprodukovat.
+			return;
+		}
+
 		using (DbCommand command = ReleaseLock_PrepareCommand(lockValue, sqlConnection))
 		{
 			await command.ExecuteNonQueryAsync(CancellationToken.None).ConfigureAwait(false);

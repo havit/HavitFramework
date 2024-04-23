@@ -5,8 +5,13 @@ namespace Havit.Extensions.Configuration.ConnectionStrings.Git;
 
 public static class ConfigurationBuilderExtensions
 {
-	public static IConfigurationRoot BuildGitBranchConfiguration(this IConfigurationBuilder configurationBuilder)
+	/// <summary>
+	/// Applies branchName to config section(s)
+	/// </summary>
+	/// <param name="configurationBuilder">configurationBuilder</param>
+	/// <param name="configSectionNamesToApply">Config section names such as ConnectionStrings (default), AppSettings, ApplicationInsights or any other root level setting</param>
+	public static IConfigurationRoot BuildGitBranchConfiguration(this IConfigurationBuilder configurationBuilder, params string[] configSectionNamesToApply)
 	{
-		return new BranchConnectionStringConfigurationRoot(configurationBuilder.Build(), configurationBuilder.GetFileProvider(), new HeadFileGitRepositoryProvider());
+		return new BranchConfigurationRoot(configurationBuilder.Build(), configurationBuilder.GetFileProvider(), new HeadFileGitRepositoryProvider(), configSectionNamesToApply);
 	}
 }

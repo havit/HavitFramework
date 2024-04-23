@@ -6,6 +6,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="BranchAppSettingsConfigurationBuilder.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<InternalsVisibleTo Include="Havit.Data.Configuration.Git.Tests" />
 	</ItemGroup>
 
@@ -21,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Havit.Data.Configuration.Git.Core\Havit.Data.Configuration.Git.Core.csproj" />
+	  <ProjectReference Include="..\Havit.Data.Configuration.Git.Core\Havit.Data.Configuration.Git.Core.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -2,33 +2,29 @@
 using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace Havit.Data.Configuration.Git;
 
 /// <summary>
-/// Configuration Builder implementation that modifies connection strings according to current Git branch (i.e. changes DB name).
-///
-/// master -> original DB
-/// {branch_name} -> {original_DB}_{branch_name}
+/// BranchConfigurationBuilderBase implementation that modifies connection strings according to current Git branch (i.e. changes DB name).
 /// </summary>
-public class BranchConnectionStringConfigurationBuilder : ConfigurationBuilder
+public class BranchConnectionStringConfigurationBuilder : BranchConfigurationBuilderBase
 {
-	private readonly IGitRepositoryProvider gitRepositoryProvider;
-
 	/// <summary>
 	/// Creates instance of <see cref="BranchConnectionStringConfigurationBuilder"/>.
 	/// </summary>
 	public BranchConnectionStringConfigurationBuilder()
-		: this(new HeadFileGitRepositoryProvider())
+		: this(new HeadFileGitRepositoryProvider(), new BranchConfigValueTransformer())
 	{
 	}
 
 	/// <summary>
-	/// Creates instance of <see cref="BranchConnectionStringConfigurationBuilder"/> with custom <see cref="IGitRepositoryProvider"/> (usually for testing purposes).
+	/// Creates instance of <see cref="BranchXmlConfigurationBuilder"/> with custom <see cref="IGitRepositoryProvider"/> and/or <paramref name="branchConfigSectionValueTransformer"/> (usually for testing purposes).
 	/// </summary>
-	public BranchConnectionStringConfigurationBuilder(IGitRepositoryProvider gitRepositoryProvider)
+	public BranchConnectionStringConfigurationBuilder(IGitRepositoryProvider gitRepositoryProvider, IBranchConfigValueTransformer branchConfigSectionValueTransformer)
+		: base(gitRepositoryProvider, branchConfigSectionValueTransformer)
 	{
-		this.gitRepositoryProvider = gitRepositoryProvider;
 	}
 
 	/// <inheritdoc />
@@ -38,28 +34,27 @@ public class BranchConnectionStringConfigurationBuilder : ConfigurationBuilder
 		{
 			return ProcessConnectionStringsSection(connectionStringsSection);
 		}
-
-		return base.ProcessConfigurationSection(configSection);
+		else
+		{
+			throw new ConfigurationErrorsException("BranchConnectionStringConfigurationBuilder can be set only on ConnectionStrings section");
+		}
 	}
 
 	private ConfigurationSection ProcessConnectionStringsSection(ConnectionStringsSection section)
 	{
-		string configPath = Path.GetDirectoryName(section.ElementInformation.Source);
-
 		var transformedSection = new ConnectionStringsSection();
 
 		foreach (ConnectionStringSettings connString in section.ConnectionStrings)
 		{
-			var newConnString = TransformConnectionString(connString.ConnectionString, configPath);
-			transformedSection.ConnectionStrings.Add(new ConnectionStringSettings(connString.Name, newConnString, connString.ProviderName));
+			var newConnString = TransformConnectionString(connString.ConnectionString);
+			transformedSection.ConnectionStrings.Add(new ConnectionStringSettings(connString.Name, newConnString));
 		}
 
 		return transformedSection;
 	}
 
-	internal string TransformConnectionString(string connectionString, string configPath)
+	internal string TransformConnectionString(string connectionString)
 	{
-		return new BranchConnectionStringTransformer(gitRepositoryProvider)
-			.ChangeDatabaseName(connectionString, configPath);
+		return BranchConfigSectionValueTransformer.TransformConfigValue(connectionString, BranchName);
 	}
 }

@@ -17,11 +17,8 @@ public class BranchConnectionStringConfigurationBuilderTests
 		var builder = CreateBuilder(null);
 		var appSettingsSection = new AppSettingsSection();
 
-		// act
-		ConfigurationSection section = builder.ProcessConfigurationSection(appSettingsSection);
-
 		// assert
-		Assert.AreSame(appSettingsSection, section);
+		Assert.ThrowsException<ConfigurationErrorsException>(() => builder.ProcessConfigurationSection(appSettingsSection));
 	}
 
 	[TestMethod]
@@ -61,6 +58,25 @@ public class BranchConnectionStringConfigurationBuilderTests
 	}
 
 	[TestMethod]
+	public void BranchConnectionStringConfigurationBuilder_ProcessConfigurationSection_BranchIsFeature_ConnectionStringContainsNewDbName()
+	{
+		// arrange
+		var builder = CreateBuilder(currentBranchName: "feature/test");
+		var configurationSection = new ConnectionStringsSection
+		{
+			ConnectionStrings = { new ConnectionStringSettings("DefaultConnectionString", "Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName") }
+		};
+
+		// act
+		var modifiedSection = (ConnectionStringsSection)builder.ProcessConfigurationSection(configurationSection);
+
+		// assert
+		ConnectionStringSettings connString = modifiedSection.ConnectionStrings.Cast<ConnectionStringSettings>().FirstOrDefault(s => s.Name == "DefaultConnectionString");
+		Assert.IsNotNull(connString);
+		Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_feature_test;Application Name=MyName", connString.ConnectionString);
+	}
+
+	[TestMethod]
 	public void BranchConnectionStringConfigurationBuilder_ProcessConfigurationSection_ConnectionStringWithoutInitialCatalog_ReturnsOriginalConnectionString()
 	{
 		// arrange
@@ -83,6 +99,6 @@ public class BranchConnectionStringConfigurationBuilderTests
 
 	private static BranchConnectionStringConfigurationBuilder CreateBuilder(string currentBranchName)
 	{
-		return new BranchConnectionStringConfigurationBuilder(Mock.Of<IGitRepositoryProvider>(f => f.GetBranch(It.IsAny<string>()) == currentBranchName));
+		return new BranchConnectionStringConfigurationBuilder(Mock.Of<IGitRepositoryProvider>(f => f.GetBranch(It.IsAny<string>()) == currentBranchName), new BranchConfigValueTransformer());
 	}
 }

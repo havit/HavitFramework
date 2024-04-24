@@ -8,7 +8,7 @@
   <!-- NuGet -->
   <Import Project="../NuGet.targets" />
   <PropertyGroup>
-	<PackageVersion>2.0.7</PackageVersion>
+	<PackageVersion>2.0.40</PackageVersion>
 	<Description>HAVIT .NET Framework Extensions - Applies git branch into connection strings (for .NET Core projects with Microsoft.Extensions.Configuration)</Description>
   </PropertyGroup>
   

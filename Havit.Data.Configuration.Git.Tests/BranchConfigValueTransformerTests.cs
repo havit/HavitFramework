@@ -1,4 +1,5 @@
-﻿using Havit.Data.Configuration.Git.Core;
+﻿using System;
+using Havit.Data.Configuration.Git.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -8,73 +9,52 @@ namespace Havit.Data.Configuration.Git.Tests;
 public class BranchConfigValueTransformerTests
 {
 	[TestMethod]
-	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_ConnectionStringDoesNotContainPlaceholder_ConnectionStringIsUnchanged()
+	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_MasterBranch()
 	{
-		var transformer = CreateTransformer();
+		// Arrange		
+		var transformer = new BranchConfigValueTransformer();
 
-		var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=MyName;Application Name=MyName";
-
-		string connString = transformer.TransformConfigValue(originalConnectionString, "master");
-
-		Assert.AreEqual(originalConnectionString, connString);
+		// Act + Assert
+		Assert.AreEqual("master", transformer.TransformConfigValue("#BRANCH_NAME#", "master"));
+		Assert.AreEqual("_master", transformer.TransformConfigValue("#_BRANCH_NAME#", "master"));
+		Assert.AreEqual("master", transformer.TransformConfigValue("{BRANCHNAME}", "master"));
 	}
 
 	[TestMethod]
-	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_BranchIsMaster_ConnectionStringContainsMasterSuffix()
+	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_FeatureBranch()
 	{
-		var transformer = CreateTransformer();
+		// Arrange		
+		var transformer = new BranchConfigValueTransformer();
 
-		string connString = transformer.TransformConfigValue("Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName", "master");
-
-		Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_master;Application Name=MyName", connString);
+		// Act + Assert
+		Assert.AreEqual("feature_test", transformer.TransformConfigValue("#BRANCH_NAME#", "feature/test"));
+		Assert.AreEqual("_feature_test", transformer.TransformConfigValue("#_BRANCH_NAME#", "feature/test"));
+		Assert.AreEqual("feature_test", transformer.TransformConfigValue("{BRANCH_NAME}", "feature/test"));
 	}
 
 	[TestMethod]
-	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_UnknownBranchNull_ConnectionStringIsUnchanged()
+	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_UnknownBranch()
 	{
-		var transformer = CreateTransformer();
+		// Arrange		
+		var transformer = new BranchConfigValueTransformer();
 
-		var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName";
+		// Act + Assert
+		Assert.AreEqual("#BRANCH_NAME#", transformer.TransformConfigValue("#BRANCH_NAME#", null));
+		Assert.AreEqual("#_BRANCH_NAME#", transformer.TransformConfigValue("#_BRANCH_NAME#", null));
+		Assert.AreEqual("{BRANCH_NAME}", transformer.TransformConfigValue("{BRANCH_NAME}", null));
 
-		string connString = transformer.TransformConfigValue(originalConnectionString, null);
-
-		Assert.AreEqual(originalConnectionString, connString);
+		Assert.AreEqual("#BRANCH_NAME#", transformer.TransformConfigValue("#BRANCH_NAME#", String.Empty));
+		Assert.AreEqual("#_BRANCH_NAME#", transformer.TransformConfigValue("#_BRANCH_NAME#", String.Empty));
+		Assert.AreEqual("{BRANCH_NAME}", transformer.TransformConfigValue("{BRANCH_NAME}", String.Empty));
 	}
 
 	[TestMethod]
-	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_UnknownBranchEmptyString_ConnectionStringIsUnchanged()
+	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_ReplacesMultipleMarkers()
 	{
-		var transformer = CreateTransformer();
+		// Arrange
+		var transformer = new BranchConfigValueTransformer();
 
-		var originalConnectionString = "Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName";
-
-		string connString = transformer.TransformConfigValue(originalConnectionString, "");
-
-		Assert.AreEqual(originalConnectionString, connString);
-	}
-
-	[TestMethod]
-	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_BranchIsTest_ConnectionStringContainsNewDbName()
-	{
-		var transformer = CreateTransformer();
-
-		string connString = transformer.TransformConfigValue("Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName", "test");
-
-		Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_test;Application Name=MyName", connString);
-	}
-
-	[TestMethod]
-	public void BranchConnectionStringConfigurationTransformer_TransformConnectionString_BranchIsFeature_ConnectionStringContainsNewDbName()
-	{
-		var transformer = CreateTransformer();
-
-		string connString = transformer.TransformConfigValue("Data Source=(localdb)\v14.0;Initial Catalog=MyName_#BRANCH_NAME#;Application Name=MyName", "feature/test");
-
-		Assert.AreEqual("Data Source=(localdb)\v14.0;Initial Catalog=MyName_feature_test;Application Name=MyName", connString);
-	}
-
-	private static IBranchConfigValueTransformer CreateTransformer()
-	{
-		return new BranchConfigValueTransformer();
+		// Act + Assert
+		Assert.AreEqual("master _master master", transformer.TransformConfigValue("#BRANCH_NAME# #_BRANCH_NAME# {BRANCH_NAME}", "master"));
 	}
 }

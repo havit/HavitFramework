@@ -14,20 +14,14 @@ public class BranchConfigurationRoot : IConfigurationRoot
 	private readonly IConfigurationRoot configurationRoot;
 	private readonly IFileProvider fileProvider;
 	private readonly IGitRepositoryProvider gitRepositoryProvider;
-	private readonly string[] configSectionNamesToApply = { "ConnectionStrings" };
 
 	public BranchConfigurationRoot(IConfigurationRoot configurationRoot,
 		IFileProvider fileProvider,
-		IGitRepositoryProvider gitRepositoryProvider,
-		params string[] configSectionNamesToApply)
+		IGitRepositoryProvider gitRepositoryProvider)
 	{
 		this.configurationRoot = configurationRoot;
 		this.fileProvider = fileProvider;
 		this.gitRepositoryProvider = gitRepositoryProvider;
-		if (configSectionNamesToApply.Length > 0)
-		{
-			this.configSectionNamesToApply = configSectionNamesToApply;
-		}
 	}
 
 	public IConfigurationSection GetSection(string key)
@@ -49,20 +43,15 @@ public class BranchConfigurationRoot : IConfigurationRoot
 	{
 		get
 		{
-			if (configSectionNamesToApply.Any(configSectionName => key.StartsWith($"{configSectionName}:")))
+			string configValue = configurationRoot[key];
+			if (configValue == null)
 			{
-				string configValue = configurationRoot[key];
-				if (configValue == null)
-				{
-					throw new ArgumentException(
-						$"Specified config value ('{key}') not found, cannot transform it using current Git branch." +
-						" Please make sure configuration is correctly set up.", nameof(key));
-				}
-
-				return TransformConfigValue(configValue);
+				throw new ArgumentException(
+					$"Specified config value ('{key}') not found, cannot transform it using current Git branch." +
+					" Please make sure configuration is correctly set up.", nameof(key));
 			}
 
-			return configurationRoot[key];
+			return TransformConfigValue(configValue);
 		}
 		set => configurationRoot[key] = value;
 	}

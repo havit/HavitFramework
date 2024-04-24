@@ -6,13 +6,19 @@ namespace Havit.Data.Configuration.Git.Core;
 /// <summary>
 /// Class for transforming config values (as strings) via placeholders and branch name
 /// </summary>
-public class BranchConfigValueTransformer : IBranchConfigValueTransformer
+public class BranchConfigValueTransformer
 {
-	/// <summary>
-	/// Branch name placeholders
-	/// </summary>
-	private string[] branchNamePlaceholders = { "#BRANCH_NAME#", "#_BRANCH_NAME#", "{BRANCH_NAME}" };
+	private List<(string placeHolder, string branchReplacement)> branchNamePlaceHolderSettings = new List<(string placeHolder, string branchReplacement)>
+	{
+		("#BRANCH_NAME#", "{0}"),
+		("#_BRANCH_NAME#", "_{0}"),
+		("#-BRANCH_NAME#", "-{0}"),
+		("{BRANCH_NAME}", "{0}"),
+		("{_BRANCH_NAME}", "_{0}"),
+		("{-BRANCH_NAME}", "-{0}")
 
+
+	};
 	/// <summary>
 	/// Applies <paramref name="branchName"/> to placeholders in <paramref name="originalValue"/>
 	/// </summary>
@@ -31,9 +37,9 @@ public class BranchConfigValueTransformer : IBranchConfigValueTransformer
 		else
 		{
 			branchName = branchName?.Replace("/", "_");
-			foreach (string branchNamePlaceholder in branchNamePlaceholders)
+			foreach (var branchNamePlaceholderSetting in branchNamePlaceHolderSettings)
 			{
-				originalValue = originalValue.Replace(branchNamePlaceholder, branchName);
+				originalValue = originalValue.Replace(branchNamePlaceholderSetting.placeHolder, string.Format(branchNamePlaceholderSetting.branchReplacement, branchName));
 			}
 			return originalValue;
 		}

@@ -9,13 +9,13 @@ using Microsoft.Extensions.Primitives;
 
 namespace Havit.Extensions.Configuration.ConnectionStrings.Git;
 
-public class BranchConnectionStringConfigurationRoot : IConfigurationRoot
+public class BranchConfigurationRoot : IConfigurationRoot
 {
 	private readonly IConfigurationRoot configurationRoot;
 	private readonly IFileProvider fileProvider;
 	private readonly IGitRepositoryProvider gitRepositoryProvider;
 
-	public BranchConnectionStringConfigurationRoot(IConfigurationRoot configurationRoot,
+	public BranchConfigurationRoot(IConfigurationRoot configurationRoot,
 		IFileProvider fileProvider,
 		IGitRepositoryProvider gitRepositoryProvider)
 	{
@@ -40,41 +40,34 @@ public class BranchConnectionStringConfigurationRoot : IConfigurationRoot
 	}
 
 	public string this[string key]
-        {
-            get
-            {
-                if (IsConnectionStringKey(key))
-                {
-                    string connectionString = configurationRoot[key];
-                    if (connectionString == null)
-                    {
-                        throw new ArgumentException(
-                            $"Specified connection string ('{key}') not found, cannot transform it using current Git branch." +
-                            " Please make sure configuration is correctly set up.", nameof(key));
-                    }
+	{
+		get
+		{
+			string configValue = configurationRoot[key];
+			if (configValue == null)
+			{
+				throw new ArgumentException(
+					$"Specified config value ('{key}') not found, cannot transform it using current Git branch." +
+					" Please make sure configuration is correctly set up.", nameof(key));
+			}
 
-                    return TransformConnectionString(connectionString);
-                }
+			return TransformConfigValue(configValue);
+		}
+		set => configurationRoot[key] = value;
+	}
 
-                return configurationRoot[key];
-            }
-            set => configurationRoot[key] = value;
-        }
-
-        public void Reload()
+	public void Reload()
 	{
 		configurationRoot.Reload();
 	}
 
 	public IEnumerable<IConfigurationProvider> Providers => configurationRoot.Providers;
 
-	private bool IsConnectionStringKey(string key) => key.StartsWith("ConnectionStrings:");
-
-	private string TransformConnectionString(string connectionString)
+	private string TransformConfigValue(string configValue)
 	{
 		var appSettingsDirectory = GetAppSettingsDirectory();
-
-		return new BranchConnectionStringTransformer(gitRepositoryProvider).ChangeDatabaseName(connectionString, appSettingsDirectory);
+		string branchName = gitRepositoryProvider.GetBranch(appSettingsDirectory);
+		return new BranchConfigValueTransformer().TransformConfigValue(configValue, branchName);
 	}
 
 	private string GetAppSettingsDirectory()

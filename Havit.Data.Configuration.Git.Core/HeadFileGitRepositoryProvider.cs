@@ -47,14 +47,14 @@ public class HeadFileGitRepositoryProvider : IGitRepositoryProvider
 
 		string line = File.ReadAllLines(headFile.FullName)[0];
 		return ParseBranchName(line);
-        }
+	}
 
 	/// <summary>
 	/// Return branch name from reference.
 	/// </summary>
-        public static string ParseBranchName(string refFromHeadFile)
-        {
-            Match match = HeadRefRegex.Match(refFromHeadFile);
-            return match.Success ? match.Groups["branch_name"].Value : null;
-        }
-    }
+	public static string ParseBranchName(string refFromHeadFile)
+	{
+		Match match = HeadRefRegex.Match(refFromHeadFile);
+		return match.Success ? match.Groups["branch_name"].Value : null;
+	}
+}

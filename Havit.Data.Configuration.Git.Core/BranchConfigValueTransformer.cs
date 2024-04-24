@@ -16,15 +16,12 @@ public class BranchConfigValueTransformer
 		("{BRANCH_NAME}", "{0}"),
 		("{_BRANCH_NAME}", "_{0}"),
 		("{-BRANCH_NAME}", "-{0}")
-
-
 	};
+
 	/// <summary>
 	/// Applies <paramref name="branchName"/> to placeholders in <paramref name="originalValue"/>
 	/// </summary>
-	/// <param name="originalValue"></param>
-	/// <param name="branchName"></param>
-	/// <returns>originalValue if branchName is null or empty or originalValue with replaced placeholder(s) </returns>
+	/// <returns>originalValue if branchName is null or empty or originalValue with replaced placeholder(s)</returns>
 	public virtual string TransformConfigValue(string originalValue, string branchName)
 	{
 		if (string.IsNullOrEmpty(branchName) || string.IsNullOrEmpty(originalValue))

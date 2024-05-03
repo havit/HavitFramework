@@ -212,7 +212,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <param name="dataSeed">Předpis k seedování.</param>
 	/// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
 	/// <param name="profile">Profil, který je seedován.</param>
-	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
+	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislostí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
 	/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
 	private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile)
 	{
@@ -252,7 +252,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <param name="dataSeed">Předpis k seedování.</param>
 	/// <param name="stack">Zásobník pro detekci cyklů závislostí.</param>
 	/// <param name="profile">Profil, který je seedován.</param>
-	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislosí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
+	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislostí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
 	/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
 	/// <param name="cancellationToken">Cancellation token.</param>
 	private async Task SeedServiceAsync(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile, CancellationToken cancellationToken)
@@ -274,8 +274,8 @@ public class DataSeedRunner : IDataSeedRunner
 		{
 			foreach (Type prerequisiteType in prerequisiteTypes)
 			{
-				IDataSeed prerequisitedDbSeed = SeedService_GetPrerequisite(dataSeed, profile, dataSeedsInProfileByType, prerequisiteType);
-				SeedService(prerequisitedDbSeed, stack, profile, dataSeedsInProfileByType, completedDataSeedsInProfile);
+				IDataSeed prerequisiteDbSeed = SeedService_GetPrerequisite(dataSeed, profile, dataSeedsInProfileByType, prerequisiteType);
+				await SeedServiceAsync(prerequisiteDbSeed, stack, profile, dataSeedsInProfileByType, completedDataSeedsInProfile, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
@@ -307,16 +307,16 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	private static IDataSeed SeedService_GetPrerequisite(IDataSeed dataSeed, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, Type prerequisiteType)
 	{
-		IDataSeed prerequisitedDbSeed;
-		if (!dataSeedsInProfileByType.TryGetValue(prerequisiteType, out prerequisitedDbSeed)) // neumožňujeme jako závislost použít předpis seedování dat z jiného profilu
+		IDataSeed prerequisiteDbSeed;
+		if (!dataSeedsInProfileByType.TryGetValue(prerequisiteType, out prerequisiteDbSeed)) // neumožňujeme jako závislost použít předpis seedování dat z jiného profilu
 		{
-			throw new InvalidOperationException(String.Format("Prerequisite {0} for data seed {1} was not found. Data seeds and prerequisities must be in the same profile ({2}).",
+			throw new InvalidOperationException(String.Format("Prerequisite {0} for data seed {1} was not found. Data seeds and prerequisites must be in the same profile ({2}).",
 				prerequisiteType.Name,
 				dataSeed.GetType().Name,
 				profile.ProfileName));
 		}
 
-		return prerequisitedDbSeed;
+		return prerequisiteDbSeed;
 	}
 
 	/// <summary>

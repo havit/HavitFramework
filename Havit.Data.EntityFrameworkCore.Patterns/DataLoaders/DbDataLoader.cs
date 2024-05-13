@@ -227,7 +227,7 @@ public partial class DbDataLoader : IDataLoader
 				catch (TargetInvocationException ex)
 				{
 					LogDebug("Exception: {0}", args: ex.Message);
-					ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 			else
@@ -246,7 +246,7 @@ public partial class DbDataLoader : IDataLoader
 				catch (TargetInvocationException ex)
 				{
 					LogDebug("Exception: {0}", args: ex.Message);
-					ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 
@@ -310,7 +310,7 @@ public partial class DbDataLoader : IDataLoader
 				catch (TargetInvocationException ex)
 				{
 					LogDebug("Exception: {0}", args: ex.Message);
-					ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 			else
@@ -329,7 +329,7 @@ public partial class DbDataLoader : IDataLoader
 				catch (TargetInvocationException ex)
 				{
 					LogDebug("Exception: {0}", args: ex.Message);
-					ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 

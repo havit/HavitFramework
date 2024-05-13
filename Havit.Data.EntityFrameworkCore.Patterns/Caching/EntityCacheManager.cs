@@ -245,7 +245,7 @@ public class EntityCacheManager : IEntityCacheManager
 			}
 			catch (TargetInvocationException ex)
 			{
-				ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+				ExceptionDispatchInfo.Throw(ex.InnerException);
 			}
 		}
 		else if (hasCachedEntities)
@@ -370,7 +370,7 @@ public class EntityCacheManager : IEntityCacheManager
 				}
 				catch (TargetInvocationException targetInvocationException)
 				{
-					ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
+					ExceptionDispatchInfo.Throw(targetInvocationException.InnerException);
 				}
 			}
 		});

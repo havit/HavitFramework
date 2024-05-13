@@ -203,6 +203,7 @@ public partial class DbDataLoader : IDataLoader
 					}
 					catch (TargetInvocationException ex)
 					{
+						// Statická metoda Throw(...) není v .NET Frameworku 4.8 dostupná -> Capture(...).Throw()
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
@@ -220,6 +221,7 @@ public partial class DbDataLoader : IDataLoader
 					}
 					catch (TargetInvocationException ex)
 					{
+						// Statická metoda Throw(...) není v .NET Frameworku 4.8 dostupná -> Capture(...).Throw()
 						ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 					}
 				}
@@ -267,6 +269,7 @@ public partial class DbDataLoader : IDataLoader
 					}
 					catch (TargetInvocationException targetInvocationException)
 					{
+						// Statická metoda Throw(...) není v .NET Frameworku 4.8 dostupná -> Capture(...).Throw()
 						ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
 					}
 				}
@@ -284,6 +287,7 @@ public partial class DbDataLoader : IDataLoader
 					}
 					catch (TargetInvocationException targetInvocationException)
 					{
+						// Statická metoda Throw(...) není v .NET Frameworku 4.8 dostupná -> Capture(...).Throw()
 						ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
 					}
 				}

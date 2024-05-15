@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Havit.Data.Configuration.Git.Core;
@@ -8,14 +9,20 @@ namespace Havit.Data.Configuration.Git.Core;
 /// </summary>
 public class BranchConfigValueTransformer
 {
-	private List<(string placeHolder, string branchReplacement)> branchNamePlaceHolderSettings = new List<(string placeHolder, string branchReplacement)>
+	private List<(string placeHolder, string branchReplacement, string branchNameSeparatorReplacement)> branchNamePlaceHolderSettings = new List<(string placeHolder, string branchReplacement, string branchNameSeparatorReplacement)>
 	{
-		("#BRANCH_NAME#", "{0}"),
-		("#_BRANCH_NAME#", "_{0}"),
-		("#-BRANCH_NAME#", "-{0}"),
-		("{BRANCH_NAME}", "{0}"),
-		("{_BRANCH_NAME}", "_{0}"),
-		("{-BRANCH_NAME}", "-{0}")
+		("#BRANCH_NAME#", "{0}", "_"),
+		("#_BRANCH_NAME#", "_{0}", "_"),
+		("#-BRANCH-NAME#", "-{0}", "-"),
+		("{BRANCH_NAME}", "{0}", "_"),
+		("{_BRANCH_NAME}", "_{0}", "_"),
+		("{-BRANCH-NAME}", "-{0}", "-"),
+		("#BRANCH_NAME_EMPTYMASTER#", "{0}", "_"),
+		("#_BRANCH_NAME_EMPTYMASTER#", "_{0}", "_"),
+		("#-BRANCH-NAME-EMPTYMASTER#", "-{0}", "-"),
+		("{BRANCH_NAME_EMPTYMASTER}", "{0}", "_"),
+		("{_BRANCH_NAME_EMPTYMASTER}", "_{0}", "_"),
+		("{-BRANCH-NAME-EMPTYMASTER}", "-{0}", "-"),
 	};
 
 	/// <summary>
@@ -33,10 +40,18 @@ public class BranchConfigValueTransformer
 		}
 		else
 		{
-			branchName = branchName?.Replace("/", "_");
-			foreach (var branchNamePlaceholderSetting in branchNamePlaceHolderSettings)
+			bool branchIsMaster = branchName.Equals("master", StringComparison.InvariantCultureIgnoreCase);
+			foreach (var branchNamePlaceholderSetting in branchNamePlaceHolderSettings.Where(ph => originalValue.Contains(ph.placeHolder)))
 			{
-				originalValue = originalValue.Replace(branchNamePlaceholderSetting.placeHolder, string.Format(branchNamePlaceholderSetting.branchReplacement, branchName));
+				if (branchIsMaster && branchNamePlaceholderSetting.placeHolder.IndexOf("EMPTYMASTER") > 0)
+				{
+					originalValue = originalValue.Replace(branchNamePlaceholderSetting.placeHolder, "");
+				}
+				else
+				{
+					branchName = branchName?.Replace("/", branchNamePlaceholderSetting.branchNameSeparatorReplacement);
+					originalValue = originalValue.Replace(branchNamePlaceholderSetting.placeHolder, string.Format(branchNamePlaceholderSetting.branchReplacement, branchName));
+				}
 			}
 			return originalValue;
 		}

@@ -54,6 +54,8 @@ public class AresServicesTests
 		Assert.AreEqual("HAVIT, s.r.o.", ekonomickySubjekt.EkonomickySubjektAres.ObchodniJmeno);
 	}
 
+	// Padal na to program, tak jsem udělal tento test, ale 15.5.2024 někdo doplnil adresu. Tím se stal zbytečným
+	[Ignore]
 	[TestMethod]
 	public async Task AresService_GetEkonomickeSubjektyDleIcoAsync_NemaSidlo()
 	{

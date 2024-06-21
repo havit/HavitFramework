@@ -19,7 +19,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="bootstrap.less" Version="3.4.1" />
-		<PackageReference Include="jQuery" Version="3.6.0" />
+		<PackageReference Include="jQuery" Version="3.7.0" />
 		<PackageReference Include="Microsoft.AspNet.ScriptManager.WebForms" Version="5.0.0" />
 		<PackageReference Include="toastr" Version="2.1.1" />
 	</ItemGroup>

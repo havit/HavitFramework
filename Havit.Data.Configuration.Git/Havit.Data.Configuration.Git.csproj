@@ -16,12 +16,12 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.41</PackageVersion>
+		<PackageVersion>2.0.42</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Applies git branch into connection strings (for classic ASP.NET projects with System.Configuration)</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -10,11 +10,11 @@
 	</ItemGroup>
 
 	<!-- NuGet -->
-	<Import Project="../NuGet.targets" />
+	<!--<Import Project="../NuGet.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.0.31</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Google Analytics Client Library</Description>
-	</PropertyGroup>
+	</PropertyGroup>-->
 
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
@@ -22,7 +22,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 

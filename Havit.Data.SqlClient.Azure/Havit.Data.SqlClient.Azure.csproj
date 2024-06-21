@@ -6,14 +6,14 @@
 	</PropertyGroup>
 
 	<!-- NuGet -->
-	<Import Project="../NuGet.targets" />
+	<!--<Import Project="../NuGet.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.0.9</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Support Azure Managed Identity Authentication for System.Data.SqlClient</Description>
-	</PropertyGroup>
+	</PropertyGroup>-->
 	
 	<ItemGroup>
-		<PackageReference Include="Azure.Identity" Version="1.11.0" />
+		<PackageReference Include="Azure.Identity" Version="1.12.0" />
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />

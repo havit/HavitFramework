@@ -12,6 +12,9 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Middlewares;
 /// <summary>
 /// Middleware to report failed requests.
 /// </summary>
+#if NET8_0_OR_GREATER
+[Obsolete("Starting in NET8, use exception handling with IExceptionHandler.")]
+#endif
 public class ExceptionMonitoringMiddleware
 {
 	private readonly RequestDelegate next;

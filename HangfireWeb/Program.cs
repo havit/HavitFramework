@@ -1,11 +1,5 @@
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HangfireWeb;
 
@@ -13,21 +7,41 @@ public class Program
 {
 	public static void Main(string[] args)
 	{
-		CreateHostBuilder(args).Build().Run();
+		WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+		ConfigureConfigurationAndLogging(builder);
+		ConfigureServices(builder);
+
+		var app = builder.Build();
+
+		ConfigureMiddleware(app);
+		ConfigureEndpoints(app);
+
+		app.Run();
 	}
 
-	public static IHostBuilder CreateHostBuilder(string[] args) =>
-		Host.CreateDefaultBuilder(args)
-			.ConfigureAppConfiguration((hostContext, configuration) =>
-			{
-				configuration
-				.AddJsonFile("appsettings.HangfireWeb.json", optional: false, reloadOnChange: false)
-				.AddJsonFile($"appsettings.HangfireWeb.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: false, reloadOnChange: false)
-				.AddEnvironmentVariables();
-			})
-			.ConfigureWebHostDefaults(webBuilder =>
-			{
-				webBuilder.UseStartup<Startup>();
-			});
+	private static void ConfigureConfigurationAndLogging(WebApplicationBuilder builder)
+	{
+		builder.Configuration.AddJsonFile("appsettings.HangfireWeb.json", optional: false, reloadOnChange: false);
+		builder.Configuration.AddJsonFile($"appsettings.HangfireWeb.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: false);
+		builder.Configuration.AddEnvironmentVariables();
+	}
 
+	private static void ConfigureServices(WebApplicationBuilder builder)
+	{
+		Startup startup = new Startup(builder.Configuration);
+		startup.ConfigureServices(builder.Services);
+	}
+
+	private static void ConfigureMiddleware(WebApplication app)
+	{
+		Startup startup = new Startup(app.Configuration);
+		startup.ConfigureMiddleware(app);
+	}
+
+	private static void ConfigureEndpoints(WebApplication app)
+	{
+		Startup startup = new Startup(app.Configuration);
+		startup.ConfigureEndpoints(app);
+	}
 }

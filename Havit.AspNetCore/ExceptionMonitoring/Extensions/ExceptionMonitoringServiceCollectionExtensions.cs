@@ -27,6 +27,9 @@ public static class ExceptionMonitoringServiceCollectionExtensions
 	/// </summary>
 	public static void AddExceptionMonitoring(this IServiceCollection services, IConfiguration configurationRoot, bool exceptionBuffering)
 	{
+#if NET8_0_OR_GREATER
+		services.AddExceptionHandler<Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers.ExceptionMonitoringExceptionHandler>();
+#endif
 		services.TryAddSingleton<IExceptionMonitoringService, ExceptionMonitoringService>();
 		services.TryAddSingleton<IExceptionFormatter, HttpRequestExceptionFormatter>();
 

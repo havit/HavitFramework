@@ -7,12 +7,13 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<ImplicitUsings>true</ImplicitUsings>
 	</PropertyGroup>
 
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.20</PackageVersion>
+		<PackageVersion>2.0.21-preview01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
 	</PropertyGroup>
 

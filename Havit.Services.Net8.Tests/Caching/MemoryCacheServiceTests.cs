@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Havit.Services.Net7.Tests.Caching;
+namespace Havit.Services.Net8.Tests.Caching;
 
 [TestClass]
 public class MemoryCacheServiceTests

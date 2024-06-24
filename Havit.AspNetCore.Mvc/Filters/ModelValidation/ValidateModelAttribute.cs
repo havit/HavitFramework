@@ -28,22 +28,22 @@ public class ValidateModelAttribute : ActionFilterAttribute
 	/// <remarks>
 	/// Výchozí hodnota je ValidationResultModel.FromModelState.
 	/// </remarks>
-    public ResultSelectorDelegate ResultSelector { get; set; } = ValidationResultModel.FromModelState;
+	public ResultSelectorDelegate ResultSelector { get; set; } = ValidationResultModel.FromModelState;
 
 	/// <summary>
 	/// Pokud není ModelState validní, vrací odpověď dle ResultSelectoru, je nastaven StatusCode dle StatuCodeSelectoru.
 	/// Dojde tím k zastavení zpracování vlastní action.
 	/// </summary>
 	public override void OnActionExecuting(ActionExecutingContext context)
-    {			
-	    if (!context.ModelState.IsValid)
-	    {
-		    int statusCode = StatusCodeSelector(context.ModelState);
-		    object result = ResultSelector(statusCode, context.ModelState);
+	{
+		if (!context.ModelState.IsValid)
+		{
+			int statusCode = StatusCodeSelector(context.ModelState);
+			object result = ResultSelector(statusCode, context.ModelState);
 
 			context.Result = new ObjectResult(result) { StatusCode = statusCode };
-	    }
-    }
+		}
+	}
 
 	/// <summary>
 	/// Určí status code dle ModelState.

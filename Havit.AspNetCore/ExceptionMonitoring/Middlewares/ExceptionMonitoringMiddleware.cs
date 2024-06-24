@@ -41,7 +41,7 @@ public class ExceptionMonitoringMiddleware
 		catch (Exception exception)
 		{
 			logger.LogDebug(exception, "Monitoring exception.");
-			
+
 			try
 			{
 				exceptionMonitoringService.HandleException(exception);

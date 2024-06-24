@@ -9,139 +9,139 @@ using System.Threading;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
 
-    /// <summary>
-    /// Exception procesor zasílající výjimku na email.
-    /// </summary>
-    public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
-    {
-        private readonly IExceptionFormatter exceptionFormatter;
+/// <summary>
+/// Exception procesor zasílající výjimku na email.
+/// </summary>
+public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
+{
+	private readonly IExceptionFormatter exceptionFormatter;
 	private readonly ILogger<SmtpExceptionMonitoringProcessor> logger;
 	private readonly SmtpExceptionMonitoringOptions options;
 
-        private int _mailCounter = 0;
+	private int _mailCounter = 0;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-        public SmtpExceptionMonitoringProcessor(IExceptionFormatter exceptionFormatter, IOptions<SmtpExceptionMonitoringOptions> options, ILogger<SmtpExceptionMonitoringProcessor> logger)
-        {
-            this.exceptionFormatter = exceptionFormatter;
+	public SmtpExceptionMonitoringProcessor(IExceptionFormatter exceptionFormatter, IOptions<SmtpExceptionMonitoringOptions> options, ILogger<SmtpExceptionMonitoringProcessor> logger)
+	{
+		this.exceptionFormatter = exceptionFormatter;
 		this.logger = logger;
 		this.options = options.Value;
-        }
+	}
 
 	/// <summary>
 	/// Zpracuje výjimku zaslanou do exception monitoringu.
 	/// Odesílá výjimku na email.
 	/// </summary>
-        public void ProcessException(Exception exception)
-        {
+	public void ProcessException(Exception exception)
+	{
 		bool enabled = options.Enabled;
 
 		logger.LogTrace(enabled ? "SmtpExceptionMonitoringProcessor enabled." : "SmtpExceptionMonitoringProcessor disabled.");
 
 		if (enabled)
-            {
-                ProcessExceptionCore(exception);
-            }
-        }
+		{
+			ProcessExceptionCore(exception);
+		}
+	}
 
-        /// <summary>
+	/// <summary>
 	/// Zpracuje výjimku zaslanou do exception monitoringu.
 	/// Odesílá výjimku na email.
-        /// </summary>
-        protected virtual void ProcessExceptionCore(Exception exception)
-        {
-            MailMessage mailMessage = PrepareMailMessage(exception);
+	/// </summary>
+	protected virtual void ProcessExceptionCore(Exception exception)
+	{
+		MailMessage mailMessage = PrepareMailMessage(exception);
 
-            using (SmtpClient smtpClient = new SmtpClient())
-            {
-                smtpClient.Host = options.SmtpServer;
-                if (options.SmtpPort != null)
-                {
-                    smtpClient.Port = options.SmtpPort.Value;
-                }
-                smtpClient.EnableSsl = options.UseSsl;
-                if (options.HasCredentials())
-                {
-                    smtpClient.Credentials = new NetworkCredential(options.SmtpUsername, options.SmtpPassword);
-                }
+		using (SmtpClient smtpClient = new SmtpClient())
+		{
+			smtpClient.Host = options.SmtpServer;
+			if (options.SmtpPort != null)
+			{
+				smtpClient.Port = options.SmtpPort.Value;
+			}
+			smtpClient.EnableSsl = options.UseSsl;
+			if (options.HasCredentials())
+			{
+				smtpClient.Credentials = new NetworkCredential(options.SmtpUsername, options.SmtpPassword);
+			}
 
-                logger.LogTrace("Sending message.");
-                smtpClient.Send(mailMessage);
-                logger.LogInformation("Message sent.");
+			logger.LogTrace("Sending message.");
+			smtpClient.Send(mailMessage);
+			logger.LogInformation("Message sent.");
 
-            }
-        }
+		}
+	}
 
-        /// <summary>
-        /// Vrací mail message k odeslání.
-        /// </summary>
-        protected virtual MailMessage PrepareMailMessage(Exception exception)
-        {
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.BodyTransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
+	/// <summary>
+	/// Vrací mail message k odeslání.
+	/// </summary>
+	protected virtual MailMessage PrepareMailMessage(Exception exception)
+	{
+		MailMessage mailMessage = new MailMessage();
+		mailMessage.BodyTransferEncoding = System.Net.Mime.TransferEncoding.SevenBit;
 
-            mailMessage.From = GetMailMessageFrom(exception);
+		mailMessage.From = GetMailMessageFrom(exception);
 
-            var toAddresses = GetMailMessageTo(exception);
-            toAddresses.ForEach(toAddress => mailMessage.To.Add(toAddress));
-            mailMessage.Subject = GetMailMessageSubject(exception);
-            mailMessage.Body = GetMailMessageBody(exception);
+		var toAddresses = GetMailMessageTo(exception);
+		toAddresses.ForEach(toAddress => mailMessage.To.Add(toAddress));
+		mailMessage.Subject = GetMailMessageSubject(exception);
+		mailMessage.Body = GetMailMessageBody(exception);
 
-            return mailMessage;
-        }
+		return mailMessage;
+	}
 
 	/// <summary>
 	/// Vratí odesílatele emailu.
 	/// </summary>
-        protected virtual MailAddress GetMailMessageFrom(Exception exception)
-        {
-            return new MailAddress(options.From);
-        }
+	protected virtual MailAddress GetMailMessageFrom(Exception exception)
+	{
+		return new MailAddress(options.From);
+	}
 
-    /// <summary>
-    /// Vratí adresáta emailu.
-    /// </summary>
-        protected virtual List<MailAddress> GetMailMessageTo(Exception exception)
-        {
-            List<MailAddress> result = new List<MailAddress>();
+	/// <summary>
+	/// Vratí adresáta emailu.
+	/// </summary>
+	protected virtual List<MailAddress> GetMailMessageTo(Exception exception)
+	{
+		List<MailAddress> result = new List<MailAddress>();
 
-            if (!String.IsNullOrEmpty(options.Subject))
-            {
-                foreach (string recipient in options.To.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    result.Add(new MailAddress(recipient.Trim()));
-                }
-            }
+		if (!String.IsNullOrEmpty(options.Subject))
+		{
+			foreach (string recipient in options.To.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				result.Add(new MailAddress(recipient.Trim()));
+			}
+		}
 
-            return result;
-        }
+		return result;
+	}
 
-    /// <summary>
-    /// Vratí předmět emailu.
-    /// </summary>
-        protected virtual string GetMailMessageSubject(Exception exception)
-        {
-            string message = exception.Message;
+	/// <summary>
+	/// Vratí předmět emailu.
+	/// </summary>
+	protected virtual string GetMailMessageSubject(Exception exception)
+	{
+		string message = exception.Message;
 
-            // předmět mailu nesmí obsahovat znaky \r a \n
-            if (message.Contains("\r"))
-            {
-                message = message.Left(message.IndexOf('\r'));
-            }
-            if (message.Contains("\n"))
-            {
-                message = message.Left(message.IndexOf('\n'));
-            }
+		// předmět mailu nesmí obsahovat znaky \r a \n
+		if (message.Contains("\r"))
+		{
+			message = message.Left(message.IndexOf('\r'));
+		}
+		if (message.Contains("\n"))
+		{
+			message = message.Left(message.IndexOf('\n'));
+		}
 
-            int counter = Interlocked.Increment(ref _mailCounter);
+		int counter = Interlocked.Increment(ref _mailCounter);
 
-            return $"{options.Subject}: {message} (#{counter})";
-        }
+		return $"{options.Subject}: {message} (#{counter})";
+	}
 
 	/// <summary>
 	/// Vrátí text emailu.
 	/// </summary>
-        protected virtual string GetMailMessageBody(Exception exception) => exceptionFormatter.FormatException(exception);
-    }
+	protected virtual string GetMailMessageBody(Exception exception) => exceptionFormatter.FormatException(exception);
+}

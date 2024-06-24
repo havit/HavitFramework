@@ -13,10 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.AspNetCore.Builder;
 
-    /// <summary>
-    /// <see cref="IApplicationBuilder"/> extension methods for the <see cref="ExceptionMonitoringMiddleware"/>.
-    /// </summary>
-    public static class ExceptionMonitoringApplicationBuilderExtensions
+/// <summary>
+/// <see cref="IApplicationBuilder"/> extension methods for the <see cref="ExceptionMonitoringMiddleware"/>.
+/// </summary>
+public static class ExceptionMonitoringApplicationBuilderExtensions
 {
 	/// <summary>
 	/// Adds a ExceptionMonitoringMiddleware to your web application pipeline to handle failed requests.
@@ -32,21 +32,21 @@ namespace Microsoft.AspNetCore.Builder;
 	/// Adds IExceptionMonitoringService (DI) as registered handler of UnobservedTaskExceptionHandler.
 	/// </summary>
 	public static IApplicationBuilder UseUnobservedTaskExceptionHandler(this IApplicationBuilder app)
-        {
-            Contract.Requires<ArgumentNullException>(app != null, nameof(app));
+	{
+		Contract.Requires<ArgumentNullException>(app != null, nameof(app));
 
-            UnobservedTaskExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
+		UnobservedTaskExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
 
-            return app;
-        }
+		return app;
+	}
 
 	/// <summary>
 	/// Adds IExceptionMonitoringService (DI) as registered handler of AppDomainUnhandledExceptionHandler.
 	/// </summary>
 	public static IApplicationBuilder UseAppDomainUnhandledExceptionHandler(this IApplicationBuilder app)
-        {
-            AppDomainUnhandledExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
+	{
+		AppDomainUnhandledExceptionHandler.RegisterHandler(app.ApplicationServices.GetRequiredService<IExceptionMonitoringService>());
 
-            return app;
-        }
-    }
+		return app;
+	}
+}

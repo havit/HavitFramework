@@ -14,17 +14,17 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// Extension metody pro registraci ErrorToJson.
 /// </summary>
-    public static class ErrorToJsonApplicationServiceCollectionExtensions
+public static class ErrorToJsonApplicationServiceCollectionExtensions
 {
 	/// <summary>
 	/// Zaregistruje služby pro ErrorToJson.
 	/// </summary>
-        public static void AddErrorToJson(this IServiceCollection services, Action<ErrorToJsonSetup> setupAction)
-        {
+	public static void AddErrorToJson(this IServiceCollection services, Action<ErrorToJsonSetup> setupAction)
+	{
 		ErrorToJsonSetup setup = new ErrorToJsonSetup();
 		setupAction.Invoke(setup);
 		var configuration = setup.GetConfiguration();
 
 		services.AddSingleton<IErrorToJsonService>(new ErrorToJsonService(configuration));
-        }
-    }
+	}
+}

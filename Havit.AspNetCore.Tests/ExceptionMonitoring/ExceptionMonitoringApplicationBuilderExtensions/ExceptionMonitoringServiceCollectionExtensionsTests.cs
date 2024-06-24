@@ -9,24 +9,24 @@ using Moq;
 namespace Havit.AspNetCore.Tests.ExceptionMonitoring.ExceptionMonitoringApplicationBuilderExtensions;
 
 [TestClass]
-    public class ExceptionMonitoringServiceCollectionExtensionsTests
-    {
-        [TestMethod]
-        public void ExceptionMonitoringServiceCollectionExtensions_AddExceptionMonitoring_RegistersServices()
-        {
-            // Arrange
-            IServiceCollection services = new ServiceCollection();
-            IConfigurationRoot configuration = new ConfigurationBuilder().Build();
-            Mock<IHttpContextAccessor> httpContextAccessorMock = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
+public class ExceptionMonitoringServiceCollectionExtensionsTests
+{
+	[TestMethod]
+	public void ExceptionMonitoringServiceCollectionExtensions_AddExceptionMonitoring_RegistersServices()
+	{
+		// Arrange
+		IServiceCollection services = new ServiceCollection();
+		IConfigurationRoot configuration = new ConfigurationBuilder().Build();
+		Mock<IHttpContextAccessor> httpContextAccessorMock = new Mock<IHttpContextAccessor>(MockBehavior.Strict);
 
-            // Act
-            services.AddExceptionMonitoring(configuration);
-            services.AddSingleton<IHttpContextAccessor>(httpContextAccessorMock.Object);
-            services.AddLogging();
-            var serviceProvider = services.BuildServiceProvider();
+		// Act
+		services.AddExceptionMonitoring(configuration);
+		services.AddSingleton<IHttpContextAccessor>(httpContextAccessorMock.Object);
+		services.AddLogging();
+		var serviceProvider = services.BuildServiceProvider();
 
-            // Assert
-            Assert.IsNotNull(serviceProvider.GetService<IExceptionMonitoringService>());
-            Assert.IsInstanceOfType(serviceProvider.GetService<IExceptionMonitoringProcessor>(), typeof(BufferingSmtpExceptionMonitoringProcessor));
-        }
-    }
+		// Assert
+		Assert.IsNotNull(serviceProvider.GetService<IExceptionMonitoringService>());
+		Assert.IsInstanceOfType(serviceProvider.GetService<IExceptionMonitoringProcessor>(), typeof(BufferingSmtpExceptionMonitoringProcessor));
+	}
+}

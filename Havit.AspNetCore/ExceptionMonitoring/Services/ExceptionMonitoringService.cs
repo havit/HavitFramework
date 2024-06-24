@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.AspNetCore.ExceptionMonitoring.Processors;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Processors;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.Services;

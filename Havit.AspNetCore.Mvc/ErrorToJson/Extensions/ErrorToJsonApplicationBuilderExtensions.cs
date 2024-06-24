@@ -1,12 +1,5 @@
-﻿using Havit.AspNetCore.ExceptionMonitoring.Middlewares;
-using Havit.AspNetCore.Mvc.ErrorToJson.Middlewares;
+﻿using Havit.AspNetCore.Mvc.ErrorToJson.Middlewares;
 using Havit.Diagnostics.Contracts;
-using Microsoft.AspNetCore.Builder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Správný namespace je Microsoft.AspNetCore.Builder!
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Havit.AspNetCore.ExceptionMonitoring.Services;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;

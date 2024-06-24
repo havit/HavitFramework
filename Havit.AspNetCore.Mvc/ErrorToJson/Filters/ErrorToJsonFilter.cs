@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Havit.AspNetCore.Mvc.ErrorToJson.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 

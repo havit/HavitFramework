@@ -5,15 +5,10 @@ using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Processors;
 
-    [TestClass]
+[TestClass]
     public class BufferingSmtpExceptionMonitoringProcessorTests
     {
         [TestMethod]

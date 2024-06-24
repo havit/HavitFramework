@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.AspNetCore.Mvc.ErrorToJson.Services;
+﻿namespace Havit.AspNetCore.Mvc.ErrorToJson.Services;
 
 /// <summary>
 /// Provides object result for exception.

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
+﻿using Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
 using Havit.AspNetCore.ExceptionMonitoring.Middlewares;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.AspNetCore.ExceptionMonitoring.Formatters;
+﻿namespace Havit.AspNetCore.ExceptionMonitoring.Formatters;
 
 /// <summary>
 /// Formatter výjimky.

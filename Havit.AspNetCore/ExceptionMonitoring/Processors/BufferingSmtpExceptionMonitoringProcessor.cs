@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Mail;
-using System.Threading;
-using Havit.AspNetCore.ExceptionMonitoring.Formatters;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Formatters;
 using Havit.Diagnostics.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;

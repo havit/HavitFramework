@@ -1,6 +1,4 @@
 ﻿using Havit.Diagnostics.Contracts;
-using System;
-using System.Collections.Generic;
 
 namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
 

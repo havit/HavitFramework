@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
+﻿namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
 
 /// <summary>
 /// Položka mapování výjimky

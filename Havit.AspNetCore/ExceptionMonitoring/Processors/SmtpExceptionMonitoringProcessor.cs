@@ -1,11 +1,8 @@
 ﻿using Havit.AspNetCore.ExceptionMonitoring.Formatters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Threading;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
 

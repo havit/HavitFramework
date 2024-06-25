@@ -14,7 +14,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.2</PackageVersion>
+		<PackageVersion>2.0.3</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Ares Class Library</Description>
 	</PropertyGroup>
 

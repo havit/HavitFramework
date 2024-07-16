@@ -190,6 +190,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForInsert<TEntity>(TEntity entity)
 		where TEntity : class
 	{
+		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
 		PerformAddForInsert(entity);
 	}
 
@@ -208,6 +209,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForUpdate<TEntity>(TEntity entity)
 		where TEntity : class
 	{
+		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
 		PerformAddForUpdate(entity);
 	}
 
@@ -227,6 +229,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForDelete<TEntity>(TEntity entity)
 		where TEntity : class
 	{
+		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
 		PerformAddForDelete(entity);
 	}
 

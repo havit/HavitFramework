@@ -65,6 +65,29 @@ public class AresService : IAresService
 		return ekonomickeSubjektyResponse;
 	}
 
+	/// <inheritdoc/>
+	public ZaznamVr GetVerejnyRejstrikDleIco(string ico)
+	{
+		EkonomickeSubjektyRegistraceFiltr verejnyRejstrikKomplexFiltr = GetVerejnyRejstrikDleIco_PrepareRequest(ico);
+		using HttpClient httpClient = new HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = AresUrl;
+		EkonomickeSubjektyVrSeznam resp = aresClient.VyhledejSeznamEkonomickychSubjektuVr(verejnyRejstrikKomplexFiltr);
+		return resp.EkonomickeSubjekty?.FirstOrDefault()?.Zaznamy?.FirstOrDefault();
+	}
+
+	/// <inheritdoc/>
+	public async Task<ZaznamVr> GetVerejnyRejstrikDleIcoAsync(string ico, CancellationToken cancellationToken = default)
+	{
+		EkonomickeSubjektyRegistraceFiltr verejnyRejstrikKomplexFiltr = GetVerejnyRejstrikDleIco_PrepareRequest(ico);
+		using HttpClient httpClient = new HttpClient();
+		AresRestApi aresClient = new AresRestApi(httpClient);
+		aresClient.BaseUrl = AresUrl;
+		EkonomickeSubjektyVrSeznam resp = await aresClient.VyhledejSeznamEkonomickychSubjektuVrAsync(verejnyRejstrikKomplexFiltr).ConfigureAwait(false);
+		return resp.EkonomickeSubjekty?.FirstOrDefault()?.Zaznamy?.FirstOrDefault();
+	}
+
+
 	private EkonomickeSubjektyKomplexFiltr GetEkonomickeSubjektyDleIco_PrepareRequest(string ico)
 	{
 		Contract.Requires<ArgumentNullException>(ico != null);
@@ -78,6 +101,7 @@ public class AresService : IAresService
 		return ekonomickeSubjektyKomplexFiltr;
 	}
 
+
 	private EkonomickeSubjektyKomplexFiltr GetEkonomickeSubjektyDleObchodnihoJmena_PrepareRequest(string obchodniJmeno, int maxResults)
 	{
 		Contract.Requires<ArgumentNullException>(obchodniJmeno != null);
@@ -90,6 +114,20 @@ public class AresService : IAresService
 		};
 		return ekonomickeSubjektyKomplexFiltr;
 	}
+
+	private EkonomickeSubjektyRegistraceFiltr GetVerejnyRejstrikDleIco_PrepareRequest(string ico)
+	{
+		Contract.Requires<ArgumentNullException>(ico != null);
+		Contract.Requires<ArgumentException>(ico.Length == 8, $"Argument '{nameof(ico)}' musí mít předepsanou délku 8 znaků.");
+		EkonomickeSubjektyRegistraceFiltr ekonomickeSubjektyRegistraceFiltr = new EkonomickeSubjektyRegistraceFiltr
+		{
+			Start = 0,
+			Pocet = 1,
+			Ico = new List<string>() { ico }
+		};
+		return ekonomickeSubjektyRegistraceFiltr;
+	}
+
 
 	private EkonomickeSubjektyResult GetEkonomickeSubjekty_ProcessResponse(EkonomickeSubjektySeznam ekonomickeSubjektySeznam)
 	{
@@ -130,6 +168,7 @@ public class AresService : IAresService
 		aresExtension.IsPlatceDph = ekonomickySubjekt.SeznamRegistraci.StavZdrojeDph == "AKTIVNI";
 		return aresExtension;
 	}
+
 
 
 	/// <summary>

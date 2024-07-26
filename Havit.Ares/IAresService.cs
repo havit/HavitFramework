@@ -6,12 +6,12 @@
 public interface IAresService
 {
 	/// <summary>
-	/// Vyhledání seznamu ekonomických subjektů ARES dle Ico.
+	/// Vyhledání seznamu ekonomických subjektů ARES dle Ico v Obchodním rejstříku.
 	/// </summary>
 	EkonomickySubjektItem GetEkonomickeSubjektyDleIco(string ico);
 
 	/// <summary>
-	/// Vyhledání seznamu ekonomických subjektů ARES dle Ico. Asynchronní varianta.
+	/// Vyhledání seznamu ekonomických subjektů ARES dle Ico v Obchodním rejstříku. Asynchronní varianta.
 	/// </summary>
 	Task<EkonomickySubjektItem> GetEkonomickeSubjektyDleIcoAsync(string ico, CancellationToken cancellationToken = default);
 
@@ -29,5 +29,16 @@ public interface IAresService
 	/// <param name="maxResults">Implicitně 100. ARES vrací maximálně 1000 subjektů - jinak chyba</param>
 	/// <param name="cancellationToken">Cancellation token.</param>
 	Task<EkonomickeSubjektyResult> GetEkonomickeSubjektyDleObchodnihoJmenaAsync(string obchodniJmeno, int maxResults = AresService.DefaultMaxResults, CancellationToken cancellationToken = default);
+
+
+	/// <summary>
+	/// Vyhledání seznamu ekonomických subjektů ARES dle Ico ve Verejném rejstříku (VR).
+	/// </summary>
+	ZaznamVr GetVerejnyRejstrikDleIco(string ico);
+
+	/// <summary>
+	/// Vyhledání seznamu ekonomických subjektů ARES dle Ico ve Verejném rejstříku (VR). Asynchronní varianta.
+	/// </summary>
+	Task<ZaznamVr> GetVerejnyRejstrikDleIcoAsync(string ico, CancellationToken cancellationToken = default);
 
 }

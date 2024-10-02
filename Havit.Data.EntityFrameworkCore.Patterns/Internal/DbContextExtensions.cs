@@ -10,7 +10,7 @@ internal static class DbContextExtensions
 		var sqlServerSingletonOptions = (dbContext as Microsoft.EntityFrameworkCore.DbContext)?.GetService<ISqlServerSingletonOptions>();
 		return (sqlServerSingletonOptions == null)
 			? false
-			: sqlServerSingletonOptions.CompatibilityLevel > 120;
+			: sqlServerSingletonOptions.SqlServerCompatibilityLevel > 120;
 
 	}
 }

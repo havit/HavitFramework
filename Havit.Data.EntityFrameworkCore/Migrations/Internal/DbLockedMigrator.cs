@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -36,8 +37,26 @@ public class DbLockedMigrator : Migrator
 		IModelRuntimeInitializer modelRuntimeInitializer,
 		IDiagnosticsLogger<DbLoggerCategory.Migrations> logger,
 		IRelationalCommandDiagnosticsLogger commandLogger,
-		IDatabaseProvider databaseProvider)
-			: base(migrationsAssembly, historyRepository, databaseCreator, migrationsSqlGenerator, rawSqlCommandBuilder, migrationCommandExecutor, connection, sqlGenerationHelper, currentContext, modelRuntimeInitializer, logger, commandLogger, databaseProvider)
+		IDatabaseProvider databaseProvider,
+		IMigrationsModelDiffer migrationsModelDiffer,
+		IDesignTimeModel designTimeModel,
+		IDbContextOptions dbContextOptions)
+		: base(migrationsAssembly,
+			historyRepository,
+			databaseCreator,
+			migrationsSqlGenerator,
+			rawSqlCommandBuilder,
+			migrationCommandExecutor,
+			connection,
+			sqlGenerationHelper,
+			currentContext,
+			modelRuntimeInitializer,
+			logger,
+			commandLogger,
+			databaseProvider,
+			migrationsModelDiffer,
+			designTimeModel,
+			dbContextOptions)
 	{
 		this.databaseCreator = databaseCreator;
 		this.connection = connection;

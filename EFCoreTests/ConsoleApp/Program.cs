@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
@@ -14,9 +16,11 @@ using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.Repositories;
 using Havit.EFCoreTests.Model;
+using Havit.Linq.Expressions;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -93,6 +97,12 @@ public static class Program
 		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 
+		var parameter = Expression.Parameter(typeof(Person), "item");
+		Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
+		var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
+
+		var x = personDataSource.Data.OrderBy<Person, IComparable>(expression2).ToList();
+
 		// scénář 1: načítání kolekcí
 		//Person person = await personRepository.GetObjectAsync(1, cancellationToken);
 		//Contract.Assert(person.BossId == null);
@@ -124,3 +134,4 @@ public static class Program
 	}
 
 }
+

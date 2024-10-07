@@ -14,7 +14,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.21-preview01</PackageVersion>
+		<PackageVersion>2.0.21</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
 	</PropertyGroup>
 

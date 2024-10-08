@@ -27,7 +27,7 @@
 		   Další issue je ve WebForms aplikaci, která má při použití BusinessLayeru v .NET Standard 2.0
 		   (blíže nezkoumané) problémy s prací s ResourceManagerem.
 	  -->
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />

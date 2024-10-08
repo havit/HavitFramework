@@ -7,7 +7,7 @@ namespace Havit.Hangfire.Extensions.Filters;
 /// Zajistí náhradu stavu <see cref="FailedState" /> za <see cref="FinalFailedState"/>.
 /// Cílem je, aby FailedState měl vlastnost IsFinal nastavenu na true, čímž dojde k expiraci položek v databázi.
 /// </summary>
-public class FinalFailedStateElectStateFilter : IElectStateFilter
+public class FinalFailedStateFilter : IElectStateFilter
 {
 	/// <inheritdoc />
 	public void OnStateElection(ElectStateContext context)

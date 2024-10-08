@@ -40,7 +40,8 @@ public class DbLockedMigrator : Migrator
 		IDatabaseProvider databaseProvider,
 		IMigrationsModelDiffer migrationsModelDiffer,
 		IDesignTimeModel designTimeModel,
-		IDbContextOptions dbContextOptions)
+		IDbContextOptions dbContextOptions,
+		IExecutionStrategy executionStrategy)
 		: base(migrationsAssembly,
 			historyRepository,
 			databaseCreator,
@@ -56,7 +57,8 @@ public class DbLockedMigrator : Migrator
 			databaseProvider,
 			migrationsModelDiffer,
 			designTimeModel,
-			dbContextOptions)
+			dbContextOptions,
+			executionStrategy)
 	{
 		this.databaseCreator = databaseCreator;
 		this.connection = connection;

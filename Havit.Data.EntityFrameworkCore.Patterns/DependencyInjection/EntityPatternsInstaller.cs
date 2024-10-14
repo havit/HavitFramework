@@ -296,7 +296,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		return this;
 	}
 
-	private Action<DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<DbContextOptionsBuilder> customOptionsBuilder)
+	private static Action<DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<DbContextOptionsBuilder> customOptionsBuilder)
 	{
 		return (DbContextOptionsBuilder targetOptionsBuilder) =>
 		{
@@ -306,7 +306,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		};
 	}
 
-	private Action<IServiceProvider, DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<IServiceProvider, DbContextOptionsBuilder> customOptionsBuilder)
+	private static Action<IServiceProvider, DbContextOptionsBuilder> GetDbContextOptionsBuilder(Action<IServiceProvider, DbContextOptionsBuilder> customOptionsBuilder)
 	{
 		return (IServiceProvider serviceProvider, DbContextOptionsBuilder targetOptionsBuilder) =>
 		{

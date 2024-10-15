@@ -14,7 +14,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.22</PackageVersion>
+		<PackageVersion>2.0.21</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
 	</PropertyGroup>
 
@@ -30,8 +30,9 @@
 		<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
 		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.1-packages-->
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="[2.1.1,2.2)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 	</ItemGroup>
 

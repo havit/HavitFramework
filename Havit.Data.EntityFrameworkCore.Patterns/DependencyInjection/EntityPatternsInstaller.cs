@@ -260,9 +260,8 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 	public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
-		// na pořadí záleží
-		services.AddDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction));
-		services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
+		services.AddDbContextFactory<TDbContext>();
+		services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
 
 		services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
 		return this;
@@ -275,12 +274,14 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
 		// na pořadí záleží
-		services.AddDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction));
-		services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
+		services.AddDbContextFactory<TDbContext>();
+		services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
 
 		services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
 		return this;
 	}
+
+	// TODO: Odstranit
 	/// <summary>
 	/// Viz <see cref="IEntityPatternsInstaller"/>
 	/// </summary>
@@ -290,7 +291,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
 
 		services.AddPooledDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction), poolSize);
-		services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
+		services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), );
 
 		services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 		return this;

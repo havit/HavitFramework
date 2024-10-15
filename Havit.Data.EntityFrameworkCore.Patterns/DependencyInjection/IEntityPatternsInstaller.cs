@@ -5,6 +5,7 @@ using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 
+// TODO: Odstranit
 /// <summary>
 /// Installer Havit.Data.Entity.Patterns a souvisejících služeb.
 /// </summary>

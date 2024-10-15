@@ -1,23 +1,23 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
+using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.Services.TimeServices;
-using Microsoft.Extensions.DependencyInjection;
-using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
 using Havit.Services.Caching;
-using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
-using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
+using Havit.Services.TimeServices;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
-using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection;
 
@@ -287,28 +287,26 @@ public class EntityPatternsInstallerTests
 
 	internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false)
 	{
-		var host = Host.CreateDefaultBuilder()
-			.ConfigureServices(services =>
-			{
+		// V Development dochází k více kontrolám, které se nám projevují při současném použití AddDbContext a AddDbContextFactory (což používáme).
+		var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
 
-				var installer = services.WithEntityPatternsInstaller();
-				if (pooling)
-				{
-					installer = installer.AddDbContextPool<TestDbContext>(options => options.UseInMemoryDatabase(nameof(TestDbContext)));
-				}
-				else
-				{
-					installer = installer.AddDbContext<TestDbContext>();
-				}
+		var installer = builder.Services.WithEntityPatternsInstaller();
+		if (pooling)
+		{
+			installer = installer.AddDbContextPool<TestDbContext>(options => options.UseInMemoryDatabase(nameof(TestDbContext)));
+		}
+		else
+		{
+			installer = installer.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase(nameof(TestDbContext)));
+		}
 
-				installer.AddEntityPatterns()
-					.AddLocalizationServices<Language>()
-					.AddDataLayer(typeof(ILanguageDataSource).Assembly);
+		installer.AddEntityPatterns()
+			.AddLocalizationServices<Language>()
+			.AddDataLayer(typeof(ILanguageDataSource).Assembly);
+		builder.Services.AddSingleton<ITimeService, ServerTimeService>();
+		builder.Services.AddSingleton<ICacheService, NullCacheService>();
 
-				services.AddSingleton<ITimeService, ServerTimeService>();
-				services.AddSingleton<ICacheService, NullCacheService>();
-			}).Build();
-
-		return host.Services;
+		var application = builder.Build();
+		return application.Services;
 	}
 }

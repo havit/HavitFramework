@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
 	/// </summary>
 	/// <param name="services">ServiceCollection.</param>
 	/// <param name="componentRegistrationAction">Konfigurace registrace komponent.</param>
-	public static IEntityPatternsInstaller WithEntityPatternsInstaller(this IServiceCollection services, Action<ComponentRegistrationOptions> componentRegistrationAction = null)
+	public static EntityPatternsInstaller WithEntityPatternsInstaller(this IServiceCollection services, Action<ComponentRegistrationOptions> componentRegistrationAction = null)
 	{
 		ComponentRegistrationOptions componentRegistrationOptions = new ComponentRegistrationOptions();
 		componentRegistrationAction?.Invoke(componentRegistrationOptions);

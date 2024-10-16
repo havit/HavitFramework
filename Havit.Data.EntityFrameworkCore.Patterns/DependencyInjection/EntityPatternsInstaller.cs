@@ -33,117 +33,149 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 
 /// <summary>
-/// Implementace <see cref="IEntityPatternsInstaller"/>u.
+/// Installer Havit.Data.Entity.Patterns a souvisejících služeb.
 /// </summary>
-internal class EntityPatternsInstaller : IEntityPatternsInstaller
+public class EntityPatternsInstaller
 {
-	private readonly IServiceCollection services;
-	private readonly ComponentRegistrationOptions componentRegistrationOptions;
+	private readonly IServiceCollection _services;
+	private readonly ComponentRegistrationOptions _componentRegistrationOptions;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public EntityPatternsInstaller(IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions)
 	{
-		this.services = services;
-		this.componentRegistrationOptions = componentRegistrationOptions;
+		this._services = services;
+		this._componentRegistrationOptions = componentRegistrationOptions;
 	}
 
 	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
+	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle), DbContextFactory&lt;TDbContext&gt; (singleton) a IDbContextFactory (singleton).
 	/// </summary>
-	public IEntityPatternsInstaller AddLocalizationServices<TLanguage>()
-		where TLanguage : class, ILanguage
+	/// <remarks>
+	/// DbContext a DbContextFactory&lt;TDbContext&gt; jsou z Entity Framework Core.
+	/// IDbContext a IDbContextFactory (negenerická!) jsou z HFW.
+	/// </remarks>
+	public EntityPatternsInstaller AddDbContext<TDbContext>()
+		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
-		Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
-		Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
+		return AddDbContext<TDbContext>((Action<DbContextOptionsBuilder>)null);
+	}
 
-		services.TryAddScoped(typeof(ILanguageService), currentLanguageServiceType);
-		services.TryAddTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
-		services.TryAddSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
-		services.TryAddTransient<ILocalizationService, LocalizationService>();
+	/// <summary>
+	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle), DbContextFactory&lt;TDbContext&gt; (singleton) a IDbContextFactory (singleton).
+	/// Dále registruje DbContextOptions&lt;TDbContext&gt; jako singleton.
+	/// </summary>
+	/// <remarks>
+	/// DbContext a DbContextFactory&lt;TDbContext&gt; jsou z Entity Framework Core.
+	/// IDbContext a IDbContextFactory (negenerická!) jsou z HFW.
+	/// DbContextOptions&lt;TDbContext&gt; jsou v Entity Framework Core ve výchozím chování registrovány jako Scoped. To však brání možnosti
+	/// použití jak DbContext, tak DbContextFactory&lt;TDbContext&gt;. Pro podporu obou potřebujeme DbContextOptions&lt;TDbContext&gt; registrovat jako singleton.
+	/// </remarks>
+	public EntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
+		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+	{
+		_services.AddDbContextFactory<TDbContext>();
+		_services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
+
+		_services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
+		return this;
+	}
+
+	/// <summary>
+	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle), DbContextFactory&lt;TDbContext&gt; (singleton) a IDbContextFactory (singleton).
+	/// Dále registruje DbContextOptions&lt;TDbContext&gt; jako singleton.
+	/// </summary>
+	/// <remarks>
+	/// DbContext a DbContextFactory&lt;TDbContext&gt; jsou z Entity Framework Core.
+	/// IDbContext a IDbContextFactory (negenerická!) jsou z HFW.
+	/// DbContextOptions&lt;TDbContext&gt; jsou v Entity Framework Core ve výchozím chování registrovány jako Scoped. To však brání možnosti
+	/// použití jak DbContext, tak DbContextFactory&lt;TDbContext&gt;. Pro podporu obou potřebujeme DbContextOptions&lt;TDbContext&gt; registrovat jako singleton.
+	/// </remarks>
+	public EntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null)
+		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+	{
+		_services.AddDbContextFactory<TDbContext>();
+		_services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
+
+		_services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
+		return this;
+	}
+
+	/// <summary>
+	/// Registruje do DI containeru DbContext s DbContext poolingem vč. IDbContextFactory.
+	/// </summary>
+	public EntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
+		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
+	{
+		//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
+
+		_services.AddPooledDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction), poolSize);
+		_services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
+
+		_services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
+		return this;
+	}
+
+	/// <summary>
+	/// Registruje do DI containeru služby HFW pro Entity Framework Core.
+	/// </summary>
+	public EntityPatternsInstaller AddEntityPatterns()
+	{
+		_componentRegistrationOptions.CachingInstaller.Install(_services);
+
+		_services.AddLogging();
+
+		_services.TryAddSingleton<ISoftDeleteManager, SoftDeleteManager>();
+		_services.TryAddSingleton<ICurrentCultureService, CurrentCultureService>();
+		_services.TryAddTransient<IDataSeedRunner, DbDataSeedRunner>();
+		_services.TryAddTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
+		_services.TryAddTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
+		_services.TryAddTransient<IDataSeedPersister, DbDataSeedPersister>();
+
+		_services.TryAddScoped<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>();
+		_services.TryAddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
+
+		_services.TryAddScoped(typeof(IUnitOfWork), _componentRegistrationOptions.UnitOfWorkType);
+		_services.TryAddScoped<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>();
+		_services.TryAddTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
+
+		_services.TryAddSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
+		_services.TryAddSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
+		_services.TryAddSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
+		_services.TryAddSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
+		_services.TryAddTransient<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
+
+		_services.TryAddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
+
+		_services.TryAddSingleton<IBeforeCommitProcessor<object>, SetCreatedToInsertingEntitiesBeforeCommitProcessor>();
+		_services.TryAddSingleton<IEntityValidationRunner, EntityValidationRunner>();
+
+		_services.TryAddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
+
+		_services.TryAddTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
+		_services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
+		_services.TryAddTransient<IReferencingNavigationsService, ReferencingNavigationsService>();
+		_services.TryAddSingleton<IReferencingNavigationsStorage, ReferencingNavigationsStorage>();
+		_services.TryAddTransient<INavigationTargetService, NavigationTargetService>();
+		_services.TryAddSingleton<INavigationTargetStorage, NavigationTargetStorage>();
+		_services.TryAddTransient<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
+		_services.TryAddSingleton<IEntityCacheKeyPrefixStorage, EntityCacheKeyPrefixStorage>();
+		_services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
+		_services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
+
+		_services.TryAddSingleton<IRepositoryQueryProvider, RepositoryQueryProvider>();
+		_services.TryAddSingleton<IRepositoryQueryStore, RepositoryQueryStore>();
+		_services.TryAddSingleton<IRepositoryQueryBuilder, RepositoryCompiledQueryBuilder>();
 
 		return this;
 	}
 
 	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
+	/// Registruje do DI containeru třídy z assembly předané v parametru dataLayerAssembly.
+	/// Registrují se data seedy, data sources, repositories a data entries.
 	/// </summary>
-	public IEntityPatternsInstaller AddEntityPatterns()
-	{
-		componentRegistrationOptions.CachingInstaller.Install(services);
-
-		services.AddLogging();
-
-		services.TryAddSingleton<ISoftDeleteManager, SoftDeleteManager>();
-		services.TryAddSingleton<ICurrentCultureService, CurrentCultureService>();
-		services.TryAddTransient<IDataSeedRunner, DbDataSeedRunner>();
-		services.TryAddTransient<IDataSeedRunDecision, OncePerVersionDataSeedRunDecision>();
-		services.TryAddTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
-		services.TryAddTransient<IDataSeedPersister, DbDataSeedPersister>();
-
-		services.TryAddScoped<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>();
-		services.TryAddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
-
-		services.TryAddScoped(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType);
-		services.TryAddScoped<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>();
-		services.TryAddTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
-
-		services.TryAddSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();
-		services.TryAddSingleton<IPropertyLambdaExpressionBuilder, PropertyLambdaExpressionBuilder>();
-		services.TryAddSingleton<IPropertyLambdaExpressionStore, PropertyLambdaExpressionStore>();
-		services.TryAddSingleton<IPropertyLoadSequenceResolver, PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution>();
-		services.TryAddTransient<IBeforeCommitProcessorsRunner, BeforeCommitProcessorsRunner>();
-
-		services.TryAddTransient<IBeforeCommitProcessorsFactory, BeforeCommitProcessorsFactory>();
-
-		services.TryAddSingleton<IBeforeCommitProcessor<object>, SetCreatedToInsertingEntitiesBeforeCommitProcessor>();
-		services.TryAddSingleton<IEntityValidationRunner, EntityValidationRunner>();
-
-		services.TryAddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
-
-		services.TryAddTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
-		services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
-		services.TryAddTransient<IReferencingNavigationsService, ReferencingNavigationsService>();
-		services.TryAddSingleton<IReferencingNavigationsStorage, ReferencingNavigationsStorage>();
-		services.TryAddTransient<INavigationTargetService, NavigationTargetService>();
-		services.TryAddSingleton<INavigationTargetStorage, NavigationTargetStorage>();
-		services.TryAddTransient<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
-		services.TryAddSingleton<IEntityCacheKeyPrefixStorage, EntityCacheKeyPrefixStorage>();
-		services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
-		services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
-
-		services.TryAddSingleton<IRepositoryQueryProvider, RepositoryQueryProvider>();
-		services.TryAddSingleton<IRepositoryQueryStore, RepositoryQueryStore>();
-		services.TryAddSingleton<IRepositoryQueryBuilder, RepositoryCompiledQueryBuilder>();
-
-		return this;
-	}
-
-	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
-	/// </summary>
-	public IEntityPatternsInstaller AddDataSeeds(Assembly dataSeedsAssembly)
-	{
-		Type[] dataSeedTypes = dataSeedsAssembly.GetTypes()
-			.Where(type => type.IsClass && type.IsPublic)
-			.Where(IsNotAbstract)
-			.Where(DoesNotHaveFakeAttribute)
-			.Where(type => type.ImplementsInterface(typeof(IDataSeed)))
-			.ToArray();
-
-		foreach (Type dataSeedType in dataSeedTypes)
-		{
-			services.AddTransient(typeof(IDataSeed), dataSeedType); // nesmí být *TryAdd*, ale musí být Add, jinak se nám přidá jen první dataSeedType!
-		}
-
-		return this;
-	}
-
-	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
-	/// </summary>
-	public IEntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
+	public EntityPatternsInstaller AddDataLayer(Assembly dataLayerAssembly)
 	{
 		AddDataSeeds(dataLayerAssembly);
 
@@ -160,7 +192,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			Type dataSourceConstructedInterface = dataSourceType.GetSingleConstructedType(typeof(IDataSource<>)); // získáme IDataSource<KonkrétníTyp>
 			Type dataSourceInterface = dataSourceType.GetInterfaces().Where(dataSourceTypeInterfaceType => dataSourceTypeInterfaceType.ImplementsInterface(dataSourceConstructedInterface)).Single(); // získáme IKonkrétníTypDataSource
 
-			services.AddServices(new Type[] { dataSourceInterface, dataSourceConstructedInterface }, dataSourceType, ServiceLifetime.Transient);
+			_services.AddServices(new Type[] { dataSourceInterface, dataSourceConstructedInterface }, dataSourceType, ServiceLifetime.Transient);
 		}
 
 		// Repositories
@@ -170,7 +202,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			Type repositoryConstructedInterface = repositoryType.GetSingleConstructedType(typeof(IRepository<>)); // získáme IRepository<KonkrétníTyp>
 			Type repositoryInterface = repositoryType.GetInterfaces().Where(repositoryTypeInterfaceType => repositoryTypeInterfaceType.ImplementsInterface(repositoryConstructedInterface)).Single(); // získáme IKonkrétníTypDataSource
 
-			services.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface }, repositoryType, ServiceLifetime.Scoped);
+			_services.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface }, repositoryType, ServiceLifetime.Scoped);
 		}
 
 		// DataEntries
@@ -185,7 +217,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 		{
 			Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypEntries
 
-			services.AddScoped(dataEntryInterface, dataEntryType);
+			_services.AddScoped(dataEntryInterface, dataEntryType);
 
 			// DataEntrySymbolService+Storage potřebujeme jen pro ty dataEntryTypes, které mají dva konstruktory.
 			// Pokud má jeden konstruktor, je to IRepository.
@@ -195,8 +227,8 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			{
 				Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
 
-				services.TryAddTransient(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType), typeof(DataEntrySymbolService<>).MakeGenericType(entityType));
-				services.TryAddSingleton(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType), typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType));
+				_services.TryAddTransient(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType), typeof(DataEntrySymbolService<>).MakeGenericType(entityType));
+				_services.TryAddSingleton(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType), typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType));
 			}
 		}
 
@@ -215,16 +247,51 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 				Type interfaceType = typeof(IEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> IEntityKeyAccessor<TEntity, int>
 				Type implementationType = typeof(DbEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> DbEntityKeyAccessor<TEntity, int>
 
-				services.TryAddTransient(interfaceType, implementationType);
+				_services.TryAddTransient(interfaceType, implementationType);
 			});
 
 		return this;
 	}
 
+	public EntityPatternsInstaller AddLocalizationServices<TLanguage>()
+		where TLanguage : class, ILanguage
+	{
+		Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
+		Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
+
+		_services.TryAddScoped(typeof(ILanguageService), currentLanguageServiceType);
+		_services.TryAddTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
+		_services.TryAddSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
+		_services.TryAddTransient<ILocalizationService, LocalizationService>();
+
+		return this;
+	}
+
 	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
+	/// Registruje do DI containeru dataseeds z dané assembly.
 	/// </summary>
-	public IEntityPatternsInstaller AddLookupService<TService, TImplementation>()
+	public EntityPatternsInstaller AddDataSeeds(Assembly dataSeedsAssembly)
+	{
+		Type[] dataSeedTypes = dataSeedsAssembly.GetTypes()
+			.Where(type => type.IsClass && type.IsPublic)
+			.Where(IsNotAbstract)
+			.Where(DoesNotHaveFakeAttribute)
+			.Where(type => type.ImplementsInterface(typeof(IDataSeed)))
+			.ToArray();
+
+		foreach (Type dataSeedType in dataSeedTypes)
+		{
+			_services.AddTransient(typeof(IDataSeed), dataSeedType); // nesmí být *TryAdd*, ale musí být Add, jinak se nám přidá jen první dataSeedType!
+		}
+
+		return this;
+	}
+
+	/// <summary>
+	/// Zaregistruje do DI containeru lookup službu.
+	/// Zajistí též takovou registraci, aby byla při uložení změn invalidována data v lookup services
+	/// </summary>
+	public EntityPatternsInstaller AddLookupService<TService, TImplementation>()
 		where TService : class
 		where TImplementation : class, TService, ILookupDataInvalidationService
 	{
@@ -232,68 +299,17 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 	}
 
 	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
+	/// Zaregistruje do DI containeru lookup službu.
+	/// Zajistí též takovou registraci, aby byla při uložení změn invalidována data v lookup services
 	/// </summary>
-	public IEntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
+	public EntityPatternsInstaller AddLookupService<TService, TImplementation, TLookupDataInvalidationService>()
 		where TService : class
 		where TImplementation : class, TService
 		where TLookupDataInvalidationService : ILookupDataInvalidationService
 	{
-		services.TryAddSingleton<IEntityLookupDataStorage, CacheEntityLookupDataStorage>();
-		services.AddServices(new Type[] { typeof(TService), typeof(ILookupDataInvalidationService) }, typeof(TLookupDataInvalidationService), ServiceLifetime.Transient);
+		_services.TryAddSingleton<IEntityLookupDataStorage, CacheEntityLookupDataStorage>();
+		_services.AddServices(new Type[] { typeof(TService), typeof(ILookupDataInvalidationService) }, typeof(TLookupDataInvalidationService), ServiceLifetime.Transient);
 
-		return this;
-	}
-
-	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
-	/// </summary>
-	public IEntityPatternsInstaller AddDbContext<TDbContext>()
-		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
-	{
-		return AddDbContext<TDbContext>((Action<DbContextOptionsBuilder>)null);
-	}
-
-	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
-	/// </summary>
-	public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
-		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
-	{
-		services.AddDbContextFactory<TDbContext>();
-		services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
-
-		services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
-		return this;
-	}
-
-	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
-	/// </summary>
-	public IEntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null)
-		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
-	{
-		// na pořadí záleží
-		services.AddDbContextFactory<TDbContext>();
-		services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
-
-		services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
-		return this;
-	}
-
-	// TODO: Odstranit
-	/// <summary>
-	/// Viz <see cref="IEntityPatternsInstaller"/>
-	/// </summary>
-	public IEntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
-		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
-	{
-		//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
-
-		services.AddPooledDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction), poolSize);
-		services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), );
-
-		services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 		return this;
 	}
 

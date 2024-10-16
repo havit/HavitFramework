@@ -253,6 +253,9 @@ public class EntityPatternsInstaller
 		return this;
 	}
 
+	/// <summary>
+	/// Registruje do DI containeru služby pro lokalizaci.
+	/// </summary>
 	public EntityPatternsInstaller AddLocalizationServices<TLanguage>()
 		where TLanguage : class, ILanguage
 	{

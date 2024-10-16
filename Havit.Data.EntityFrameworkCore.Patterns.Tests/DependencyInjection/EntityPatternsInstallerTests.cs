@@ -15,9 +15,9 @@ using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection;
 
@@ -288,7 +288,7 @@ public class EntityPatternsInstallerTests
 	internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false)
 	{
 		// V Development dochází k více kontrolám, které se nám projevují při současném použití AddDbContext a AddDbContextFactory (což používáme).
-		var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
+		var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings { EnvironmentName = "Development" });
 
 		var installer = builder.Services.WithEntityPatternsInstaller();
 		if (pooling)

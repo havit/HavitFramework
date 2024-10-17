@@ -18,14 +18,15 @@ public class DbUnitOfWork : IUnitOfWork
 	private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
 	private readonly IEntityValidationRunner entityValidationRunner;
 	private readonly ILookupDataInvalidationRunner lookupDataInvalidationRunner;
-	private List<Action> afterCommits = null;
 
-	private readonly HashSet<object> updateRegistrations = new HashSet<object>();
+	// internal: unit testy ověřují stav
+	internal List<Action> afterCommits = null;
+	internal readonly HashSet<object> updateRegistrations = new HashSet<object>();
 
 	/// <summary>
 	/// DbContext, nad kterým stojí Unit of Work.
 	/// </summary>
-	protected IDbContext DbContext { get; private set; }
+	protected internal IDbContext DbContext { get; private set; }
 
 	/// <summary>
 	/// SoftDeleteManager používaný v tomto Unit Of Worku.
@@ -313,5 +314,15 @@ public class DbUnitOfWork : IUnitOfWork
 					prepareToInvalidate2?.Invalidate();
 				})
 			: null;
+	}
+
+	/// <summary>
+	/// Vyčistí registrace objektů, after commit actions, atp. (vč. podkladového DbContextu a jeho changetrackeru).
+	/// </summary>	
+	public void Clear()
+	{
+		ClearRegistrationHashSets();
+		afterCommits = null;
+		DbContext.ChangeTracker.Clear();
 	}
 }

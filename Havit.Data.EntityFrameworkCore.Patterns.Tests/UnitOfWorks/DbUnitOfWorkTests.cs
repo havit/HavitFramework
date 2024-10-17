@@ -357,6 +357,40 @@ public class DbUnitOfWorkTests
 	}
 
 	[TestMethod]
+	public void DbUnitOfWork_Clear()
+	{
+		// Arrange
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(new TestDbContext(), new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+
+		Language language = new Language();
+		language.Id = 1;
+		language.Culture = "";
+		language.UiCulture = "";
+		dbUnitOfWork.AddForUpdate(language);
+		dbUnitOfWork.RegisterAfterCommitAction(() => { /* something */ });
+
+		// Prerequisities
+		Assert.AreEqual(1, dbUnitOfWork.updateRegistrations.Count);
+		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Count());
+		Assert.AreEqual(0, dbUnitOfWork.updateRegistrations.Count); // GetAllKnowChanges změní stav
+		Assert.AreEqual(1, dbUnitOfWork.afterCommits.Count);
+		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
+
+		// Act
+		dbUnitOfWork.Clear();
+
+		// Assert
+		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Count());
+		Assert.AreEqual(0, dbUnitOfWork.updateRegistrations.Count);
+		Assert.IsNull(dbUnitOfWork.afterCommits);
+		Assert.AreEqual(0, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
+	}
+
+	[TestMethod]
 	public void DbUnitOfWork_AfterCommit_DoesNotRepeatEventsAfterCommit()
 	{
 		// Arrange

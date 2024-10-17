@@ -57,4 +57,9 @@ public interface IUnitOfWork
 	/// Registruje akci k provedení po commitu. Akce je provedena metodou AfterCommit.
 	/// </summary>
 	void RegisterAfterCommitAction(Action action);
+
+	/// <summary>
+	/// Vyčistí registrace objektů, after commit actions, atp. (vč. podkladového DbContextu a jeho changetrackeru).
+	/// </summary>
+	void Clear();
 }

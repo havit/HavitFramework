@@ -2,6 +2,7 @@
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Havit.Linq.Expressions;
@@ -15,14 +16,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 /// </summary>
 public class DbDataSeedPersister : IDataSeedPersister
 {
-	private readonly IDbContext dbContext;
+	private readonly IDbContext _dbContext;
+	private readonly IUnitOfWork _unitOfWork;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public DbDataSeedPersister(IDbContext dbContext)
+	public DbDataSeedPersister(IDbContext dbContext, IUnitOfWork unitOfWork)
 	{
-		this.dbContext = dbContext;
+		_dbContext = dbContext;
+		_unitOfWork = unitOfWork;
 	}
 
 	/// <summary>
@@ -31,19 +34,21 @@ public class DbDataSeedPersister : IDataSeedPersister
 	public void Save<TEntity>(DataSeedConfiguration<TEntity> configuration)
 		where TEntity : class
 	{
-		// TODO EFCore9: Options & clear DbContext/UnitOfWork
-		PerformSave<TEntity>(dbContext, configuration);
+		ClearChangeTracker();
+		PerformSave<TEntity>(configuration);
+		ClearChangeTracker();
+
 	}
 
 	/// <summary>
 	/// Provede seedování s daným DbContextem. Ten má již nastavenu transakci.
 	/// </summary>
-	protected virtual void PerformSave<TEntity>(IDbContext dbContext, DataSeedConfiguration<TEntity> configuration)
+	protected virtual void PerformSave<TEntity>(DataSeedConfiguration<TEntity> configuration)
 		where TEntity : class
 	{
 		CheckConditions(configuration);
 
-		IDbSet<TEntity> dbSet = dbContext.Set<TEntity>();
+		IDbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
 		List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
 		List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(PairWithDbData))), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
 		List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
@@ -60,11 +65,11 @@ public class DbDataSeedPersister : IDataSeedPersister
 			unpairedSeedDataPair.IsNew = true;
 		}
 
-		Update(configuration, seedDataPairsToUpdate, dbContext);
-		dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
+		Update(configuration, seedDataPairsToUpdate);
+		_unitOfWork.AddRangeForInsert(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
 
 		DoBeforeSaveActions(configuration, seedDataPairs);
-		dbContext.SaveChanges();
+		_unitOfWork.Commit();
 		DoAfterSaveActions(configuration, seedDataPairs);
 
 		if (configuration.ChildrenSeeds != null)
@@ -84,7 +89,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		Contract.Requires<ArgumentNullException>(configuration != null);
 		Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
-		var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+		var entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
 		var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
 
 		Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(ExpressionExt.GetMemberAccessMemberName(expression))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
@@ -279,11 +284,11 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// <summary>
 	/// Provede vytvoření či aktualizaci dat dle předpisu seedování.
 	/// </summary>
-	private void Update<TEntity>(DataSeedConfiguration<TEntity> configuration, IEnumerable<SeedDataPair<TEntity>> pairs, IDbContext dbContext)
+	private void Update<TEntity>(DataSeedConfiguration<TEntity> configuration, IEnumerable<SeedDataPair<TEntity>> pairs)
 		where TEntity : class
 	{
 		// current entity type from model
-		IEntityType entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+		IEntityType entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
 
 		List<IProperty> propertiesForInserting = GetPropertiesForInserting(entityType);
 		List<IProperty> propertiesForUpdating = GetPropertiesForUpdating<TEntity>(entityType,
@@ -399,4 +404,10 @@ public class DbDataSeedPersister : IDataSeedPersister
 			&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
 			&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
 	}
+
+	private void ClearChangeTracker()
+	{
+		_unitOfWork.Clear();
+	}
+
 }

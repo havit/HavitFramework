@@ -1,7 +1,14 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
+using Havit.Services.TimeServices;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds;
@@ -12,7 +19,19 @@ public class DbDataSeedsTests
 	{
 		IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
 		IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
-		IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext);
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunnerMock = new Mock<IBeforeCommitProcessorsRunner>(MockBehavior.Strict);
+		mockBeforeCommitProcessorsRunnerMock.Setup(m => m.Run(It.IsAny<Changes>()));
+
+		Mock<IEntityValidationRunner> mockEntityValidationRunnerMock = new Mock<IEntityValidationRunner>(MockBehavior.Strict);
+		mockEntityValidationRunnerMock.Setup(m => m.Validate(It.IsAny<Changes>()));
+
+		Mock<IEntityCacheDependencyManager> entityCacheDependencyManagerMock = new Mock<IEntityCacheDependencyManager>(MockBehavior.Strict);
+		entityCacheDependencyManagerMock.Setup(m => m.PrepareCacheInvalidation(It.IsAny<Changes>())).Returns(new CacheInvalidationOperation(() => { }));
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(dbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManagerMock.Object, mockBeforeCommitProcessorsRunnerMock.Object, mockEntityValidationRunnerMock.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+
+		IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext, dbUnitOfWork);
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);

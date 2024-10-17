@@ -4,7 +4,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSources;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Infrastructure.Factories;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
@@ -105,7 +104,6 @@ public class EntityPatternsInstaller
 		_services.TryAddTransient<IDataSeedRunDecisionStatePersister, DbDataSeedRunDecisionStatePersister>();
 		_services.TryAddTransient<IDataSeedPersister, DbDataSeedPersister>();
 
-		_services.TryAddScoped<IDbDataSeedTransactionContext, DbDataSeedTransactionContext>();
 		_services.TryAddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 
 		_services.TryAddScoped(typeof(IUnitOfWork), _componentRegistrationOptions.UnitOfWorkType);

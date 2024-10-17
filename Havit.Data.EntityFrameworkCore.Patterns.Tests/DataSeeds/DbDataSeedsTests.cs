@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
@@ -13,13 +12,13 @@ public class DbDataSeedsTests
 	{
 		IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
 		IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
-		IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext, new DbDataSeedTransactionContext());
+		IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext);
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-		return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContext, new DbDataSeedTransactionContext());
+		return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContext);
 	}
 
 	[TestClass]

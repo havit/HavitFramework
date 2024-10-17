@@ -16,19 +16,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 public class DbDataSeedPersister : IDataSeedPersister
 {
 	private readonly IDbContext dbContext;
-	private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	/// <remarks>
-	/// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
-	/// Ale dále se k němu chováme jako k IDbContextu.
-	/// </remarks>
-	public DbDataSeedPersister(IDbContext dbContext, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
+	public DbDataSeedPersister(IDbContext dbContext)
 	{
 		this.dbContext = dbContext;
-		this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
 	}
 
 	/// <summary>
@@ -37,11 +31,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	public void Save<TEntity>(DataSeedConfiguration<TEntity> configuration)
 		where TEntity : class
 	{
-		if (dbDataSeedTransactionContext.CurrentTransaction != null)
-		{
-			dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
-		}
-
+		// TODO EFCore9: Options & clear DbContext/UnitOfWork
 		PerformSave<TEntity>(dbContext, configuration);
 	}
 

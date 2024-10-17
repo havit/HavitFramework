@@ -1,7 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
-using Havit.Data.EntityFrameworkCore.Threading.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Threading.Internal;
 using Havit.Data.Patterns.DataSeeds;
-using Havit.Diagnostics.Contracts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -16,7 +14,6 @@ public class DbDataSeedRunner : DataSeedRunner
 {
 	private const string DataSeedLockValue = "DbDataSeeds";
 	private readonly IDbContext dbContext;
-	private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
 	/// <summary>
 	/// Konstruktor.
@@ -24,18 +21,15 @@ public class DbDataSeedRunner : DataSeedRunner
 	public DbDataSeedRunner(IEnumerable<IDataSeed> dataSeeds,
 		IDataSeedRunDecision dataSeedRunDecision,
 		IDataSeedPersisterFactory dataSeedPersisterFactory,
-		IDbContext dbContext,
-		IDbDataSeedTransactionContext dbDataSeedTransactionContext)
+		IDbContext dbContext)
 		: base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory)
 	{
 		this.dbContext = dbContext;
-		this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
 	}
 
 	/// <inheritdoc />
 	public override void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	{
-		Contract.Requires(dbDataSeedTransactionContext.CurrentTransaction == null);
 		if (dbContext.Database.IsSqlServer())
 		{
 			new DbLockedCriticalSection((SqlConnection)dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
@@ -48,16 +42,8 @@ public class DbDataSeedRunner : DataSeedRunner
 				{
 					using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
 					{
-						dbDataSeedTransactionContext.CurrentTransaction = dbContext.Database.CurrentTransaction;
-						try
-						{
-							base.SeedData(dataSeedProfileType, forceRun);
-							transaction.Commit();
-						}
-						finally
-						{
-							dbDataSeedTransactionContext.CurrentTransaction = null;
-						}
+						base.SeedData(dataSeedProfileType, forceRun);
+						transaction.Commit();
 					}
 				});
 			});
@@ -66,6 +52,5 @@ public class DbDataSeedRunner : DataSeedRunner
 		{
 			base.SeedData(dataSeedProfileType, forceRun);
 		}
-		Contract.Assert(dbDataSeedTransactionContext.CurrentTransaction == null);
 	}
 }

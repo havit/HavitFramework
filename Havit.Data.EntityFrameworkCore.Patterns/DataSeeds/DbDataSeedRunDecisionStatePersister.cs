@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Model;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.Patterns.DataSeeds;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
@@ -11,15 +10,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePersister
 {
 	private readonly IDbContext dbContext;
-	private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public DbDataSeedRunDecisionStatePersister(IDbContext dbContext, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
+	public DbDataSeedRunDecisionStatePersister(IDbContext dbContext)
 	{
 		this.dbContext = dbContext;
-		this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
 	}
 
 	/// <summary>
@@ -33,11 +30,6 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 	/// </remarks>
 	public string ReadCurrentState(string profileName)
 	{
-		if (dbDataSeedTransactionContext.CurrentTransaction != null)
-		{
-			dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
-		}
-
 		DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
 		return dataSeedVersion?.Version;
 	}
@@ -52,11 +44,6 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 	/// </remarks>
 	public void WriteCurrentState(string profileName, string currentState)
 	{
-		if (dbDataSeedTransactionContext.CurrentTransaction != null)
-		{
-			dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
-		}
-
 		DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
 		if (dataSeedVersion == null)
 		{

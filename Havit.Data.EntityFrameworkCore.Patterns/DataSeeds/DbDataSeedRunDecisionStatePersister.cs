@@ -10,15 +10,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 /// </summary>
 public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePersister
 {
-	private readonly IDbContextFactory dbContextFactory;
+	private readonly IDbContext dbContext;
 	private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public DbDataSeedRunDecisionStatePersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
+	public DbDataSeedRunDecisionStatePersister(IDbContext dbContext, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
 	{
-		this.dbContextFactory = dbContextFactory;
+		this.dbContext = dbContext;
 		this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
 	}
 
@@ -33,16 +33,13 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 	/// </remarks>
 	public string ReadCurrentState(string profileName)
 	{
-		using (var dbContext = dbContextFactory.CreateDbContext())
+		if (dbDataSeedTransactionContext.CurrentTransaction != null)
 		{
-			if (dbDataSeedTransactionContext.CurrentTransaction != null)
-			{
-				dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
-			}
-
-			DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
-			return dataSeedVersion?.Version;
+			dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
 		}
+
+		DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
+		return dataSeedVersion?.Version;
 	}
 
 	/// <summary>
@@ -55,22 +52,19 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 	/// </remarks>
 	public void WriteCurrentState(string profileName, string currentState)
 	{
-		using (var dbContext = dbContextFactory.CreateDbContext())
+		if (dbDataSeedTransactionContext.CurrentTransaction != null)
 		{
-			if (dbDataSeedTransactionContext.CurrentTransaction != null)
-			{
-				dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
-			}
-
-			DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
-			if (dataSeedVersion == null)
-			{
-				dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
-				dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
-			}
-			dataSeedVersion.Version = currentState;
-			dbContext.SaveChanges();
+			dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
 		}
+
+		DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
+		if (dataSeedVersion == null)
+		{
+			dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
+			dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
+		}
+		dataSeedVersion.Version = currentState;
+		dbContext.SaveChanges();
 	}
 
 	private DataSeedVersion GetDataSeedVersion(IDbContext dbContext, string profileName)

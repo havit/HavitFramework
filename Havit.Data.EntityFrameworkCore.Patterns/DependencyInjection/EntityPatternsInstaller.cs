@@ -50,12 +50,8 @@ public class EntityPatternsInstaller
 	}
 
 	/// <summary>
-	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle), DbContextFactory&lt;TDbContext&gt; (singleton) a IDbContextFactory (singleton).
+	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle).
 	/// </summary>
-	/// <remarks>
-	/// DbContext a DbContextFactory&lt;TDbContext&gt; jsou z Entity Framework Core.
-	/// IDbContext a IDbContextFactory (negenerická!) jsou z HFW.
-	/// </remarks>
 	public EntityPatternsInstaller AddDbContext<TDbContext>()
 		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
@@ -63,42 +59,22 @@ public class EntityPatternsInstaller
 	}
 
 	/// <summary>
-	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle), DbContextFactory&lt;TDbContext&gt; (singleton) a IDbContextFactory (singleton).
-	/// Dále registruje DbContextOptions&lt;TDbContext&gt; jako singleton.
+	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle).
 	/// </summary>
-	/// <remarks>
-	/// DbContext a DbContextFactory&lt;TDbContext&gt; jsou z Entity Framework Core.
-	/// IDbContext a IDbContextFactory (negenerická!) jsou z HFW.
-	/// DbContextOptions&lt;TDbContext&gt; jsou v Entity Framework Core ve výchozím chování registrovány jako Scoped. To však brání možnosti
-	/// použití jak DbContext, tak DbContextFactory&lt;TDbContext&gt;. Pro podporu obou potřebujeme DbContextOptions&lt;TDbContext&gt; registrovat jako singleton.
-	/// </remarks>
 	public EntityPatternsInstaller AddDbContext<TDbContext>(Action<DbContextOptionsBuilder> optionsAction = null)
 		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
-		_services.AddDbContextFactory<TDbContext>();
-		_services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
-
-		_services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
+		_services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 		return this;
 	}
 
 	/// <summary>
-	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle), DbContextFactory&lt;TDbContext&gt; (singleton) a IDbContextFactory (singleton).
-	/// Dále registruje DbContextOptions&lt;TDbContext&gt; jako singleton.
+	/// Registruje do DI containeru DbContext pod interface IDbContext (scoped lifestyle).
 	/// </summary>
-	/// <remarks>
-	/// DbContext a DbContextFactory&lt;TDbContext&gt; jsou z Entity Framework Core.
-	/// IDbContext a IDbContextFactory (negenerická!) jsou z HFW.
-	/// DbContextOptions&lt;TDbContext&gt; jsou v Entity Framework Core ve výchozím chování registrovány jako Scoped. To však brání možnosti
-	/// použití jak DbContext, tak DbContextFactory&lt;TDbContext&gt;. Pro podporu obou potřebujeme DbContextOptions&lt;TDbContext&gt; registrovat jako singleton.
-	/// </remarks>
 	public EntityPatternsInstaller AddDbContext<TDbContext>(Action<IServiceProvider, DbContextOptionsBuilder> optionsAction = null)
 		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
-		_services.AddDbContextFactory<TDbContext>();
-		_services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction), optionsLifetime: ServiceLifetime.Singleton);
-
-		_services.TryAddTransient<IDbContextFactory, DbContextFactory<TDbContext>>();
+		_services.AddDbContext<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 		return this;
 	}
 
@@ -108,12 +84,8 @@ public class EntityPatternsInstaller
 	public EntityPatternsInstaller AddDbContextPool<TDbContext>(Action<DbContextOptionsBuilder> optionsAction, int poolSize = DbContextPool<DbContext>.DefaultPoolSize)
 		where TDbContext : Havit.Data.EntityFrameworkCore.DbContext, IDbContext
 	{
-		//Contract.Requires(componentRegistrationOptions.DbContextLifestyle == ServiceLifetime.Scoped);
-
-		_services.AddPooledDbContextFactory<TDbContext>(GetDbContextOptionsBuilder(optionsAction), poolSize);
 		_services.AddDbContextPool<IDbContext, TDbContext>(GetDbContextOptionsBuilder(optionsAction));
 
-		_services.TryAddSingleton<IDbContextFactory, DbContextFactory<TDbContext>>();
 		return this;
 	}
 

@@ -15,7 +15,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 /// </summary>
 public class DbDataSeedPersister : IDataSeedPersister
 {
-	private readonly IDbContextFactory dbContextFactory;
+	private readonly IDbContext dbContext;
 	private readonly IDbDataSeedTransactionContext dbDataSeedTransactionContext;
 
 	/// <summary>
@@ -25,9 +25,9 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// Chceme transientní DbContext, abychom od sebe odstínili jednotlivé seedy.
 	/// Ale dále se k němu chováme jako k IDbContextu.
 	/// </remarks>
-	public DbDataSeedPersister(IDbContextFactory dbContextFactory, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
+	public DbDataSeedPersister(IDbContext dbContext, IDbDataSeedTransactionContext dbDataSeedTransactionContext)
 	{
-		this.dbContextFactory = dbContextFactory;
+		this.dbContext = dbContext;
 		this.dbDataSeedTransactionContext = dbDataSeedTransactionContext;
 	}
 
@@ -37,15 +37,12 @@ public class DbDataSeedPersister : IDataSeedPersister
 	public void Save<TEntity>(DataSeedConfiguration<TEntity> configuration)
 		where TEntity : class
 	{
-		ExecuteWithDbContext(dbContext =>
+		if (dbDataSeedTransactionContext.CurrentTransaction != null)
 		{
-			if (dbDataSeedTransactionContext.CurrentTransaction != null)
-			{
-				dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
-			}
+			dbDataSeedTransactionContext.ApplyCurrentTransactionTo(dbContext);
+		}
 
-			PerformSave<TEntity>(dbContext, configuration);
-		});
+		PerformSave<TEntity>(dbContext, configuration);
 	}
 
 	/// <summary>
@@ -97,13 +94,10 @@ public class DbDataSeedPersister : IDataSeedPersister
 		Contract.Requires<ArgumentNullException>(configuration != null);
 		Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
-		ExecuteWithDbContext(dbContext =>
-		{
-			var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
-			var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
+		var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+		var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
 
-			Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(ExpressionExt.GetMemberAccessMemberName(expression))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
-		});
+		Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(ExpressionExt.GetMemberAccessMemberName(expression))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
 	}
 
 	/// <summary>
@@ -299,11 +293,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		where TEntity : class
 	{
 		// current entity type from model
-		IEntityType entityType = null;
-		ExecuteWithDbContext(dbContext =>
-		{
-			entityType = dbContext.Model.FindEntityType(typeof(TEntity));
-		});
+		IEntityType entityType = dbContext.Model.FindEntityType(typeof(TEntity));
 
 		List<IProperty> propertiesForInserting = GetPropertiesForInserting(entityType);
 		List<IProperty> propertiesForUpdating = GetPropertiesForUpdating<TEntity>(entityType,
@@ -419,28 +409,4 @@ public class DbDataSeedPersister : IDataSeedPersister
 			&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
 			&& String.IsNullOrEmpty(property.GetDefaultValueSql()); // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
 	}
-
-	private void ExecuteWithDbContext(Action<IDbContext> action)
-	{
-		if (_currentDbContext == null)
-		{
-			using (var dbContext = dbContextFactory.CreateDbContext())
-			{
-				try
-				{
-					_currentDbContext = dbContext;
-					action(_currentDbContext);
-				}
-				finally
-				{
-					_currentDbContext = null;
-				}
-			}
-		}
-		else
-		{
-			action(_currentDbContext);
-		}
-	}
-	private IDbContext _currentDbContext;
 }

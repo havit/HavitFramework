@@ -33,7 +33,7 @@ public partial class DbDataLoader
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
-				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunkify(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
+				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
 				LogDebug("Starting reading chunks from a database.");
 
 				loadedProperties = new List<TProperty>();
@@ -78,7 +78,7 @@ public partial class DbDataLoader
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
-				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunkify(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
+				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
 				LogDebug("Starting reading chunks from a database.");
 
 				loadedProperties = new List<TProperty>();

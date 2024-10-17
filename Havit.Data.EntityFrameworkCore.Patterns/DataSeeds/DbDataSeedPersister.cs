@@ -171,7 +171,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 
 		// Chunkify(1000) --> SQL Server 2008: Some part of your SQL statement is nested too deeply. Rewrite the query or break it up into smaller queries.
 		// Proto došlo ke změně na .Chunkify(100), správné číslo hledáme.
-		foreach (TEntity[] chunk in seedData.Chunkify(100))
+		foreach (TEntity[] chunk in seedData.Chunk(100))
 		{
 			Expression<Func<TEntity, bool>> chunkWhereExpression = PairWithDbData_LoadDatabaseData_BuildWhereCondition(chunk, pairByExpressionsWithCompilations);
 			dbEntities.AddRange(databaseDataQueryable.Where(chunkWhereExpression).ToList());

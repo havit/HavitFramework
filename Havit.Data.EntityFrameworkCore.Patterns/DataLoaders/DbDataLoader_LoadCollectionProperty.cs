@@ -45,7 +45,7 @@ public partial class DbDataLoader
 				//   více a považujeme toto za good-enough řešení).
 				// - Víceré spuštění changetrackeru (ale když už použijeme takto enormní množství dat, changetracker nás nejspíš netrápí)
 				// Zároveň se snažíme ani trochu nesnížit výkon pro běžný scénář s běžným počtem záznamů (nechceme přidat volání AddRange v dalších variantách této metody, atp.).
-				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunkify(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
+				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
 				LogDebug("Starting reading chunks from a database.");
 				loadedProperties = new List<TPropertyItem>();
 				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
@@ -95,7 +95,7 @@ public partial class DbDataLoader
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
-				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunkify(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
+				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
 				LogDebug("Starting reading chunks from a database.");
 				loadedProperties = new List<TPropertyItem>();
 				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)

@@ -208,7 +208,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				loadedObjects = new List<TEntity>();
-				foreach (int[] idsToLoadChunk in idsToLoad.Chunkify(GetObjectsChunkSize))
+				foreach (int[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
 				{
 					loadedObjects.AddRange(query((DbContext)dbContext, idsToLoadChunk).ToList());
 				}
@@ -279,7 +279,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				loadedObjects = new List<TEntity>();
-				foreach (int[] idsToLoadChunk in idsToLoad.Chunkify(GetObjectsChunkSize))
+				foreach (int[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
 				{
 					loadedObjects.AddRange(await query((DbContext)dbContext, idsToLoadChunk).ToListAsync(cancellationToken).ConfigureAwait(false));
 				}

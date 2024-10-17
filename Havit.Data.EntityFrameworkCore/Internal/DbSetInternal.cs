@@ -14,116 +14,90 @@ namespace Havit.Data.EntityFrameworkCore.Internal;
 internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 	where TEntity : class
 {
-	private readonly DbSet<TEntity> dbSet;
-	private readonly Lazy<IKey> primaryKeyLazy;
-	private readonly Lazy<IStateManager> stateManagerLazy;
-#if BENCHMARKING
-	private readonly Lazy<LocalView<TEntity>> localViewLazy;
-#endif
+	private readonly DbContext _dbContext;
+	private readonly DbSet<TEntity> _dbSet;
+
+	private IKey _primaryKey;
+#pragma warning disable EF1001 // Internal EF Core API usage.
+	private IStateManager _stateManager;
+#pragma warning restore EF1001 // Internal EF Core API usage.
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public DbSetInternal(DbContext dbContext)
 	{
-		this.dbSet = dbContext.Set<TEntity>();
-		this.primaryKeyLazy = new Lazy<IKey>(() => dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey(), LazyThreadSafetyMode.None);
-#pragma warning disable EF1001 // Internal EF Core API usage.
-		this.stateManagerLazy = new Lazy<IStateManager>(() => dbContext.GetService<IStateManager>(), LazyThreadSafetyMode.None);
-#pragma warning restore EF1001 // Internal EF Core API usage.
-#if BENCHMARKING
-		this.localViewLazy = new Lazy<LocalView<TEntity>>(() => dbContext.ExecuteWithoutAutoDetectChanges(() => dbSet.Local));
-#endif
+		_dbContext = dbContext;
+		_dbSet = dbContext.Set<TEntity>();
 	}
 
 	/// <inheritdoc />
 	public IQueryable<TEntity> AsQueryable(string queryTag)
 	{
 		return !String.IsNullOrEmpty(queryTag)
-			? dbSet.TagWith(queryTag)
-			: dbSet;
+			? _dbSet.TagWith(queryTag)
+			: _dbSet;
 	}
 
 	/// <summary>
 	/// Vyhledá entitu v načtených (trackovaných objektech). Pokud objekt není nalezen, vrací null.
 	/// </summary>
+#pragma warning disable EF1001 // Internal EF Core API usage.
 	public TEntity FindTracked(params object[] keyValues)
 	{
-#pragma warning disable EF1001 // Internal EF Core API usage.
-		return (TEntity)stateManagerLazy.Value.TryGetEntry(primaryKeyLazy.Value, keyValues)?.Entity;
+		_primaryKey ??= _dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey();
+		_stateManager ??= _dbContext.GetService<IStateManager>();
+
+		return (TEntity)_stateManager.TryGetEntry(_primaryKey, keyValues)?.Entity;
+	}
 #pragma warning restore EF1001 // Internal EF Core API usage.
-	}
-
-#if BENCHMARKING
-	internal TEntity UsingLocal_FindEntry<TKey>(TKey key)
-	{
-		return localViewLazy.Value.FindEntry(key)?.Entity;
-	}
-
-	internal TEntity UsingLocal_FindEntryUntyped(params object[] keyValues)
-	{
-		return localViewLazy.Value.FindEntryUntyped(keyValues)?.Entity;
-	}
-#endif
 
 	/// <inheritdoc />
 	public void Add(TEntity entity)
 	{
-		dbSet.Add(entity);
+		_dbSet.Add(entity);
 	}
 
 	/// <inheritdoc />
-	public async ValueTask AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+	public void AddRange(IEnumerable<TEntity> entities)
 	{
-		await dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
-	}
-
-	/// <inheritdoc />
-	public void AddRange(TEntity[] entities)
-	{
-		dbSet.AddRange(entities);
-	}
-
-	/// <inheritdoc />
-	public async Task AddRangeAsync(TEntity[] entities, CancellationToken cancellationToken = default)
-	{
-		await dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+		_dbSet.AddRange(entities);
 	}
 
 	/// <inheritdoc />
 	public void Update(TEntity entity)
 	{
-		dbSet.Update(entity);
+		_dbSet.Update(entity);
 	}
 
 	/// <inheritdoc />
-	public void UpdateRange(TEntity[] entities)
+	public void UpdateRange(IEnumerable<TEntity> entities)
 	{
-		dbSet.UpdateRange(entities);
+		_dbSet.UpdateRange(entities);
 	}
 
 	/// <inheritdoc />
 	public void Remove(TEntity entity)
 	{
-		dbSet.Remove(entity);
+		_dbSet.Remove(entity);
 	}
 
 	/// <inheritdoc />
-	public void RemoveRange(TEntity[] entities)
+	public void RemoveRange(IEnumerable<TEntity> entities)
 	{
-		dbSet.RemoveRange(entities);
+		_dbSet.RemoveRange(entities);
 	}
 
 	/// <inheritdoc />
 	public void Attach(TEntity entity)
 	{
-		dbSet.Attach(entity);
+		_dbSet.Attach(entity);
 	}
 
 	/// <inheritdoc />
-	public void AttachRange(TEntity[] entities)
+	public void AttachRange(IEnumerable<TEntity> entities)
 	{
-		dbSet.AttachRange(entities);
+		_dbSet.AttachRange(entities);
 	}
 
 }

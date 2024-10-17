@@ -228,6 +228,27 @@ public class DbUnitOfWorkTests
 	}
 
 	[TestMethod]
+	public void DbUnitOfWork_AddRangeForInsert_EnsuresObjectIsRegistered()
+	{
+		// Arrange
+		TestDbContext testDbContext = new TestDbContext();
+		testDbContext.Database.DropCreate();
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		Language language = new Language();
+
+		// Act
+		dbUnitOfWork.AddRangeForInsert([language]);
+
+		// Assert
+		Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));
+	}
+
+	[TestMethod]
 	public void DbUnitOfWork_AddForUpdate_EnsuresObjectIsRegistered()
 	{
 		// Arrange
@@ -243,6 +264,27 @@ public class DbUnitOfWorkTests
 
 		// Act
 		dbUnitOfWork.AddForUpdate(language);
+
+		// Assert
+		Assert.AreEqual(EntityState.Modified, ((IDbContext)testDbContext).GetEntityState(language));
+	}
+
+	[TestMethod]
+	public void DbUnitOfWork_AddRangeForUpdate_EnsuresObjectIsRegistered()
+	{
+		// Arrange
+		TestDbContext testDbContext = new TestDbContext();
+		testDbContext.Database.DropCreate();
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		Language language = new Language { Id = 100 };
+
+		// Act
+		dbUnitOfWork.AddRangeForUpdate([language]);
 
 		// Assert
 		Assert.AreEqual(EntityState.Modified, ((IDbContext)testDbContext).GetEntityState(language));
@@ -286,6 +328,43 @@ public class DbUnitOfWorkTests
 		}
 	}
 
+	[TestMethod]
+	public void DbUnitOfWork_AddRangeForDelete_EnsuresObjectIsRegistered()
+	{
+		// Arrange
+		SoftDeleteManager softDeleteManager = new SoftDeleteManager(new ServerTimeService());
+		Assert.IsFalse(softDeleteManager.IsSoftDeleteSupported<Language>(), "Test vyžaduje objekt, který není mazán příznakem.");
+		Assert.IsTrue(softDeleteManager.IsSoftDeleteSupported<ItemWithDeleted>(), "Test vyžaduje objekt, který je mazán příznakem.");
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		using (TestDbContext testDbContext = new TestDbContext())
+		{
+			testDbContext.Database.DropCreate();
+			testDbContext.Set<Language>().Add(new Language() { Culture = "cs-CZ", UiCulture = "cs-CZ" });
+			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
+			testDbContext.SaveChanges();
+		}
+
+		using (TestDbContext testDbContext = new TestDbContext())
+		{
+			Language language = testDbContext.Set<Language>().Single();
+			ItemWithDeleted itemWithDeleted = testDbContext.Set<ItemWithDeleted>().Single();
+
+			DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, softDeleteManager, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+
+			// Act
+			dbUnitOfWork.AddRangeForDelete([language]);
+			dbUnitOfWork.AddRangeForDelete([itemWithDeleted]);
+
+			// Assert
+			testDbContext.ChangeTracker.DetectChanges();
+			Assert.AreEqual(EntityState.Deleted, ((IDbContext)testDbContext).GetEntityState(language));
+			Assert.AreEqual(EntityState.Modified, ((IDbContext)testDbContext).GetEntityState(itemWithDeleted));
+		}
+	}
 	[TestMethod]
 	public void DbUnitOfWork_AddForUpdate_UpdatesFromNonTrackedObject()
 	{
@@ -333,30 +412,7 @@ public class DbUnitOfWorkTests
 		}
 	}
 
-	/// <summary>
-	/// Bug 26702: AddRangeForInsert vyvolává 'System.InvalidOperationException'
-	/// </summary>
-	[TestMethod]
-	public void DbUnitOfWork_AddForInsertRange_SupportsRangeOfObject()
-	{
-		// Arrange
-		TestDbContext dbContext = new TestDbContext();
-		var softDeleteManager = new SoftDeleteManager(new ServerTimeService());
-
-		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
-		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
-		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
-
-		var dbUnitOfWork = new DbUnitOfWork(dbContext, softDeleteManager, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
-
-		// Act
-		dbUnitOfWork.AddRangeForInsert(new[] { new ItemWithDeleted(), new ItemWithDeleted(), new ItemWithDeleted() });
-
-		// Assert
-		// no exception is thrown
-	}
-
-	[TestMethod]
+		[TestMethod]
 	public void DbUnitOfWork_Clear()
 	{
 		// Arrange
@@ -374,9 +430,7 @@ public class DbUnitOfWorkTests
 		dbUnitOfWork.RegisterAfterCommitAction(() => { /* something */ });
 
 		// Prerequisities
-		Assert.AreEqual(1, dbUnitOfWork.updateRegistrations.Count);
 		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Count());
-		Assert.AreEqual(0, dbUnitOfWork.updateRegistrations.Count); // GetAllKnowChanges změní stav
 		Assert.AreEqual(1, dbUnitOfWork.afterCommits.Count);
 		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 

@@ -201,7 +201,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		PerformAddForInsert<TEntity>(entities.ToArray());
+		PerformAddRangeForInsert(entities);
 	}
 
 	/// <summary>
@@ -220,7 +220,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		PerformAddForUpdate<TEntity>(entities.ToArray());
+		PerformAddRangeForUpdate(entities);
 	}
 
 	/// <summary>
@@ -241,37 +241,85 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		PerformAddForDelete<TEntity>(entities.ToArray());
+		PerformAddRangeForDelete(entities);
+	}
+
+	/// <summary>
+	/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
+	/// </summary>
+	protected virtual void PerformAddForInsert<TEntity>(TEntity entity)
+		where TEntity : class
+	{
+		DbContext.Set<TEntity>().Add(entity);
 	}
 
 	/// <summary>
 	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 	/// </summary>
-	protected virtual void PerformAddForInsert<TEntity>(params TEntity[] entities)
+	protected virtual void PerformAddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		if (entities.Length > 0)
+		DbContext.Set<TEntity>().AddRange(entities);
+	}
+
+	/// <summary>
+	/// Zajistí vložení objektu jako změněného objektu (při uložen bude změněn).
+	/// </summary>
+	protected virtual void PerformAddForUpdate<TEntity>(TEntity entity)
+		where TEntity : class
+	{
+		// z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker
+		if (DbContext.GetEntityState(entity) == EntityState.Detached)
 		{
-			DbContext.Set<TEntity>().AddRange(entities);
+			DbContext.Set<TEntity>().Update(entity);
+		}
+		else
+		{
+			updateRegistrations.Add(entity);
 		}
 	}
 
 	/// <summary>
 	/// Zajistí vložení objektů jako změněné objekty (při uložení budou změněny).
 	/// </summary>
-	protected virtual void PerformAddForUpdate<TEntity>(params TEntity[] entities)
+	protected virtual void PerformAddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		if (entities.Length > 0)
+		// Registrace na DbSetu pro Update označí entity za modifikované a budou uložené celé bez ohledu na to, zda se na nich skutečně něco změnilo.
+		// Proto implementujeme tak, že netrackované entity zaregistrujeme jako změněné.
+		// Trackované entity z pohledu DbSetu neřešíme (a předpokládáme, že svou práci provede change tracker),
+		// pouze si je zapíšeme mezi updateRegistrations (aby se na něj při uložení volal BeforeCommitProcessor).
+		// Vzhledem k tomu, že vše chceme realizovat v rámci jednoho průchodu entit, zapisujeme si entity do updateRegistrations
+		// v rámci iterování entit (v rámci volání Where).
+
+		// Z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker.
+		DbContext.Set<TEntity>().UpdateRange(entities
+			.Where(entity =>
+			{
+				bool isDetached = DbContext.GetEntityState(entity) == EntityState.Detached;
+				if (!isDetached)
+				{
+					updateRegistrations.Add(entity);
+				}
+				return isDetached;
+			}));
+	}
+
+	/// <summary>
+	/// Zajistí odstranění objektu (při uložení bude smazán).
+	/// Objekty podporující mazání příznakem budou smazány příznakem - bude jim nastaven příznak smazání a bude nad nimi zavoláno PerformAddForUpdate.
+	/// </summary>
+	protected virtual void PerformAddForDelete<TEntity>(TEntity entity)
+		where TEntity : class
+	{
+		if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 		{
-			// registrace na DbSetu pro Update označí entity za modifikované a budou uložené celé bez ohledu na to, zda se na nich skutečně něco změnilo
-			// proto implementujeme tak, že trackované entity neřešíme (a předpokládáme, že svou práci provede change tracker)
-			// netrackované entity zaregistrujeme jako změněné
-
-			// z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker
-
-			DbContext.Set<TEntity>().UpdateRange(entities.Where(entity => DbContext.GetEntityState(entity) == EntityState.Detached).ToArray());
-			updateRegistrations.UnionWith(entities);
+			SoftDeleteManager.SetDeleted<TEntity>(entity);
+			PerformAddForUpdate(entity);
+		}
+		else
+		{
+			DbContext.Set<TEntity>().Remove(entity);
 		}
 	}
 
@@ -279,23 +327,37 @@ public class DbUnitOfWork : IUnitOfWork
 	/// Zajistí odstranění objektů (při uložení budou smazány).
 	/// Objekty podporující mazání příznakem budou smazány příznakem - bude jim nastaven příznak smazání a bude nad nimi zavoláno PerformAddForUpdate.
 	/// </summary>
-	protected virtual void PerformAddForDelete<TEntity>(params TEntity[] entities)
+	protected virtual void PerformAddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		if (entities.Length > 0)
+		if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 		{
-			if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
+			// Pokud jde o list, můžeme levně projít seznam a následně zavolat PerformAddForUpdate, nevadí nám dva průchody.
+			if (entities is IList<TEntity> entitiesList)
 			{
-				foreach (TEntity entity in entities)
+				for (int i = 0; i < entitiesList.Count; i++)
 				{
-					SoftDeleteManager.SetDeleted<TEntity>(entity);
+					SoftDeleteManager.SetDeleted<TEntity>(entitiesList[i]);
 				}
-				PerformAddForUpdate(entities);
+				PerformAddRangeForUpdate(entitiesList);
 			}
 			else
 			{
-				DbContext.Set<TEntity>().RemoveRange(entities);
+				// Chceme 
+				// a) zavolat nad entitou SoftDeleteManager.SetDeleted
+				// b) včechny entity předat PerformAddForUpdate
+				// a to v jednom průchodu.				
+				// Abychom zajistili jediný průchod, nad entitami voláme SoftDeleteManager.SetDeleted v rámci jejich iterování.
+				PerformAddRangeForUpdate(entities.Select(entity =>
+				{
+					SoftDeleteManager.SetDeleted<TEntity>(entity);
+					return entity;
+				}));
 			}
+		}
+		else
+		{
+			DbContext.Set<TEntity>().RemoveRange(entities);
 		}
 	}
 

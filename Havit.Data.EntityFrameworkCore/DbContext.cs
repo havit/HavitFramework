@@ -176,9 +176,9 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Vrátí objekty v daných stavech.
 	/// </summary>
-	EntityEntry[] IDbContext.GetEntries(bool suppressDetectChanges)
+	IEnumerable<EntityEntry> IDbContext.GetEntries(bool suppressDetectChanges)
 	{
-		EntityEntry[] getObjectInStatesFunc() => this.ChangeTracker.Entries().ToArray();
+		IEnumerable<EntityEntry> getObjectInStatesFunc() => this.ChangeTracker.Entries();
 
 		return suppressDetectChanges
 			? ExecuteWithoutAutoDetectChanges(getObjectInStatesFunc)

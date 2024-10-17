@@ -74,7 +74,7 @@ public interface IDbContext : IDisposable
 	/// <summary>
 	/// Vrátí entity entries všech zaregistrovaných entit.
 	/// </summary>
-	EntityEntry[] GetEntries(bool suppressDetectChanges);
+	IEnumerable<EntityEntry> GetEntries(bool suppressDetectChanges);
 
 	/// <summary>
 	/// Vrací true, pokud je EF považuje vlastnost za načtenou.

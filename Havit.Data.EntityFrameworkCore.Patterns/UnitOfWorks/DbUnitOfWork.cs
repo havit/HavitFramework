@@ -159,10 +159,9 @@ public class DbUnitOfWork : IUnitOfWork
 		// Abychom umožnili kompenzaci konfliktu na entitě ve stavu Modified, potřebujeme také aby entita zmizela z kolekce updateRegistrations.
 		// Tím se pro ni přestanou volat BeforeCommitProcessory.
 
-		var modifiedEntities = entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity).ToArray();
 		// Entity, o kterých již víme, že jsou ve stavu Modified, odebereme z kolekce updateRegistrations, protože víme, že se nám v běžném kódu budou stále vracet z changetrackeru dle předchozího řádku.
 		// Zároveň tak zajistíme, že updateRegistrations nemají žádný průnik s entityEntries (.Entry) a tak můžeme níže bezpečně použít Concat bez rizika vzniku duplicit.
-		updateRegistrations.ExceptWith(modifiedEntities);
+		updateRegistrations.ExceptWith(entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity));
 
 		var changesFromEntries = entityEntries.Select(entry => new EntityChange
 		{

@@ -129,8 +129,14 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	protected internal virtual void AfterSaveChanges()
 	{
-		afterSaveChangesActions?.ForEach(item => item.Invoke());
-		afterSaveChangesActions = null;
+		if (afterSaveChangesActions != null)
+		{
+			foreach (var afterSaveChangesAction in afterSaveChangesActions)
+			{
+				afterSaveChangesAction.Invoke();
+			}
+			afterSaveChangesActions = null;
+		}
 	}
 
 	/// <summary>
@@ -141,19 +147,18 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	{
 		if (afterSaveChangesActions == null)
 		{
-			afterSaveChangesActions = new List<Action>();
+			afterSaveChangesActions = new List<Action>([action]);
 		}
-		afterSaveChangesActions.Add(action);
+		else
+		{
+			afterSaveChangesActions.Add(action);
+		}
 	}
 
 	/// <summary>
 	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 	/// </summary>
-#if BENCHMARKING
-	internal TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
-#else
 	private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
-#endif
 	{
 		if (ChangeTracker.AutoDetectChangesEnabled)
 		{

@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-#if BENCHMARKING
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-#endif
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;

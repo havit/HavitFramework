@@ -9,14 +9,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProces
 /// </summary>
 public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitProcessor<object>
 {
-	private readonly ITimeService timeService;
+	private readonly ITimeService _timeService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public SetCreatedToInsertingEntitiesBeforeCommitProcessor(ITimeService timeService)
 	{
-		this.timeService = timeService;
+		this._timeService = timeService;
 	}
 
 	/// <summary>
@@ -35,7 +35,7 @@ public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitP
 			DateTime created = (DateTime)createdProperty.GetValue(changingEntity);
 			if (created == default(DateTime))
 			{
-				createdProperty.SetValue(changingEntity, timeService.GetCurrentTime());
+				createdProperty.SetValue(changingEntity, _timeService.GetCurrentTime());
 			}
 		}
 	}

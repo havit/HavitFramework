@@ -12,7 +12,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Registr akcí k provedení po uložení změn.
 	/// </summary>
-	private List<Action> afterSaveChangesActions;
+	private List<Action> _afterSaveChangesActions;
 
 	private Dictionary<Type, object> _dbSetsDictionary;
 
@@ -129,13 +129,13 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	protected internal virtual void AfterSaveChanges()
 	{
-		if (afterSaveChangesActions != null)
+		if (_afterSaveChangesActions != null)
 		{
-			foreach (var afterSaveChangesAction in afterSaveChangesActions)
+			foreach (var afterSaveChangesAction in _afterSaveChangesActions)
 			{
 				afterSaveChangesAction.Invoke();
 			}
-			afterSaveChangesActions = null;
+			_afterSaveChangesActions = null;
 		}
 	}
 
@@ -145,13 +145,13 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	public void RegisterAfterSaveChangesAction(Action action)
 	{
-		if (afterSaveChangesActions == null)
+		if (_afterSaveChangesActions == null)
 		{
-			afterSaveChangesActions = new List<Action>([action]);
+			_afterSaveChangesActions = new List<Action>([action]);
 		}
 		else
 		{
-			afterSaveChangesActions.Add(action);
+			_afterSaveChangesActions.Add(action);
 		}
 	}
 

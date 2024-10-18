@@ -431,7 +431,7 @@ public class DbUnitOfWorkTests
 
 		// Prerequisities
 		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Count());
-		Assert.AreEqual(1, dbUnitOfWork.afterCommits.Count);
+		Assert.AreEqual(1, dbUnitOfWork._afterCommits.Count);
 		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 
 		// Act
@@ -439,8 +439,8 @@ public class DbUnitOfWorkTests
 
 		// Assert
 		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Count());
-		Assert.AreEqual(0, dbUnitOfWork.updateRegistrations.Count);
-		Assert.IsNull(dbUnitOfWork.afterCommits);
+		Assert.AreEqual(0, dbUnitOfWork._updateRegistrations.Count);
+		Assert.IsNull(dbUnitOfWork._afterCommits);
 		Assert.AreEqual(0, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 	}
 

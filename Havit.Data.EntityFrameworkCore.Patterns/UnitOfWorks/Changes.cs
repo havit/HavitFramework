@@ -7,14 +7,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 /// </summary>
 public class Changes : IEnumerable<Change>
 {
-	private List<Change> changes;
+	private List<Change> _changes;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public Changes(IEnumerable<Change> changes)
 	{
-		this.changes = changes.ToList();
+		_changes = changes.ToList();
 	}
 
 	/// <summary>
@@ -46,7 +46,7 @@ public class Changes : IEnumerable<Change>
 	}
 
 	#region IEnumerable<Change> implementation
-	IEnumerator<Change> IEnumerable<Change>.GetEnumerator() => changes.GetEnumerator();
-	IEnumerator IEnumerable.GetEnumerator() => changes.GetEnumerator();
+	IEnumerator<Change> IEnumerable<Change>.GetEnumerator() => _changes.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => _changes.GetEnumerator();
 	#endregion
 }

@@ -15,13 +15,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 /// </summary>
 public class DbUnitOfWork : IUnitOfWork
 {
-	private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
-	private readonly IEntityValidationRunner entityValidationRunner;
-	private readonly ILookupDataInvalidationRunner lookupDataInvalidationRunner;
+	private readonly IBeforeCommitProcessorsRunner _beforeCommitProcessorsRunner;
+	private readonly IEntityValidationRunner _entityValidationRunner;
+	private readonly ILookupDataInvalidationRunner _lookupDataInvalidationRunner;
 
 	// internal: unit testy ověřují stav
-	internal List<Action> afterCommits = null;
-	internal readonly HashSet<object> updateRegistrations = new HashSet<object>();
+	internal List<Action> _afterCommits = null;
+	internal readonly HashSet<object> _updateRegistrations = new HashSet<object>();
 
 	/// <summary>
 	/// DbContext, nad kterým stojí Unit of Work.
@@ -55,9 +55,9 @@ public class DbUnitOfWork : IUnitOfWork
 		SoftDeleteManager = softDeleteManager;
 		EntityCacheManager = entityCacheManager;
 		EntityCacheDependencyManager = entityCacheDependencyManager;
-		this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
-		this.entityValidationRunner = entityValidationRunner;
-		this.lookupDataInvalidationRunner = lookupDataInvalidationRunner;
+		_beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
+		_entityValidationRunner = entityValidationRunner;
+		_lookupDataInvalidationRunner = lookupDataInvalidationRunner;
 	}
 
 	/// <summary>
@@ -66,17 +66,17 @@ public class DbUnitOfWork : IUnitOfWork
 	public void Commit()
 	{
 		BeforeCommit();
-		beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
+		_beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
 
 		Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
-		entityValidationRunner.Validate(allKnownChanges);
+		_entityValidationRunner.Validate(allKnownChanges);
 		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
 
 		DbContext.SaveChanges();
 
 		ClearRegistrationHashSets();
 		cacheInvalidationOperation?.Invalidate();
-		lookupDataInvalidationRunner.Invalidate(allKnownChanges);
+		_lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 
 		AfterCommit();
 	}
@@ -87,18 +87,18 @@ public class DbUnitOfWork : IUnitOfWork
 	public async Task CommitAsync(CancellationToken cancellationToken = default)
 	{
 		BeforeCommit();
-		beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
+		_beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
 		cancellationToken.ThrowIfCancellationRequested();
 
 		Changes allKnownChanges = GetAllKnownChanges(); // ptáme se na změny znovu, runnery mohli seznam objektů k uložení změnit
-		entityValidationRunner.Validate(allKnownChanges);
+		_entityValidationRunner.Validate(allKnownChanges);
 		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
 
 		await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
 		ClearRegistrationHashSets();
 		cacheInvalidationOperation?.Invalidate();
-		lookupDataInvalidationRunner.Invalidate(allKnownChanges);
+		_lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 
 		AfterCommit();
 	}
@@ -113,7 +113,7 @@ public class DbUnitOfWork : IUnitOfWork
 
 	private void ClearRegistrationHashSets()
 	{
-		updateRegistrations.Clear();
+		_updateRegistrations.Clear();
 	}
 
 	/// <summary>
@@ -122,10 +122,10 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	protected internal virtual void AfterCommit()
 	{
-		List<Action> registeredAfterCommitActiond = afterCommits;
+		List<Action> registeredAfterCommitActiond = _afterCommits;
 		// Neprve vyčistíme afterCommits, pak je teprve spustíme.
 		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
-		afterCommits = null;
+		_afterCommits = null;
 		registeredAfterCommitActiond?.ForEach(item => item.Invoke());
 	}
 
@@ -135,11 +135,11 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	public void RegisterAfterCommitAction(Action action)
 	{
-		if (afterCommits == null)
+		if (_afterCommits == null)
 		{
-			afterCommits = new List<Action>();
+			_afterCommits = new List<Action>();
 		}
-		afterCommits.Add(action);
+		_afterCommits.Add(action);
 	}
 
 	/// <summary>
@@ -161,7 +161,7 @@ public class DbUnitOfWork : IUnitOfWork
 
 		// Entity, o kterých již víme, že jsou ve stavu Modified, odebereme z kolekce updateRegistrations, protože víme, že se nám v běžném kódu budou stále vracet z changetrackeru dle předchozího řádku.
 		// Zároveň tak zajistíme, že updateRegistrations nemají žádný průnik s entityEntries (.Entry) a tak můžeme níže bezpečně použít Concat bez rizika vzniku duplicit.
-		updateRegistrations.ExceptWith(entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity));
+		_updateRegistrations.ExceptWith(entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity));
 
 		var changesFromEntries = entityEntries.Select(entry => new EntityChange
 		{
@@ -172,7 +172,7 @@ public class DbUnitOfWork : IUnitOfWork
 			Entity = entry.Entity,
 		});
 
-		var changesFromUpdateRegistrations = updateRegistrations.Select(item => new EntityChange()
+		var changesFromUpdateRegistrations = _updateRegistrations.Select(item => new EntityChange()
 		{
 			ChangeType = ChangeType.Update,
 			ClrType = item.GetType(),
@@ -274,7 +274,7 @@ public class DbUnitOfWork : IUnitOfWork
 		}
 		else
 		{
-			updateRegistrations.Add(entity);
+			_updateRegistrations.Add(entity);
 		}
 	}
 
@@ -298,7 +298,7 @@ public class DbUnitOfWork : IUnitOfWork
 				bool isDetached = DbContext.GetEntityState(entity) == EntityState.Detached;
 				if (!isDetached)
 				{
-					updateRegistrations.Add(entity);
+					_updateRegistrations.Add(entity);
 				}
 				return isDetached;
 			}));
@@ -383,7 +383,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void Clear()
 	{
 		ClearRegistrationHashSets();
-		afterCommits = null;
+		_afterCommits = null;
 		DbContext.ChangeTracker.Clear();
 	}
 }

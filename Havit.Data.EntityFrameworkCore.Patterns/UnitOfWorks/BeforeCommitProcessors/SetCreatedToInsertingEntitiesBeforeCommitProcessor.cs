@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using Havit.Services.TimeServices;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
@@ -10,6 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProces
 public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitProcessor<object>
 {
 	private readonly ITimeService _timeService;
+	private readonly ConcurrentDictionary<Type, PropertyInfo> _createdProperties = new ConcurrentDictionary<Type, PropertyInfo>();
 
 	/// <summary>
 	/// Konstruktor.
@@ -29,8 +31,19 @@ public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitP
 			return;
 		}
 
-		PropertyInfo createdProperty = changingEntity.GetType().GetProperty("Created");
-		if ((createdProperty != null) && (createdProperty.PropertyType == typeof(DateTime)))
+		PropertyInfo createdProperty = _createdProperties.GetOrAdd(
+			changingEntity.GetType(),
+			type =>
+			{
+				var propertyInfo = type.GetProperty("Created");
+				if (propertyInfo != null && propertyInfo.PropertyType == typeof(DateTime)) // propertyInfo nás zajímá pouze pokud je typu DateTime
+				{
+					return propertyInfo;
+				}
+				return null;
+			});
+
+		if (createdProperty != null)
 		{
 			DateTime created = (DateTime)createdProperty.GetValue(changingEntity);
 			if (created == default(DateTime))

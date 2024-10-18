@@ -17,7 +17,7 @@ public static class MigrationExtensions
 	/// <param name="sqlResourceAssembly">Assembly, ve které je hledán resource.</param>
 	public static void SqlResource(this MigrationBuilder migrationBuilder, string resourceName, Assembly sqlResourceAssembly)
 	{
-		Contract.Requires<ArgumentNullException>(resourceName != null);
+		Contract.Requires<ArgumentNullException>(resourceName != null, nameof(resourceName));
 
 		using var stream = sqlResourceAssembly.GetManifestResourceStream(resourceName);
 		Contract.Assert<ArgumentException>(stream != null, $"Resource name '{resourceName}' does not exist");

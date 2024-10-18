@@ -16,8 +16,8 @@ public static class ModelBuilderExtensions
 	/// </summary>
 	public static void RegisterModelFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
 	{
-		Contract.Requires(modelBuilder != null);
-		Contract.Requires(assembly != null);
+		Contract.Requires<ArgumentNullException>(modelBuilder != null, nameof(modelBuilder));
+		Contract.Requires<ArgumentNullException>(assembly != null, nameof(modelBuilder));
 
 		Type[] assemblyTypes = assembly.GetTypes()
 			.Where(type => type.IsPublic && type.IsClass && !(type.IsAbstract && type.IsSealed) /* pokrývá statické třídy, viz např. https://stackoverflow.com/questions/4145072/how-to-tell-if-a-type-is-a-static-class */)

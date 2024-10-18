@@ -174,6 +174,8 @@ public partial class DbDataLoader : IDataLoader
 		Contract.Requires(propertyPaths != null);
 		Contract.Requires(propertyPaths.Length > 0);
 
+		// TODO EFCore9: Pozor, tady máme několik enumerací entities!!!
+
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
 			await LoadInternalAsync(entities, propertyPath, cancellationToken).ConfigureAwait(false);

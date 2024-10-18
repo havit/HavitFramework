@@ -6,7 +6,6 @@ using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
 using Havit.Diagnostics.Contracts;
-using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
@@ -69,9 +68,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// </summary>
 	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
 	{
-		Contract.Requires<ArgumentException>(dbContext != null);
-		Contract.Requires<ArgumentException>(softDeleteManager != null);
-
 		this.dbContext = dbContext;
 		this.entityKeyAccessor = entityKeyAccessor;
 		this.dataLoader = dataLoader;
@@ -117,7 +113,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			ThrowObjectNotFoundException(id);
 		}
 
-		LoadReferences(new TEntity[] { result });
+		LoadReferences([result]);
 		return result;
 	}
 
@@ -156,7 +152,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			ThrowObjectNotFoundException(id);
 		}
 
-		await LoadReferencesAsync(new TEntity[] { result }, cancellationToken).ConfigureAwait(false);
+		await LoadReferencesAsync([result], cancellationToken).ConfigureAwait(false);
 		return result;
 	}
 
@@ -168,7 +164,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public List<TEntity> GetObjects(params int[] ids)
 	{
-		Contract.Requires(ids != null);
+		Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
@@ -229,7 +225,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			result.AddRange(loadedObjects);
 		}
 
-		LoadReferences(result.ToArray());
+		LoadReferences(result);
 		return result;
 	}
 
@@ -240,7 +236,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires(ids != null);
+		Contract.Requires<ArgumentException>(ids != null, nameof(ids));
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
@@ -300,7 +296,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			result.AddRange(loadedObjects);
 		}
 
-		await LoadReferencesAsync(result.ToArray(), cancellationToken).ConfigureAwait(false);
+		await LoadReferencesAsync(result, cancellationToken).ConfigureAwait(false);
 		return result;
 	}
 
@@ -389,15 +385,18 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
 	/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
 	/// </remarks>
-	protected virtual void LoadReferences(params TEntity[] entities)
+	protected virtual void LoadReferences(IEnumerable<TEntity> entities)
 	{
-		Contract.Requires(entities != null);
+		Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
 
-		var loadReferences = GetLoadReferences().ToArray();
-		if (loadReferences.Any())
+		var loadReferences = GetLoadReferences();
+		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.
+		if (loadReferences == Enumerable.Empty<Expression<Func<TEntity, object>>>())
 		{
-			dataLoader.LoadAll(entities, loadReferences);
+			return;
 		}
+
+		dataLoader.LoadAll(entities, loadReferences.ToArray());
 	}
 
 	/// <summary>
@@ -407,15 +406,18 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
 	/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
 	/// </remarks>
-	protected virtual async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
+	protected virtual async Task LoadReferencesAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires(entities != null);
+		Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
 
-		var loadReferences = GetLoadReferences().ToArray();
-		if (loadReferences.Any())
+		var loadReferences = GetLoadReferences();
+		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.
+		if (loadReferences == Enumerable.Empty<Expression<Func<TEntity, object>>>())
 		{
-			await dataLoader.LoadAllAsync(entities, loadReferences, cancellationToken).ConfigureAwait(false);
+			return;
 		}
+
+		await dataLoader.LoadAllAsync(entities, loadReferences.ToArray(), cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -429,8 +431,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 	private void ThrowObjectNotFoundException(params int[] missingIds)
 	{
-		Contract.Requires(missingIds != null);
-		Contract.Requires(missingIds.Length > 0);
+		Contract.Requires<ArgumentNullException>(missingIds != null, nameof(missingIds));
+		Contract.Requires<ArgumentException>(missingIds.Length > 0);
 
 		string exceptionText = (missingIds.Length == 1)
 			? String.Format("Object {0} with key {1} not found.", typeof(TEntity).Name, missingIds[0])

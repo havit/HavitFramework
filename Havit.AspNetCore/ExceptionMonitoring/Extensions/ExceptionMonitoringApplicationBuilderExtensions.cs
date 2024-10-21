@@ -17,7 +17,7 @@ public static class ExceptionMonitoringApplicationBuilderExtensions
 	/// Adds a ExceptionMonitoringMiddleware to your web application pipeline to handle failed requests.
 	/// </summary>
 #if NET8_0_OR_GREATER
-	[Obsolete("Starting in NET8, use exceptions handling with IExceptionHandler. Register services by services.AddExceptionMonitoring() and let the app.UseExceptionHandler(...) to do its job. For more information about handling errors with IExceptionHandler, see https://medium.com/@AntonAntonov88/handling-errors-with-iexceptionhandler-in-asp-net-core-8-0-48c71654cc2e")]
+	[Obsolete("Starting in NET8, use exceptions handling with IExceptionHandler. Register services only by services.AddExceptionMonitoring() and let the app.UseExceptionHandler(...) to do its job. For more information about handling errors with IExceptionHandler, see https://medium.com/@AntonAntonov88/handling-errors-with-iexceptionhandler-in-asp-net-core-8-0-48c71654cc2e")]
 #endif
 	public static IApplicationBuilder UseExceptionMonitoring(this IApplicationBuilder app)
 	{

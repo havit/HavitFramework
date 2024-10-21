@@ -358,15 +358,23 @@ public class EntityCacheManager : IEntityCacheManager
 			cacheService.RemoveAll(cacheKeysToInvalidate);
 
 			// aktualizujeme v cache změněné entity
+			Dictionary<Type, MethodInfo> methodInfosDictionary = new Dictionary<Type, MethodInfo>();
+			object[] invokeArguments = new object[1];
+
 			foreach (object entityToUpdateInCache in entitiesToUpdateInCache)
 			{
 				// protože je metoda StoreEntity generická, musíme přes reflexi
 				try
 				{
-					this.GetType()
-						.GetMethod(nameof(StoreEntity))
-						.MakeGenericMethod(entityToUpdateInCache.GetType())
-						.Invoke(this, new[] { entityToUpdateInCache });
+					invokeArguments[0] = entityToUpdateInCache; // eliminace alokace pole pro každý průchod
+					Type entityToUpdateInCacheType = entityToUpdateInCache.GetType();
+					if (!methodInfosDictionary.TryGetValue(entityToUpdateInCacheType, out MethodInfo methodInfo))
+					{
+						methodInfo = this.GetType().GetMethod(nameof(StoreEntity)).MakeGenericMethod(entityToUpdateInCacheType);
+						methodInfosDictionary.Add(entityToUpdateInCacheType, methodInfo);
+					}
+
+					methodInfo.Invoke(this, invokeArguments);
 				}
 				catch (TargetInvocationException targetInvocationException)
 				{
@@ -407,6 +415,8 @@ public class EntityCacheManager : IEntityCacheManager
 	private void PrepareCacheInvalidation_EntityInternal(Change change, object entityKey, HashSet<string> cacheKeysToInvalidate, HashSet<object> entitiesToUpdateInCache)
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
+
+		// TODO: EF Core 9: Co se situací, kdy sami necachujeme, ale chceme invalidovat cache jiné části systému?
 		if (entityCacheSupportDecision.ShouldCacheEntity(change.Entity))
 		{
 			if (change.ChangeType != ChangeType.Insert)

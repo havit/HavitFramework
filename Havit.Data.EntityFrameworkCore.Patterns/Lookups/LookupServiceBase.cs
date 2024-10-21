@@ -348,6 +348,8 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		}
 
 		// nedošlo k žádné změně sledované entity, neprovádíme žádnou invalidaci
+
+		// TODO EF Core 9: Enumerace navíc.
 		if (!changes.Any(change => (change.IsOfType<TEntity>())))
 		{
 			return;

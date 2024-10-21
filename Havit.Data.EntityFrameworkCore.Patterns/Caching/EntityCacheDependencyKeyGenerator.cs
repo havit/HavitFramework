@@ -58,6 +58,8 @@ public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenera
 	{
 		// musíme se nejprve zeptat, zda exisuje
 		// kdybychom se nezeptali a došlo jen k Addu, invalidoval by se dosavadní klíč a vzal by s sebou své závislosti.
+
+		// TODO: Dokázali bychom přes IMemoryService.GetOrCreate (a dopravené do ICacheService) eliminovat dvojí zjišťování existence klíče?
 		if (!cacheService.Contains(dependencyKey))
 		{
 			cacheService.Add(dependencyKey, staticCacheValue);

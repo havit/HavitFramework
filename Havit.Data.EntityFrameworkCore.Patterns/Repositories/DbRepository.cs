@@ -309,19 +309,19 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	{
 		if (_all == null)
 		{
-			TEntity[] allData;
+			List<TEntity> allData;
 
 			// máme v cache klíče, která chceme načítat?
 			if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 			{
 				// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-				allData = GetObjects((int[])keys).ToArray();
+				allData = GetObjects((int[])keys);
 			}
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
 				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
-				allData = query((DbContext)dbContext).ToArray();
+				allData = query((DbContext)dbContext).ToList();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
@@ -350,19 +350,19 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	{
 		if (_all == null)
 		{
-			TEntity[] allData;
+			List<TEntity> allData;
 
 			// máme v cache klíče, která chceme načítat?
 			if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 			{
 				// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-				allData = (await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false)).ToArray();
+				allData = await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
 				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
-				allData = await query((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
+				allData = await query((DbContext)dbContext).ToListAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
@@ -376,7 +376,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		return new List<TEntity>(_all);
 	}
 
-	private TEntity[] _all;
+	private List<TEntity> _all;
 
 	/// <summary>
 	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.

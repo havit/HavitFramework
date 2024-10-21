@@ -113,14 +113,14 @@ public class EntityCacheManager : IEntityCacheManager
 	}
 
 	/// <inheritdoc />
-	public void StoreAllKeys<TEntity>(object keys)
+	public void StoreAllKeys<TEntity>(Func<object> keysFunc)
 		where TEntity : class
 	{
 		// pokud je možné klíče uložit do cache, uložíme je
 		if (_entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
 		{
 			string cacheKey = _entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
-			_cacheService.Add(cacheKey, (object)keys, _entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
+			_cacheService.Add(cacheKey, keysFunc.Invoke(), _entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
 		}
 	}
 

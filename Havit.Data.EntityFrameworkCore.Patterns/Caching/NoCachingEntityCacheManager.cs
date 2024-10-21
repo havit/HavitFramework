@@ -63,7 +63,7 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	/// <summary>
 	/// Nic nedělá, neukládá do cache.
 	/// </summary>
-	public void StoreAllKeys<TEntity>(object keys)
+	public void StoreAllKeys<TEntity>(Func<object> keysFunc)
 		where TEntity : class
 	{
 		// NOOP

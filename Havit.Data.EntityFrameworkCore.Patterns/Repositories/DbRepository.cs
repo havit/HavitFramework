@@ -323,7 +323,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
 				allData = query((DbContext)dbContext).ToList();
 
-				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
 				{
 					EntityCacheManager.StoreEntity<TEntity>(entity);
@@ -363,7 +363,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				// pokud ne, načtene data a uložíme klíče do cache
 				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
 				allData = await query((DbContext)dbContext).ToListAsync(cancellationToken).ConfigureAwait(false);
-				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 

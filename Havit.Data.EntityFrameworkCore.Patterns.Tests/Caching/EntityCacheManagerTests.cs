@@ -165,8 +165,9 @@ public class EntityCacheManagerTests
 		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
 
 		object allKeys = new object(); // just a marker object
-									   // Act
-		entityCacheManager1.StoreAllKeys<Role>(allKeys);
+
+		// Act
+		entityCacheManager1.StoreAllKeys<Role>(() => allKeys);
 		bool success = entityCacheManager2.TryGetAllKeys<Role>(out object allKeysResult);
 
 		// Assert

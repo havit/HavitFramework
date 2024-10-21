@@ -46,9 +46,10 @@ public interface IEntityCacheManager
 		where TEntity : class;
 
 	/// <summary>
-	/// Uloží do cache objekt reprezentující klíče všech entity (pro metodu GetAll).
+	/// Uloží do cache objekt reprezentující klíče všech entity (pro metodu GetAll).	
 	/// </summary>
-	void StoreAllKeys<TEntity>(object keys)
+	/// <param name="keysFunc">Funkce vracející klíče. Je zavolána (a memory alokace tedy udělána) pouze, pokud má dojít k uložení klíčů do cache.</param>
+	void StoreAllKeys<TEntity>(Func<object> keysFunc)
 		where TEntity : class;
 
 	/// <summary>

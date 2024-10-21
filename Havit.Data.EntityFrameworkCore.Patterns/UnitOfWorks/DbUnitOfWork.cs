@@ -66,17 +66,10 @@ public class DbUnitOfWork : IUnitOfWork
 	public void Commit()
 	{
 		BeforeCommit();
-		_beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
 
-		Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
-		_entityValidationRunner.Validate(allKnownChanges);
-		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
-
-		DbContext.SaveChanges();
-
-		ClearRegistrationHashSets();
-		cacheInvalidationOperation?.Invalidate();
-		_lookupDataInvalidationRunner.Invalidate(allKnownChanges);
+		var (allKnownChanges, cacheInvalidationOperation) = Commit_BeforeSaveChanges();
+		DbContext.SaveChanges(suppressDetectChanges: true); // change tracker byl zavolán a nepotřebujeme jej volat znovu
+		Commit_AfterSaveChanges(allKnownChanges, cacheInvalidationOperation);
 
 		AfterCommit();
 	}
@@ -87,20 +80,43 @@ public class DbUnitOfWork : IUnitOfWork
 	public async Task CommitAsync(CancellationToken cancellationToken = default)
 	{
 		BeforeCommit();
-		_beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
-		cancellationToken.ThrowIfCancellationRequested();
 
-		Changes allKnownChanges = GetAllKnownChanges(); // ptáme se na změny znovu, runnery mohli seznam objektů k uložení změnit
+		var (allKnownChanges, cacheInvalidationOperation) = Commit_BeforeSaveChanges();
+		await DbContext.SaveChangesAsync(suppressDetectChanges: true, cancellationToken: cancellationToken).ConfigureAwait(false); // change tracker byl zavolán a nepotřebujeme jej volat znovu
+		Commit_AfterSaveChanges(allKnownChanges, cacheInvalidationOperation);
+
+		AfterCommit();
+	}
+
+	private (Changes, CacheInvalidationOperation) Commit_BeforeSaveChanges()
+	{
+		Changes allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
+
+		// spuštění before commit processorů
+		ChangeTrackerImpact beforeCommitProcessorImpact = _beforeCommitProcessorsRunner.Run(allKnownChanges);
+
+		if (beforeCommitProcessorImpact == ChangeTrackerImpact.StateChanged)
+		{
+			// pokud nějaký BeforeCommitProcessor způsobil, že se změnil stav change trackeru (zejména zatrackována nová entity),
+			// aktualizujeme seznam známých změn.
+
+			allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
+		}
+
+		// validace entit před uložením
 		_entityValidationRunner.Validate(allKnownChanges);
+
+		// příprava invalidace cache
 		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
 
-		await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+		return (allKnownChanges, cacheInvalidationOperation);
+	}
 
+	private void Commit_AfterSaveChanges(Changes allKnownChanges, CacheInvalidationOperation cacheInvalidationOperation)
+	{
 		ClearRegistrationHashSets();
 		cacheInvalidationOperation?.Invalidate();
 		_lookupDataInvalidationRunner.Invalidate(allKnownChanges);
-
-		AfterCommit();
 	}
 
 	/// <summary>

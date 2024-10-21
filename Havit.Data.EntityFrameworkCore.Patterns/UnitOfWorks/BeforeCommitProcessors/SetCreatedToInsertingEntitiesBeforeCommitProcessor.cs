@@ -24,32 +24,32 @@ public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitP
 	/// <summary>
 	/// Pro změnu Insert, pokud má entita vlastnost Created typu DateTime s hodnotou default(DateTime), nastaví hodnotu této vlastnosti na aktuální datum/čas.
 	/// </summary>
-	public void Run(ChangeType changeType, object changingEntity)
+	public ChangeTrackerImpact Run(ChangeType changeType, object changingEntity)
 	{
-		if (changeType != ChangeType.Insert)
+		if (changeType == ChangeType.Insert)
 		{
-			return;
-		}
-
-		PropertyInfo createdProperty = _createdProperties.GetOrAdd(
-			changingEntity.GetType(),
-			type =>
-			{
-				var propertyInfo = type.GetProperty("Created");
-				if (propertyInfo != null && propertyInfo.PropertyType == typeof(DateTime)) // propertyInfo nás zajímá pouze pokud je typu DateTime
+			PropertyInfo createdProperty = _createdProperties.GetOrAdd(
+				changingEntity.GetType(),
+				type =>
 				{
-					return propertyInfo;
-				}
-				return null;
-			});
+					var propertyInfo = type.GetProperty("Created");
+					if (propertyInfo != null && propertyInfo.PropertyType == typeof(DateTime)) // propertyInfo nás zajímá pouze pokud je typu DateTime
+					{
+						return propertyInfo;
+					}
+					return null;
+				});
 
-		if (createdProperty != null)
-		{
-			DateTime created = (DateTime)createdProperty.GetValue(changingEntity);
-			if (created == default(DateTime))
+			if (createdProperty != null)
 			{
-				createdProperty.SetValue(changingEntity, _timeService.GetCurrentTime());
+				DateTime created = (DateTime)createdProperty.GetValue(changingEntity);
+				if (created == default(DateTime))
+				{
+					createdProperty.SetValue(changingEntity, _timeService.GetCurrentTime());
+				}
 			}
 		}
+
+		return ChangeTrackerImpact.NoImpact;
 	}
 }

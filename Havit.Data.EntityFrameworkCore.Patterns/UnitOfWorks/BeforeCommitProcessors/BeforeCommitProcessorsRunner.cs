@@ -23,8 +23,10 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 	/// <summary>
 	/// Spustí IBeforeCommitProcessory pro zadané změny.
 	/// </summary>
-	public void Run(Changes changes)
+	public ChangeTrackerImpact Run(Changes changes)
 	{
+		ChangeTrackerImpact result = ChangeTrackerImpact.NoImpact;
+
 		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
 
@@ -55,9 +57,14 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 				runMethodParameters[1] = change.Entity;
 				foreach (var supportedProcessor in supportedProcessors)
 				{
-					runMethod.Invoke(supportedProcessor, runMethodParameters);
+					if ((ChangeTrackerImpact)runMethod.Invoke(supportedProcessor, runMethodParameters) == ChangeTrackerImpact.StateChanged)
+					{
+						result = ChangeTrackerImpact.StateChanged;
+					}
 				}
 			}
 		}
+
+		return result;
 	}
 }

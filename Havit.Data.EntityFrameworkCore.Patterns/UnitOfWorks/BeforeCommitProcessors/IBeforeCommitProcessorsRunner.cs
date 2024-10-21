@@ -8,5 +8,5 @@ public interface IBeforeCommitProcessorsRunner
 	/// <summary>
 	/// Spustí registrované IBeforeCommitProcessory.	
 	/// </summary>
-	void Run(Changes changes);
+	ChangeTrackerImpact Run(Changes changes);
 }

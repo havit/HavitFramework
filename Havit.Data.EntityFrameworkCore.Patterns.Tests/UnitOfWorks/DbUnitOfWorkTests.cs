@@ -31,7 +31,9 @@ public class DbUnitOfWorkTests
 		dbUnitOfWork.Commit();
 
 		// Assert
-		mockDbContext.Verify(m => m.SaveChanges(), Times.Once);
+		mockDbContext.Verify(m => m.SaveChanges(true), Times.Once);
+		mockDbContext.Verify(m => m.SaveChanges(), Times.Never);
+		mockDbContext.Verify(m => m.SaveChangesAsync(true, It.IsAny<CancellationToken>()), Times.Never);
 		mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
 	}
 
@@ -51,8 +53,10 @@ public class DbUnitOfWorkTests
 		await dbUnitOfWork.CommitAsync();
 
 		// Assert
+		mockDbContext.Verify(m => m.SaveChanges(true), Times.Never);
 		mockDbContext.Verify(m => m.SaveChanges(), Times.Never);
-		mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+		mockDbContext.Verify(m => m.SaveChangesAsync(true, It.IsAny<CancellationToken>()), Times.Once);
+		mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
 	}
 
 	[TestMethod]
@@ -162,7 +166,7 @@ public class DbUnitOfWorkTests
 		Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
 		mockDbUnitOfWork.CallBase = true;
 
-		mockDbContext.Setup(m => m.SaveChanges()).Callback(() =>
+		mockDbContext.Setup(m => m.SaveChanges(true)).Callback(() =>
 		{
 			mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
 			mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Never);
@@ -173,7 +177,7 @@ public class DbUnitOfWorkTests
 
 		// Assert
 		mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
-		mockDbContext.Verify(m => m.SaveChanges(), Times.Once);
+		mockDbContext.Verify(m => m.SaveChanges(true), Times.Once);
 		mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Once);
 	}
 
@@ -189,7 +193,7 @@ public class DbUnitOfWorkTests
 		Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
 		mockDbUnitOfWork.CallBase = true;
 
-		mockDbContext.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()))
+		mockDbContext.Setup(m => m.SaveChangesAsync(true, It.IsAny<CancellationToken>()))
 			.Callback(() =>
 			{
 				mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
@@ -202,7 +206,7 @@ public class DbUnitOfWorkTests
 
 		// Assert
 		mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
-		mockDbContext.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+		mockDbContext.Verify(m => m.SaveChangesAsync(true, It.IsAny<CancellationToken>()), Times.Once);
 		mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Once);
 	}
 
@@ -412,7 +416,7 @@ public class DbUnitOfWorkTests
 		}
 	}
 
-		[TestMethod]
+	[TestMethod]
 	public void DbUnitOfWork_Clear()
 	{
 		// Arrange

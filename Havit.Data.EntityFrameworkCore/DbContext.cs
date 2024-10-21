@@ -179,6 +179,29 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	}
 
 	/// <summary>
+	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
+	/// </summary>
+	private async Task<TResult> ExecuteWithoutAutoDetectChangesAsync<TResult>(Func<Task<TResult>> actionAsync)
+	{
+		if (ChangeTracker.AutoDetectChangesEnabled)
+		{
+			try
+			{
+				ChangeTracker.AutoDetectChangesEnabled = false;
+				return await actionAsync().ConfigureAwait(false);
+			}
+			finally
+			{
+				ChangeTracker.AutoDetectChangesEnabled = true;
+			}
+		}
+		else
+		{
+			return await actionAsync().ConfigureAwait(false);
+		}
+	}
+
+	/// <summary>
 	/// Vrátí objekty v daných stavech.
 	/// </summary>
 	IEnumerable<EntityEntry> IDbContext.GetEntries(bool suppressDetectChanges)
@@ -249,8 +272,39 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Uloží změny.
 	/// </summary>
+	void IDbContext.SaveChanges(bool suppressDetectChanges)
+	{
+		if (suppressDetectChanges)
+		{
+			ExecuteWithoutAutoDetectChanges(() => this.SaveChanges());
+		}
+		else
+		{
+			this.SaveChanges();
+		}
+	}
+
+	/// <summary>
+	/// Uloží změny.
+	/// </summary>
 	Task IDbContext.SaveChangesAsync(CancellationToken cancellationToken)
 	{
 		return SaveChangesAsync(cancellationToken);
 	}
+
+	/// <summary>
+	/// Uloží změny.
+	/// </summary>
+	async Task IDbContext.SaveChangesAsync(bool suppressDetectChanges, CancellationToken cancellationToken)
+	{
+		if (suppressDetectChanges)
+		{
+			await ExecuteWithoutAutoDetectChanges(async () => await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+		}
+		else
+		{
+			await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+		}
+	}
+
 }

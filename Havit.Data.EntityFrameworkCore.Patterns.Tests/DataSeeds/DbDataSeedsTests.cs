@@ -21,7 +21,7 @@ public class DbDataSeedsTests
 		IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
 
 		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunnerMock = new Mock<IBeforeCommitProcessorsRunner>(MockBehavior.Strict);
-		mockBeforeCommitProcessorsRunnerMock.Setup(m => m.Run(It.IsAny<Changes>()));
+		mockBeforeCommitProcessorsRunnerMock.Setup(m => m.Run(It.IsAny<Changes>())).Returns(ChangeTrackerImpact.NoImpact);
 
 		Mock<IEntityValidationRunner> mockEntityValidationRunnerMock = new Mock<IEntityValidationRunner>(MockBehavior.Strict);
 		mockEntityValidationRunnerMock.Setup(m => m.Validate(It.IsAny<Changes>()));

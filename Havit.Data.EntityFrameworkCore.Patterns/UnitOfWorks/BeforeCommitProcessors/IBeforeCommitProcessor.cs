@@ -10,5 +10,5 @@ public interface IBeforeCommitProcessor<in TEntity>
 	/// </summary>
 	/// <param name="changeType">Prováděná operace s entitou (Insert/Update/Delete).</param>
 	/// <param name="changingEntity">Entita, nad níž bude operace provedena.</param>
-	void Run(ChangeType changeType, TEntity changingEntity);
+	ChangeTrackerImpact Run(ChangeType changeType, TEntity changingEntity);
 }

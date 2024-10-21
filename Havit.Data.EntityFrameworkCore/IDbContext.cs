@@ -53,7 +53,17 @@ public interface IDbContext : IDisposable
 	/// <summary>
 	/// Uloží změny.
 	/// </summary>
+	void SaveChanges(bool suppressDetectChanges);
+
+	/// <summary>
+	/// Uloží změny.
+	/// </summary>
 	Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
+	/// <summary>
+	/// Uloží změny.
+	/// </summary>
+	Task SaveChangesAsync(bool suppressDetectChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.

@@ -1,4 +1,5 @@
-﻿using Havit.Services.Caching;
+﻿using System.Collections.Frozen;
+using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -10,5 +11,5 @@ public interface IAnnotationsEntityCacheOptionsGeneratorStorage
 	/// <summary>
 	/// Úložiště CacheOptions k jednotlivým entitám
 	/// </summary>
-	Dictionary<Type, CacheOptions> Value { get; set; }
+	FrozenDictionary<Type, CacheOptions> Value { get; set; }
 }

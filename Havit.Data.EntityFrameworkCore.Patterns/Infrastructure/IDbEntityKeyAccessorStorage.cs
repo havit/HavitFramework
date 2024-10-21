@@ -13,5 +13,5 @@ public interface IDbEntityKeyAccessorStorage
 	/// <summary>
 	/// Mapování entit na property info vlastností reprezentující primární klíče.
 	/// </summary>
-	Dictionary<Type, PropertyInfo[]> Value { get; set; }
+	FrozenDictionary<Type, PropertyInfo[]> Value { get; set; }
 }

@@ -56,14 +56,14 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 			{
 				if (annotationsEntityCacheOptionsGeneratorStorage.Value == null)
 				{
-					annotationsEntityCacheOptionsGeneratorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
-											entityType => entityType.ClrType,
-											entityType =>
-											{
-												var options = GetCacheOptions(entityType);
-												options?.Freeze();
-												return options;
-											});
+					annotationsEntityCacheOptionsGeneratorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
+						entityType => entityType.ClrType,
+						entityType =>
+						{
+							var options = GetCacheOptions(entityType);
+							options?.Freeze();
+							return options;
+						});
 				}
 			}
 		}

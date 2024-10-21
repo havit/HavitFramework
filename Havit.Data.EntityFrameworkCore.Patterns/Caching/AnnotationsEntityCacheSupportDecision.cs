@@ -73,7 +73,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private Dictionary<Type, bool> GetShouldCacheEntitiesDictionary()
+	private FrozenDictionary<Type, bool> GetShouldCacheEntitiesDictionary()
 	{
 		if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
 		{
@@ -81,7 +81,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 			{
 				if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
 				{
-					annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
+					annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
 						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheAllKeysAnnotationName)?.Value)).GetValueOrDefault(false));
 				}
@@ -91,7 +91,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private Dictionary<Type, bool> GetShouldCacheAllKeysDictionary()
+	private FrozenDictionary<Type, bool> GetShouldCacheAllKeysDictionary()
 	{
 		if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
 		{
@@ -99,7 +99,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 			{
 				if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
 				{
-					annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys = dbContext.Model.GetApplicationEntityTypes().ToDictionary(
+					annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
 						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
 				}
@@ -109,7 +109,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private bool GetValueFromDictionary(Dictionary<Type, bool> valuesDictionary, Type type)
+	private bool GetValueFromDictionary(FrozenDictionary<Type, bool> valuesDictionary, Type type)
 	{
 		if (valuesDictionary.TryGetValue(type, out bool result))
 		{

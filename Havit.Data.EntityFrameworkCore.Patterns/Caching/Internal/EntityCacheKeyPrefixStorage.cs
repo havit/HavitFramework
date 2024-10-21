@@ -4,5 +4,5 @@
 public class EntityCacheKeyPrefixStorage : IEntityCacheKeyPrefixStorage
 {
 	/// <inheritdoc />
-	public Dictionary<Type, string> Value { get; set; }
+	public FrozenDictionary<Type, string> Value { get; set; }
 }

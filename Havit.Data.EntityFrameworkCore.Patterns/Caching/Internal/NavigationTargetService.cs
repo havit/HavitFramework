@@ -60,7 +60,7 @@ public class NavigationTargetService : INavigationTargetService
 								PropertyInfo = skipNavigation.PropertyInfo
 							}
 						})))
-					.ToDictionary(a => a.TypePropertyName, a => a.NavigationTarget);
+					.ToFrozenDictionary(a => a.TypePropertyName, a => a.NavigationTarget);
 				}
 			}
 		}

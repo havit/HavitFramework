@@ -8,10 +8,10 @@ public class AnnotationsEntityCacheSupportDecisionStorage : IAnnotationsEntityCa
 	/// <summary>
 	/// Indikuje ke každému typu, zda má cachovat entity.
 	/// </summary>
-	public Dictionary<Type, bool> ShouldCacheEntities { get; set; }
+	public FrozenDictionary<Type, bool> ShouldCacheEntities { get; set; }
 
 	/// <summary>
 	/// Indikuje ke každému typu, zda má cachovat "all keys".
 	/// </summary>
-	public Dictionary<Type, bool> ShouldCacheAllKeys { get; set; }
+	public FrozenDictionary<Type, bool> ShouldCacheAllKeys { get; set; }
 }

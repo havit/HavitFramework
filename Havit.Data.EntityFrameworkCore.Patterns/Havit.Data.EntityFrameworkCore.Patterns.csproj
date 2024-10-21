@@ -13,7 +13,11 @@
 		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Patterns.Windsor.Tests" />
 	</ItemGroup>
 
-	<!-- NuGet -->
+	<ItemGroup>
+		<Using Include="System.Collections.Frozen" />
+	</ItemGroup>
+
+		<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.9.0-pre03</PackageVersion>

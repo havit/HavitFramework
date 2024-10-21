@@ -49,7 +49,7 @@ public class DbEntityKeyAccessor : IEntityKeyAccessor
 			{
 				if (dbEntityKeyAccessorStorage.Value == null)
 				{
-					dbEntityKeyAccessorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
+					dbEntityKeyAccessorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
 				}
 			}
 		}

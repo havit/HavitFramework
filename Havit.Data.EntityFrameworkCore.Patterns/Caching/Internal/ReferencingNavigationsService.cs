@@ -43,7 +43,7 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 								.Concat(GetReferencingNavigations_ManyToManyCollections(entityType))
 								.ToList()
 						})
-						.ToDictionary(item => item.EntityType, item => item.ReferencingCollections);
+						.ToFrozenDictionary(item => item.EntityType, item => item.ReferencingCollections);
 				}
 			}
 		}

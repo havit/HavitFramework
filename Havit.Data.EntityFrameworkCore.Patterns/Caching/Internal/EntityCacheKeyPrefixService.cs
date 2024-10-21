@@ -49,7 +49,7 @@ public class EntityCacheKeyPrefixService : IEntityCacheKeyPrefixService
 							.Select(type => new { Type = type, CacheKeyCore = type.FullName }); // použijeme celý název třídy vč. namespace
 
 					entityCacheKeyPrefixStorage.Value = singleTypeOccurences.Concat(multipleTypeOccurences)
-							.ToDictionary(item => item.Type, item => "EF|" + item.CacheKeyCore + "|");
+							.ToFrozenDictionary(item => item.Type, item => "EF|" + item.CacheKeyCore + "|");
 				}
 			}
 		}

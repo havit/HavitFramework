@@ -4,5 +4,5 @@
 public class NavigationTargetStorage : INavigationTargetStorage
 {
 	/// <inheritdoc />
-	public Dictionary<TypePropertyName, NavigationTarget> Value { get; set; }
+	public FrozenDictionary<TypePropertyName, NavigationTarget> Value { get; set; }
 }

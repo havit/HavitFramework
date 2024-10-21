@@ -8,5 +8,5 @@ public interface INavigationTargetStorage
 	/// <summary>
 	/// Úložiště dat pro <see cref="NavigationTargetStorage"/>.
 	/// </summary>
-	Dictionary<TypePropertyName, NavigationTarget> Value { get; set; }
+	FrozenDictionary<TypePropertyName, NavigationTarget> Value { get; set; }
 }

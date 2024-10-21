@@ -13,8 +13,8 @@ public class PropertyLambdaExpressionManager : IPropertyLambdaExpressionManager
 	/// </summary>
 	public PropertyLambdaExpressionManager(IPropertyLambdaExpressionStore propertyLambdaExpressionStore, IPropertyLambdaExpressionBuilder propertyLambdaExpressionBuilder)
 	{
-		this._propertyLambdaExpressionStore = propertyLambdaExpressionStore;
-		this._propertyLambdaExpressionBuilder = propertyLambdaExpressionBuilder;
+		_propertyLambdaExpressionStore = propertyLambdaExpressionStore;
+		_propertyLambdaExpressionBuilder = propertyLambdaExpressionBuilder;
 	}
 
 	/// <summary>

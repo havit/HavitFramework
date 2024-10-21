@@ -10,18 +10,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 {
-	private readonly IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage;
-	private readonly IDbContext dbContext;
-	private readonly INavigationTargetService navigationTargetService;
+	private readonly IAnnotationsEntityCacheSupportDecisionStorage _annotationsEntityCacheSupportDecisionStorage;
+	private readonly IDbContext _dbContext;
+	private readonly INavigationTargetService _navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
 	{
-		this.annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
-		this.dbContext = dbContext;
-		this.navigationTargetService = navigationTargetService;
+		_annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
+		_dbContext = dbContext;
+		_navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -57,7 +57,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 		// 4) reference one-to-one (backreference)
 		// - Opet platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
 
-		return ShouldCacheEntityType(navigationTargetService.GetNavigationTarget(entityType, propertyName).TargetClrType);
+		return ShouldCacheEntityType(_navigationTargetService.GetNavigationTarget(entityType, propertyName).TargetClrType);
 	}
 
 	/// <inheritdoc />
@@ -75,37 +75,37 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private FrozenDictionary<Type, bool> GetShouldCacheEntitiesDictionary()
 	{
-		if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
+		if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
 		{
-			lock (annotationsEntityCacheSupportDecisionStorage)
+			lock (_annotationsEntityCacheSupportDecisionStorage)
 			{
-				if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
+				if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
 				{
-					annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
+					_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
 						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheAllKeysAnnotationName)?.Value)).GetValueOrDefault(false));
 				}
 			}
 		}
-		return annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities;
+		return _annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private FrozenDictionary<Type, bool> GetShouldCacheAllKeysDictionary()
 	{
-		if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
+		if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
 		{
-			lock (annotationsEntityCacheSupportDecisionStorage)
+			lock (_annotationsEntityCacheSupportDecisionStorage)
 			{
-				if (annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
+				if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
 				{
-					annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
+					_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
 						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
 				}
 			}
 		}
-		return annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys;
+		return _annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

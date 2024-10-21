@@ -6,28 +6,28 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 /// <inheritdoc />
 public class NavigationTargetService : INavigationTargetService
 {
-	private readonly INavigationTargetStorage navigationTargetStorage;
-	private readonly IDbContext dbContext;
+	private readonly INavigationTargetStorage _navigationTargetStorage;
+	private readonly IDbContext _dbContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public NavigationTargetService(INavigationTargetStorage navigationTargetStorage, IDbContext dbContext)
 	{
-		this.navigationTargetStorage = navigationTargetStorage;
-		this.dbContext = dbContext;
+		_navigationTargetStorage = navigationTargetStorage;
+		_dbContext = dbContext;
 	}
 
 	/// <inheritdoc />
 	public NavigationTarget GetNavigationTarget(Type type, string propertyName)
 	{
-		if (navigationTargetStorage.Value == null)
+		if (_navigationTargetStorage.Value == null)
 		{
-			lock (navigationTargetStorage)
+			lock (_navigationTargetStorage)
 			{
-				if (navigationTargetStorage.Value == null)
+				if (_navigationTargetStorage.Value == null)
 				{
-					navigationTargetStorage.Value = dbContext.Model.GetApplicationEntityTypes()
+					_navigationTargetStorage.Value = _dbContext.Model.GetApplicationEntityTypes()
 					.SelectMany(entityType => entityType
 						.GetNavigations()
 						.Select(navigation => new
@@ -65,7 +65,7 @@ public class NavigationTargetService : INavigationTargetService
 			}
 		}
 
-		if (navigationTargetStorage.Value.TryGetValue(new TypePropertyName { Type = type, PropertyName = propertyName }, out NavigationTarget result))
+		if (_navigationTargetStorage.Value.TryGetValue(new TypePropertyName { Type = type, PropertyName = propertyName }, out NavigationTarget result))
 		{
 			return result;
 		}

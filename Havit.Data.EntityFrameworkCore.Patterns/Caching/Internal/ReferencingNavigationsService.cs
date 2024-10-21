@@ -8,16 +8,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 /// </summary>
 public class ReferencingNavigationsService : IReferencingNavigationsService
 {
-	private readonly IReferencingNavigationsStorage referencingCollectionsStorage;
-	private readonly IDbContext dbContext;
+	private readonly IReferencingNavigationsStorage _referencingCollectionsStorage;
+	private readonly IDbContext _dbContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public ReferencingNavigationsService(IReferencingNavigationsStorage referencingCollectionsStorage, IDbContext dbContext)
 	{
-		this.referencingCollectionsStorage = referencingCollectionsStorage;
-		this.dbContext = dbContext;
+		_referencingCollectionsStorage = referencingCollectionsStorage;
+		_dbContext = dbContext;
 	}
 
 	/// <inheritdoc />
@@ -25,13 +25,13 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 	{
 		Debug.Assert(entityType != null);
 
-		if (referencingCollectionsStorage.Value == null)
+		if (_referencingCollectionsStorage.Value == null)
 		{
-			lock (referencingCollectionsStorage)
+			lock (_referencingCollectionsStorage)
 			{
-				if (referencingCollectionsStorage.Value == null)
+				if (_referencingCollectionsStorage.Value == null)
 				{
-					referencingCollectionsStorage.Value = dbContext.Model
+					_referencingCollectionsStorage.Value = _dbContext.Model
 						.GetEntityTypes() // získáme entity types
 										  // z každého EntityType vezmeme EntityType a připojíme ReferencingCollections (klidně prázdný seznam)
 						.Select(entityType => new
@@ -48,7 +48,7 @@ public class ReferencingNavigationsService : IReferencingNavigationsService
 			}
 		}
 
-		if (referencingCollectionsStorage.Value.TryGetValue(entityType, out var result))
+		if (_referencingCollectionsStorage.Value.TryGetValue(entityType, out var result))
 		{
 			return result;
 		}

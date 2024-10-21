@@ -11,24 +11,24 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 {
-	private readonly ICacheService cacheService;
-	private readonly IEntityCacheDependencyKeyGenerator entityCacheDependencyKeyGenerator;
-	private readonly IEntityKeyAccessor entityKeyAccessor;
+	private readonly ICacheService _cacheService;
+	private readonly IEntityCacheDependencyKeyGenerator _entityCacheDependencyKeyGenerator;
+	private readonly IEntityKeyAccessor _entityKeyAccessor;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public EntityCacheDependencyManager(ICacheService cacheService, IEntityCacheDependencyKeyGenerator entityCacheDependencyKeyGenerator, IEntityKeyAccessor entityKeyAccessor)
 	{
-		this.cacheService = cacheService;
-		this.entityCacheDependencyKeyGenerator = entityCacheDependencyKeyGenerator;
-		this.entityKeyAccessor = entityKeyAccessor;
+		_cacheService = cacheService;
+		_entityCacheDependencyKeyGenerator = entityCacheDependencyKeyGenerator;
+		_entityKeyAccessor = entityKeyAccessor;
 	}
 
 	/// <inheritdoc />
 	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
-		if (!cacheService.SupportsCacheDependencies)
+		if (!_cacheService.SupportsCacheDependencies)
 		{
 			// závislosti nemohou být použity
 			return null;
@@ -53,7 +53,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 
 		return new CacheInvalidationOperation(() =>
 		{
-			cacheService.RemoveAll(cacheKeysToInvalidate);
+			_cacheService.RemoveAll(cacheKeysToInvalidate);
 		});
 	}
 
@@ -65,7 +65,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		// invalidate entity cache
 		Type entityType = entity.GetType();
 
-		object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
+		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(entity);
 
 		// entity se složeným klíčem nepodporujeme (předpokládáme, že jediné takové jsou reprezentace vztahu ManyToMany)
 		if (entityKeyValues.Length == 1)
@@ -86,13 +86,13 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey, HashSet<string> cacheKeysToInvalidate)
 	{
-		cacheKeysToInvalidate.Add(entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
+		cacheKeysToInvalidate.Add(_entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateAnySaveCacheDependencyKeyInternal(Type entityType, HashSet<string> cacheKeysToInvalidate)
 	{
-		cacheKeysToInvalidate.Add(entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
+		cacheKeysToInvalidate.Add(_entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
 	}
 
 }

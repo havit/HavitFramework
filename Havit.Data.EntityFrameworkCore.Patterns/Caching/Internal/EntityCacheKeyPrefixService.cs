@@ -10,29 +10,29 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 /// </summary>
 public class EntityCacheKeyPrefixService : IEntityCacheKeyPrefixService
 {
-	private readonly IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage;
-	private readonly IDbContext dbContext;
+	private readonly IEntityCacheKeyPrefixStorage _entityCacheKeyPrefixStorage;
+	private readonly IDbContext _dbContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public EntityCacheKeyPrefixService(IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage, IDbContext dbContext)
 	{
-		this.entityCacheKeyPrefixStorage = entityCacheKeyPrefixStorage;
-		this.dbContext = dbContext;
+		_entityCacheKeyPrefixStorage = entityCacheKeyPrefixStorage;
+		_dbContext = dbContext;
 	}
 
 	/// <inheritdoc />
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public string GetCacheKeyPrefix(Type type)
 	{
-		if (entityCacheKeyPrefixStorage.Value == null)
+		if (_entityCacheKeyPrefixStorage.Value == null)
 		{
-			lock (entityCacheKeyPrefixStorage)
+			lock (_entityCacheKeyPrefixStorage)
 			{
-				if (entityCacheKeyPrefixStorage.Value == null)
+				if (_entityCacheKeyPrefixStorage.Value == null)
 				{
-					var typesByName = dbContext
+					var typesByName = _dbContext
 						 .Model
 						 .GetApplicationEntityTypes(includeManyToManyEntities: false)
 						 .Select(entityType => entityType.ClrType)
@@ -48,13 +48,13 @@ public class EntityCacheKeyPrefixService : IEntityCacheKeyPrefixService
 							.SelectMany(group => group)
 							.Select(type => new { Type = type, CacheKeyCore = type.FullName }); // použijeme celý název třídy vč. namespace
 
-					entityCacheKeyPrefixStorage.Value = singleTypeOccurences.Concat(multipleTypeOccurences)
+					_entityCacheKeyPrefixStorage.Value = singleTypeOccurences.Concat(multipleTypeOccurences)
 							.ToFrozenDictionary(item => item.Type, item => "EF|" + item.CacheKeyCore + "|");
 				}
 			}
 		}
 
-		if (entityCacheKeyPrefixStorage.Value.TryGetValue(type, out string result))
+		if (_entityCacheKeyPrefixStorage.Value.TryGetValue(type, out string result))
 		{
 			return result;
 		}

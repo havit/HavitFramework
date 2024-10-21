@@ -12,18 +12,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerator
 {
-	private readonly IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage;
-	private readonly IDbContext dbContext;
-	private readonly INavigationTargetService navigationTargetService;
+	private readonly IAnnotationsEntityCacheOptionsGeneratorStorage _annotationsEntityCacheOptionsGeneratorStorage;
+	private readonly IDbContext _dbContext;
+	private readonly INavigationTargetService _navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public AnnotationsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
 	{
-		this.annotationsEntityCacheOptionsGeneratorStorage = annotationsEntityCacheOptionsGeneratorStorage;
-		this.dbContext = dbContext;
-		this.navigationTargetService = navigationTargetService;
+		_annotationsEntityCacheOptionsGeneratorStorage = annotationsEntityCacheOptionsGeneratorStorage;
+		_dbContext = dbContext;
+		_navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -37,7 +37,7 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 	public CacheOptions GetNavigationCacheOptions<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return GetValueForEntity(navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName).TargetClrType);
+		return GetValueForEntity(_navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName).TargetClrType);
 	}
 
 	/// <inheritdoc />
@@ -50,13 +50,13 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private CacheOptions GetValueForEntity(Type type)
 	{
-		if (annotationsEntityCacheOptionsGeneratorStorage.Value == null)
+		if (_annotationsEntityCacheOptionsGeneratorStorage.Value == null)
 		{
-			lock (annotationsEntityCacheOptionsGeneratorStorage)
+			lock (_annotationsEntityCacheOptionsGeneratorStorage)
 			{
-				if (annotationsEntityCacheOptionsGeneratorStorage.Value == null)
+				if (_annotationsEntityCacheOptionsGeneratorStorage.Value == null)
 				{
-					annotationsEntityCacheOptionsGeneratorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
+					_annotationsEntityCacheOptionsGeneratorStorage.Value = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
 						entityType =>
 						{
@@ -68,7 +68,7 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 			}
 		}
 
-		if (annotationsEntityCacheOptionsGeneratorStorage.Value.TryGetValue(type, out CacheOptions result))
+		if (_annotationsEntityCacheOptionsGeneratorStorage.Value.TryGetValue(type, out CacheOptions result))
 		{
 			return result;
 		}

@@ -23,30 +23,30 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class EntityCacheManager : IEntityCacheManager
 {
-	private readonly ICacheService cacheService;
-	private readonly IEntityCacheSupportDecision entityCacheSupportDecision;
-	private readonly IEntityCacheKeyGenerator entityCacheKeyGenerator;
-	private readonly IEntityCacheOptionsGenerator entityCacheOptionsGenerator;
-	private readonly IDbContext dbContext;
-	private readonly IReferencingNavigationsService referencingNavigationsService;
-	private readonly INavigationTargetService navigationTargetService;
-	private readonly IEntityKeyAccessor entityKeyAccessor;
-	private readonly IPropertyLambdaExpressionManager propertyLambdaExpressionManager;
+	private readonly ICacheService _cacheService;
+	private readonly IEntityCacheSupportDecision _entityCacheSupportDecision;
+	private readonly IEntityCacheKeyGenerator _entityCacheKeyGenerator;
+	private readonly IEntityCacheOptionsGenerator _entityCacheOptionsGenerator;
+	private readonly IDbContext _dbContext;
+	private readonly IReferencingNavigationsService _referencingNavigationsService;
+	private readonly INavigationTargetService _navigationTargetService;
+	private readonly IEntityKeyAccessor _entityKeyAccessor;
+	private readonly IPropertyLambdaExpressionManager _propertyLambdaExpressionManager;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public EntityCacheManager(ICacheService cacheService, IEntityCacheSupportDecision entityCacheSupportDecision, IEntityCacheKeyGenerator entityCacheKeyGenerator, IEntityCacheOptionsGenerator entityCacheOptionsGenerator, IEntityKeyAccessor entityKeyAccessor, IPropertyLambdaExpressionManager propertyLambdaExpressionManager, IDbContext dbContext, IReferencingNavigationsService referencingNavigationsService, INavigationTargetService navigationTargetService)
 	{
-		this.cacheService = cacheService;
-		this.entityCacheSupportDecision = entityCacheSupportDecision;
-		this.entityCacheKeyGenerator = entityCacheKeyGenerator;
-		this.entityCacheOptionsGenerator = entityCacheOptionsGenerator;
-		this.entityKeyAccessor = entityKeyAccessor;
-		this.propertyLambdaExpressionManager = propertyLambdaExpressionManager;
-		this.dbContext = dbContext;
-		this.referencingNavigationsService = referencingNavigationsService;
-		this.navigationTargetService = navigationTargetService;
+		_cacheService = cacheService;
+		_entityCacheSupportDecision = entityCacheSupportDecision;
+		_entityCacheKeyGenerator = entityCacheKeyGenerator;
+		_entityCacheOptionsGenerator = entityCacheOptionsGenerator;
+		_entityKeyAccessor = entityKeyAccessor;
+		_propertyLambdaExpressionManager = propertyLambdaExpressionManager;
+		_dbContext = dbContext;
+		_referencingNavigationsService = referencingNavigationsService;
+		_navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
@@ -54,18 +54,18 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 	{
 		// pokud vůbec kdy může být entita cachována, budeme se ptát do cache
-		if (entityCacheSupportDecision.ShouldCacheEntityType(typeof(TEntity)))
+		if (_entityCacheSupportDecision.ShouldCacheEntityType(typeof(TEntity)))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), key);
-			if (cacheService.TryGet(cacheKey, out object cacheValues))
+			string cacheKey = _entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), key);
+			if (_cacheService.TryGet(cacheKey, out object cacheValues))
 			{
 				// pokud je entita v cache, materializujeme ji a vrátíme ji
 				TEntity result = EntityActivator.CreateInstance<TEntity>();
 
-				var entry = dbContext.GetEntry(result, suppressDetectChanges: true);
+				var entry = _dbContext.GetEntry(result, suppressDetectChanges: true);
 				entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
 				entry.CurrentValues.SetValues(cacheValues); // aby byly naplněny vlastnosti entity
-				dbContext.Set<TEntity>().Attach(result); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
+				_dbContext.Set<TEntity>().Attach(result); // nutno volat až po materializaci, jinak registruje entitu s nenastavenou hodnotou primárního klíče
 
 				entity = result;
 				return true;
@@ -80,10 +80,10 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 	{
 		// pokud je entitu možné uložit do cache, uložíme ji
-		if (entityCacheSupportDecision.ShouldCacheEntity(entity))
+		if (_entityCacheSupportDecision.ShouldCacheEntity(entity))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single());
-			EntityEntry entry = dbContext.GetEntry(entity, suppressDetectChanges: true);
+			string cacheKey = _entityCacheKeyGenerator.GetEntityCacheKey(typeof(TEntity), _entityKeyAccessor.GetEntityKeyValues(entity).Single());
+			EntityEntry entry = _dbContext.GetEntry(entity, suppressDetectChanges: true);
 
 			Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
 
@@ -93,7 +93,7 @@ public class EntityCacheManager : IEntityCacheManager
 			// Ten získáme tak, že zavoláme entry.OriginalValues.ToObject(), což vrátí novou instanci entity ve stavu Detached.
 			// Tato instance by měla držen ten základní vlastnosti, bez navigačních vlastností (což vzhledem k Detached dává význam).
 			object originalValuesObject = entry.OriginalValues.ToObject();
-			cacheService.Add(cacheKey, originalValuesObject, entityCacheOptionsGenerator.GetEntityCacheOptions(entity));
+			_cacheService.Add(cacheKey, originalValuesObject, _entityCacheOptionsGenerator.GetEntityCacheOptions(entity));
 		}
 	}
 
@@ -102,10 +102,10 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 	{
 		// pokud mohou být klíče v cache, budeme je hledat
-		if (entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
+		if (_entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
-			return cacheService.TryGet(cacheKey, out keys);
+			string cacheKey = _entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
+			return _cacheService.TryGet(cacheKey, out keys);
 		}
 
 		keys = null;
@@ -117,10 +117,10 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 	{
 		// pokud je možné klíče uložit do cache, uložíme je
-		if (entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
+		if (_entityCacheSupportDecision.ShouldCacheAllKeys(typeof(TEntity)))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
-			cacheService.Add(cacheKey, (object)keys, entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
+			string cacheKey = _entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(TEntity));
+			_cacheService.Add(cacheKey, (object)keys, _entityCacheOptionsGenerator.GetAllKeysCacheOptions<TEntity>());
 		}
 	}
 
@@ -129,13 +129,13 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
+		if (_entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
+			string cacheKey = _entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), _entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
-			if (cacheService.TryGet(cacheKey, out object cacheEntityPropertyMembersKeys))
+			if (_cacheService.TryGet(cacheKey, out object cacheEntityPropertyMembersKeys))
 			{
-				var navigationTarget = navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
+				var navigationTarget = _navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
 
 				switch (navigationTarget.NavigationType)
 				{
@@ -163,7 +163,7 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
-		var dbSet = dbContext.Set<TPropertyItem>();
+		var dbSet = _dbContext.Set<TPropertyItem>();
 
 		// Řekneme, že se nám podařilo odbavit z cache načtení kolekce typy OneToMany,
 		// pokud pro každý prvek, který má být v kolekci platí:
@@ -179,8 +179,8 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
-		var dbSet = dbContext.Set<TPropertyItem>();
-		var propertyNames = entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TPropertyItem));
+		var dbSet = _dbContext.Set<TPropertyItem>();
+		var propertyNames = _entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TPropertyItem));
 
 		// Pro všechny objekty, které mají být v kolekci typu many-to-many (dekomponované na dva one-to-many)
 		// vytvoříme instanci reprezentující vazební entitu a tu nastavíme jako trackovanou.
@@ -205,7 +205,7 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
-		var dbSet = dbContext.Set<TPropertyItem>();
+		var dbSet = _dbContext.Set<TPropertyItem>();
 
 		List<TPropertyItem> cachedEntities = new List<TPropertyItem>(entityPropertyMembersKeys.Length);
 		foreach (object[] entityPropertyMembersKey in entityPropertyMembersKeys)
@@ -225,7 +225,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 		if (hasCachedEntities)
 		{
-			dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
+			_dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
 		}
 
 		object propertyValue = navigationTarget.PropertyInfo.GetValue(parentEntity);
@@ -267,9 +267,9 @@ public class EntityCacheManager : IEntityCacheManager
 
 		if (hasCachedEntities)
 		{
-			dbContext.ChangeTracker.Tracked += TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
-			dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
-			dbContext.ChangeTracker.Tracked -= TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
+			_dbContext.ChangeTracker.Tracked += TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
+			_dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
+			_dbContext.ChangeTracker.Tracked -= TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
 		}
 
 		return true;
@@ -294,11 +294,11 @@ public class EntityCacheManager : IEntityCacheManager
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		if (entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
+		if (_entityCacheSupportDecision.ShouldCacheEntityNavigation(entity, propertyName))
 		{
-			string cacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
+			string cacheKey = _entityCacheKeyGenerator.GetNavigationCacheKey(typeof(TEntity), _entityKeyAccessor.GetEntityKeyValues(entity).Single(), propertyName);
 
-			var navigationTarget = navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
+			var navigationTarget = _navigationTargetService.GetNavigationTarget(typeof(TEntity), propertyName);
 
 			switch (navigationTarget.NavigationType)
 			{
@@ -306,11 +306,11 @@ public class EntityCacheManager : IEntityCacheManager
 				case NavigationType.ManyToMany:
 				case NavigationType.ManyToManyDecomposedToOneToMany:
 					{
-						var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
+						var propertyLambda = _propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
 						var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
 
-						object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
-						cacheService.Add(cacheKey, entityPropertyMembersKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+						object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => _entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
+						_cacheService.Add(cacheKey, entityPropertyMembersKeys, _entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 
 						// V aktuálním použití DbDataLoaderem nechceme cachovat samotnou entitu, cachuje ji DbDataLoader samostatně.
 						// Avšak TryGet spoléhá, že cachována je.
@@ -319,11 +319,11 @@ public class EntityCacheManager : IEntityCacheManager
 
 				case NavigationType.OneToOne:
 					{
-						var propertyLambda = propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
+						var propertyLambda = _propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
 						var entityPropertyValue = propertyLambda(entity);
 
-						object[] entityPropertyValueKeys = entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
-						cacheService.Add(cacheKey, entityPropertyValueKeys, entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
+						object[] entityPropertyValueKeys = _entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
+						_cacheService.Add(cacheKey, entityPropertyValueKeys, _entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 					}
 					break;
 
@@ -355,7 +355,7 @@ public class EntityCacheManager : IEntityCacheManager
 		return new CacheInvalidationOperation(() =>
 		{
 			// odstraníme položky z cache
-			cacheService.RemoveAll(cacheKeysToInvalidate);
+			_cacheService.RemoveAll(cacheKeysToInvalidate);
 
 			// aktualizujeme v cache změněné entity
 			Dictionary<Type, MethodInfo> methodInfosDictionary = new Dictionary<Type, MethodInfo>();
@@ -388,7 +388,7 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		// invalidate entity cache
 
-		object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(change.Entity);
+		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(change.Entity);
 
 		// Entity se složeným klíčem (ManyToMany jakožto dekomponovaný vztah i skip navigation)
 		if (entityKeyValues.Length > 1)
@@ -417,12 +417,12 @@ public class EntityCacheManager : IEntityCacheManager
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 
 		// TODO: EF Core 9: Co se situací, kdy sami necachujeme, ale chceme invalidovat cache jiné části systému?
-		if (entityCacheSupportDecision.ShouldCacheEntity(change.Entity))
+		if (_entityCacheSupportDecision.ShouldCacheEntity(change.Entity))
 		{
 			if (change.ChangeType != ChangeType.Insert)
 			{
 				// nové entity nemohou být v cache, neinvalidujeme
-				cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetEntityCacheKey(change.ClrType, entityKey));
+				cacheKeysToInvalidate.Add(_entityCacheKeyGenerator.GetEntityCacheKey(change.ClrType, entityKey));
 			}
 
 			if (change.ChangeType != ChangeType.Delete)
@@ -435,12 +435,12 @@ public class EntityCacheManager : IEntityCacheManager
 
 	private void PrepareCacheInvalidation_NavigationsInternal(Change change, HashSet<string> cacheKeysToInvalidate)
 	{
-		var referencingNavigations = referencingNavigationsService.GetReferencingNavigations(change.EntityType);
+		var referencingNavigations = _referencingNavigationsService.GetReferencingNavigations(change.EntityType);
 		foreach (var referencingNavigation in referencingNavigations)
 		{
 			// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 			// Zde nejsme schopni vždy ověřit instanci, doptáme se tedy na typ.
-			if (entityCacheSupportDecision.ShouldCacheEntityTypeNavigation(referencingNavigation.EntityType, referencingNavigation.NavigationPropertyName))
+			if (_entityCacheSupportDecision.ShouldCacheEntityTypeNavigation(referencingNavigation.EntityType, referencingNavigation.NavigationPropertyName))
 			{
 				// získáme hodnotu cizího klíče				
 				object foreignKeyCurrentValue = change.GetCurrentValue(referencingNavigation.SourceEntityForeignKeyProperty);
@@ -454,7 +454,7 @@ public class EntityCacheManager : IEntityCacheManager
 				// (a zároveň máme předchozí hodnotu)
 				if (((change.ChangeType == ChangeType.Delete) || ((change.ChangeType == ChangeType.Update) && wasChanged)) && (foreignKeyOriginalValue != null))
 				{
-					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetNavigationCacheKey(referencingNavigation.EntityType, foreignKeyOriginalValue, referencingNavigation.NavigationPropertyName));
+					cacheKeysToInvalidate.Add(_entityCacheKeyGenerator.GetNavigationCacheKey(referencingNavigation.EntityType, foreignKeyOriginalValue, referencingNavigation.NavigationPropertyName));
 				}
 
 				// invalidujeme kolekci aktuálního "vlastníka" pokud:
@@ -463,7 +463,7 @@ public class EntityCacheManager : IEntityCacheManager
 				// (a zároveň máme aktuální hodnotu)
 				if (((change.ChangeType == ChangeType.Insert) || ((change.ChangeType == ChangeType.Update) && wasChanged)) && (foreignKeyCurrentValue != null))
 				{
-					cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetNavigationCacheKey(referencingNavigation.EntityType, foreignKeyCurrentValue, referencingNavigation.NavigationPropertyName));
+					cacheKeysToInvalidate.Add(_entityCacheKeyGenerator.GetNavigationCacheKey(referencingNavigation.EntityType, foreignKeyCurrentValue, referencingNavigation.NavigationPropertyName));
 				}
 			}
 		}
@@ -472,9 +472,9 @@ public class EntityCacheManager : IEntityCacheManager
 	private void PrepareCacheInvalidation_GetAllInternal(Type type, HashSet<string> cacheKeysToInvalidate)
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
-		if (entityCacheSupportDecision.ShouldCacheAllKeys(type))
+		if (_entityCacheSupportDecision.ShouldCacheAllKeys(type))
 		{
-			cacheKeysToInvalidate.Add(entityCacheKeyGenerator.GetAllKeysCacheKey(type));
+			cacheKeysToInvalidate.Add(_entityCacheKeyGenerator.GetAllKeysCacheKey(type));
 		}
 	}
 }

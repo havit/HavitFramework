@@ -18,7 +18,7 @@ public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitP
 	/// </summary>
 	public SetCreatedToInsertingEntitiesBeforeCommitProcessor(ITimeService timeService)
 	{
-		this._timeService = timeService;
+		_timeService = timeService;
 	}
 
 	/// <summary>

@@ -7,14 +7,14 @@
 /// </summary>
 public class CacheInvalidationOperation
 {
-	private readonly Action invalidateAction;
+	private readonly Action _invalidateAction;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public CacheInvalidationOperation(Action invalidateAction)
 	{
-		this.invalidateAction = invalidateAction;
+		_invalidateAction = invalidateAction;
 	}
 
 	/// <summary>
@@ -22,6 +22,6 @@ public class CacheInvalidationOperation
 	/// </summary>
 	public void Invalidate()
 	{
-		invalidateAction.Invoke();
+		_invalidateAction.Invoke();
 	}
 }

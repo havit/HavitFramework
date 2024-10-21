@@ -44,8 +44,8 @@ public class EntityPatternsInstaller
 	/// </summary>
 	public EntityPatternsInstaller(IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions)
 	{
-		this._services = services;
-		this._componentRegistrationOptions = componentRegistrationOptions;
+		_services = services;
+		_componentRegistrationOptions = componentRegistrationOptions;
 	}
 
 	/// <summary>

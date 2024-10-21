@@ -9,16 +9,16 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>	
 public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEntityCacheOptionsGenerator
 {
-	private readonly TimeSpan? absoluteExpiration;
-	private readonly TimeSpan? slidingExpiration;
+	private readonly TimeSpan? _absoluteExpiration;
+	private readonly TimeSpan? _slidingExpiration;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetService navigationTargetTypeService, AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options) : base(annotationsEntityCacheOptionsGeneratorStorage, dbContext, navigationTargetTypeService)
 	{
-		this.absoluteExpiration = options.AbsoluteExpiration;
-		this.slidingExpiration = options.SlidingExpiration;
+		_absoluteExpiration = options.AbsoluteExpiration;
+		_slidingExpiration = options.SlidingExpiration;
 	}
 
 	/// <inheritdoc />
@@ -33,12 +33,12 @@ public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEnt
 
 		if (result.AbsoluteExpiration == null)
 		{
-			result.AbsoluteExpiration = absoluteExpiration;
+			result.AbsoluteExpiration = _absoluteExpiration;
 		}
 
 		if (result.SlidingExpiration == null)
 		{
-			result.SlidingExpiration = slidingExpiration;
+			result.SlidingExpiration = _slidingExpiration;
 		}
 
 		return result;

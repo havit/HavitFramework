@@ -23,7 +23,7 @@ public class SoftDeleteManager : ISoftDeleteManager
 	/// <param name="timeService">Služba pro práci s časem. Používá se pro získání času smazání objektu, který má být objektu nastaven.</param>
 	public SoftDeleteManager(ITimeService timeService)
 	{
-		this._timeService = timeService;
+		_timeService = timeService;
 	}
 
 	/// <summary>

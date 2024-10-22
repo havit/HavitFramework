@@ -48,12 +48,14 @@ public static class CachingTestHelper
 		IReferencingNavigationsStorage referencingNavigationsStorage = new ReferencingNavigationsStorageBuilder(dbContext).Build();
 		IReferencingNavigationsService referencingCollectionStore = new ReferencingNavigationsService(referencingNavigationsStorage);
 
+		IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage = new DbEntityKeyAccessorStorageBuilder(dbContext).Build();
+
 		return new EntityCacheManager(
 			cacheService,
 			entityCacheSupportDecision,
 			entityCacheKeyGenerator,
 			entityCacheOptionsGenerator,
-			new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext),
+			new DbEntityKeyAccessor(dbEntityKeyAccessorStorage),
 			propertyLambdaExpressionManager,
 			dbContext,
 			referencingCollectionStore,

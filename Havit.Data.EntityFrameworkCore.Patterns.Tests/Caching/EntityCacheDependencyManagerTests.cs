@@ -4,6 +4,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.Patterns.Infrastructure;
 using Havit.Services.Caching;
 using Moq;
 
@@ -33,7 +34,9 @@ public class EntityCacheDependencyManagerTests
 		string saveCacheDependencyKey = entityCacheDependencyManager.GetSaveCacheDependencyKey(typeof(LoginAccount), loginAccount.Id);
 		string anySaveCacheDependencyKey = entityCacheDependencyManager.GetAnySaveCacheDependencyKey(typeof(LoginAccount));
 
-		EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object, entityCacheKeyPrefixService), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+		IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage = new DbEntityKeyAccessorStorageBuilder(dbContext).Build();
+		IEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(dbEntityKeyAccessorStorage);
+		EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object, entityCacheKeyPrefixService), dbEntityKeyAccessor);
 
 		Changes changes = new Changes(new List<Change>
 		{

@@ -123,7 +123,9 @@ public class EntityPatternsInstaller
 
 		_services.TryAddTransient<IEntityValidatorsFactory, EntityValidatorsFactory>();
 
-		_services.TryAddTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
+		_services.TryAddSingleton<IEntityKeyAccessor, DbEntityKeyAccessor>();
+		_services.TryAddTransient<IDbEntityKeyAccessorStorageBuilder, DbEntityKeyAccessorStorageBuilder>();
+		_services.TryAddSingletonFromScopedServiceProvider<IDbEntityKeyAccessorStorage>(sp => sp.GetRequiredService<IDbEntityKeyAccessorStorageBuilder>().Build());
 		_services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
 		_services.TryAddSingleton<IReferencingNavigationsService, ReferencingNavigationsService>();
 		_services.TryAddTransient<IReferencingNavigationsStorageBuilder, ReferencingNavigationsStorageBuilder>();

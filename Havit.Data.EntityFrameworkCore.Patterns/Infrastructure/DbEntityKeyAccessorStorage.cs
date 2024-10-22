@@ -10,5 +10,5 @@ public class DbEntityKeyAccessorStorage : IDbEntityKeyAccessorStorage
 	/// <summary>
 	/// Mapování entit na property info vlastností reprezentující primární klíče.
 	/// </summary>
-	public FrozenDictionary<Type, PropertyInfo[]> Value { get; set; }
+	public required FrozenDictionary<Type, DbEntityKeyAccessorItem> Value { get; init; }
 }

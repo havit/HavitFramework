@@ -322,7 +322,7 @@ public class EntityCacheManager : IEntityCacheManager
 						var propertyLambda = _propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
 						var entityPropertyValue = propertyLambda(entity);
 
-						object[] entityPropertyValueKeys = _entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
+						object[] entityPropertyValueKeys = _entityKeyAccessor.GetEntityKeyValues(entityPropertyValue);
 						_cacheService.Add(cacheKey, entityPropertyValueKeys, _entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 					}
 					break;

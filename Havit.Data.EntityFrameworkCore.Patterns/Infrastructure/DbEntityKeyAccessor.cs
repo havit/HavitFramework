@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using Havit.Data.EntityFrameworkCore.Metadata;
-using Havit.Data.Patterns.Infrastructure;
+﻿using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
@@ -10,17 +8,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 /// </summary>
 public class DbEntityKeyAccessor : IEntityKeyAccessor
 {
-	private readonly IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage;
-	private readonly IDbContext dbContext;
+	private readonly IDbEntityKeyAccessorStorage _dbEntityKeyAccessorStorage;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public DbEntityKeyAccessor(IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage, IDbContext dbContext)
+	public DbEntityKeyAccessor(IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage)
 	{
-		// pro možnost použití jako singletonu pro všechny případy používáme LazyThreadSafetyMode.ExecutionAndPublication
-		this.dbEntityKeyAccessorStorage = dbEntityKeyAccessorStorage;
-		this.dbContext = dbContext;
+		_dbEntityKeyAccessorStorage = dbEntityKeyAccessorStorage;
 	}
 
 	/// <summary>
@@ -29,8 +24,9 @@ public class DbEntityKeyAccessor : IEntityKeyAccessor
 	/// <param name="entity">Entita.</param>
 	public object[] GetEntityKeyValues(object entity)
 	{
+		// TODO EF Core 9: Velmi často se používá na výsledek metody .Single(), pokud uděláme dedikovanou metodu, odstraníme alokaci pole pomocí .ToArray().
 		Contract.Requires(entity != null);
-		return GetPropertyInfos(entity.GetType()).Select(propertyInfo => propertyInfo.GetValue(entity)).ToArray();
+		return GetDbEntityKeyAccessorItem(entity.GetType()).PropertyInfos.Select(propertyInfo => propertyInfo.GetValue(entity)).ToArray();
 	}
 
 	/// <summary>
@@ -38,25 +34,14 @@ public class DbEntityKeyAccessor : IEntityKeyAccessor
 	/// </summary>
 	public string[] GetEntityKeyPropertyNames(Type entityType)
 	{
-		return GetPropertyInfos(entityType).Select(propertyInfo => propertyInfo.Name).ToArray();
+		return GetDbEntityKeyAccessorItem(entityType).PropertyNames;
 	}
 
-	private PropertyInfo[] GetPropertyInfos(Type entityType)
+	private DbEntityKeyAccessorItem GetDbEntityKeyAccessorItem(Type entityType)
 	{
-		if (dbEntityKeyAccessorStorage.Value == null)
+		if (_dbEntityKeyAccessorStorage.Value.TryGetValue(entityType, out DbEntityKeyAccessorItem item))
 		{
-			lock (dbEntityKeyAccessorStorage)
-			{
-				if (dbEntityKeyAccessorStorage.Value == null)
-				{
-					dbEntityKeyAccessorStorage.Value = dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(entityType => entityType.ClrType, entityType => entityType.FindPrimaryKey().Properties.Select(property => property.PropertyInfo).ToArray());
-				}
-			}
-		}
-
-		if (dbEntityKeyAccessorStorage.Value.TryGetValue(entityType, out PropertyInfo[] propertyInfo))
-		{
-			return propertyInfo;
+			return item;
 		}
 		else
 		{

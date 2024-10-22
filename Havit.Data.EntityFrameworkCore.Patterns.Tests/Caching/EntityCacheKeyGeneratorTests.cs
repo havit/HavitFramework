@@ -11,7 +11,8 @@ public class EntityCacheKeyGeneratorTests
 	public void EntityCacheKeyGenerator_GetEntityCacheKey()
 	{
 		// Arrange
-		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), new TestDbContext()));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(new TestDbContext()).Build();
+		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 
 		// Act + Assert
 		Assert.AreEqual("EF|Language|5", entityCacheKeyGenerator.GetEntityCacheKey(typeof(Language), 5));
@@ -21,7 +22,8 @@ public class EntityCacheKeyGeneratorTests
 	public void EntityCacheKeyGenerator_GetAllKeysCacheKey()
 	{
 		// Arrange
-		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), new TestDbContext()));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(new TestDbContext()).Build();
+		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 
 		// Act + Assert
 		Assert.AreEqual("EF|Language|AllKeys", entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(Language)));

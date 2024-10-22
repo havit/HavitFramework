@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching;
 
@@ -8,14 +9,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching;
 /// </summary>
 public class CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller : DefaultCachingInstaller
 {
-	private readonly TimeSpan slidingExpiration;
+	private readonly TimeSpan _slidingExpiration;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller(TimeSpan slidingExpiration)
 	{
-		this.slidingExpiration = slidingExpiration;
+		_slidingExpiration = slidingExpiration;
 	}
 
 	/// <inheritdoc />
@@ -23,21 +24,22 @@ public class CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller : Defa
 	{
 		// no base call!
 
-		AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options = new AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions
+		AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilderOptions options = new AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilderOptions
 		{
-			SlidingExpiration = slidingExpiration,
+			SlidingExpiration = _slidingExpiration,
 			AbsoluteExpiration = null
 		};
 
-		services.AddTransient<IEntityCacheOptionsGenerator, AnnotationsWithDefaultsEntityCacheOptionsGenerator>();
-		services.AddSingleton(typeof(AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions), options);
-		services.AddSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
+		services.TryAddSingleton<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
+		services.TryAddTransient<IAnnotationsEntityCacheOptionsGeneratorStorageBuilder, AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilder>();
+		services.TryAddSingleton<AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilderOptions>(options);
+		services.TryAddSingletonFromScopedServiceProvider<IAnnotationsEntityCacheOptionsGeneratorStorage>(sp => sp.GetRequiredService<IAnnotationsEntityCacheOptionsGeneratorStorageBuilder>().Build());
 	}
 
 	/// <inheritdoc />
 	protected override void RegisterEntityCacheSupportDecision(IServiceCollection services)
 	{
 		// no base call!
-		services.AddSingleton<IEntityCacheSupportDecision, CacheAllEntitiesEntityCacheSupportDecision>();
+		services.TryAddSingleton<IEntityCacheSupportDecision, CacheAllEntitiesEntityCacheSupportDecision>();
 	}
 }

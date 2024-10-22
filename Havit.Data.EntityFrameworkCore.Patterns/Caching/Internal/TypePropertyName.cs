@@ -3,7 +3,7 @@
 /// <summary>
 /// Evidence typu entity a názvu vlastnosti pro použití jako klíč v Dictionary (<see cref="NavigationTargetService"/>).
 /// </summary>
-public record TypePropertyName()
+public record struct TypePropertyName
 {
 	/// <summary>
 	/// Typ entity.

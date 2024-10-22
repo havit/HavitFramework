@@ -341,7 +341,8 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 		string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 		string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
@@ -383,7 +384,8 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 		string collectionCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.Children));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
@@ -423,7 +425,8 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 		string navigationCacheKey = entityCacheKeyGenerator.GetNavigationCacheKey(typeof(Master), child.ParentId, nameof(Master.Children));
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(
@@ -463,7 +466,8 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 		string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 		string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 
@@ -512,7 +516,8 @@ public class EntityCacheManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(false);
 
-		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+		var entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 		string entityCacheKey = entityCacheKeyGenerator.GetEntityCacheKey(typeof(LoginAccount), loginAccount.Id);
 		string allKeysCacheKey = entityCacheKeyGenerator.GetAllKeysCacheKey(typeof(LoginAccount));
 

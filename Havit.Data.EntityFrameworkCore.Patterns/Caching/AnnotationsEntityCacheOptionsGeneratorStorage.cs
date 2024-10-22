@@ -10,5 +10,5 @@ public class AnnotationsEntityCacheOptionsGeneratorStorage : IAnnotationsEntityC
 	/// <summary>
 	/// Úložiště CacheOptions k jednotlivým entitám
 	/// </summary>
-	public FrozenDictionary<Type, CacheOptions> Value { get; set; }
+	public required FrozenDictionary<Type, CacheOptions> Value { get; init; }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 
@@ -60,5 +61,17 @@ public static class ServiceCollectionExtensions
 		{
 			services.AddTransient(serviceType, sp => sp.GetRequiredService(firstServiceTypeToRegister));
 		}
+	}
+
+	internal static IServiceCollection TryAddSingletonFromScopedServiceProvider<TService>(this IServiceCollection services, Func<IServiceProvider, TService> factory)
+		where TService : class
+	{
+		services.TryAddSingleton<TService>(sp =>
+		{
+			using var scope = sp.CreateScope();
+			return factory(scope.ServiceProvider);
+		});
+
+		return services;
 	}
 }

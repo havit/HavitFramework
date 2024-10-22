@@ -7,7 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// <summary>
 /// Strategie definující, zda může být entita cachována. Řídí se anotacemi, ke kterým doplňuje výchozí hodnoty.
 /// </summary>	
-public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEntityCacheOptionsGenerator
+public class AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilder : AnnotationsEntityCacheOptionsGeneratorStorageBuilder
 {
 	private readonly TimeSpan? _absoluteExpiration;
 	private readonly TimeSpan? _slidingExpiration;
@@ -15,7 +15,7 @@ public class AnnotationsWithDefaultsEntityCacheOptionsGenerator : AnnotationsEnt
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsWithDefaultsEntityCacheOptionsGenerator(IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage, IDbContext dbContext, INavigationTargetService navigationTargetTypeService, AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions options) : base(annotationsEntityCacheOptionsGeneratorStorage, dbContext, navigationTargetTypeService)
+	public AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilder(IDbContext dbContext, AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilderOptions options) : base(dbContext)
 	{
 		_absoluteExpiration = options.AbsoluteExpiration;
 		_slidingExpiration = options.SlidingExpiration;

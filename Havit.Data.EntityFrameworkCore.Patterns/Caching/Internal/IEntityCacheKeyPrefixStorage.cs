@@ -8,5 +8,5 @@ public interface IEntityCacheKeyPrefixStorage
 	/// <summary>
 	/// Mapování typu entity na prefix klíče v cache.
 	/// </summary>
-	FrozenDictionary<Type, string> Value { get; set; }
+	FrozenDictionary<Type, string> Value { get; }
 }

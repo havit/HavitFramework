@@ -15,7 +15,8 @@ public class ReferencingNavigationsServiceTests
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
-		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
+		IReferencingNavigationsStorage referencingNavigationsStorage = new ReferencingNavigationsStorageBuilder(dbContext).Build();
+		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(referencingNavigationsStorage);
 
 		// Act		
 		var childReferencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(Child)));
@@ -34,7 +35,8 @@ public class ReferencingNavigationsServiceTests
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
-		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
+		IReferencingNavigationsStorage referencingNavigationsStorage = new ReferencingNavigationsStorageBuilder(dbContext).Build();
+		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(referencingNavigationsStorage);
 
 		// Act
 		var skipNavigationEntityReferencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType("ClassManyToManyA_Items"));
@@ -53,7 +55,8 @@ public class ReferencingNavigationsServiceTests
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
-		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
+		IReferencingNavigationsStorage referencingNavigationsStorage = new ReferencingNavigationsStorageBuilder(dbContext).Build();
+		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(referencingNavigationsStorage);
 
 		// Act
 		var classOneToOneAReferencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(ClassOneToOneA)));
@@ -72,7 +75,8 @@ public class ReferencingNavigationsServiceTests
 	{
 		// Arrange
 		CachingTestDbContext dbContext = new CachingTestDbContext();
-		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
+		IReferencingNavigationsStorage referencingNavigationsStorage = new ReferencingNavigationsStorageBuilder(dbContext).Build();
+		ReferencingNavigationsService referencingNavigationsService = new ReferencingNavigationsService(referencingNavigationsStorage);
 
 		// Act
 		var referencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(LoginAccount)));

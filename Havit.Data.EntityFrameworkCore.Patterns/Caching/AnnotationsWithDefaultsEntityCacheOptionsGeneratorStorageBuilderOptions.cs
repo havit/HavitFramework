@@ -1,9 +1,9 @@
 ﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
-/// Konfigurace pro AnnotationsWithDefaultsEntityCacheOptionsGenerator.
+/// Konfigurace pro AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilder.
 /// </summary>
-public class AnnotationsWithDefaultsEntityCacheOptionsGeneratorOptions
+public class AnnotationsWithDefaultsEntityCacheOptionsGeneratorStorageBuilderOptions
 {
 	/// <summary>
 	/// Čas absolutní expirace.

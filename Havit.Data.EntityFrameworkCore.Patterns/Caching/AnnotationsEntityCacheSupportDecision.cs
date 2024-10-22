@@ -1,6 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Metadata;
-using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -11,23 +9,21 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 {
 	private readonly IAnnotationsEntityCacheSupportDecisionStorage _annotationsEntityCacheSupportDecisionStorage;
-	private readonly IDbContext _dbContext;
 	private readonly INavigationTargetService _navigationTargetService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, IDbContext dbContext, INavigationTargetService navigationTargetService)
+	public AnnotationsEntityCacheSupportDecision(IAnnotationsEntityCacheSupportDecisionStorage annotationsEntityCacheSupportDecisionStorage, INavigationTargetService navigationTargetService)
 	{
 		_annotationsEntityCacheSupportDecisionStorage = annotationsEntityCacheSupportDecisionStorage;
-		_dbContext = dbContext;
 		_navigationTargetService = navigationTargetService;
 	}
 
 	/// <inheritdoc />
 	public virtual bool ShouldCacheEntityType(Type entityType)
 	{
-		return GetValueFromDictionary(GetShouldCacheEntitiesDictionary(), entityType);
+		return GetValueFromDictionary(_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities, entityType);
 	}
 
 	/// <inheritdoc />
@@ -69,43 +65,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 	/// <inheritdoc />
 	public virtual bool ShouldCacheAllKeys(Type entityType)
 	{
-		return GetValueFromDictionary(GetShouldCacheAllKeysDictionary(), entityType);
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private FrozenDictionary<Type, bool> GetShouldCacheEntitiesDictionary()
-	{
-		if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
-		{
-			lock (_annotationsEntityCacheSupportDecisionStorage)
-			{
-				if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities == null)
-				{
-					_annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
-						entityType => entityType.ClrType,
-						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheAllKeysAnnotationName)?.Value)).GetValueOrDefault(false));
-				}
-			}
-		}
-		return _annotationsEntityCacheSupportDecisionStorage.ShouldCacheEntities;
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private FrozenDictionary<Type, bool> GetShouldCacheAllKeysDictionary()
-	{
-		if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
-		{
-			lock (_annotationsEntityCacheSupportDecisionStorage)
-			{
-				if (_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys == null)
-				{
-					_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
-						entityType => entityType.ClrType,
-						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false));
-				}
-			}
-		}
-		return _annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys;
+		return GetValueFromDictionary(_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys, entityType);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

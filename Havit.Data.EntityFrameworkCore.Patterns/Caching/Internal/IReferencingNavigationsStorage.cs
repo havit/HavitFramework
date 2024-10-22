@@ -10,5 +10,5 @@ public interface IReferencingNavigationsStorage
 	/// <summary>
 	/// Seznam kolekcí a one-to-one referencí referencující danou entitu.
 	/// </summary>
-	public FrozenDictionary<IEntityType, List<ReferencingNavigation>> Value { get; set; }
+	public FrozenDictionary<IEntityType, List<ReferencingNavigation>> Value { get; }
 }

@@ -14,10 +14,10 @@ public class NavigationTargetServiceTests
 	public void NavigationTargetService_GetNavigationTarget()
 	{
 		// Arrange
-		var navigationTargetTypeStorage = new NavigationTargetStorage();
 		var dbContext = new CachingTestDbContext();
 
-		var navigationTargetService = new NavigationTargetService(navigationTargetTypeStorage, dbContext);
+		INavigationTargetStorage navigationTargetStorage = new NavigationTargetStorageBuilder(dbContext).Build();
+		var navigationTargetService = new NavigationTargetService(navigationTargetStorage);
 
 		// Act & Assert
 
@@ -77,6 +77,6 @@ public class NavigationTargetServiceTests
 		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
 		// A nic víc!
-		Assert.AreEqual(12, navigationTargetTypeStorage.Value.Count());
+		Assert.AreEqual(12, navigationTargetStorage.Value.Count());
 	}
 }

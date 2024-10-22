@@ -26,7 +26,8 @@ public class EntityCacheDependencyManagerTests
 		cacheServiceMock.Setup(m => m.Remove(It.IsAny<string>()));
 		cacheServiceMock.SetupGet(m => m.SupportsCacheDependencies).Returns(true);
 
-		var entityCacheKeyPrefixService = new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext);
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+		var entityCacheKeyPrefixService = new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage);
 
 		EntityCacheDependencyKeyGenerator entityCacheDependencyManager = new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object, entityCacheKeyPrefixService);
 		string saveCacheDependencyKey = entityCacheDependencyManager.GetSaveCacheDependencyKey(typeof(LoginAccount), loginAccount.Id);

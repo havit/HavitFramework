@@ -125,12 +125,15 @@ public class EntityPatternsInstaller
 
 		_services.TryAddTransient<IEntityKeyAccessor, DbEntityKeyAccessor>();
 		_services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
-		_services.TryAddTransient<IReferencingNavigationsService, ReferencingNavigationsService>();
-		_services.TryAddSingleton<IReferencingNavigationsStorage, ReferencingNavigationsStorage>();
-		_services.TryAddTransient<INavigationTargetService, NavigationTargetService>();
-		_services.TryAddSingleton<INavigationTargetStorage, NavigationTargetStorage>();
-		_services.TryAddTransient<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
-		_services.TryAddSingleton<IEntityCacheKeyPrefixStorage, EntityCacheKeyPrefixStorage>();
+		_services.TryAddSingleton<IReferencingNavigationsService, ReferencingNavigationsService>();
+		_services.TryAddTransient<IReferencingNavigationsStorageBuilder, ReferencingNavigationsStorageBuilder>();
+		_services.TryAddSingletonFromScopedServiceProvider<IReferencingNavigationsStorage>(sp => sp.GetRequiredService<IReferencingNavigationsStorageBuilder>().Build());
+		_services.TryAddSingleton<INavigationTargetService, NavigationTargetService>();
+		_services.TryAddTransient<INavigationTargetStorageBuilder, NavigationTargetStorageBuilder>();
+		_services.TryAddSingletonFromScopedServiceProvider<INavigationTargetStorage>(sp => sp.GetRequiredService<INavigationTargetStorageBuilder>().Build());
+		_services.TryAddSingleton<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
+		_services.TryAddTransient<IEntityCacheKeyPrefixStorageBuilder, EntityCacheKeyPrefixStorageBuilder>();
+		_services.TryAddSingletonFromScopedServiceProvider<IEntityCacheKeyPrefixStorage>(sp => sp.GetRequiredService<IEntityCacheKeyPrefixStorageBuilder>().Build());
 		_services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
 		_services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 

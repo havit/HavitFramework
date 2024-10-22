@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 
 /// <summary>
 /// Mapování entit na property info vlastností reprezentující primární klíče.

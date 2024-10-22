@@ -12,7 +12,7 @@ public class DbEntityKeyAccessorStorageBuilder : IDbEntityKeyAccessorStorageBuil
 	/// </summary>
 	public DbEntityKeyAccessorStorageBuilder(IDbContext dbContext)
 	{
-		this._dbContext = dbContext;
+		_dbContext = dbContext;
 	}
 
 	/// <inheritdoc />

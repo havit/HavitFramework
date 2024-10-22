@@ -9,14 +9,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 public class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TKey>
 	where TEntity : class
 {
-	private readonly IEntityKeyAccessor entityKeyAccessor;
+	private readonly IEntityKeyAccessor _entityKeyAccessor;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public DbEntityKeyAccessor(IEntityKeyAccessor entityKeyAccessor)
 	{
-		this.entityKeyAccessor = entityKeyAccessor;
+		_entityKeyAccessor = entityKeyAccessor;
 	}
 
 	/// <summary>
@@ -27,7 +27,7 @@ public class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TK
 	{
 		Contract.Requires(entity != null);
 
-		return (TKey)entityKeyAccessor.GetEntityKeyValues(entity).Single();
+		return (TKey)_entityKeyAccessor.GetEntityKeyValues(entity).Single();
 	}
 
 	/// <summary>
@@ -35,7 +35,7 @@ public class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TK
 	/// </summary>
 	public string GetEntityKeyPropertyName()
 	{
-		return entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TEntity)).Single();
+		return _entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TEntity)).Single();
 	}
 
 }

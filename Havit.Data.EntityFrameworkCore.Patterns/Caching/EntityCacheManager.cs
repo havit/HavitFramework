@@ -8,6 +8,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -61,7 +62,6 @@ public class EntityCacheManager : IEntityCacheManager
 			{
 				// pokud je entita v cache, materializujeme ji a vrátíme ji
 				TEntity result = EntityActivator.CreateInstance<TEntity>();
-
 				var entry = _dbContext.GetEntry(result, suppressDetectChanges: true);
 				entry.OriginalValues.SetValues(cacheValues); // aby při případném update byly známy změněné vlastnosti
 				entry.CurrentValues.SetValues(cacheValues); // aby byly naplněny vlastnosti entity

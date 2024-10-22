@@ -340,7 +340,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 		HashSet<Type> typesToInvalidateGetAll = new HashSet<Type>();
 
-		foreach (var change in changes)
+		foreach (var change in changes.Items)
 		{
 			PrepareCacheInvalidation_EntityWithNavigationsInternal(change, typesToInvalidateGetAll, cacheKeysToInvalidate, entitiesToUpdateInCache);
 		}

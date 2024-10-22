@@ -28,14 +28,11 @@ public class EntityValidationRunner : IEntityValidationRunner
 		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
 
-		var changesGroups = changes
-			.Where(change => change.ClrType != null)
-			.GroupBy(change => change.ClrType)
-			.ToList();
+		ILookup<Type, Change> changesGroups = changes.GetChangesByClrType();
 
 		object[] runMethodParameters = new object[2];
 		List<string> allValidationErrors = new List<string>();
-		foreach (var changesGroup in changesGroups)
+		foreach (IGrouping<Type, Change> changesGroup in changesGroups)
 		{
 			List<object> supportedValidators = new List<object>();
 			// Factory pro IEntityValidators<Entity> nevrací processory pro případné předky, musíme proto zajistit zde podporu pro before commitprocessory předků.
@@ -48,7 +45,7 @@ public class EntityValidationRunner : IEntityValidationRunner
 
 			Type entityValidatorType = typeof(IEntityValidator<>).MakeGenericType(changesGroup.Key);
 			MethodInfo runMethod = entityValidatorType.GetMethod(nameof(IEntityValidator<object>.Validate));
-			foreach (var change in changesGroup)
+			foreach (Change change in changesGroup)
 			{
 				runMethodParameters[0] = change.ChangeType;
 				runMethodParameters[1] = change.Entity;

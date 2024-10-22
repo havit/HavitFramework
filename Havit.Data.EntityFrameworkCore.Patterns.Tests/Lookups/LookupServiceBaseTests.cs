@@ -135,7 +135,7 @@ public class LookupServiceBaseTests
 		// provedeme aktualizaci uzivatele
 		uzivatele.Add(uzivatel2); // pro dostupnost uživatele v Repository
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -171,7 +171,7 @@ public class LookupServiceBaseTests
 		Assert.IsNull(uzivatelLookupService.GetUzivatelByEmail(uzivatel1.Email));
 
 		// provedeme aktualizaci uzivatele
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -202,7 +202,7 @@ public class LookupServiceBaseTests
 		// provedeme aktualizaci uzivatele
 		uzivatele.Remove(uzivatel); // pro (ne)dostupnost uživatele Repository
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{

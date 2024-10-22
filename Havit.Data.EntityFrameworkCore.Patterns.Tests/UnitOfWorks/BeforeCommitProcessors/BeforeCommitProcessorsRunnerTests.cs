@@ -28,7 +28,7 @@ public class BeforeCommitProcessorsRunnerTests
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityInserting },
 			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityUpdating },
@@ -36,7 +36,7 @@ public class BeforeCommitProcessorsRunnerTests
 		});
 
 		// Act
-		runner.Run(new Changes(changes));
+		runner.Run(changes);
 
 		// Assert
 		beforeCommitProcessorFactoryMock.Verify(m => m.Create<Entity>(), Times.AtLeastOnce);
@@ -71,13 +71,13 @@ public class BeforeCommitProcessorsRunnerTests
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity }
 		});
 
 		// Act
-		ChangeTrackerImpact result = runner.Run(new Changes(changes));
+		ChangeTrackerImpact result = runner.Run(changes);
 
 		// Assert
 		Assert.AreEqual(ChangeTrackerImpact.NoImpact, result);
@@ -101,13 +101,13 @@ public class BeforeCommitProcessorsRunnerTests
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity }
 		});
 
 		// Act
-		ChangeTrackerImpact result = runner.Run(new Changes(changes));
+		ChangeTrackerImpact result = runner.Run(changes);
 
 		// Assert
 		Assert.AreEqual(ChangeTrackerImpact.StateChanged, result);

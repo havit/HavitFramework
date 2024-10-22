@@ -28,7 +28,7 @@ public class EntityValidationRunnerTests
 
 		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityInserting },
 			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityUpdating },
@@ -69,7 +69,7 @@ public class EntityValidationRunnerTests
 
 		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{

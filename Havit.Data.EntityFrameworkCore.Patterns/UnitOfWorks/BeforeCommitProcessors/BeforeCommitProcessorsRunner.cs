@@ -30,14 +30,11 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
 
-		var changesGroups = changes
-			.Where(change => change.ClrType != null)
-			.GroupBy(change => change.ClrType)
-			.ToList();
+		ILookup<Type, Change> changesGroups = changes.GetChangesByClrType();
 
 		var runMethodParameters = new object[2];
 
-		foreach (var changesGroup in changesGroups)
+		foreach (IGrouping<Type, Change> changesGroup in changesGroups)
 		{
 			List<object> supportedProcessors = new List<object>(4);
 			// Factory pro IBeforeCommitProcessor<Entity> nevrací processory pro případné předky, musíme proto zajistit zde podporu pro before commitprocessory předků.
@@ -51,7 +48,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 			Type beforeCommitProcessorType = typeof(IBeforeCommitProcessor<>).MakeGenericType(changesGroup.Key);
 			MethodInfo runMethod = beforeCommitProcessorType.GetMethod(nameof(IBeforeCommitProcessor<object>.Run));
 
-			foreach (var change in changesGroup)
+			foreach (Change change in changesGroup)
 			{
 				runMethodParameters[0] = change.ChangeType;
 				runMethodParameters[1] = change.Entity;

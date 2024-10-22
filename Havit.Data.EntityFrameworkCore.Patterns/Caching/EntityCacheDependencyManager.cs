@@ -37,7 +37,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		HashSet<string> cacheKeysToInvalidate = new HashSet<string>();
 		HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey = new HashSet<Type>();
 
-		foreach (var change in changes)
+		foreach (var change in changes.Items)
 		{
 			if (change.ClrType != null)
 			{

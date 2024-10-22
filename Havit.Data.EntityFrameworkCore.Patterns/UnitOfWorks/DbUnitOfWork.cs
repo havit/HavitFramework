@@ -197,7 +197,7 @@ public class DbUnitOfWork : IUnitOfWork
 			Entity = item
 		});
 
-		return new Changes(changesFromEntries.Concat(changesFromUpdateRegistrations));
+		return new Changes(changesFromEntries.Concat(changesFromUpdateRegistrations).Cast<Change>().ToList());
 	}
 
 	/// <summary>

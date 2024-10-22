@@ -348,9 +348,8 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		}
 
 		// nedošlo k žádné změně sledované entity, neprovádíme žádnou invalidaci
-
-		// TODO EF Core 9: Enumerace navíc.
-		if (!changes.Any(change => (change.IsOfType<TEntity>())))
+		IEnumerable<Change> entityChanges = changes.GetChangesByClrType()[typeof(TEntity)];
+		if (!entityChanges.Any())
 		{
 			return;
 		}
@@ -365,8 +364,8 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 			return;
 		}
 
-		var updatedAndDeletedEntities = changes
-			.Where(change => change.IsOfType<TEntity>() && ((change.ChangeType == ChangeType.Update) || change.ChangeType == ChangeType.Delete))
+		var updatedAndDeletedEntities = entityChanges
+			.Where(change => (change.ChangeType == ChangeType.Update) || (change.ChangeType == ChangeType.Delete))
 			.Select(change => (TEntity)change.Entity)
 			.ToList();
 
@@ -389,8 +388,8 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 		Func<TEntity, bool> softDeleteCompiledLambda = softDeleteSupported ? softDeleteManager.GetNotDeletedCompiledLambda<TEntity>() : null;
 		Func<TEntity, bool> filterCompiledLambda = entityLookupData.FilterCompiledLambda;
 
-		var insertedAndUpdatedEntities = changes
-		.Where(change => change.IsOfType<TEntity>() && ((change.ChangeType == ChangeType.Update) || change.ChangeType == ChangeType.Insert))
+		var insertedAndUpdatedEntities = entityChanges
+		.Where(change => (change.ChangeType == ChangeType.Update) || (change.ChangeType == ChangeType.Insert))
 		.Select(change => (TEntity)change.Entity)
 		.ToList();
 

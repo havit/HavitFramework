@@ -350,7 +350,7 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -391,7 +391,7 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -431,7 +431,7 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -472,7 +472,7 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -521,7 +521,7 @@ public class EntityCacheManagerTests
 			cacheService: cacheServiceMock.Object,
 			entityCacheKeyGenerator: entityCacheKeyGenerator);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -551,7 +551,7 @@ public class EntityCacheManagerTests
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{
@@ -581,7 +581,7 @@ public class EntityCacheManagerTests
 
 		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{

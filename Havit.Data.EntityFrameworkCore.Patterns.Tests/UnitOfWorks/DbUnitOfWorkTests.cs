@@ -127,7 +127,7 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Count(), "Changes contains a registered change.");
+		Assert.AreEqual(0, allKnownChanges.Items.Count(), "Changes contains a registered change.");
 	}
 
 	[TestMethod]
@@ -150,7 +150,7 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Count(), "Changes contains a registered change.");
+		Assert.AreEqual(0, allKnownChanges.Items.Count(), "Changes contains a registered change.");
 	}
 
 	[TestMethod]
@@ -434,7 +434,7 @@ public class DbUnitOfWorkTests
 		dbUnitOfWork.RegisterAfterCommitAction(() => { /* something */ });
 
 		// Prerequisities
-		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Count());
+		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Items.Count());
 		Assert.AreEqual(1, dbUnitOfWork._afterCommits.Count);
 		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 
@@ -442,7 +442,7 @@ public class DbUnitOfWorkTests
 		dbUnitOfWork.Clear();
 
 		// Assert
-		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Count());
+		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Items.Count());
 		Assert.AreEqual(0, dbUnitOfWork._updateRegistrations.Count);
 		Assert.IsNull(dbUnitOfWork._afterCommits);
 		Assert.AreEqual(0, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());

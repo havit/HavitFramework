@@ -34,7 +34,7 @@ public class EntityCacheDependencyManagerTests
 
 		EntityCacheDependencyManager entityCacheManager = new EntityCacheDependencyManager(cacheServiceMock.Object, new EntityCacheDependencyKeyGenerator(cacheServiceMock.Object, entityCacheKeyPrefixService), new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
 
-		Changes changes = new Changes(new[]
+		Changes changes = new Changes(new List<Change>
 		{
 			new FakeChange
 			{

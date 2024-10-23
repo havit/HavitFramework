@@ -10,7 +10,7 @@ namespace Havit.Data.Patterns.DataLoaders;
 internal class DbFluentDataLoader<TEntity> : DbFluentDataLoader<TEntity, TEntity>
 	where TEntity : class
 {
-	public DbFluentDataLoader(DbDataLoader loader, TEntity[] data) : base(loader, data)
+	public DbFluentDataLoader(DbDataLoader loader, IEnumerable<TEntity> data) : base(loader, data)
 	{
 	}
 }

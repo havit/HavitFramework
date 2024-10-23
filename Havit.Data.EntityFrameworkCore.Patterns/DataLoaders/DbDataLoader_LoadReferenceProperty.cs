@@ -12,14 +12,16 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 	/// </summary>
-	private LoadPropertyInternalResult LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, TEntity[] entities)
+	private LoadPropertyInternalResult LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities)
 		where TEntity : class
 		where TProperty : class
 	{
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
+		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
+
+		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
-		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
+		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Count > 0) // zůstalo nám, na co se ptát do databáze?
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
@@ -33,14 +35,15 @@ public partial class DbDataLoader
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
-				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
+				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
+				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList()));
 				LogDebug("Starting reading chunks from a database.");
 
-				loadedProperties = new List<TProperty>();
-				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
+				int chunkIndex = 0;
+				foreach (var chunkQuery in chunkQueries)
 				{
-					var chunkQuery = chunkQueries[chunkIndex];
-					List<TProperty> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToList();
+					List<TProperty> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {++chunkIndex}/{chunksCount}").ToList();
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
@@ -57,14 +60,16 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 	/// </summary>
-	private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+	private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
 		where TProperty : class
 	{
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
+		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
+
+		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
-		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Any()) // zůstalo nám, na co se ptát do databáze?
+		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Count > 0) // zůstalo nám, na co se ptát do databáze?
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
@@ -78,10 +83,11 @@ public partial class DbDataLoader
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
+				// TODO EF Core 9: Odstranit ToList
 				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
 				LogDebug("Starting reading chunks from a database.");
 
-				loadedProperties = new List<TProperty>();
+				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
 				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
 				{
 					var chunkQuery = chunkQueries[chunkIndex];
@@ -99,7 +105,7 @@ public partial class DbDataLoader
 		return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 	}
 
-	private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, TEntity[] entities, out List<object> foreignKeysToLoad)
+	private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, ICollection<TEntity> entities, out List<object> foreignKeysToLoad)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -112,12 +118,11 @@ public partial class DbDataLoader
 		}
 
 		// získáme cizí klíč reprezentující referenci (Navigation)
-		// TODO JK: Performance? Každý pokus o načtení z cache?            
 		IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
 
 		// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
 		// ignorujeme nenastavené reference (null)
-		object[] foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct().ToArray();
+		IEnumerable<object> foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct();
 
 		IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
 
@@ -154,6 +159,7 @@ public partial class DbDataLoader
 		if (shouldFixup)
 		{
 			LogDebug("Starting change tracker change detection.");
+			// TODO EF Core 9: Pokud bychom měli i objekt(y), které vedou na tento cizí klíč, mohli bychom použít jen lokální detekci změn
 			dbContext.ChangeTracker.DetectChanges();
 		}
 	}
@@ -185,16 +191,20 @@ public partial class DbDataLoader
 		}
 	}
 
-	private LoadPropertyInternalResult LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(string propertyName, TEntity[] entities)
+	private LoadPropertyInternalResult LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(string propertyName, ICollection<TEntity> entities)
 		where TEntity : class
 		where TProperty : class
 	{
 		var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
 		// zde spoléháme na proběhnutí fixupu
-		var loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
+
+		IEnumerable<TProperty> loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item));
 		return new LoadPropertyInternalResult
 		{
+			// Zde předáváme dvakrát IEnumerable<TProperty>, ale efektivně bude použit nejvýše jeden z nich.
+			// Entities v dalším průchodu foreachem v LoadInternal[Async] (pokud nenásleduje další průchod, nebude kolekce nikdy zpracována)
+			// FluentDataLoader v dalším ThanLoad (pokud nenásleduje ThenLoad[Async], nebude kolekce nikdy zpracována)
 			Entities = loadedEntities,
 			FluentDataLoader = new DbFluentDataLoader<TProperty>(this, loadedEntities)
 		};

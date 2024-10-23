@@ -101,36 +101,24 @@ public static class Program
 		Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
 		var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
 
-		var x = personDataSource.Data.OrderBy<Person, IComparable>(expression2).ToList();
-
 		// scénář 1: načítání kolekcí
-		//Person person = await personRepository.GetObjectAsync(1, cancellationToken);
-		//Contract.Assert(person.BossId == null);
+		Person person1 = personRepository.GetObject(1);
+		Person person2 = await personRepository.GetObjectAsync(4, cancellationToken);
+		Contract.Assert(person1.BossId == null);
+		Contract.Assert(person2.BossId == null);
 
-		//Stopwatch sw = Stopwatch.StartNew();
-		//dataLoader.Load(person, p => p.Subordinates).ThenLoad(p => p.Subordinates);
-		//await dataLoader.LoadAsync(person, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
-		//sw.Stop();
+		dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
 		// scénář 2: načítání referencí
-		//List<Person> persons = personDataSource.DataIncludingDeleted.Where(p => (p.BossId != null) && (p.BossId != 1)).ToList();
-		//Stopwatch sw = Stopwatch.StartNew();
-		////dataLoader.LoadAll(persons, p => p.Boss);
-		//await dataLoader.LoadAllAsync(persons, p => p.Boss, cancellationToken);
-		//sw.Stop();
+		List<Person> persons1 = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
+		List<Person> persons2 = await personRepository.GetObjectsAsync(Enumerable.Range(50000, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
+		dataLoader.LoadAll(persons1, p => p.Boss);
+		await dataLoader.LoadAllAsync(persons2, p => p.Boss, cancellationToken);
 
 		// scénář 3: XyRepository.GetObjects()
-		//await personRepository.GetObjectsAsync(new int[] { 1, 3 }, cancellationToken);
-
-		//Stopwatch sw = Stopwatch.StartNew();
-		////List<Person> persons = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
-		//List<Person> persons = await personRepository.GetObjectsAsync(Enumerable.Range(1, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
-		//sw.Stop();
-
-		var person = personRepository.GetObject(1);
-		await dataLoader.LoadAsync(person, p => p.Subordinates, cancellationToken);
-
-		//Console.WriteLine("  " + sw.ElapsedMilliseconds + " ms");
+		personRepository.GetObjects(3, 4);
+		await personRepository.GetObjectsAsync([5, 6], cancellationToken);
 	}
 
 }

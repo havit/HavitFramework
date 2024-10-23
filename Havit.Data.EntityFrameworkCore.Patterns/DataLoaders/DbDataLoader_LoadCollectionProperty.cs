@@ -13,15 +13,17 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 	/// </summary>
-	private LoadPropertyInternalResult LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities)
+	private LoadPropertyInternalResult LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, IEnumerable<TEntity> distinctNotNullEntities)
 		where TEntity : class
 		where TPropertyCollection : class
 		where TOriginalPropertyCollection : class
 		where TPropertyItem : class
 	{
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
-		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out var entitiesToLoadQuery);
-		if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
+		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
+
+		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
+		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
+		if ((entitiesToLoadQuery != null) && (entitiesToLoadQuery.Count > 0)) // zůstalo nám, na co se ptát do databáze?
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
@@ -45,13 +47,15 @@ public partial class DbDataLoader
 				//   více a považujeme toto za good-enough řešení).
 				// - Víceré spuštění changetrackeru (ale když už použijeme takto enormní množství dat, changetracker nás nejspíš netrápí)
 				// Zároveň se snažíme ani trochu nesnížit výkon pro běžný scénář s běžným počtem záznamů (nechceme přidat volání AddRange v dalších variantách této metody, atp.).
-				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
+
+				int chunkIndex = 0;
+				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
+				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName));
 				LogDebug("Starting reading chunks from a database.");
-				loadedProperties = new List<TPropertyItem>();
-				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
+				foreach (var chunkQuery in chunkQueries)
 				{
-					var chunkQuery = chunkQueries[chunkIndex];
-					List<TPropertyItem> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToList();
+					List<TPropertyItem> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {++chunkIndex}/{chunksCount}").ToList();
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
@@ -73,16 +77,18 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 	/// </summary>
-	private async ValueTask<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+	private async ValueTask<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, IEnumerable<TEntity> distinctNotNullEntities, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
 		where TPropertyCollection : class
 		where TOriginalPropertyCollection : class
 		where TPropertyItem : class
 	{
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Length);
-		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out var entitiesToLoadQuery);
+		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
 
-		if ((entitiesToLoadQuery != null) && entitiesToLoadQuery.Any()) // zůstalo nám, na co se ptát do databáze?
+		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
+		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
+
+		if ((entitiesToLoadQuery != null) && (entitiesToLoadQuery.Count > 0)) // zůstalo nám, na co se ptát do databáze?
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
@@ -95,13 +101,14 @@ public partial class DbDataLoader
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
-				List<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName)).ToList(); /* ToList: Jen seznam dotazů, nikoliv spuštění dotazu */
+				int chunkIndex = 0;
+				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
+				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName));
 				LogDebug("Starting reading chunks from a database.");
-				loadedProperties = new List<TPropertyItem>();
-				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
+				foreach (var chunkQuery in chunkQueries)
 				{
-					var chunkQuery = chunkQueries[chunkIndex];
-					List<TPropertyItem> loadedPropertiesChunk = await chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToListAsync(cancellationToken).ConfigureAwait(false);
+					List<TPropertyItem> loadedPropertiesChunk = await chunkQuery.TagWith($"Chunk {++chunkIndex}/{chunksCount}").ToListAsync(cancellationToken).ConfigureAwait(false);
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
@@ -126,7 +133,7 @@ public partial class DbDataLoader
 	/// Klíče objektů, které se nepodařilo načíst z cache, nastavuje out parametru.
 	/// Aktuálně s cache nic nedělá, do out parametru vrací všechny entity.
 	/// </summary>
-	private void LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(string propertyName, TEntity[] entities, out List<TEntity> entitiesToLoadQuery)
+	private void LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(string propertyName, ICollection<TEntity> entities, out List<TEntity> entitiesToLoadQuery)
 		where TEntity : class
 		where TPropertyItem : class
 	{
@@ -208,12 +215,13 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Tato metoda inicializuje kolekce (nastaví nové instance), pokud jsou null.
 	/// </summary>
-	private void LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(TEntity[] entities, string propertyName)
+	private void LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(ICollection<TEntity> entities, string propertyName)
 		where TEntity : class
 		where TPropertyCollection : class
 		where TPropertyItem : class
 	{
 		var propertyLambda = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName).LambdaCompiled;
+		// TODO EF Core 9: Odebrat ToList
 		List<TEntity> entitiesWithNullReference = entities.Where(item => propertyLambda(item) == null).ToList();
 
 		if (entitiesWithNullReference.Count > 0)
@@ -240,7 +248,7 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Označí entitám vlatnost propertyName jako načtenou.
 	/// </summary>
-	private void LoadCollectionPropertyInternal_MarkAsLoaded<TEntity>(TEntity[] entities, string propertyName)
+	private void LoadCollectionPropertyInternal_MarkAsLoaded<TEntity>(ICollection<TEntity> entities, string propertyName)
 		where TEntity : class
 	{
 		foreach (var entity in entities)
@@ -249,17 +257,21 @@ public partial class DbDataLoader
 		}
 	}
 
-	private LoadPropertyInternalResult LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(TEntity[] entities, string originalPropertyName)
+	private LoadPropertyInternalResult LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(ICollection<TEntity> entities, string originalPropertyName)
 		where TEntity : class
 		where TOriginalPropertyCollection : class
 		where TPropertyItem : class
 	{
 		var originalPropertyLambda = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(originalPropertyName).LambdaCompiled;
 
+		IEnumerable<TPropertyItem> loadedEntities = entities.SelectMany(item => (IEnumerable<TPropertyItem>)originalPropertyLambda(item));
 		return new LoadPropertyInternalResult
 		{
-			Entities = entities.SelectMany(item => (IEnumerable<TPropertyItem>)originalPropertyLambda(item)).ToArray(),
-			FluentDataLoader = new DbFluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, entities.SelectMany(item => originalPropertyLambda(item)).ToArray())
+			// Zde předáváme dvakrát IEnumerable<TPropertyItem>, ale efektivně bude použit nejvýše jeden z nich.
+			// Entities v dalším průchodu foreachem v LoadInternal[Async] (pokud nenásleduje další průchod, nebude kolekce nikdy zpracována)
+			// FluentDataLoader v dalším ThanLoad (pokud nenásleduje ThenLoad[Async], nebude kolekce nikdy zpracována)
+			Entities = loadedEntities,
+			FluentDataLoader = new DbFluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, loadedEntities)
 		};
 	}
 }

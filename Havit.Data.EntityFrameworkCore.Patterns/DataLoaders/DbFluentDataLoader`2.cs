@@ -15,12 +15,12 @@ internal class DbFluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TC
 	where TItem : class
 {
 	internal DbDataLoader Loader { get; }
-	internal TItem[] Data { get; }
+	internal IEnumerable<TItem> Data { get; }
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public DbFluentDataLoader(DbDataLoader loader, TItem[] data)
+	public DbFluentDataLoader(DbDataLoader loader, IEnumerable<TItem> data)
 	{
 		this.Loader = loader;
 		this.Data = data;
@@ -49,7 +49,7 @@ internal class DbFluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TC
 	{
 		if (typeof(IEnumerable<TWrappedEntity>).IsAssignableFrom(typeof(TContractEntity)))
 		{
-			TWrappedEntity[] unwrappedData = Data.Cast<TWrappedEntity>().ToArray();
+			IEnumerable<TWrappedEntity> unwrappedData = Data.Cast<TWrappedEntity>();
 			return new DbFluentDataLoader<TWrappedEntity, TWrappedEntity>(this.Loader, unwrappedData);
 		}
 		else

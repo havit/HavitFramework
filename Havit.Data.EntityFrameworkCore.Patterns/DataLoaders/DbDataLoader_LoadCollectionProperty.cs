@@ -21,6 +21,11 @@ public partial class DbDataLoader
 	{
 		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
 
+		if (entities.Count == 0)
+		{
+			return LoadPropertyInternalResult.CreateEmpty<TPropertyItem>();
+		}
+
 		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
 		if ((entitiesToLoadQuery != null) && (entitiesToLoadQuery.Count > 0)) // zůstalo nám, na co se ptát do databáze?
@@ -84,6 +89,11 @@ public partial class DbDataLoader
 		where TPropertyItem : class
 	{
 		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
+
+		if (entities.Count == 0)
+		{
+			return LoadPropertyInternalResult.CreateEmpty<TPropertyItem>();
+		}
 
 		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
@@ -271,7 +281,7 @@ public partial class DbDataLoader
 			// Entities v dalším průchodu foreachem v LoadInternal[Async] (pokud nenásleduje další průchod, nebude kolekce nikdy zpracována)
 			// FluentDataLoader v dalším ThanLoad (pokud nenásleduje ThenLoad[Async], nebude kolekce nikdy zpracována)
 			Entities = loadedEntities,
-			FluentDataLoader = new DbFluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, loadedEntities)
+			FluentDataLoader = new FluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, loadedEntities)
 		};
 	}
 }

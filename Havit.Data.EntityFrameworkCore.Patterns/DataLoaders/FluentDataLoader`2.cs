@@ -10,17 +10,17 @@ namespace Havit.Data.Patterns.DataLoaders;
 /// - TContractEntity je typ vlastnosti Xy, použije se jen pro snadný zápis fluent API, jiný význam nemá.
 /// - TItem je typ, který je prvkem kolekce Xy.
 /// </summary>
-internal class DbFluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TContractEntity>
+internal class FluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TContractEntity>
 	where TContractEntity : class
 	where TItem : class
 {
-	internal DbDataLoader Loader { get; }
+	internal IDataLoader Loader { get; }
 	internal IEnumerable<TItem> Data { get; }
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public DbFluentDataLoader(DbDataLoader loader, IEnumerable<TItem> data)
+	public FluentDataLoader(IDataLoader loader, IEnumerable<TItem> data)
 	{
 		this.Loader = loader;
 		this.Data = data;
@@ -44,13 +44,13 @@ internal class DbFluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TC
 		return this.Unwrap<TWrappedEntity>();
 	}
 
-	private DbFluentDataLoader<TWrappedEntity, TWrappedEntity> Unwrap<TWrappedEntity>()
+	private FluentDataLoader<TWrappedEntity, TWrappedEntity> Unwrap<TWrappedEntity>()
 		where TWrappedEntity : class
 	{
 		if (typeof(IEnumerable<TWrappedEntity>).IsAssignableFrom(typeof(TContractEntity)))
 		{
 			IEnumerable<TWrappedEntity> unwrappedData = Data.Cast<TWrappedEntity>();
-			return new DbFluentDataLoader<TWrappedEntity, TWrappedEntity>(this.Loader, unwrappedData);
+			return new FluentDataLoader<TWrappedEntity, TWrappedEntity>(this.Loader, unwrappedData);
 		}
 		else
 		{

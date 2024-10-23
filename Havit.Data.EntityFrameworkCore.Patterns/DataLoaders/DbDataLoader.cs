@@ -66,10 +66,11 @@ public partial class DbDataLoader : IDataLoader
 	{
 		if (entity == null)
 		{
-			return new DbFluentDataLoader<TProperty>(this, Array.Empty<TProperty>());
+			return new NullFluentDataLoader<TProperty>();
 		}
 
-		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
+		TEntity[] distinctNotNullEntities = [entity];
 		return LoadInternal(distinctNotNullEntities, propertyPath);
 	}
 
@@ -89,6 +90,7 @@ public partial class DbDataLoader : IDataLoader
 			return;
 		}
 
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
 		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -105,7 +107,7 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().ToArray();
+		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext);
 		return LoadInternal(distinctNotNullEntities, propertyPath);
 	}
 
@@ -121,7 +123,7 @@ public partial class DbDataLoader : IDataLoader
 		Contract.Requires(propertyPaths != null);
 		Contract.Requires(propertyPaths.Length > 0);
 
-		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
+		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
 			LoadInternal(distinctNotNullEntities, propertyPath);
@@ -142,10 +144,11 @@ public partial class DbDataLoader : IDataLoader
 
 		if (entity == null)
 		{
-			return new DbFluentDataLoader<TProperty>(this, Array.Empty<TProperty>());
+			return new NullFluentDataLoader<TProperty>();
 		}
 
-		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
+		TEntity[] distinctNotNullEntities = [entity];
 		return await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 	}
 
@@ -166,6 +169,7 @@ public partial class DbDataLoader : IDataLoader
 			return;
 		}
 
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
 		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -186,7 +190,7 @@ public partial class DbDataLoader : IDataLoader
 		Contract.Requires(entities != null);
 		Contract.Requires(propertyPath != null);
 
-		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().ToArray();
+		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext);
 		return await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 	}
 
@@ -202,7 +206,7 @@ public partial class DbDataLoader : IDataLoader
 		Contract.Requires(propertyPaths != null);
 		Contract.Requires(propertyPaths.Length > 0);
 
-		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
+		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
 			await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
@@ -212,24 +216,14 @@ public partial class DbDataLoader : IDataLoader
 	/// <summary>
 	/// Deleguje načtení objektů do metody pro načtení referencí nebo metody pro načtení kolekce.
 	/// </summary>
-	private IFluentDataLoader<TProperty> LoadInternal<TEntity, TProperty>(TEntity[] distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath)
+	private IFluentDataLoader<TProperty> LoadInternal<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath)
 		where TEntity : class
 		where TProperty : class
 	{
-		if (distinctNotNullEntities.Length == 0)
-		{
-			LogDebug("Exiting, there is nothing to load.");
-			return new DbFluentDataLoader<TProperty>(this, Array.Empty<TProperty>());
-		}
-
-		// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
-		// TODO EF Core 9: Dokážeme eliminovat průchod pomocí iterátoru nad kolekcí (stačí Select).
-		Contract.Assert<InvalidOperationException>(distinctNotNullEntities.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
 		// vytáhneme posloupnost vlastností, které budeme načítat
 		PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
-		IEnumerable entities = distinctNotNullEntities; // entities: První instance je pole, v dalších průchodech je IEnumerable<>
+		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
 
 		object[] invokeLoadReferencePropertyInternalMethodArguments = null;
@@ -295,23 +289,14 @@ public partial class DbDataLoader : IDataLoader
 	/// <summary>
 	/// Deleguje načtení objektů do asynchronní metody pro načtení referencí nebo asynchronní metody pro načtení kolekce.
 	/// </summary>
-	private async Task<IFluentDataLoader<TProperty>> LoadInternalAsync<TEntity, TProperty>(TEntity[] distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
+	private async Task<IFluentDataLoader<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
 		where TEntity : class
 		where TProperty : class
 	{
-		if (distinctNotNullEntities.Length == 0) // pokud ne máme, co načítat
-		{
-			LogDebug("Exiting, there is nothing to load.");
-			return new DbFluentDataLoader<TProperty>(this, Array.Empty<TProperty>());
-		}
-		// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
-		// TODO EF Core 9: Dokážeme eliminovat průchod pomocí iterátoru nad kolekcí (stačí Select).
-		Contract.Assert<InvalidOperationException>(distinctNotNullEntities.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
 		// vytáhneme posloupnost vlastností, které budeme načítat
 		PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
-		IEnumerable entities = distinctNotNullEntities; // // entities: První instance je pole, v dalších průchodech je IEnumerable<>
+		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
 
 		object[] invokeLoadReferencePropertyInternalMethodArguments = null;

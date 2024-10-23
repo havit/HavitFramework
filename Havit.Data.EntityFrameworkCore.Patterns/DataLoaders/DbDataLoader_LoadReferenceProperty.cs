@@ -18,6 +18,11 @@ public partial class DbDataLoader
 	{
 		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
 
+		if (entities.Count == 0)
+		{
+			return LoadPropertyInternalResult.CreateEmpty<TProperty>();
+		}
+
 		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
@@ -65,6 +70,11 @@ public partial class DbDataLoader
 		where TProperty : class
 	{
 		ICollection<TEntity> entities = LoadPropertyInternal_EntitiesToCollectionOptimized(distinctNotNullEntities);
+
+		if (entities.Count == 0)
+		{
+			return LoadPropertyInternalResult.CreateEmpty<TProperty>();
+		}
 
 		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
@@ -206,7 +216,7 @@ public partial class DbDataLoader
 			// Entities v dalším průchodu foreachem v LoadInternal[Async] (pokud nenásleduje další průchod, nebude kolekce nikdy zpracována)
 			// FluentDataLoader v dalším ThanLoad (pokud nenásleduje ThenLoad[Async], nebude kolekce nikdy zpracována)
 			Entities = loadedEntities,
-			FluentDataLoader = new DbFluentDataLoader<TProperty>(this, loadedEntities)
+			FluentDataLoader = new FluentDataLoader<TProperty>(this, loadedEntities)
 		};
 	}
 }

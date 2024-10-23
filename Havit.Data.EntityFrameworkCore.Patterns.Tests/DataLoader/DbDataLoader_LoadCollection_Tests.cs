@@ -297,7 +297,7 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 		Master master = dbContext.Master.First();
 
 		// Act
-		DbFluentDataLoader<FilteringCollection<Child>, Child> fluentDataLoader = (DbFluentDataLoader<FilteringCollection<Child>, Child>)dataLoader.Load(master, m => m.Children); ;
+		FluentDataLoader<FilteringCollection<Child>, Child> fluentDataLoader = (FluentDataLoader<FilteringCollection<Child>, Child>)dataLoader.Load(master, m => m.Children); ;
 
 		// Assert
 		Assert.AreEqual(0, fluentDataLoader.Data.Count(), "Jsou vybráni smazané Child k načítání závislostí.");

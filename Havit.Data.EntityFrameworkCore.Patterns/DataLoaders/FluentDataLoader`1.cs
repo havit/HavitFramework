@@ -7,10 +7,10 @@ namespace Havit.Data.Patterns.DataLoaders;
 /// Použit pro výsledek načtení referencí.
 /// 
 /// </summary>
-internal class DbFluentDataLoader<TEntity> : DbFluentDataLoader<TEntity, TEntity>
+internal class FluentDataLoader<TEntity> : FluentDataLoader<TEntity, TEntity>
 	where TEntity : class
 {
-	public DbFluentDataLoader(DbDataLoader loader, IEnumerable<TEntity> data) : base(loader, data)
+	public FluentDataLoader(IDataLoader loader, IEnumerable<TEntity> data) : base(loader, data)
 	{
 	}
 }

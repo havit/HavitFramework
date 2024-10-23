@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Text.RegularExpressions;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 
 /// <summary>
 /// Změny objektů v UnitOfWork.

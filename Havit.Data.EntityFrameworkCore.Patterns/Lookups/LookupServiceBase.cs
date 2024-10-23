@@ -115,6 +115,8 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// </summary>
 	protected List<TEntity> GetEntitiesByLookupKeys(TLookupKey[] lookupKeys)
 	{
+		ArgumentNullException.ThrowIfNull(lookupKeys);
+
 		var entityKeys = lookupKeys.Select(lookupKey =>
 			{
 				bool success = TryGetEntityKeyByLookupKey(lookupKey, out int entityKey);
@@ -134,6 +136,8 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : ILookupDataInvali
 	/// </summary>
 	protected async ValueTask<List<TEntity>> GetEntitiesByLookupKeysAsync(TLookupKey[] lookupKeys, CancellationToken cancellationToken = default)
 	{
+		ArgumentNullException.ThrowIfNull(lookupKeys);
+
 		List<int> entityKeys = new List<int>(lookupKeys.Length);
 		foreach (var lookupKey in lookupKeys)
 		{

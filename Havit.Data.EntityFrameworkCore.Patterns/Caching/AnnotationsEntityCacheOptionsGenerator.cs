@@ -1,9 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Metadata;
-using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Services.Caching;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -45,7 +41,6 @@ public class AnnotationsEntityCacheOptionsGenerator : IEntityCacheOptionsGenerat
 		return GetValueForEntity(typeof(TEntity));
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private CacheOptions GetValueForEntity(Type type)
 	{
 		_annotationsEntityCacheOptionsGeneratorStorage.Value.TryGetValue(type, out CacheOptions result);

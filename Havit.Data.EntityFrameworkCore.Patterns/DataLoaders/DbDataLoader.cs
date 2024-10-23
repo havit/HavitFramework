@@ -7,8 +7,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
-using Havit.Diagnostics.Contracts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
@@ -27,12 +25,12 @@ public partial class DbDataLoader : IDataLoader
 	/// </summary>
 	internal const int ChunkSize = DbRepository<object>.GetObjectsChunkSize;
 
-	private readonly IDbContext dbContext;
-	private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
-	private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
-	private readonly IEntityCacheManager entityCacheManager;
-	private readonly IEntityKeyAccessor entityKeyAccessor;
-	private readonly ILogger<DbDataLoader> logger;
+	private readonly IDbContext _dbContext;
+	private readonly IPropertyLoadSequenceResolver _propertyLoadSequenceResolver;
+	private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
+	private readonly IEntityCacheManager _entityCacheManager;
+	private readonly IEntityKeyAccessor _entityKeyAccessor;
+	private readonly ILogger<DbDataLoader> _logger;
 
 	/// <summary>
 	/// Konstructor.
@@ -45,14 +43,12 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="logger">Logger.</param>
 	public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILogger<DbDataLoader> logger)
 	{
-		Contract.Requires(dbContext != null);
-
-		this.dbContext = dbContext;
-		this.propertyLoadSequenceResolver = propertyLoadSequenceResolver;
-		this.lambdaExpressionManager = lambdaExpressionManager;
-		this.entityCacheManager = entityCacheManager;
-		this.entityKeyAccessor = entityKeyAccessor;
-		this.logger = logger;
+		_dbContext = dbContext;
+		_propertyLoadSequenceResolver = propertyLoadSequenceResolver;
+		_lambdaExpressionManager = lambdaExpressionManager;
+		_entityCacheManager = entityCacheManager;
+		_entityKeyAccessor = entityKeyAccessor;
+		_logger = logger;
 	}
 
 	/// <summary>
@@ -69,7 +65,7 @@ public partial class DbDataLoader : IDataLoader
 			return new NullFluentDataLoader<TProperty>();
 		}
 
-		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
 		TEntity[] distinctNotNullEntities = [entity];
 		return LoadInternal(distinctNotNullEntities, propertyPath);
 	}
@@ -82,15 +78,15 @@ public partial class DbDataLoader : IDataLoader
 	public void Load<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
 		if (entity == null)
 		{
 			return;
 		}
 
-		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
 		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -107,7 +103,7 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext);
+		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext);
 		return LoadInternal(distinctNotNullEntities, propertyPath);
 	}
 
@@ -119,11 +115,11 @@ public partial class DbDataLoader : IDataLoader
 	public void LoadAll<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
 		where TEntity : class
 	{
-		Contract.Requires(entities != null);
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(entities);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
-		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
+		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
 			LoadInternal(distinctNotNullEntities, propertyPath);
@@ -140,14 +136,14 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		Contract.Requires(propertyPath != null);
+		ArgumentNullException.ThrowIfNull(propertyPath);
 
 		if (entity == null)
 		{
 			return new NullFluentDataLoader<TProperty>();
 		}
 
-		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
 		TEntity[] distinctNotNullEntities = [entity];
 		return await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 	}
@@ -161,15 +157,15 @@ public partial class DbDataLoader : IDataLoader
 	public async Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
 		if (entity == null)
 		{
 			return;
 		}
 
-		DbDataLoaderHelpers.CheckEntityIsTracked(entity, dbContext);
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
 		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
@@ -187,10 +183,10 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		Contract.Requires(entities != null);
-		Contract.Requires(propertyPath != null);
+		ArgumentNullException.ThrowIfNull(entities);
+		ArgumentNullException.ThrowIfNull(propertyPath);
 
-		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext);
+		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext);
 		return await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 	}
 
@@ -203,10 +199,11 @@ public partial class DbDataLoader : IDataLoader
 	public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(entities);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
-		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
+		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
 			await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
@@ -221,7 +218,7 @@ public partial class DbDataLoader : IDataLoader
 		where TProperty : class
 	{
 		// vytáhneme posloupnost vlastností, které budeme načítat
-		PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
 		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
@@ -294,7 +291,7 @@ public partial class DbDataLoader : IDataLoader
 		where TProperty : class
 	{
 		// vytáhneme posloupnost vlastností, které budeme načítat
-		PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
 		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
@@ -371,12 +368,12 @@ public partial class DbDataLoader : IDataLoader
 	protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return dbContext.IsNavigationLoaded(entity, propertyName);
+		return _dbContext.IsNavigationLoaded(entity, propertyName);
 	}
 
 	private void LogDebug(string message, [System.Runtime.CompilerServices.CallerMemberName] string caller = null, params object[] args)
 	{
 		// TODO: Dořešit Params
-		logger.LogDebug("{caller}: {message} ", caller, message);
+		_logger.LogDebug("{caller}: {message} ", caller, message);
 	}
 }

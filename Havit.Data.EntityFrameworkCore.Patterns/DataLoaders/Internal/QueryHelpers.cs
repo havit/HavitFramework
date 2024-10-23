@@ -1,5 +1,4 @@
-﻿using Havit.Diagnostics.Contracts;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 
@@ -7,7 +6,7 @@ internal static class QueryHelpers
 {
 	internal static Expression<Func<TEntity, bool>> ContainsEffective<TEntity>(this List<int> values, Expression<Func<TEntity, int>> propertyAccessor)
 	{
-		Contract.Requires(values != null);
+		ArgumentNullException.ThrowIfNull(values);
 
 		// žádný hodnota -> item => false;
 		if (values.Count == 0)

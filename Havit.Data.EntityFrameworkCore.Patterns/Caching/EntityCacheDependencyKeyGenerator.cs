@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
 
@@ -47,13 +46,11 @@ public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenera
 		return dependencyKey;
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void EnsureSupportsCacheDependencies()
 	{
 		Contract.Assert<InvalidOperationException>(_cacheService.SupportsCacheDependencies, "Dependency keys can be generated only for ICacheService which supports cache dependencies.");
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void EnsureInCache(string dependencyKey)
 	{
 		// musíme se nejprve zeptat, zda exisuje

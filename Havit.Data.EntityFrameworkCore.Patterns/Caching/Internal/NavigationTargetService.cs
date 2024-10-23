@@ -1,7 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 /// <inheritdoc />
 public class NavigationTargetService : INavigationTargetService

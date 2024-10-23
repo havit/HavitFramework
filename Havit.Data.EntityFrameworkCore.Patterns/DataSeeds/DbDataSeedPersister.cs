@@ -86,7 +86,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// </summary>
 	internal void CheckConditions<TEntity>(DataSeedConfiguration<TEntity> configuration)
 	{
-		Contract.Requires<ArgumentNullException>(configuration != null);
+		ArgumentNullException.ThrowIfNull(configuration);
 		Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
 		var entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
@@ -353,7 +353,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// </remarks>
 	internal List<IProperty> GetPropertiesForInserting(IEntityType entityType)
 	{
-		Contract.Requires<ArgumentNullException>(entityType != null);
+		ArgumentNullException.ThrowIfNull(entityType);
 
 		return entityType
 			.GetProperties()
@@ -368,7 +368,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// </summary>		
 	internal List<IProperty> GetPropertiesForUpdating<TEntity>(IEntityType entityType, List<Expression<Func<TEntity, object>>> excludedProperties)
 	{
-		Contract.Requires<ArgumentNullException>(entityType != null);
+		ArgumentNullException.ThrowIfNull(entityType);
 
 		List<IProperty> result = entityType
 			.GetProperties()

@@ -7,6 +7,8 @@ internal static class DbContextExtensions
 {
 	internal static bool SupportsSqlServerOpenJson(this IDbContext dbContext)
 	{
+		ArgumentNullException.ThrowIfNull(dbContext);
+
 		var sqlServerSingletonOptions = (dbContext as Microsoft.EntityFrameworkCore.DbContext)?.GetService<ISqlServerSingletonOptions>();
 		return (sqlServerSingletonOptions == null)
 			? false

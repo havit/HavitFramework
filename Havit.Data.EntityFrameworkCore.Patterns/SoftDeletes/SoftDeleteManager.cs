@@ -31,10 +31,10 @@ public class SoftDeleteManager : ISoftDeleteManager
 	/// </summary>
 	public bool IsSoftDeleteSupported(Type entityType)
 	{
-		Contract.Requires<ArgumentNullException>(entityType != null);
-
 		return _supportedTypesDictionary.GetOrAdd(entityType, _ =>
 		{
+			ArgumentNullException.ThrowIfNull(entityType); // kontrolu na null hodnotu parametru odložíme až do doby, kdy hodnotu nenajdeme v dictionary a chceme pro ni zjistit podporu
+
 			PropertyInfo deletedProperty = entityType.GetProperty("Deleted");
 			return (deletedProperty != null) && deletedProperty.PropertyType == typeof(DateTime?);
 		});
@@ -81,10 +81,11 @@ public class SoftDeleteManager : ISoftDeleteManager
 	/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
 	public Expression<Func<TEntity, bool>> GetNotDeletedExpressionLambda<TEntity>()
 	{
-		Contract.Requires<NotSupportedException>(IsSoftDeleteSupported(typeof(TEntity)), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
-
 		return (Expression<Func<TEntity, bool>>)_notDeletedExpressionLambdaDictionary.GetOrAdd(typeof(TEntity), _ =>
 		{
+			// odložení kontroly na podporovaný typ až do doby, kdy se hodnota nenajde v dictionary
+			Contract.Assert<NotSupportedException>(IsSoftDeleteSupported(typeof(TEntity)), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
+
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "o");
 			BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null));
 			return Expression.Lambda(equal, parameter);
@@ -97,6 +98,7 @@ public class SoftDeleteManager : ISoftDeleteManager
 	/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
 	public Func<TEntity, bool> GetNotDeletedCompiledLambda<TEntity>()
 	{
+		// kontrola typu je až v metodě GetNotDeletedExpressionLambda
 		return (Func<TEntity, bool>)_notDeletedCompiledLambdaDictionary.GetOrAdd(typeof(TEntity), _ => GetNotDeletedExpressionLambda<TEntity>().Compile());
 	}
 

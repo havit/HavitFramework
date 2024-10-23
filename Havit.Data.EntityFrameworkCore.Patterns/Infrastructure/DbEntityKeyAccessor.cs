@@ -1,5 +1,4 @@
 ﻿using Havit.Data.Patterns.Infrastructure;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 
@@ -25,7 +24,6 @@ public class DbEntityKeyAccessor : IEntityKeyAccessor
 	public object[] GetEntityKeyValues(object entity)
 	{
 		// TODO EF Core 9: Velmi často se používá na výsledek metody .Single(), pokud uděláme dedikovanou metodu, odstraníme alokaci pole pomocí .ToArray().
-		Contract.Requires(entity != null);
 		return GetDbEntityKeyAccessorItem(entity.GetType()).PropertyInfos.Select(propertyInfo => propertyInfo.GetValue(entity)).ToArray();
 	}
 

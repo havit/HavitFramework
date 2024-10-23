@@ -8,7 +8,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -277,7 +276,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 	private void TryGetNavigation_ManyToMany_ChangeTracker_Tracked(object sender, EntityTrackedEventArgs e)
 	{
-		Contract.Requires(e.Entry.State == Microsoft.EntityFrameworkCore.EntityState.Added);
+		Contract.Requires<InvalidOperationException>(e.Entry.State == Microsoft.EntityFrameworkCore.EntityState.Added);
 		e.Entry.State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
 	}
 

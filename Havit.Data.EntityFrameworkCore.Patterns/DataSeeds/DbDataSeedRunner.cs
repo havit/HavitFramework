@@ -13,7 +13,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 public class DbDataSeedRunner : DataSeedRunner
 {
 	private const string DataSeedLockValue = "DbDataSeeds";
-	private readonly IDbContext dbContext;
+	private readonly IDbContext _dbContext;
 
 	/// <summary>
 	/// Konstruktor.
@@ -24,23 +24,23 @@ public class DbDataSeedRunner : DataSeedRunner
 		IDbContext dbContext)
 		: base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory)
 	{
-		this.dbContext = dbContext;
+		this._dbContext = dbContext;
 	}
 
 	/// <inheritdoc />
 	public override void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	{
-		if (dbContext.Database.IsSqlServer())
+		if (_dbContext.Database.IsSqlServer())
 		{
-			new DbLockedCriticalSection((SqlConnection)dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
+			new DbLockedCriticalSection((SqlConnection)_dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
 			{
 				// podpora pro Connection Resiliency
 				// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
 				// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
-				var strategy = dbContext.Database.CreateExecutionStrategy();
+				var strategy = _dbContext.Database.CreateExecutionStrategy();
 				strategy.Execute(() =>
 				{
-					using (IDbContextTransaction transaction = dbContext.Database.BeginTransaction())
+					using (IDbContextTransaction transaction = _dbContext.Database.BeginTransaction())
 					{
 						base.SeedData(dataSeedProfileType, forceRun);
 						transaction.Commit();

@@ -1,6 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
-
-namespace Havit.Data.Patterns.DataLoaders;
+﻿namespace Havit.Data.Patterns.DataLoaders;
 
 /// <summary>
 /// Podpora Fluent API pro DbDataLoader.

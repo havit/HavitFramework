@@ -1,7 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.Patterns.DataLoaders;
-using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -31,7 +30,7 @@ public partial class DbDataLoader
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
-			if ((foreignKeysToLoad.Count < ChunkSize) || dbContext.SupportsSqlServerOpenJson())
+			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
 				LogDebug("Starting reading from a database.");
@@ -84,7 +83,7 @@ public partial class DbDataLoader
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
-			if ((foreignKeysToLoad.Count < ChunkSize) || dbContext.SupportsSqlServerOpenJson())
+			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
 				LogDebug("Starting reading from a database.");
@@ -128,13 +127,13 @@ public partial class DbDataLoader
 		}
 
 		// získáme cizí klíč reprezentující referenci (Navigation)
-		IProperty foreignKeyForReference = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+		IProperty foreignKeyForReference = _dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
 
 		// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
 		// ignorujeme nenastavené reference (null)
-		IEnumerable<object> foreignKeyValues = entitiesToLoadReference.Select(entity => dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct();
+		IEnumerable<object> foreignKeyValues = entitiesToLoadReference.Select(entity => _dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct();
 
-		IDbSet<TProperty> dbSet = dbContext.Set<TProperty>();
+		IDbSet<TProperty> dbSet = _dbContext.Set<TProperty>();
 
 		bool shouldFixup = false;
 		foreignKeysToLoad = new List<object>(entitiesToLoadReference.Count);
@@ -152,7 +151,7 @@ public partial class DbDataLoader
 			{
 				shouldFixup = true;
 			}
-			else if (entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
+			else if (_entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
 			{
 				// NOOP
 			}
@@ -170,7 +169,7 @@ public partial class DbDataLoader
 		{
 			LogDebug("Starting change tracker change detection.");
 			// TODO EF Core 9: Pokud bychom měli i objekt(y), které vedou na tento cizí klíč, mohli bychom použít jen lokální detekci změn
-			dbContext.ChangeTracker.DetectChanges();
+			_dbContext.ChangeTracker.DetectChanges();
 		}
 	}
 
@@ -179,14 +178,14 @@ public partial class DbDataLoader
 	{
 		// získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
 		// Performance: No big issue.
-		string propertyPrimaryKey = dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
+		string propertyPrimaryKey = _dbContext.Model.FindEntityType(typeof(TProperty)).FindPrimaryKey().Properties.Single().Name;
 
 		// získáme query pro načtení objektů
 
 		// https://github.com/aspnet/EntityFrameworkCore/issues/14408
 		// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
 		List<int> foreignKeysToQueryInt = foreignKeysToLoad.Cast<int>().ToList();
-		return dbContext.Set<TProperty>()
+		return _dbContext.Set<TProperty>()
 			.AsQueryable(QueryTagBuilder.CreateTag(typeof(DbDataLoader), null))
 			.Where(foreignKeysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
 	}
@@ -197,7 +196,7 @@ public partial class DbDataLoader
 		// uložíme do cache, pokud je cachovaná
 		foreach (TProperty loadedEntity in loadedProperties)
 		{
-			entityCacheManager.StoreEntity(loadedEntity);
+			_entityCacheManager.StoreEntity(loadedEntity);
 		}
 	}
 
@@ -205,7 +204,7 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
+		var propertyLambdaExpression = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
 		// zde spoléháme na proběhnutí fixupu
 

@@ -1,5 +1,4 @@
 ﻿using Havit.Data.Patterns.Infrastructure;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 
@@ -25,8 +24,6 @@ public class DbEntityKeyAccessor<TEntity, TKey> : IEntityKeyAccessor<TEntity, TK
 	/// <param name="entity">Entita.</param>
 	public TKey GetEntityKeyValue(TEntity entity)
 	{
-		Contract.Requires(entity != null);
-
 		return (TKey)_entityKeyAccessor.GetEntityKeyValues(entity).Single();
 	}
 

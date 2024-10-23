@@ -5,7 +5,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
@@ -84,7 +83,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 	public TEntity GetObject(int id)
 	{
-		Contract.Requires<ArgumentException>(id != default(int));
+		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 		// hledáme v identity mapě
 		TEntity result = DbSet.FindTracked(id);
@@ -124,7 +123,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 	public async Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentException>(id != default(int));
+		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 		TEntity result = DbSet.FindTracked(id);
 
@@ -164,14 +163,14 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public List<TEntity> GetObjects(params int[] ids)
 	{
-		Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
+		ArgumentNullException.ThrowIfNull(ids);
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
 
 		foreach (int id in ids)
 		{
-			Contract.Assert<ArgumentException>(id != default(int));
+			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 			TEntity trackedEntity = DbSet.FindTracked(id);
 			if (trackedEntity != null)
@@ -236,14 +235,14 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentException>(ids != null, nameof(ids));
+		ArgumentNullException.ThrowIfNull(ids);
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
 
 		foreach (int id in ids)
 		{
-			Contract.Assert<ArgumentException>(id != default(int));
+			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 			TEntity trackedEntity = DbSet.FindTracked(id);
 			if (trackedEntity != null)
@@ -387,8 +386,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// </remarks>
 	protected virtual void LoadReferences(IEnumerable<TEntity> entities)
 	{
-		Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
-
 		var loadReferences = GetLoadReferences();
 		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.
 		if (loadReferences == Enumerable.Empty<Expression<Func<TEntity, object>>>())
@@ -408,8 +405,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// </remarks>
 	protected virtual async Task LoadReferencesAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
-
 		var loadReferences = GetLoadReferences();
 		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.
 		if (loadReferences == Enumerable.Empty<Expression<Func<TEntity, object>>>())
@@ -431,8 +426,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 	private void ThrowObjectNotFoundException(params int[] missingIds)
 	{
-		Contract.Requires<ArgumentNullException>(missingIds != null, nameof(missingIds));
-		Contract.Requires<ArgumentException>(missingIds.Length > 0);
+		ArgumentNullException.ThrowIfNull(missingIds);
+		ArgumentOutOfRangeException.ThrowIfZero(missingIds.Length);
 
 		string exceptionText = (missingIds.Length == 1)
 			? String.Format("Object {0} with key {1} not found.", typeof(TEntity).Name, missingIds[0])

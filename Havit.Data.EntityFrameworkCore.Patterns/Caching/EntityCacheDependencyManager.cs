@@ -1,7 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
-using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -57,11 +55,8 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		});
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateEntityDependencies(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey, HashSet<string> cacheKeysToInvalidate)
 	{
-		Contract.Requires(entity != null);
-
 		// invalidate entity cache
 		Type entityType = entity.GetType();
 
@@ -83,13 +78,11 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		}
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey, HashSet<string> cacheKeysToInvalidate)
 	{
 		cacheKeysToInvalidate.Add(_entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateAnySaveCacheDependencyKeyInternal(Type entityType, HashSet<string> cacheKeysToInvalidate)
 	{
 		cacheKeysToInvalidate.Add(_entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));

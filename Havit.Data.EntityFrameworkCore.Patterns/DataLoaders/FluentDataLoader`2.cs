@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
 namespace Havit.Data.Patterns.DataLoaders;
 
@@ -22,8 +21,8 @@ internal class FluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TCon
 	/// </summary>
 	public FluentDataLoader(IDataLoader loader, IEnumerable<TItem> data)
 	{
-		this.Loader = loader;
-		this.Data = data;
+		Loader = loader;
+		Data = data;
 	}
 
 	/// <inheritdoc />

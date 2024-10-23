@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Services.Caching;
+﻿using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 
@@ -13,7 +12,6 @@ public class CacheEntityLookupDataStorage(
 	/// <summary>
 	/// Vrátí klíč, pod kterým bude storage uložen v cache.
 	/// </summary>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	protected virtual string GetCacheKey(string storageKey) => storageKey;
 
 	/// <inheritdoc />

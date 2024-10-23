@@ -1,7 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Metadata;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 

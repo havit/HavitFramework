@@ -1,6 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
-using Havit.Diagnostics.Contracts;
 using Havit.Services.TimeServices;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
@@ -10,18 +9,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 /// </summary>
 public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 {
-	private readonly ISoftDeleteManager softDeleteManager;
-	private readonly TEntity[] data;
+	private readonly ISoftDeleteManager _softDeleteManager;
+	private readonly TEntity[] _data;
 
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> Data => new FakeAsyncEnumerable<TEntity>(data.AsQueryable().WhereNotDeleted(softDeleteManager).ToList());
+	public virtual IQueryable<TEntity> Data => new FakeAsyncEnumerable<TEntity>(_data.AsQueryable().WhereNotDeleted(_softDeleteManager).ToList());
 
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> DataIncludingDeleted => new FakeAsyncEnumerable<TEntity>(data);
+	public virtual IQueryable<TEntity> DataIncludingDeleted => new FakeAsyncEnumerable<TEntity>(_data);
 
 	/// <summary>
 	/// Konstruktor.
@@ -39,9 +38,9 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <param name="softDeleteManager">Pro podporu mazání příznakem.</param>
 	protected FakeDataSource(IEnumerable<TEntity> data, ISoftDeleteManager softDeleteManager = null)
 	{
-		this.softDeleteManager = softDeleteManager ?? new SoftDeleteManager(new ServerTimeService());
-		Contract.Requires(data != null);
+		ArgumentNullException.ThrowIfNull(data);
 
-		this.data = data.ToArray();
+		_softDeleteManager = softDeleteManager ?? new SoftDeleteManager(new ServerTimeService());
+		_data = data.ToArray();
 	}
 }

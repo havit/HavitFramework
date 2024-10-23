@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
@@ -68,7 +67,6 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 		return GetValueFromDictionary(_annotationsEntityCacheSupportDecisionStorage.ShouldCacheAllKeys, entityType);
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private bool GetValueFromDictionary(FrozenDictionary<Type, bool> valuesDictionary, Type type)
 	{
 		if (valuesDictionary.TryGetValue(type, out bool result))

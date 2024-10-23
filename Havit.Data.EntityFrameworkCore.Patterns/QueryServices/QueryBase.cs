@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
 
@@ -37,8 +36,8 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected DataFragment<TQueryResultItem> GetPage(int pageIndex, int pageSize)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageIndex, 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 0);
 
 		return GetDataFragment(pageIndex * pageSize, pageSize);
 	}
@@ -48,8 +47,8 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected async Task<DataFragment<TQueryResultItem>> GetPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageIndex, 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 0);
 
 		return await GetDataFragmentAsync(pageIndex * pageSize, pageSize, cancellationToken).ConfigureAwait(false);
 	}
@@ -59,7 +58,8 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected internal DataFragment<TQueryResultItem> GetDataFragment(int startIndex, int? count)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
+		ArgumentNullException.ThrowIfNull(count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count.Value, 0);
 
 		IQueryable<TQueryResultItem> originalQuery = Query();
 		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;
@@ -90,7 +90,8 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected internal async Task<DataFragment<TQueryResultItem>> GetDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
+		ArgumentNullException.ThrowIfNull(count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count.Value, 0);
 
 		IQueryable<TQueryResultItem> originalQuery = Query();
 		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;

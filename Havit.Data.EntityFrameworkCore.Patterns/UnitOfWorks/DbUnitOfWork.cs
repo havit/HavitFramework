@@ -4,7 +4,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -48,9 +47,6 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IEntityCacheDependencyManager entityCacheDependencyManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner, ILookupDataInvalidationRunner lookupDataInvalidationRunner)
 	{
-		Contract.Requires<ArgumentNullException>(dbContext != null);
-		Contract.Requires<ArgumentNullException>(softDeleteManager != null);
-
 		DbContext = dbContext;
 		SoftDeleteManager = softDeleteManager;
 		EntityCacheManager = entityCacheManager;
@@ -151,6 +147,7 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	public void RegisterAfterCommitAction(Action action)
 	{
+		ArgumentNullException.ThrowIfNull(action);
 		if (_afterCommits == null)
 		{
 			_afterCommits = new List<Action>();
@@ -206,7 +203,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForInsert<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+		ArgumentNullException.ThrowIfNull(entity);
 		PerformAddForInsert(entity);
 	}
 
@@ -216,6 +213,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
+		ArgumentNullException.ThrowIfNull(entities);
 		PerformAddRangeForInsert(entities);
 	}
 
@@ -225,7 +223,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForUpdate<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+		ArgumentNullException.ThrowIfNull(entity);
 		PerformAddForUpdate(entity);
 	}
 
@@ -235,6 +233,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
+		ArgumentNullException.ThrowIfNull(entities);
 		PerformAddRangeForUpdate(entities);
 	}
 
@@ -245,7 +244,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForDelete<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+		ArgumentNullException.ThrowIfNull(entity);
 		PerformAddForDelete(entity);
 	}
 
@@ -256,6 +255,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
+		ArgumentNullException.ThrowIfNull(entities);
 		PerformAddRangeForDelete(entities);
 	}
 
@@ -264,7 +264,7 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	protected virtual void PerformAddForInsert<TEntity>(TEntity entity)
 		where TEntity : class
-	{
+	{		
 		DbContext.Set<TEntity>().Add(entity);
 	}
 

@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Metadata;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 
 /// <summary>
 /// Služba pro poskytnutí prefixů stringových klíčů do cache.

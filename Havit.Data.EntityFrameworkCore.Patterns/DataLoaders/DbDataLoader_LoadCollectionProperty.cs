@@ -32,7 +32,7 @@ public partial class DbDataLoader
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
-			if ((entitiesToLoadQuery.Count <= ChunkSize) || dbContext.SupportsSqlServerOpenJson())
+			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
 				LogDebug("Starting reading from a database.");
@@ -102,7 +102,7 @@ public partial class DbDataLoader
 		{
 			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
-			if ((entitiesToLoadQuery.Count <= ChunkSize) || dbContext.SupportsSqlServerOpenJson())
+			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
 				LogDebug("Starting reading from a database.");
@@ -147,7 +147,7 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		List<TEntity> entitiesToLoad = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).Where(item => dbContext.GetEntityState(item) != EntityState.Added).ToList();
+		List<TEntity> entitiesToLoad = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).Where(item => _dbContext.GetEntityState(item) != EntityState.Added).ToList();
 
 		if (entitiesToLoad.Count == 0)
 		{
@@ -158,7 +158,7 @@ public partial class DbDataLoader
 		entitiesToLoadQuery = new List<TEntity>(entitiesToLoad.Count);
 		foreach (var entityToLoad in entitiesToLoad)
 		{
-			if (entityCacheManager.TryGetNavigation<TEntity, TPropertyItem>(entityToLoad, propertyName))
+			if (_entityCacheManager.TryGetNavigation<TEntity, TPropertyItem>(entityToLoad, propertyName))
 			{
 				// NOOP
 			}
@@ -177,12 +177,12 @@ public partial class DbDataLoader
 		where TProperty : class
 	{
 		// Performance: No big issue.
-		var foreignKeyProperty = dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
+		var foreignKeyProperty = _dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
 
-		Contract.Assert(foreignKeyProperty.ClrType == typeof(int) || foreignKeyProperty.ClrType == typeof(int?));
+		Contract.Assert<InvalidOperationException>(foreignKeyProperty.ClrType == typeof(int) || foreignKeyProperty.ClrType == typeof(int?));
 
-		List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
-		return dbContext.Set<TProperty>()
+		List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => _entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
+		return _dbContext.Set<TProperty>()
 			.AsQueryable(QueryTagBuilder.CreateTag(typeof(DbDataLoader), null))
 
 			// V EF Core 2.x a 3.x bez následujícího řádku mohlo při vykonávání dotazu dojít k System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
@@ -204,7 +204,7 @@ public partial class DbDataLoader
 		// pozor, property zde ještě může být null
 		foreach (TEntity loadedEntity in loadedEntities)
 		{
-			entityCacheManager.StoreNavigation<TEntity, TPropertyItem>(loadedEntity, propertyName);
+			_entityCacheManager.StoreNavigation<TEntity, TPropertyItem>(loadedEntity, propertyName);
 		}
 	}
 
@@ -212,12 +212,12 @@ public partial class DbDataLoader
 		where TProperty : class
 	{
 		// TODO: Test na ManyToMany
-		if (entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TProperty)).Length == 1)
+		if (_entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TProperty)).Length == 1)
 		{
 			// uložíme do cache, pokud je cachovaná
 			foreach (TProperty loadedEntity in loadedProperties)
 			{
-				entityCacheManager.StoreEntity(loadedEntity);
+				_entityCacheManager.StoreEntity(loadedEntity);
 			}
 		}
 	}
@@ -230,7 +230,7 @@ public partial class DbDataLoader
 		where TPropertyCollection : class
 		where TPropertyItem : class
 	{
-		var propertyLambda = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName).LambdaCompiled;
+		var propertyLambda = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName).LambdaCompiled;
 		// TODO EF Core 9: Odebrat ToList
 		List<TEntity> entitiesWithNullReference = entities.Where(item => propertyLambda(item) == null).ToList();
 
@@ -263,7 +263,7 @@ public partial class DbDataLoader
 	{
 		foreach (var entity in entities)
 		{
-			dbContext.MarkNavigationAsLoaded(entity, propertyName);
+			_dbContext.MarkNavigationAsLoaded(entity, propertyName);
 		}
 	}
 
@@ -272,7 +272,7 @@ public partial class DbDataLoader
 		where TOriginalPropertyCollection : class
 		where TPropertyItem : class
 	{
-		var originalPropertyLambda = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(originalPropertyName).LambdaCompiled;
+		var originalPropertyLambda = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(originalPropertyName).LambdaCompiled;
 
 		IEnumerable<TPropertyItem> loadedEntities = entities.SelectMany(item => (IEnumerable<TPropertyItem>)originalPropertyLambda(item));
 		return new LoadPropertyInternalResult

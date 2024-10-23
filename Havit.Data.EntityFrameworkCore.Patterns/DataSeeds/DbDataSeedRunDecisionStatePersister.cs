@@ -9,14 +9,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 /// </summary>
 public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePersister
 {
-	private readonly IDbContext dbContext;
+	private readonly IDbContext _dbContext;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public DbDataSeedRunDecisionStatePersister(IDbContext dbContext)
 	{
-		this.dbContext = dbContext;
+		_dbContext = dbContext;
 	}
 
 	/// <summary>
@@ -30,7 +30,7 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 	/// </remarks>
 	public string ReadCurrentState(string profileName)
 	{
-		DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
+		DataSeedVersion dataSeedVersion = GetDataSeedVersion(_dbContext, profileName);
 		return dataSeedVersion?.Version;
 	}
 
@@ -44,14 +44,14 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 	/// </remarks>
 	public void WriteCurrentState(string profileName, string currentState)
 	{
-		DataSeedVersion dataSeedVersion = GetDataSeedVersion(dbContext, profileName);
+		DataSeedVersion dataSeedVersion = GetDataSeedVersion(_dbContext, profileName);
 		if (dataSeedVersion == null)
 		{
 			dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
-			dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
+			_dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
 		}
 		dataSeedVersion.Version = currentState;
-		dbContext.SaveChanges();
+		_dbContext.SaveChanges();
 	}
 
 	private DataSeedVersion GetDataSeedVersion(IDbContext dbContext, string profileName)

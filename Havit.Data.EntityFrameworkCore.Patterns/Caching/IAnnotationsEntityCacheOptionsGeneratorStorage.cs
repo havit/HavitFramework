@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using Havit.Services.Caching;
+﻿using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 

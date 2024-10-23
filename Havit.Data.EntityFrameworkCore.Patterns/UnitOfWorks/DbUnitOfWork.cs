@@ -264,7 +264,7 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	protected virtual void PerformAddForInsert<TEntity>(TEntity entity)
 		where TEntity : class
-	{		
+	{
 		DbContext.Set<TEntity>().Add(entity);
 	}
 

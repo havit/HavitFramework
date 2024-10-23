@@ -415,7 +415,7 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 
-		// TODO: EF Core 9: Co se situací, kdy sami necachujeme, ale chceme invalidovat cache jiné části systému?
+		// TODO: Co se situací, kdy sami necachujeme, ale chceme invalidovat cache jiné části systému?
 		if (_entityCacheSupportDecision.ShouldCacheEntity(change.Entity))
 		{
 			if (change.ChangeType != ChangeType.Insert)

@@ -219,6 +219,7 @@ public partial class DbDataLoader : IDataLoader
 	{
 		// vytáhneme posloupnost vlastností, které budeme načítat
 		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+		string propertyPathString = propertyPath.ToString(); // ev. by šlo použít CallerArgumentExpression, ale je to breaking change do IDataLoader
 
 		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
@@ -233,9 +234,10 @@ public partial class DbDataLoader : IDataLoader
 
 			if (!propertyToLoad.IsCollection)
 			{
-				invokeLoadReferencePropertyInternalMethodArguments ??= new object[2];
+				invokeLoadReferencePropertyInternalMethodArguments ??= new object[3];
 				invokeLoadReferencePropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
 				invokeLoadReferencePropertyInternalMethodArguments[1] = entities; // IEnumerable<>
+				invokeLoadReferencePropertyInternalMethodArguments[2] = propertyPathString;
 				try
 				{
 					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
@@ -253,10 +255,11 @@ public partial class DbDataLoader : IDataLoader
 			}
 			else
 			{
-				invokeLoadCollectionPropertyInternalMethodArguments ??= new object[3];
+				invokeLoadCollectionPropertyInternalMethodArguments ??= new object[4];
 				invokeLoadCollectionPropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
 				invokeLoadCollectionPropertyInternalMethodArguments[1] = propertyToLoad.OriginalPropertyName;
 				invokeLoadCollectionPropertyInternalMethodArguments[2] = entities; // IEnumerable<>
+				invokeLoadCollectionPropertyInternalMethodArguments[3] = propertyPathString;
 				try
 				{
 					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
@@ -292,7 +295,7 @@ public partial class DbDataLoader : IDataLoader
 	{
 		// vytáhneme posloupnost vlastností, které budeme načítat
 		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
-
+		string propertyPathString = propertyPath.ToString(); // ev. by šlo použít CallerArgumentExpression, ale je to breaking change do IDataLoader
 		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
 
@@ -306,10 +309,11 @@ public partial class DbDataLoader : IDataLoader
 			ValueTask<LoadPropertyInternalResult> task = default;
 			if (!propertyToLoad.IsCollection)
 			{
-				invokeLoadReferencePropertyInternalMethodArguments ??= new object[3];
+				invokeLoadReferencePropertyInternalMethodArguments ??= new object[4];
 				invokeLoadReferencePropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
 				invokeLoadReferencePropertyInternalMethodArguments[1] = entities; // IEnumerable<>
-				invokeLoadReferencePropertyInternalMethodArguments[2] = cancellationToken;
+				invokeLoadReferencePropertyInternalMethodArguments[2] = propertyPathString;
+				invokeLoadReferencePropertyInternalMethodArguments[3] = cancellationToken;
 				try
 				{
 					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
@@ -327,11 +331,12 @@ public partial class DbDataLoader : IDataLoader
 			}
 			else
 			{
-				invokeLoadCollectionPropertyInternalMethodArguments ??= new object[4];
+				invokeLoadCollectionPropertyInternalMethodArguments ??= new object[5];
 				invokeLoadCollectionPropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
 				invokeLoadCollectionPropertyInternalMethodArguments[1] = propertyToLoad.OriginalPropertyName;
 				invokeLoadCollectionPropertyInternalMethodArguments[2] = entities; // IEnumerable<>
-				invokeLoadCollectionPropertyInternalMethodArguments[3] = cancellationToken;
+				invokeLoadCollectionPropertyInternalMethodArguments[3] = propertyPathString;
+				invokeLoadCollectionPropertyInternalMethodArguments[4] = cancellationToken;
 				try
 				{
 					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)

@@ -11,7 +11,7 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 	/// </summary>
-	private LoadPropertyInternalResult LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities)
+	private LoadPropertyInternalResult LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities, string propertyPathString)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -32,19 +32,19 @@ public partial class DbDataLoader
 			List<TProperty> loadedProperties;
 			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
-				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
+				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoad, propertyPathString);
 				LogDebug("Starting reading from a database.");
 				loadedProperties = query.ToList();
 			}
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
+				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList()));
+				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
 				LogDebug("Starting reading chunks from a database.");
 
 				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
-				int chunkIndex = 0;
 				foreach (var chunkQuery in chunkQueries)
 				{
 					List<TProperty> loadedPropertiesChunk = chunkQuery.TagWith($"Chunk {++chunkIndex}/{chunksCount}").ToList();
@@ -64,7 +64,7 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
 	/// </summary>
-	private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities, CancellationToken cancellationToken /* no default */)
+	private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities, string propertyPathString, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -85,22 +85,22 @@ public partial class DbDataLoader
 			List<TProperty> loadedProperties;
 			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
-				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoad);
+				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoad, propertyPathString);
 				LogDebug("Starting reading from a database.");
 				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
 				// viz komentář v LoadCollectionPropertyInternal
-				// TODO EF Core 9: Odstranit ToList
-				List<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TProperty>(foreignKeysToLoadChunk.ToList())).ToList();
+				int chunkIndex = 0;
+				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
+				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
 				LogDebug("Starting reading chunks from a database.");
 
 				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
-				for (int chunkIndex = 0; chunkIndex < chunkQueries.Count; chunkIndex++)
+				foreach (var chunkQuery in chunkQueries)
 				{
-					var chunkQuery = chunkQueries[chunkIndex];
-					List<TProperty> loadedPropertiesChunk = await chunkQuery.TagWith($"Chunk {chunkIndex + 1}/{chunkQueries.Count}").ToListAsync(cancellationToken).ConfigureAwait(false);
+					List<TProperty> loadedPropertiesChunk = await chunkQuery.TagWith($"Chunk {++chunkIndex}/{chunksCount}").ToListAsync(cancellationToken).ConfigureAwait(false);
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
@@ -168,12 +168,12 @@ public partial class DbDataLoader
 		if (shouldFixup)
 		{
 			LogDebug("Starting change tracker change detection.");
-			// TODO EF Core 9: Pokud bychom měli i objekt(y), které vedou na tento cizí klíč, mohli bychom použít jen lokální detekci změn
+			// Pokud bychom měli i objekt(y), které vedou na tento cizí klíč, mohli bychom použít jen lokální detekci změn.
 			_dbContext.ChangeTracker.DetectChanges();
 		}
 	}
 
-	private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TProperty>(List<object> foreignKeysToLoad)
+	private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(List<object> foreignKeysToLoad, string propertyPathString)
 		where TProperty : class
 	{
 		// získáme název vlastnosti primárního klíče třídy načítané vlastnosti (obvykle "Id")
@@ -186,7 +186,7 @@ public partial class DbDataLoader
 		// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
 		List<int> foreignKeysToQueryInt = foreignKeysToLoad.Cast<int>().ToList();
 		return _dbContext.Set<TProperty>()
-			.AsQueryable(QueryTagBuilder.CreateTag(typeof(DbDataLoader), null))
+			.AsQueryable($"{nameof(DbDataLoader)} ({typeof(TEntity).Name} {propertyPathString})")
 			.Where(foreignKeysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
 	}
 

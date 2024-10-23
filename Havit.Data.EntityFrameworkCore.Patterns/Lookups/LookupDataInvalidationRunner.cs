@@ -22,13 +22,9 @@ public class LookupDataInvalidationRunner : ILookupDataInvalidationRunner
 	/// </summary>
 	public void Invalidate(Changes allKnownChanges)
 	{
-		// TODO EF Core 9: vícero iterování enumerable (+ toto navíc)!
-		if (lookupInvalidationServices.Any())
+		foreach (var lookupService in lookupInvalidationServices)
 		{
-			foreach (var lookupService in lookupInvalidationServices)
-			{
-				lookupService.InvalidateAfterCommit(allKnownChanges);
-			}
+			lookupService.InvalidateAfterCommit(allKnownChanges);
 		}
 	}
 }

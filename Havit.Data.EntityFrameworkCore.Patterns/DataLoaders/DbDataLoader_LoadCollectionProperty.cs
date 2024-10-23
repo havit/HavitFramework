@@ -13,7 +13,7 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 	/// </summary>
-	private LoadPropertyInternalResult LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, IEnumerable<TEntity> distinctNotNullEntities)
+	private LoadPropertyInternalResult LoadCollectionPropertyInternal<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, IEnumerable<TEntity> distinctNotNullEntities, string propertyPathString)
 		where TEntity : class
 		where TPropertyCollection : class
 		where TOriginalPropertyCollection : class
@@ -34,7 +34,7 @@ public partial class DbDataLoader
 			List<TPropertyItem> loadedProperties;
 			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
-				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName, propertyPathString);
 				LogDebug("Starting reading from a database.");
 				loadedProperties = query.ToList();
 			}
@@ -55,7 +55,7 @@ public partial class DbDataLoader
 
 				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName));
+				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
 				LogDebug("Starting reading chunks from a database.");
 				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
 				foreach (var chunkQuery in chunkQueries)
@@ -82,7 +82,7 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 	/// </summary>
-	private async ValueTask<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, IEnumerable<TEntity> distinctNotNullEntities, CancellationToken cancellationToken /* no default */)
+	private async ValueTask<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TOriginalPropertyCollection, TPropertyItem>(string propertyName, string originalPropertyName, IEnumerable<TEntity> distinctNotNullEntities, string propertyPathString, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
 		where TPropertyCollection : class
 		where TOriginalPropertyCollection : class
@@ -104,7 +104,7 @@ public partial class DbDataLoader
 			List<TPropertyItem> loadedProperties;
 			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
-				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
+				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName, propertyPathString);
 				LogDebug("Starting reading from a database.");
 				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 			}
@@ -113,7 +113,7 @@ public partial class DbDataLoader
 				// viz komentář v LoadCollectionPropertyInternal
 				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName));
+				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
 				LogDebug("Starting reading chunks from a database.");
 				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
 				foreach (var chunkQuery in chunkQueries)
@@ -172,7 +172,7 @@ public partial class DbDataLoader
 	/// <summary>
 	/// Vrátí dotaz načítající vlastnosti objektů pro dané primární klíče.
 	/// </summary>
-	private IQueryable<TProperty> LoadCollectionPropertyInternal_GetQuery<TEntity, TProperty>(List<TEntity> entitiesToLoad, string propertyName)
+	private IQueryable<TProperty> LoadCollectionPropertyInternal_GetQuery<TEntity, TProperty>(List<TEntity> entitiesToLoad, string propertyName, string propertyPathString)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -183,7 +183,7 @@ public partial class DbDataLoader
 
 		List<int> primaryKeysToLoad = entitiesToLoad.Select(entityToLoad => _entityKeyAccessor.GetEntityKeyValues(entityToLoad).Single()).Cast<int>().ToList();
 		return _dbContext.Set<TProperty>()
-			.AsQueryable(QueryTagBuilder.CreateTag(typeof(DbDataLoader), null))
+			.AsQueryable($"{nameof(DbDataLoader)} ({typeof(TEntity).Name} {propertyPathString})")
 
 			// V EF Core 2.x a 3.x bez následujícího řádku mohlo při vykonávání dotazu dojít k System.InvalidOperationException: Objekt povolující hodnotu Null musí mít hodnotu.
 			// V EF Core 5.x opraveno, již není třeba.
@@ -231,10 +231,10 @@ public partial class DbDataLoader
 		where TPropertyItem : class
 	{
 		var propertyLambda = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName).LambdaCompiled;
-		// TODO EF Core 9: Odebrat ToList
-		List<TEntity> entitiesWithNullReference = entities.Where(item => propertyLambda(item) == null).ToList();
+		IEnumerable<TEntity> entitiesWithNullReference = entities.Where(item => propertyLambda(item) == null);
 
-		if (entitiesWithNullReference.Count > 0)
+		var entitiesWithNullReferenceEnumerator = entitiesWithNullReference.GetEnumerator();
+		if (entitiesWithNullReferenceEnumerator.MoveNext()) // == .Any() s jednou iterací
 		{
 			if (typeof(TPropertyCollection) == typeof(List<TPropertyItem>) || typeof(TPropertyCollection) == typeof(IList<TPropertyItem>))
 			{
@@ -243,10 +243,13 @@ public partial class DbDataLoader
 				{
 					throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {{typeof(TEntity).FullName}} while it does not have a public setter.");
 				}
-				foreach (var item in entitiesWithNullReference)
+
+				var setterArgument = new object[1];
+				do
 				{
-					setter.Invoke(item, new object[] { new List<TPropertyItem>() });
-				}
+					setterArgument[0] = new List<TPropertyItem>(); // nastavujeme nové pole
+					setter.Invoke(entitiesWithNullReferenceEnumerator.Current, setterArgument);
+				} while (entitiesWithNullReferenceEnumerator.MoveNext());
 			}
 			else
 			{

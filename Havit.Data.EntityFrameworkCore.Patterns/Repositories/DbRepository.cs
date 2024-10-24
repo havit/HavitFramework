@@ -21,6 +21,9 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
 	private readonly IRepositoryQueryProvider repositoryQueryProvider;
 
+	private List<TEntity> _all;
+	private bool? _isEntityCachable;
+
 	/// <summary>
 	/// DataLoader pro případné využití v implementaci potomků.
 	/// </summary>
@@ -88,8 +91,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// hledáme v identity mapě
 		TEntity result = DbSet.FindTracked(id);
 
-		// není v identity mapě, hledáme v cache
-		if (result == null)
+		// není v identity mapě, hledáme v cache		
+		if ((result == null) && IsEntityCachable())
 		{
 			EntityCacheManager.TryGetEntity<TEntity>(id, out result);
 		}
@@ -128,7 +131,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		TEntity result = DbSet.FindTracked(id);
 
 		// není v identity mapě, hledáme v cache
-		if (result == null)
+		if ((result == null) && IsEntityCachable())
 		{
 			EntityCacheManager.TryGetEntity<TEntity>(id, out result);
 		}
@@ -168,6 +171,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
 
+		bool isEntityCachable = IsEntityCachable();
 		foreach (int id in ids)
 		{
 			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
@@ -178,7 +182,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				loadedEntities.Add(trackedEntity);
 			}
 			// není v identity mapě, hledáme v cache
-			else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
+			else if (isEntityCachable && EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
 			{
 				loadedEntities.Add(cachedEntity);
 			}
@@ -215,10 +219,13 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
-			// načtené objekty uložíme do cache
-			foreach (TEntity loadedObject in loadedObjects)
+			if (isEntityCachable)
 			{
-				EntityCacheManager.StoreEntity(loadedObject);
+				// načtené objekty uložíme do cache
+				foreach (TEntity loadedObject in loadedObjects)
+				{
+					EntityCacheManager.StoreEntity(loadedObject);
+				}
 			}
 
 			result.AddRange(loadedObjects);
@@ -240,6 +247,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
 
+		bool isEntityCachable = IsEntityCachable();
 		foreach (int id in ids)
 		{
 			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
@@ -250,7 +258,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				loadedEntities.Add(trackedEntity);
 			}
 			// není v identity mapě, hledáme v cache
-			else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
+			else if (isEntityCachable && EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
 			{
 				loadedEntities.Add(cachedEntity);
 			}
@@ -286,10 +294,13 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
-			// načtené objekty uložíme do cache
-			foreach (TEntity loadedObject in loadedObjects)
+			if (isEntityCachable)
 			{
-				EntityCacheManager.StoreEntity(loadedObject);
+				// načtené objekty uložíme do cache
+				foreach (TEntity loadedObject in loadedObjects)
+				{
+					EntityCacheManager.StoreEntity(loadedObject);
+				}
 			}
 
 			result.AddRange(loadedObjects);
@@ -323,9 +334,12 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				allData = query((DbContext)dbContext).ToList();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
-				foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+				if (IsEntityCachable())
 				{
-					EntityCacheManager.StoreEntity<TEntity>(entity);
+					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+					{
+						EntityCacheManager.StoreEntity<TEntity>(entity);
+					}
 				}
 			}
 
@@ -374,8 +388,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		}
 		return new List<TEntity>(_all);
 	}
-
-	private List<TEntity> _all;
 
 	/// <summary>
 	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
@@ -436,4 +448,5 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		throw new Havit.Data.Patterns.Exceptions.ObjectNotFoundException(exceptionText);
 	}
 
+	private bool IsEntityCachable() => _isEntityCachable ??= EntityCacheManager.ShouldCacheEntityType<TEntity>();
 }

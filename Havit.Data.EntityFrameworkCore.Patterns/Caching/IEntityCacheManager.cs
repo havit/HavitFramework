@@ -14,6 +14,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 public interface IEntityCacheManager
 {
 	/// <summary>
+	/// Vrací true, pokud může být entita daného typu cachována.
+	/// Použito před vyhledáváním entity v cache - jinými slovy, to, zda má vůbec význam hledat v cache, se dozvíme z této metody.
+	/// </summary>
+	bool ShouldCacheEntityType<TEntity>();
+
+	/// <summary>
 	/// Pokusí se vrátit z cache entitu daného typu s daným klíčem. Pokud je entita v cache nalezena a vrácena, vrací true. Jinak false.
 	/// </summary>
 	bool TryGetEntity<TEntity>(object key, out TEntity entity)
@@ -56,5 +62,4 @@ public interface IEntityCacheManager
 	/// Přijme notifikaci o změně entit a zajistí jejich invalidaci v cache.
 	/// </summary>
 	CacheInvalidationOperation PrepareCacheInvalidation(Changes changes);
-
 }

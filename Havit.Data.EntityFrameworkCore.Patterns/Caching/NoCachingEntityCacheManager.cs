@@ -9,6 +9,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 {
 	/// <summary>
+	/// Vrací vždy false.
+	/// </summary>
+	public bool ShouldCacheEntityType<TEntity>()
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// Nic nedělá, nehledá v cache.
 	/// Vrací vždy false.
 	/// </summary>

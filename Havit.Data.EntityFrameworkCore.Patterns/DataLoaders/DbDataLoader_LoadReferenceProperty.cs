@@ -24,7 +24,8 @@ public partial class DbDataLoader
 			return LoadPropertyInternalResult.CreateEmpty<TProperty>();
 		}
 
-		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
+		var isTPropertyCachable = _entityCacheManager.ShouldCacheEntityType<TProperty>();
+		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad, isTPropertyCachable);
 
 		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Count > 0) // zůstalo nám, na co se ptát do databáze?
 		{
@@ -53,7 +54,10 @@ public partial class DbDataLoader
 
 			_logger.LogDebug("Data for entities read from the database.");
 
-			LoadReferencePropertyInternal_StoreToCache(loadedProperties);
+			if (isTPropertyCachable)
+			{
+				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
+			}
 		}
 
 		return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
@@ -74,7 +78,8 @@ public partial class DbDataLoader
 			return LoadPropertyInternalResult.CreateEmpty<TProperty>();
 		}
 
-		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
+		var isTPropertyCachable = _entityCacheManager.ShouldCacheEntityType<TProperty>();
+		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad, isTPropertyCachable);
 
 		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Count > 0) // zůstalo nám, na co se ptát do databáze?
 		{
@@ -102,13 +107,16 @@ public partial class DbDataLoader
 			}
 			_logger.LogDebug("Data for entities read from the database.");
 
-			LoadReferencePropertyInternal_StoreToCache(loadedProperties);
+			if (isTPropertyCachable)
+			{
+				LoadReferencePropertyInternal_StoreToCache(loadedProperties);
+			}
 		}
 
 		return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 	}
 
-	private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, ICollection<TEntity> entities, out List<object> foreignKeysToLoad)
+	private void LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(string propertyName, ICollection<TEntity> entities, out List<object> foreignKeysToLoad, bool isTPropertyCachable)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -150,7 +158,7 @@ public partial class DbDataLoader
 				cacheHitCounter += 1;
 				shouldFixup = true;
 			}
-			else if (_entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
+			else if (isTPropertyCachable && _entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
 			{
 				cacheHitCounter += 1;
 			}
@@ -196,7 +204,6 @@ public partial class DbDataLoader
 		where TProperty : class
 	{
 		_logger.LogDebug("Storing entities to cache...");
-		// TODO EF 9: if cachable
 		// uložíme do cache, pokud je cachovaná
 		foreach (TProperty loadedEntity in loadedProperties)
 		{

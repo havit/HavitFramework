@@ -50,6 +50,9 @@ public class EntityCacheManager : IEntityCacheManager
 	}
 
 	/// <inheritdoc />
+	public bool ShouldCacheEntityType<TEntity>() => _entityCacheSupportDecision.ShouldCacheEntityType(typeof(TEntity));
+
+	/// <inheritdoc />
 	public bool TryGetEntity<TEntity>(object key, out TEntity entity)
 		where TEntity : class
 	{
@@ -362,6 +365,8 @@ public class EntityCacheManager : IEntityCacheManager
 
 			foreach (object entityToUpdateInCache in entitiesToUpdateInCache)
 			{
+				// TODO EF Core 9: Jen pro cachovatelné entity
+
 				// protože je metoda StoreEntity generická, musíme přes reflexi
 				try
 				{

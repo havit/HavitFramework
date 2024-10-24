@@ -197,9 +197,10 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TPropertyItem : class
 	{
+		// TODO EF Core 9: if cachable
+
 		_logger.LogDebug("Storing navigations to cache...");
 
-		// TODO EF Core 9: if cachable
 		// pozor, property zde ještě může být null
 		foreach (TEntity loadedEntity in loadedEntities)
 		{
@@ -212,20 +213,22 @@ public partial class DbDataLoader
 	private void LoadCollectionPropertyInternal_StoreEntitiesToCache<TProperty>(List<TProperty> loadedProperties)
 		where TProperty : class
 	{
-		_logger.LogDebug("Storing entities to cache...");
+		if (!_entityCacheManager.ShouldCacheEntityType<TProperty>())
+		{
+			return;
+		}
 
-		// TODO EF Core 9: if cachable
 		// TODO: Test na ManyToMany
 		if (_entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TProperty)).Length == 1)
 		{
+			_logger.LogDebug("Storing entities to cache...");
 			// uložíme do cache, pokud je cachovaná
 			foreach (TProperty loadedEntity in loadedProperties)
 			{
 				_entityCacheManager.StoreEntity(loadedEntity);
 			}
+			_logger.LogDebug("Entities stored to cache.");
 		}
-
-		_logger.LogDebug("Entities stored to cache.");
 	}
 
 	/// <summary>

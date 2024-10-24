@@ -5,6 +5,7 @@ using Havit.Data.Patterns.DataLoaders;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
@@ -23,19 +24,18 @@ public partial class DbDataLoader
 
 		if (entities.Count == 0)
 		{
+			_logger.LogDebug("No entity to retrieve data.");
 			return LoadPropertyInternalResult.CreateEmpty<TPropertyItem>();
 		}
 
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
 		if ((entitiesToLoadQuery != null) && (entitiesToLoadQuery.Count > 0)) // zůstalo nám, na co se ptát do databáze?
 		{
-			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
+			_logger.LogDebug("Retrieving data for {Count} entities from the database...", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
 			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName, propertyPathString);
-				LogDebug("Starting reading from a database.");
 				loadedProperties = query.ToList();
 			}
 			else
@@ -56,7 +56,6 @@ public partial class DbDataLoader
 				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
 				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
-				LogDebug("Starting reading chunks from a database.");
 				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
 				foreach (var chunkQuery in chunkQueries)
 				{
@@ -64,18 +63,14 @@ public partial class DbDataLoader
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
-			LogDebug("Finished reading from a database.");
-			LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
+			_logger.LogDebug("Data for entities retrieved from the database.");
 			LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
 			LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
 		}
 
-		LogDebug("Initializing collections.");
 		LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
-		LogDebug("Marking properties as loaded.");
 		LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 
-		LogDebug("Returning.");
 		return LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(entities, originalPropertyName);
 	}
 
@@ -92,20 +87,19 @@ public partial class DbDataLoader
 
 		if (entities.Count == 0)
 		{
+			_logger.LogDebug("No entity to retrieve data.");
 			return LoadPropertyInternalResult.CreateEmpty<TPropertyItem>();
 		}
 
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
 
 		if ((entitiesToLoadQuery != null) && (entitiesToLoadQuery.Count > 0)) // zůstalo nám, na co se ptát do databáze?
 		{
-			LogDebug("Trying to retrieve data for {0} entities from the database.", args: entitiesToLoadQuery.Count);
+			_logger.LogDebug("Reading data for {Count} entities from the database...", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
 			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName, propertyPathString);
-				LogDebug("Starting reading from a database.");
 				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 			}
 			else
@@ -114,7 +108,6 @@ public partial class DbDataLoader
 				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
 				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
-				LogDebug("Starting reading chunks from a database.");
 				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
 				foreach (var chunkQuery in chunkQueries)
 				{
@@ -122,19 +115,15 @@ public partial class DbDataLoader
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
-			LogDebug("Finished reading from a database.");
+			_logger.LogDebug("Data for entities read from the database.");
 
-			LogDebug("Storing data for {0} entities to the cache.", args: entitiesToLoadQuery.Count);
 			LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName);
 			LoadCollectionPropertyInternal_StoreEntitiesToCache<TPropertyItem>(loadedProperties);
 		}
 
-		LogDebug("Initializing collections.");
 		LoadCollectionPropertyInternal_InitializeCollections<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyName);
-		LogDebug("Marking properties as loaded.");
 		LoadCollectionPropertyInternal_MarkAsLoaded(entities, propertyName); // potřebujeme označit všechny kolekce za načtené (načtené + založené prázdné + odbavené z cache)
 
-		LogDebug("Returning.");
 		return LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(entities, originalPropertyName);
 	}
 
@@ -147,26 +136,33 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TPropertyItem : class
 	{
+		// TODO EF Core: Má tento list a jeho duplikace o pár řádek níže smysl?
+
 		List<TEntity> entitiesToLoad = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).Where(item => _dbContext.GetEntityState(item) != EntityState.Added).ToList();
 
 		if (entitiesToLoad.Count == 0)
 		{
+			_logger.LogDebug("No entity to retrieve data (previously loaded).");
 			entitiesToLoadQuery = null;
 			return;
 		}
 
+		_logger.LogDebug("Retrieving data for {Count} entities from the cache...", entities.Count);
 		entitiesToLoadQuery = new List<TEntity>(entitiesToLoad.Count);
+		int cacheHitCounter = 0;
 		foreach (var entityToLoad in entitiesToLoad)
 		{
 			if (_entityCacheManager.TryGetNavigation<TEntity, TPropertyItem>(entityToLoad, propertyName))
 			{
-				// NOOP
+				cacheHitCounter += 1;
 			}
 			else
 			{
 				entitiesToLoadQuery.Add(entityToLoad);
 			}
 		}
+		_logger.LogDebug("Retrieved data for {Count} entities from the cache.", cacheHitCounter);
+
 	}
 
 	/// <summary>
@@ -201,16 +197,24 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TPropertyItem : class
 	{
+		_logger.LogDebug("Storing navigations to cache...");
+
+		// TODO EF Core 9: if cachable
 		// pozor, property zde ještě může být null
 		foreach (TEntity loadedEntity in loadedEntities)
 		{
 			_entityCacheManager.StoreNavigation<TEntity, TPropertyItem>(loadedEntity, propertyName);
 		}
+
+		_logger.LogDebug("Navigations stored to cache.");
 	}
 
 	private void LoadCollectionPropertyInternal_StoreEntitiesToCache<TProperty>(List<TProperty> loadedProperties)
 		where TProperty : class
 	{
+		_logger.LogDebug("Storing entities to cache...");
+
+		// TODO EF Core 9: if cachable
 		// TODO: Test na ManyToMany
 		if (_entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TProperty)).Length == 1)
 		{
@@ -220,6 +224,8 @@ public partial class DbDataLoader
 				_entityCacheManager.StoreEntity(loadedEntity);
 			}
 		}
+
+		_logger.LogDebug("Entities stored to cache.");
 	}
 
 	/// <summary>
@@ -230,6 +236,8 @@ public partial class DbDataLoader
 		where TPropertyCollection : class
 		where TPropertyItem : class
 	{
+		_logger.LogDebug("Initializing collections...");
+
 		var propertyLambda = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyCollection>(propertyName).LambdaCompiled;
 		IEnumerable<TEntity> entitiesWithNullReference = entities.Where(item => propertyLambda(item) == null);
 
@@ -256,6 +264,8 @@ public partial class DbDataLoader
 				throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {typeof(TEntity).FullName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
 			}
 		}
+
+		_logger.LogDebug("Collections initialized.");
 	}
 
 	/// <summary>
@@ -264,10 +274,14 @@ public partial class DbDataLoader
 	private void LoadCollectionPropertyInternal_MarkAsLoaded<TEntity>(ICollection<TEntity> entities, string propertyName)
 		where TEntity : class
 	{
+		_logger.LogDebug("Marking properties as loaded...");
+
 		foreach (var entity in entities)
 		{
 			_dbContext.MarkNavigationAsLoaded(entity, propertyName);
 		}
+
+		_logger.LogDebug("Properties marked as loaded.");
 	}
 
 	private LoadPropertyInternalResult LoadCollectionPropertyInternal_GetResult<TEntity, TOriginalPropertyCollection, TPropertyItem>(ICollection<TEntity> entities, string originalPropertyName)

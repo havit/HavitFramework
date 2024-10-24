@@ -3,6 +3,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
@@ -19,21 +20,20 @@ public partial class DbDataLoader
 
 		if (entities.Count == 0)
 		{
+			_logger.LogDebug("No entity to retrieve data.");
 			return LoadPropertyInternalResult.CreateEmpty<TProperty>();
 		}
 
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
 		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Count > 0) // zůstalo nám, na co se ptát do databáze?
 		{
-			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
+			_logger.LogDebug("Reading data for {Count} entities from the database...", foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
 			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoad, propertyPathString);
-				LogDebug("Starting reading from a database.");
 				loadedProperties = query.ToList();
 			}
 			else
@@ -42,7 +42,6 @@ public partial class DbDataLoader
 				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
 				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
-				LogDebug("Starting reading chunks from a database.");
 
 				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
 				foreach (var chunkQuery in chunkQueries)
@@ -51,13 +50,12 @@ public partial class DbDataLoader
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
-			LogDebug("Finished reading from a database.");
 
-			LogDebug("Storing data for {0} entities to the cache.", args: loadedProperties.Count);
+			_logger.LogDebug("Data for entities read from the database.");
+
 			LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 		}
 
-		LogDebug("Returning.");
 		return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 	}
 
@@ -72,21 +70,20 @@ public partial class DbDataLoader
 
 		if (entities.Count == 0)
 		{
+			_logger.LogDebug("No entity to retrieve data.");
 			return LoadPropertyInternalResult.CreateEmpty<TProperty>();
 		}
 
-		LogDebug("Retrieving data for {0} entities from the cache.", args: entities.Count);
 		LoadReferencePropertyInternal_GetFromCache<TEntity, TProperty>(propertyName, entities, out List<object> foreignKeysToLoad);
 
 		if ((foreignKeysToLoad != null) && foreignKeysToLoad.Count > 0) // zůstalo nám, na co se ptát do databáze?
 		{
-			LogDebug("Trying to retrieve data for {0} entities from the database.", args: foreignKeysToLoad.Count);
+			_logger.LogDebug("Reading data for {Count} entities from the database...", foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
 			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoad, propertyPathString);
-				LogDebug("Starting reading from a database.");
 				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 			}
 			else
@@ -95,7 +92,6 @@ public partial class DbDataLoader
 				int chunkIndex = 0;
 				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
 				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
-				LogDebug("Starting reading chunks from a database.");
 
 				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
 				foreach (var chunkQuery in chunkQueries)
@@ -104,13 +100,11 @@ public partial class DbDataLoader
 					loadedProperties.AddRange(loadedPropertiesChunk);
 				}
 			}
-			LogDebug("Finished reading from a database.");
+			_logger.LogDebug("Data for entities read from the database.");
 
-			LogDebug("Storing data for {0} entities to the cache.", args: loadedProperties.Count);
 			LoadReferencePropertyInternal_StoreToCache(loadedProperties);
 		}
 
-		LogDebug("Returning.");
 		return LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(propertyName, entities);
 	}
 
@@ -122,9 +116,12 @@ public partial class DbDataLoader
 
 		if (entitiesToLoadReference.Count == 0)
 		{
+			_logger.LogDebug("No entity to retrieve data (previously loaded).");
 			foreignKeysToLoad = null;
 			return;
 		}
+
+		_logger.LogDebug("Retrieving data for {Count} entities from the identity map and the cache...", entities.Count);
 
 		// získáme cizí klíč reprezentující referenci (Navigation)
 		IProperty foreignKeyForReference = _dbContext.Model.FindEntityType(typeof(TEntity)).FindNavigation(propertyName).ForeignKey.Properties.Single();
@@ -135,6 +132,7 @@ public partial class DbDataLoader
 
 		IDbSet<TProperty> dbSet = _dbContext.Set<TProperty>();
 
+		int cacheHitCounter = 0;
 		bool shouldFixup = false;
 		foreignKeysToLoad = new List<object>(entitiesToLoadReference.Count);
 
@@ -149,11 +147,12 @@ public partial class DbDataLoader
 			TProperty trackedEntity = dbSet.FindTracked(foreignKeyValue);
 			if (trackedEntity != null)
 			{
+				cacheHitCounter += 1;
 				shouldFixup = true;
 			}
 			else if (_entityCacheManager.TryGetEntity<TProperty>(foreignKeyValue, out TProperty cachedEntity))
 			{
-				// NOOP
+				cacheHitCounter += 1;
 			}
 			else // není ani v identity mapě, ani v cache, hledáme v databázi
 			{
@@ -167,10 +166,13 @@ public partial class DbDataLoader
 		// Known issue: Property bude i nadále považována za nenačtenou. Avšak díky metodě v IsEntityPropertyLoaded v DbDataLoaderWithLoadedPropertiesMemory nebude docházet k opakovanému zpracování této vlastnosti.
 		if (shouldFixup)
 		{
-			LogDebug("Starting change tracker change detection.");
+			_logger.LogDebug("It is required to to detect changes by ChangeTracker.");
 			// Pokud bychom měli i objekt(y), které vedou na tento cizí klíč, mohli bychom použít jen lokální detekci změn.
 			_dbContext.ChangeTracker.DetectChanges();
 		}
+
+		_logger.LogDebug("Retrieved data for {Count} entities from the identity map and the cache.", cacheHitCounter);
+
 	}
 
 	private IQueryable<TProperty> LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(List<object> foreignKeysToLoad, string propertyPathString)
@@ -193,11 +195,14 @@ public partial class DbDataLoader
 	private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)
 		where TProperty : class
 	{
+		_logger.LogDebug("Storing entities to cache...");
+		// TODO EF 9: if cachable
 		// uložíme do cache, pokud je cachovaná
 		foreach (TProperty loadedEntity in loadedProperties)
 		{
 			_entityCacheManager.StoreEntity(loadedEntity);
 		}
+		_logger.LogDebug("Entities stored to cache.");
 	}
 
 	private LoadPropertyInternalResult LoadReferencePropertyInternal_GetResult<TEntity, TProperty>(string propertyName, ICollection<TEntity> entities)

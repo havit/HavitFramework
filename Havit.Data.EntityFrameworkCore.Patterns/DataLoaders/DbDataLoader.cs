@@ -228,7 +228,7 @@ public partial class DbDataLoader : IDataLoader
 		object[] invokeLoadCollectionPropertyInternalMethodArguments = null;
 		foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 		{
-			LogDebug("Loading a property '{0}'.", args: propertyToLoad.OriginalPropertyName);
+			_logger.LogDebug("Loading a property '{Property}' of entity '{Entity}'...", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 
 			LoadPropertyInternalResult loadPropertyInternalResult = default;
 
@@ -249,7 +249,7 @@ public partial class DbDataLoader : IDataLoader
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -273,23 +273,24 @@ public partial class DbDataLoader : IDataLoader
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 
 			entities = loadPropertyInternalResult.Entities;
 			fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
+
+			_logger.LogDebug("Property '{Property}' of entity '{Entity}' loaded.", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 		}
 
-		LogDebug("Returning.");
 		return (IFluentDataLoader<TProperty>)fluentDataLoader;
 	}
 
 	/// <summary>
 	/// Deleguje načtení objektů do asynchronní metody pro načtení referencí nebo asynchronní metody pro načtení kolekce.
 	/// </summary>
-	private async Task<IFluentDataLoader<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
+	private async ValueTask<IFluentDataLoader<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -304,7 +305,7 @@ public partial class DbDataLoader : IDataLoader
 
 		foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 		{
-			LogDebug("Loading a property '{0}'.", args: propertyToLoad.OriginalPropertyName);
+			_logger.LogDebug("Loading a property '{Property}' of entity '{Entity}'...", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 
 			ValueTask<LoadPropertyInternalResult> task = default;
 			if (!propertyToLoad.IsCollection)
@@ -325,7 +326,7 @@ public partial class DbDataLoader : IDataLoader
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -350,7 +351,7 @@ public partial class DbDataLoader : IDataLoader
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -359,9 +360,10 @@ public partial class DbDataLoader : IDataLoader
 
 			entities = loadPropertyInternalResult.Entities;
 			fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
+
+			_logger.LogDebug("Property '{Property}' of entity '{Entity}' loaded.", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 		}
 
-		LogDebug("Returning.");
 		return (IFluentDataLoader<TProperty>)fluentDataLoader;
 	}
 
@@ -374,11 +376,5 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 	{
 		return _dbContext.IsNavigationLoaded(entity, propertyName);
-	}
-
-	private void LogDebug(string message, [System.Runtime.CompilerServices.CallerMemberName] string caller = null, params object[] args)
-	{
-		// TODO: Dořešit Params
-		_logger.LogDebug("{caller}: {message} ", caller, message);
 	}
 }

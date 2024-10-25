@@ -1,6 +1,8 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+﻿using System.Text;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors.Internal;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.BeforeCommitProcessors;
@@ -16,15 +18,12 @@ public class BeforeCommitProcessorsRunnerTests
 		Entity entityUpdating = new Entity();
 		Entity entityDeleting = new Entity();
 
-		Mock<IBeforeCommitProcessor<Entity>> beforeCommitEntityProcessorMock = new Mock<IBeforeCommitProcessor<Entity>>(MockBehavior.Strict);
-		beforeCommitEntityProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
-
-		Mock<IBeforeCommitProcessor<object>> beforeCommitObjectProcessorMock = new Mock<IBeforeCommitProcessor<object>>(MockBehavior.Strict);
-		beforeCommitObjectProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<object>())).Returns(ChangeTrackerImpact.NoImpact);
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).ReturnsAsync(ChangeTrackerImpact.NoImpact);
 
 		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
-		beforeCommitProcessorFactoryMock.Setup(m => m.Create<object>()).Returns(new List<IBeforeCommitProcessor<object>> { beforeCommitObjectProcessorMock.Object });
-		beforeCommitProcessorFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IBeforeCommitProcessor<Entity>> { beforeCommitEntityProcessorMock.Object });
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
@@ -39,18 +38,48 @@ public class BeforeCommitProcessorsRunnerTests
 		runner.Run(changes);
 
 		// Assert
-		beforeCommitProcessorFactoryMock.Verify(m => m.Create<Entity>(), Times.AtLeastOnce);
-		beforeCommitProcessorFactoryMock.Verify(m => m.Create<object>(), Times.AtLeastOnce);
+		beforeCommitProcessorFactoryMock.Verify(m => m.Create(typeof(Entity)), Times.AtLeastOnce);
 
-		beforeCommitEntityProcessorMock.Verify(m => m.Run(ChangeType.Insert, entityInserting), Times.Once);
-		beforeCommitEntityProcessorMock.Verify(m => m.Run(ChangeType.Update, entityUpdating), Times.Once);
-		beforeCommitEntityProcessorMock.Verify(m => m.Run(ChangeType.Delete, entityDeleting), Times.Once);
-		beforeCommitEntityProcessorMock.Verify(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Insert, entityInserting), Times.Once);
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entityUpdating), Times.Once);
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Delete, entityDeleting), Times.Once);
+		beforeCommitProcessorMock.Verify(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
+	}
 
-		beforeCommitObjectProcessorMock.Verify(m => m.Run(ChangeType.Insert, entityInserting), Times.Once);
-		beforeCommitObjectProcessorMock.Verify(m => m.Run(ChangeType.Update, entityUpdating), Times.Once);
-		beforeCommitObjectProcessorMock.Verify(m => m.Run(ChangeType.Delete, entityDeleting), Times.Once);
-		beforeCommitObjectProcessorMock.Verify(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<object>()), Times.Exactly(3));
+	[TestMethod]
+	public async Task BeforeCommitProcessorsRunner_RunAsync_RunsProcessors()
+	{
+		// Arrange
+		Entity entityInserting = new Entity();
+		Entity entityUpdating = new Entity();
+		Entity entityDeleting = new Entity();
+
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).ReturnsAsync(ChangeTrackerImpact.NoImpact);
+
+		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
+
+		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
+
+		Changes changes = new Changes(new List<Change>
+		{
+			new FakeChange { ChangeType = ChangeType.Insert, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityInserting },
+			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityUpdating },
+			new FakeChange { ChangeType = ChangeType.Delete, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entityDeleting },
+		});
+
+		// Act
+		await runner.RunAsync(changes);
+
+		// Assert
+		beforeCommitProcessorFactoryMock.Verify(m => m.Create(typeof(Entity)), Times.AtLeastOnce);
+
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Insert, entityInserting), Times.Once);
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entityUpdating), Times.Once);
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Delete, entityDeleting), Times.Once);
+		beforeCommitProcessorMock.Verify(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
 	}
 
 	[TestMethod]
@@ -59,15 +88,12 @@ public class BeforeCommitProcessorsRunnerTests
 		// Arrange
 		Entity entity = new Entity();
 
-		Mock<IBeforeCommitProcessor<Entity>> beforeCommitEntityProcessorMock1 = new Mock<IBeforeCommitProcessor<Entity>>(MockBehavior.Strict);
-		beforeCommitEntityProcessorMock1.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
-
-		Mock<IBeforeCommitProcessor<Entity>> beforeCommitEntityProcessorMock2 = new Mock<IBeforeCommitProcessor<Entity>>(MockBehavior.Strict);
-		beforeCommitEntityProcessorMock2.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).ReturnsAsync(ChangeTrackerImpact.NoImpact);
 
 		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
-		beforeCommitProcessorFactoryMock.Setup(m => m.Create<object>()).Returns(Enumerable.Empty<IBeforeCommitProcessor<object>>());
-		beforeCommitProcessorFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IBeforeCommitProcessor<Entity>> { beforeCommitEntityProcessorMock1.Object, beforeCommitEntityProcessorMock2.Object });
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
@@ -80,6 +106,35 @@ public class BeforeCommitProcessorsRunnerTests
 		ChangeTrackerImpact result = runner.Run(changes);
 
 		// Assert
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entity), Times.Once);
+		Assert.AreEqual(ChangeTrackerImpact.NoImpact, result);
+	}
+
+	[TestMethod]
+	public async Task BeforeCommitProcessorsRunner_RunAsync_RunsProcessors_ReturnsNoImpactWhenThereIsNoImpact()
+	{
+		// Arrange
+		Entity entity = new Entity();
+
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).ReturnsAsync(ChangeTrackerImpact.NoImpact);
+
+		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
+
+		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
+
+		Changes changes = new Changes(new List<Change>
+		{
+			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity }
+		});
+
+		// Act
+		ChangeTrackerImpact result = await runner.RunAsync(changes);
+
+		// Assert
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entity), Times.Once);
 		Assert.AreEqual(ChangeTrackerImpact.NoImpact, result);
 	}
 
@@ -89,15 +144,71 @@ public class BeforeCommitProcessorsRunnerTests
 		// Arrange
 		Entity entity = new Entity();
 
-		Mock<IBeforeCommitProcessor<Entity>> beforeCommitEntityProcessorMock1 = new Mock<IBeforeCommitProcessor<Entity>>(MockBehavior.Strict);
-		beforeCommitEntityProcessorMock1.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.NoImpact);
-
-		Mock<IBeforeCommitProcessor<Entity>> beforeCommitEntityProcessorMock2 = new Mock<IBeforeCommitProcessor<Entity>>(MockBehavior.Strict);
-		beforeCommitEntityProcessorMock2.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.StateChanged);
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.StateChanged);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).ReturnsAsync(ChangeTrackerImpact.NoImpact);
 
 		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
-		beforeCommitProcessorFactoryMock.Setup(m => m.Create<object>()).Returns(Enumerable.Empty<IBeforeCommitProcessor<object>>());
-		beforeCommitProcessorFactoryMock.Setup(m => m.Create<Entity>()).Returns(new List<IBeforeCommitProcessor<Entity>> { beforeCommitEntityProcessorMock1.Object, beforeCommitEntityProcessorMock2.Object });
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
+
+		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
+
+		Changes changes = new Changes(new List<Change>
+		{
+			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity } });
+
+		// Act
+		ChangeTrackerImpact result = runner.Run(changes);
+
+		// Assert
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entity), Times.Once);
+		Assert.AreEqual(ChangeTrackerImpact.StateChanged, result);
+	}
+
+	[TestMethod]
+	public async Task BeforeCommitProcessorsRunner_RunAsync_RunsProcessors_ReturnsStateChangesWhenThereIsAtLeastOneChange()
+	{
+		// Arrange
+		Entity entity = new Entity();
+
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.StateChanged);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).ReturnsAsync(ChangeTrackerImpact.NoImpact);
+
+		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
+
+		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
+
+		Changes changes = new Changes(new List<Change>
+		{
+			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity } });
+
+		// Act
+		ChangeTrackerImpact result = await runner.RunAsync(changes);
+
+		// Assert
+		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entity), Times.Once);
+		Assert.AreEqual(ChangeTrackerImpact.StateChanged, result);
+	}
+
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
+	public void BeforeCommitProcessorsRunner_Run_ThrowsExceptionWhenThereIsAsyncBeforeCommitProcessor()
+	{
+		// Arrange
+		Entity entity = new Entity();
+
+		Mock<IBeforeCommitProcessorInternal> beforeCommitProcessorMock = new Mock<IBeforeCommitProcessorInternal>(MockBehavior.Strict);
+		beforeCommitProcessorMock.Setup(m => m.Run(It.IsAny<ChangeType>(), It.IsAny<Entity>())).Returns(ChangeTrackerImpact.StateChanged);
+		beforeCommitProcessorMock.Setup(m => m.RunAsync(It.IsAny<ChangeType>(), It.IsAny<Entity>(), It.IsAny<CancellationToken>())).Returns(async () =>
+		{
+			await Task.Yield();
+			return ChangeTrackerImpact.NoImpact;
+		});
+
+		Mock<IBeforeCommitProcessorsFactory> beforeCommitProcessorFactoryMock = new Mock<IBeforeCommitProcessorsFactory>(MockBehavior.Strict);
+		beforeCommitProcessorFactoryMock.Setup(m => m.Create(typeof(Entity))).Returns(new List<IBeforeCommitProcessorInternal> { beforeCommitProcessorMock.Object });
 
 		BeforeCommitProcessorsRunner runner = new BeforeCommitProcessorsRunner(beforeCommitProcessorFactoryMock.Object);
 
@@ -109,8 +220,7 @@ public class BeforeCommitProcessorsRunnerTests
 		// Act
 		ChangeTrackerImpact result = runner.Run(changes);
 
-		// Assert
-		Assert.AreEqual(ChangeTrackerImpact.StateChanged, result);
+		// Assert by method attribute		
 	}
 
 	public class Entity

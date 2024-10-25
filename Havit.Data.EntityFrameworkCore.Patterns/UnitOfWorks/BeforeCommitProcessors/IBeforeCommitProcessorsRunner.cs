@@ -6,7 +6,12 @@
 public interface IBeforeCommitProcessorsRunner
 {
 	/// <summary>
-	/// Spustí registrované IBeforeCommitProcessory.	
+	/// Spustí IBeforeCommitProcessory pro zadané změny. Bez podpory pro asynchronní before commit procesory.
 	/// </summary>
 	ChangeTrackerImpact Run(Changes changes);
+
+	/// <summary>
+	/// Spustí IBeforeCommitProcessory pro zadané změny. Bez podpory pro asynchronní before commit procesory.
+	/// </summary>
+	ValueTask<ChangeTrackerImpact> RunAsync(Changes changes, CancellationToken cancellationToken);
 }

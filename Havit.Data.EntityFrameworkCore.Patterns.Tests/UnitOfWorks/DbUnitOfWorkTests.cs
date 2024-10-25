@@ -182,6 +182,52 @@ public class DbUnitOfWorkTests
 	}
 
 	[TestMethod]
+	public void DbUnitOfWork_Commit_CallsBeforeCommitProcessorsRunner_Run()
+	{
+		// Arrange
+		Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
+		mockDbContext.Setup(m => m.SaveChanges(true));
+
+		Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		mockDbUnitOfWork.CallBase = true;
+
+		// Act
+		mockDbUnitOfWork.Object.Commit();
+
+		// Assert
+		mockBeforeCommitProcessorsRunner.Verify(m => m.Run(It.IsAny<Changes>()), Times.Once);
+		mockBeforeCommitProcessorsRunner.Verify(m => m.RunAsync(It.IsAny<Changes>(), It.IsAny<CancellationToken>()), Times.Never);
+	}
+
+	[TestMethod]
+	public async Task DbUnitOfWork_CommitAsync_CallsBeforeCommitProcessorsRunner_RunAsync()
+	{
+		// Arrange
+		Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
+		mockDbContext.Setup(m => m.SaveChanges(true));
+
+		Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		Mock<DbUnitOfWork> mockDbUnitOfWork = new Mock<DbUnitOfWork>(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		mockDbUnitOfWork.CallBase = true;
+
+		// Act
+		await mockDbUnitOfWork.Object.CommitAsync();
+
+		// Assert
+		mockBeforeCommitProcessorsRunner.Verify(m => m.Run(It.IsAny<Changes>()), Times.Never);
+		mockBeforeCommitProcessorsRunner.Verify(m => m.RunAsync(It.IsAny<Changes>(), It.IsAny<CancellationToken>()), Times.Once);
+	}
+
+	[TestMethod]
 	public async Task DbUnitOfWork_CommitAsync_CallsBeforeCommitAndAfterCommitInOrder()
 	{
 		// Arrange

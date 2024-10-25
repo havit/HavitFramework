@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors.Internal;
+using Havit.Data.Patterns.UnitOfWorks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 
@@ -21,7 +22,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 	}
 
 	/// <summary>
-	/// Spustí IBeforeCommitProcessory pro zadané změny.
+	/// Spustí IBeforeCommitProcessory pro zadané změny. Bez podpory pro asynchronní before commit procesory.
 	/// </summary>
 	public ChangeTrackerImpact Run(Changes changes)
 	{
@@ -29,32 +30,62 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 
 		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
-
 		ILookup<Type, Change> changesGroups = changes.GetChangesByClrType();
-
-		var runMethodParameters = new object[2];
 
 		foreach (IGrouping<Type, Change> changesGroup in changesGroups)
 		{
-			List<object> supportedProcessors = new List<object>(4);
-			// Factory pro IBeforeCommitProcessor<Entity> nevrací processory pro případné předky, musíme proto zajistit zde podporu pro before commitprocessory předků.
-			Type type = changesGroup.Key;
-			while (type != null)
-			{
-				supportedProcessors.AddRange((IEnumerable<object>)_beforeCommitProcessorsFactory.GetType().GetMethod(nameof(IBeforeCommitProcessorsFactory.Create)).MakeGenericMethod(type).Invoke(_beforeCommitProcessorsFactory, null));
-				type = type.BaseType;
-			}
+			IEnumerable<IBeforeCommitProcessorInternal> supportedProcessors = _beforeCommitProcessorsFactory.Create(changesGroup.Key /* entity type*/);
 
-			Type beforeCommitProcessorType = typeof(IBeforeCommitProcessor<>).MakeGenericType(changesGroup.Key);
-			MethodInfo runMethod = beforeCommitProcessorType.GetMethod(nameof(IBeforeCommitProcessor<object>.Run));
-
-			foreach (Change change in changesGroup)
+			foreach (var supportedProcessor in supportedProcessors)
 			{
-				runMethodParameters[0] = change.ChangeType;
-				runMethodParameters[1] = change.Entity;
-				foreach (var supportedProcessor in supportedProcessors)
+				foreach (Change change in changesGroup)
 				{
-					if ((ChangeTrackerImpact)runMethod.Invoke(supportedProcessor, runMethodParameters) == ChangeTrackerImpact.StateChanged)
+					if (supportedProcessor.Run(change.ChangeType, change.Entity) == ChangeTrackerImpact.StateChanged)
+					{
+						result = ChangeTrackerImpact.StateChanged;
+					};
+
+					ValueTask<ChangeTrackerImpact> task = supportedProcessor.RunAsync(change.ChangeType, change.Entity);
+					if (!task.IsCompleted)
+					{
+						throw new InvalidOperationException($"Async before commit processors are supported only for async {nameof(IUnitOfWork)}.{nameof(IUnitOfWork.CommitAsync)} method.");
+					}
+					else if (task.Result == ChangeTrackerImpact.StateChanged)
+					{
+						result = ChangeTrackerImpact.StateChanged;
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/// <summary>
+	/// Spustí IBeforeCommitProcessory pro zadané změny.
+	/// </summary>
+	public async ValueTask<ChangeTrackerImpact> RunAsync(Changes changes, CancellationToken cancellationToken = default)
+	{
+		ChangeTrackerImpact result = ChangeTrackerImpact.NoImpact;
+
+		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
+		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
+		ILookup<Type, Change> changesGroups = changes.GetChangesByClrType();
+
+		foreach (IGrouping<Type, Change> changesGroup in changesGroups)
+		{
+			IEnumerable<IBeforeCommitProcessorInternal> supportedProcessors = _beforeCommitProcessorsFactory.Create(changesGroup.Key /* entity type*/);
+
+			foreach (var supportedProcessor in supportedProcessors)
+			{
+				foreach (Change change in changesGroup)
+				{
+					if (supportedProcessor.Run(change.ChangeType, change.Entity) == ChangeTrackerImpact.StateChanged)
+					{
+						result = ChangeTrackerImpact.StateChanged;
+					};
+
+					if ((await supportedProcessor.RunAsync(change.ChangeType, change.Entity, cancellationToken).ConfigureAwait(false)) == ChangeTrackerImpact.StateChanged)
 					{
 						result = ChangeTrackerImpact.StateChanged;
 					}

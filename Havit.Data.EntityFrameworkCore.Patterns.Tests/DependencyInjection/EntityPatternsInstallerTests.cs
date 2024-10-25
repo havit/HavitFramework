@@ -259,12 +259,12 @@ public class EntityPatternsInstallerTests
 		// Act
 		IBeforeCommitProcessorsFactory factory = serviceProvider.GetRequiredService<IBeforeCommitProcessorsFactory>();
 		serviceProvider.GetRequiredService<IBeforeCommitProcessorsRunner>();
-		var languageBeforeCommitProcessors = factory.Create<Language>().ToList();
-		var objectBeforeCommitProcessors = factory.Create<object>().ToList();
+		var languageBeforeCommitProcessors = factory.Create(typeof(Language)).ToList();
+		var objectBeforeCommitProcessors = factory.Create(typeof(object)).ToList();
 
 		// Assert
-		Assert.AreEqual(0, languageBeforeCommitProcessors.Count);
-		Assert.AreEqual(1, objectBeforeCommitProcessors.Count);
+		Assert.IsInstanceOfType<SetCreatedToInsertingEntitiesBeforeCommitProcessor>(languageBeforeCommitProcessors.Single());
+		Assert.IsInstanceOfType<SetCreatedToInsertingEntitiesBeforeCommitProcessor>(objectBeforeCommitProcessors.Single());
 
 		Assert.IsInstanceOfType(objectBeforeCommitProcessors.Single(), typeof(SetCreatedToInsertingEntitiesBeforeCommitProcessor));
 	}

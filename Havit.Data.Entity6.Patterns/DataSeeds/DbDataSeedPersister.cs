@@ -6,6 +6,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Diagnostics.Contracts;
 using Havit.Linq;
@@ -54,7 +56,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		dbSet.AddRange(unpairedSeedDataPairs.Select(item => item.DbEntity));
 
 		Update(configuration, seedDataPairsToUpdate);
-		
+
 		DoBeforeSaveActions(configuration, seedDataPairs);
 		dbContext.SaveChanges();
 		DoAfterSaveActions(configuration, seedDataPairs);
@@ -283,5 +285,13 @@ public class DbDataSeedPersister : IDataSeedPersister
 		}
 	}
 
-
+	/// <summary>
+	/// Není podporováno, vyhazuje výjimku NotSupportedException.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Vždy.</exception>
+	public Task SaveAsync<TEntity>(DataSeedConfiguration<TEntity> configuration, CancellationToken cancellationToken)
+		where TEntity : class
+	{
+		throw new NotSupportedException();
+	}
 }

@@ -10,11 +10,13 @@ using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.Patterns.DataLoaders;
+using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.Repositories;
+using Havit.EFCoreTests.DataLayer.Seeds.Persons;
 using Havit.EFCoreTests.Model;
 using Havit.Linq.Expressions;
 using Havit.Services.Caching;
@@ -44,8 +46,8 @@ public static class Program
 			.Build();
 
 		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
-		//await SeedDatabaseAsync(host.Services, CancellationToken.None);
-		await DebugAsync(host.Services);
+		await SeedDatabaseAsync(host.Services, CancellationToken.None);
+		//await DebugAsync(host.Services);
 	}
 
 	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
@@ -76,17 +78,22 @@ public static class Program
 
 	private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 	{
-		//await scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken);
+		CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+		CancellationToken stoppedCancellationToken = cancellationTokenSource.Token;
+		cancellationTokenSource.Cancel();
+		serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>(forceRun: true);
+		await Task.Yield();
+		//await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, stoppedCancellationToken);
 
-		for (int i = 0; i < 50000; i++)
-		{
-			using var scope = serviceProvider.CreateScope();
-			var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-			Person person = new Person();
-			person.Subordinates.AddRange(Enumerable.Range(0, 2).Select(i => new Person()));
-			uow.AddForInsert(person);
-			await uow.CommitAsync(cancellationToken);
-		}
+		//for (int i = 0; i < 50000; i++)
+		//{
+		//	using var scope = serviceProvider.CreateScope();
+		//	var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+		//	Person person = new Person();
+		//	person.Subordinates.AddRange(Enumerable.Range(0, 2).Select(i => new Person()));
+		//	uow.AddForInsert(person);
+		//	await uow.CommitAsync(cancellationToken);
+		//}
 	}
 
 

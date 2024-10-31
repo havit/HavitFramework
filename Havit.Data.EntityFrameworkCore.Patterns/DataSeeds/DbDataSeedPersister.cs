@@ -35,29 +35,47 @@ public class DbDataSeedPersister : IDataSeedPersister
 		where TEntity : class
 	{
 		ClearChangeTracker();
-		PerformSave<TEntity>(configuration);
+		Task t = PerformSaveOptionalyAsync<TEntity>(configuration, SynchronizationMode.Synchronous, CancellationToken.None);
+		Contract.Assert(t.IsCompleted, $"Task must be completed. There is a bug in the {nameof(DbDataSeedPersister)}.");
 		ClearChangeTracker();
+	}
 
+	/// <summary>
+	/// Dle předpisu seedování dat (konfigurace) provede persistenci seedovaných dat.
+	/// </summary>
+	public async Task SaveAsync<TEntity>(DataSeedConfiguration<TEntity> configuration, CancellationToken cancellationToken)
+		where TEntity : class
+	{
+		ClearChangeTracker();
+		await PerformSaveOptionalyAsync<TEntity>(configuration, SynchronizationMode.Asynchronous, cancellationToken).ConfigureAwait(false);
+		ClearChangeTracker();
+	}
+
+	private IQueryable<TEntity> GetDbSetQueryable<TEntity>()
+		where TEntity : class
+	{
+		return _dbContext.Set<TEntity>().AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), null));
 	}
 
 	/// <summary>
 	/// Provede seedování s daným DbContextem. Ten má již nastavenu transakci.
 	/// </summary>
-	protected virtual void PerformSave<TEntity>(DataSeedConfiguration<TEntity> configuration)
+	/// <remarks>
+	/// Vzhledem ke komplexnosti metody nechceme implementovat synchronní a asynchronní variantu.
+	/// Mohli bychom tedy implementovat jednoduše jen asynchronní variantu a synchronní volající může použít GetAwaiter().GetResult().
+	/// Vzhledem k tomu, že veškerá implementace uložení data seedu je interní (resp. private) a nic nezveřejňujeme,
+	/// je zvolena lehce složitější implementace, kdy metoda může být volána ze synchronního i asynchronního kódu
+	/// a její implementace svá volání tomu přizpůsobí.
+	/// Pro synchronní variantu nikdy nevolá žádný asynchronní kód (synchronní volající ověřuje pomocí Task.IsCompleted).
+	/// </remarks>
+	private async Task PerformSaveOptionalyAsync<TEntity>(DataSeedConfiguration<TEntity> configuration, SynchronizationMode synchronizationMode, CancellationToken cancellationToken)
 		where TEntity : class
 	{
 		CheckConditions(configuration);
 
-		IDbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
 		List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
-		List<SeedDataPair<TEntity>> seedDataPairs = PairWithDbData(configuration.SeedData, dbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(PairWithDbData))), pairByExpressionsWithCompilations, configuration.CustomQueryCondition);
-		List<SeedDataPair<TEntity>> seedDataPairsToUpdate = new List<SeedDataPair<TEntity>>(seedDataPairs);
-
-		if (!configuration.UpdateEnabled)
-		{
-			seedDataPairsToUpdate.RemoveAll(item => item.DbEntity != null);
-		}
-
+		List<SeedDataPair<TEntity>> seedDataPairs = await PairWithDbDataOptionallyAsync(configuration.SeedData, pairByExpressionsWithCompilations, configuration.CustomQueryCondition, synchronizationMode, cancellationToken).ConfigureAwait(false);
+		List<SeedDataPair<TEntity>> seedDataPairsToUpdate = configuration.UpdateEnabled ? seedDataPairs.ToList() : seedDataPairs.Where(item => item.DbEntity == null).ToList();
 		List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
 		foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
 		{
@@ -66,10 +84,19 @@ public class DbDataSeedPersister : IDataSeedPersister
 		}
 
 		Update(configuration, seedDataPairsToUpdate);
-		_unitOfWork.AddRangeForInsert(unpairedSeedDataPairs.Select(item => item.DbEntity).ToArray());
+		_unitOfWork.AddRangeForInsert(unpairedSeedDataPairs.Select(item => item.DbEntity));
 
 		DoBeforeSaveActions(configuration, seedDataPairs);
-		_unitOfWork.Commit();
+
+		if (synchronizationMode == SynchronizationMode.Synchronous)
+		{
+			_unitOfWork.Commit();
+		}
+		else
+		{
+			await _unitOfWork.CommitAsync(cancellationToken).ConfigureAwait(false);
+		}
+
 		DoAfterSaveActions(configuration, seedDataPairs);
 
 		if (configuration.ChildrenSeeds != null)
@@ -98,7 +125,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// <summary>
 	/// Provede párování předpisu seedovaných dat s existujícími objekty.
 	/// </summary>
-	internal List<SeedDataPair<TEntity>> PairWithDbData<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressions, Expression<Func<TEntity, bool>> customQueryCondition)
+	private async Task<List<SeedDataPair<TEntity>>> PairWithDbDataOptionallyAsync<TEntity>(IEnumerable<TEntity> seedData, List<PairExpressionWithCompilation<TEntity>> pairByExpressions, Expression<Func<TEntity, bool>> customQueryCondition, SynchronizationMode synchronizationMode, CancellationToken cancellationToken)
 		where TEntity : class
 	{
 		// vezmeme data k seedování, přidáme k nim klíč pro párování (pro pohodlný left join)
@@ -106,18 +133,11 @@ public class DbDataSeedPersister : IDataSeedPersister
 		// zkontrolujeme, zda data k seedování neobsahují duplicity
 		seedDataWithPairByValues.ThrowIfContainsDuplicates($"Seed for {typeof(TEntity).Name} cannot be done. Data to seed contains duplicates in the source code. Duplicates:", pairByExpressions);
 
-		List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues;
-
 		// načteme databázová data k seedovaným datům
-		List<TEntity> databaseData = PairWithDbData_LoadDatabaseData(seedData, seedDataWithPairByValues, databaseDataQueryable, pairByExpressions, customQueryCondition, out databaseDataWithPairByValues);
+		List<TEntity> databaseData = await PairWithDbData_LoadDatabaseDataOptionallyAsync(seedData, seedDataWithPairByValues, pairByExpressions, customQueryCondition, synchronizationMode, cancellationToken).ConfigureAwait(false);
 
 		// vezmeme databázová data, přidáme k nim klíč pro párování (pro pohodlný left join)
-		// Protože v jiné části kódu již databaseDataWithPairByValues sestavujeme, může zde být výkonová zkratka, ať je nesestavujeme znovu (pak není databaseDataWithPairByValues null).
-		// Pokud jsme je nesestavili jinde, sestavíme je zde.
-		if (databaseDataWithPairByValues == null)
-		{
-			databaseDataWithPairByValues = ToDataWithPairByValues(databaseData, pairByExpressions);
-		}
+		List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues = ToDataWithPairByValues(databaseData, pairByExpressions);
 
 		// zkontrolujeme, zda databázová data neobsahují duplicity
 		databaseDataWithPairByValues.ThrowIfContainsDuplicates($"Seed for {typeof(TEntity).Name} cannot be done. Data in the DATABASE already contains duplicates. Duplicate records:", pairByExpressions);
@@ -150,21 +170,19 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// <summary>
 	/// Provede načtení dat pro párování seedovaných dat s databázovými entitami.
 	/// </summary>
-	private List<TEntity> PairWithDbData_LoadDatabaseData<TEntity>(IEnumerable<TEntity> seedData, List<DataWithPairByValues<TEntity>> seedDataWithPairByValues, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, Expression<Func<TEntity, bool>> customQueryCondition, out List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues)
+	private async Task<List<TEntity>> PairWithDbData_LoadDatabaseDataOptionallyAsync<TEntity>(IEnumerable<TEntity> seedData, List<DataWithPairByValues<TEntity>> seedDataWithPairByValues, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, Expression<Func<TEntity, bool>> customQueryCondition, SynchronizationMode synchronizationMode, CancellationToken cancellationToken)
 		where TEntity : class
 	{
-		databaseDataWithPairByValues = null;
-
 		return (customQueryCondition == null)
-			? PairWithDbData_LoadDatabaseData_AutoQueryCondition(seedData, databaseDataQueryable, pairByExpressionsWithCompilations)
-			: PairWithDbData_LoadDatabaseData_CustomQueryCondition(seedDataWithPairByValues, databaseDataQueryable, pairByExpressionsWithCompilations, customQueryCondition, out databaseDataWithPairByValues);
+			? await PairWithDbData_LoadDatabaseData_AutoQueryConditionOptionallyAsync(seedData, pairByExpressionsWithCompilations, synchronizationMode, cancellationToken).ConfigureAwait(false)
+			: await PairWithDbData_LoadDatabaseData_CustomQueryConditionOptionallyAsync(seedDataWithPairByValues, pairByExpressionsWithCompilations, customQueryCondition, synchronizationMode, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
 	/// Provede načtení dat pro párování seedovaných dat s databázovými entitami.
 	/// Objekty načteny v dávkách, čímž dochází k optimalizaci množství prováděných databázových operací.
 	/// </summary>
-	private List<TEntity> PairWithDbData_LoadDatabaseData_AutoQueryCondition<TEntity>(IEnumerable<TEntity> seedData, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
+	private async Task<List<TEntity>> PairWithDbData_LoadDatabaseData_AutoQueryConditionOptionallyAsync<TEntity>(IEnumerable<TEntity> seedData, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, SynchronizationMode synchronizationMode, CancellationToken cancellationToken)
 		where TEntity : class
 	{
 		List<TEntity> dbEntities = new List<TEntity>();
@@ -174,7 +192,14 @@ public class DbDataSeedPersister : IDataSeedPersister
 		foreach (TEntity[] chunk in seedData.Chunk(100))
 		{
 			Expression<Func<TEntity, bool>> chunkWhereExpression = PairWithDbData_LoadDatabaseData_BuildWhereCondition(chunk, pairByExpressionsWithCompilations);
-			dbEntities.AddRange(databaseDataQueryable.Where(chunkWhereExpression).ToList());
+			if (synchronizationMode == SynchronizationMode.Synchronous)
+			{
+				dbEntities.AddRange(GetDbSetQueryable<TEntity>().Where(chunkWhereExpression).ToList());
+			}
+			else
+			{
+				dbEntities.AddRange(await GetDbSetQueryable<TEntity>().Where(chunkWhereExpression).ToListAsync(cancellationToken).ConfigureAwait(false));
+			}
 		}
 
 		return dbEntities;
@@ -184,11 +209,19 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// Provede načtení dat pro párování seedovaných dat s databázovými entitami.
 	/// Použije uživatelsky definovaný filtr.
 	/// </summary>
-	private List<TEntity> PairWithDbData_LoadDatabaseData_CustomQueryCondition<TEntity>(List<DataWithPairByValues<TEntity>> seedDataWithPairByValues, IQueryable<TEntity> databaseDataQueryable, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, Expression<Func<TEntity, bool>> customDatabaseCondition, out List<DataWithPairByValues<TEntity>> databaseDataWithPairByValues)
+	private async Task<List<TEntity>> PairWithDbData_LoadDatabaseData_CustomQueryConditionOptionallyAsync<TEntity>(List<DataWithPairByValues<TEntity>> seedDataWithPairByValues, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, Expression<Func<TEntity, bool>> customDatabaseCondition, SynchronizationMode synchronizationMode, CancellationToken cancellationToken)
 		where TEntity : class
 	{
 		// načteme entity dle podmínky, můžeme však načíst více dat, než kolik budeme dále párovat
-		List<TEntity> loadedDbEntities = databaseDataQueryable.Where(customDatabaseCondition).ToList();
+		List<TEntity> loadedDbEntities;
+		if (synchronizationMode == SynchronizationMode.Synchronous)
+		{
+			loadedDbEntities = GetDbSetQueryable<TEntity>().Where(customDatabaseCondition).ToList();
+		}
+		else
+		{
+			loadedDbEntities = await GetDbSetQueryable<TEntity>().Where(customDatabaseCondition).ToListAsync(cancellationToken).ConfigureAwait(false);
+		}
 
 		// potřebujeme zajistit, aby se nám vrátila jen data, která budeme párovat s seedovaným hodnotam, ale žádná jiná
 		// (dále kontrolujeme duplicitu párovacích klíčů, což může vadit, pokud načteme celou tabulku kde jsou nepárované záznamy bez párovacího klíče)
@@ -200,12 +233,6 @@ public class DbDataSeedPersister : IDataSeedPersister
 		List<DataWithPairByValues<TEntity>> loadedDbEntitiesWithPairByValues = ToDataWithPairByValues(loadedDbEntities, pairByExpressionsWithCompilations);
 		// a zafiltrujeme je jen na takové entity, které mají PairByValues mezi seedovanými daty (tím dostaneme pryč objekty, které nemají být seedovány)
 		List<TEntity> filteredLoadedDbEntities = loadedDbEntitiesWithPairByValues.Where(item => seedDataWithPairByValueHashSet.Contains(item.PairByValues /* overrides Equals */)).Select(item => item.OriginalItem).ToList();
-
-		// performance zkratka - pokud načtená a filtrovaná data odpovídají, vrátíme loadedDbEntitiesWithPairByValues, ať se nemusí sestavovat znovu
-		// out parameter
-		databaseDataWithPairByValues = (loadedDbEntities.Count == filteredLoadedDbEntities.Count) // všechny načtené objekty byly vyfiltrovány, pak můžeme sestavené PairByValues vratít
-			? loadedDbEntitiesWithPairByValues
-			: null; // objekt můžeme vrátit
 
 		return filteredLoadedDbEntities;
 	}
@@ -279,7 +306,6 @@ public class DbDataSeedPersister : IDataSeedPersister
 
 		return seedEntityWhereExpression;
 	}
-
 
 	/// <summary>
 	/// Provede vytvoření či aktualizaci dat dle předpisu seedování.
@@ -410,4 +436,9 @@ public class DbDataSeedPersister : IDataSeedPersister
 		_unitOfWork.Clear();
 	}
 
+	private enum SynchronizationMode
+	{
+		Synchronous,
+		Asynchronous
+	}
 }

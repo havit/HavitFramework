@@ -55,7 +55,7 @@ public class DataSeedRunner : IDataSeedRunner
 	public virtual async Task SeedDataAsync<TDataSeedProfile>(bool forceRun = false, CancellationToken cancellationToken = default)
 		where TDataSeedProfile : IDataSeedProfile, new()
 	{
-		await SeedDataAsync(typeof(TDataSeedProfile), forceRun).ConfigureAwait(false);
+		await SeedDataAsync(typeof(TDataSeedProfile), forceRun, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -332,7 +332,7 @@ public class DataSeedRunner : IDataSeedRunner
 			var task = dataSeed.SeedDataAsync(dataSeedPersister, CancellationToken.None);
 			if (!task.IsCompleted)
 			{
-				throw new InvalidOperationException($"Async data seeds are supported only for async {nameof(DataSeedRunner)} methods. It means you need to run data seeding using {nameof(IDataSeedRunner)}.{nameof(IDataSeedRunner.SeedDataAsync)} method when {nameof(DataSeed<DefaultProfile>)} implements (overrides) {nameof(DataSeed<DefaultProfile>.SeedDataAsync)} method.");
+				throw new SeedAsyncFromSyncSeedDataException($"Async data seeds are supported only for async {nameof(DataSeedRunner)} methods. It means you need to run data seeding using {nameof(IDataSeedRunner)}.{nameof(IDataSeedRunner.SeedDataAsync)} method when {nameof(DataSeed<DefaultProfile>)} implements (overrides) {nameof(DataSeed<DefaultProfile>.SeedDataAsync)} method.");
 			}
 		}
 		finally

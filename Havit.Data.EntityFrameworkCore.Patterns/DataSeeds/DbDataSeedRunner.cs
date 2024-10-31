@@ -30,23 +30,75 @@ public class DbDataSeedRunner : DataSeedRunner
 	/// <inheritdoc />
 	public override void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	{
+		SeedAsyncFromSyncSeedDataException seedAsyncFromSyncSeedDataException = null;
+
+		try
+		{
+			if (_dbContext.Database.IsSqlServer())
+			{
+				new DbLockedCriticalSection((SqlConnection)_dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
+				{
+					// podpora pro Connection Resiliency
+					// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
+					// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+					var strategy = _dbContext.Database.CreateExecutionStrategy();
+					strategy.Execute(() =>
+					{
+						using (IDbContextTransaction transaction = _dbContext.Database.BeginTransaction())
+						{
+							try
+							{
+								base.SeedData(dataSeedProfileType, forceRun);
+							}
+							catch (SeedAsyncFromSyncSeedDataException exception)
+							{
+								// Při chybném volání async metody z sync seedu nebo zapomenutí awaitu zůstává typicky otevřené spojení (a reader).
+								// Různá následující volání (commit, rollback, Dispose!!!) pak selhávají. Ovšem typicky ve finally bloku,
+								// takže je tato výjimka je zahozena. (C# 4 Language Specification § 8.9.5: If the finally block throws another exception, processing of the current exception is terminated.)
+								// Pokud již nedošlo k zamaskování, pokusíme se výjimkou, která nás zajíma zde zapamatovat,
+								// abychom ji níže mohli vyhodit v AggregateException.
+								// Cílem je, dát programátorovi vědět zdrojovou chybu, nikoliv následné chyby ve stylu "Na SQL spojení není povolen MARS." atp.
+								seedAsyncFromSyncSeedDataException = exception;
+								throw;
+							}
+
+							transaction.Commit();
+						}
+					});
+				});
+			}
+			else
+			{
+				base.SeedData(dataSeedProfileType, forceRun);
+			}
+		}
+		catch (Exception exception) when ((seedAsyncFromSyncSeedDataException != null) && (exception != seedAsyncFromSyncSeedDataException /* to se snad nemůže stát */))
+		{
+			// viz komentář výše u přiřazení seedAsyncFromSyncSeedDataException
+			throw new AggregateException(seedAsyncFromSyncSeedDataException, exception);
+		}
+	}
+
+	/// <inheritdoc />
+	public override async Task SeedDataAsync(Type dataSeedProfileType, bool forceRun = false, CancellationToken cancellationToken = default)
+	{
 		if (_dbContext.Database.IsSqlServer())
 		{
-			new DbLockedCriticalSection((SqlConnection)_dbContext.Database.GetDbConnection()).ExecuteAction(DataSeedLockValue, () =>
+			await new DbLockedCriticalSection((SqlConnection)_dbContext.Database.GetDbConnection()).ExecuteActionAsync(DataSeedLockValue, async () =>
 			{
 				// podpora pro Connection Resiliency
 				// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
 				// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
 				var strategy = _dbContext.Database.CreateExecutionStrategy();
-				strategy.Execute(() =>
+				await strategy.ExecuteAsync(async _ =>
 				{
 					using (IDbContextTransaction transaction = _dbContext.Database.BeginTransaction())
 					{
-						base.SeedData(dataSeedProfileType, forceRun);
-						transaction.Commit();
+						await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
+						await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
 					}
-				});
-			});
+				}, cancellationToken).ConfigureAwait(false);
+			}, cancellationToken).ConfigureAwait(false);
 		}
 		else
 		{

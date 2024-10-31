@@ -10,7 +10,7 @@ namespace Havit.EFCoreTests.DataLayer.Seeds.Persons;
 
 public class PersonSeed : DataSeed<PersonsProfile>
 {
-	public override void SeedData()
+	public override async Task SeedDataAsync(CancellationToken cancellationToken)
 	{
 		var persons = CreatePersons(200).ToArray();
 		foreach (Person person in persons)
@@ -21,7 +21,8 @@ public class PersonSeed : DataSeed<PersonsProfile>
 				subordinate.Subordinates.AddRange(CreatePersons(3));
 			}
 		}
-		Seed(For(persons).PairBy(p => p.Name));
+		//Seed(For(persons).PairBy(p => p.Name));
+		await SeedAsync(For(persons).PairBy(p => p.Name), cancellationToken);
 	}
 
 	private List<Person> CreatePersons(int count)

@@ -72,6 +72,15 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	}
 
 	/// <summary>
+	/// Provede persistenci seedovaných dat. Učeno pro volání z implementace metody SeedData.
+	/// </summary>
+	protected async Task SeedAsync<TEntity>(IDataSeedFor<TEntity> dataSeedFor, CancellationToken cancellationToken = default)
+		where TEntity : class
+	{
+		await currentDataSeedPersister.SaveAsync<TEntity>(dataSeedFor.Configuration, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Získá objekt pro konfiguraci seedování dat.
 	/// </summary>
 	/// <param name="data">Objekty, které mají být seedovány.</param>

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
@@ -37,6 +38,17 @@ public class DbDataSeedPersister : IDataSeedPersister
 		ClearChangeTracker();
 		Task t = PerformSaveOptionalyAsync<TEntity>(configuration, SynchronizationMode.Synchronous, CancellationToken.None);
 		Contract.Assert(t.IsCompleted, $"Task must be completed. There is a bug in the {nameof(DbDataSeedPersister)}.");
+		if (t.Exception != null)
+		{
+			if (t.Exception is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
+			{
+				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
+			}
+			else
+			{
+				ExceptionDispatchInfo.Capture(t.Exception).Throw();
+			}
+		}
 		ClearChangeTracker();
 	}
 

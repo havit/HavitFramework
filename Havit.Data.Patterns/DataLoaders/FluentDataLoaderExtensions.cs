@@ -36,7 +36,9 @@ public static class FluentDataLoaderExtensions
 		where TEntity : class
 		where TProperty : class
 	{
+#pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
 		return await (await source.ConfigureAwait(false)).LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
 	}
 
 	// **************************************************************************************************************************************
@@ -53,7 +55,9 @@ public static class FluentDataLoaderExtensions
 		where TEntity : class
 		where TProperty : class
 	{
+#pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
 		return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
 	}
 
 	/// <summary>
@@ -63,7 +67,9 @@ public static class FluentDataLoaderExtensions
 		where TEntity : class
 		where TProperty : class
 	{
+#pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
 		return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
 	}
 
 	/// <summary>
@@ -73,7 +79,9 @@ public static class FluentDataLoaderExtensions
 		where TEntity : class
 		where TProperty : class
 	{
+#pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
 		return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
 	}
 
 	/// <summary>
@@ -83,7 +91,9 @@ public static class FluentDataLoaderExtensions
 		where TEntity : class
 		where TProperty : class
 	{
+#pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
 		return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
 	}
 
 	/// <summary>
@@ -93,6 +103,8 @@ public static class FluentDataLoaderExtensions
 		where TEntity : class
 		where TProperty : class
 	{
+#pragma warning disable VSTHRD003 // Avoid awaiting foreign Tasks
 		return await (await source.ConfigureAwait(false)).Unwrap<TEntity>().LoadAsync<TProperty>(propertyPath, cancellationToken).ConfigureAwait(false);
+#pragma warning restore VSTHRD003 // Avoid awaiting foreign Tasks
 	}
 }

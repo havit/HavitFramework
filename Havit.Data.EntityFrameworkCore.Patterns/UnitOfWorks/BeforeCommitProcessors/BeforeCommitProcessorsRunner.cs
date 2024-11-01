@@ -50,7 +50,11 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 					{
 						throw new InvalidOperationException($"Async before commit processors are supported only for async {nameof(IUnitOfWork)}.{nameof(IUnitOfWork.CommitAsync)} method.");
 					}
-					else if (task.Result == ChangeTrackerImpact.StateChanged)
+
+#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
+					ChangeTrackerImpact changeTrackerImpact = task.GetAwaiter().GetResult(); // pro propagaci případných výjimek
+#pragma warning restore VSTHRD002 // Avoid problematic synchronous waits
+					if (changeTrackerImpact == ChangeTrackerImpact.StateChanged)
 					{
 						result = ChangeTrackerImpact.StateChanged;
 					}

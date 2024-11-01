@@ -334,6 +334,9 @@ public class DataSeedRunner : IDataSeedRunner
 			{
 				throw new SeedAsyncFromSyncSeedDataException($"Async data seeds are supported only for async {nameof(DataSeedRunner)} methods. It means you need to run data seeding using {nameof(IDataSeedRunner)}.{nameof(IDataSeedRunner.SeedDataAsync)} method when {nameof(DataSeed<DefaultProfile>)} implements (overrides) {nameof(DataSeed<DefaultProfile>.SeedDataAsync)} method.");
 			}
+#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
+			task.GetAwaiter().GetResult(); // pro propagaci případných výjimek
+#pragma warning restore VSTHRD002 // Avoid problematic synchronous waits
 		}
 		finally
 		{

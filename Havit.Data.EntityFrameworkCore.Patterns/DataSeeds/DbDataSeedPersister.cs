@@ -36,19 +36,11 @@ public class DbDataSeedPersister : IDataSeedPersister
 		where TEntity : class
 	{
 		ClearChangeTracker();
-		Task t = PerformSaveOptionalyAsync<TEntity>(configuration, SynchronizationMode.Synchronous, CancellationToken.None);
-		Contract.Assert(t.IsCompleted, $"Task must be completed. There is a bug in the {nameof(DbDataSeedPersister)}.");
-		if (t.Exception != null)
-		{
-			if (t.Exception is AggregateException aggregateException && aggregateException.InnerExceptions.Count == 1)
-			{
-				ExceptionDispatchInfo.Capture(aggregateException.InnerExceptions[0]).Throw();
-			}
-			else
-			{
-				ExceptionDispatchInfo.Capture(t.Exception).Throw();
-			}
-		}
+		Task task = PerformSaveOptionalyAsync<TEntity>(configuration, SynchronizationMode.Synchronous, CancellationToken.None);
+		Contract.Assert(task.IsCompleted, $"Task must be completed. There is a bug in the {nameof(DbDataSeedPersister)}.");
+#pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
+		task.GetAwaiter().GetResult(); // pro propagaci případných výjimek
+#pragma warning restore VSTHRD002 // Avoid problematic synchronous waits
 		ClearChangeTracker();
 	}
 

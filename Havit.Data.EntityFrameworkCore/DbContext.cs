@@ -43,17 +43,6 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 		ModelCreatingCompleting(modelBuilder);
 	}
 
-	/// <inheritdoc />
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		base.OnConfiguring(optionsBuilder);
-
-		// Nebude fungovat v DbContext poolingu.
-		// Pro DbContext pooling se přidávají tyto konvence v AddDbContext(Pool).
-		optionsBuilder.UseFrameworkConventions();
-		optionsBuilder.UseDbLockedMigrator();
-	}
-
 	/// <summary>
 	/// Zaregistruje třídu DataSeedVersion do modelu
 	/// </summary>

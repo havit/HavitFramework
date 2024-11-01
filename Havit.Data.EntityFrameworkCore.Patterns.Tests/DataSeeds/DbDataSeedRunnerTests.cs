@@ -27,10 +27,10 @@ public class DbDataSeedRunnerTests
 		services.AddSingleton<ITimeService, ServerTimeService>();
 		services.AddSingleton<ICacheService, MemoryCacheService>();
 
-		services.WithEntityPatternsInstaller()
-			.AddDbContext<TestDbContext>(options => options.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=Havit.Data.EntityFrameworkCore.Patterns.Tests",
-				o => o.EnableRetryOnFailure())) // this is the most important part of the test setup!
-			.AddEntityPatterns();
+		services.AddDbContext<TestDbContext>(options => options.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=Havit.Data.EntityFrameworkCore.Patterns.Tests",
+				o => o.EnableRetryOnFailure())); // this is the most important part of the test setup!
+
+		services.AddEntityPatterns();
 
 
 		using var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });

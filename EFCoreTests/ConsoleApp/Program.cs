@@ -52,14 +52,15 @@ public static class Program
 
 	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
 	{
-		services.WithEntityPatternsInstaller()
-			.AddDataLayer(typeof(IPersonRepository).Assembly)
-			.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
+		services.AddDbContext<IDbContext, Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 				optionsBuilder
 					.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
-					.EnableSensitiveDataLogging(true))
-			//.UseInMemoryDatabase("ConsoleApp")
+					.UseDefaultHavitConventions()
+					.EnableSensitiveDataLogging(true));
+
+		services
 			.AddEntityPatterns()
+			.AddDataLayer(typeof(IPersonRepository).Assembly)
 			.AddLookupService<IUserLookupService, UserLookupService>();
 
 		services.AddSingleton<ITimeService, ServerTimeService>();

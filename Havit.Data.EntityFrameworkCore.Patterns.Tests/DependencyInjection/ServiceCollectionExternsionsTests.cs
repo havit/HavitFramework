@@ -16,87 +16,50 @@ using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection;
 
 [TestClass]
-public class EntityPatternsInstallerTests
+public class ServiceCollectionExtensionsTests
 {
 	[TestMethod]
-	public void EntityPatternsInstaller_DbContextIsScoped()
+	public void ServiceCollectionExtensions_DbContext_ConventionsUsesDbLockedMigrator()
 	{
 		// Arrange
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
+		// noop
 
 		// Act
-		using var scope1 = serviceProvider.CreateScope();
-		using var scope2 = serviceProvider.CreateScope();
+		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(false);
 
-		var dbContext1a = scope1.ServiceProvider.GetRequiredService<IDbContext>();
-		var dbContext1b = scope1.ServiceProvider.GetRequiredService<IDbContext>();
-		var dbContext2 = scope2.ServiceProvider.GetRequiredService<IDbContext>();
-
-		// Assert			
-		Assert.AreSame(dbContext1a, dbContext1b);
-		Assert.AreNotSame(dbContext1a, dbContext2);
-		Assert.AreNotSame(dbContext1b, dbContext2);
-
-		Assert.IsInstanceOfType(dbContext1a, typeof(TestDbContext));
-		Assert.IsInstanceOfType(dbContext2, typeof(TestDbContext));
+		// Assert
+		using var scope = serviceProvider.CreateScope();
+		var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
+		var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
+		Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_PooledDbContextIsScoped()
+	public void ServiceCollectionExtensions_PooledDbContext_ConventionsUsesDbLockedMigrator()
 	{
 		// Arrange
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
+		// noop
 
 		// Act
+		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(true);
 
-		// scopes jsou paralelně existující
-		using var scope1 = serviceProvider.CreateScope();
-		using var scope2 = serviceProvider.CreateScope();
-
-		IDbContext dbContext1 = scope1.ServiceProvider.GetRequiredService<IDbContext>();
-		IDbContext dbContext2 = scope2.ServiceProvider.GetRequiredService<IDbContext>();
-
-		// Assert			
-		Assert.AreNotSame(dbContext1, dbContext2);
-
-		Assert.IsInstanceOfType(dbContext1, typeof(TestDbContext));
-		Assert.IsInstanceOfType(dbContext2, typeof(TestDbContext));
+		// Assert
+		using var scope = serviceProvider.CreateScope();
+		var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
+		var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
+		Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_PooledDbContextIsReused()
-	{
-		// Arrange
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
-
-		// Act
-		IDbContext dbContext1;
-		IDbContext dbContext2;
-
-		// scopes jsou za sebou jdoucí
-		using (var scope = serviceProvider.CreateScope())
-		{
-			dbContext1 = scope.ServiceProvider.GetRequiredService<IDbContext>();
-		}
-
-		using (var scope = serviceProvider.CreateScope())
-		{
-			dbContext2 = scope.ServiceProvider.GetRequiredService<IDbContext>();
-		}
-
-		// Assert			
-		Assert.AreSame(dbContext1, dbContext2);
-		Assert.IsInstanceOfType(dbContext1, typeof(TestDbContext));
-	}
-
-	[TestMethod]
-	public void EntityPatternsInstaller_LanguageAndLocalizationServicesAreScoped()
+	public void ServiceCollectionExtensions_LanguageAndLocalizationServicesAreScoped()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -121,7 +84,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_DataSourcesAreTransient()
+	public void ServiceCollectionExtensions_DataSourcesAreTransient()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -141,7 +104,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_RepositoriesAreScoped()
+	public void ServiceCollectionExtensions_RepositoriesAreScoped()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -165,7 +128,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_DataLoaderIsScoped()
+	public void ServiceCollectionExtensions_DataLoaderIsScoped()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -185,7 +148,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_UnitOfWorkIsScoped()
+	public void ServiceCollectionExtensions_UnitOfWorkIsScoped()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -205,7 +168,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_EntityCacheManagerIsTransient()
+	public void ServiceCollectionExtensions_EntityCacheManagerIsTransient()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -225,7 +188,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_BeforeCommitProcessorsRunnerIsRegistered()
+	public void ServiceCollectionExtensions_BeforeCommitProcessorsRunnerIsRegistered()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -238,7 +201,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_BeforeCommitProcessorsFactoryIsRegistered()
+	public void ServiceCollectionExtensions_BeforeCommitProcessorsFactoryIsRegistered()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -251,7 +214,7 @@ public class EntityPatternsInstallerTests
 	}
 
 	[TestMethod]
-	public void EntityPatternsInstaller_SetCreatedToInsertingEntitiesBeforeCommitProcessorIsRegistered()
+	public void ServiceCollectionExtensions_SetCreatedToInsertingEntitiesBeforeCommitProcessorIsRegistered()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -269,9 +232,8 @@ public class EntityPatternsInstallerTests
 		Assert.IsInstanceOfType(objectBeforeCommitProcessors.Single(), typeof(SetCreatedToInsertingEntitiesBeforeCommitProcessor));
 	}
 
-
 	[TestMethod]
-	public void EntityPatternsInstaller_DataSeedRunnerIsRegistered()
+	public void ServiceCollectionExtensions_DataSeedRunnerIsRegistered()
 	{
 		// Arrange
 		IServiceProvider serviceProvider = CreateAndSetupServiceProvider();
@@ -287,20 +249,24 @@ public class EntityPatternsInstallerTests
 
 	internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false)
 	{
-		// V Development dochází k více kontrolám, které se nám projevují při současném použití AddDbContext a AddDbContextFactory (což používáme).
+		// V Development dochází k více kontrolám
 		var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings { EnvironmentName = "Development" });
 
-		var installer = builder.Services.WithEntityPatternsInstaller();
 		if (pooling)
 		{
-			installer = installer.AddDbContextPool<TestDbContext>(options => options.UseInMemoryDatabase(nameof(TestDbContext)));
+			builder.Services.AddDbContextPool<IDbContext, TestDbContext>(options => options
+				.UseSqlServer("Data Source=FAKE")
+				.UseDefaultHavitConventions());
 		}
 		else
 		{
-			installer = installer.AddDbContext<TestDbContext>(options => options.UseInMemoryDatabase(nameof(TestDbContext)));
+			builder.Services.AddDbContext<IDbContext, TestDbContext>(options => options
+				.UseSqlServer("Data Source=FAKE")
+				.UseDefaultHavitConventions());
 		}
 
-		installer.AddEntityPatterns()
+		builder.Services
+			.AddEntityPatterns()
 			.AddLocalizationServices<Language>()
 			.AddDataLayer(typeof(ILanguageDataSource).Assembly);
 		builder.Services.AddSingleton<ITimeService, ServerTimeService>();

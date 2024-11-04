@@ -365,20 +365,28 @@ public class EntityCacheManager : IEntityCacheManager
 
 			foreach (object entityToUpdateInCache in entitiesToUpdateInCache)
 			{
-				// TODO EF Core 9: Jen pro cachovatelné entity
-
 				// protože je metoda StoreEntity generická, musíme přes reflexi
-				try
+				invokeArguments[0] = entityToUpdateInCache; // eliminace alokace pole pro každý průchod
+				Type entityToUpdateInCacheType = entityToUpdateInCache.GetType();
+				if (!methodInfosDictionary.TryGetValue(entityToUpdateInCacheType, out MethodInfo methodInfo))
 				{
-					invokeArguments[0] = entityToUpdateInCache; // eliminace alokace pole pro každý průchod
-					Type entityToUpdateInCacheType = entityToUpdateInCache.GetType();
-					if (!methodInfosDictionary.TryGetValue(entityToUpdateInCacheType, out MethodInfo methodInfo))
+					// Uložíme si odkaz na metodu StoreEntity, ovšem jen pro typy entit, které může cachovat.
+					// Pro ostatní si uložíme hodnotu null.
+					if (_entityCacheSupportDecision.ShouldCacheEntityType(entityToUpdateInCacheType))
 					{
 						methodInfo = this.GetType().GetMethod(nameof(StoreEntity)).MakeGenericMethod(entityToUpdateInCacheType);
 						methodInfosDictionary.Add(entityToUpdateInCacheType, methodInfo);
 					}
+					else
+					{
+						methodInfo = null;
+						methodInfosDictionary.Add(entityToUpdateInCacheType, null);
+					}
+				}
 
-					methodInfo.Invoke(this, invokeArguments);
+				try
+				{
+					methodInfo?.Invoke(this, invokeArguments); // pro necachovatelné entity je methodInfo null
 				}
 				catch (TargetInvocationException targetInvocationException)
 				{

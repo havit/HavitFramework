@@ -311,7 +311,7 @@ public class EntityCacheManager : IEntityCacheManager
 						var propertyLambda = _propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(propertyName).LambdaCompiled;
 						var entityPropertyMembers = propertyLambda(entity) ?? Enumerable.Empty<TPropertyItem>();
 
-						object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => _entityKeyAccessor.GetEntityKeyValues(entityPropertyMember)).ToArray();
+						object[][] entityPropertyMembersKeys = entityPropertyMembers.Select(entityPropertyMember => _entityKeyAccessor.GetEntityKeyValues(entityPropertyMember).ToArray()).ToArray();
 						_cacheService.Add(cacheKey, entityPropertyMembersKeys, _entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 
 						// V aktuálním použití DbDataLoaderem nechceme cachovat samotnou entitu, cachuje ji DbDataLoader samostatně.
@@ -324,7 +324,7 @@ public class EntityCacheManager : IEntityCacheManager
 						var propertyLambda = _propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
 						var entityPropertyValue = propertyLambda(entity);
 
-						object[] entityPropertyValueKeys = _entityKeyAccessor.GetEntityKeyValues(entityPropertyValue);
+						object[] entityPropertyValueKeys = _entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
 						_cacheService.Add(cacheKey, entityPropertyValueKeys, _entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 					}
 					break;
@@ -400,7 +400,7 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		// invalidate entity cache
 
-		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(change.Entity);
+		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(change.Entity).ToArray();
 
 		// Entity se složeným klíčem (ManyToMany jakožto dekomponovaný vztah i skip navigation)
 		if (entityKeyValues.Length > 1)

@@ -60,7 +60,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		// invalidate entity cache
 		Type entityType = entity.GetType();
 
-		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(entity);
+		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(entity).ToArray();
 
 		// entity se složeným klíčem nepodporujeme (předpokládáme, že jediné takové jsou reprezentace vztahu ManyToMany)
 		if (entityKeyValues.Length == 1)

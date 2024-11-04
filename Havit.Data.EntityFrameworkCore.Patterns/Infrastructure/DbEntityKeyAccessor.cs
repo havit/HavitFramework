@@ -21,10 +21,9 @@ public class DbEntityKeyAccessor : IEntityKeyAccessor
 	/// Vrátí hodnotu primárního klíče entity.
 	/// </summary>
 	/// <param name="entity">Entita.</param>
-	public object[] GetEntityKeyValues(object entity)
+	public IEnumerable<object> GetEntityKeyValues(object entity)
 	{
-		// TODO EF Core 9: Velmi často se používá na výsledek metody .Single(), pokud uděláme dedikovanou metodu, odstraníme alokaci pole pomocí .ToArray().
-		return GetDbEntityKeyAccessorItem(entity.GetType()).PropertyInfos.Select(propertyInfo => propertyInfo.GetValue(entity)).ToArray();
+		return GetDbEntityKeyAccessorItem(entity.GetType()).PropertyInfos.Select(propertyInfo => propertyInfo.GetValue(entity));
 	}
 
 	/// <summary>

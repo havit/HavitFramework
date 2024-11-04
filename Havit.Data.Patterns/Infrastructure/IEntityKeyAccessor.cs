@@ -9,7 +9,7 @@ public interface IEntityKeyAccessor
 	/// Vrátí hodnotu primárního klíče entity.
 	/// </summary>
 	/// <param name="entity">Entita.</param>
-	object[] GetEntityKeyValues(object entity);
+	IEnumerable<object> GetEntityKeyValues(object entity);
 
 	/// <summary>
 	/// Vrátí název vlastnosti, která je primárním klíčem.

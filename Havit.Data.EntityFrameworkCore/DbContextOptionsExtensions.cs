@@ -12,8 +12,6 @@ public static class DbContextOptionsExtensions
 	/// </summary>
 	public static DbContextOptionsBuilder UseDefaultHavitConventions(this DbContextOptionsBuilder optionsBuilder)
 	{
-		// TODO EF Core: Předělat na konvence?
-		optionsBuilder.UseFrameworkConventions();
 		optionsBuilder.UseDbLockedMigrator();
 
 		return optionsBuilder;

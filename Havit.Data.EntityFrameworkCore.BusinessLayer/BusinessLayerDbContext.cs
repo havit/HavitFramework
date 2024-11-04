@@ -1,13 +1,9 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Migrations.Extensions;
-using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
-using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer;
 
@@ -53,10 +49,6 @@ public abstract class BusinessLayerDbContext : DbContext
 		// Sice není ideální ve frameworku použít OnConfiguring, nicméně použití BusinessLayerDbContextu se nepředpokládá tam, kde toto bude blokující pro použití DbContextu (např. pooled db connection)
 		BusinessLayerDbContextSettings settings = CreateDbContextSettings();
 
-		optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions
-			.UseStringPropertiesDefaultValueConvention(true)
-			.UseLocalizationTableIndexConvention(false));
-
 #pragma warning disable CS0618 // Type or member is obsolete
 		optionsBuilder.UseModelExtensions(builder => builder
 			.ModelExtensionsAssembly(settings.ModelExtensionsAssembly)
@@ -88,6 +80,15 @@ public abstract class BusinessLayerDbContext : DbContext
 		optionsBuilder.ConditionalyUseConventionSetPlugin<LocalizationTableIndexConventionPlugin>(() => settings.LocalizationTableIndexConvention);
 
 		optionsBuilder.ConditionalyUseConventionSetPlugin<XmlCommentsForDescriptionPropertyConventionPlugin>(() => settings.UseXmlCommentsForDescriptionPropertyConvention);
+	}
+
+	protected override ConventionsOptions GetConventionOptions()
+	{
+		return base.GetConventionOptions() with
+		{
+			StringPropertiesDefaultValueConventionEnabled = true,
+			LocalizationTableIndexConventionEnabled = false
+		};
 	}
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

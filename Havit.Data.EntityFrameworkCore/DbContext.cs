@@ -1,8 +1,12 @@
 ﻿using Havit.Data.EntityFrameworkCore.Internal;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore;
 
@@ -30,6 +34,54 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	protected DbContext(DbContextOptions options) : base(options)
 	{
 	}
+
+	/// <inheritdoc />
+	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+	{
+		base.ConfigureConventions(configurationBuilder);
+
+		var conventionsOptions = GetConventionOptions();
+
+		if (conventionsOptions.CacheAttributeToAnnotationConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(sp => new CacheAttributeToAnnotationConvention(sp.GetRequiredService<ProviderConventionSetBuilderDependencies>()));
+		}
+
+		if (conventionsOptions.CascadeDeleteToRestrictConventionEnabled)
+		{
+			configurationBuilder.Conventions.Remove(typeof(SqlServerOnDeleteConvention));
+			configurationBuilder.Conventions.Add(sp => new CascadeDeleteToRestrictConvention(sp.GetRequiredService<ProviderConventionSetBuilderDependencies>()));
+		}
+
+		if (conventionsOptions.DataTypeAttributeConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(sp => new DataTypeAttributeConvention(sp.GetRequiredService<ProviderConventionSetBuilderDependencies>()));
+		}
+
+		if (conventionsOptions.ManyToManyEntityKeyDiscoveryConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(_ => new ManyToManyEntityKeyDiscoveryConvention());
+		}
+
+		if (conventionsOptions.StringPropertiesDefaultValueConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(_ => new StringPropertiesDefaultValueConvention());
+		}
+
+		if (conventionsOptions.LocalizationTableIndexConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(_ => new LocalizationTableIndexConvention());
+		}
+	}
+
+	/// <summary>
+	/// Vrátí nastavení pro registraci konvencí.
+	/// </summary>
+	protected virtual ConventionsOptions GetConventionOptions()
+	{
+		return new ConventionsOptions();
+	}
+
 
 	/// <inheritdoc />
 	protected override sealed void OnModelCreating(ModelBuilder modelBuilder)

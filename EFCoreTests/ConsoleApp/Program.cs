@@ -82,8 +82,7 @@ public static class Program
 		CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 		CancellationToken stoppedCancellationToken = cancellationTokenSource.Token;
 		cancellationTokenSource.Cancel();
-		serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>(forceRun: true);
-		await Task.Yield();
+		await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken: cancellationToken);
 		//await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, stoppedCancellationToken);
 
 		//for (int i = 0; i < 50000; i++)

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
-using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.Fakes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -46,17 +45,22 @@ public class EndToEndTestDbContext : TestDbContext
 	{
 		base.OnConfiguring(optionsBuilder);
 
-		optionsBuilder.UseFrameworkConventions(frameworkConventions => frameworkConventions
-			.UseCacheAttributeToAnnotationConvention(false)
-			.UseCascadeDeleteToRestrictConvention(false)
-			.UseDataTypeAttributeConvention(false)
-			.UseManyToManyEntityKeyDiscoveryConvention(false)
-			.UseStringPropertiesDefaultValueConvention(false)
-		);
-
 		// stub out Model Extender types, so all extenders in test assembly don't interfere with tests.
 		// Tests should setup their own types when necessary.
 		optionsBuilder.SetModelExtenderTypes(Enumerable.Empty<TypeInfo>());
+	}
+
+	protected override ConventionsOptions GetConventionOptions()
+	{
+		return new ConventionsOptions
+		{
+			CacheAttributeToAnnotationConventionEnabled = false,
+			CascadeDeleteToRestrictConventionEnabled = false,
+			DataTypeAttributeConventionEnabled = false,
+			ManyToManyEntityKeyDiscoveryConventionEnabled = false,
+			StringPropertiesDefaultValueConventionEnabled = false
+			//LocalizationTableIndexConventionEnabled = false
+		};
 	}
 
 	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)

@@ -11,21 +11,6 @@ namespace Havit.Data.EntityFrameworkCore;
 public static class DbContextOptionsBuilderExtensions
 {
 	/// <summary>
-	/// Zajistí použití frameworkových konvencí.
-	/// </summary>
-	public static DbContextOptionsBuilder UseFrameworkConventions(this DbContextOptionsBuilder optionsBuilder, Action<FrameworkConventionSetOptionsBuilder> frameworkConventionSetOptionsBuilder = null)
-	{
-		if (optionsBuilder.Options.FindExtension<FrameworkConventionSetOptionsExtension>() == null)
-		{
-			((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(new FrameworkConventionSetOptionsExtension());
-		}
-
-		frameworkConventionSetOptionsBuilder?.Invoke(new FrameworkConventionSetOptionsBuilder(optionsBuilder));
-
-		return optionsBuilder;
-	}
-
-	/// <summary>
 	/// Zajistí použití migrátoru chráněného databázovým zámkem před paralelním spuštěním.
 	/// </summary>
 	public static DbContextOptionsBuilder UseDbLockedMigrator(this DbContextOptionsBuilder optionsBuilder)

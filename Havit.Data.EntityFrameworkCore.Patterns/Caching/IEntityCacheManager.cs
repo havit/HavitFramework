@@ -32,6 +32,11 @@ public interface IEntityCacheManager
 		where TEntity : class;
 
 	/// <summary>
+	/// Vrací true, pokud půže být daná kolekce dané entity cachována.
+	/// </summary>
+	bool ShouldCacheEntityTypeNavigation<TEntity>(string propertyName);
+
+	/// <summary>
 	/// Pokusí se z cache načíst kolekci nebo one-to-one "back-referenci" dané entity. Pokud je kolekce nebo one-to-one vlastnost entity v cache nalezena a vrácena, vrací true. Jinak false. 
 	/// </summary>
 	bool TryGetNavigation<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)

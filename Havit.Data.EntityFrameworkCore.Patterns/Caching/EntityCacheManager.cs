@@ -127,6 +127,12 @@ public class EntityCacheManager : IEntityCacheManager
 	}
 
 	/// <inheritdoc />
+	public bool ShouldCacheEntityTypeNavigation<TEntity>(string propertyName)
+	{
+		return _entityCacheSupportDecision.ShouldCacheEntityTypeNavigation(typeof(TEntity), propertyName);
+	}
+
+	/// <inheritdoc />
 	public bool TryGetNavigation<TEntity, TPropertyItem>(TEntity entity, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class

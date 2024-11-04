@@ -37,6 +37,11 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	}
 
 	/// <summary>
+	/// Vrací vždy false.
+	/// </summary>
+	public bool ShouldCacheEntityTypeNavigation<TEntity>(string propertyName) => false;
+
+	/// <summary>
 	/// Nic nedělá, nehledá v cache.
 	/// Vrací vždy false.
 	/// </summary>

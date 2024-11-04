@@ -195,7 +195,10 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		// TODO EF Core 9: if cachable
+		if (!_entityCacheManager.ShouldCacheEntityTypeNavigation<TEntity>(propertyName))
+		{
+			return;
+		}
 
 		_logger.LogDebug("Storing navigations to cache...");
 

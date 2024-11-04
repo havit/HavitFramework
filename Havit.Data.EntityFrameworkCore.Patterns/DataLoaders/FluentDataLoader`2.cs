@@ -32,7 +32,7 @@ internal class FluentDataLoader<TContractEntity, TItem> : IFluentDataLoader<TCon
 	}
 
 	/// <inheritdoc />
-	async Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TContractEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no default */)
+	async ValueTask<IFluentDataLoader<TProperty>> IFluentDataLoader<TContractEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no default */)
 	{
 		return await Loader.LoadAllAsync(Data, (Expression<Func<TItem, TProperty>>)propertyPath, cancellationToken).ConfigureAwait(false);
 	}

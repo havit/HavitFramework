@@ -19,9 +19,9 @@ public class NullFluentDataLoader<TEntity> : IFluentDataLoader<TEntity>
 	/// <summary>
 	/// Nedělá nic.
 	/// </summary>
-	public Task<IFluentDataLoader<TProperty>> LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken = default) where TProperty : class
+	public ValueTask<IFluentDataLoader<TProperty>> LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken = default) where TProperty : class
 	{
-		return Task.FromResult((IFluentDataLoader<TProperty>)new NullFluentDataLoader<TProperty>());
+		return new ValueTask<IFluentDataLoader<TProperty>>(new NullFluentDataLoader<TProperty>());
 	}
 
 	/// <summary>

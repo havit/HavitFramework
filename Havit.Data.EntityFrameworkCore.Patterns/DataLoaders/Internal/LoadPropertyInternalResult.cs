@@ -1,11 +1,11 @@
 ﻿using Havit.Data.Patterns.DataLoaders;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 
 /// <summary>
 /// Interní použití v DbDataLoaderu.
 /// </summary>
-internal class LoadPropertyInternalResult
+internal struct LoadPropertyInternalResult
 {
 	public required IEnumerable Entities { get; init; }
 	public required object FluentDataLoader { get; init; }

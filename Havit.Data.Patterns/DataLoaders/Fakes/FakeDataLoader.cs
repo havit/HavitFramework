@@ -18,7 +18,7 @@ public class FakeDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		return new FakeFluentDataLoader<TProperty>();
+		return new NullFluentDataLoader<TProperty>();
 	}
 
 	/// <summary>
@@ -39,7 +39,7 @@ public class FakeDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		return new FakeFluentDataLoader<TProperty>();
+		return new NullFluentDataLoader<TProperty>();
 	}
 
 	/// <summary>
@@ -60,7 +60,7 @@ public class FakeDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());
+		return Task.FromResult((IFluentDataLoader<TProperty>)new NullFluentDataLoader<TProperty>());
 	}
 
 	/// <summary>
@@ -81,7 +81,7 @@ public class FakeDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		return Task.FromResult((IFluentDataLoader<TProperty>)new FakeFluentDataLoader<TProperty>());
+		return Task.FromResult((IFluentDataLoader<TProperty>)new NullFluentDataLoader<TProperty>());
 	}
 
 	/// <summary>

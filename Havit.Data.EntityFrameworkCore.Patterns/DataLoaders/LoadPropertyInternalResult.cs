@@ -1,4 +1,6 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
+﻿using Havit.Data.Patterns.DataLoaders;
+
+namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
 /// <summary>
 /// Interní použití v DbDataLoaderu.

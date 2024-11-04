@@ -13,6 +13,9 @@
 		<PackageVersion>2.9.0-pre03</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Content Remove="C:\Users\Jirka\.nuget\packages\system.diagnostics.diagnosticsource\9.0.0-rc.2.24473.5\contentFiles\any\net8.0\ILLink\ILLink.Descriptors.LibraryBuild.xml" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.2.24474.1">
@@ -22,7 +25,8 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.CodeDom" Version="8.0.0" />
+		<PackageReference Include="System.CodeDom" Version="9.0.0-rc.2.24473.5" />
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.0-rc.2.24473.5" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,6 +44,11 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>InterfaceDataEntriesTemplate.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.cs">
+		  <DependentUpon>DataLayerServiceExtensionsTemplate.tt</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
 		</Compile>
 		<Compile Update="Actions\DataSources\Model\InterfaceDataSourceModel.cs">
 			<SubType>Code</SubType>
@@ -116,6 +125,10 @@
 		<None Update="Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>
 			<LastGenOutput>InterfaceDataEntriesTemplate.cs</LastGenOutput>
+		</None>
+		<None Update="Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt">
+		  <LastGenOutput>DataLayerServiceExtensionsTemplate.cs</LastGenOutput>
+		  <Generator>TextTemplatingFilePreprocessor</Generator>
 		</None>
 		<None Update="Actions\DataSources\Template\DbDataSourceTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>

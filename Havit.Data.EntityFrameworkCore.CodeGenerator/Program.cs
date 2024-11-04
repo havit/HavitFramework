@@ -15,6 +15,8 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Template
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore.Design;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Template;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Model;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
@@ -38,7 +40,6 @@ public static class Program
 		IProject metadataProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.MetadataProjectPath));
 		IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj"));
 
-
 		Console.WriteLine($"Initializing DbContext...");
 		if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
 		{
@@ -53,7 +54,8 @@ public static class Program
 			() => GenerateMetadata(metadataProject, modelProject, dbContext, configuration),
 			() => GenerateDataSources(dataLayerProject, modelProject, dbContext),
 			() => GenerateDataEntries(dataLayerProject, modelProject, dbContext, dataEntriesModelSource),
-			() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource)
+			() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource),
+			() => GenerateDataLayerServiceExtensions(modelProject, dataLayerProject, dbContext)
 		);
 
 		string[] unusedDataLayerFiles = null;
@@ -210,5 +212,22 @@ public static class Program
 		dbRepositoryBaseGeneratedGenerator.Generate();
 		dbRepositoryGeneratedGenerator.Generate();
 		dbRepositoryGenerator.Generate();
+	}
+
+	private static void GenerateDataLayerServiceExtensions(IProject modelProject, IProject dataLayerProject, DbContext dbContext)
+	{
+		CodeWriter codeWriter = new CodeWriter(dataLayerProject);
+		string targetFilename = Path.Combine(dataLayerProject.GetProjectRootPath(), "_generated\\DataLayerServiceExtensions.cs");
+
+		// TODO: model factory
+		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(dbContext, modelProject, dataLayerProject);
+		var model = new DataLayerServiceExtensionsModel
+		{
+			NamespaceName = dataLayerProject.GetProjectRootNamespace(),
+			DataSourceModels = dbDataSourceModelSource.GetModels().ToList()
+		};
+		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(model);
+		codeWriter.Save(targetFilename, template.TransformText(), true);
+		dataLayerProject.SaveChanges();
 	}
 }

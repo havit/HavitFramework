@@ -142,7 +142,7 @@ public partial class DbDataLoader
 
 		int cacheHitCounter = 0;
 		bool shouldFixup = false;
-		foreignKeysToLoad = new List<object>(entitiesToLoadReference.Count);
+		foreignKeysToLoad = _entityCacheManager.ShouldCacheEntityType<TProperty>() ? new List<object>() : new List<object>(entitiesToLoadReference.Count);
 
 		foreach (object foreignKeyValue in foreignKeyValues)
 		{

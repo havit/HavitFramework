@@ -136,8 +136,6 @@ public partial class DbDataLoader
 		where TEntity : class
 		where TPropertyItem : class
 	{
-		// TODO EF Core: Má tento list a jeho duplikace o pár řádek níže smysl?
-
 		List<TEntity> entitiesToLoad = entities.Where(entity => !IsEntityPropertyLoaded(entity, propertyName)).Where(item => _dbContext.GetEntityState(item) != EntityState.Added).ToList();
 
 		if (entitiesToLoad.Count == 0)
@@ -148,7 +146,7 @@ public partial class DbDataLoader
 		}
 
 		_logger.LogDebug("Retrieving data for {Count} entities from the cache...", entities.Count);
-		entitiesToLoadQuery = new List<TEntity>(entitiesToLoad.Count);
+		entitiesToLoadQuery = _entityCacheManager.ShouldCacheEntityType<TEntity>() ? new List<TEntity>() : new List<TEntity>(entitiesToLoad.Count); // pro cachované předpokládáme, že je nebudeme načítat
 		int cacheHitCounter = 0;
 		foreach (var entityToLoad in entitiesToLoad)
 		{

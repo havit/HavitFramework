@@ -22,5 +22,8 @@
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+		<!--TODO EF Core 9: Odebrat (bez System.Diagnostics.DiagnosticSource a System.Text.Json tool nefunguje, nejde načíst tyto assembly.-->
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.0-rc.2.24473.5" />
+	  <PackageReference Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
 	</ItemGroup>
 </Project>

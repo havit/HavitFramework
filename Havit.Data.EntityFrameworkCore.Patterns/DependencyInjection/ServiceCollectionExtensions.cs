@@ -11,6 +11,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.Attributes;
@@ -54,8 +55,11 @@ public static class ServiceCollectionExtensions
 
 		services.TryAddTransient<IDataSeedPersisterFactory, DataSeedPersisterFactory>();
 
-		services.TryAddScoped(typeof(IUnitOfWork), componentRegistrationOptions.UnitOfWorkType);
-		services.TryAddScoped<IDataLoader, DbDataLoaderWithLoadedPropertiesMemory>();
+		services.TryAddScoped<IUnitOfWork, DbUnitOfWork>();
+
+		services.TryAddScoped<IDataLoader, DbDataLoader>();
+		services.TryAddScoped<ILoadedPropertyReader, DbLoadedPropertyReaderWithMemory>();
+
 		services.TryAddTransient<ILookupDataInvalidationRunner, LookupDataInvalidationRunner>();
 
 		services.TryAddSingleton<IPropertyLambdaExpressionManager, PropertyLambdaExpressionManager>();

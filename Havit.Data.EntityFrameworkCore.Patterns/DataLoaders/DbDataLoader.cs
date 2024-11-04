@@ -30,6 +30,7 @@ public partial class DbDataLoader : IDataLoader
 	private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
 	private readonly IEntityCacheManager _entityCacheManager;
 	private readonly IEntityKeyAccessor _entityKeyAccessor;
+	private readonly ILoadedPropertyReader _loadedPropertyReader;
 	private readonly ILogger<DbDataLoader> _logger;
 
 	/// <summary>
@@ -40,14 +41,16 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
 	/// <param name="entityCacheManager">Zajišťuje získávání a ukládání entit z/do cache.</param>
 	/// <param name="entityKeyAccessor">Zajišťuje získávání hodnot primárního klíče entit.</param>
+	/// <param name="loadedPropertyReader">Zajišťuje získávání informace, zda byla již vlastnost načtena.</param>
 	/// <param name="logger">Logger.</param>
-	public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILogger<DbDataLoader> logger)
+	public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILoadedPropertyReader loadedPropertyReader, ILogger<DbDataLoader> logger)
 	{
 		_dbContext = dbContext;
 		_propertyLoadSequenceResolver = propertyLoadSequenceResolver;
 		_lambdaExpressionManager = lambdaExpressionManager;
 		_entityCacheManager = entityCacheManager;
 		_entityKeyAccessor = entityKeyAccessor;
+		_loadedPropertyReader = loadedPropertyReader;
 		_logger = logger;
 	}
 
@@ -369,12 +372,10 @@ public partial class DbDataLoader : IDataLoader
 
 	/// <summary>
 	/// Vrací true, pokud je vlastnost objektu již načtena.
-	/// Řídí se pomocí IDbContext.IsEntityCollectionLoaded, DbContext.IsEntityReferenceLoaded.
-	/// Pozor na předefinování metody v potomku - DbDataLoaderWithLoadedPropertiesMemory. Díky tomu nesmí být tato metoda volána opakovaně (poprvé vrací skutečnou hodnotu, v dalších voláních vrací vždy true).
 	/// </summary>
-	protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName)
+	private bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return _dbContext.IsNavigationLoaded(entity, propertyName);
+		return _loadedPropertyReader.IsEntityPropertyLoaded(entity, propertyName);
 	}
 }

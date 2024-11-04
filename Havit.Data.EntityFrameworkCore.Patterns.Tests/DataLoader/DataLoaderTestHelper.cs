@@ -30,6 +30,6 @@ public static class DataLoaderTestHelper
 		IEntityKeyAccessor entityKeyAccessor = new DbEntityKeyAccessor(dbEntityKeyAccessorStorage);
 
 		Mock<ILogger<DbDataLoader>> loggerMock = new Mock<ILogger<DbDataLoader>>(MockBehavior.Loose); // dovolíme použití loggeru bez setupu
-		return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, entityKeyAccessor, loggerMock.Object);
+		return new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), entityCacheManager, entityKeyAccessor, new DbLoadedPropertyReaderWithMemory(dbContext), loggerMock.Object);
 	}
 }

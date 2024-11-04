@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 /// </summary>
 public class ModelExtensionsMigrationsAnnotationProvider : MigrationsAnnotationProvider
 {
-	private readonly IModelExtensionAnnotationProvider annotationProvider;
+	private readonly IModelExtensionAnnotationProvider _annotationProvider;
 
 	/// <summary>
 	/// Konstruktor.
@@ -19,7 +19,7 @@ public class ModelExtensionsMigrationsAnnotationProvider : MigrationsAnnotationP
 	public ModelExtensionsMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IModelExtensionAnnotationProvider annotationProvider)
 		: base(dependencies)
 	{
-		this.annotationProvider = annotationProvider;
+		this._annotationProvider = annotationProvider;
 	}
 
 	/// <inheritdoc />
@@ -30,6 +30,6 @@ public class ModelExtensionsMigrationsAnnotationProvider : MigrationsAnnotationP
 
 	private bool IsModelExtension(IAnnotation annotation)
 	{
-		return annotationProvider.GetModelExtensions(new List<IAnnotation> { annotation }).Any();
+		return _annotationProvider.GetModelExtensions(new List<IAnnotation> { annotation }).Any();
 	}
 }

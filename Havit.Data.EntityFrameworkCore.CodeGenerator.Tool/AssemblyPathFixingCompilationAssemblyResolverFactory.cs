@@ -11,15 +11,15 @@ public class AssemblyPathFixingCompilationAssemblyResolverFactory
 		new PackageCompilationAssemblyResolver()
 	};
 
-	private readonly CompositeCompilationAssemblyResolver innerResolver;
+	private readonly CompositeCompilationAssemblyResolver _innerResolver;
 
 	public AssemblyPathFixingCompilationAssemblyResolverFactory(string appBasePath)
 	{
-		innerResolver = new CompositeCompilationAssemblyResolver(
+		_innerResolver = new CompositeCompilationAssemblyResolver(
 			new[] { new AppBaseCompilationAssemblyResolver(appBasePath) }
 				.Concat(DefaultResolvers).ToArray());
 	}
 
 	public AssemblyPathFixingCompilationAssemblyResolver Create(DependencyContext dependencyContext)
-		=> new AssemblyPathFixingCompilationAssemblyResolver(dependencyContext, innerResolver);
+		=> new AssemblyPathFixingCompilationAssemblyResolver(dependencyContext, _innerResolver);
 }

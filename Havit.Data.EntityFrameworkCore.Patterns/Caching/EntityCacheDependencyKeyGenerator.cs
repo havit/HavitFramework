@@ -11,7 +11,7 @@ public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenera
 {
 	private readonly ICacheService _cacheService;
 	private readonly IEntityCacheKeyPrefixService _entityCacheKeyPrefixService;
-	private static readonly object _staticCacheValue = new object();
+	private static readonly object s_staticCacheValue = new object();
 
 	/// <summary>
 	/// Konstruktor.
@@ -58,7 +58,7 @@ public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenera
 
 		if (!_cacheService.Contains(dependencyKey))
 		{
-			_cacheService.Add(dependencyKey, _staticCacheValue);
+			_cacheService.Add(dependencyKey, s_staticCacheValue);
 		}
 	}
 }

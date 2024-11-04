@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 /// </summary>
 public abstract class ModelExtensionsExtensionBuilderBase : IModelExtensionsExtensionBuilderInfrastructure
 {
-	private readonly ModelExtensionsExtensionBuilder modelExtensionsExtensionBuilder;
+	private readonly ModelExtensionsExtensionBuilder _modelExtensionsExtensionBuilder;
 
 	/// <summary>
 	/// Konstruktor.
@@ -19,13 +19,13 @@ public abstract class ModelExtensionsExtensionBuilderBase : IModelExtensionsExte
 	protected ModelExtensionsExtensionBuilderBase(ModelExtensionsExtensionBuilder modelExtensionsExtensionBuilder)
 	{
 		Contract.Assert<ArgumentNullException>(modelExtensionsExtensionBuilder != null);
-		this.modelExtensionsExtensionBuilder = modelExtensionsExtensionBuilder;
+		this._modelExtensionsExtensionBuilder = modelExtensionsExtensionBuilder;
 	}
 
 	/// <summary>
 	/// Gets the core options builder.
 	/// </summary>
-	private DbContextOptionsBuilder OptionsBuilder => ((IModelExtensionsExtensionBuilderInfrastructure)modelExtensionsExtensionBuilder).OptionsBuilder;
+	private DbContextOptionsBuilder OptionsBuilder => ((IModelExtensionsExtensionBuilderInfrastructure)_modelExtensionsExtensionBuilder).OptionsBuilder;
 
 	DbContextOptionsBuilder IModelExtensionsExtensionBuilderInfrastructure.OptionsBuilder => OptionsBuilder;
 
@@ -38,6 +38,6 @@ public abstract class ModelExtensionsExtensionBuilderBase : IModelExtensionsExte
 		((IDbContextOptionsBuilderInfrastructure)OptionsBuilder).AddOrUpdateExtension(
 			setAction(OptionsBuilder.Options.FindExtension<ModelExtensionsExtension>() ?? new ModelExtensionsExtension()));
 
-		return modelExtensionsExtensionBuilder;
+		return _modelExtensionsExtensionBuilder;
 	}
 }

@@ -8,14 +8,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool;
 /// </summary>
 public class AssemblyPathFixingCompilationAssemblyResolver : ICompilationAssemblyResolver
 {
-	private readonly ICompilationAssemblyResolver innerResolver;
+	private readonly ICompilationAssemblyResolver _innerResolver;
 
 	public DependencyContext DependencyContext { get; }
 
 	public AssemblyPathFixingCompilationAssemblyResolver(DependencyContext dependencyContext, ICompilationAssemblyResolver innerResolver)
 	{
 		DependencyContext = dependencyContext;
-		this.innerResolver = innerResolver;
+		this._innerResolver = innerResolver;
 	}
 
 	public bool TryResolveAssemblyPaths(CompilationLibrary library, List<string> assemblies)
@@ -52,6 +52,6 @@ public class AssemblyPathFixingCompilationAssemblyResolver : ICompilationAssembl
 				library.HashPath);
 		}
 
-		return innerResolver.TryResolveAssemblyPaths(libraryToResolve, assemblies);
+		return _innerResolver.TryResolveAssemblyPaths(libraryToResolve, assemblies);
 	}
 }

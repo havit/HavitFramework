@@ -12,8 +12,8 @@ namespace Havit.Data.Patterns.DataEntries;
 public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 	where TEntity : class
 {
-	private readonly IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage;
-	private readonly IDataSource<TEntity> dataSource; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbDataSource.
+	private readonly IDataEntrySymbolStorage<TEntity> _dataEntrySymbolStorage;
+	private readonly IDataSource<TEntity> _dataSource; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbDataSource.
 
 	/// <summary>
 	/// Konstructor.
@@ -24,8 +24,8 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DbDataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
 		Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolService is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
 
-		this.dataEntrySymbolStorage = dataEntrySymbolStorage;
-		this.dataSource = dataSource;
+		this._dataEntrySymbolStorage = dataEntrySymbolStorage;
+		this._dataSource = dataSource;
 	}
 
 	/// <summary>
@@ -49,17 +49,17 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 
 	private Dictionary<string, int> GetIdentifiersByEntry()
 	{
-		if (dataEntrySymbolStorage.Value == null)
+		if (_dataEntrySymbolStorage.Value == null)
 		{
-			lock (dataEntrySymbolStorage)
+			lock (_dataEntrySymbolStorage)
 			{
-				if (dataEntrySymbolStorage.Value == null)
+				if (_dataEntrySymbolStorage.Value == null)
 				{
-					dataEntrySymbolStorage.Value = GetStorageData();
+					_dataEntrySymbolStorage.Value = GetStorageData();
 				}
 			}
 		}
-		return dataEntrySymbolStorage.Value;
+		return _dataEntrySymbolStorage.Value;
 	}
 
 	private Dictionary<string, int> GetStorageData()
@@ -79,7 +79,7 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 			parameter);
 
 		Dictionary<string, int> result;
-		result = dataSource.DataIncludingDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
+		result = _dataSource.DataIncludingDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
 
 		return result;
 	}

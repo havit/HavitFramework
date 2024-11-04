@@ -17,10 +17,10 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 /// </summary>
 public class ModelExtensionsExtension : IDbContextOptionsExtension
 {
-	private ImmutableList<Type> annotationProviders = ImmutableList.Create<Type>();
-	private ImmutableList<Type> sqlGenerators = ImmutableList.Create<Type>();
-	private bool consolidateStatementsForMigrationsAnnotationsForModel = true;
-	private Assembly extensionsAssembly;
+	private ImmutableList<Type> _annotationProviders = ImmutableList.Create<Type>();
+	private ImmutableList<Type> _sqlGenerators = ImmutableList.Create<Type>();
+	private bool _consolidateStatementsForMigrationsAnnotationsForModel = true;
+	private Assembly _extensionsAssembly;
 
 	private DbContextOptionsExtensionInfo _info;
 
@@ -43,10 +43,10 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 	/// </summary>
 	protected ModelExtensionsExtension(ModelExtensionsExtension copyFrom)
 	{
-		annotationProviders = copyFrom.annotationProviders;
-		sqlGenerators = copyFrom.sqlGenerators;
-		consolidateStatementsForMigrationsAnnotationsForModel = copyFrom.consolidateStatementsForMigrationsAnnotationsForModel;
-		extensionsAssembly = copyFrom.extensionsAssembly;
+		_annotationProviders = copyFrom._annotationProviders;
+		_sqlGenerators = copyFrom._sqlGenerators;
+		_consolidateStatementsForMigrationsAnnotationsForModel = copyFrom._consolidateStatementsForMigrationsAnnotationsForModel;
+		_extensionsAssembly = copyFrom._extensionsAssembly;
 	}
 
 	/// <summary>
@@ -61,12 +61,12 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 	/// 
 	/// If enabled <see cref="AlterOperationsFixUpMigrationsModelDiffer"/> is used instead of original implementation of <see cref="IMigrationsModelDiffer"/>.
 	/// </summary>
-	public bool ConsolidateStatementsForMigrationsAnnotationsForModel => consolidateStatementsForMigrationsAnnotationsForModel;
+	public bool ConsolidateStatementsForMigrationsAnnotationsForModel => _consolidateStatementsForMigrationsAnnotationsForModel;
 
 	/// <summary>
 	/// <see cref="Assembly"/> that contains <see cref="IModelExtender"/>s. This assembly is used to register <see cref="IModelExtender"/>s into the model.
 	/// </summary>
-	public Assembly ExtensionsAssembly => extensionsAssembly;
+	public Assembly ExtensionsAssembly => _extensionsAssembly;
 
 	/// <summary>
 	/// Consolidate generated code statements in migrations with annotations (e.g. AlterDatabase().Annotation().OldAnnotation()).
@@ -76,7 +76,7 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 	public ModelExtensionsExtension WithConsolidateStatementsForMigrationsAnnotationsForModel(bool consolidateStatementsForMigrationsAnnotationsForModel)
 	{
 		var clone = Clone();
-		clone.consolidateStatementsForMigrationsAnnotationsForModel = consolidateStatementsForMigrationsAnnotationsForModel;
+		clone._consolidateStatementsForMigrationsAnnotationsForModel = consolidateStatementsForMigrationsAnnotationsForModel;
 		return clone;
 	}
 
@@ -92,7 +92,7 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 		// https://github.com/aspnet/EntityFrameworkCore/issues/10559#issuecomment-351753702
 		// https://github.com/aspnet/EntityFrameworkCore/blob/779d43731773d59ecd5f899a6330105879263cf3/src/EFCore.InMemory/Infrastructure/Internal/InMemoryOptionsExtension.cs#L47
 		var clone = Clone();
-		clone.annotationProviders = clone.annotationProviders.Add(typeof(T));
+		clone._annotationProviders = clone._annotationProviders.Add(typeof(T));
 		return clone;
 	}
 
@@ -106,7 +106,7 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 	{
 		// clone with new IModelExtensionSqlGenerator 
 		var clone = Clone();
-		clone.sqlGenerators = clone.sqlGenerators.Add(typeof(T));
+		clone._sqlGenerators = clone._sqlGenerators.Add(typeof(T));
 		return clone;
 	}
 
@@ -123,28 +123,28 @@ public class ModelExtensionsExtension : IDbContextOptionsExtension
 
 		// clone with new extensions assembly 
 		var clone = Clone();
-		clone.extensionsAssembly = extensionsAssembly;
+		clone._extensionsAssembly = extensionsAssembly;
 		return clone;
 	}
 
 	/// <inheritdoc />
 	public void ApplyServices(IServiceCollection services)
 	{
-		var currentProviderTypes = annotationProviders.ToArray();
+		var currentProviderTypes = _annotationProviders.ToArray();
 		CompositeModelExtensionAnnotationProvider AnnotationProviderFactory(IServiceProvider serviceProvider)
 		{
 			var providers = currentProviderTypes.Select(type => (IModelExtensionAnnotationProvider)serviceProvider.GetService(type)).ToArray();
 			return new CompositeModelExtensionAnnotationProvider(providers);
 		}
-		var currentSqlGeneratorTypes = sqlGenerators.ToArray();
+		var currentSqlGeneratorTypes = _sqlGenerators.ToArray();
 		ModelExtensionSqlResolver DropSqlResolverFactory(IServiceProvider serviceProvider)
 		{
 			var generators = currentSqlGeneratorTypes.Select(type => (IModelExtensionSqlGenerator)serviceProvider.GetService(type)).ToArray();
 			return new ModelExtensionSqlResolver(generators);
 		}
 
-		services.Add(annotationProviders.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
-		services.Add(sqlGenerators.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
+		services.Add(_annotationProviders.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
+		services.Add(_sqlGenerators.ToArray().Select(t => ServiceDescriptor.Singleton(t, t)));
 		services.AddSingleton<IModelExtensionAnnotationProvider, CompositeModelExtensionAnnotationProvider>(AnnotationProviderFactory);
 		services.AddSingleton<IModelExtensionSqlResolver, ModelExtensionSqlResolver>(DropSqlResolverFactory);
 		if (ConsolidateStatementsForMigrationsAnnotationsForModel)

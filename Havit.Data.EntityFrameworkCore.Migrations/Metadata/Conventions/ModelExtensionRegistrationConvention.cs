@@ -15,8 +15,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 /// </remarks>
 public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
 {
-	private readonly IModelExtensionsAssembly modelExtensionsAssembly;
-	private readonly IModelExtensionAnnotationProvider modelExtensionAnnotationProvider;
+	private readonly IModelExtensionsAssembly _modelExtensionsAssembly;
+	private readonly IModelExtensionAnnotationProvider _modelExtensionAnnotationProvider;
 
 	/// <summary>
 	/// Constructor
@@ -25,16 +25,16 @@ public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
 	{
 		//Contract.Requires<ArgumentNullException>(modelExtensionsAssembly != null);
 
-		this.modelExtensionsAssembly = (IModelExtensionsAssembly)serviceProvider.GetService(typeof(IModelExtensionsAssembly));
-		this.modelExtensionAnnotationProvider = (IModelExtensionAnnotationProvider)serviceProvider.GetService(typeof(IModelExtensionAnnotationProvider));
+		this._modelExtensionsAssembly = (IModelExtensionsAssembly)serviceProvider.GetService(typeof(IModelExtensionsAssembly));
+		this._modelExtensionAnnotationProvider = (IModelExtensionAnnotationProvider)serviceProvider.GetService(typeof(IModelExtensionAnnotationProvider));
 	}
 
 	/// <inheritdoc />
 	public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
 	{
-		foreach (TypeInfo modelExtenderClass in modelExtensionsAssembly.ModelExtenders)
+		foreach (TypeInfo modelExtenderClass in _modelExtensionsAssembly.ModelExtenders)
 		{
-			IModelExtender extender = modelExtensionsAssembly.CreateModelExtender(modelExtenderClass);
+			IModelExtender extender = _modelExtensionsAssembly.CreateModelExtender(modelExtenderClass);
 
 			IEnumerable<MethodInfo> publicMethods = modelExtenderClass.GetMethods(BindingFlags.Instance | BindingFlags.Public)
 				.Where(m => typeof(IModelExtension).IsAssignableFrom(m.ReturnType));
@@ -43,7 +43,7 @@ public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
 			{
 				var modelExtension = (IModelExtension)method.Invoke(extender, new object[0]);
 
-				List<IAnnotation> annotations = modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
+				List<IAnnotation> annotations = _modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
 
 				annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, false));
 			}

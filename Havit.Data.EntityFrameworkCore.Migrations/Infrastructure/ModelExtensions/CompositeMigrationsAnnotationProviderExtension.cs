@@ -11,11 +11,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 /// </summary>
 public class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsExtension
 {
-	private ImmutableHashSet<Type> providers = ImmutableHashSet<Type>.Empty;
+	private ImmutableHashSet<Type> _providers = ImmutableHashSet<Type>.Empty;
 
 	private DbContextOptionsExtensionInfo _info;
 
-	internal IImmutableSet<Type> Providers => providers;
+	internal IImmutableSet<Type> Providers => _providers;
 
 	/// <inheritdoc />
 	public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
@@ -32,7 +32,7 @@ public class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsE
 	/// </summary>
 	protected CompositeMigrationsAnnotationProviderExtension(CompositeMigrationsAnnotationProviderExtension copyFrom)
 	{
-		providers = copyFrom.providers;
+		_providers = copyFrom._providers;
 	}
 
 	/// <summary>
@@ -49,14 +49,14 @@ public class CompositeMigrationsAnnotationProviderExtension : IDbContextOptionsE
 		where T : IMigrationsAnnotationProvider
 	{
 		var clone = Clone();
-		clone.providers = providers.Add(typeof(T));
+		clone._providers = _providers.Add(typeof(T));
 		return clone;
 	}
 
 	/// <inheritdoc />
 	public void ApplyServices(IServiceCollection services)
 	{
-		var currentProviderTypes = providers.ToArray();
+		var currentProviderTypes = _providers.ToArray();
 		CompositeMigrationsAnnotationProvider Factory(IServiceProvider serviceProvider)
 		{
 			var providers = currentProviderTypes.Select(type => (IMigrationsAnnotationProvider)serviceProvider.GetService(type)).ToArray();

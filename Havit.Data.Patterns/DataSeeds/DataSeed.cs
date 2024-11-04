@@ -34,7 +34,7 @@ namespace Havit.Data.Patterns.DataSeeds;
 public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	where TDataSeedProfile : IDataSeedProfile, new() // new() nás chrání před použitím abstraktní třídy Profile, jinou funkci zde nemá, instanci nevytváříme
 {
-	private IDataSeedPersister currentDataSeedPersister;
+	private IDataSeedPersister _currentDataSeedPersister;
 
 	/// <summary>
 	/// Předpis seedování dat.
@@ -68,7 +68,7 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	protected void Seed<TEntity>(IDataSeedFor<TEntity> dataSeedFor)
 		where TEntity : class
 	{
-		currentDataSeedPersister.Save<TEntity>(dataSeedFor.Configuration);
+		_currentDataSeedPersister.Save<TEntity>(dataSeedFor.Configuration);
 	}
 
 	/// <summary>
@@ -77,7 +77,7 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	protected async Task SeedAsync<TEntity>(IDataSeedFor<TEntity> dataSeedFor, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		await currentDataSeedPersister.SaveAsync<TEntity>(dataSeedFor.Configuration, cancellationToken).ConfigureAwait(false);
+		await _currentDataSeedPersister.SaveAsync<TEntity>(dataSeedFor.Configuration, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -106,9 +106,9 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	/// </summary>
 	void IDataSeed.SeedData(IDataSeedPersister dataSeedPersister)
 	{
-		this.currentDataSeedPersister = dataSeedPersister;
+		this._currentDataSeedPersister = dataSeedPersister;
 		SeedData();
-		this.currentDataSeedPersister = null;
+		this._currentDataSeedPersister = null;
 	}
 
 	/// <summary>
@@ -116,8 +116,8 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	/// </summary>
 	async Task IDataSeed.SeedDataAsync(IDataSeedPersister dataSeedPersister, CancellationToken cancellationToken)
 	{
-		this.currentDataSeedPersister = dataSeedPersister;
+		this._currentDataSeedPersister = dataSeedPersister;
 		await SeedDataAsync(cancellationToken).ConfigureAwait(false);
-		this.currentDataSeedPersister = null;
+		this._currentDataSeedPersister = null;
 	}
 }

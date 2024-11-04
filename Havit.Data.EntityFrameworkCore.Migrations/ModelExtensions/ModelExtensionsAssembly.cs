@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 /// <inheritdoc />
 public class ModelExtensionsAssembly : IModelExtensionsAssembly
 {
-	private IReadOnlyCollection<TypeInfo> modelExtenders;
+	private IReadOnlyCollection<TypeInfo> _modelExtenders;
 
 	/// <summary>
 	/// Constructor.
@@ -36,7 +36,7 @@ public class ModelExtensionsAssembly : IModelExtensionsAssembly
 					ImmutableArray<TypeInfo>.Empty;
 			}
 
-			return modelExtenders ??= Create();
+			return _modelExtenders ??= Create();
 		}
 	}
 

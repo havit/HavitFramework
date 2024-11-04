@@ -19,8 +19,8 @@ public class DbLockedMigrator : Migrator
 {
 	private const string EfCoreMigrationsLockValue = "EF_Core_Migrations";
 
-	private readonly IDatabaseCreator databaseCreator;
-	private readonly IRelationalConnection connection;
+	private readonly IDatabaseCreator _databaseCreator;
+	private readonly IRelationalConnection _connection;
 
 	/// <summary>
 	/// Konstruktor.
@@ -60,8 +60,8 @@ public class DbLockedMigrator : Migrator
 			dbContextOptions,
 			executionStrategy)
 	{
-		this.databaseCreator = databaseCreator;
-		this.connection = connection;
+		this._databaseCreator = databaseCreator;
+		this._connection = connection;
 	}
 
 	/// <inheritdoc />
@@ -71,7 +71,7 @@ public class DbLockedMigrator : Migrator
 		// Proto musíme nejprve databázi založit.
 		// Tím ovšem přesuneme úzké místo sem, mezi Exists/Create.
 		// To se pokusíme kompenzovat tak, že ignorujeme výjimku o existenci databáze.
-		IRelationalDatabaseCreator relationalDatabaseCreator = (IRelationalDatabaseCreator)databaseCreator;
+		IRelationalDatabaseCreator relationalDatabaseCreator = (IRelationalDatabaseCreator)_databaseCreator;
 		if (!relationalDatabaseCreator.Exists())
 		{
 			try
@@ -85,7 +85,7 @@ public class DbLockedMigrator : Migrator
 		}
 
 		// Databáze je založena, můžeme použít bezpečně použít dodaný connection string.
-		new DbLockedCriticalSection((SqlConnection)connection.DbConnection).ExecuteAction(EfCoreMigrationsLockValue, () =>
+		new DbLockedCriticalSection((SqlConnection)_connection.DbConnection).ExecuteAction(EfCoreMigrationsLockValue, () =>
 		{
 			base.Migrate(targetMigration);
 		});
@@ -94,7 +94,7 @@ public class DbLockedMigrator : Migrator
 	/// <inheritdoc />
 	public override async Task MigrateAsync(string targetMigration = null, CancellationToken cancellationToken = default)
 	{
-		IRelationalDatabaseCreator relationalDatabaseCreator = (IRelationalDatabaseCreator)databaseCreator;
+		IRelationalDatabaseCreator relationalDatabaseCreator = (IRelationalDatabaseCreator)_databaseCreator;
 		if (!await relationalDatabaseCreator.ExistsAsync(cancellationToken).ConfigureAwait(false))
 		{
 			try
@@ -108,7 +108,7 @@ public class DbLockedMigrator : Migrator
 		}
 
 		// Databáze je založena, můžeme použít bezpečně použít dodaný connection string.
-		await new DbLockedCriticalSection((SqlConnection)connection.DbConnection).ExecuteActionAsync(EfCoreMigrationsLockValue, async () =>
+		await new DbLockedCriticalSection((SqlConnection)_connection.DbConnection).ExecuteActionAsync(EfCoreMigrationsLockValue, async () =>
 		{
 			await base.MigrateAsync(targetMigration, cancellationToken).ConfigureAwait(false);
 		}, cancellationToken).ConfigureAwait(false);

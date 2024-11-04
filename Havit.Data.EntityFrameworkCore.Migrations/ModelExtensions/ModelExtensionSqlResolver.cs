@@ -3,14 +3,14 @@
 /// <inheritdoc />
 public class ModelExtensionSqlResolver : IModelExtensionSqlResolver
 {
-	private readonly IEnumerable<IModelExtensionSqlGenerator> sqlGenerators;
+	private readonly IEnumerable<IModelExtensionSqlGenerator> _sqlGenerators;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public ModelExtensionSqlResolver(IEnumerable<IModelExtensionSqlGenerator> sqlGenerators)
 	{
-		this.sqlGenerators = sqlGenerators;
+		this._sqlGenerators = sqlGenerators;
 	}
 
 	/// <inheritdoc />
@@ -31,7 +31,7 @@ public class ModelExtensionSqlResolver : IModelExtensionSqlResolver
 
 		foreach (IModelExtension modelExtension in modelExtensions)
 		{
-			IEnumerable<string> sqlStatements = sqlGenerators
+			IEnumerable<string> sqlStatements = _sqlGenerators
 				.Select(g => sqlProvider(g, modelExtension))
 				.Where(s => s != null);
 

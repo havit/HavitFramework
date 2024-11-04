@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 /// </summary>
 public class LocalizationTableIndexConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
 {
-	private readonly Dictionary<IConventionEntityType, IConventionIndex> createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
+	private readonly Dictionary<IConventionEntityType, IConventionIndex> _createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
 
 	/// <inheritdoc />
 	public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
@@ -43,10 +43,10 @@ public class LocalizationTableIndexConvention : IForeignKeyAddedConvention, IFor
 		if (entityType.ClrType.GetInterfaces().Any(item => item.IsGenericType && (item.GetGenericTypeDefinition() == typeof(ILocalization<,>)))) // jsme v lokalizační tabulce?
 		{
 			// pokud jsme již index udělali, zrušíme jej
-			if (createdIndexes.TryGetValue(entityType, out var index))
+			if (_createdIndexes.TryGetValue(entityType, out var index))
 			{
 				entityType.Builder.HasNoIndex(index);
-				createdIndexes.Remove(entityType);
+				_createdIndexes.Remove(entityType);
 			}
 
 			// najdeme sloupec s odkazem na parent tabulku
@@ -59,7 +59,7 @@ public class LocalizationTableIndexConvention : IForeignKeyAddedConvention, IFor
 				// vytvoříme unikátní index
 				IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentForeignKeyProperty, languageForeignKeyProperty }.AsReadOnly(), fromDataAnnotation: false);
 				indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
-				createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
+				_createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
 			}
 		}
 	}

@@ -8,9 +8,9 @@ namespace Havit.Data.Patterns.DataSeeds;
 /// </summary>
 public class DataSeedRunner : IDataSeedRunner
 {
-	private readonly List<IDataSeed> dataSeeds;
-	private readonly IDataSeedRunDecision dataSeedRunDecision;
-	private readonly IDataSeedPersisterFactory dataSeedPersisterFactory;
+	private readonly List<IDataSeed> _dataSeeds;
+	private readonly IDataSeedRunDecision _dataSeedRunDecision;
+	private readonly IDataSeedPersisterFactory _dataSeedPersisterFactory;
 
 	/// <summary>
 	/// Konstruktor.
@@ -29,15 +29,15 @@ public class DataSeedRunner : IDataSeedRunner
 		Contract.Requires<ArgumentNullException>(dataSeedRunDecision != null, nameof(dataSeedRunDecision));
 		Contract.Requires<ArgumentNullException>(dataSeedPersisterFactory != null, nameof(dataSeedPersisterFactory));
 
-		this.dataSeeds = dataSeeds.ToList();
+		this._dataSeeds = dataSeeds.ToList();
 
-		if (this.dataSeeds.Select(item => item.GetType()).Distinct().Count() != this.dataSeeds.Count())
+		if (this._dataSeeds.Select(item => item.GetType()).Distinct().Count() != this._dataSeeds.Count())
 		{
 			throw new ArgumentException("Contains dataseed type duplicity.", nameof(dataSeeds));
 		}
 
-		this.dataSeedRunDecision = dataSeedRunDecision;
-		this.dataSeedPersisterFactory = dataSeedPersisterFactory;
+		this._dataSeedRunDecision = dataSeedRunDecision;
+		this._dataSeedPersisterFactory = dataSeedPersisterFactory;
 	}
 
 	/// <summary>
@@ -162,10 +162,10 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	private void SeedProfile(IDataSeedProfile profile, Type profileType, bool forceRun)
 	{
-		List<IDataSeed> dataSeedsInProfile = dataSeeds.Where(item => item.ProfileType == profileType).ToList();
+		List<IDataSeed> dataSeedsInProfile = _dataSeeds.Where(item => item.ProfileType == profileType).ToList();
 		List<Type> dataSeedsInProfileTypes = dataSeedsInProfile.Select(item => item.GetType()).ToList();
 
-		if (forceRun || dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
+		if (forceRun || _dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
 		{
 			// seed profile
 			Dictionary<Type, IDataSeed> dataSeedsInProfileByType = dataSeedsInProfile.ToDictionary(item => item.GetType(), item => item);
@@ -177,7 +177,7 @@ public class DataSeedRunner : IDataSeedRunner
 				SeedService(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds);
 			}
 
-			dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
+			_dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
 		}
 	}
 
@@ -187,10 +187,10 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	private async Task SeedProfileAsync(IDataSeedProfile profile, Type profileType, bool forceRun, CancellationToken cancellationToken)
 	{
-		List<IDataSeed> dataSeedsInProfile = dataSeeds.Where(item => item.ProfileType == profileType).ToList();
+		List<IDataSeed> dataSeedsInProfile = _dataSeeds.Where(item => item.ProfileType == profileType).ToList();
 		List<Type> dataSeedsInProfileTypes = dataSeedsInProfile.Select(item => item.GetType()).ToList();
 
-		if (forceRun || dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
+		if (forceRun || _dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
 		{
 			// seed profile
 			Dictionary<Type, IDataSeed> dataSeedsInProfileByType = dataSeedsInProfile.ToDictionary(item => item.GetType(), item => item);
@@ -202,7 +202,7 @@ public class DataSeedRunner : IDataSeedRunner
 				await SeedServiceAsync(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds, cancellationToken).ConfigureAwait(false);
 			}
 
-			dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
+			_dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
 		}
 	}
 
@@ -325,7 +325,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <param name="dataSeed">Předpis seedování dat.</param>
 	private void Seed(IDataSeed dataSeed)
 	{
-		IDataSeedPersister dataSeedPersister = dataSeedPersisterFactory.CreateService();
+		IDataSeedPersister dataSeedPersister = _dataSeedPersisterFactory.CreateService();
 		try
 		{
 			dataSeed.SeedData(dataSeedPersister);
@@ -340,7 +340,7 @@ public class DataSeedRunner : IDataSeedRunner
 		}
 		finally
 		{
-			dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
+			_dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
 		}
 	}
 
@@ -353,7 +353,7 @@ public class DataSeedRunner : IDataSeedRunner
 	{
 		cancellationToken.ThrowIfCancellationRequested();
 
-		IDataSeedPersister dataSeedPersister = dataSeedPersisterFactory.CreateService();
+		IDataSeedPersister dataSeedPersister = _dataSeedPersisterFactory.CreateService();
 		try
 		{
 			dataSeed.SeedData(dataSeedPersister);
@@ -361,7 +361,7 @@ public class DataSeedRunner : IDataSeedRunner
 		}
 		finally
 		{
-			dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
+			_dataSeedPersisterFactory.ReleaseService(dataSeedPersister);
 		}
 	}
 }

@@ -254,7 +254,7 @@ public class DataSeedRunnerTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
+	[ExpectedException(typeof(SeedAsyncFromSyncSeedDataException))]
 	public void DataSeedPersister_SeedData_ThrowsExceptionWhenSeedDataAsyncReturnsNotCompletedTask()
 	{
 		// Arrange

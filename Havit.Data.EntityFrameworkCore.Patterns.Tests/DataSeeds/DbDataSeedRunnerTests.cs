@@ -30,7 +30,7 @@ public class DbDataSeedRunnerTests
 		services.AddDbContext<TestDbContext>(options => options.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=Havit.Data.EntityFrameworkCore.Patterns.Tests",
 				o => o.EnableRetryOnFailure())); // this is the most important part of the test setup!
 
-		services.AddEntityPatterns();
+		services.AddDataLayerCoreServices();
 
 
 		using var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });

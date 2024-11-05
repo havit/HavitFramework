@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
-using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
+using Havit.EFCoreTests.DataLayer;
 using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.Repositories;
@@ -22,7 +19,6 @@ using Havit.Linq.Expressions;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,8 +55,7 @@ public static class Program
 					.EnableSensitiveDataLogging(true));
 
 		services
-			.AddEntityPatterns()
-			.AddDataLayer(typeof(IPersonRepository).Assembly)
+			.AddDataLayerServices()
 			.AddLookupService<IUserLookupService, UserLookupService>();
 
 		services.AddSingleton<ITimeService, ServerTimeService>();

@@ -38,7 +38,7 @@ public static class ServiceCollectionExtensions
 	/// <summary>
 	/// Registruje do DI containeru služby HFW pro Entity Framework Core.
 	/// </summary>
-	public static IServiceCollection AddEntityPatterns(this IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions = null)
+	public static IServiceCollection AddDataLayerCoreServices(this IServiceCollection services, ComponentRegistrationOptions componentRegistrationOptions = null)
 	{
 		componentRegistrationOptions ??= new ComponentRegistrationOptions();
 
@@ -99,85 +99,12 @@ public static class ServiceCollectionExtensions
 	}
 
 	/// <summary>
-	/// Registruje do DI containeru třídy z assembly předané v parametru dataLayerAssembly.
-	/// Registrují se data seedy, data sources, repositories a data entries.
+	/// Vyhazuje výjimku NotSupportedException.
 	/// </summary>
+	[Obsolete("Use generated UseDataLayerServices method.")]
 	public static IServiceCollection AddDataLayer(this IServiceCollection services, Assembly dataLayerAssembly)
 	{
-		services.AddDataSeeds(dataLayerAssembly);
-
-		Type[] dataLayerDependencyInjectionEnabledTypes = dataLayerAssembly.GetTypes().Where(type => type.IsClass && type.IsPublic).Where(IsNotAbstract).Where(DoesNotHaveFakeAttribute).ToArray();
-
-		// Registrace přes IDataSource<T> nestačí, protože při pokusu získání instance dostaneme chybu
-		// proto registrujeme přes IDataSource<KonkrétníTyp> pomocí metody WithServiceConstructedInterface.
-		// Dále registrujeme přes potomky IDataSource<>, např. IKonkrétníTypDataSource.
-
-		// DataSources
-		Type[] dataSourceTypes = dataLayerDependencyInjectionEnabledTypes.Where(type => type.HasAncestorOfType(typeof(DbDataSource<>))).ToArray();
-		foreach (Type dataSourceType in dataSourceTypes)
-		{
-			Type dataSourceConstructedInterface = dataSourceType.GetSingleConstructedType(typeof(IDataSource<>)); // získáme IDataSource<KonkrétníTyp>
-			Type dataSourceInterface = dataSourceType.GetInterfaces().Where(dataSourceTypeInterfaceType => dataSourceTypeInterfaceType.ImplementsInterface(dataSourceConstructedInterface)).Single(); // získáme IKonkrétníTypDataSource
-
-			services.AddServices(new Type[] { dataSourceInterface, dataSourceConstructedInterface }, dataSourceType, ServiceLifetime.Transient);
-		}
-
-		// Repositories
-		Type[] repositoryTypes = dataLayerDependencyInjectionEnabledTypes.Where(type => type.HasAncestorOfType(typeof(DbRepository<>))).ToArray();
-		foreach (Type repositoryType in repositoryTypes)
-		{
-			Type repositoryConstructedInterface = repositoryType.GetSingleConstructedType(typeof(IRepository<>)); // získáme IRepository<KonkrétníTyp>
-			Type repositoryInterface = repositoryType.GetInterfaces().Where(repositoryTypeInterfaceType => repositoryTypeInterfaceType.ImplementsInterface(repositoryConstructedInterface)).Single(); // získáme IKonkrétníTypDataSource
-
-			services.AddServices(new Type[] { repositoryInterface, repositoryConstructedInterface }, repositoryType, ServiceLifetime.Scoped);
-		}
-
-		// DataEntries
-		Type[] dataEntryTypes = dataLayerDependencyInjectionEnabledTypes
-			.Where(type => type.ImplementsInterface(typeof(IDataEntries)) // musí implementovat IDataEntries
-				&& (type.BaseType != null)
-				&& (type.BaseType.IsGenericType)
-				&& (type.BaseType.GetGenericTypeDefinition() == typeof(DataEntries<>))) // a dědit z DataEntries (pro test konstruktorů, viz dále)
-			.ToArray();
-
-		foreach (Type dataEntryType in dataEntryTypes)
-		{
-			Type dataEntryInterface = dataEntryType.GetInterfaces().Where(dataEntryTypeTypeInterfaceType => dataEntryTypeTypeInterfaceType.ImplementsInterface(typeof(IDataEntries))).Single(); // získáme IKonkrétníTypEntries
-
-			services.AddScoped(dataEntryInterface, dataEntryType);
-
-			// DataEntrySymbolService+Storage potřebujeme jen pro ty dataEntryTypes, které mají dva konstruktory.
-			// Pokud má jeden konstruktor, je to IRepository.
-			// Pokud má dva konstruktory, je to IDataEntrySymbolService a IRepository.
-
-			if (dataEntryType.GetConstructors().Single().GetParameters().Count() == 2)
-			{
-				Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
-
-				services.TryAddTransient(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType), typeof(DataEntrySymbolService<>).MakeGenericType(entityType));
-				services.TryAddSingleton(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType), typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType));
-			}
-		}
-
-		// Potřebujeme zaregistrovat IEntityKeyAccessor<TEntity, int>.
-		// Nemáme seznam TEntity, tak je získáme z existujících implementací IRepository<>.
-		// Pak pro každou TEntity zaregistrujeme DbEntityKeyAccesor<TEntity, int> pod IEntityKeyAccessor<TEntity, int>.
-		dataLayerAssembly
-			.GetExportedTypes()
-			.SelectMany(type => type.GetInterfaces())
-			.Where(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IRepository<>))
-			.Select(repositoryInterfaceType => repositoryInterfaceType.GetGenericArguments().Single()) // IRepository<TEntity> --> TEntity (tj. výsledkem je neunikátní seznam modelových tříd)
-			.Distinct() // různé interface a třídy nám (DbRepository<Xy>, IXyRepository) nám dají stejné modelové třídy
-			.ToList() // aby šel použít foreach
-			.ForEach(modelType =>
-			{
-				Type interfaceType = typeof(IEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> IEntityKeyAccessor<TEntity, int>
-				Type implementationType = typeof(DbEntityKeyAccessor<,>).MakeGenericType(modelType, typeof(int)); // --> DbEntityKeyAccessor<TEntity, int>
-
-				services.TryAddTransient(interfaceType, implementationType);
-			});
-
-		return services;
+		throw new NotSupportedException();
 	}
 
 	/// <summary>

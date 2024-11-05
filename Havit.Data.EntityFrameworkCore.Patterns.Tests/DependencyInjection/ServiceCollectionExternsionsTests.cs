@@ -266,9 +266,8 @@ public class ServiceCollectionExtensionsTests
 		}
 
 		builder.Services
-			.AddEntityPatterns()
-			.AddLocalizationServices<Language>()
-			.AddDataLayer(typeof(ILanguageDataSource).Assembly);
+			.AddDataLayerServices()
+			.AddLocalizationServices<Language>();
 		builder.Services.AddSingleton<ITimeService, ServerTimeService>();
 		builder.Services.AddSingleton<ICacheService, NullCacheService>();
 

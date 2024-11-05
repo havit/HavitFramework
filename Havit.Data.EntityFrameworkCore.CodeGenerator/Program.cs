@@ -22,7 +22,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
 public static class Program
 {
-	// This is not a true entry point - it is not a console, but a class library (netstandard 2.x).
+	// This is not a true entry point - it is not a console, but a class library (net x.0).
 	// Method is used in CodeGenerator.Tool via reflection!
 	// Environment is preconfigured by CodeGenerator.Tool (mainly AppDomain.CurrentDomain.AssemblyResolve).
 	public static void Main(string[] args)
@@ -219,14 +219,13 @@ public static class Program
 		CodeWriter codeWriter = new CodeWriter(dataLayerProject);
 		string targetFilename = Path.Combine(dataLayerProject.GetProjectRootPath(), "_generated\\DataLayerServiceExtensions.cs");
 
-		// TODO: model factory
+		// TODO: Lépe pomocí DI? Nebo místo sources rovnou řešit modely?
+		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, new CammelCaseNamingStrategy());
 		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(dbContext, modelProject, dataLayerProject);
-		var model = new DataLayerServiceExtensionsModel
-		{
-			NamespaceName = dataLayerProject.GetProjectRootNamespace(),
-			DataSourceModels = dbDataSourceModelSource.GetModels().ToList()
-		};
-		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(model);
+		RepositoryModelSource repositoryModelSource = new RepositoryModelSource(dbContext, modelProject, dataLayerProject, dataEntriesModelSource);
+
+		DataLayerServiceExtensionsModelSource modelSource = new DataLayerServiceExtensionsModelSource(dataLayerProject, dataEntriesModelSource, dbDataSourceModelSource, repositoryModelSource);
+		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(modelSource.GetModels().Single());
 		codeWriter.Save(targetFilename, template.TransformText(), true);
 		dataLayerProject.SaveChanges();
 	}

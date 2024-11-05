@@ -14,6 +14,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceE
     using System.Collections.Generic;
     using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
     using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model;
+    using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
     using System;
     
     /// <summary>
@@ -36,10 +37,19 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceE
 //     Changes to this file will be lost if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------");
-            this.Write("\r\n\r\nusing Havit.Data.Patterns.DataSources;\r\nusing Microsoft.Extensions.Dependency" +
-                    "Injection;\r\n\r\nnamespace ");
+            this.Write(@"
+
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
+using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.Patterns.DataSources;
+using Havit.Data.Patterns.Infrastructure;
+using Havit.Data.Patterns.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+namespace ");
             
-            #line 13 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -47,14 +57,18 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceE
             this.Write(@";
 
 [System.CodeDom.Compiler.GeneratedCode(""Havit.Data.EntityFrameworkCore.CodeGenerator"", ""1.0"")]
-public static class DataLayerServiceExtensions
+public static partial class DataLayerServiceExtensions
 {
-	public static IServiceCollection AddDataLayerServices(this IServiceCollection services)
+	public static IServiceCollection AddDataLayerServices(this IServiceCollection services, ComponentRegistrationOptions options = null)
 	{
-		// services.AddDataLayerCoreServices();
+		services.AddDataLayerCoreServices(options);
 	
 		AddDataSources(services);
 		AddRepositories(services);
+		AddDataEntries(services);
+		AddEntityKeyAccessors(services);
+
+		AddNextDataLayerServices(services); // partial method for custom extensibility
 
 		return services;
 	}
@@ -63,55 +77,245 @@ public static class DataLayerServiceExtensions
 	{
 ");
             
-            #line 30 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
- foreach (DbDataSourceModel dataSourceModel in Model.DataSourceModels) { 
+            #line 40 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ foreach (DbDataSourceModel dataSourceModel in Model.DataSources) { 
             
             #line default
             #line hidden
-            this.Write("\t\t//services.AddServices(new Type[] { typeof(");
+            this.Write("\t\tservices.TryAddTransient<");
             
-            #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.NamespaceName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.InterfaceDataSourceFullName));
             
             #line default
             #line hidden
-            this.Write("), typeof(IDataSource<");
+            this.Write(", ");
             
-            #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">) }, typeof(");
-            
-            #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.NamespaceName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.DbDataSourceClassName));
             
             #line default
             #line hidden
-            this.Write("), ServiceLifetime.Transient);\r\n");
+            this.Write(">();\r\n\t\tservices.TryAddTransient<IDataSource<");
             
-            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            #line 42 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">, ");
+            
+            #line 42 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.NamespaceName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 42 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataSourceModel.DbDataSourceClassName));
+            
+            #line default
+            #line hidden
+            this.Write(">();\r\n\r\n");
+            
+            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t}\r\n\r\n\tprivate static void AddRepositories(IServiceCollection services)\r\n\t{\r\n\t}\r\n" +
-                    "}\r\n");
+            this.Write("\t}\r\n\r\n\tprivate static void AddRepositories(IServiceCollection services)\r\n\t{\r\n");
+            
+            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ foreach (RepositoryModel repositoryModel in Model.Repositories) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\tservices.TryAddScoped<");
+            
+            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.NamespaceName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.InterfaceRepositoryName));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.NamespaceName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.DbRepositoryName));
+            
+            #line default
+            #line hidden
+            this.Write(">();\r\n\t\tservices.TryAddScoped<IRepository<");
+            
+            #line 51 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">>(sp => sp.GetRequiredService<");
+            
+            #line 51 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.NamespaceName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 51 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.InterfaceRepositoryName));
+            
+            #line default
+            #line hidden
+            this.Write(">());\r\n\r\n");
+            
+            #line 53 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t}\r\n\r\n\tprivate static void AddDataEntries(IServiceCollection services)\r\n\t{\r\n");
+            
+            #line 58 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ foreach (DataEntriesModel dataEntriesModel in Model.DataEntries) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\tservices.TryAddScoped<");
+            
+            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.NamespaceName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.InterfaceName));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.NamespaceName));
+            
+            #line default
+            #line hidden
+            this.Write(".");
+            
+            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.DbClassName));
+            
+            #line default
+            #line hidden
+            this.Write("();\r\n");
+            
+            #line 60 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ if (dataEntriesModel.UseDataEntrySymbolStorage) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\tservices.TryAddTransient<IDataEntrySymbolService<");
+            
+            #line 61 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">, DataEntrySymbolService<");
+            
+            #line 61 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">>();\r\n\t\tservices.TryAddSingleton<IDataEntrySymbolStorage<");
+            
+            #line 62 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">, DataEntrySymbolStorage<");
+            
+            #line 62 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">>();\t\r\n");
+            
+            #line 63 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 65 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t}\r\n\r\n\tprivate static void AddEntityKeyAccessors(IServiceCollection services)\r\n\t{" +
+                    "\r\n");
+            
+            #line 70 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ foreach (RepositoryModel repositoryModel in Model.Repositories) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t\tservices.TryAddTransient<IEntityKeyAccessor<");
+            
+            #line 71 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(", int>, DbEntityKeyAccessor<");
+            
+            #line 71 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(repositoryModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(", int>>();\r\n");
+            
+            #line 72 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("\t}\r\n\r\n\tstatic partial void AddNextDataLayerServices(IServiceCollection services);" +
+                    "\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

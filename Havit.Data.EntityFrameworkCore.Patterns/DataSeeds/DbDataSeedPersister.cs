@@ -292,7 +292,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 				? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
 				: (Expression)Expression.Constant(value);
 
-			Expression pairByConditionExpression = Expression.Equal(ExpressionExt.ReplaceParameter(expression, expression.Parameters[0], parameter).RemoveConvert(), valueExpression); // Expression.Constant nejde pro references
+			Expression pairByConditionExpression = Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression); // Expression.Constant nejde pro references
 
 			if (seedEntityWhereExpression != null)
 			{

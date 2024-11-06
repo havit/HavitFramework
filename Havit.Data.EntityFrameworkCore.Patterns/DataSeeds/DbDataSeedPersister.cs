@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
@@ -79,7 +78,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 
 		List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations = configuration.PairByExpressions.ToPairByExpressionsWithCompilations();
 		List<SeedDataPair<TEntity>> seedDataPairs = await PairWithDbDataOptionallyAsync(configuration.SeedData, pairByExpressionsWithCompilations, configuration.CustomQueryCondition, synchronizationMode, cancellationToken).ConfigureAwait(false);
-		List<SeedDataPair<TEntity>> seedDataPairsToUpdate = configuration.UpdateEnabled ? seedDataPairs.ToList() : seedDataPairs.Where(item => item.DbEntity == null).ToList();
+		List<SeedDataPair<TEntity>> seedDataPairsToUpdate = configuration.UpdateEnabled ? seedDataPairs : seedDataPairs.Where(item => item.DbEntity == null).ToList();
 		List<SeedDataPair<TEntity>> unpairedSeedDataPairs = seedDataPairsToUpdate.Where(item => item.DbEntity == null).ToList();
 		foreach (SeedDataPair<TEntity> unpairedSeedDataPair in unpairedSeedDataPairs)
 		{
@@ -121,7 +120,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		Contract.Requires<InvalidOperationException>((configuration.PairByExpressions != null) && (configuration.PairByExpressions.Count > 0), "Expression to pair object missing (missing PairBy method call).");
 
 		var entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
-		var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToList();
+		var propertiesForInserting = GetPropertiesForInserting(entityType).Select(item => item.PropertyInfo.Name).ToHashSet();
 
 		Contract.Assert<InvalidOperationException>(configuration.PairByExpressions.TrueForAll(expression => propertiesForInserting.Contains(ExpressionExt.GetMemberAccessMemberName(expression))), "Expression to pair object contains not supported property (only properties which can be inserted are allowed).");
 	}
@@ -191,8 +190,8 @@ public class DbDataSeedPersister : IDataSeedPersister
 	{
 		List<TEntity> dbEntities = new List<TEntity>();
 
-		// Chunkify(1000) --> SQL Server 2008: Some part of your SQL statement is nested too deeply. Rewrite the query or break it up into smaller queries.
-		// Proto došlo ke změně na .Chunkify(100), správné číslo hledáme.
+		// Chunk(1000) --> SQL Server 2008: Some part of your SQL statement is nested too deeply. Rewrite the query or break it up into smaller queries.
+		// Proto došlo ke změně na .Chunk(100), správné číslo hledáme.
 		foreach (TEntity[] chunk in seedData.Chunk(100))
 		{
 			Expression<Func<TEntity, bool>> chunkWhereExpression = PairWithDbData_LoadDatabaseData_BuildWhereCondition(chunk, pairByExpressionsWithCompilations);
@@ -244,7 +243,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// <summary>
 	/// Sestaví podmínku pro vyfiltrování dat (seedData) při zadaných párovacích výrazech.
 	/// </summary>
-	private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition<TEntity>(IEnumerable<TEntity> seedData, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
+	private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition<TEntity>(TEntity[] seedData, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations)
 		where TEntity : class
 	{
 		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
@@ -255,8 +254,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		// Jenže hloubka stromu může být maximálně okolo 1000 položek, jinak dostáváme při kompilaci dotazu StackOverflowException.
 		// Proto nyní stavíme z podmínek strom, jehož hloubka roste logaritmicky vůči počtu seedovaných položek.
 
-		TEntity[] seedDataArray = seedData.ToArray();
-		return PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive(seedDataArray, pairByExpressionsWithCompilations, 0, seedDataArray.Length - 1, parameter);
+		return PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive(seedData, pairByExpressionsWithCompilations, 0, seedData.Length - 1, parameter);
 	}
 
 	private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive<TEntity>(TEntity[] seedDataArray, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, int indexFrom, int indexTo, ParameterExpression parameter)
@@ -279,7 +277,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive_BuildItem<TEntity>(TEntity seedEntity, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, ParameterExpression parameter)
 		where TEntity : class
 	{
-		Expression<Func<TEntity, bool>> seedEntityWhereExpression = null;
+		Expression seedEntityWhereExpression = null;
 
 		for (int i = 0; i < pairByExpressionsWithCompilations.Count; i++)
 		{
@@ -294,13 +292,11 @@ public class DbDataSeedPersister : IDataSeedPersister
 				? (Expression)Expression.Convert(Expression.Constant(value), expressionBodyType)
 				: (Expression)Expression.Constant(value);
 
-			Expression<Func<TEntity, bool>> pairByConditionExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(
-				Expression.Equal(ExpressionExt.ReplaceParameter(expression.Body, expression.Parameters[0], parameter).RemoveConvert(), valueExpression), // Expression.Constant nejde pro references
-				parameter);
+			Expression pairByConditionExpression = Expression.Equal(ExpressionExt.ReplaceParameter(expression, expression.Parameters[0], parameter).RemoveConvert(), valueExpression); // Expression.Constant nejde pro references
 
 			if (seedEntityWhereExpression != null)
 			{
-				seedEntityWhereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.AndAlso(seedEntityWhereExpression.Body, pairByConditionExpression.Body), parameter);
+				seedEntityWhereExpression = Expression.AndAlso(seedEntityWhereExpression, pairByConditionExpression);
 			}
 			else
 			{
@@ -308,7 +304,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 			}
 		}
 
-		return seedEntityWhereExpression;
+		return (Expression<Func<TEntity, bool>>)Expression.Lambda(seedEntityWhereExpression, parameter);
 	}
 
 	/// <summary>

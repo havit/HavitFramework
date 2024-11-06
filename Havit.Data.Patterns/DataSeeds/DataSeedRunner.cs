@@ -162,17 +162,16 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	private void SeedProfile(IDataSeedProfile profile, Type profileType, bool forceRun)
 	{
-		List<IDataSeed> dataSeedsInProfile = _dataSeeds.Where(item => item.ProfileType == profileType).ToList();
-		List<Type> dataSeedsInProfileTypes = dataSeedsInProfile.Select(item => item.GetType()).ToList();
+		Dictionary<Type, IDataSeed> dataSeedsInProfileByType = _dataSeeds.Where(item => item.ProfileType == profileType).ToDictionary(item => item.GetType(), item => item);
+		List<Type> dataSeedsInProfileTypes = dataSeedsInProfileByType.Keys.ToList();
 
 		if (forceRun || _dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
 		{
 			// seed profile
-			Dictionary<Type, IDataSeed> dataSeedsInProfileByType = dataSeedsInProfile.ToDictionary(item => item.GetType(), item => item);
-			List<IDataSeed> completedDataSeeds = new List<IDataSeed>();
+			HashSet<IDataSeed> completedDataSeeds = new HashSet<IDataSeed>();
 
 			Stack<IDataSeed> dataSeedsStack = new Stack<IDataSeed>();
-			foreach (IDataSeed dataSeed in dataSeedsInProfile)
+			foreach (IDataSeed dataSeed in dataSeedsInProfileByType.Values)
 			{
 				SeedService(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds);
 			}
@@ -187,17 +186,16 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	private async Task SeedProfileAsync(IDataSeedProfile profile, Type profileType, bool forceRun, CancellationToken cancellationToken)
 	{
-		List<IDataSeed> dataSeedsInProfile = _dataSeeds.Where(item => item.ProfileType == profileType).ToList();
-		List<Type> dataSeedsInProfileTypes = dataSeedsInProfile.Select(item => item.GetType()).ToList();
+		Dictionary<Type, IDataSeed> dataSeedsInProfileByType = _dataSeeds.Where(item => item.ProfileType == profileType).ToDictionary(item => item.GetType(), item => item);
+		List<Type> dataSeedsInProfileTypes = dataSeedsInProfileByType.Keys.ToList();
 
 		if (forceRun || _dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
 		{
 			// seed profile
-			Dictionary<Type, IDataSeed> dataSeedsInProfileByType = dataSeedsInProfile.ToDictionary(item => item.GetType(), item => item);
 			List<IDataSeed> completedDataSeeds = new List<IDataSeed>();
 
 			Stack<IDataSeed> dataSeedsStack = new Stack<IDataSeed>();
-			foreach (IDataSeed dataSeed in dataSeedsInProfile)
+			foreach (IDataSeed dataSeed in dataSeedsInProfileByType.Values)
 			{
 				await SeedServiceAsync(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds, cancellationToken).ConfigureAwait(false);
 			}
@@ -214,7 +212,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <param name="profile">Profil, který je seedován.</param>
 	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislostí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
 	/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
-	private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile)
+	private void SeedService(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, HashSet<IDataSeed> completedDataSeedsInProfile)
 	{
 		// Already completed?
 		if (completedDataSeedsInProfile.Contains(dataSeed))

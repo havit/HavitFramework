@@ -92,7 +92,7 @@ public class DbDataSeedRunner : DataSeedRunner
 				var strategy = _dbContext.Database.CreateExecutionStrategy();
 				await strategy.ExecuteAsync(async _ =>
 				{
-					using (IDbContextTransaction transaction = _dbContext.Database.BeginTransaction())
+					using (IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
 					{
 						await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
 						await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
@@ -102,7 +102,7 @@ public class DbDataSeedRunner : DataSeedRunner
 		}
 		else
 		{
-			base.SeedData(dataSeedProfileType, forceRun);
+			await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
 		}
 	}
 }

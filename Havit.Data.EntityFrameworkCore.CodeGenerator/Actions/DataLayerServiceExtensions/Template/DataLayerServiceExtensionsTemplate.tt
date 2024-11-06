@@ -10,6 +10,7 @@
 
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
@@ -56,7 +57,7 @@ public static partial class DataLayerServiceExtensions
 	private static void AddDataEntries(IServiceCollection services)
 	{
 <# foreach (DataEntriesModel dataEntriesModel in Model.DataEntries) { #>
-		services.TryAddScoped<<#= dataEntriesModel.NamespaceName #>.<#= dataEntriesModel.InterfaceName #>, <#= dataEntriesModel.NamespaceName #>.<#= dataEntriesModel.DbClassName #>();
+		services.TryAddScoped<<#= dataEntriesModel.NamespaceName #>.<#= dataEntriesModel.InterfaceName #>, <#= dataEntriesModel.NamespaceName #>.<#= dataEntriesModel.DbClassName #>>();
 <# if (dataEntriesModel.UseDataEntrySymbolStorage) { #>
 		services.TryAddTransient<IDataEntrySymbolService<<#= dataEntriesModel.ModelClassFullName #>>, DataEntrySymbolService<<#= dataEntriesModel.ModelClassFullName #>>>();
 		services.TryAddSingleton<IDataEntrySymbolStorage<<#= dataEntriesModel.ModelClassFullName #>>, DataEntrySymbolStorage<<#= dataEntriesModel.ModelClassFullName #>>>();	

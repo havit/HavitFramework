@@ -295,14 +295,17 @@ public partial class DbDataLoader
 	{
 		var originalPropertyLambda = _lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, IEnumerable<TPropertyItem>>(originalPropertyName).LambdaCompiled;
 
-		IEnumerable<TPropertyItem> loadedEntities = entities.SelectMany(item => (IEnumerable<TPropertyItem>)originalPropertyLambda(item));
+		IEnumerable<TPropertyItem> loadedDistinctNotNullEntities = entities.SelectMany(item => (IEnumerable<TPropertyItem>)originalPropertyLambda(item))
+			.Where(item => item != null)
+			.Distinct();
+
 		return new LoadPropertyInternalResult
 		{
 			// Zde předáváme dvakrát IEnumerable<TPropertyItem>, ale efektivně bude použit nejvýše jeden z nich.
 			// Entities v dalším průchodu foreachem v LoadInternal[Async] (pokud nenásleduje další průchod, nebude kolekce nikdy zpracována)
 			// FluentDataLoader v dalším ThanLoad (pokud nenásleduje ThenLoad[Async], nebude kolekce nikdy zpracována)
-			Entities = loadedEntities,
-			FluentDataLoader = new FluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, loadedEntities)
+			Entities = loadedDistinctNotNullEntities,
+			FluentDataLoader = new FluentDataLoader<TOriginalPropertyCollection, TPropertyItem>(this, loadedDistinctNotNullEntities)
 		};
 	}
 }

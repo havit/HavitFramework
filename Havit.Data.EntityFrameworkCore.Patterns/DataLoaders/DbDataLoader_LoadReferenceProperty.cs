@@ -3,6 +3,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
@@ -220,14 +221,17 @@ public partial class DbDataLoader
 
 		// zde spoléháme na proběhnutí fixupu
 
-		IEnumerable<TProperty> loadedEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item));
+		IEnumerable<TProperty> loadedDistinctNotNullEntities = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item))
+			.Where(item => item != null)
+			.Distinct();
+
 		return new LoadPropertyInternalResult
 		{
 			// Zde předáváme dvakrát IEnumerable<TProperty>, ale efektivně bude použit nejvýše jeden z nich.
 			// Entities v dalším průchodu foreachem v LoadInternal[Async] (pokud nenásleduje další průchod, nebude kolekce nikdy zpracována)
 			// FluentDataLoader v dalším ThanLoad (pokud nenásleduje ThenLoad[Async], nebude kolekce nikdy zpracována)
-			Entities = loadedEntities,
-			FluentDataLoader = new FluentDataLoader<TProperty>(this, loadedEntities)
+			Entities = loadedDistinctNotNullEntities,
+			FluentDataLoader = new FluentDataLoader<TProperty>(this, loadedDistinctNotNullEntities)
 		};
 	}
 }

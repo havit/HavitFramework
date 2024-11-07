@@ -83,7 +83,7 @@ public class SoftDeleteManager : ISoftDeleteManager
 		}
 
 		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "o");
-		BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null));
+		BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null, typeof(DateTime?)));
 		result = Expression.Lambda(equal, parameter);
 		_getNotDeletedExpressionLambdaDictionary.TryAdd(typeof(TEntity), result);
 

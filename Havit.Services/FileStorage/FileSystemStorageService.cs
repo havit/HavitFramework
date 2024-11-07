@@ -37,7 +37,7 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 	public FileSystemStorageService(string storagePath, bool useFullyQualifiedPathNames, EncryptionOptions encryptionOptions) : base(encryptionOptions)
 	{
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(storagePath) ^ useFullyQualifiedPathNames, "Je nutno zadat buď cestu k úložišti anebo zvolit použití plně kvalifikovaných názvu souborů, přičemž nelze obojí současně.");
-		this.StoragePath = storagePath?.Replace("%TEMP%", Path.GetTempPath().TrimEnd('\\'));
+		this.StoragePath = storagePath?.Replace("%TEMP%", Path.GetTempPath().TrimEnd(Path.DirectorySeparatorChar));
 		this.useFullyQualifiedPathNames = useFullyQualifiedPathNames;
 	}
 	/// <summary>
@@ -398,7 +398,7 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 			return false;
 		}
 
-		if (String.Equals(filePath.FullName.TrimEnd('\\'), storageDirectory.FullName.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
+		if (String.Equals(filePath.FullName.TrimEnd(Path.DirectorySeparatorChar), storageDirectory.FullName.TrimEnd(Path.DirectorySeparatorChar), StringComparison.InvariantCultureIgnoreCase))
 		{
 			return true;
 		}

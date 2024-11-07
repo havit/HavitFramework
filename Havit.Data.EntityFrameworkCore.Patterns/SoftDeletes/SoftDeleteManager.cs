@@ -87,7 +87,7 @@ public class SoftDeleteManager : ISoftDeleteManager
 			Contract.Assert<NotSupportedException>(IsSoftDeleteSupported(typeof(TEntity)), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 
 			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "o");
-			BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null));
+			BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null, typeof(DateTime?)));
 			return Expression.Lambda(equal, parameter);
 		});
 	}

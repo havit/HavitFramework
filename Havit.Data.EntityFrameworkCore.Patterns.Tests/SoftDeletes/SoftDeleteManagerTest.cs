@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Services.TimeServices;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.SoftDeletes;
@@ -132,8 +133,49 @@ public class SoftDeleteManagerTest
 		// Assert by method attribute 
 	}
 
+	/// <summary>
+	/// See https://github.com/dotnet/efcore/issues/35059
+	/// </summary>
+	[TestMethod]
+	public void SoftDeleteManager_ContainsWorkaroundForIssue35059()
+	{
+		// Arrange
+		Mock<ITimeService> mockTimeSevice = new Mock<ITimeService>();
+		SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
+
+		using var dbContext = new SoftDeleteManagerDbContext(new DbContextOptionsBuilder().UseSqlServer("Data Source=FAKE").Options);
+
+		// Precondition
+		// Testujeme, zda máme správně tento unit test. Tedy ověřujeme, jak se do query projeví,
+		// pokud máme v dotazu nesplnitelnou podmínku (což je project chyby dle issue 35059).		
+		bool ContainsImpossibleCondition(string query) => query.Contains("WHERE 0 = 1");
+
+		string queryPrecondition = dbContext.NullableDateTimeDeletedDbSet.Where(item => false).ToQueryString();
+		Assert.IsTrue(ContainsImpossibleCondition(queryPrecondition));
+
+		// Act
+		string query = dbContext.NullableDateTimeDeletedDbSet
+			.WhereNotDeleted(softDeleteManager) // zde doplníme podmínku na Deleted
+			.Where(x => x.Deleted == null) // a zde ji doplníme ještě jednou, což je předmět dané issue
+			.ToQueryString();
+
+		// Assert
+		Assert.IsFalse(ContainsImpossibleCondition(query));
+	}
+
+	public class SoftDeleteManagerDbContext : DbContext
+	{
+		public DbSet<NullableDateTimeDeleted> NullableDateTimeDeletedDbSet { get; set; }
+
+		public SoftDeleteManagerDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+		{
+			// noop
+		}
+	}
+
 	public class NullableDateTimeDeleted
 	{
+		public int Id { get; set; }
 		public DateTime? Deleted { get; set; }
 	}
 

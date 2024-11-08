@@ -16,7 +16,7 @@ public interface IRepository<TEntity>
 	/// Vrací instanci objektu dle Id.
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-	ValueTask<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default);
+	Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Vrací instance objektů dle Id.
@@ -26,7 +26,7 @@ public interface IRepository<TEntity>
 	/// <summary>
 	/// Vrací instance objektů dle Id.
 	/// </summary>
-	ValueTask<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default);
+	Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Vrací seznam všech (příznakem nesmazaných) objektů typu TEntity.
@@ -36,5 +36,5 @@ public interface IRepository<TEntity>
 	/// <summary>
 	/// Vrací seznam všech (příznakem nesmazaných) objektů typu TEntity.
 	/// </summary>
-	ValueTask<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
+	Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 }

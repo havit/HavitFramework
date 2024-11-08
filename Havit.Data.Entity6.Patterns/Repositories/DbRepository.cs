@@ -176,14 +176,14 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekt má načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-	public async ValueTask<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
+	public async Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
 	{
 		Contract.Requires<ArgumentException>(id != default, nameof(id));
 
 		TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(cancellationToken, new object[] { id })).ConfigureAwait(false);
 		if (result == null)
 		{
-			ThrowObjectNotFoundException(id);
+			ThrowObjectNotFoundException(id);					
 		}
 
 		await LoadReferencesAsync(new TEntity[] { result }, cancellationToken).ConfigureAwait(false);
@@ -242,7 +242,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
-	public async ValueTask<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
+	public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
 	{
 		Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
@@ -310,7 +310,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Dotaz na seznam objektů provede jednou, při opakovaném volání vrací data z paměti.
 	/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
-	public async ValueTask<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+	public async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
 		if (_all == null)
 		{
@@ -369,7 +369,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <summary>
 	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 	/// </summary>
-	protected async ValueTask LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
+	protected async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
 	{
 		Contract.Requires<ArgumentNullException>(entities != null, nameof(entities));
 

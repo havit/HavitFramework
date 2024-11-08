@@ -124,7 +124,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekt má načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-	public async ValueTask<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
+	public async Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
 	{
 		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
@@ -240,7 +240,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
-	public async ValueTask<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
+	public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(ids);
 
@@ -359,7 +359,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Dotaz na seznam objektů provede jednou, při opakovaném volání vrací data z paměti.
 	/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
-	public async ValueTask<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
+	public async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
 	{
 		if (_all == null)
 		{
@@ -415,7 +415,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
 	/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
 	/// </remarks>
-	protected virtual async ValueTask LoadReferencesAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+	protected virtual async Task LoadReferencesAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
 	{
 		var loadReferences = GetLoadReferences();
 		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.

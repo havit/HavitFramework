@@ -23,7 +23,7 @@ public class NotSuportedFluentDataLoader<TEntity> : IFluentDataLoader<TEntity>
 	/// <summary>
 	/// Vyhazuje výjimku NotSupportedException.
 	/// </summary>
-	ValueTask<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no  default */)
+	Task<IFluentDataLoader<TProperty>> IFluentDataLoader<TEntity>.LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken /* no  default */)
 	{
 		throw CreateNotSupportedException();
 	}

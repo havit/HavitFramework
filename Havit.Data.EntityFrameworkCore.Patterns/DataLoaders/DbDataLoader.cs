@@ -135,7 +135,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 	/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public async Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -157,7 +157,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 	/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
+	public async Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
 		ArgumentNullException.ThrowIfNull(propertyPaths);
@@ -182,7 +182,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 	/// <param name="propertyPath">Vlastnost, který má být načtena.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public async Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -199,7 +199,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 	/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
+	public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
 		ArgumentNullException.ThrowIfNull(entities);
@@ -310,7 +310,7 @@ public partial class DbDataLoader : IDataLoader
 		{
 			_logger.LogDebug("Loading a property '{Property}' of entity '{Entity}'...", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 
-			ValueTask<LoadPropertyInternalResult> valueTask = default;
+			ValueTask<LoadPropertyInternalResult> task = default;
 			if (!propertyToLoad.IsCollection)
 			{
 				invokeLoadReferencePropertyInternalMethodArguments ??= new object[4];
@@ -320,7 +320,7 @@ public partial class DbDataLoader : IDataLoader
 				invokeLoadReferencePropertyInternalMethodArguments[3] = cancellationToken;
 				try
 				{
-					valueTask = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
+					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
 						.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 						.MakeGenericMethod(
 							propertyToLoad.SourceType,
@@ -343,7 +343,7 @@ public partial class DbDataLoader : IDataLoader
 				invokeLoadCollectionPropertyInternalMethodArguments[4] = cancellationToken;
 				try
 				{
-					valueTask = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
+					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
 						.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 						.MakeGenericMethod(
 							propertyToLoad.SourceType,
@@ -359,7 +359,7 @@ public partial class DbDataLoader : IDataLoader
 				}
 			}
 
-			LoadPropertyInternalResult loadPropertyInternalResult = await valueTask.ConfigureAwait(false);
+			LoadPropertyInternalResult loadPropertyInternalResult = await task.ConfigureAwait(false);
 
 			entities = loadPropertyInternalResult.Entities;
 			fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;

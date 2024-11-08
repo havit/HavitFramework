@@ -107,7 +107,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 	/// <param name="propertyPath">Vlastnost, který má být načtena.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public async Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -123,7 +123,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 	/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
+	public async Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
 		Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
@@ -140,7 +140,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 	/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public async Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -157,7 +157,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 	/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
 	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-	public async ValueTask LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
+	public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
 		Contract.Requires<ArgumentNullException>(propertyPaths != null, nameof(propertyPaths));
@@ -237,7 +237,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	private async ValueTask LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken /* no default */)
+	private async Task LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -253,14 +253,14 @@ public partial class DbDataLoader : IDataLoader
 			PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 
 			Array entities = entitiesToLoadWithoutNulls;
-			ValueTask<LoadPropertyInternalResult> valueTask = default;
+			Task task = null;
 			foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 			{
 				if (!propertyToLoad.IsCollection)
 				{
 					try
 					{
-						valueTask = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
+						task = (Task)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -277,7 +277,7 @@ public partial class DbDataLoader : IDataLoader
 				{
 					try
 					{
-						valueTask = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
+						task = (Task)typeof(DbDataLoader)
 							.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
 							.MakeGenericMethod(
 								propertyToLoad.SourceType,
@@ -291,7 +291,8 @@ public partial class DbDataLoader : IDataLoader
 						ExceptionDispatchInfo.Capture(targetInvocationException.InnerException).Throw();
 					}
 				}
-				entities = (await valueTask.ConfigureAwait(false)).Result;
+				await task.ConfigureAwait(false);
+				entities = (Array)((dynamic)task).Result; // task je již dokončen
 
 				if (entities.Length == 0)
 				{
@@ -323,8 +324,8 @@ public partial class DbDataLoader : IDataLoader
 
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je referencí (není kolekcí). Voláno reflexí.
-	/// </summary>	
-	private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+	/// </summary>
+	private async Task<TProperty[]> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -338,8 +339,7 @@ public partial class DbDataLoader : IDataLoader
 			await loadQuery.LoadAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		TProperty[] result = entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
-		return new LoadPropertyInternalResult { Result = result };
+		return entities.Select(item => propertyLambdaExpression.LambdaCompiled(item)).Where(item => item != null).ToArray();
 	}
 
 	/// <summary>
@@ -368,7 +368,7 @@ public partial class DbDataLoader : IDataLoader
 	/// <summary>
 	/// Zajistí načtení vlastnosti, která je kolekcí. Voláno reflexí.
 	/// </summary>
-	private async ValueTask<LoadPropertyInternalResult> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
+	private async Task<TPropertyItem[]> LoadCollectionPropertyInternalAsync<TEntity, TPropertyCollection, TPropertyItem>(string propertyName, TEntity[] entities, CancellationToken cancellationToken /* no default */)
 			where TEntity : class
 			where TPropertyCollection : class
 			where TPropertyItem : class
@@ -386,7 +386,7 @@ public partial class DbDataLoader : IDataLoader
 		}
 
 		TPropertyItem[] result = entities.SelectMany(item => (IEnumerable<TPropertyItem>)propertyLambdaExpression.LambdaCompiled(item)).ToArray();
-		return new LoadPropertyInternalResult { Result = result };
+		return result;
 	}
 
 	/// <summary>

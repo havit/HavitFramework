@@ -32,7 +32,7 @@ public static class FluentDataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	public static async ValueTask<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this ValueTask<IFluentDataLoader<TEntity>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<TEntity>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -43,7 +43,7 @@ public static class FluentDataLoaderExtensions
 
 	// **************************************************************************************************************************************
 	//
-	// Protože ValueTask<...> není ValueTask<out ...>, není možné extension metody použít hezky, jako v případě synchronních metod na IEnumerable.
+	// Protože Task<...> není Task<out ...>, není možné extension metody použít hezky, jako v případě synchronních metod na IEnumerable.
 	// Proto zde máme několik přetížení nad ICollection, IList, List, atp.
 	//
 	// **************************************************************************************************************************************
@@ -51,7 +51,7 @@ public static class FluentDataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	public static async ValueTask<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this ValueTask<IFluentDataLoader<ICollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<ICollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -63,7 +63,7 @@ public static class FluentDataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	public static async ValueTask<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this ValueTask<IFluentDataLoader<IList<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<IList<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -75,7 +75,7 @@ public static class FluentDataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	public static async ValueTask<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this ValueTask<IFluentDataLoader<List<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<List<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -87,7 +87,7 @@ public static class FluentDataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	public static async ValueTask<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this ValueTask<IFluentDataLoader<FilteringCollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<FilteringCollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
@@ -99,7 +99,7 @@ public static class FluentDataLoaderExtensions
 	/// <summary>
 	/// Načte vlastnosti objektů, pokud ještě nejsou načteny.
 	/// </summary>
-	public static async ValueTask<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this ValueTask<IFluentDataLoader<ObservableCollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public static async Task<IFluentDataLoader<TProperty>> ThenLoadAsync<TEntity, TProperty>(this Task<IFluentDataLoader<ObservableCollection<TEntity>>> source, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{

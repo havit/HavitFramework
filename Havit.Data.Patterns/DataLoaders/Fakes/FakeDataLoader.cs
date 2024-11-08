@@ -56,43 +56,41 @@ public class FakeDataLoader : IDataLoader
 	/// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	/// Implementace: Nic nedělá.
 	/// </summary>
-	public ValueTask<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
-		return new ValueTask<IFluentDataLoader<TProperty>>(new NullFluentDataLoader<TProperty>());
+		return Task.FromResult((IFluentDataLoader<TProperty>)new NullFluentDataLoader<TProperty>());
 	}
 
 	/// <summary>
 	/// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	/// Implementace: Nic nedělá.
 	/// </summary>
-	public ValueTask LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
+	public Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		// TODO: .NET5+ ValueTask.CompletedTask
-		return new ValueTask();
+		return Task.CompletedTask;
 	}
 
 	/// <summary>
 	/// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	/// Implementace: Nic nedělá.
 	/// </summary>
-	public ValueTask<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
+	public Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class
 	{
-		return new ValueTask<IFluentDataLoader<TProperty>>(new NullFluentDataLoader<TProperty>());
+		return Task.FromResult((IFluentDataLoader<TProperty>)new NullFluentDataLoader<TProperty>());
 	}
 
 	/// <summary>
 	/// Contract: Načte vlastnosti objektů, pokud ještě nejsou načteny.        
 	/// Implementace: Nic nedělá.
 	/// </summary>
-	public ValueTask LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
+	public Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		// TODO: .NET5+ ValueTask.CompletedTask
-		return new ValueTask();
+		return Task.CompletedTask;
 	}
 }

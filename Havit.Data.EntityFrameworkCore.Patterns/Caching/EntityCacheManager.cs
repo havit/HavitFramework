@@ -495,4 +495,15 @@ public class EntityCacheManager : IEntityCacheManager
 			cacheKeysToInvalidate.Add(_entityCacheKeyGenerator.GetAllKeysCacheKey(type));
 		}
 	}
+
+	/// <summary>
+	/// Odstraní všechny entity (a data související s nimi, např. navigace, atp.) z cache.
+	/// Vzhledem ke kontextu použití si dovolíme odstranit veškerá data z cache.
+	/// </summary>
+	public void InvalidateAll()
+	{
+		// V případě povolení cache dependencies by bylo možné veškeré cachované záznamy navázat na jediný,
+		// který jediný bychom invalidovali. Tím bychom odstranili všechny záznamy EF Core, ale nic víc.
+		_cacheService.Clear();
+	}
 }

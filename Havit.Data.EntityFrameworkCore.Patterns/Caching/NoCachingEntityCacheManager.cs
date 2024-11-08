@@ -89,4 +89,12 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	{
 		return null;
 	}
+
+	/// <summary>
+	/// Nic nedělá, neinvaliduje.	
+	/// </summary>
+	public void InvalidateAll()
+	{
+		// NOOP
+	}
 }

@@ -67,4 +67,9 @@ public interface IEntityCacheManager
 	/// Přijme notifikaci o změně entit a zajistí jejich invalidaci v cache.
 	/// </summary>
 	CacheInvalidationOperation PrepareCacheInvalidation(Changes changes);
+
+	/// <summary>
+	/// Odstraní všechny entity (a data související s nimi, např. navigace, atp.) z cache.
+	/// </summary>
+	void InvalidateAll();
 }

@@ -37,7 +37,7 @@ public class DbDataSeedsTests
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-		return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContext);
+		return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, new NoCachingEntityCacheManager(), dbContext);
 	}
 
 	[TestClass]

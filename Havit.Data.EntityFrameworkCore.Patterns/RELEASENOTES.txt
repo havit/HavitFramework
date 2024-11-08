@@ -21,7 +21,7 @@ Dependency Injection [BREAKING CHANGE]
 • AddEntityPatterns - zrušen
 • AddDataLayer - metoda nahrazena generovanou metodou AddDayaLayerServices
 • AddDataLayer/AddDayaLayerServices nově neregistruje data seedy a potřebuje explicitní registraci
-* ComponentRegistrationOptions již nemá DbUnitOfWorkType (vlastní unit of work lze zaregistrovat samostatně)
+• ComponentRegistrationOptions již nemá DbUnitOfWorkType (vlastní unit of work lze zaregistrovat samostatně)
 
 Optimalizace:
 • DbUnitOfWork.Commit[Async] - optimalizace alokací paměti a využití reflexe v BeforeCommitProcessorech+EntityValidators

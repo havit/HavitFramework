@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Threading.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Threading.Internal;
 using Havit.Data.Patterns.DataSeeds;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 public class DbDataSeedRunner : DataSeedRunner
 {
 	private const string DataSeedLockValue = "DbDataSeeds";
+	private readonly IEntityCacheManager _entityCacheManager;
 	private readonly IDbContext _dbContext;
 
 	/// <summary>
@@ -21,10 +23,12 @@ public class DbDataSeedRunner : DataSeedRunner
 	public DbDataSeedRunner(IEnumerable<IDataSeed> dataSeeds,
 		IDataSeedRunDecision dataSeedRunDecision,
 		IDataSeedPersisterFactory dataSeedPersisterFactory,
+		IEntityCacheManager entityCacheManager,
 		IDbContext dbContext)
 		: base(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactory)
 	{
-		this._dbContext = dbContext;
+		_entityCacheManager = entityCacheManager;
+		_dbContext = dbContext;
 	}
 
 	/// <inheritdoc />
@@ -70,33 +74,52 @@ public class DbDataSeedRunner : DataSeedRunner
 		}
 		catch (Exception exception) when ((seedAsyncFromSyncSeedDataException != null) && (exception != seedAsyncFromSyncSeedDataException /* to se snad nemůže stát */))
 		{
+			_entityCacheManager.InvalidateAll(); // viz komentář níže u "catch"
+
 			// viz komentář výše u přiřazení seedAsyncFromSyncSeedDataException
 			throw new AggregateException(seedAsyncFromSyncSeedDataException, exception);
+		}
+		catch
+		{
+			// Pokud neprošlo seedování celé, mohlo se stát, že proběhla jeho část v transakci a došlo k uložení části dat (později rollback-ovaných)
+			// do cache. Proto preventivně z cache odstraníme veškerá data (vzhledem ke kontextu použití této služby si to zřejmě můžeme dovolit).
+			_entityCacheManager.InvalidateAll();
+			throw;
 		}
 	}
 
 	/// <inheritdoc />
 	public override async Task SeedDataAsync(Type dataSeedProfileType, bool forceRun = false, CancellationToken cancellationToken = default)
 	{
-		if (_dbContext.Database.IsSqlServer())
+		try
 		{
-			await new DbLockedCriticalSection((SqlConnection)_dbContext.Database.GetDbConnection()).ExecuteActionAsync(DataSeedLockValue, async () =>
+			if (_dbContext.Database.IsSqlServer())
 			{
-				// podpora pro Connection Resiliency
-				// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
-				// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
-				var strategy = _dbContext.Database.CreateExecutionStrategy();
-				await strategy.ExecuteInTransactionAsync(async _ =>
+				await new DbLockedCriticalSection((SqlConnection)_dbContext.Database.GetDbConnection()).ExecuteActionAsync(DataSeedLockValue, async () =>
 				{
-					await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
-				},
-				null,
-				cancellationToken).ConfigureAwait(false);
-			}, cancellationToken).ConfigureAwait(false);
+					// podpora pro Connection Resiliency
+					// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
+					// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+					var strategy = _dbContext.Database.CreateExecutionStrategy();
+					await strategy.ExecuteInTransactionAsync(async _ =>
+					{
+						await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
+					},
+					null,
+					cancellationToken).ConfigureAwait(false);
+				}, cancellationToken).ConfigureAwait(false);
+			}
+			else
+			{
+				await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
+			}
 		}
-		else
+		catch
 		{
-			await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
+			// Pokud neprošlo seedování celé, mohlo se stát, že proběhla jeho část v transakci a došlo k uložení části dat (později revertovaných)
+			// do cache. Proto preventivně z cache odstraníme veškerá data (vzhledem ke kontextu použití této služby si to zřejmě můžeme dovolit).
+			_entityCacheManager.InvalidateAll();
+			throw;
 		}
 	}
 }

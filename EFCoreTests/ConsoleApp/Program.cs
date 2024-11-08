@@ -56,7 +56,8 @@ public static class Program
 
 		services
 			.AddDataLayerServices()
-			.AddLookupService<IUserLookupService, UserLookupService>();
+			.AddLookupService<IUserLookupService, UserLookupService>()
+			.AddDataSeeds(typeof(Havit.EFCoreTests.DataLayer.Seeds.Persons.PersonsProfile).Assembly);
 
 		services.AddSingleton<ITimeService, ServerTimeService>();
 		services.AddSingleton<ICacheService, MemoryCacheService>();
@@ -74,11 +75,8 @@ public static class Program
 
 	private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 	{
-		CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-		CancellationToken stoppedCancellationToken = cancellationTokenSource.Token;
-		cancellationTokenSource.Cancel();
-		await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken: cancellationToken);
-		//await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, stoppedCancellationToken);
+		//await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken: cancellationToken);
+		serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>(forceRun: true);
 
 		//for (int i = 0; i < 50000; i++)
 		//{

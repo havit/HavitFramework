@@ -42,29 +42,25 @@ public class DbDataSeedRunner : DataSeedRunner
 					// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
 					// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
 					var strategy = _dbContext.Database.CreateExecutionStrategy();
-					strategy.Execute(() =>
+					strategy.ExecuteInTransaction(() =>
 					{
-						using (IDbContextTransaction transaction = _dbContext.Database.BeginTransaction())
+						try
 						{
-							try
-							{
-								base.SeedData(dataSeedProfileType, forceRun);
-							}
-							catch (SeedAsyncFromSyncSeedDataException exception)
-							{
-								// Při chybném volání async metody z sync seedu nebo zapomenutí awaitu zůstává typicky otevřené spojení (a reader).
-								// Různá následující volání (commit, rollback, Dispose!!!) pak selhávají. Ovšem typicky ve finally bloku,
-								// takže je tato výjimka je zahozena. (C# 4 Language Specification § 8.9.5: If the finally block throws another exception, processing of the current exception is terminated.)
-								// Pokud již nedošlo k zamaskování, pokusíme se výjimkou, která nás zajíma zde zapamatovat,
-								// abychom ji níže mohli vyhodit v AggregateException.
-								// Cílem je, dát programátorovi vědět zdrojovou chybu, nikoliv následné chyby ve stylu "Na SQL spojení není povolen MARS." atp.
-								seedAsyncFromSyncSeedDataException = exception;
-								throw;
-							}
-
-							transaction.Commit();
+							base.SeedData(dataSeedProfileType, forceRun);
 						}
-					});
+						catch (SeedAsyncFromSyncSeedDataException exception)
+						{
+							// Při chybném volání async metody z sync seedu nebo zapomenutí awaitu zůstává typicky otevřené spojení (a reader).
+							// Různá následující volání (commit, rollback, Dispose!!!) pak selhávají. Ovšem typicky ve finally bloku,
+							// takže je tato výjimka je zahozena. (C# 4 Language Specification § 8.9.5: If the finally block throws another exception, processing of the current exception is terminated.)
+							// Pokud již nedošlo k zamaskování, pokusíme se výjimkou, která nás zajíma zde zapamatovat,
+							// abychom ji níže mohli vyhodit v AggregateException.
+							// Cílem je, dát programátorovi vědět zdrojovou chybu, nikoliv následné chyby ve stylu "Na SQL spojení není povolen MARS." atp.
+							seedAsyncFromSyncSeedDataException = exception;
+							throw;
+						}
+					},
+					null);
 				});
 			}
 			else
@@ -90,14 +86,12 @@ public class DbDataSeedRunner : DataSeedRunner
 				// seedování používá "Option 2 - Rebuild application state" popsanou v dokumentaci
 				// viz: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
 				var strategy = _dbContext.Database.CreateExecutionStrategy();
-				await strategy.ExecuteAsync(async _ =>
+				await strategy.ExecuteInTransactionAsync(async _ =>
 				{
-					using (IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
-					{
-						await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
-						await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
-					}
-				}, cancellationToken).ConfigureAwait(false);
+					await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
+				},
+				null,
+				cancellationToken).ConfigureAwait(false);
 			}, cancellationToken).ConfigureAwait(false);
 		}
 		else

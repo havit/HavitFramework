@@ -1,0 +1,29 @@
+﻿v2.9.0 (12.11.2024)
+• Aktualizace na EF Core 9
+
+Novinky, úpravy:
+• IUnitOfWork.Clear() pro vyčištění change trackeru (a samotného unit of worku)
+• DbUnitOfWork.Commit[Async] - omezeno snížení volání detekce změn ze 3 na 1 (občas na 2)
+• DbUnitOfWork PerformAddForInsert/Update/Delete - přibylo přetížení pro 1 entitu a stávající pole změněno na IEnumeable<>, breaking changes pro ty, kteří mají vlastní DbUnitOfWork s přetíženými metodami [BREAKING CHANGE]
+• BeforeCommitProcessory nyní vrací informaci o tom, zda provedl úpravu s dopadem na change tracker [BREAKING CHANGE]
+• BeforeCommitProcessory - podpora pro async variantu (lze použít jen v asynchronním commitu!)
+• Seedování dat nyní používá UnitOfWork, neobchází tak (čištění) cache, používá before commit processory, atp.
+• Seedování dat nyní izoluje jednotlivé seedy pomocí IUnitOfWork.Clear()
+• Seedování má možnost nově použít SeedAsync (nutné pro fungování asynchronních before commit procesorů)
+• DbDataLoader - lepší identifikace zdroje dotazu pomocí WithTag
+• Změna registrace do DI containeru (viz níže) [BREAKING CHANGE]
+• Spousta optimalizací alokací paměti a výkonu
+• Odstranění obsolete memberů [BREAKING CHANGE]
+
+Dependency Injection [BREAKING CHANGE]
+• Odstranění IEntityPatternInstaller, WithEntityPatternsInstaller, použito jen IServiceCollection
+• Registrace DbContextu pomocí prostředků samotného EF Core
+• AddEntityPatterns - zrušen
+• AddDataLayer - metoda nahrazena generovanou metodou AddDayaLayerServices
+• AddDataLayer/AddDayaLayerServices nově neregistruje data seedy a potřebuje explicitní registraci
+* ComponentRegistrationOptions již nemá DbUnitOfWorkType (vlastní unit of work lze zaregistrovat samostatně)
+
+Optimalizace:
+• DbUnitOfWork.Commit[Async] - optimalizace alokací paměti a využití reflexe v BeforeCommitProcessorech+EntityValidators
+• Dictionary nahrazen FrozenDictionary, sestavení při startu aplikace, atp.
+• DbDataLoader - optimalizace iterací polí, alokací paměti, předávání dat do následujícího ThenLoad

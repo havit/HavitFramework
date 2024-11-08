@@ -11,11 +11,11 @@ public class FakeDataSourceTest
 	public void FakeDataSource_SupportsEmptyData()
 	{
 		// Arrange
-		int[] sourceData = Enumerable.Empty<int>().ToArray();
-		FakeDataSource<int> dataSource = new FakeInt32DataSource(sourceData);
+		Employee[] sourceData = Enumerable.Empty<Employee>().ToArray();
+		var dataSource = new FakeEmployeeDataSource(sourceData);
 
 		//Act
-		List<int> resultData = dataSource.Data.ToList();
+		List<Employee> resultData = dataSource.Data.ToList();
 
 		// Assert
 		Assert.AreEqual(0, resultData.Count);
@@ -25,11 +25,11 @@ public class FakeDataSourceTest
 	public void FakeDataSource_ReturnsSourceData()
 	{
 		// Arrange
-		int[] sourceData = Enumerable.Range(1, 5).ToArray();
-		FakeDataSource<int> dataSource = new FakeInt32DataSource(sourceData);
+		Employee[] sourceData = Enumerable.Range(1, 5).Select(i => new Employee { Id = i }).ToArray();
+		var dataSource = new FakeEmployeeDataSource(sourceData);
 
 		//Act
-		List<int> resultData = dataSource.Data.ToList();
+		List<Employee> resultData = dataSource.Data.ToList();
 
 		// Assert
 		CollectionAssert.AreEqual(sourceData, resultData);
@@ -39,11 +39,11 @@ public class FakeDataSourceTest
 	public async Task FakeDataSource_Async_ReturnsSourceData()
 	{
 		// Arrange
-		int[] sourceData = Enumerable.Range(1, 5).ToArray();
-		FakeDataSource<int> dataSource = new FakeInt32DataSource(sourceData);
+		Employee[] sourceData = Enumerable.Range(1, 5).Select(i => new Employee { Id = i }).ToArray();
+		var dataSource = new FakeEmployeeDataSource(sourceData);
 
 		//Act
-		List<int> resultData = await dataSource.Data.ToListAsync();
+		List<Employee> resultData = await dataSource.Data.ToListAsync();
 
 		// Assert
 		CollectionAssert.AreEqual(sourceData, resultData);
@@ -53,24 +53,31 @@ public class FakeDataSourceTest
 	public async Task FakeDataSource_Async_WithCondition()
 	{
 		// Arrange
-		int[] sourceData = Enumerable.Range(1, 100).ToArray();
-		FakeDataSource<int> dataSource = new FakeInt32DataSource(sourceData);
+		Employee[] sourceData = Enumerable.Range(1, 100).Select(i => new Employee { Id = i }).ToArray();
+		var dataSource = new FakeEmployeeDataSource(sourceData);
 
 		//Act
-		List<int> resultData = await dataSource.Data.Skip(5).Where(i => i > 3).Skip(1).Take(3).ToListAsync();
+		Employee result = await dataSource.Data
+			.Include(e => e.Boss)
+			.ThenInclude(e => e.Subordinates)
+			.Skip(5)
+			.Where(item => item.Id > 3)
+			.Skip(1)
+			.Take(3)
+			.FirstOrDefaultAsync();
 
 		// Assert
-		CollectionAssert.AreEqual(new List<int> { 7, 8, 9 }, resultData);
+		Assert.AreEqual(7, result.Id);
 	}
 
 	[TestMethod]
 	public void FakeDataSource_DoNotReturnDeletedObjects()
 	{
 		// Arrange
-		FakeDataSource<ItemWithDeleted> dataSource = new FakeItemWithDeletedDataSource(new ItemWithDeleted { Deleted = DateTime.Now });
+		var dataSource = new FakeEmployeeDataSource(new Employee { Deleted = DateTime.Now });
 
 		//Act
-		List<ItemWithDeleted> resultData = dataSource.Data.ToList();
+		List<Employee> resultData = dataSource.Data.ToList();
 
 		// Assert
 		Assert.AreEqual(0, resultData.Count);
@@ -80,10 +87,10 @@ public class FakeDataSourceTest
 	public async Task FakeDataSource_Async_DoNotReturnDeletedObjects()
 	{
 		// Arrange
-		FakeDataSource<ItemWithDeleted> dataSource = new FakeItemWithDeletedDataSource(new ItemWithDeleted { Deleted = DateTime.Now });
+		var dataSource = new FakeEmployeeDataSource(new Employee { Deleted = DateTime.Now });
 
 		//Act
-		List<ItemWithDeleted> resultData = await dataSource.Data.ToListAsync();
+		List<Employee> resultData = await dataSource.Data.ToListAsync();
 
 		// Assert
 		Assert.AreEqual(0, resultData.Count);

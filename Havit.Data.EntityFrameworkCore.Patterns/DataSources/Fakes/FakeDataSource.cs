@@ -15,19 +15,19 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> Data => new FakeAsyncEnumerable<TEntity>(_data.AsQueryable().WhereNotDeleted(_softDeleteManager).ToList());
+	public virtual IQueryable<TEntity> Data => DataIncludingDeleted.WhereNotDeleted(_softDeleteManager);
 
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> DataIncludingDeleted => new FakeAsyncEnumerable<TEntity>(_data);
+	public virtual IQueryable<TEntity> DataIncludingDeleted => new MockQueryable.EntityFrameworkCore.TestAsyncEnumerableEfCore<TEntity>(_data);
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	protected FakeDataSource(params TEntity[] data)
-		: this(data.AsEnumerable(), null)
+		: this(data, null)
 	{
 	}
 
@@ -37,6 +37,11 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	/// <param name="softDeleteManager">Pro podporu mazání příznakem.</param>
 	protected FakeDataSource(IEnumerable<TEntity> data, ISoftDeleteManager softDeleteManager = null)
+		: this(data.ToArray(), null)
+	{
+	}
+
+	private FakeDataSource(TEntity[] data, ISoftDeleteManager softDeleteManager = null)
 	{
 		ArgumentNullException.ThrowIfNull(data);
 

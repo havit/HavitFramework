@@ -2,9 +2,10 @@
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 
-public class FakeInt32DataSource : FakeDataSource<int>
+public class FakeEmployeeDataSource : FakeDataSource<Employee>
 {
-	public FakeInt32DataSource(params int[] data) : base(data)
+	public FakeEmployeeDataSource(params Employee[] data)
+		: base(data)
 	{
 	}
 }

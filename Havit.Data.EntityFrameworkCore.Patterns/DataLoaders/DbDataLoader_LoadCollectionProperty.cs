@@ -25,7 +25,7 @@ public partial class DbDataLoader
 		if (entities.Count == 0)
 		{
 			_logger.LogDebug("No entity to retrieve data.");
-			return LoadPropertyInternalResult.CreateEmpty<TPropertyItem>();
+			return LoadPropertyInternalResult.CreateEmpty<TOriginalPropertyCollection>();
 		}
 
 		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);
@@ -88,7 +88,7 @@ public partial class DbDataLoader
 		if (entities.Count == 0)
 		{
 			_logger.LogDebug("No entity to retrieve data.");
-			return LoadPropertyInternalResult.CreateEmpty<TPropertyItem>();
+			return LoadPropertyInternalResult.CreateEmpty<TOriginalPropertyCollection>();
 		}
 
 		LoadCollectionPropertyInternal_GetFromCache<TEntity, TPropertyItem>(propertyName, entities, out List<TEntity> entitiesToLoadQuery);

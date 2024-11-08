@@ -42,8 +42,8 @@ public static class Program
 			.Build();
 
 		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
-		await SeedDatabaseAsync(host.Services, CancellationToken.None);
-		//await DebugAsync(host.Services);
+		//await SeedDatabaseAsync(host.Services, CancellationToken.None);
+		await DebugAsync(host.Services);
 	}
 
 	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
@@ -97,29 +97,34 @@ public static class Program
 		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 
-		var parameter = Expression.Parameter(typeof(Person), "item");
-		Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
-		var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
-
-		// scénář 1: načítání kolekcí
 		Person person1 = personRepository.GetObject(1);
-		Person person2 = await personRepository.GetObjectAsync(4, cancellationToken);
-		Contract.Assert(person1.BossId == null);
-		Contract.Assert(person2.BossId == null);
-
 		dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+
+		Person person2 = personRepository.GetObject(2);
 		await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
-		// scénář 2: načítání referencí
-		List<Person> persons1 = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
-		List<Person> persons2 = await personRepository.GetObjectsAsync(Enumerable.Range(50000, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
-		dataLoader.LoadAll(persons1, p => p.Boss);
-		await dataLoader.LoadAllAsync(persons2, p => p.Boss, cancellationToken);
+		//	var parameter = Expression.Parameter(typeof(Person), "item");
+		//	Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
+		//	var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
 
-		// scénář 3: XyRepository.GetObjects()
-		personRepository.GetObjects(3, 4);
-		await personRepository.GetObjectsAsync([5, 6], cancellationToken);
+		//	// scénář 1: načítání kolekcí
+		//	Person person1 = personRepository.GetObject(1);
+		//	Person person2 = await personRepository.GetObjectAsync(4, cancellationToken);
+		//	Contract.Assert(person1.BossId == null);
+		//	Contract.Assert(person2.BossId == null);
+
+		//	dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		//	await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
+
+		//	// scénář 2: načítání referencí
+		//	List<Person> persons1 = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
+		//	List<Person> persons2 = await personRepository.GetObjectsAsync(Enumerable.Range(50000, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
+		//	dataLoader.LoadAll(persons1, p => p.Boss);
+		//	await dataLoader.LoadAllAsync(persons2, p => p.Boss, cancellationToken);
+
+		//	// scénář 3: XyRepository.GetObjects()
+		//	personRepository.GetObjects(3, 4);
+		//	await personRepository.GetObjectsAsync([5, 6], cancellationToken);
 	}
 
 }
-

@@ -220,6 +220,9 @@ public static class EnumerableExt
 	/// </summary>
 	/// <param name="source">Source data.</param>
 	/// <param name="size">Size of one segment (chunk). The smallest possible value is 1.</param>
+#if NET6_0_OR_GREATER
+	[Obsolete("Use the Chunk method instead of Chunkify. The Chunk method was introduced in LINQ with .NET 6.")]
+#endif
 	public static IEnumerable<T[]> Chunkify<T>(this IEnumerable<T> source, int size)
 	{
 		Contract.Requires<ArgumentNullException>(source != null, nameof(source));

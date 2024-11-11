@@ -69,16 +69,33 @@ public static class EnumerableExt
 	/// Unlike other methods, full outer join is evaluated immediately, results are not affected by changes 
 	/// in source data (leftSource, rightSource) after calling this method and before actual query evaluation (IEnumerable).
 	/// </summary>
-	public static IEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> leftSource,
-											 IEnumerable<TRight> rightSource,
-											 Func<TLeft, TKey> leftKeySelector,
-											 Func<TRight, TKey> rightKeySelector,
-											 Func<TLeft, TRight, TResult> resultSelector)
+	public static IEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TResult>(
+		this IEnumerable<TLeft> leftSource,
+		IEnumerable<TRight> rightSource,
+		Func<TLeft, TKey> leftKeySelector,
+		Func<TRight, TKey> rightKeySelector,
+		Func<TLeft, TRight, TResult> resultSelector)
 	{
-		var leftLookup = leftSource.ToLookup(leftKeySelector);
-		var rightLookup = rightSource.ToLookup(rightKeySelector);
+		return FullOuterJoin(leftSource, rightSource, leftKeySelector, rightKeySelector, resultSelector, EqualityComparer<TKey>.Default);
+	}
 
-		var keys = new HashSet<TKey>(leftLookup.Select(p => p.Key));
+	/// <summary>
+	/// Full outer join.
+	/// Unlike other methods, full outer join is evaluated immediately, results are not affected by changes 
+	/// in source data (leftSource, rightSource) after calling this method and before actual query evaluation (IEnumerable).
+	/// </summary>
+	public static IEnumerable<TResult> FullOuterJoin<TLeft, TRight, TKey, TResult>(
+		this IEnumerable<TLeft> leftSource,
+		IEnumerable<TRight> rightSource,
+		Func<TLeft, TKey> leftKeySelector,
+		Func<TRight, TKey> rightKeySelector,
+		Func<TLeft, TRight, TResult> resultSelector,
+		IEqualityComparer<TKey> equalityComparer)
+	{
+		var leftLookup = leftSource.ToLookup(leftKeySelector, equalityComparer);
+		var rightLookup = rightSource.ToLookup(rightKeySelector, equalityComparer);
+
+		var keys = new HashSet<TKey>(leftLookup.Select(p => p.Key), equalityComparer);
 		keys.UnionWith(rightLookup.Select(p => p.Key));
 
 		IEnumerable<TResult> result = from key in keys
@@ -86,7 +103,7 @@ public static class EnumerableExt
 									  from xRight in rightLookup[key].DefaultIfEmpty()
 									  select resultSelector(xLeft, xRight);
 
-		return result.ToList();
+		return result;
 	}
 
 	/// <summary>

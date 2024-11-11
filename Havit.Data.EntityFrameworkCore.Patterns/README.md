@@ -1,6 +1,6 @@
 ﻿HAVIT .NET Framework Extensions - Entity Framework Core Extensions
 
-# EF Core 8 to EF Core 9 Migration Guide
+## EF Core 8 to EF Core 9 Migration Guide
 
 * Aktualizovat nuget HFW balíčky a Microsoft balíčky na EF Core 9.
 * Aktualizovat dotnet tool Havit.Data.EntityFrameworkCore.CodeGenerator.Tool (`dotnet tool update Havit.Data.EntityFrameworkCore.CodeGenerator.Tool`).
@@ -8,13 +8,13 @@
 * Spustit generátor kódu.
 * Upravit Before Commit Processory (doplnění nové návratové hodnoty), jsou-li.
 * Upravit přetížení metod PerformAddForInsert/Update/Delete pro vlastní Unit Of Work, pokud je potřeba.
-* Upravit registraci služeb do dependency injection.
-    * Odstranit volání WithEntityPatterns
-	* Odstranit volání AddEntityPatterns
-	* K volání AddDbContext přidat generický parametr IDbContext
-	* K volání AddDbContext přidat do optionsBuilderu volání UseDefaultHavitConvetions()
-	* Nahradit volání AddDataLayer metodou AddDataLayerServices (odstranit argument s assembly)
-	* Doplnit volání AddDataSeeds, jsou-li použity.
+* Upravit registraci služeb do dependency injection:
+    * odstranit volání WithEntityPatterns,
+	* odstranit volání AddEntityPatterns,
+	* k volání AddDbContext přidat generický parametr IDbContext,
+	* k volání AddDbContext přidat do optionsBuilderu volání UseDefaultHavitConvetions(),
+	* nahradit volání AddDataLayer metodou AddDataLayerServices (odstranit argument s assembly),
+	* doplnit volání AddDataSeeds, jsou-li použity data seedy.
 * Metody AddLocalizationServices, AddLookupServices zůstávají beze změny. 
 
 ```csharp

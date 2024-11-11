@@ -14,7 +14,7 @@
 	* K volání AddDbContext přidat generický parametr IDbContext
 	* K volání AddDbContext přidat do optionsBuilderu volání UseDefaultHavitConvetions()
 	* Nahradit volání AddDataLayer metodou AddDataLayerServices (odstranit argument s assembly)
-	* Doplnit volání data seedů, jsou-li použity.
+	* Doplnit volání AddDataSeeds, jsou-li použity.
 * Metody AddLocalizationServices, AddLookupServices zůstávají beze změny. 
 
 ```csharp

@@ -1,6 +1,7 @@
 ﻿v2.9.0 (12.11.2024)
 • Aktualizace na EF Core 9
 
+
 Novinky, úpravy:
 • IUnitOfWork.Clear() pro vyčištění change trackeru (a samotného unit of worku)
 • DbUnitOfWork.Commit[Async] - omezeno snížení volání detekce změn ze 3 na 1 (občas na 2)
@@ -10,10 +11,11 @@ Novinky, úpravy:
 • Seedování dat nyní používá UnitOfWork, neobchází tak (čištění) cache, používá before commit processory, atp.
 • Seedování dat nyní izoluje jednotlivé seedy pomocí IUnitOfWork.Clear()
 • Seedování má možnost nově použít SeedAsync (nutné pro fungování asynchronních before commit procesorů)
-• DbDataLoader - lepší identifikace zdroje dotazu pomocí WithTag
+• DbDataLoader - lepší identifikace zdroje dotazu pomocí TagWith
 • Změna registrace do DI containeru (viz níže) [BREAKING CHANGE]
 • Spousta optimalizací alokací paměti a výkonu
 • Odstranění obsolete memberů [BREAKING CHANGE]
+
 
 Dependency Injection [BREAKING CHANGE]
 • Odstranění IEntityPatternInstaller, WithEntityPatternsInstaller, použito jen IServiceCollection
@@ -22,6 +24,7 @@ Dependency Injection [BREAKING CHANGE]
 • AddDataLayer - metoda nahrazena generovanou metodou AddDayaLayerServices
 • AddDataLayer/AddDayaLayerServices nově neregistruje data seedy a potřebuje explicitní registraci
 • ComponentRegistrationOptions již nemá DbUnitOfWorkType (vlastní unit of work lze zaregistrovat samostatně)
+
 
 Optimalizace:
 • DbUnitOfWork.Commit[Async] - optimalizace alokací paměti a využití reflexe v BeforeCommitProcessorech+EntityValidators

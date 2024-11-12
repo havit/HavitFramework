@@ -42,7 +42,7 @@ public static class Program
 			.Build();
 
 		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
-		//await SeedDatabaseAsync(host.Services, CancellationToken.None);
+		await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}
 

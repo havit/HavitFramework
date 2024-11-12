@@ -21,13 +21,21 @@ namespace Havit.Data.Entity.Patterns.DataSeeds;
 public class DbDataSeedPersister : IDataSeedPersister
 {
 	private readonly IDbContext dbContext;
-	
+
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public DbDataSeedPersister(IDbContext dbContext)
 	{
 		this.dbContext = dbContext;
+	}
+
+	/// <summary>
+	/// Nedělá nic.
+	/// </summary>
+	public void AttachDataSeed(IDataSeed dataSeed)
+	{
+		// NOOP
 	}
 
 	/// <summary>

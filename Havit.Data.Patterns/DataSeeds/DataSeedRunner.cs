@@ -324,6 +324,7 @@ public class DataSeedRunner : IDataSeedRunner
 	private void Seed(IDataSeed dataSeed)
 	{
 		IDataSeedPersister dataSeedPersister = _dataSeedPersisterFactory.CreateService();
+		dataSeedPersister.AttachDataSeed(dataSeed);
 		try
 		{
 			dataSeed.SeedData(dataSeedPersister);
@@ -352,6 +353,7 @@ public class DataSeedRunner : IDataSeedRunner
 		cancellationToken.ThrowIfCancellationRequested();
 
 		IDataSeedPersister dataSeedPersister = _dataSeedPersisterFactory.CreateService();
+		dataSeedPersister.AttachDataSeed(dataSeed);
 		try
 		{
 			dataSeed.SeedData(dataSeedPersister);

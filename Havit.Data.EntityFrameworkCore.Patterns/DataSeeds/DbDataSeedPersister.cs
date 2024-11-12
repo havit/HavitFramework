@@ -19,6 +19,8 @@ public class DbDataSeedPersister : IDataSeedPersister
 	private readonly IDbContext _dbContext;
 	private readonly IUnitOfWork _unitOfWork;
 
+	private string _queryTag;
+
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
@@ -26,6 +28,16 @@ public class DbDataSeedPersister : IDataSeedPersister
 	{
 		_dbContext = dbContext;
 		_unitOfWork = unitOfWork;
+	}
+
+	/// <summary>
+	/// Přijme informaci o dataSeedu, který bude seedovat data.	
+	/// </summary>
+	public void AttachDataSeed(IDataSeed dataSeed)
+	{
+		string dataSeedPersisterQueryTag = QueryTagBuilder.CreateTag(this.GetType(), null);
+		string dataSeedTypeName = dataSeed.GetType().FullName;
+		_queryTag = $"{dataSeedPersisterQueryTag} for {dataSeedTypeName}";
 	}
 
 	/// <summary>
@@ -57,7 +69,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	private IQueryable<TEntity> GetDbSetQueryable<TEntity>()
 		where TEntity : class
 	{
-		return _dbContext.Set<TEntity>().AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), null));
+		return _dbContext.Set<TEntity>().AsQueryable(_queryTag);
 	}
 
 	/// <summary>

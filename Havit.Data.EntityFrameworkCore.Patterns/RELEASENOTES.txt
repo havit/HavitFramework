@@ -11,10 +11,10 @@ Novinky, úpravy:
 • Seedování dat nyní používá UnitOfWork, neobchází tak (čištění) cache, používá before commit processory, atp.
 • Seedování dat nyní izoluje jednotlivé seedy pomocí IUnitOfWork.Clear()
 • Seedování má možnost nově použít SeedAsync (nutné pro fungování asynchronních before commit procesorů)
-• DbDataLoader - lepší identifikace zdroje dotazu pomocí TagWith
+• DbDataLoader, DbDataSeedPersister - lepší identifikace zdroje SQL dotazu pomocí TagWith
 • Změna registrace do DI containeru (viz níže) [BREAKING CHANGE]
-• Spousta optimalizací alokací paměti a výkonu
 • Odstranění obsolete memberů [BREAKING CHANGE]
+• Spousta optimalizací alokací paměti a výkonu
 
 
 Dependency Injection [BREAKING CHANGE]

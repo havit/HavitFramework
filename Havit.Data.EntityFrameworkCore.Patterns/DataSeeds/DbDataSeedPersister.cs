@@ -266,27 +266,21 @@ public class DbDataSeedPersister : IDataSeedPersister
 		// Jenže hloubka stromu může být maximálně okolo 1000 položek, jinak dostáváme při kompilaci dotazu StackOverflowException.
 		// Proto nyní stavíme z podmínek strom, jehož hloubka roste logaritmicky vůči počtu seedovaných položek.
 
-		return PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive(seedData, pairByExpressionsWithCompilations, 0, seedData.Length - 1, parameter);
+		// získáme expression pro každý jednotlivý item
+		Queue<Expression> queue = new Queue<Expression>(seedData.Select(seedDataItem => PairWithDbData_LoadDatabaseData_BuildWhereCondition_BuildItem(seedDataItem, pairByExpressionsWithCompilations, parameter)));
+
+		// postavíme nad expression strom
+		while (queue.Count > 1)
+		{
+			Expression expression1 = queue.Dequeue();
+			Expression expression2 = queue.Dequeue();
+			queue.Enqueue(Expression.OrElse(expression1, expression2));
+		}
+
+		return Expression.Lambda<Func<TEntity, bool>>(queue.Single(), parameter);
 	}
 
-	private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive<TEntity>(TEntity[] seedDataArray, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, int indexFrom, int indexTo, ParameterExpression parameter)
-		where TEntity : class
-	{
-		if (indexFrom == indexTo)
-		{
-			return PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive_BuildItem(seedDataArray[indexFrom], pairByExpressionsWithCompilations, parameter);
-		}
-		else
-		{
-			return (Expression<Func<TEntity, bool>>)Expression.Lambda(
-				Expression.OrElse(
-					PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive(seedDataArray, pairByExpressionsWithCompilations, indexFrom, (indexFrom + indexTo) / 2, parameter).Body,
-					PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive(seedDataArray, pairByExpressionsWithCompilations, ((indexFrom + indexTo) / 2) + 1, indexTo, parameter).Body
-				), parameter);
-		}
-	}
-
-	private Expression<Func<TEntity, bool>> PairWithDbData_LoadDatabaseData_BuildWhereCondition_Recursive_BuildItem<TEntity>(TEntity seedEntity, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, ParameterExpression parameter)
+	private Expression PairWithDbData_LoadDatabaseData_BuildWhereCondition_BuildItem<TEntity>(TEntity seedEntity, List<PairExpressionWithCompilation<TEntity>> pairByExpressionsWithCompilations, ParameterExpression parameter)
 		where TEntity : class
 	{
 		Expression seedEntityWhereExpression = null;
@@ -316,7 +310,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 			}
 		}
 
-		return (Expression<Func<TEntity, bool>>)Expression.Lambda(seedEntityWhereExpression, parameter);
+		return seedEntityWhereExpression;
 	}
 
 	/// <summary>

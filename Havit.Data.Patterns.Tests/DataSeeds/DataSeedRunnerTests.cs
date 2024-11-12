@@ -24,6 +24,8 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
+
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
 		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
@@ -49,6 +51,8 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
+
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
 		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
@@ -74,6 +78,7 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
@@ -100,6 +105,7 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
@@ -265,6 +271,7 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(() => new Task(() => { }));
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);
@@ -289,6 +296,7 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(() => Task.Delay(1));
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
+		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersisterMock.Object);

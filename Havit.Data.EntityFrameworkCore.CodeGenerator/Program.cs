@@ -25,7 +25,9 @@ public static class Program
 	// This is not a true entry point - it is not a console, but a class library (net x.0).
 	// Method is used in CodeGenerator.Tool via reflection!
 	// Environment is preconfigured by CodeGenerator.Tool (mainly AppDomain.CurrentDomain.AssemblyResolve).
-	public static void Main(string[] args)
+#pragma warning disable VSTHRD200 // Use "Async" suffix for async methods
+	public static Task Main(string[] args)
+#pragma warning restore VSTHRD200 // Use "Async" suffix for async methods
 	{
 		Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -43,7 +45,7 @@ public static class Program
 		Console.WriteLine($"Initializing DbContext...");
 		if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
 		{
-			return;
+			return Task.CompletedTask;
 		}
 
 		Console.WriteLine($"Generating code...");
@@ -90,6 +92,8 @@ public static class Program
 
 		stopwatch.Stop();
 		Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
+
+		return Task.CompletedTask;
 	}
 
 	private static bool TryGetDbContext(string entityAssemblyName, out DbContext dbContext)

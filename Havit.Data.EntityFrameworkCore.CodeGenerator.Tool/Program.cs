@@ -6,7 +6,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool;
 
 public class Program
 {
-	public static void Main(string[] args)
+	public static async Task Main(string[] args)
 	{
 		Console.WriteLine("HAVIT Entity Framework Core CodeGenerator Tool");
 		Console.WriteLine("----------------------------------------------");
@@ -108,7 +108,7 @@ public class Program
 		}
 
 		Console.WriteLine("Starting CodeGenerator...");
-		main.Invoke(null, new object[]
+		await (Task)main.Invoke(null, new object[]
 		{
 			new string[] { solutionDirectory.FullName, Path.GetFileNameWithoutExtension(applicationEntityAssemblyFileInfo.FullName) }
 		});

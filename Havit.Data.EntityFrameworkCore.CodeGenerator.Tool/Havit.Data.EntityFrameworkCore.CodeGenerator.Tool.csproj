@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>true</ImplicitUsings>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
@@ -10,7 +10,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.9.0-pre08</PackageVersion>
+		<PackageVersion>2.9.0-pre09</PackageVersion>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>efcodegenerator</ToolCommandName>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator (dotnet tool)</Description>

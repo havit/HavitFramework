@@ -21,14 +21,14 @@
 		<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.9.0-pre07</PackageVersion>
+		<PackageVersion>2.9.0-pre08</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.11.20">
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

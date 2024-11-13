@@ -10,23 +10,17 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.9.0-pre05</PackageVersion>
+		<PackageVersion>2.9.0-pre08</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
 	</PropertyGroup>
-	<ItemGroup>
-	  <Content Remove="C:\Users\Jirka\.nuget\packages\system.diagnostics.diagnosticsource\9.0.0-rc.2.24473.5\contentFiles\any\net8.0\ILLink\ILLink.Descriptors.LibraryBuild.xml" />
-	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.2.24474.1">
-			<!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[9.0.0,10)"><!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.11.20">
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.CodeDom" Version="9.0.0-rc.2.24473.5" />
-		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.0-rc.2.24473.5" />
 	</ItemGroup>
 
 	<ItemGroup>

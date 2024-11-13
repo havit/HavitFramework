@@ -10,8 +10,8 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 /// </summary>
 public class ModelExtensionMigrationOperationSqlGenerator : MigrationOperationSqlGenerator
 {
-	private readonly IModelExtensionAnnotationProvider modelExtensionAnnotationProvider;
-	private readonly IModelExtensionSqlResolver modelExtensionSqlResolver;
+	private readonly IModelExtensionAnnotationProvider _modelExtensionAnnotationProvider;
+	private readonly IModelExtensionSqlResolver _modelExtensionSqlResolver;
 
 	/// <summary>
 	/// Konstruktor.
@@ -20,8 +20,8 @@ public class ModelExtensionMigrationOperationSqlGenerator : MigrationOperationSq
 		IModelExtensionAnnotationProvider modelExtensionAnnotationProvider,
 		IModelExtensionSqlResolver modelExtensionSqlResolver)
 	{
-		this.modelExtensionAnnotationProvider = modelExtensionAnnotationProvider;
-		this.modelExtensionSqlResolver = modelExtensionSqlResolver;
+		this._modelExtensionAnnotationProvider = modelExtensionAnnotationProvider;
+		this._modelExtensionSqlResolver = modelExtensionSqlResolver;
 	}
 
 	/// <inheritdoc />
@@ -41,7 +41,7 @@ public class ModelExtensionMigrationOperationSqlGenerator : MigrationOperationSq
 
 	private Dictionary<string, Annotation> GetAnnotations(IEnumerable<Annotation> annotations)
 	{
-		return annotations.Where(a => modelExtensionAnnotationProvider.GetModelExtensions(new List<IAnnotation> { a }).Any())
+		return annotations.Where(a => _modelExtensionAnnotationProvider.GetModelExtensions(new List<IAnnotation> { a }).Any())
 			.ToDictionary(a => a.Name);
 	}
 
@@ -57,18 +57,18 @@ public class ModelExtensionMigrationOperationSqlGenerator : MigrationOperationSq
 
 	private void GenerateDropCommands(List<IAnnotation> oldAnnotations, MigrationCommandListBuilder builder)
 	{
-		List<IModelExtension> modelExtensions = modelExtensionAnnotationProvider.GetModelExtensions(oldAnnotations);
+		List<IModelExtension> modelExtensions = _modelExtensionAnnotationProvider.GetModelExtensions(oldAnnotations);
 
-		List<string> scripts = modelExtensionSqlResolver.ResolveDropSqlScripts(modelExtensions);
+		List<string> scripts = _modelExtensionSqlResolver.ResolveDropSqlScripts(modelExtensions);
 
 		GenerateSqlStatements(builder, scripts);
 	}
 
 	private void GenerateAlterCommands(List<IAnnotation> existingAnnotations, MigrationCommandListBuilder builder)
 	{
-		List<IModelExtension> modelExtensions = modelExtensionAnnotationProvider.GetModelExtensions(existingAnnotations);
+		List<IModelExtension> modelExtensions = _modelExtensionAnnotationProvider.GetModelExtensions(existingAnnotations);
 
-		List<string> scripts = modelExtensionSqlResolver.ResolveAlterSqlScripts(modelExtensions);
+		List<string> scripts = _modelExtensionSqlResolver.ResolveAlterSqlScripts(modelExtensions);
 
 		GenerateSqlStatements(builder, scripts);
 	}

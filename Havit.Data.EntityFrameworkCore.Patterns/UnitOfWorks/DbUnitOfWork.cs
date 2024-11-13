@@ -4,7 +4,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -15,17 +14,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 /// </summary>
 public class DbUnitOfWork : IUnitOfWork
 {
-	private readonly IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner;
-	private readonly IEntityValidationRunner entityValidationRunner;
-	private readonly ILookupDataInvalidationRunner lookupDataInvalidationRunner;
-	private List<Action> afterCommits = null;
+	private readonly IBeforeCommitProcessorsRunner _beforeCommitProcessorsRunner;
+	private readonly IEntityValidationRunner _entityValidationRunner;
+	private readonly ILookupDataInvalidationRunner _lookupDataInvalidationRunner;
 
-	private readonly HashSet<object> updateRegistrations = new HashSet<object>();
+	// internal: unit testy ověřují stav
+	internal List<Action> _afterCommits = null;
+	internal readonly HashSet<object> _updateRegistrations = new HashSet<object>();
 
 	/// <summary>
 	/// DbContext, nad kterým stojí Unit of Work.
 	/// </summary>
-	protected IDbContext DbContext { get; private set; }
+	protected internal IDbContext DbContext { get; private set; }
 
 	/// <summary>
 	/// SoftDeleteManager používaný v tomto Unit Of Worku.
@@ -47,16 +47,13 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	public DbUnitOfWork(IDbContext dbContext, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IEntityCacheDependencyManager entityCacheDependencyManager, IBeforeCommitProcessorsRunner beforeCommitProcessorsRunner, IEntityValidationRunner entityValidationRunner, ILookupDataInvalidationRunner lookupDataInvalidationRunner)
 	{
-		Contract.Requires<ArgumentNullException>(dbContext != null);
-		Contract.Requires<ArgumentNullException>(softDeleteManager != null);
-
 		DbContext = dbContext;
 		SoftDeleteManager = softDeleteManager;
 		EntityCacheManager = entityCacheManager;
 		EntityCacheDependencyManager = entityCacheDependencyManager;
-		this.beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
-		this.entityValidationRunner = entityValidationRunner;
-		this.lookupDataInvalidationRunner = lookupDataInvalidationRunner;
+		_beforeCommitProcessorsRunner = beforeCommitProcessorsRunner;
+		_entityValidationRunner = entityValidationRunner;
+		_lookupDataInvalidationRunner = lookupDataInvalidationRunner;
 	}
 
 	/// <summary>
@@ -65,17 +62,28 @@ public class DbUnitOfWork : IUnitOfWork
 	public void Commit()
 	{
 		BeforeCommit();
-		beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
 
-		Changes allKnownChanges = GetAllKnownChanges(); // práme se na změny znovu, runnery mohli seznam objektů k uložení změnit
-		entityValidationRunner.Validate(allKnownChanges);
+		Changes allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
+
+		// spuštění before commit processorů
+		ChangeTrackerImpact beforeCommitProcessorImpact = _beforeCommitProcessorsRunner.Run(allKnownChanges);
+
+		if (beforeCommitProcessorImpact == ChangeTrackerImpact.StateChanged)
+		{
+			// pokud nějaký BeforeCommitProcessor způsobil, že se změnil stav change trackeru (zejména zatrackována nová entity),
+			// aktualizujeme seznam známých změn.
+
+			allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
+		}
+
+		// validace entit před uložením
+		_entityValidationRunner.Validate(allKnownChanges);
+
+		// příprava invalidace cache
 		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
 
-		DbContext.SaveChanges();
-
-		ClearRegistrationHashSets();
-		cacheInvalidationOperation?.Invalidate();
-		lookupDataInvalidationRunner.Invalidate(allKnownChanges);
+		DbContext.SaveChanges(suppressDetectChanges: true); // change tracker byl zavolán a nepotřebujeme jej volat znovu
+		Commit_AfterSaveChanges(allKnownChanges, cacheInvalidationOperation);
 
 		AfterCommit();
 	}
@@ -86,20 +94,37 @@ public class DbUnitOfWork : IUnitOfWork
 	public async Task CommitAsync(CancellationToken cancellationToken = default)
 	{
 		BeforeCommit();
-		beforeCommitProcessorsRunner.Run(GetAllKnownChanges());
-		cancellationToken.ThrowIfCancellationRequested();
 
-		Changes allKnownChanges = GetAllKnownChanges(); // ptáme se na změny znovu, runnery mohli seznam objektů k uložení změnit
-		entityValidationRunner.Validate(allKnownChanges);
+		Changes allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
+
+		// spuštění before commit processorů
+		ChangeTrackerImpact beforeCommitProcessorImpact = await _beforeCommitProcessorsRunner.RunAsync(allKnownChanges, cancellationToken).ConfigureAwait(false);
+
+		if (beforeCommitProcessorImpact == ChangeTrackerImpact.StateChanged)
+		{
+			// pokud nějaký BeforeCommitProcessor způsobil, že se změnil stav change trackeru (zejména zatrackována nová entity),
+			// aktualizujeme seznam známých změn.
+
+			allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
+		}
+
+		// validace entit před uložením
+		_entityValidationRunner.Validate(allKnownChanges);
+
+		// příprava invalidace cache
 		CacheInvalidationOperation cacheInvalidationOperation = PrepareCacheInvalidation(allKnownChanges);
 
-		await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-		ClearRegistrationHashSets();
-		cacheInvalidationOperation?.Invalidate();
-		lookupDataInvalidationRunner.Invalidate(allKnownChanges);
+		await DbContext.SaveChangesAsync(suppressDetectChanges: true, cancellationToken: cancellationToken).ConfigureAwait(false); // change tracker byl zavolán a nepotřebujeme jej volat znovu
+		Commit_AfterSaveChanges(allKnownChanges, cacheInvalidationOperation);
 
 		AfterCommit();
+	}
+
+	private void Commit_AfterSaveChanges(Changes allKnownChanges, CacheInvalidationOperation cacheInvalidationOperation)
+	{
+		ClearRegistrationHashSets();
+		cacheInvalidationOperation?.Invalidate();
+		_lookupDataInvalidationRunner.Invalidate(allKnownChanges);
 	}
 
 	/// <summary>
@@ -112,7 +137,7 @@ public class DbUnitOfWork : IUnitOfWork
 
 	private void ClearRegistrationHashSets()
 	{
-		updateRegistrations.Clear();
+		_updateRegistrations.Clear();
 	}
 
 	/// <summary>
@@ -121,10 +146,10 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	protected internal virtual void AfterCommit()
 	{
-		List<Action> registeredAfterCommitActiond = afterCommits;
+		List<Action> registeredAfterCommitActiond = _afterCommits;
 		// Neprve vyčistíme afterCommits, pak je teprve spustíme.
 		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
-		afterCommits = null;
+		_afterCommits = null;
 		registeredAfterCommitActiond?.ForEach(item => item.Invoke());
 	}
 
@@ -134,11 +159,12 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	public void RegisterAfterCommitAction(Action action)
 	{
-		if (afterCommits == null)
+		ArgumentNullException.ThrowIfNull(action);
+		if (_afterCommits == null)
 		{
-			afterCommits = new List<Action>();
+			_afterCommits = new List<Action>();
 		}
-		afterCommits.Add(action);
+		_afterCommits.Add(action);
 	}
 
 	/// <summary>
@@ -158,10 +184,9 @@ public class DbUnitOfWork : IUnitOfWork
 		// Abychom umožnili kompenzaci konfliktu na entitě ve stavu Modified, potřebujeme také aby entita zmizela z kolekce updateRegistrations.
 		// Tím se pro ni přestanou volat BeforeCommitProcessory.
 
-		var modifiedEntities = entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity).ToArray();
 		// Entity, o kterých již víme, že jsou ve stavu Modified, odebereme z kolekce updateRegistrations, protože víme, že se nám v běžném kódu budou stále vracet z changetrackeru dle předchozího řádku.
 		// Zároveň tak zajistíme, že updateRegistrations nemají žádný průnik s entityEntries (.Entry) a tak můžeme níže bezpečně použít Concat bez rizika vzniku duplicit.
-		updateRegistrations.ExceptWith(modifiedEntities);
+		_updateRegistrations.ExceptWith(entityEntries.Where(item => item.State == EntityState.Modified).Select(entry => entry.Entity));
 
 		var changesFromEntries = entityEntries.Select(entry => new EntityChange
 		{
@@ -172,7 +197,7 @@ public class DbUnitOfWork : IUnitOfWork
 			Entity = entry.Entity,
 		});
 
-		var changesFromUpdateRegistrations = updateRegistrations.Select(item => new EntityChange()
+		var changesFromUpdateRegistrations = _updateRegistrations.Select(item => new EntityChange()
 		{
 			ChangeType = ChangeType.Update,
 			ClrType = item.GetType(),
@@ -181,7 +206,7 @@ public class DbUnitOfWork : IUnitOfWork
 			Entity = item
 		});
 
-		return new Changes(changesFromEntries.Concat(changesFromUpdateRegistrations));
+		return new Changes(changesFromEntries.Concat(changesFromUpdateRegistrations).Cast<Change>().ToList());
 	}
 
 	/// <summary>
@@ -190,7 +215,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForInsert<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+		ArgumentNullException.ThrowIfNull(entity);
 		PerformAddForInsert(entity);
 	}
 
@@ -200,7 +225,8 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		PerformAddForInsert<TEntity>(entities.ToArray());
+		ArgumentNullException.ThrowIfNull(entities);
+		PerformAddRangeForInsert(entities);
 	}
 
 	/// <summary>
@@ -209,7 +235,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForUpdate<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+		ArgumentNullException.ThrowIfNull(entity);
 		PerformAddForUpdate(entity);
 	}
 
@@ -219,7 +245,8 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		PerformAddForUpdate<TEntity>(entities.ToArray());
+		ArgumentNullException.ThrowIfNull(entities);
+		PerformAddRangeForUpdate(entities);
 	}
 
 	/// <summary>
@@ -229,7 +256,7 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddForDelete<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		Contract.Requires<ArgumentNullException>(entity != null, nameof(entity));
+		ArgumentNullException.ThrowIfNull(entity);
 		PerformAddForDelete(entity);
 	}
 
@@ -240,37 +267,86 @@ public class DbUnitOfWork : IUnitOfWork
 	public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		PerformAddForDelete<TEntity>(entities.ToArray());
+		ArgumentNullException.ThrowIfNull(entities);
+		PerformAddRangeForDelete(entities);
+	}
+
+	/// <summary>
+	/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
+	/// </summary>
+	protected virtual void PerformAddForInsert<TEntity>(TEntity entity)
+		where TEntity : class
+	{
+		DbContext.Set<TEntity>().Add(entity);
 	}
 
 	/// <summary>
 	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 	/// </summary>
-	protected virtual void PerformAddForInsert<TEntity>(params TEntity[] entities)
+	protected virtual void PerformAddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		if (entities.Length > 0)
+		DbContext.Set<TEntity>().AddRange(entities);
+	}
+
+	/// <summary>
+	/// Zajistí vložení objektu jako změněného objektu (při uložen bude změněn).
+	/// </summary>
+	protected virtual void PerformAddForUpdate<TEntity>(TEntity entity)
+		where TEntity : class
+	{
+		// z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker
+		if (DbContext.GetEntityState(entity) == EntityState.Detached)
 		{
-			DbContext.Set<TEntity>().AddRange(entities);
+			DbContext.Set<TEntity>().Update(entity);
+		}
+		else
+		{
+			_updateRegistrations.Add(entity);
 		}
 	}
 
 	/// <summary>
 	/// Zajistí vložení objektů jako změněné objekty (při uložení budou změněny).
 	/// </summary>
-	protected virtual void PerformAddForUpdate<TEntity>(params TEntity[] entities)
+	protected virtual void PerformAddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		if (entities.Length > 0)
+		// Registrace na DbSetu pro Update označí entity za modifikované a budou uložené celé bez ohledu na to, zda se na nich skutečně něco změnilo.
+		// Proto implementujeme tak, že netrackované entity zaregistrujeme jako změněné.
+		// Trackované entity z pohledu DbSetu neřešíme (a předpokládáme, že svou práci provede change tracker),
+		// pouze si je zapíšeme mezi updateRegistrations (aby se na něj při uložení volal BeforeCommitProcessor).
+		// Vzhledem k tomu, že vše chceme realizovat v rámci jednoho průchodu entit, zapisujeme si entity do updateRegistrations
+		// v rámci iterování entit (v rámci volání Where).
+
+		// Z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker.
+		DbContext.Set<TEntity>().UpdateRange(entities
+			.Where(entity =>
+			{
+				bool isDetached = DbContext.GetEntityState(entity) == EntityState.Detached;
+				if (!isDetached)
+				{
+					_updateRegistrations.Add(entity);
+				}
+				return isDetached;
+			}));
+	}
+
+	/// <summary>
+	/// Zajistí odstranění objektu (při uložení bude smazán).
+	/// Objekty podporující mazání příznakem budou smazány příznakem - bude jim nastaven příznak smazání a bude nad nimi zavoláno PerformAddForUpdate.
+	/// </summary>
+	protected virtual void PerformAddForDelete<TEntity>(TEntity entity)
+		where TEntity : class
+	{
+		if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 		{
-			// registrace na DbSetu pro Update označí entity za modifikované a budou uložené celé bez ohledu na to, zda se na nich skutečně něco změnilo
-			// proto implementujeme tak, že trackované entity neřešíme (a předpokládáme, že svou práci provede change tracker)
-			// netrackované entity zaregistrujeme jako změněné
-
-			// z výkonových důvodů se očekává, že volaná metoda GetEntityState nevolá change tracker
-
-			DbContext.Set<TEntity>().UpdateRange(entities.Where(entity => DbContext.GetEntityState(entity) == EntityState.Detached).ToArray());
-			updateRegistrations.UnionWith(entities);
+			SoftDeleteManager.SetDeleted<TEntity>(entity);
+			PerformAddForUpdate(entity);
+		}
+		else
+		{
+			DbContext.Set<TEntity>().Remove(entity);
 		}
 	}
 
@@ -278,23 +354,37 @@ public class DbUnitOfWork : IUnitOfWork
 	/// Zajistí odstranění objektů (při uložení budou smazány).
 	/// Objekty podporující mazání příznakem budou smazány příznakem - bude jim nastaven příznak smazání a bude nad nimi zavoláno PerformAddForUpdate.
 	/// </summary>
-	protected virtual void PerformAddForDelete<TEntity>(params TEntity[] entities)
+	protected virtual void PerformAddRangeForDelete<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
-		if (entities.Length > 0)
+		if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
 		{
-			if (SoftDeleteManager.IsSoftDeleteSupported<TEntity>())
+			// Pokud jde o list, můžeme levně projít seznam a následně zavolat PerformAddForUpdate, nevadí nám dva průchody.
+			if (entities is IList<TEntity> entitiesList)
 			{
-				foreach (TEntity entity in entities)
+				for (int i = 0; i < entitiesList.Count; i++)
 				{
-					SoftDeleteManager.SetDeleted<TEntity>(entity);
+					SoftDeleteManager.SetDeleted<TEntity>(entitiesList[i]);
 				}
-				PerformAddForUpdate(entities);
+				PerformAddRangeForUpdate(entitiesList);
 			}
 			else
 			{
-				DbContext.Set<TEntity>().RemoveRange(entities);
+				// Chceme 
+				// a) zavolat nad entitou SoftDeleteManager.SetDeleted
+				// b) včechny entity předat PerformAddForUpdate
+				// a to v jednom průchodu.				
+				// Abychom zajistili jediný průchod, nad entitami voláme SoftDeleteManager.SetDeleted v rámci jejich iterování.
+				PerformAddRangeForUpdate(entities.Select(entity =>
+				{
+					SoftDeleteManager.SetDeleted<TEntity>(entity);
+					return entity;
+				}));
 			}
+		}
+		else
+		{
+			DbContext.Set<TEntity>().RemoveRange(entities);
 		}
 	}
 
@@ -313,5 +403,15 @@ public class DbUnitOfWork : IUnitOfWork
 					prepareToInvalidate2?.Invalidate();
 				})
 			: null;
+	}
+
+	/// <summary>
+	/// Vyčistí registrace objektů, after commit actions, atp. (vč. podkladového DbContextu a jeho changetrackeru).
+	/// </summary>	
+	public void Clear()
+	{
+		ClearRegistrationHashSets();
+		_afterCommits = null;
+		DbContext.ChangeTracker.Clear();
 	}
 }

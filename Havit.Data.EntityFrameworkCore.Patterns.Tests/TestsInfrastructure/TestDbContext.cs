@@ -30,9 +30,10 @@ public class TestDbContext : DbContext
 	{
 		base.CustomizeModelCreating(modelBuilder);
 
-		modelBuilder.Entity(typeof(ItemWithDeleted));
-		modelBuilder.Entity(typeof(ItemWithNullableProperty));
-		modelBuilder.Entity(typeof(Language));
-		modelBuilder.Entity(typeof(ManyToMany)).HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
+		modelBuilder.Entity<ItemWithDeleted>();
+		modelBuilder.Entity<ItemWithNullableProperty>();
+		modelBuilder.Entity<Language>();
+		modelBuilder.Entity<Employee>().HasMany(e => e.Subordinates).WithOne(e => e.Boss).HasForeignKey(e => e.BossId);
+		modelBuilder.Entity<ManyToMany>().HasKey(nameof(ManyToMany.LanguageId), nameof(ManyToMany.ItemWithDeletedId));
 	}
 }

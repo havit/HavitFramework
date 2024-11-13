@@ -24,7 +24,6 @@ public class ComponentRegistrationOptions
 	/// </summary>
 	internal ComponentRegistrationOptions()
 	{
-		UnitOfWorkType = typeof(DbUnitOfWork);
 		CachingInstaller = new DefaultCachingInstaller();
 	}
 

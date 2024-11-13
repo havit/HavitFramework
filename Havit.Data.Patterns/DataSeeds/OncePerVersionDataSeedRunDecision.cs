@@ -8,14 +8,14 @@ namespace Havit.Data.Patterns.DataSeeds;
 /// </summary>
 public class OncePerVersionDataSeedRunDecision : IDataSeedRunDecision
 {
-	private readonly IDataSeedRunDecisionStatePersister dataSeedRunDecisionStatePersister;
+	private readonly IDataSeedRunDecisionStatePersister _dataSeedRunDecisionStatePersister;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public OncePerVersionDataSeedRunDecision(IDataSeedRunDecisionStatePersister dataSeedRunDecisionStatePersister)
 	{
-		this.dataSeedRunDecisionStatePersister = dataSeedRunDecisionStatePersister;
+		this._dataSeedRunDecisionStatePersister = dataSeedRunDecisionStatePersister;
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public class OncePerVersionDataSeedRunDecision : IDataSeedRunDecision
 	/// </summary>
 	public bool ShouldSeedData(IDataSeedProfile profile, List<Type> dataSeedTypes)
 	{
-		return GetState(dataSeedTypes) != dataSeedRunDecisionStatePersister.ReadCurrentState(profile.ProfileName);
+		return GetState(dataSeedTypes) != _dataSeedRunDecisionStatePersister.ReadCurrentState(profile.ProfileName);
 	}
 
 	/// <summary>
@@ -40,6 +40,6 @@ public class OncePerVersionDataSeedRunDecision : IDataSeedRunDecision
 	/// </summary>
 	public void SeedDataCompleted(IDataSeedProfile profile, List<Type> dataSeedTypes)
 	{
-		dataSeedRunDecisionStatePersister.WriteCurrentState(profile.ProfileName, GetState(dataSeedTypes));
+		_dataSeedRunDecisionStatePersister.WriteCurrentState(profile.ProfileName, GetState(dataSeedTypes));
 	}
 }

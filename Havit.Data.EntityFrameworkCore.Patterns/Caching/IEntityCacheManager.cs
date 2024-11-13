@@ -14,6 +14,12 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 public interface IEntityCacheManager
 {
 	/// <summary>
+	/// Vrací true, pokud může být entita daného typu cachována.
+	/// Použito před vyhledáváním entity v cache - jinými slovy, to, zda má vůbec význam hledat v cache, se dozvíme z této metody.
+	/// </summary>
+	bool ShouldCacheEntityType<TEntity>();
+
+	/// <summary>
 	/// Pokusí se vrátit z cache entitu daného typu s daným klíčem. Pokud je entita v cache nalezena a vrácena, vrací true. Jinak false.
 	/// </summary>
 	bool TryGetEntity<TEntity>(object key, out TEntity entity)
@@ -24,6 +30,11 @@ public interface IEntityCacheManager
 	/// </summary>
 	void StoreEntity<TEntity>(TEntity entity)
 		where TEntity : class;
+
+	/// <summary>
+	/// Vrací true, pokud půže být daná kolekce dané entity cachována.
+	/// </summary>
+	bool ShouldCacheEntityTypeNavigation<TEntity>(string propertyName);
 
 	/// <summary>
 	/// Pokusí se z cache načíst kolekci nebo one-to-one "back-referenci" dané entity. Pokud je kolekce nebo one-to-one vlastnost entity v cache nalezena a vrácena, vrací true. Jinak false. 
@@ -46,9 +57,10 @@ public interface IEntityCacheManager
 		where TEntity : class;
 
 	/// <summary>
-	/// Uloží do cache objekt reprezentující klíče všech entity (pro metodu GetAll).
+	/// Uloží do cache objekt reprezentující klíče všech entity (pro metodu GetAll).	
 	/// </summary>
-	void StoreAllKeys<TEntity>(object keys)
+	/// <param name="keysFunc">Funkce vracející klíče. Je zavolána (a memory alokace tedy udělána) pouze, pokud má dojít k uložení klíčů do cache.</param>
+	void StoreAllKeys<TEntity>(Func<object> keysFunc)
 		where TEntity : class;
 
 	/// <summary>
@@ -56,4 +68,8 @@ public interface IEntityCacheManager
 	/// </summary>
 	CacheInvalidationOperation PrepareCacheInvalidation(Changes changes);
 
+	/// <summary>
+	/// Odstraní všechny entity (a data související s nimi, např. navigace, atp.) z cache.
+	/// </summary>
+	void InvalidateAll();
 }

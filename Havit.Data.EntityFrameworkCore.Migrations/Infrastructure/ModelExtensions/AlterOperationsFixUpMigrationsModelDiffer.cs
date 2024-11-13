@@ -23,12 +23,14 @@ public class AlterOperationsFixUpMigrationsModelDiffer : MigrationsModelDiffer
 	public AlterOperationsFixUpMigrationsModelDiffer(
 		IRelationalTypeMappingSource typeMappingSource,
 		IMigrationsAnnotationProvider migrationsAnnotationProvider,
+		IRelationalAnnotationProvider relationalAnnotationProvider,
 		IRowIdentityMapFactory rowIdentityMapFactory,
 		CommandBatchPreparerDependencies commandBatchPreparerDependencies)
 		: base(typeMappingSource,
-		migrationsAnnotationProvider,
-		rowIdentityMapFactory,
-		commandBatchPreparerDependencies)
+			migrationsAnnotationProvider,
+			relationalAnnotationProvider,
+			rowIdentityMapFactory,
+			commandBatchPreparerDependencies)
 	{
 	}
 

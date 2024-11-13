@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using Havit.Threading;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 

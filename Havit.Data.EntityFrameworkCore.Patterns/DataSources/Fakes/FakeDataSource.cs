@@ -1,6 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
-using Havit.Diagnostics.Contracts;
 using Havit.Services.TimeServices;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
@@ -10,25 +9,25 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 /// </summary>
 public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 {
-	private readonly ISoftDeleteManager softDeleteManager;
-	private readonly TEntity[] data;
+	private readonly ISoftDeleteManager _softDeleteManager;
+	private readonly TEntity[] _data;
 
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> Data => new FakeAsyncEnumerable<TEntity>(data.AsQueryable().WhereNotDeleted(softDeleteManager).ToList());
+	public virtual IQueryable<TEntity> Data => DataIncludingDeleted.WhereNotDeleted(_softDeleteManager);
 
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> DataIncludingDeleted => new FakeAsyncEnumerable<TEntity>(data);
+	public virtual IQueryable<TEntity> DataIncludingDeleted => new MockQueryable.EntityFrameworkCore.TestAsyncEnumerableEfCore<TEntity>(_data);
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	protected FakeDataSource(params TEntity[] data)
-		: this(data.AsEnumerable(), null)
+		: this(data, null)
 	{
 	}
 
@@ -38,10 +37,15 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	/// <param name="softDeleteManager">Pro podporu mazání příznakem.</param>
 	protected FakeDataSource(IEnumerable<TEntity> data, ISoftDeleteManager softDeleteManager = null)
+		: this(data.ToArray(), null)
 	{
-		this.softDeleteManager = softDeleteManager ?? new SoftDeleteManager(new ServerTimeService());
-		Contract.Requires(data != null);
+	}
 
-		this.data = data.ToArray();
+	private FakeDataSource(TEntity[] data, ISoftDeleteManager softDeleteManager = null)
+	{
+		ArgumentNullException.ThrowIfNull(data);
+
+		_softDeleteManager = softDeleteManager ?? new SoftDeleteManager(new ServerTimeService());
+		_data = data.ToArray();
 	}
 }

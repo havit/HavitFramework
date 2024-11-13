@@ -14,12 +14,12 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.8.4</PackageVersion>
+		<PackageVersion>2.9.0-pre08</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.6,9)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[9.0.0,10)" />
 	</ItemGroup>
 
 	<ItemGroup>

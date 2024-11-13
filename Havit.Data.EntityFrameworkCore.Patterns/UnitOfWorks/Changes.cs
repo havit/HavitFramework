@@ -1,52 +1,33 @@
-﻿using System.Collections;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 
 /// <summary>
 /// Změny objektů v UnitOfWork.
 /// </summary>
-public class Changes : IEnumerable<Change>
+public class Changes
 {
-	private List<Change> changes;
+	/// <summary>
+	/// Seznam změn.
+	/// </summary>
+	/// <remarks>Oproti dřívější implementaci, kdy Changes samotné bylo IEnumerable, se takto v toolingu lépe hledají enumerace změn.</remarks>
+	public List<Change> Items { get; }
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public Changes(IEnumerable<Change> changes)
+	public Changes(List<Change> items)
 	{
-		this.changes = changes.ToList();
+		Items = items.ToList();
 	}
 
 	/// <summary>
-	/// Registrované objekty pro Insert. Pro zpětnou kompatibilitu.
+	/// Seznam změn seskupený podle CLR typu.
+	/// Záznamy s CLR typem null nejsou obsaženy.
 	/// </summary>
-	[Obsolete("Changes samotné je nyní IEnumerable<Change>, obsahuje nejen entity, ale i informace k nim.")]
-	public object[] Inserts => this.Where(item => item.ChangeType == ChangeType.Insert).Select(item => item.Entity).ToArray();
-
-	/// <summary>
-	/// Registrované objekty pro Update. Pro zpětnou kompatibilitu.
-	/// </summary>
-	[Obsolete("Changes samotné je nyní IEnumerable<Change>, obsahuje nejen entity, ale i informace k nim.")]
-	public object[] Updates => this.Where(item => item.ChangeType == ChangeType.Update).Select(item => item.Entity).ToArray();
-
-	/// <summary>
-	/// Registrované objekty pro Delete. Pro zpětnou kompatibilitu.
-	/// </summary>
-	[Obsolete("Changes samotné je nyní IEnumerable<Change>, obsahuje nejen entity, ale i informace k nim.")]
-	public object[] Deletes => this.Where(item => item.ChangeType == ChangeType.Delete).Select(item => item.Entity).ToArray();
-
-	/// <summary>
-	/// Vrátí všechny změněné objekty (bez ohledu na způsob změny).
-	/// Pro zpětnou kompatibilitu.
-	/// </summary>
-	[Obsolete("Changes samotné je nyní IEnumerable<Change>, obsahuje nejen entity, ale i informace k nim.")]
-	public object[] GetAllChanges()
+	public ILookup<Type, Change> GetChangesByClrType()
 	{
-		return this.Select(item => item.Entity).ToArray();
+		return _itemsGroupByClrType ??= Items
+			.Where(change => change.ClrType != null)
+			.ToLookup(change => change.ClrType);
 	}
-
-	#region IEnumerable<Change> implementation
-	IEnumerator<Change> IEnumerable<Change>.GetEnumerator() => changes.GetEnumerator();
-	IEnumerator IEnumerable.GetEnumerator() => changes.GetEnumerator();
-	#endregion
+	private ILookup<Type, Change> _itemsGroupByClrType;
 }

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations;
@@ -17,10 +16,13 @@ public static class MigrationExtensions
 	/// <param name="sqlResourceAssembly">Assembly, ve které je hledán resource.</param>
 	public static void SqlResource(this MigrationBuilder migrationBuilder, string resourceName, Assembly sqlResourceAssembly)
 	{
-		Contract.Requires<ArgumentNullException>(resourceName != null);
+		ArgumentNullException.ThrowIfNull(resourceName);
 
 		using var stream = sqlResourceAssembly.GetManifestResourceStream(resourceName);
-		Contract.Assert<ArgumentException>(stream != null, $"Resource name '{resourceName}' does not exist");
+		if (stream == null)
+		{
+			throw new ArgumentException($"Resource name '{resourceName}' does not exist");
+		}
 
 		string sql;
 		using (var textStream = new StreamReader(stream))

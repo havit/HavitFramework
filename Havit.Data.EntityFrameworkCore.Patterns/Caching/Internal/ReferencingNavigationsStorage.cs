@@ -10,5 +10,5 @@ public class ReferencingNavigationsStorage : IReferencingNavigationsStorage
 	/// <summary>
 	/// Seznam kolekcí referencující danou entitu.
 	/// </summary>
-	public Dictionary<IEntityType, List<ReferencingNavigation>> Value { get; set; }
+	public required FrozenDictionary<IEntityType, List<ReferencingNavigation>> Value { get; init; }
 }

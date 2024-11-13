@@ -10,5 +10,5 @@ public interface IAnnotationsEntityCacheOptionsGeneratorStorage
 	/// <summary>
 	/// Úložiště CacheOptions k jednotlivým entitám
 	/// </summary>
-	Dictionary<Type, CacheOptions> Value { get; set; }
+	FrozenDictionary<Type, CacheOptions> Value { get; }
 }

@@ -39,26 +39,6 @@ public interface IDbSet<TEntity>
 	void Add(TEntity entity);
 
 	/// <summary>
-	///     Begins tracking the given entity, and any other reachable entities that are
-	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
-	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
-	/// </summary>
-	/// <remarks>
-	///     <para>
-	///         This method is async only to allow special value generators, such as the one used by
-	///         'Microsoft.EntityFrameworkCore.Metadata.SqlServerValueGenerationStrategy.SequenceHiLo',
-	///         to access the database asynchronously. For all other cases the non async method should be used.
-	///     </para>
-	///     <para>
-	///         Use <see cref="EntityEntry.State" /> to set the state of only a single entity.
-	///     </para>
-	///     <para>
-	///         See <see href="https://aka.ms/efcore-docs-change-tracking">EF Core change tracking</see> for more information and examples.
-	///     </para>
-	/// </remarks>
-	public ValueTask AddAsync(TEntity entity, CancellationToken cancellationToken = default);
-
-	/// <summary>
 	///     Begins tracking the given entities, and any other reachable entities that are
 	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
 	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
@@ -68,26 +48,8 @@ public interface IDbSet<TEntity>
 	///     and <see href="https://aka.ms/efcore-docs-attach-range">Using AddRange, UpdateRange, AttachRange, and RemoveRange</see>
 	///     for more information and examples.
 	/// </remarks>
-	void AddRange(TEntity[] entities);
-
-	/// <summary>
-	///     Begins tracking the given entities, and any other reachable entities that are
-	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
-	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
-	/// </summary>
-	/// <remarks>
-	///     <para>
-	///         This method is async only to allow special value generators, such as the one used by
-	///         'Microsoft.EntityFrameworkCore.Metadata.SqlServerValueGenerationStrategy.SequenceHiLo',
-	///         to access the database asynchronously. For all other cases the non async method should be used.
-	///     </para>
-	///     <para>
-	///         See <see href="https://aka.ms/efcore-docs-change-tracking">EF Core change tracking</see>
-	///         and <see href="https://aka.ms/efcore-docs-attach-range">Using AddRange, UpdateRange, AttachRange, and RemoveRange</see>
-	///         for more information and examples.
-	///     </para>
-	/// </remarks>
-	public Task AddRangeAsync(TEntity[] entities, CancellationToken cancellationToken = default);
+	/// <param name="entities">The entities to add.</param>
+	void AddRange(IEnumerable<TEntity> entities);
 
 	/// <summary>
 	///     Begins tracking the given entity and entries reachable from the given entity using
@@ -157,7 +119,8 @@ public interface IDbSet<TEntity>
 	///         for more information and examples.
 	///     </para>
 	/// </remarks>
-	void UpdateRange(TEntity[] entities);
+	/// <param name="entities">The entities to update.</param>	
+	void UpdateRange(IEnumerable<TEntity> entities);
 
 	/// <summary>
 	///     Begins tracking the given entity in the <see cref="EntityState.Deleted" /> state such that it will
@@ -195,7 +158,7 @@ public interface IDbSet<TEntity>
 	///     </para>
 	///     <para>
 	///         Any other reachable entities that are not already being tracked will be tracked in the same way that
-	///         they would be if <see cref="AttachRange(TEntity[])" /> was called before calling this method.
+	///         they would be if <see cref="AttachRange(IEnumerable{TEntity})" /> was called before calling this method.
 	///         This allows any cascading actions to be applied when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
 	///     </para>
 	///     <para>
@@ -205,7 +168,7 @@ public interface IDbSet<TEntity>
 	///     </para>
 	/// </remarks>
 	/// <param name="entities">The entities to remove.</param>
-	void RemoveRange(TEntity[] entities);
+	void RemoveRange(IEnumerable<TEntity> entities);
 
 	/// <summary>
 	///     Begins tracking the given entity and entries reachable from the given entity using
@@ -275,5 +238,6 @@ public interface IDbSet<TEntity>
 	///         for more information and examples.
 	///     </para>
 	/// </remarks>
-	void AttachRange(TEntity[] entities);
+	/// <param name="entities">The entities to attach.</param>
+	void AttachRange(IEnumerable<TEntity> entities);
 }

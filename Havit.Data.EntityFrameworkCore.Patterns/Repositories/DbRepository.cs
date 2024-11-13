@@ -5,8 +5,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
-using Havit.Diagnostics.Contracts;
-using Havit.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
@@ -22,6 +20,9 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	private readonly IDbContext dbContext;
 	private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
 	private readonly IRepositoryQueryProvider repositoryQueryProvider;
+
+	private List<TEntity> _all;
+	private bool? _isEntityCachable;
 
 	/// <summary>
 	/// DataLoader pro případné využití v implementaci potomků.
@@ -69,9 +70,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// </summary>
 	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
 	{
-		Contract.Requires<ArgumentException>(dbContext != null);
-		Contract.Requires<ArgumentException>(softDeleteManager != null);
-
 		this.dbContext = dbContext;
 		this.entityKeyAccessor = entityKeyAccessor;
 		this.dataLoader = dataLoader;
@@ -88,13 +86,13 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 	public TEntity GetObject(int id)
 	{
-		Contract.Requires<ArgumentException>(id != default(int));
+		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 		// hledáme v identity mapě
 		TEntity result = DbSet.FindTracked(id);
 
-		// není v identity mapě, hledáme v cache
-		if (result == null)
+		// není v identity mapě, hledáme v cache		
+		if ((result == null) && IsEntityCachable())
 		{
 			EntityCacheManager.TryGetEntity<TEntity>(id, out result);
 		}
@@ -117,7 +115,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			ThrowObjectNotFoundException(id);
 		}
 
-		LoadReferences(new TEntity[] { result });
+		LoadReferences([result]);
 		return result;
 	}
 
@@ -128,12 +126,12 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
 	public async Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentException>(id != default(int));
+		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 		TEntity result = DbSet.FindTracked(id);
 
 		// není v identity mapě, hledáme v cache
-		if (result == null)
+		if ((result == null) && IsEntityCachable())
 		{
 			EntityCacheManager.TryGetEntity<TEntity>(id, out result);
 		}
@@ -156,7 +154,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			ThrowObjectNotFoundException(id);
 		}
 
-		await LoadReferencesAsync(new TEntity[] { result }, cancellationToken).ConfigureAwait(false);
+		await LoadReferencesAsync([result], cancellationToken).ConfigureAwait(false);
 		return result;
 	}
 
@@ -168,14 +166,15 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public List<TEntity> GetObjects(params int[] ids)
 	{
-		Contract.Requires(ids != null);
+		ArgumentNullException.ThrowIfNull(ids);
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
 
+		bool isEntityCachable = IsEntityCachable();
 		foreach (int id in ids)
 		{
-			Contract.Assert<ArgumentException>(id != default(int));
+			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 			TEntity trackedEntity = DbSet.FindTracked(id);
 			if (trackedEntity != null)
@@ -183,7 +182,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				loadedEntities.Add(trackedEntity);
 			}
 			// není v identity mapě, hledáme v cache
-			else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
+			else if (isEntityCachable && EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
 			{
 				loadedEntities.Add(cachedEntity);
 			}
@@ -220,16 +219,19 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
-			// načtené objekty uložíme do cache
-			foreach (TEntity loadedObject in loadedObjects)
+			if (isEntityCachable)
 			{
-				EntityCacheManager.StoreEntity(loadedObject);
+				// načtené objekty uložíme do cache
+				foreach (TEntity loadedObject in loadedObjects)
+				{
+					EntityCacheManager.StoreEntity(loadedObject);
+				}
 			}
 
 			result.AddRange(loadedObjects);
 		}
 
-		LoadReferences(result.ToArray());
+		LoadReferences(result);
 		return result;
 	}
 
@@ -240,14 +242,15 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires(ids != null);
+		ArgumentNullException.ThrowIfNull(ids);
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
 		HashSet<int> idsToLoad = new HashSet<int>();
 
+		bool isEntityCachable = IsEntityCachable();
 		foreach (int id in ids)
 		{
-			Contract.Assert<ArgumentException>(id != default(int));
+			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
 
 			TEntity trackedEntity = DbSet.FindTracked(id);
 			if (trackedEntity != null)
@@ -255,7 +258,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				loadedEntities.Add(trackedEntity);
 			}
 			// není v identity mapě, hledáme v cache
-			else if (EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
+			else if (isEntityCachable && EntityCacheManager.TryGetEntity<TEntity>(id, out TEntity cachedEntity))
 			{
 				loadedEntities.Add(cachedEntity);
 			}
@@ -278,7 +281,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			}
 			else
 			{
-				loadedObjects = new List<TEntity>();
+				loadedObjects = new List<TEntity>(idsToLoad.Count);
 				foreach (int[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
 				{
 					loadedObjects.AddRange(await query((DbContext)dbContext, idsToLoadChunk).ToListAsync(cancellationToken).ConfigureAwait(false));
@@ -291,16 +294,19 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
-			// načtené objekty uložíme do cache
-			foreach (TEntity loadedObject in loadedObjects)
+			if (isEntityCachable)
 			{
-				EntityCacheManager.StoreEntity(loadedObject);
+				// načtené objekty uložíme do cache
+				foreach (TEntity loadedObject in loadedObjects)
+				{
+					EntityCacheManager.StoreEntity(loadedObject);
+				}
 			}
 
 			result.AddRange(loadedObjects);
 		}
 
-		await LoadReferencesAsync(result.ToArray(), cancellationToken).ConfigureAwait(false);
+		await LoadReferencesAsync(result, cancellationToken).ConfigureAwait(false);
 		return result;
 	}
 
@@ -313,24 +319,27 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	{
 		if (_all == null)
 		{
-			TEntity[] allData;
+			List<TEntity> allData;
 
 			// máme v cache klíče, která chceme načítat?
 			if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 			{
 				// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-				allData = GetObjects((int[])keys).ToArray();
+				allData = GetObjects((int[])keys);
 			}
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
 				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
-				allData = query((DbContext)dbContext).ToArray();
+				allData = query((DbContext)dbContext).ToList();
 
-				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
-				foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				if (IsEntityCachable())
 				{
-					EntityCacheManager.StoreEntity<TEntity>(entity);
+					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+					{
+						EntityCacheManager.StoreEntity<TEntity>(entity);
+					}
 				}
 			}
 
@@ -354,20 +363,20 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	{
 		if (_all == null)
 		{
-			TEntity[] allData;
+			List<TEntity> allData;
 
 			// máme v cache klíče, která chceme načítat?
 			if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 			{
 				// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-				allData = (await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false)).ToArray();
+				allData = await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
 				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
-				allData = await query((DbContext)dbContext).ToArrayAsync(cancellationToken).ConfigureAwait(false);
-				EntityCacheManager.StoreAllKeys<TEntity>(allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				allData = await query((DbContext)dbContext).ToListAsync(cancellationToken).ConfigureAwait(false);
+				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 
@@ -380,8 +389,6 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		return new List<TEntity>(_all);
 	}
 
-	private TEntity[] _all;
-
 	/// <summary>
 	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
 	/// </summary>
@@ -389,15 +396,16 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
 	/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
 	/// </remarks>
-	protected virtual void LoadReferences(params TEntity[] entities)
+	protected virtual void LoadReferences(IEnumerable<TEntity> entities)
 	{
-		Contract.Requires(entities != null);
-
-		var loadReferences = GetLoadReferences().ToArray();
-		if (loadReferences.Any())
+		var loadReferences = GetLoadReferences();
+		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.
+		if (loadReferences == Enumerable.Empty<Expression<Func<TEntity, object>>>())
 		{
-			dataLoader.LoadAll(entities, loadReferences);
+			return;
 		}
+
+		dataLoader.LoadAll(entities, loadReferences.ToArray());
 	}
 
 	/// <summary>
@@ -407,15 +415,16 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
 	/// Nezapomeňte však overridovat synchronní i asynchronní verzi! Jsou to nezávislé implementace...
 	/// </remarks>
-	protected virtual async Task LoadReferencesAsync(TEntity[] entities, CancellationToken cancellationToken = default)
+	protected virtual async Task LoadReferencesAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires(entities != null);
-
-		var loadReferences = GetLoadReferences().ToArray();
-		if (loadReferences.Any())
+		var loadReferences = GetLoadReferences();
+		// Výrazně nejčastější scénář je, že nemáme žádné references (vrací se enumerable.empty) a porovnání referencí je nejrychlejší.
+		if (loadReferences == Enumerable.Empty<Expression<Func<TEntity, object>>>())
 		{
-			await dataLoader.LoadAllAsync(entities, loadReferences, cancellationToken).ConfigureAwait(false);
+			return;
 		}
+
+		await dataLoader.LoadAllAsync(entities, loadReferences.ToArray(), cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -429,8 +438,8 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 	private void ThrowObjectNotFoundException(params int[] missingIds)
 	{
-		Contract.Requires(missingIds != null);
-		Contract.Requires(missingIds.Length > 0);
+		ArgumentNullException.ThrowIfNull(missingIds);
+		ArgumentOutOfRangeException.ThrowIfZero(missingIds.Length);
 
 		string exceptionText = (missingIds.Length == 1)
 			? String.Format("Object {0} with key {1} not found.", typeof(TEntity).Name, missingIds[0])
@@ -439,4 +448,5 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		throw new Havit.Data.Patterns.Exceptions.ObjectNotFoundException(exceptionText);
 	}
 
+	private bool IsEntityCachable() => _isEntityCachable ??= EntityCacheManager.ShouldCacheEntityType<TEntity>();
 }

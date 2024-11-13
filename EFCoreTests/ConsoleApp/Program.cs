@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Data.EntityFrameworkCore;
-using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.Patterns.DataLoaders;
-using Havit.Data.Patterns.UnitOfWorks;
+using Havit.Data.Patterns.DataSeeds;
 using Havit.Diagnostics.Contracts;
+using Havit.EFCoreTests.DataLayer;
 using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.Repositories;
+using Havit.EFCoreTests.DataLayer.Seeds.Persons;
 using Havit.EFCoreTests.Model;
 using Havit.Linq.Expressions;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,21 +42,22 @@ public static class Program
 			.Build();
 
 		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
-		//await SeedDatabaseAsync(host.Services, CancellationToken.None);
+		await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}
 
 	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
 	{
-		services.WithEntityPatternsInstaller()
-			.AddDataLayer(typeof(IPersonRepository).Assembly)
-			.AddDbContext<Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
+		services.AddDbContext<IDbContext, Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 				optionsBuilder
 					.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
-					.EnableSensitiveDataLogging(true))
-			//.UseInMemoryDatabase("ConsoleApp")
-			.AddEntityPatterns()
-			.AddLookupService<IUserLookupService, UserLookupService>();
+					.UseDefaultHavitConventions()
+					.EnableSensitiveDataLogging(true));
+
+		services
+			.AddDataLayerServices()
+			.AddLookupService<IUserLookupService, UserLookupService>()
+			.AddDataSeeds(typeof(Havit.EFCoreTests.DataLayer.Seeds.Persons.PersonsProfile).Assembly);
 
 		services.AddSingleton<ITimeService, ServerTimeService>();
 		services.AddSingleton<ICacheService, MemoryCacheService>();
@@ -76,17 +75,18 @@ public static class Program
 
 	private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 	{
-		//await scope.ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken);
+		await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken: cancellationToken);
+		//serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>(forceRun: true);
 
-		for (int i = 0; i < 50000; i++)
-		{
-			using var scope = serviceProvider.CreateScope();
-			var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-			Person person = new Person();
-			person.Subordinates.AddRange(Enumerable.Range(0, 2).Select(i => new Person()));
-			uow.AddForInsert(person);
-			await uow.CommitAsync(cancellationToken);
-		}
+		//for (int i = 0; i < 50000; i++)
+		//{
+		//	using var scope = serviceProvider.CreateScope();
+		//	var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+		//	Person person = new Person();
+		//	person.Subordinates.AddRange(Enumerable.Range(0, 2).Select(i => new Person()));
+		//	uow.AddForInsert(person);
+		//	await uow.CommitAsync(cancellationToken);
+		//}
 	}
 
 
@@ -97,41 +97,34 @@ public static class Program
 		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 
-		var parameter = Expression.Parameter(typeof(Person), "item");
-		Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
-		var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
+		Person person1 = personRepository.GetObject(1);
+		dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
 
-		var x = personDataSource.Data.OrderBy<Person, IComparable>(expression2).ToList();
+		Person person2 = personRepository.GetObject(2);
+		await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
-		// scénář 1: načítání kolekcí
-		//Person person = await personRepository.GetObjectAsync(1, cancellationToken);
-		//Contract.Assert(person.BossId == null);
+		//	var parameter = Expression.Parameter(typeof(Person), "item");
+		//	Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
+		//	var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
 
-		//Stopwatch sw = Stopwatch.StartNew();
-		//dataLoader.Load(person, p => p.Subordinates).ThenLoad(p => p.Subordinates);
-		//await dataLoader.LoadAsync(person, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
-		//sw.Stop();
+		//	// scénář 1: načítání kolekcí
+		//	Person person1 = personRepository.GetObject(1);
+		//	Person person2 = await personRepository.GetObjectAsync(4, cancellationToken);
+		//	Contract.Assert(person1.BossId == null);
+		//	Contract.Assert(person2.BossId == null);
 
-		// scénář 2: načítání referencí
-		//List<Person> persons = personDataSource.DataIncludingDeleted.Where(p => (p.BossId != null) && (p.BossId != 1)).ToList();
-		//Stopwatch sw = Stopwatch.StartNew();
-		////dataLoader.LoadAll(persons, p => p.Boss);
-		//await dataLoader.LoadAllAsync(persons, p => p.Boss, cancellationToken);
-		//sw.Stop();
+		//	dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		//	await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
-		// scénář 3: XyRepository.GetObjects()
-		//await personRepository.GetObjectsAsync(new int[] { 1, 3 }, cancellationToken);
+		//	// scénář 2: načítání referencí
+		//	List<Person> persons1 = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
+		//	List<Person> persons2 = await personRepository.GetObjectsAsync(Enumerable.Range(50000, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
+		//	dataLoader.LoadAll(persons1, p => p.Boss);
+		//	await dataLoader.LoadAllAsync(persons2, p => p.Boss, cancellationToken);
 
-		//Stopwatch sw = Stopwatch.StartNew();
-		////List<Person> persons = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
-		//List<Person> persons = await personRepository.GetObjectsAsync(Enumerable.Range(1, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
-		//sw.Stop();
-
-		var person = personRepository.GetObject(1);
-		await dataLoader.LoadAsync(person, p => p.Subordinates, cancellationToken);
-
-		//Console.WriteLine("  " + sw.ElapsedMilliseconds + " ms");
+		//	// scénář 3: XyRepository.GetObjects()
+		//	personRepository.GetObjects(3, 4);
+		//	await personRepository.GetObjectsAsync([5, 6], cancellationToken);
 	}
 
 }
-

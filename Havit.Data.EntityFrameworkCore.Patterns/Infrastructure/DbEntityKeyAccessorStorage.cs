@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 
 /// <summary>
 /// Mapování entit na property info vlastností reprezentující primární klíče.
@@ -10,5 +8,5 @@ public class DbEntityKeyAccessorStorage : IDbEntityKeyAccessorStorage
 	/// <summary>
 	/// Mapování entit na property info vlastností reprezentující primární klíče.
 	/// </summary>
-	public Dictionary<Type, PropertyInfo[]> Value { get; set; }
+	public required FrozenDictionary<Type, DbEntityKeyAccessorItem> Value { get; init; }
 }

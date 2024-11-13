@@ -1,25 +1,43 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
-using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
+using Havit.Data.EntityFrameworkCore.Patterns.Lookups;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
+using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
+using Havit.Services.TimeServices;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSeeds;
 
 public class DbDataSeedsTests
 {
-	private static DbDataSeedRunner GetDefaultDataSeedRunner(IDbContextFactory dbContextFactory, params IDataSeed[] dataSeedsParams)
+	private static DbDataSeedRunner GetDefaultDataSeedRunner(IDbContext dbContext, params IDataSeed[] dataSeedsParams)
 	{
 		IEnumerable<IDataSeed> dataSeeds = new List<IDataSeed>(dataSeedsParams);
 		IDataSeedRunDecision dataSeedRunDecision = new AlwaysRunDecision();
-		IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContextFactory, new DbDataSeedTransactionContext());
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunnerMock = new Mock<IBeforeCommitProcessorsRunner>(MockBehavior.Strict);
+		mockBeforeCommitProcessorsRunnerMock.Setup(m => m.Run(It.IsAny<Changes>())).Returns(ChangeTrackerImpact.NoImpact);
+
+		Mock<IEntityValidationRunner> mockEntityValidationRunnerMock = new Mock<IEntityValidationRunner>(MockBehavior.Strict);
+		mockEntityValidationRunnerMock.Setup(m => m.Validate(It.IsAny<Changes>()));
+
+		Mock<IEntityCacheDependencyManager> entityCacheDependencyManagerMock = new Mock<IEntityCacheDependencyManager>(MockBehavior.Strict);
+		entityCacheDependencyManagerMock.Setup(m => m.PrepareCacheInvalidation(It.IsAny<Changes>())).Returns(new CacheInvalidationOperation(() => { }));
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(dbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManagerMock.Object, mockBeforeCommitProcessorsRunnerMock.Object, mockEntityValidationRunnerMock.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+
+		IDataSeedPersister dataSeedPersister = new DbDataSeedPersister(dbContext, dbUnitOfWork);
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 		dataSeedPersisterFactoryMock.Setup(m => m.CreateService()).Returns(dataSeedPersister);
 		dataSeedPersisterFactoryMock.Setup(m => m.ReleaseService(It.IsAny<IDataSeedPersister>()));
 
-		return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, dbContextFactory.CreateDbContext(), new DbDataSeedTransactionContext());
+		return new DbDataSeedRunner(dataSeeds, dataSeedRunDecision, dataSeedPersisterFactoryMock.Object, new NoCachingEntityCacheManager(), dbContext);
 	}
 
 	[TestClass]
@@ -29,18 +47,20 @@ public class DbDataSeedsTests
 		public void DataSeedRunner_SeedData_CanInsertNewItemsWithKeyGeneration()
 		{
 			// Arrange
-			TestDbContextFactory dbContextFactory = new TestDbContextFactory();
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				dbContext.Database.DropCreate();
 			}
 
 			// Act
-			DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithNullablePropertySeed());
-			dataSeedRunner.SeedData<DefaultProfile>();
+			using (IDbContext dbContext = new TestDbContext())
+			{
+				DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithNullablePropertySeed());
+				dataSeedRunner.SeedData<DefaultProfile>();
+			}
 
 			// Assert
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable(queryTag: this.GetType().Name);
 				Assert.AreEqual(3, items.Count());
@@ -66,18 +86,20 @@ public class DbDataSeedsTests
 		public void DataSeedRunner_SeedData_CanInsertNewItemsWithoutUpdate()
 		{
 			// Arrange
-			TestDbContextFactory dbContextFactory = new TestDbContextFactory();
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				dbContext.Database.DropCreate();
 			}
 
 			// Act
-			DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
-			dataSeedRunner.SeedData<DefaultProfile>();
+			using (IDbContext dbContext = new TestDbContext())
+			{
+				DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+				dataSeedRunner.SeedData<DefaultProfile>();
+			}
 
 			// Assert
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithNullableProperty>().AsQueryable(queryTag: this.GetType().Name);
 
@@ -106,8 +128,7 @@ public class DbDataSeedsTests
 		public void DataSeedRunner_SeedData_AreExcludedUpdatePropertiesSetByExcludeUpdateExpressions()
 		{
 			// Arrange
-			TestDbContextFactory dbContextFactory = new TestDbContextFactory();
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				dbContext.Database.DropCreate();
 				dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
@@ -116,11 +137,14 @@ public class DbDataSeedsTests
 			}
 
 			// Act
-			DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
-			dataSeedRunner.SeedData<DefaultProfile>();
+			using (IDbContext dbContext = new TestDbContext())
+			{
+				DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+				dataSeedRunner.SeedData<DefaultProfile>();
+			}
 
 			// Assert that item is NOT updated, because of ExcludeUpdateExpressions
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
 				Assert.IsTrue(items.All(item => item.Deleted == null));
@@ -147,8 +171,7 @@ public class DbDataSeedsTests
 		public void DataSeedRunner_SeedData_AreExcludedUpdatePropertiesSetByWithoutUpdate()
 		{
 			// Arrange
-			TestDbContextFactory dbContextFactory = new TestDbContextFactory();
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				dbContext.Database.DropCreate();
 				dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = null });
@@ -157,12 +180,14 @@ public class DbDataSeedsTests
 			}
 
 			// Act
-			DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
-			dataSeedRunner.SeedData<DefaultProfile>();
-
+			using (IDbContext dbContext = new TestDbContext())
+			{
+				DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+				dataSeedRunner.SeedData<DefaultProfile>();
+			}
 
 			// Assert that items ARE NOT updated, because of WithoutUpdate()
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
 				Assert.AreEqual(true, items.All(item => item.Deleted == null));
@@ -189,8 +214,7 @@ public class DbDataSeedsTests
 		public void DataSeedRunner_SeedData_ItemsArePairedAndUpdated()
 		{
 			// Arrange
-			TestDbContextFactory dbContextFactory = new TestDbContextFactory();
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				dbContext.Database.DropCreate();
 				dbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted() { Symbol = "A", Deleted = DateTime.Now });
@@ -199,12 +223,15 @@ public class DbDataSeedsTests
 			}
 
 			// Act
-			DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
-			dataSeedRunner.SeedData<DefaultProfile>();
+			using (IDbContext dbContext = new TestDbContext())
+			{
+				DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+				dataSeedRunner.SeedData<DefaultProfile>();
+			}
 
 			// Assert that ALL items ARE paired and updated
 
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
 
@@ -233,8 +260,7 @@ public class DbDataSeedsTests
 		public void DataSeedRunner_SeedData_CanMixAndUpdateNewItems()
 		{
 			// Arrange
-			TestDbContextFactory dbContextFactory = new TestDbContextFactory();
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				dbContext.Database.DropCreate();
 
@@ -244,12 +270,15 @@ public class DbDataSeedsTests
 			}
 
 			// Act
-			DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContextFactory, new ItemWithDeletedSeed());
-			dataSeedRunner.SeedData<DefaultProfile>();
+			using (IDbContext dbContext = new TestDbContext())
+			{
+				DbDataSeedRunner dataSeedRunner = GetDefaultDataSeedRunner(dbContext, new ItemWithDeletedSeed());
+				dataSeedRunner.SeedData<DefaultProfile>();
+			}
 
 
 			// Assert that first two items are updated and new two items are created
-			using (IDbContext dbContext = dbContextFactory.CreateDbContext())
+			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name).OrderBy(s => s.Id).ToArray();
 

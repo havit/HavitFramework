@@ -11,16 +11,16 @@ namespace Havit.Data.Patterns.Localizations;
 public class LanguageService<TLanguage> : ILanguageService
 	where TLanguage : class, ILanguage
 {
-	private readonly IRepository<TLanguage> languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
-	private readonly ILanguageByCultureService languageByCultureService;
+	private readonly IRepository<TLanguage> _languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
+	private readonly ILanguageByCultureService _languageByCultureService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public LanguageService(IRepository<TLanguage> languageRepository, ILanguageByCultureService languageByCultureService)
 	{
-		this.languageRepository = languageRepository;
-		this.languageByCultureService = languageByCultureService;
+		this._languageRepository = languageRepository;
+		this._languageByCultureService = languageByCultureService;
 	}
 
 	/// <summary>
@@ -36,7 +36,7 @@ public class LanguageService<TLanguage> : ILanguageService
 	/// </summary>
 	public ILanguage GetLanguage(string cultureName)
 	{
-		int languageId = languageByCultureService.GetLanguageId(cultureName);
-		return languageRepository.GetObject(languageId);
+		int languageId = _languageByCultureService.GetLanguageId(cultureName);
+		return _languageRepository.GetObject(languageId);
 	}
 }

@@ -503,7 +503,7 @@ public class DbRepositoryTests
 	private DbEntityKeyAccessor<TEntity, int> CreateEntityKeyAccessor<TEntity>(IDbContext dbContext)
 		where TEntity : class
 	{
-		return new DbEntityKeyAccessor<TEntity, int>(new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext));
+		return new DbEntityKeyAccessor<TEntity, int>(new DbEntityKeyAccessor(new DbEntityKeyAccessorStorageBuilder(dbContext).Build()));
 
 	}
 }

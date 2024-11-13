@@ -10,8 +10,8 @@ namespace Havit.Data.Patterns.DataEntries;
 public abstract class DataEntries<TEntity>
 	where TEntity : class
 {
-	private readonly IDataEntrySymbolService<TEntity> dataEntrySymbolService;
-	private readonly IRepository<TEntity> repository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
+	private readonly IDataEntrySymbolService<TEntity> _dataEntrySymbolService;
+	private readonly IRepository<TEntity> _repository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
 
 	/// <summary>
 	/// Konstruktor.
@@ -22,8 +22,8 @@ public abstract class DataEntries<TEntity>
 	{
 		Contract.Requires(repository != null);
 
-		this.dataEntrySymbolService = null;
-		this.repository = repository;
+		this._dataEntrySymbolService = null;
+		this._repository = repository;
 	}
 
 	/// <summary>
@@ -36,8 +36,8 @@ public abstract class DataEntries<TEntity>
 	{
 		Contract.Requires(repository != null);
 
-		this.dataEntrySymbolService = dataEntrySymbolService;
-		this.repository = repository;
+		this._dataEntrySymbolService = dataEntrySymbolService;
+		this._repository = repository;
 	}
 
 	/// <summary>
@@ -48,11 +48,11 @@ public abstract class DataEntries<TEntity>
 	protected internal TEntity GetEntry(Enum entry)
 	{
 		// najdeme identifikátor objektu
-		int id = (dataEntrySymbolService == null)
+		int id = (_dataEntrySymbolService == null)
 			? Convert.ToInt32(entry) // pokud hodnota enumu odpovídá identifikátoru, vezmeme ji přímo
-			: dataEntrySymbolService.GetEntryId(entry); // pokud hodnota enum nemusí odpovídat identifikátoru, pak jej hledáme ve slovníku
+			: _dataEntrySymbolService.GetEntryId(entry); // pokud hodnota enum nemusí odpovídat identifikátoru, pak jej hledáme ve slovníku
 
 		// vrátíme objekt z repository
-		return repository.GetObject(id);
+		return _repository.GetObject(id);
 	}
 }

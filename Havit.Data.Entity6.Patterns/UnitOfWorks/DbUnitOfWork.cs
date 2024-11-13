@@ -287,4 +287,13 @@ public class DbUnitOfWork : IUnitOfWork
 	{
 		return DbContext.GetObjectsInState(EntityState.Added | EntityState.Modified | EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
 	}
+
+	/// <summary>
+	/// Vyhazuje výjimku NotSupportedException.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Always.</exception>
+	public void Clear()
+	{
+		throw new NotSupportedException();
+	}
 }

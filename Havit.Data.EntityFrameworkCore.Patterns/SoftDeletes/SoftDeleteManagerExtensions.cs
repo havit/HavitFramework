@@ -1,6 +1,4 @@
-﻿using Havit.Diagnostics.Contracts;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
 /// <summary>
 /// Extension metody pro snadné filtrování IQueryable&lt;T&gt; a IEnumerable&lt;T&gt; s pomocí ISoftDeleteManager.
@@ -12,8 +10,8 @@ public static class SoftDeleteManagerExtensions
 	/// </summary>
 	public static IQueryable<TSource> WhereNotDeleted<TSource>(this IQueryable<TSource> source, ISoftDeleteManager softDeleteManager)
 	{
-		Contract.Requires<ArgumentNullException>(source != null);
-		Contract.Requires<ArgumentNullException>(softDeleteManager != null);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(softDeleteManager);
 
 		return softDeleteManager.IsSoftDeleteSupported<TSource>()
 			? source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>())
@@ -25,8 +23,8 @@ public static class SoftDeleteManagerExtensions
 	/// </summary>
 	public static IEnumerable<TSource> WhereNotDeleted<TSource>(this IEnumerable<TSource> source, ISoftDeleteManager softDeleteManager)
 	{
-		Contract.Requires<ArgumentNullException>(source != null);
-		Contract.Requires<ArgumentNullException>(softDeleteManager != null);
+		ArgumentNullException.ThrowIfNull(source);
+		ArgumentNullException.ThrowIfNull(softDeleteManager);
 
 		return softDeleteManager.IsSoftDeleteSupported<TSource>()
 			? source.Where(softDeleteManager.GetNotDeletedCompiledLambda<TSource>())

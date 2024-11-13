@@ -7,8 +7,8 @@ namespace Havit.Model.Collections.Generic;
 /// </summary>
 public class FilteringCollection<T> : ICollection<T>
 {
-	private readonly IList<T> source;
-	private readonly Func<T, bool> filter;
+	private readonly IList<T> _source;
+	private readonly Func<T, bool> _filter;
 
 	/// <summary>
 	/// Konstruktor.
@@ -17,14 +17,14 @@ public class FilteringCollection<T> : ICollection<T>
 	/// <param name="filter">Filtr, kterým se podkladová kolekce filtruje.</param>
 	public FilteringCollection(IList<T> source, Func<T, bool> filter)
 	{
-		this.source = source;
-		this.filter = filter;
+		this._source = source;
+		this._filter = filter;
 	}
 
 	/// <inheritdoc />
 	public IEnumerator<T> GetEnumerator()
 	{
-		return source.Where(filter).GetEnumerator();
+		return _source.Where(_filter).GetEnumerator();
 	}
 
 	/// <inheritdoc />
@@ -38,7 +38,7 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public void Add(T item)
 	{
-		source.Add(item);
+		_source.Add(item);
 	}
 
 	/// <summary>
@@ -46,7 +46,7 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public void AddRange(IEnumerable<T> collection)
 	{
-		if (source is List<T> list)
+		if (_source is List<T> list)
 		{
 			list.AddRange(collection);
 		}
@@ -54,7 +54,7 @@ public class FilteringCollection<T> : ICollection<T>
 		{
 			foreach (var item in collection)
 			{
-				source.Add(item);
+				_source.Add(item);
 			}
 		}
 	}
@@ -64,7 +64,7 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public void Clear()
 	{
-		source.Clear();
+		_source.Clear();
 	}
 
 	/// <summary>
@@ -72,7 +72,7 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public bool Contains(T item)
 	{
-		return source.Where(filter).Contains(item);
+		return _source.Where(_filter).Contains(item);
 	}
 
 	/// <summary>
@@ -80,7 +80,7 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public void CopyTo(T[] array, int arrayIndex)
 	{
-		source.Where(filter).ToList().CopyTo(array, arrayIndex);
+		_source.Where(_filter).ToList().CopyTo(array, arrayIndex);
 	}
 
 	/// <summary>
@@ -88,7 +88,7 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public bool Remove(T item)
 	{
-		return source.Remove(item);
+		return _source.Remove(item);
 	}
 
 	/// <summary>
@@ -96,18 +96,18 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public int RemoveAll(Predicate<T> predicate)
 	{
-		if (source is List<T> list)
+		if (_source is List<T> list)
 		{
 			return list.RemoveAll(predicate);
 		}
 		else
 		{
 			int count = 0;
-			for (int i = source.Count - 1; i >= 0; i--)
+			for (int i = _source.Count - 1; i >= 0; i--)
 			{
-				if (predicate(source[i]))
+				if (predicate(_source[i]))
 				{
-					source.RemoveAt(i);
+					_source.RemoveAt(i);
 					count++;
 				}
 			}
@@ -120,14 +120,14 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	public void ForEach(Action<T> action)
 	{
-		source.Where(filter).ToList().ForEach(action);
+		_source.Where(_filter).ToList().ForEach(action);
 	}
 
 	/// <summary>
 	/// Vrací počet objektů z podkladové kolekci po aplikování filtru.
 	/// Nemá konstantní, ale lineární (vzhledem k velikosti kolekce) časovou složitost!
 	/// </summary>
-	public int Count => source.Where(filter).Count();
+	public int Count => _source.Where(_filter).Count();
 
 	/// <inheritdoc />
 	public bool IsReadOnly => false;

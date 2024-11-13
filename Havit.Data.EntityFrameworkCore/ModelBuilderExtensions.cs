@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore;
@@ -16,13 +15,13 @@ public static class ModelBuilderExtensions
 	/// </summary>
 	public static void RegisterModelFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
 	{
-		Contract.Requires(modelBuilder != null);
-		Contract.Requires(assembly != null);
+		ArgumentNullException.ThrowIfNull(modelBuilder);
+		ArgumentNullException.ThrowIfNull(assembly);
 
-		List<Type> assemblyTypes = assembly.GetTypes()
+		Type[] assemblyTypes = assembly.GetTypes()
 			.Where(type => type.IsPublic && type.IsClass && !(type.IsAbstract && type.IsSealed) /* pokrývá statické třídy, viz např. https://stackoverflow.com/questions/4145072/how-to-tell-if-a-type-is-a-static-class */)
 			.Where(type => String.IsNullOrEmpty(namespaceName) || type.Namespace.StartsWith(namespaceName))
-			.ToList();
+			.ToArray();
 
 		foreach (Type assemblyType in assemblyTypes)
 		{
@@ -64,7 +63,7 @@ public static class ModelBuilderExtensions
 			.Where(item => item.Interface.IsConstructedGenericType && (item.Interface.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>)))
 			// přejmenování Interface -> EntityTypeConfigurationInterface
 			.Select(item => new { Type = item.Type, EntityTypeConfigurationInterface = item.Interface })
-			.ToList();
+			.ToArray();
 
 		foreach (var typeWithInterface in applicableTypesWithConfigurations)
 		{

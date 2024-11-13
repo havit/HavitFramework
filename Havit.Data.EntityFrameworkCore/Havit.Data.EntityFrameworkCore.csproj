@@ -15,17 +15,17 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.8.9</PackageVersion>
+		<PackageVersion>2.9.0</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- Azure.Identity:
-				Microsoft.EntityFrameworkCore má jako závislost Microsoft.Data.SqlClient (5.1.4), který má jako závislost
-				Azure.Identity 1.10.3. Ta má však známou bezpečností zranitelnost, proto zde (do vyřešení závislostí v MS balíčcích).-->
-		<PackageReference Include="Azure.Identity" Version="1.12.0" />
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.6,9)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[9.0.0,10)" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

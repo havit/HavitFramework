@@ -6,7 +6,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool;
 
 public class Program
 {
-	public static void Main(string[] args)
+	public static async Task Main(string[] args)
 	{
 		Console.WriteLine("HAVIT Entity Framework Core CodeGenerator Tool");
 		Console.WriteLine("----------------------------------------------");
@@ -101,16 +101,25 @@ public class Program
 		}
 
 		MethodInfo main = program.GetMethod("Main", BindingFlags.Static | BindingFlags.Public);
-		if (program == null)
+		if (main == null)
 		{
 			Console.WriteLine("Havit.Data.EntityFrameworkCore.CodeGenerator entry point (method) was not found.");
 			return;
 		}
 
 		Console.WriteLine("Starting CodeGenerator...");
-		main.Invoke(null, new object[]
+
+		Task mainTask = (Task)main.Invoke(null, new object[]
 		{
 			new string[] { solutionDirectory.FullName, Path.GetFileNameWithoutExtension(applicationEntityAssemblyFileInfo.FullName) }
 		});
+
+		if (mainTask == null)
+		{
+			Console.WriteLine("Havit.Data.EntityFrameworkCore.CodeGenerator entry point (method) did not return a Task.");
+			return;
+		}
+
+		await mainTask;
 	}
 }

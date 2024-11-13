@@ -26,14 +26,17 @@ public static class CachingTestHelper
 			entityCacheSupportDecision = new CacheAllEntitiesEntityCacheSupportDecision();
 		}
 
+		INavigationTargetStorage navigationTargetStorage = new NavigationTargetStorageBuilder(dbContext).Build();
+		IAnnotationsEntityCacheOptionsGeneratorStorage annotationsEntityCacheOptionsGeneratorStorage = new AnnotationsEntityCacheOptionsGeneratorStorageBuilder(dbContext).Build();
 		if (entityCacheOptionsGenerator == null)
 		{
-			entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(new AnnotationsEntityCacheOptionsGeneratorStorage(), dbContext, new NavigationTargetService(new NavigationTargetStorage(), dbContext));
+			entityCacheOptionsGenerator = new AnnotationsEntityCacheOptionsGenerator(annotationsEntityCacheOptionsGeneratorStorage, new NavigationTargetService(navigationTargetStorage));
 		}
 
 		if (entityCacheKeyGenerator == null)
 		{
-			entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContext));
+			IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContext).Build();
+			entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 		}
 
 		if (cacheService == null)
@@ -42,17 +45,20 @@ public static class CachingTestHelper
 		}
 
 		IPropertyLambdaExpressionManager propertyLambdaExpressionManager = new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder());
-		IReferencingNavigationsService referencingCollectionStore = new ReferencingNavigationsService(new ReferencingNavigationsStorage(), dbContext);
+		IReferencingNavigationsStorage referencingNavigationsStorage = new ReferencingNavigationsStorageBuilder(dbContext).Build();
+		IReferencingNavigationsService referencingCollectionStore = new ReferencingNavigationsService(referencingNavigationsStorage);
+
+		IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage = new DbEntityKeyAccessorStorageBuilder(dbContext).Build();
 
 		return new EntityCacheManager(
 			cacheService,
 			entityCacheSupportDecision,
 			entityCacheKeyGenerator,
 			entityCacheOptionsGenerator,
-			new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), dbContext),
+			new DbEntityKeyAccessor(dbEntityKeyAccessorStorage),
 			propertyLambdaExpressionManager,
 			dbContext,
 			referencingCollectionStore,
-			new NavigationTargetService(new NavigationTargetStorage(), dbContext));
+			new NavigationTargetService(navigationTargetStorage));
 	}
 }

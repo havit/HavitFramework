@@ -13,9 +13,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	/// </summary>
 	public DataSeedConfiguration<TEntity> Configuration { get; private set; }
 
-#pragma warning disable IDE1006 // Naming rule violation: Prefix '_' is not expected
 	internal Dictionary<string, object> _childDataForsRegistry { get; private set; } = new Dictionary<string, object>();
-#pragma warning restore IDE1006 // Naming rule violation: Prefix '_' is not expected
 
 	/// <summary>
 	/// Konstuktor.

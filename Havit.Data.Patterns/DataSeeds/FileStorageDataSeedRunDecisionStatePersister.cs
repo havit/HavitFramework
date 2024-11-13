@@ -8,7 +8,7 @@ namespace Havit.Data.Patterns.DataSeeds;
 /// </summary>
 public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePersister
 {
-	private readonly IFileStorageService fileStorageService;
+	private readonly IFileStorageService _fileStorageService;
 
 	/// <summary>
 	/// Konstruktor.
@@ -16,7 +16,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	/// <param name="fileStorageService">FileStorage použitá pro zápis stavu state persisteru.</param>
 	public FileStorageDataSeedRunDecisionStatePersister(IFileStorageService fileStorageService)
 	{
-		this.fileStorageService = fileStorageService;
+		this._fileStorageService = fileStorageService;
 	}
 
 	/// <summary>
@@ -28,7 +28,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	{
 		try
 		{
-			using (Stream stream = fileStorageService.OpenRead(GetFileName(profileName)))
+			using (Stream stream = _fileStorageService.OpenRead(GetFileName(profileName)))
 			using (StreamReader reader = new StreamReader(stream))
 			{
 				return reader.ReadToEnd();
@@ -53,7 +53,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 			}
 			memoryStream.Seek(0, SeekOrigin.Begin);
 
-			fileStorageService.Save(GetFileName(profileName), memoryStream, "text/plain");
+			_fileStorageService.Save(GetFileName(profileName), memoryStream, "text/plain");
 		}
 	}
 
@@ -62,7 +62,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	/// </summary>
 	internal void DeleteCurrentStateFile(string profileName)
 	{
-		fileStorageService.Delete(GetFileName(profileName));
+		_fileStorageService.Delete(GetFileName(profileName));
 	}
 
 	private string GetFileName(string profileName)

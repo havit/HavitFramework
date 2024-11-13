@@ -15,15 +15,19 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Template
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Microsoft.EntityFrameworkCore.Design;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Template;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Model;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
 public static class Program
 {
-	// This is not a true entry point - it is not a console, but a class library (netstandard 2.x).
+	// This is not a true entry point - it is not a console, but a class library (net x.0).
 	// Method is used in CodeGenerator.Tool via reflection!
 	// Environment is preconfigured by CodeGenerator.Tool (mainly AppDomain.CurrentDomain.AssemblyResolve).
-	public static void Main(string[] args)
+#pragma warning disable VSTHRD200 // Use "Async" suffix for async methods
+	public static Task Main(string[] args)
+#pragma warning restore VSTHRD200 // Use "Async" suffix for async methods
 	{
 		Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -38,11 +42,10 @@ public static class Program
 		IProject metadataProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.MetadataProjectPath));
 		IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj"));
 
-
 		Console.WriteLine($"Initializing DbContext...");
 		if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
 		{
-			return;
+			return Task.CompletedTask;
 		}
 
 		Console.WriteLine($"Generating code...");
@@ -53,7 +56,8 @@ public static class Program
 			() => GenerateMetadata(metadataProject, modelProject, dbContext, configuration),
 			() => GenerateDataSources(dataLayerProject, modelProject, dbContext),
 			() => GenerateDataEntries(dataLayerProject, modelProject, dbContext, dataEntriesModelSource),
-			() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource)
+			() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource),
+			() => GenerateDataLayerServiceExtensions(modelProject, dataLayerProject, dbContext)
 		);
 
 		string[] unusedDataLayerFiles = null;
@@ -88,6 +92,8 @@ public static class Program
 
 		stopwatch.Stop();
 		Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
+
+		return Task.CompletedTask;
 	}
 
 	private static bool TryGetDbContext(string entityAssemblyName, out DbContext dbContext)
@@ -210,5 +216,21 @@ public static class Program
 		dbRepositoryBaseGeneratedGenerator.Generate();
 		dbRepositoryGeneratedGenerator.Generate();
 		dbRepositoryGenerator.Generate();
+	}
+
+	private static void GenerateDataLayerServiceExtensions(IProject modelProject, IProject dataLayerProject, DbContext dbContext)
+	{
+		CodeWriter codeWriter = new CodeWriter(dataLayerProject);
+		string targetFilename = Path.Combine(dataLayerProject.GetProjectRootPath(), "_generated\\DataLayerServiceExtensions.cs");
+
+		// TODO: Lépe pomocí DI? Nebo místo sources rovnou řešit modely?
+		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, new CammelCaseNamingStrategy());
+		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(dbContext, modelProject, dataLayerProject);
+		RepositoryModelSource repositoryModelSource = new RepositoryModelSource(dbContext, modelProject, dataLayerProject, dataEntriesModelSource);
+
+		DataLayerServiceExtensionsModelSource modelSource = new DataLayerServiceExtensionsModelSource(dataLayerProject, dataEntriesModelSource, dbDataSourceModelSource, repositoryModelSource);
+		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(modelSource.GetModels().Single());
+		codeWriter.Save(targetFilename, template.TransformText(), true);
+		dataLayerProject.SaveChanges();
 	}
 }

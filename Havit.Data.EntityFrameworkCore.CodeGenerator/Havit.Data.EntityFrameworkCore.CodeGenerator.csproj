@@ -10,15 +10,17 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.8.4</PackageVersion>
+		<PackageVersion>2.9.0</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6"><!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
-			<!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[9.0.0,10)"><!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
 		</PackageReference>
-		<PackageReference Include="System.CodeDom" Version="8.0.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,6 +38,11 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>InterfaceDataEntriesTemplate.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.cs">
+		  <DependentUpon>DataLayerServiceExtensionsTemplate.tt</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
 		</Compile>
 		<Compile Update="Actions\DataSources\Model\InterfaceDataSourceModel.cs">
 			<SubType>Code</SubType>
@@ -112,6 +119,10 @@
 		<None Update="Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>
 			<LastGenOutput>InterfaceDataEntriesTemplate.cs</LastGenOutput>
+		</None>
+		<None Update="Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt">
+		  <LastGenOutput>DataLayerServiceExtensionsTemplate.cs</LastGenOutput>
+		  <Generator>TextTemplatingFilePreprocessor</Generator>
 		</None>
 		<None Update="Actions\DataSources\Template\DbDataSourceTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>

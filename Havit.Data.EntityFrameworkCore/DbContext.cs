@@ -1,8 +1,12 @@
 ﻿using Havit.Data.EntityFrameworkCore.Internal;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 using Havit.Data.EntityFrameworkCore.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore;
 
@@ -12,7 +16,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Registr akcí k provedení po uložení změn.
 	/// </summary>
-	private List<Action> afterSaveChangesActions;
+	private List<Action> _afterSaveChangesActions;
 
 	private Dictionary<Type, object> _dbSetsDictionary;
 
@@ -32,6 +36,54 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	}
 
 	/// <inheritdoc />
+	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+	{
+		base.ConfigureConventions(configurationBuilder);
+
+		var conventionsOptions = GetConventionOptions();
+
+		if (conventionsOptions.CacheAttributeToAnnotationConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(sp => new CacheAttributeToAnnotationConvention(sp.GetRequiredService<ProviderConventionSetBuilderDependencies>()));
+		}
+
+		if (conventionsOptions.CascadeDeleteToRestrictConventionEnabled)
+		{
+			configurationBuilder.Conventions.Remove(typeof(SqlServerOnDeleteConvention));
+			configurationBuilder.Conventions.Add(sp => new CascadeDeleteToRestrictConvention(sp.GetRequiredService<ProviderConventionSetBuilderDependencies>()));
+		}
+
+		if (conventionsOptions.DataTypeAttributeConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(sp => new DataTypeAttributeConvention(sp.GetRequiredService<ProviderConventionSetBuilderDependencies>()));
+		}
+
+		if (conventionsOptions.ManyToManyEntityKeyDiscoveryConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(_ => new ManyToManyEntityKeyDiscoveryConvention());
+		}
+
+		if (conventionsOptions.StringPropertiesDefaultValueConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(_ => new StringPropertiesDefaultValueConvention());
+		}
+
+		if (conventionsOptions.LocalizationTableIndexConventionEnabled)
+		{
+			configurationBuilder.Conventions.Add(_ => new LocalizationTableIndexConvention());
+		}
+	}
+
+	/// <summary>
+	/// Vrátí nastavení pro registraci konvencí.
+	/// </summary>
+	protected virtual ConventionsOptions GetConventionOptions()
+	{
+		return new ConventionsOptions();
+	}
+
+
+	/// <inheritdoc />
 	protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
@@ -41,17 +93,6 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 		CustomizeModelCreating(modelBuilder);
 
 		ModelCreatingCompleting(modelBuilder);
-	}
-
-	/// <inheritdoc />
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		base.OnConfiguring(optionsBuilder);
-
-		// Nebude fungovat v DbContext poolingu.
-		// Pro DbContext pooling se přidávají tyto konvence v AddDbContext(Pool).
-		optionsBuilder.UseFrameworkConventions();
-		optionsBuilder.UseDbLockedMigrator();
 	}
 
 	/// <summary>
@@ -129,8 +170,14 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	protected internal virtual void AfterSaveChanges()
 	{
-		afterSaveChangesActions?.ForEach(item => item.Invoke());
-		afterSaveChangesActions = null;
+		if (_afterSaveChangesActions != null)
+		{
+			foreach (var afterSaveChangesAction in _afterSaveChangesActions)
+			{
+				afterSaveChangesAction.Invoke();
+			}
+			_afterSaveChangesActions = null;
+		}
 	}
 
 	/// <summary>
@@ -139,21 +186,20 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	public void RegisterAfterSaveChangesAction(Action action)
 	{
-		if (afterSaveChangesActions == null)
+		if (_afterSaveChangesActions == null)
 		{
-			afterSaveChangesActions = new List<Action>();
+			_afterSaveChangesActions = new List<Action>([action]);
 		}
-		afterSaveChangesActions.Add(action);
+		else
+		{
+			_afterSaveChangesActions.Add(action);
+		}
 	}
 
 	/// <summary>
 	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 	/// </summary>
-#if BENCHMARKING
-	internal TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
-#else
 	private TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
-#endif
 	{
 		if (ChangeTracker.AutoDetectChangesEnabled)
 		{
@@ -174,11 +220,34 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	}
 
 	/// <summary>
+	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
+	/// </summary>
+	private async Task<TResult> ExecuteWithoutAutoDetectChangesAsync<TResult>(Func<Task<TResult>> actionAsync)
+	{
+		if (ChangeTracker.AutoDetectChangesEnabled)
+		{
+			try
+			{
+				ChangeTracker.AutoDetectChangesEnabled = false;
+				return await actionAsync().ConfigureAwait(false);
+			}
+			finally
+			{
+				ChangeTracker.AutoDetectChangesEnabled = true;
+			}
+		}
+		else
+		{
+			return await actionAsync().ConfigureAwait(false);
+		}
+	}
+
+	/// <summary>
 	/// Vrátí objekty v daných stavech.
 	/// </summary>
-	EntityEntry[] IDbContext.GetEntries(bool suppressDetectChanges)
+	IEnumerable<EntityEntry> IDbContext.GetEntries(bool suppressDetectChanges)
 	{
-		EntityEntry[] getObjectInStatesFunc() => this.ChangeTracker.Entries().ToArray();
+		IEnumerable<EntityEntry> getObjectInStatesFunc() => this.ChangeTracker.Entries();
 
 		return suppressDetectChanges
 			? ExecuteWithoutAutoDetectChanges(getObjectInStatesFunc)
@@ -244,8 +313,39 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Uloží změny.
 	/// </summary>
+	void IDbContext.SaveChanges(bool suppressDetectChanges)
+	{
+		if (suppressDetectChanges)
+		{
+			ExecuteWithoutAutoDetectChanges(() => this.SaveChanges());
+		}
+		else
+		{
+			this.SaveChanges();
+		}
+	}
+
+	/// <summary>
+	/// Uloží změny.
+	/// </summary>
 	Task IDbContext.SaveChangesAsync(CancellationToken cancellationToken)
 	{
 		return SaveChangesAsync(cancellationToken);
 	}
+
+	/// <summary>
+	/// Uloží změny.
+	/// </summary>
+	async Task IDbContext.SaveChangesAsync(bool suppressDetectChanges, CancellationToken cancellationToken)
+	{
+		if (suppressDetectChanges)
+		{
+			await ExecuteWithoutAutoDetectChanges(async () => await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+		}
+		else
+		{
+			await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+		}
+	}
+
 }

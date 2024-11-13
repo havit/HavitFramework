@@ -13,9 +13,9 @@ public class ValidationFailedException : Exception
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public ValidationFailedException(IEnumerable<string> validationErrors)
+	public ValidationFailedException(List<string> validationErrors)
 	{
-		ValidationErrors = validationErrors.ToList().AsReadOnly();
+		ValidationErrors = validationErrors.AsReadOnly();
 	}
 
 	/// <summary>

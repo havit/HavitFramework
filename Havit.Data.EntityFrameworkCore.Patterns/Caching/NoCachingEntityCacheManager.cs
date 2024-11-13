@@ -9,6 +9,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 {
 	/// <summary>
+	/// Vrací vždy false.
+	/// </summary>
+	public bool ShouldCacheEntityType<TEntity>()
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// Nic nedělá, nehledá v cache.
 	/// Vrací vždy false.
 	/// </summary>
@@ -27,6 +35,11 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	{
 		// NOOP
 	}
+
+	/// <summary>
+	/// Vrací vždy false.
+	/// </summary>
+	public bool ShouldCacheEntityTypeNavigation<TEntity>(string propertyName) => false;
 
 	/// <summary>
 	/// Nic nedělá, nehledá v cache.
@@ -63,7 +76,7 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	/// <summary>
 	/// Nic nedělá, neukládá do cache.
 	/// </summary>
-	public void StoreAllKeys<TEntity>(object keys)
+	public void StoreAllKeys<TEntity>(Func<object> keysFunc)
 		where TEntity : class
 	{
 		// NOOP
@@ -75,5 +88,13 @@ public sealed class NoCachingEntityCacheManager : IEntityCacheManager
 	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
 		return null;
+	}
+
+	/// <summary>
+	/// Nic nedělá, neinvaliduje.	
+	/// </summary>
+	public void InvalidateAll()
+	{
+		// NOOP
 	}
 }

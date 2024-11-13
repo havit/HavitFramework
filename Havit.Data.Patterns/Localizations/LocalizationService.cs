@@ -10,16 +10,16 @@ namespace Havit.Data.Patterns.Localizations;
 /// </summary>
 public class LocalizationService : ILocalizationService
 {
-	private readonly ICurrentCultureService currentCultureService;
-	private readonly ILanguageService languageService;
+	private readonly ICurrentCultureService _currentCultureService;
+	private readonly ILanguageService _languageService;
 
 	/// <summary>
 	/// Konstruktor. 
 	/// </summary>
 	public LocalizationService(ICurrentCultureService currentCultureService, ILanguageService languageService)
 	{
-		this.currentCultureService = currentCultureService;
-		this.languageService = languageService;
+		this._currentCultureService = currentCultureService;
+		this._languageService = languageService;
 	}
 
 	/// <summary>
@@ -29,8 +29,8 @@ public class LocalizationService : ILocalizationService
 	public virtual TLocalizationEntity GetCurrentLocalization<TLocalizationEntity>(ILocalized<TLocalizationEntity, ILanguage> entity)
 		where TLocalizationEntity : class, ILocalization<object, ILanguage>
 	{
-		string cultureName = currentCultureService.GetCurrentUICulture().Name;
-		ILanguage language = languageService.GetLanguage(cultureName);
+		string cultureName = _currentCultureService.GetCurrentUICulture().Name;
+		ILanguage language = _languageService.GetLanguage(cultureName);
 		return GetLocalization(entity, language);
 	}
 
@@ -51,14 +51,14 @@ public class LocalizationService : ILocalizationService
 		// pokud jsme nic nenašli a použili jsme jazyk s culture ve formátu "cs-CZ", zkusíme hledat "cs".
 		if ((result == null) && (language.UiCulture.Length > 2))
 		{
-			language = languageService.GetLanguage(language.UiCulture.Substring(0, 2));
+			language = _languageService.GetLanguage(language.UiCulture.Substring(0, 2));
 			result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language));
 		}
 
 		// pokud jsme pořád nic nenašli a použili jsme jazyk s culture ve formátu "cs", zkusíme hledat "".
 		if ((result == null) && (language.UiCulture.Length > 0))
 		{
-			language = languageService.GetLanguage("");
+			language = _languageService.GetLanguage("");
 			result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language));
 		}
 

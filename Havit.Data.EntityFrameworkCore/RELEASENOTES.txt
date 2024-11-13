@@ -1,4 +1,13 @@
-﻿v2.8.5 (28.3.2024)
+﻿v2.9.0 (12.11.2024)
+• Aktualizace na EF Core 9
+• DbContext.Add[Range]For[Insert/Update/Delete] (a další)): optimalizace alokací paměti
+• IDbContextFactory odstraněn
+• DbContext - již nemá OnConfiguring (nelze použít s poolingem), nahrazeno UseDefaultHavitConventions()
+
+v2.8.6 (8.11.2024)
+• workaround issue Expressions without explicit type causes filter to be eliminated/false · Issue #35059 · dotnet/efcore
+
+v2.8.5 (28.3.2024)
 • CascadeDeleteToRestrictConvention - oprava nastavování DeleteBehavior.Restrict i na tříchách mapovaných pomocí ToTable(...)
 • `DbContext.Set<TEntity>()` - mikrooptimalizace pro opakované volání
 • `IDbSet<TEntity>().FindAsync(...)` - metoda odebrána, nebyla nikde použita

@@ -7,16 +7,16 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool;
 
 public class DependencyContextAssemblyLoader
 {
-	private readonly DependencyLoadInfo buildLoadInfo;
-	private readonly DependencyLoadInfo projectAssetLoadInfo;
+	private readonly DependencyLoadInfo _buildLoadInfo;
+	private readonly DependencyLoadInfo _projectAssetLoadInfo;
 
 	public DependencyContextAssemblyLoader(
 		DependencyContext buildOutputDependencyContext,
 		DependencyContext projectAssetsContext,
 		string appBasePath)
 	{
-		buildLoadInfo = new DependencyLoadInfo(buildOutputDependencyContext, appBasePath);
-		projectAssetLoadInfo = new DependencyLoadInfo(projectAssetsContext, appBasePath);
+		_buildLoadInfo = new DependencyLoadInfo(buildOutputDependencyContext, appBasePath);
+		_projectAssetLoadInfo = new DependencyLoadInfo(projectAssetsContext, appBasePath);
 	}
 
 	public void RegisterResolvingEvent(AssemblyLoadContext assemblyLoadContext)
@@ -26,7 +26,7 @@ public class DependencyContextAssemblyLoader
 
 	private Assembly ResolveAssembly(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
 	{
-		var compilationLibrary = projectAssetLoadInfo.FindCompilationLibrary(assemblyName);
+		var compilationLibrary = _projectAssetLoadInfo.FindCompilationLibrary(assemblyName);
 
 		// DependencyContext loaded from <assembly>.deps.json (in bin directory) does not contain all assemblies from references packages,
 		// so we cannot use it for resolving these assemblies.
@@ -39,7 +39,7 @@ public class DependencyContextAssemblyLoader
 
 		if (compilationLibrary?.Type == "package")
 		{
-			if (projectAssetLoadInfo.TryLoadAssembly(compilationLibrary, out Assembly assembly))
+			if (_projectAssetLoadInfo.TryLoadAssembly(compilationLibrary, out Assembly assembly))
 			{
 				return assembly;
 			}
@@ -47,10 +47,10 @@ public class DependencyContextAssemblyLoader
 
 		if (compilationLibrary?.Type == "project")
 		{
-			compilationLibrary = buildLoadInfo.FindCompilationLibrary(assemblyName);
+			compilationLibrary = _buildLoadInfo.FindCompilationLibrary(assemblyName);
 			if (compilationLibrary != null) // pokud je DisableTransitiveProjectReferences=true, pak nemusí být projekt v *.deps.json!
 			{
-				if (buildLoadInfo.TryLoadAssembly(compilationLibrary, out Assembly assembly))
+				if (_buildLoadInfo.TryLoadAssembly(compilationLibrary, out Assembly assembly))
 				{
 					return assembly;
 				}

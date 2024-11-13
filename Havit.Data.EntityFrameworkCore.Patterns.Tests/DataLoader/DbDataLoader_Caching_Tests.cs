@@ -140,7 +140,8 @@ public class DbDataLoader_Caching_Tests
 		// připojíme objekt Role k DbContextu jako existující (avšak není v databázi)
 		dbContextInitial.Attach(role);
 
-		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(new EntityCacheKeyPrefixStorage(), dbContextInitial));
+		IEntityCacheKeyPrefixStorage entityCacheKeyPrefixStorage = new EntityCacheKeyPrefixStorageBuilder(dbContextInitial).Build();
+		EntityCacheKeyGenerator entityCacheKeyGenerator = new EntityCacheKeyGenerator(new EntityCacheKeyPrefixService(entityCacheKeyPrefixStorage));
 
 		// a tento in memory objekt uložíme do cache (přestože není v databázi)
 		EntityCacheManager entityCacheManagerInitial = CachingTestHelper.CreateEntityCacheManager(

@@ -23,8 +23,9 @@ public class DefaultCachingInstaller : ICachingInstaller
 	/// </summary>
 	protected virtual void RegisterEntityCacheOptionsGenerator(IServiceCollection services)
 	{
-		services.TryAddTransient<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
-		services.TryAddSingleton<IAnnotationsEntityCacheOptionsGeneratorStorage, AnnotationsEntityCacheOptionsGeneratorStorage>();
+		services.TryAddSingleton<IEntityCacheOptionsGenerator, AnnotationsEntityCacheOptionsGenerator>();
+		services.TryAddTransient<IAnnotationsEntityCacheOptionsGeneratorStorageBuilder, AnnotationsEntityCacheOptionsGeneratorStorageBuilder>();
+		services.TryAddSingletonFromScopedServiceProvider<IAnnotationsEntityCacheOptionsGeneratorStorage>(sp => sp.GetRequiredService<IAnnotationsEntityCacheOptionsGeneratorStorageBuilder>().Build());
 	}
 
 	/// <summary>
@@ -40,7 +41,8 @@ public class DefaultCachingInstaller : ICachingInstaller
 	/// </summary>
 	protected virtual void RegisterEntityCacheSupportDecision(IServiceCollection services)
 	{
-		services.TryAddTransient<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
-		services.TryAddSingleton<IAnnotationsEntityCacheSupportDecisionStorage, AnnotationsEntityCacheSupportDecisionStorage>();
+		services.TryAddSingleton<IEntityCacheSupportDecision, AnnotationsEntityCacheSupportDecision>();
+		services.TryAddTransient<IAnnotationsEntityCacheSupportDecisionStorageBuilder, AnnotationsEntityCacheSupportDecisionStorageBuilder>();
+		services.TryAddSingletonFromScopedServiceProvider<IAnnotationsEntityCacheSupportDecisionStorage>(sp => sp.GetRequiredService<IAnnotationsEntityCacheSupportDecisionStorageBuilder>().Build());
 	}
 }

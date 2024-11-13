@@ -10,7 +10,7 @@ public class DbEntityKeyAccessorTests
 	public void GetEntityKeyPropertyName_GetEntityKeyPropertyName()
 	{
 		// Arrange
-		DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), new TestDbContext());
+		DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorageBuilder(new TestDbContext()).Build());
 
 		// Act + Assert
 		Assert.AreEqual(nameof(Language.Id), dbEntityKeyAccessor.GetEntityKeyPropertyNames(typeof(Language)).Single());
@@ -20,7 +20,7 @@ public class DbEntityKeyAccessorTests
 	public void GetEntityKeyPropertyName_GetEntityKey()
 	{
 		// Arrange
-		DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorage(), new TestDbContext());
+		DbEntityKeyAccessor dbEntityKeyAccessor = new DbEntityKeyAccessor(new DbEntityKeyAccessorStorageBuilder(new TestDbContext()).Build());
 
 		Language language = new Language() { Id = 999 };
 

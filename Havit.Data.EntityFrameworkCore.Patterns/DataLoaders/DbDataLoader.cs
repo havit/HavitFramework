@@ -7,8 +7,6 @@ using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
-using Havit.Diagnostics.Contracts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
@@ -27,12 +25,13 @@ public partial class DbDataLoader : IDataLoader
 	/// </summary>
 	internal const int ChunkSize = DbRepository<object>.GetObjectsChunkSize;
 
-	private readonly IDbContext dbContext;
-	private readonly IPropertyLoadSequenceResolver propertyLoadSequenceResolver;
-	private readonly IPropertyLambdaExpressionManager lambdaExpressionManager;
-	private readonly IEntityCacheManager entityCacheManager;
-	private readonly IEntityKeyAccessor entityKeyAccessor;
-	private readonly ILogger<DbDataLoader> logger;
+	private readonly IDbContext _dbContext;
+	private readonly IPropertyLoadSequenceResolver _propertyLoadSequenceResolver;
+	private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
+	private readonly IEntityCacheManager _entityCacheManager;
+	private readonly IEntityKeyAccessor _entityKeyAccessor;
+	private readonly ILoadedPropertyReader _loadedPropertyReader;
+	private readonly ILogger<DbDataLoader> _logger;
 
 	/// <summary>
 	/// Konstructor.
@@ -42,17 +41,17 @@ public partial class DbDataLoader : IDataLoader
 	/// <param name="lambdaExpressionManager">LambdaExpressionManager, pomocí něhož jsou získávány expression trees a kompilované expression trees pro lambda výrazy přístupu k vlastnostem objektů.</param>
 	/// <param name="entityCacheManager">Zajišťuje získávání a ukládání entit z/do cache.</param>
 	/// <param name="entityKeyAccessor">Zajišťuje získávání hodnot primárního klíče entit.</param>
+	/// <param name="loadedPropertyReader">Zajišťuje získávání informace, zda byla již vlastnost načtena.</param>
 	/// <param name="logger">Logger.</param>
-	public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILogger<DbDataLoader> logger)
+	public DbDataLoader(IDbContext dbContext, IPropertyLoadSequenceResolver propertyLoadSequenceResolver, IPropertyLambdaExpressionManager lambdaExpressionManager, IEntityCacheManager entityCacheManager, IEntityKeyAccessor entityKeyAccessor, ILoadedPropertyReader loadedPropertyReader, ILogger<DbDataLoader> logger)
 	{
-		Contract.Requires(dbContext != null);
-
-		this.dbContext = dbContext;
-		this.propertyLoadSequenceResolver = propertyLoadSequenceResolver;
-		this.lambdaExpressionManager = lambdaExpressionManager;
-		this.entityCacheManager = entityCacheManager;
-		this.entityKeyAccessor = entityKeyAccessor;
-		this.logger = logger;
+		_dbContext = dbContext;
+		_propertyLoadSequenceResolver = propertyLoadSequenceResolver;
+		_lambdaExpressionManager = lambdaExpressionManager;
+		_entityCacheManager = entityCacheManager;
+		_entityKeyAccessor = entityKeyAccessor;
+		_loadedPropertyReader = loadedPropertyReader;
+		_logger = logger;
 	}
 
 	/// <summary>
@@ -64,7 +63,14 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		return LoadInternal(new TEntity[] { entity }, propertyPath);
+		if (entity == null)
+		{
+			return new NullFluentDataLoader<TProperty>();
+		}
+
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
+		TEntity[] distinctNotNullEntities = [entity];
+		return LoadInternal(distinctNotNullEntities, propertyPath);
 	}
 
 	/// <summary>
@@ -75,12 +81,19 @@ public partial class DbDataLoader : IDataLoader
 	public void Load<TEntity>(TEntity entity, params Expression<Func<TEntity, object>>[] propertyPaths)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
+		if (entity == null)
+		{
+			return;
+		}
+
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
+		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
-			LoadInternal(new TEntity[] { entity }, propertyPath);
+			LoadInternal(distinctNotNullEntities, propertyPath);
 		}
 	}
 
@@ -93,7 +106,8 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		return LoadInternal(entities, propertyPath);
+		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext);
+		return LoadInternal(distinctNotNullEntities, propertyPath);
 	}
 
 	/// <summary>
@@ -104,13 +118,14 @@ public partial class DbDataLoader : IDataLoader
 	public void LoadAll<TEntity>(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] propertyPaths)
 		where TEntity : class
 	{
-		Contract.Requires(entities != null);
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(entities);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
+		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
-			LoadInternal(entities, propertyPath);
+			LoadInternal(distinctNotNullEntities, propertyPath);
 		}
 	}
 
@@ -124,9 +139,16 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		Contract.Requires(propertyPath != null);
+		ArgumentNullException.ThrowIfNull(propertyPath);
 
-		return await LoadInternalAsync(new TEntity[] { entity }, propertyPath, cancellationToken).ConfigureAwait(false);
+		if (entity == null)
+		{
+			return new NullFluentDataLoader<TProperty>();
+		}
+
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
+		TEntity[] distinctNotNullEntities = [entity];
+		return await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -138,12 +160,19 @@ public partial class DbDataLoader : IDataLoader
 	public async Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
+		if (entity == null)
+		{
+			return;
+		}
+
+		DbDataLoaderHelpers.CheckEntityIsTracked(entity, _dbContext);
+		TEntity[] distinctNotNullEntities = new TEntity[] { entity };
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
-			await LoadInternalAsync(new TEntity[] { entity }, propertyPath, cancellationToken).ConfigureAwait(false);
+			await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 		}
 	}
 
@@ -157,9 +186,11 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
-		Contract.Requires(entities != null);
-		Contract.Requires(propertyPath != null);
-		return await LoadInternalAsync(entities, propertyPath, cancellationToken).ConfigureAwait(false);
+		ArgumentNullException.ThrowIfNull(entities);
+		ArgumentNullException.ThrowIfNull(propertyPath);
+
+		IEnumerable<TEntity> distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext);
+		return await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -171,50 +202,45 @@ public partial class DbDataLoader : IDataLoader
 	public async Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPaths != null);
-		Contract.Requires(propertyPaths.Length > 0);
+		ArgumentNullException.ThrowIfNull(entities);
+		ArgumentNullException.ThrowIfNull(propertyPaths);
+		ArgumentOutOfRangeException.ThrowIfZero(propertyPaths.Length);
 
+		TEntity[] distinctNotNullEntities = entities.Where(item => item != null).Distinct().WithTrackedEntitiesCheck(_dbContext).ToArray(); // ToArray: Eliminace vícenásobné iterace v cyklu
 		foreach (Expression<Func<TEntity, object>> propertyPath in propertyPaths)
 		{
-			await LoadInternalAsync(entities, propertyPath, cancellationToken).ConfigureAwait(false);
+			await LoadInternalAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
 		}
 	}
 
 	/// <summary>
 	/// Deleguje načtení objektů do metody pro načtení referencí nebo metody pro načtení kolekce.
 	/// </summary>
-	private IFluentDataLoader<TProperty> LoadInternal<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath)
+	private IFluentDataLoader<TProperty> LoadInternal<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath)
 		where TEntity : class
 		where TProperty : class
 	{
-		LogDebug("Processing {0} entities.", args: entitiesToLoad.Count());
-
-		// přeskočíme prázdné
-		TEntity[] entitiesToLoadWithoutNulls = entitiesToLoad.Where(entity => entity != null).ToArray();
-
-		if (entitiesToLoadWithoutNulls.Length == 0) // pokud ne máme, co načítat
-		{
-			LogDebug("Exiting, there is nothing to load.");
-			return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
-		}
-
-		// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
-		Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
 		// vytáhneme posloupnost vlastností, které budeme načítat
-		PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+		string propertyPathString = propertyPath.ToString(); // ev. by šlo použít CallerArgumentExpression, ale je to breaking change do IDataLoader
 
-		Array entities = entitiesToLoadWithoutNulls;
+		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
 
+		object[] invokeLoadReferencePropertyInternalMethodArguments = null;
+		object[] invokeLoadCollectionPropertyInternalMethodArguments = null;
 		foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 		{
-			LogDebug("Loading a property '{0}'.", args: propertyToLoad.OriginalPropertyName);
+			_logger.LogDebug("Loading a property '{Property}' of entity '{Entity}'...", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 
 			LoadPropertyInternalResult loadPropertyInternalResult = default;
 
 			if (!propertyToLoad.IsCollection)
 			{
+				invokeLoadReferencePropertyInternalMethodArguments ??= new object[3];
+				invokeLoadReferencePropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
+				invokeLoadReferencePropertyInternalMethodArguments[1] = entities; // IEnumerable<>
+				invokeLoadReferencePropertyInternalMethodArguments[2] = propertyPathString;
 				try
 				{
 					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
@@ -222,16 +248,21 @@ public partial class DbDataLoader : IDataLoader
 						.MakeGenericMethod(
 							propertyToLoad.SourceType,
 							propertyToLoad.TargetType)
-						.Invoke(this, new object[] { propertyToLoad.PropertyName, entities });
+						.Invoke(this, invokeLoadReferencePropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 			else
 			{
+				invokeLoadCollectionPropertyInternalMethodArguments ??= new object[4];
+				invokeLoadCollectionPropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
+				invokeLoadCollectionPropertyInternalMethodArguments[1] = propertyToLoad.OriginalPropertyName;
+				invokeLoadCollectionPropertyInternalMethodArguments[2] = entities; // IEnumerable<>
+				invokeLoadCollectionPropertyInternalMethodArguments[3] = propertyPathString;
 				try
 				{
 					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
@@ -241,11 +272,11 @@ public partial class DbDataLoader : IDataLoader
 							propertyToLoad.TargetType,
 							propertyToLoad.OriginalTargetType,
 							propertyToLoad.CollectionItemType)
-						.Invoke(this, new object[] { propertyToLoad.PropertyName, propertyToLoad.OriginalPropertyName, entities });
+						.Invoke(this, invokeLoadCollectionPropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -253,51 +284,40 @@ public partial class DbDataLoader : IDataLoader
 			entities = loadPropertyInternalResult.Entities;
 			fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
 
-			if (entities.Length == 0)
-			{
-				// shortcut
-				LogDebug("Returning via shortcut.");
-				return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
-			}
+			_logger.LogDebug("Property '{Property}' of entity '{Entity}' loaded.", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 		}
 
-		LogDebug("Returning.");
 		return (IFluentDataLoader<TProperty>)fluentDataLoader;
 	}
 
 	/// <summary>
 	/// Deleguje načtení objektů do asynchronní metody pro načtení referencí nebo asynchronní metody pro načtení kolekce.
 	/// </summary>
-	private async Task<IFluentDataLoader<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> entitiesToLoad, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
+	private async ValueTask<IFluentDataLoader<TProperty>> LoadInternalAsync<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
 		where TEntity : class
 		where TProperty : class
 	{
-		LogDebug("Processing {0} entities.", args: entitiesToLoad.Count());
-		// přeskočíme prázdné
-		TEntity[] entitiesToLoadWithoutNulls = entitiesToLoad.Where(entity => entity != null).ToArray();
-
-		if (entitiesToLoadWithoutNulls.Length == 0) // pokud ne máme, co načítat
-		{
-			LogDebug("Exiting, there is nothing to load.");
-			return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
-		}
-
-		// ověříme, že jsou všechny objekty sledované change trackerem (na který spoléháme)
-		Contract.Assert<InvalidOperationException>(entitiesToLoadWithoutNulls.All(item => dbContext.GetEntityState(item) != EntityState.Detached), "DbDataLoader can be used only for objects tracked by a change tracker.");
-
 		// vytáhneme posloupnost vlastností, které budeme načítat
-		PropertyToLoad[] propertiesSequenceToLoad = propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
-
-		Array entities = entitiesToLoadWithoutNulls;
+		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
+		string propertyPathString = propertyPath.ToString(); // ev. by šlo použít CallerArgumentExpression, ale je to breaking change do IDataLoader
+		IEnumerable entities = distinctNotNullEntities;
 		object fluentDataLoader = null;
+
+		object[] invokeLoadReferencePropertyInternalMethodArguments = null;
+		object[] invokeLoadCollectionPropertyInternalMethodArguments = null;
 
 		foreach (PropertyToLoad propertyToLoad in propertiesSequenceToLoad)
 		{
-			LogDebug("Loading a property '{0}'.", args: propertyToLoad.OriginalPropertyName);
+			_logger.LogDebug("Loading a property '{Property}' of entity '{Entity}'...", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 
 			ValueTask<LoadPropertyInternalResult> task = default;
 			if (!propertyToLoad.IsCollection)
 			{
+				invokeLoadReferencePropertyInternalMethodArguments ??= new object[4];
+				invokeLoadReferencePropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
+				invokeLoadReferencePropertyInternalMethodArguments[1] = entities; // IEnumerable<>
+				invokeLoadReferencePropertyInternalMethodArguments[2] = propertyPathString;
+				invokeLoadReferencePropertyInternalMethodArguments[3] = cancellationToken;
 				try
 				{
 					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
@@ -305,16 +325,22 @@ public partial class DbDataLoader : IDataLoader
 						.MakeGenericMethod(
 							propertyToLoad.SourceType,
 							propertyToLoad.TargetType)
-						.Invoke(this, new object[] { propertyToLoad.PropertyName, entities, cancellationToken });
+						.Invoke(this, invokeLoadReferencePropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
 			else
 			{
+				invokeLoadCollectionPropertyInternalMethodArguments ??= new object[5];
+				invokeLoadCollectionPropertyInternalMethodArguments[0] = propertyToLoad.PropertyName;
+				invokeLoadCollectionPropertyInternalMethodArguments[1] = propertyToLoad.OriginalPropertyName;
+				invokeLoadCollectionPropertyInternalMethodArguments[2] = entities; // IEnumerable<>
+				invokeLoadCollectionPropertyInternalMethodArguments[3] = propertyPathString;
+				invokeLoadCollectionPropertyInternalMethodArguments[4] = cancellationToken;
 				try
 				{
 					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
@@ -324,11 +350,11 @@ public partial class DbDataLoader : IDataLoader
 							propertyToLoad.TargetType,
 							propertyToLoad.OriginalTargetType,
 							propertyToLoad.CollectionItemType)
-						.Invoke(this, new object[] { propertyToLoad.PropertyName, propertyToLoad.OriginalPropertyName, entities, cancellationToken });
+						.Invoke(this, invokeLoadCollectionPropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					LogDebug("Exception: {0}", args: ex.Message);
+					_logger.LogError(ex.Message);
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -338,31 +364,18 @@ public partial class DbDataLoader : IDataLoader
 			entities = loadPropertyInternalResult.Entities;
 			fluentDataLoader = loadPropertyInternalResult.FluentDataLoader;
 
-			if (entities.Length == 0)
-			{
-				// shortcut
-				LogDebug("Returning via shortcut.");
-				return new DbFluentDataLoader<TProperty>(this, new TProperty[0]);
-			}
+			_logger.LogDebug("Property '{Property}' of entity '{Entity}' loaded.", propertyToLoad.OriginalPropertyName, propertyToLoad.SourceType);
 		}
 
-		LogDebug("Returning.");
 		return (IFluentDataLoader<TProperty>)fluentDataLoader;
 	}
 
 	/// <summary>
 	/// Vrací true, pokud je vlastnost objektu již načtena.
-	/// Řídí se pomocí IDbContext.IsEntityCollectionLoaded, DbContext.IsEntityReferenceLoaded.
-	/// Pozor na předefinování metody v potomku - DbDataLoaderWithLoadedPropertiesMemory. Díky tomu nesmí být tato metoda volána opakovaně (poprvé vrací skutečnou hodnotu, v dalších voláních vrací vždy true).
 	/// </summary>
-	protected virtual bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName)
+	private bool IsEntityPropertyLoaded<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class
 	{
-		return dbContext.IsNavigationLoaded(entity, propertyName);
-	}
-
-	private void LogDebug(string message, [System.Runtime.CompilerServices.CallerMemberName] string caller = null, params object[] args)
-	{
-		logger.LogDebug(String.Concat(caller, "[", this.GetHashCode(), "]: ", message), args);
+		return _loadedPropertyReader.IsEntityPropertyLoaded(entity, propertyName);
 	}
 }

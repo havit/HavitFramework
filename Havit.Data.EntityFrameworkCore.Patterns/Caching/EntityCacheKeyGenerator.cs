@@ -9,31 +9,31 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class EntityCacheKeyGenerator : IEntityCacheKeyGenerator
 {
-	private readonly IEntityCacheKeyPrefixService entityCacheKeyPrefixService;
+	private readonly IEntityCacheKeyPrefixService _entityCacheKeyPrefixService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public EntityCacheKeyGenerator(IEntityCacheKeyPrefixService entityCacheKeyPrefixService)
 	{
-		this.entityCacheKeyPrefixService = entityCacheKeyPrefixService;
+		_entityCacheKeyPrefixService = entityCacheKeyPrefixService;
 	}
 
 	/// <inheritdoc />
 	public string GetEntityCacheKey(Type entityType, object key)
 	{
-		return entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + key.ToString();
+		return _entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + key.ToString();
 	}
 
 	/// <inheritdoc />
 	public string GetNavigationCacheKey(Type entityType, object key, string propertyName)
 	{
-		return entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + key.ToString() + "|" + propertyName;
+		return _entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + key.ToString() + "|" + propertyName;
 	}
 
 	/// <inheritdoc />
 	public string GetAllKeysCacheKey(Type entityType)
 	{
-		return entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + "AllKeys";
+		return _entityCacheKeyPrefixService.GetCacheKeyPrefix(entityType) + "AllKeys";
 	}
 }

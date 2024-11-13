@@ -22,12 +22,9 @@ public class LookupDataInvalidationRunner : ILookupDataInvalidationRunner
 	/// </summary>
 	public void Invalidate(Changes allKnownChanges)
 	{
-		if (lookupInvalidationServices.Any())
+		foreach (var lookupService in lookupInvalidationServices)
 		{
-			foreach (var lookupService in lookupInvalidationServices)
-			{
-				lookupService.InvalidateAfterCommit(allKnownChanges);
-			}
+			lookupService.InvalidateAfterCommit(allKnownChanges);
 		}
 	}
 }

@@ -11,11 +11,11 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 /// </summary>
 public class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtension
 {
-	private ImmutableList<Type> generatorTypes = ImmutableList<Type>.Empty;
+	private ImmutableList<Type> _generatorTypes = ImmutableList<Type>.Empty;
 
 	private DbContextOptionsExtensionInfo _info;
 
-	internal IImmutableList<Type> GeneratorTypes => generatorTypes;
+	internal IImmutableList<Type> GeneratorTypes => _generatorTypes;
 
 	/// <inheritdoc />
 	public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
@@ -32,7 +32,7 @@ public class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtensi
 	/// </summary>
 	protected CompositeMigrationsSqlGeneratorExtension(CompositeMigrationsSqlGeneratorExtension copyFrom)
 	{
-		generatorTypes = copyFrom.generatorTypes;
+		_generatorTypes = copyFrom._generatorTypes;
 	}
 
 	/// <summary>
@@ -49,9 +49,9 @@ public class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtensi
 		where T : IMigrationOperationSqlGenerator
 	{
 		var clone = Clone();
-		if (!clone.generatorTypes.Contains(typeof(T)))
+		if (!clone._generatorTypes.Contains(typeof(T)))
 		{
-			clone.generatorTypes = generatorTypes.Add(typeof(T));
+			clone._generatorTypes = _generatorTypes.Add(typeof(T));
 		}
 
 		return clone;
@@ -60,7 +60,7 @@ public class CompositeMigrationsSqlGeneratorExtension : IDbContextOptionsExtensi
 	/// <inheritdoc />
 	public void ApplyServices(IServiceCollection services)
 	{
-		var currentProviderTypes = generatorTypes.ToArray();
+		var currentProviderTypes = _generatorTypes.ToArray();
 
 		// since EF.Core 3.0, IMigrationsSqlGenerator is registered with scoped lifetime
 		// here we'll use exact lifetime of IMigrationsSqlGenerator defined in EF Core

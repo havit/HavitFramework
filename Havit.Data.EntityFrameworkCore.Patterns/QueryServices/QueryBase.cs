@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.QueryServices;
 
@@ -33,36 +32,12 @@ public abstract class QueryBase<TQueryResultItem>
 	}
 
 	/// <summary>
-	/// Vrátí danou stránku dané velikosti dle Query.
-	/// </summary>
-	[Obsolete($"Replaced by {nameof(GetPage)} method which contains optimized use of {nameof(Count)} method.")]
-	protected List<TQueryResultItem> SelectPage(int pageIndex, int pageSize)
-	{
-		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
-
-		return Query().Skip(pageIndex * pageSize).Take(pageSize).ToList();
-	}
-
-	/// <summary>
-	/// Vrátí danou stránku dané velikosti dle Query.
-	/// </summary>
-	[Obsolete($"Replaced by {nameof(GetPageAsync)} method which contains optimized use of {nameof(Count)} method.")]
-	protected Task<List<TQueryResultItem>> SelectPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
-	{
-		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
-
-		return Query().Skip(pageIndex * pageSize).Take(pageSize).ToListAsync(cancellationToken);
-	}
-
-	/// <summary>
 	/// Vrátí danou stránku dat a počet záznamů dle Query.
 	/// </summary>
 	protected DataFragment<TQueryResultItem> GetPage(int pageIndex, int pageSize)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageIndex, 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 0);
 
 		return GetDataFragment(pageIndex * pageSize, pageSize);
 	}
@@ -72,54 +47,10 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected async Task<DataFragment<TQueryResultItem>> GetPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>(pageIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>(pageSize >= 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageIndex, 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(pageSize, 0);
 
 		return await GetDataFragmentAsync(pageIndex * pageSize, pageSize, cancellationToken).ConfigureAwait(false);
-	}
-
-	/// <summary>
-	/// Vrátí fragment dat dle Query.
-	/// </summary>
-	[Obsolete($"Replaced by {nameof(GetDataFragment)} method which contains optimized use of {nameof(Count)} method.")]
-	protected List<TQueryResultItem> SelectDataFragment(int startIndex, int? count)
-	{
-		Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
-
-		IQueryable<TQueryResultItem> query = Query();
-		if (startIndex > 0)
-		{
-			query = query.Skip(startIndex);
-		}
-		if (count != null)
-		{
-			query = query.Take(count.Value);
-		}
-
-		return query.ToList();
-	}
-
-	/// <summary>
-	/// Vrátí fragment dat dle Query.
-	/// </summary>
-	[Obsolete($"Replaced by {nameof(GetDataFragment)} method which contains optimized use of {nameof(Count)} method.")]
-	protected Task<List<TQueryResultItem>> SelectDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
-	{
-		Contract.Requires<ArgumentOutOfRangeException>(startIndex >= 0);
-		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
-
-		IQueryable<TQueryResultItem> query = Query();
-		if (startIndex > 0)
-		{
-			query = query.Skip(startIndex);
-		}
-		if (count != null)
-		{
-			query = query.Take(count.Value);
-		}
-
-		return query.ToListAsync(cancellationToken);
 	}
 
 	/// <summary>
@@ -127,7 +58,8 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected internal DataFragment<TQueryResultItem> GetDataFragment(int startIndex, int? count)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
+		ArgumentNullException.ThrowIfNull(count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count.Value, 0);
 
 		IQueryable<TQueryResultItem> originalQuery = Query();
 		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;
@@ -158,7 +90,8 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected internal async Task<DataFragment<TQueryResultItem>> GetDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 	{
-		Contract.Requires<ArgumentOutOfRangeException>((count == null) || (count >= 0));
+		ArgumentNullException.ThrowIfNull(count);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count.Value, 0);
 
 		IQueryable<TQueryResultItem> originalQuery = Query();
 		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;

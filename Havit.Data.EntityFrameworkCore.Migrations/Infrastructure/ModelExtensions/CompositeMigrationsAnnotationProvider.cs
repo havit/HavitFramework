@@ -11,7 +11,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 /// </summary>
 public class CompositeMigrationsAnnotationProvider : MigrationsAnnotationProvider
 {
-	private readonly IEnumerable<IMigrationsAnnotationProvider> providers;
+	private readonly IEnumerable<IMigrationsAnnotationProvider> _providers;
 
 	/// <summary>
 	/// Konstruktor.
@@ -19,67 +19,67 @@ public class CompositeMigrationsAnnotationProvider : MigrationsAnnotationProvide
 	public CompositeMigrationsAnnotationProvider(MigrationsAnnotationProviderDependencies dependencies, IEnumerable<IMigrationsAnnotationProvider> providers)
 		: base(dependencies)
 	{
-		this.providers = providers;
+		this._providers = providers;
 	}
 
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(IRelationalModel model)
 	{
-		return base.ForRemove(model).Concat(providers.SelectMany(provider => provider.ForRemove(model)));
+		return base.ForRemove(model).Concat(_providers.SelectMany(provider => provider.ForRemove(model)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(ITable table)
 	{
-		return base.ForRemove(table).Concat(providers.SelectMany(provider => provider.ForRemove(table)));
+		return base.ForRemove(table).Concat(_providers.SelectMany(provider => provider.ForRemove(table)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(IColumn column)
 	{
-		return base.ForRemove(column).Concat(providers.SelectMany(provider => provider.ForRemove(column)));
+		return base.ForRemove(column).Concat(_providers.SelectMany(provider => provider.ForRemove(column)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(IView view)
 	{
-		return base.ForRemove(view).Concat(providers.SelectMany(provider => provider.ForRemove(view)));
+		return base.ForRemove(view).Concat(_providers.SelectMany(provider => provider.ForRemove(view)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(IViewColumn column)
 	{
-		return base.ForRemove(column).Concat(providers.SelectMany(provider => provider.ForRemove(column)));
+		return base.ForRemove(column).Concat(_providers.SelectMany(provider => provider.ForRemove(column)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(IUniqueConstraint constraint)
 	{
-		return base.ForRemove(constraint).Concat(providers.SelectMany(provider => provider.ForRemove(constraint)));
+		return base.ForRemove(constraint).Concat(_providers.SelectMany(provider => provider.ForRemove(constraint)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(ITableIndex index)
 	{
-		return base.ForRemove(index).Concat(providers.SelectMany(provider => provider.ForRemove(index)));
+		return base.ForRemove(index).Concat(_providers.SelectMany(provider => provider.ForRemove(index)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(IForeignKeyConstraint foreignKey)
 	{
-		return base.ForRemove(foreignKey).Concat(providers.SelectMany(provider => provider.ForRemove(foreignKey)));
+		return base.ForRemove(foreignKey).Concat(_providers.SelectMany(provider => provider.ForRemove(foreignKey)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(ISequence sequence)
 	{
-		return base.ForRemove(sequence).Concat(providers.SelectMany(provider => provider.ForRemove(sequence)));
+		return base.ForRemove(sequence).Concat(_providers.SelectMany(provider => provider.ForRemove(sequence)));
 	}
 
 	/// <inheritdoc />
 	public override IEnumerable<IAnnotation> ForRemove(ICheckConstraint checkConstraint)
 	{
-		return base.ForRemove(checkConstraint).Concat(providers.SelectMany(provider => provider.ForRemove(checkConstraint)));
+		return base.ForRemove(checkConstraint).Concat(_providers.SelectMany(provider => provider.ForRemove(checkConstraint)));
 	}
 }

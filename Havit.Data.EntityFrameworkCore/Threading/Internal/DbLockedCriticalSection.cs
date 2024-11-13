@@ -12,43 +12,43 @@ namespace Havit.Data.EntityFrameworkCore.Threading.Internal;
 /// </remarks>
 public class DbLockedCriticalSection : ICriticalSection<string>
 {
-	private readonly SqlConnection sqlConnection;
+	private readonly SqlConnection _sqlConnection;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public DbLockedCriticalSection(SqlConnection sqlConnection)
 	{
-		this.sqlConnection = sqlConnection;
+		this._sqlConnection = sqlConnection;
 	}
 
 	/// <inheritdoc />
 	public void ExecuteAction(string lockValue, Action criticalSection)
 	{
 		bool mustClose = false;
-		if (sqlConnection.State != System.Data.ConnectionState.Open)
+		if (_sqlConnection.State != System.Data.ConnectionState.Open)
 		{
-			sqlConnection.Open();
+			_sqlConnection.Open();
 			mustClose = true;
 		}
 
 		try
 		{
-			GetLock(lockValue, sqlConnection);
+			GetLock(lockValue, _sqlConnection);
 			try
 			{
 				criticalSection();
 			}
 			finally
 			{
-				ReleaseLock(lockValue, sqlConnection);
+				ReleaseLock(lockValue, _sqlConnection);
 			}
 		}
 		finally
 		{
 			if (mustClose)
 			{
-				sqlConnection.Close();
+				_sqlConnection.Close();
 			}
 		}
 	}
@@ -57,29 +57,29 @@ public class DbLockedCriticalSection : ICriticalSection<string>
 	public async Task ExecuteActionAsync(string lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default)
 	{
 		bool mustClose = false;
-		if (sqlConnection.State != System.Data.ConnectionState.Open)
+		if (_sqlConnection.State != System.Data.ConnectionState.Open)
 		{
-			await sqlConnection.OpenAsync(cancellationToken).ConfigureAwait(false);
+			await _sqlConnection.OpenAsync(cancellationToken).ConfigureAwait(false);
 			mustClose = true;
 		}
 
 		try
 		{
-			await GetLockAsync(lockValue, sqlConnection, cancellationToken).ConfigureAwait(false);
+			await GetLockAsync(lockValue, _sqlConnection, cancellationToken).ConfigureAwait(false);
 			try
 			{
 				await criticalSection().ConfigureAwait(false);
 			}
 			finally
 			{
-				await ReleaseLockAsync(lockValue, sqlConnection).ConfigureAwait(false); // NO CANCELLATION TOKEN (uvolnit zámek chceme bez ohledu na cancellation token)
+				await ReleaseLockAsync(lockValue, _sqlConnection).ConfigureAwait(false); // NO CANCELLATION TOKEN (uvolnit zámek chceme bez ohledu na cancellation token)
 			}
 		}
 		finally
 		{
 			if (mustClose)
 			{
-				await sqlConnection.CloseAsync().ConfigureAwait(false);
+				await _sqlConnection.CloseAsync().ConfigureAwait(false);
 			}
 		}
 	}

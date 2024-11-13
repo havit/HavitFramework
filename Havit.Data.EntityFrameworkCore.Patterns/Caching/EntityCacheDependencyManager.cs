@@ -1,7 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.Patterns.Infrastructure;
-using Havit.Diagnostics.Contracts;
 using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -11,24 +9,24 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 {
-	private readonly ICacheService cacheService;
-	private readonly IEntityCacheDependencyKeyGenerator entityCacheDependencyKeyGenerator;
-	private readonly IEntityKeyAccessor entityKeyAccessor;
+	private readonly ICacheService _cacheService;
+	private readonly IEntityCacheDependencyKeyGenerator _entityCacheDependencyKeyGenerator;
+	private readonly IEntityKeyAccessor _entityKeyAccessor;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public EntityCacheDependencyManager(ICacheService cacheService, IEntityCacheDependencyKeyGenerator entityCacheDependencyKeyGenerator, IEntityKeyAccessor entityKeyAccessor)
 	{
-		this.cacheService = cacheService;
-		this.entityCacheDependencyKeyGenerator = entityCacheDependencyKeyGenerator;
-		this.entityKeyAccessor = entityKeyAccessor;
+		_cacheService = cacheService;
+		_entityCacheDependencyKeyGenerator = entityCacheDependencyKeyGenerator;
+		_entityKeyAccessor = entityKeyAccessor;
 	}
 
 	/// <inheritdoc />
 	public CacheInvalidationOperation PrepareCacheInvalidation(Changes changes)
 	{
-		if (!cacheService.SupportsCacheDependencies)
+		if (!_cacheService.SupportsCacheDependencies)
 		{
 			// závislosti nemohou být použity
 			return null;
@@ -37,7 +35,7 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		HashSet<string> cacheKeysToInvalidate = new HashSet<string>();
 		HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey = new HashSet<Type>();
 
-		foreach (var change in changes)
+		foreach (var change in changes.Items)
 		{
 			if (change.ClrType != null)
 			{
@@ -53,19 +51,16 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 
 		return new CacheInvalidationOperation(() =>
 		{
-			cacheService.RemoveAll(cacheKeysToInvalidate);
+			_cacheService.RemoveAll(cacheKeysToInvalidate);
 		});
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateEntityDependencies(ChangeType changeType, object entity, HashSet<Type> typesToInvalidateAnySaveCacheDependencyKey, HashSet<string> cacheKeysToInvalidate)
 	{
-		Contract.Requires(entity != null);
-
 		// invalidate entity cache
 		Type entityType = entity.GetType();
 
-		object[] entityKeyValues = entityKeyAccessor.GetEntityKeyValues(entity);
+		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(entity).ToArray();
 
 		// entity se složeným klíčem nepodporujeme (předpokládáme, že jediné takové jsou reprezentace vztahu ManyToMany)
 		if (entityKeyValues.Length == 1)
@@ -83,16 +78,14 @@ public class EntityCacheDependencyManager : IEntityCacheDependencyManager
 		}
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateSaveCacheDependencyKeyInternal(Type entityType, object entityKey, HashSet<string> cacheKeysToInvalidate)
 	{
-		cacheKeysToInvalidate.Add(entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
+		cacheKeysToInvalidate.Add(_entityCacheDependencyKeyGenerator.GetSaveCacheDependencyKey(entityType, entityKey, ensureInCache: false));
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private void InvalidateAnySaveCacheDependencyKeyInternal(Type entityType, HashSet<string> cacheKeysToInvalidate)
 	{
-		cacheKeysToInvalidate.Add(entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
+		cacheKeysToInvalidate.Add(_entityCacheDependencyKeyGenerator.GetAnySaveCacheDependencyKey(entityType, ensureInCache: false));
 	}
 
 }

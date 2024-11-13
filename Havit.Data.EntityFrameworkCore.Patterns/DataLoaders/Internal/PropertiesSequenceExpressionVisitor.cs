@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
 
@@ -12,7 +11,7 @@ internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 	public PropertyToLoad[] GetPropertiesToLoad<TEntity, TProperty>(Expression<Func<TEntity, TProperty>> propertyPath)
 		where TEntity : class
 	{
-		Contract.Requires(propertyPath != null);
+		ArgumentNullException.ThrowIfNull(propertyPath);
 
 		propertyPathString = propertyPath.ToString();
 

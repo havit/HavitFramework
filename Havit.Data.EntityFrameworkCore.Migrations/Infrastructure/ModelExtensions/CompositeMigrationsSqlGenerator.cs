@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensio
 /// </summary>
 public class CompositeMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
 {
-	private readonly IEnumerable<IMigrationOperationSqlGenerator> operationGenerators;
+	private readonly IEnumerable<IMigrationOperationSqlGenerator> _operationGenerators;
 
 	/// <summary>
 	/// Konstruktor.
@@ -21,7 +21,7 @@ public class CompositeMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
 		IEnumerable<IMigrationOperationSqlGenerator> operationGenerators)
 		: base(dependencies, commandBatchPreparer)
 	{
-		this.operationGenerators = operationGenerators;
+		this._operationGenerators = operationGenerators;
 	}
 
 	/// <inheritdoc />
@@ -74,7 +74,7 @@ public class CompositeMigrationsSqlGenerator : SqlServerMigrationsSqlGenerator
 
 	private void RunOnGenerators(Action<IMigrationOperationSqlGenerator> action)
 	{
-		foreach (IMigrationOperationSqlGenerator generator in operationGenerators)
+		foreach (IMigrationOperationSqlGenerator generator in _operationGenerators)
 		{
 			action(generator);
 		}

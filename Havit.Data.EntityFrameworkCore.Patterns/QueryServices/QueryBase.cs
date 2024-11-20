@@ -89,8 +89,7 @@ public abstract class QueryBase<TQueryResultItem>
 	/// </summary>
 	protected internal async Task<DataFragment<TQueryResultItem>> GetDataFragmentAsync(int startIndex, int? count, CancellationToken cancellationToken = default)
 	{
-		ArgumentNullException.ThrowIfNull(count);
-		ArgumentOutOfRangeException.ThrowIfLessThan(count.Value, 0);
+		ArgumentOutOfRangeException.ThrowIfLessThan(count ?? 0, 0);
 
 		IQueryable<TQueryResultItem> originalQuery = Query();
 		IQueryable<TQueryResultItem> fragmentQuery = originalQuery;

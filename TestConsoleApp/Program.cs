@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Havit.Extensions.DependencyInjection.Abstractions;
 using Havit.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TestConsoleApp;
 
@@ -15,3 +17,11 @@ public class Program
 		}
 	}
 }
+
+[Service]
+public class MyService : IMyService
+{
+
+}
+
+public interface IMyService { }

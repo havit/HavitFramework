@@ -12,9 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.Analyzers;
 
-// TODO: Komentář
 /// <summary>
-/// TODO
+/// This class generates service registration code for dependency injection
+/// based on custom attributes applied to classes in the project.
 /// </summary>
 [Generator]
 public class ServiceRegistrationsGenerator : IIncrementalGenerator
@@ -24,28 +24,40 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext initializationContext)
 	{
-		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationEntriesProvider = initializationContext
-			.SyntaxProvider
-			.ForAttributeWithMetadataName(
-				fullyQualifiedMetadataName: typeof(ServiceAttribute).FullName,
-				predicate: static (node, _) => node is ClassDeclarationSyntax,
-				transform: static (ctx, _) => GetServiceGenerations_ServiceAttribute0(ctx))
-			.SelectMany((fields, _) => fields)
-			.Collect();
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationNonGenericProvider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute), ExtractServiceTypesFromNamedParameters);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric1Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<>), ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric2Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,>), ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric3Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,,>), ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric4Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,,,>), ExtractServiceTypesFromGenericArguments);
+		var allServiceRegistrationsProvider = serviceRegistrationNonGenericProvider.Concat(serviceRegistrationGeneric1Provider).Concat(serviceRegistrationGeneric2Provider).Concat(serviceRegistrationGeneric3Provider).Concat(serviceRegistrationGeneric4Provider);
 
-		initializationContext.RegisterSourceOutput(serviceRegistrationEntriesProvider, static (sourceContext, source) =>
+		initializationContext.RegisterSourceOutput(allServiceRegistrationsProvider, static (sourceContext, source) =>
 		{
 			GenerateSourceCode(source, sourceContext);
 		});
-
 	}
 
-	private static IEnumerable<ServiceRegistrationEntry> GetServiceGenerations_ServiceAttribute0(GeneratorAttributeSyntaxContext context)
+	private IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> GetServiceRegistrationEntriesValuesProvider(
+		IncrementalGeneratorInitializationContext initializationContext,
+		Type attributeType,
+		Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
+	{
+		return initializationContext
+			.SyntaxProvider
+			.ForAttributeWithMetadataName(
+				fullyQualifiedMetadataName: attributeType.FullName,
+				predicate: static (node, _) => node is ClassDeclarationSyntax,
+				transform: (context, _) => GetServiceGenerations_ServiceAttribute_Core(context, serviceTypeReader))
+			.SelectMany((items, _) => items)
+			.Collect();
+	}
+
+	private static IEnumerable<ServiceRegistrationEntry> GetServiceGenerations_ServiceAttribute_Core(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
 	{
 		if (context.TargetNode is not ClassDeclarationSyntax classDeclarationSyntax) yield break;
 
-		var classSymbol = (INamedTypeSymbol)context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
-		var classTypeName = classSymbol.ToDisplayString();
+		INamedTypeSymbol classSymbol = (INamedTypeSymbol)context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+		string classTypeName = classSymbol.ToDisplayString();
 
 		foreach (AttributeData attribute in context.Attributes)
 		{
@@ -54,7 +66,7 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 				ImplementationType = classTypeName,
 				Lifetime = ExtractLifetime(attribute),
 				Profile = ExtractProfile(attribute),
-				//ServiceTypes = ExtractServiceTypes0(attribute)
+				ServiceTypes = serviceTypeReader(classSymbol, attribute)
 			};
 		}
 	}
@@ -93,58 +105,52 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		return (string)profileArgument.Value.Value;
 	}
 
-	//foreach (var attributeListSyntax in classDeclaration.AttributeLists)
+	private static string[] ExtractServiceTypesFromNamedParameters(INamedTypeSymbol classSymbol, AttributeData attributeData)
+	{
+		List<string> result = new List<string>();
 
-	//{
-	//	foreach (var attributeSyntax in attributeListSyntax.Attributes)
-	//	{
-	//		if (context.SemanticModel.GetSymbolInfo(attributeSyntax).Symbol is not IMethodSymbol attributeSymbol)
-	//		{
-	//			continue;
-	//		}
+		KeyValuePair<string, TypedConstant> serviceTypeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.ServiceType));
+		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypeArgument, default) && (serviceTypeArgument.Value.Kind != TypedConstantKind.Error))
+		{
+			result.Add(((INamedTypeSymbol)serviceTypeArgument.Value.Value).ToDisplayString());
+		}
 
-	//		var fullyQualifiedAttributeName = attributeSymbol.ContainingType.ToString();
+		KeyValuePair<string, TypedConstant> serviceTypesArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.ServiceTypes));
+		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypesArgument, default) && (serviceTypesArgument.Value.Kind != TypedConstantKind.Error))
+		{
+			result.AddRange(
+				serviceTypesArgument.Value.Values
+				.Where(value => value.Kind != TypedConstantKind.Error)
+				.Select(value => ((INamedTypeSymbol)value.Value).ToDisplayString()));
+		}
 
-	//		if (RegistrationTypes.TryGetValue(fullyQualifiedAttributeName, out var registrationType))
-	//		{
-	//			var symbol = (INamedTypeSymbol)context.SemanticModel.GetDeclaredSymbol(classDeclaration);
-	//			var typeName = symbol.ToDisplayString();
+		if (result.Count == 0)
+		{
+			// když není určen žádný typ (což je 99+ scénářů), zkusíme najít interface mezi implementovanými interfaces
+			string namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
+			string className = classSymbol.Name;
 
-	//			var attributeData = symbol.GetFirstAutoRegisterAttribute(fullyQualifiedAttributeName);
+			string interfaceCandidateName = namespaceName + ".I" + className;
 
-	//			string[] registerAs;
-	//			string serviceKey = string.Empty;
+			if (classSymbol.AllInterfaces.Any(interfaceTypeSymbol => interfaceTypeSymbol.ToDisplayString() == interfaceCandidateName))
+			{
+				result.Add(interfaceCandidateName);
+			}
+		}
 
-	//			if (attributeData?.AttributeConstructor?.Parameters.Length > 0 &&
-	//				attributeData?.AttributeConstructor?.Parameters.Any(a => a.Name == SERVICE_KEY) is true)
-	//			{
-	//				serviceKey = attributeData?.ConstructorArguments.First().Value?.ToString();
-	//			}
+		return result.ToArray();
+	}
 
-	//			if (attributeData?.AttributeConstructor?.Parameters.Length > 0 && attributeData.GetIgnoredTypeNames(ONLY_REGISTER_AS) is { Length: > 0 } onlyRegisterAs)
-	//			{
-	//				registerAs = symbol!
-	//				.AllInterfaces
-	//				.Select(x => x.ToDisplayString())
-	//				.Where(x => onlyRegisterAs.Contains(x))
-	//				.ToArray();
-	//			}
-	//			else
-	//			{
-	//				registerAs = symbol!
-	//				.Interfaces
-	//				.Select(x => x.ToDisplayString())
-	//				.Where(x => !IgnoredInterfaces.Contains(x))
-	//				.ToArray();
-	//			}
-
-	//			return new AutoRegisteredClass(
-	//				typeName,
-	//				registrationType,
-	//				registerAs,
-	//				serviceKey);
-	//		}
-	//	}
+	/// <summary>
+	/// Returns name of types from generic arguments of the attribute.
+	/// </summary>
+	private static string[] ExtractServiceTypesFromGenericArguments(INamedTypeSymbol classSymbol, AttributeData attributeData)
+	{
+		return attributeData.AttributeClass.TypeArguments
+			.Where(item => item.Kind != SymbolKind.ErrorType)
+			.Select(typeArgument => typeArgument.ToDisplayString())
+			.ToArray();
+	}
 
 	private static void GenerateSourceCode(ImmutableArray<ServiceRegistrationEntry> serviceRegistrations, SourceProductionContext context)
 	{
@@ -152,25 +158,8 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		{
 			return;
 		}
-		// TODO: Název metody?
-		// TODO: Profily?
 
-		var formatted = string.Join("\r\n", serviceRegistrations.Select(c => "// " + c.GetCode()));
-		var output = formatted;
-		context.AddSource(GeneratedOutputFileName, SourceText.From(output, Encoding.UTF8));
-
+		context.AddSource(GeneratedOutputFileName, SourceText.From(ServiceRegistrationsCodeBuilder.GenerateCode(serviceRegistrations), Encoding.UTF8));
 	}
 
-	internal class ServiceRegistrationEntry
-	{
-		public string[] ServiceTypes { get; set; }
-		public string ImplementationType { get; set; }
-		public string Profile { get; set; }
-		public ServiceLifetime Lifetime { get; set; }
-
-		public string GetCode()
-		{
-			return $"services.Add{Lifetime}<{ServiceTypes?.FirstOrDefault()}, {ImplementationType}>(); // {Profile}";
-		}
-	}
 }

@@ -6,7 +6,7 @@ namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 public partial class ServiceRegistrationsTests
 {
 	[TestMethod]
-	public async Task ServiceRegistration_Profiles()
+	public async Task ServiceRegistration_SerticeTypes_Generics()
 	{
 		const string input = @"
 using Microsoft.Extensions.DependencyInjection;
@@ -14,22 +14,13 @@ using Havit.Extensions.DependencyInjection.Abstractions;
 
 namespace TestNamespace;
 
-[Service]
-public class MyDefaultService : IMyDefaultService { }
-public interface IMyDefaultService { }
+[Service<IMyService1, IMyService2, IMyService3, IMyService4>]
+public class MyService : IMyService1, IMyService2, IMyService3, IMyService4 { }
 
-[Service(Profile = ""Profile1"")]
-public class MyProfile1Service : IMyProfile1Service { }
-public interface IMyProfile1Service { }
-
-[Service(Profile = Constants.Profile2)]
-public class MyProfile2Service : IMyProfile2Service { }
-public interface IMyProfile2Service { }
-
-internal static class Constants
-{
-	public const string Profile2 = ""Profile2"";
-}
+public interface IMyService1 { }
+public interface IMyService2 { }
+public interface IMyService3 { }
+public interface IMyService4 { }
 ";
 
 		// TODO: doplnit

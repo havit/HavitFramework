@@ -1,10 +1,8 @@
 ﻿using System.Collections.Immutable;
-using System.Security.Cryptography.Xml;
 using System.Threading;
 using System.Threading.Tasks;
 using Havit.Extensions.DependencyInjection.Analyzers;
 using Havit.Extensions.DependencyInjection.SourceGenerators.Tests.Infrastructure;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

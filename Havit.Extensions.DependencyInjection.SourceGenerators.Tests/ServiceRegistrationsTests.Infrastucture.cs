@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
-using Havit.Extensions.DependencyInjection.Analyzers;
 using Havit.Extensions.DependencyInjection.SourceGenerators.Tests.Infrastructure;
+using Microsoft;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,7 +26,11 @@ public partial class ServiceRegistrationsTests
 			ReferenceAssemblies = Reference,
 			TestState =
 			{
-				Sources = { sourceInput }
+				Sources = { sourceInput },
+				AnalyzerConfigFiles = { ("/.editorconfig", @$"
+is_global=true
+build_property.RootNamespace = Havit.TestProject.Services
+" )}
 			}
 		};
 

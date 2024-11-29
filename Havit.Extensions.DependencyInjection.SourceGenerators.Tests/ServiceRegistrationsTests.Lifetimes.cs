@@ -12,7 +12,7 @@ public partial class ServiceRegistrationsTests
 using Microsoft.Extensions.DependencyInjection;
 using Havit.Extensions.DependencyInjection.Abstractions;
 
-namespace TestNamespace;
+namespace Havit.TestProject.Services.Lifetimes;
 
 [Service]
 public class MyDefaultService : IMyDefaultService { }
@@ -32,7 +32,30 @@ public interface IMyTransientService { }
 ";
 
 		// TODO: doplnit
-		const string expectedOutput = @" some code";
+		const string expectedOutput = @"using Microsoft.Extensions.DependencyInjection;
+
+namespace Havit.TestProject.Services;
+
+public static class ServiceCollectionExtensions
+{
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	{
+		if (profileName == ""@DefaultProfile"")
+		{
+			services.AddTransient<Havit.TestProject.Services.Lifetimes.IMyDefaultService, Havit.TestProject.Services.Lifetimes.MyDefaultService>();
+			services.AddScoped<Havit.TestProject.Services.Lifetimes.IMyScopedService, Havit.TestProject.Services.Lifetimes.MyScopedService>();
+			services.AddSingleton<Havit.TestProject.Services.Lifetimes.IMySingletonService, Havit.TestProject.Services.Lifetimes.MySingletonService>();
+			services.AddTransient<Havit.TestProject.Services.Lifetimes.IMyTransientService, Havit.TestProject.Services.Lifetimes.MyTransientService>();
+		}
+		else
+		{
+			throw new System.InvalidOperationException(""Unknown profile name."");
+		}
+
+		return services;
+	}
+}
+";
 
 		await VerifyGeneratorAsync(input, expectedOutput);
 	}

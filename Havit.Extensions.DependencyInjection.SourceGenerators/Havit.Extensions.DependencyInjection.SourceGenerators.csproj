@@ -11,7 +11,7 @@
 	</ItemGroup>
 
 	<!-- NuGet -->
-	<!--<Import Project="../NuGet.targets" />-->
+	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.0.0-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - SourceGenerators</Description>

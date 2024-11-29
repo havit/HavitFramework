@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Havit.Extensions.DependencyInjection.Analyzers;
+namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
 internal class ServiceRegistrationEntry
 {

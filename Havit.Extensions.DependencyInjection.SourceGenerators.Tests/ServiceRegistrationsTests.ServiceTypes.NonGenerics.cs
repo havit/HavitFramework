@@ -6,13 +6,13 @@ namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 public partial class ServiceRegistrationsTests
 {
 	[TestMethod]
-	public async Task ServiceRegistration_SerticeTypes_NonGenerics()
+	public async Task ServiceRegistration_ServiceTypes_NonGenerics()
 	{
 		const string input = @"
 using Microsoft.Extensions.DependencyInjection;
 using Havit.Extensions.DependencyInjection.Abstractions;
 
-namespace TestNamespace;
+namespace Havit.TestProject.Services.ServiceTypes.NonGenerics;
 
 [Service]
 public partial class MyService0: IMyService1 { }
@@ -21,7 +21,7 @@ public partial class MyService0: IMyService1 { }
 public partial class MyService1 { }
 public partial class MyService1 : IMyService1 { }
 
-[Service(ServiceType = typeof(IMyService2)]
+[Service(ServiceType = typeof(IMyService2))]
 public class MyService2 : IMyService2 { }
 
 [Service(ServiceTypes = [typeof(IMyService3), typeof(IMyService4)])]
@@ -34,10 +34,38 @@ public interface IMyService1 { }
 public interface IMyService2 { }
 public interface IMyService3 { }
 public interface IMyService4 { }
+public interface IMyService5 { }
+public interface IMyService6 { }
 ";
 
 		// TODO: doplnit
-		const string expectedOutput = @" some code";
+		const string expectedOutput = @"using Microsoft.Extensions.DependencyInjection;
+
+namespace Havit.TestProject.Services;
+
+public static class ServiceCollectionExtensions
+{
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	{
+		if (profileName == ""@DefaultProfile"")
+		{
+			#warning no registration found
+			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
+			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService2, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService2>();
+			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService3, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
+			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService4, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
+			services.AddSingleton<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService5>();
+			services.AddSingleton<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6>(sp => (Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6)sp.GetService<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5>());
+		}
+		else
+		{
+			throw new System.InvalidOperationException(""Unknown profile name."");
+		}
+
+		return services;
+	}
+}
+";
 
 		await VerifyGeneratorAsync(input, expectedOutput);
 	}

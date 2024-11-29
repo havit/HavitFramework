@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Havit.Extensions.DependencyInjection.Analyzers;
+namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
 /// <summary>
 /// Provides extension methods for <see cref="IncrementalValueProvider{T}"/>.

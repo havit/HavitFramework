@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Havit.Extensions.DependencyInjection.Analyzers;
+namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
 /// <summary>
 /// This class generates service registration code for dependency injection
@@ -24,14 +24,34 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext initializationContext)
 	{
+		// přečteme data z atributů (máme jich několik - negenerické a generické s různým počtem generických parametrů
 		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationNonGenericProvider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute), ExtractServiceTypesFromNamedParameters);
 		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric1Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<>), ExtractServiceTypesFromGenericArguments);
 		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric2Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,>), ExtractServiceTypesFromGenericArguments);
 		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric3Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,,>), ExtractServiceTypesFromGenericArguments);
 		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric4Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,,,>), ExtractServiceTypesFromGenericArguments);
-		var allServiceRegistrationsProvider = serviceRegistrationNonGenericProvider.Concat(serviceRegistrationGeneric1Provider).Concat(serviceRegistrationGeneric2Provider).Concat(serviceRegistrationGeneric3Provider).Concat(serviceRegistrationGeneric4Provider);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> allServiceRegistrationsProvider = serviceRegistrationNonGenericProvider.Concat(serviceRegistrationGeneric1Provider).Concat(serviceRegistrationGeneric2Provider).Concat(serviceRegistrationGeneric3Provider).Concat(serviceRegistrationGeneric4Provider);
 
-		initializationContext.RegisterSourceOutput(allServiceRegistrationsProvider, static (sourceContext, source) =>
+		// přečteme konfiguraci projektu
+		IncrementalValueProvider<BuildConfiguration> buildConfigurationProvider = initializationContext.AnalyzerConfigOptionsProvider.Select((analyzerConfig, _) =>
+		{
+			analyzerConfig.GlobalOptions.TryGetValue("build_property.RootNamespace", out string rootNamespace);
+
+			return new BuildConfiguration
+			{
+				RootNamespace = rootNamespace
+			};
+		});
+
+		// sloučíme data z atributů a konfiguraci projektu do dat pro generátor kódu
+		var serviceRegistrationsGeneratorDataProvider = allServiceRegistrationsProvider.Combine(buildConfigurationProvider).Select((data, _) => new ServiceRegistrationsGeneratorData
+		{
+			ServiceRegistrationEntries = data.Left,
+			BuildConfiguration = data.Right
+		});
+
+		// vygenerujeme kód
+		initializationContext.RegisterSourceOutput(serviceRegistrationsGeneratorDataProvider, static (sourceContext, source) =>
 		{
 			GenerateSourceCode(source, sourceContext);
 		});
@@ -47,16 +67,19 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			.ForAttributeWithMetadataName(
 				fullyQualifiedMetadataName: attributeType.FullName,
 				predicate: static (node, _) => node is ClassDeclarationSyntax,
-				transform: (context, _) => GetServiceGenerations_ServiceAttribute_Core(context, serviceTypeReader))
+				transform: (context, _) => GetServiceRegistrationEntries(context, serviceTypeReader))
 			.SelectMany((items, _) => items)
 			.Collect();
 	}
 
-	private static IEnumerable<ServiceRegistrationEntry> GetServiceGenerations_ServiceAttribute_Core(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
+	private static IEnumerable<ServiceRegistrationEntry> GetServiceRegistrationEntries(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
 	{
-		if (context.TargetNode is not ClassDeclarationSyntax classDeclarationSyntax) yield break;
+		if (context.TargetNode is not ClassDeclarationSyntax classDeclarationSyntax)
+		{
+			yield break;
+		}
 
-		INamedTypeSymbol classSymbol = (INamedTypeSymbol)context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+		INamedTypeSymbol classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
 		string classTypeName = classSymbol.ToDisplayString();
 
 		foreach (AttributeData attribute in context.Attributes)
@@ -110,17 +133,19 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		List<string> result = new List<string>();
 
 		KeyValuePair<string, TypedConstant> serviceTypeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.ServiceType));
-		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypeArgument, default) && (serviceTypeArgument.Value.Kind != TypedConstantKind.Error))
+		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypeArgument, default)
+			&& serviceTypeArgument.Value.Kind == TypedConstantKind.Type)
 		{
 			result.Add(((INamedTypeSymbol)serviceTypeArgument.Value.Value).ToDisplayString());
 		}
 
 		KeyValuePair<string, TypedConstant> serviceTypesArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.ServiceTypes));
-		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypesArgument, default) && (serviceTypesArgument.Value.Kind != TypedConstantKind.Error))
+		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypesArgument, default) && serviceTypesArgument.Value.Kind != TypedConstantKind.Error)
 		{
 			result.AddRange(
 				serviceTypesArgument.Value.Values
-				.Where(value => value.Kind != TypedConstantKind.Error)
+				.Where(value => value.Kind == TypedConstantKind.Type)
+				.Where(value => ((ISymbol)value.Value).Kind != SymbolKind.ErrorType)
 				.Select(value => ((INamedTypeSymbol)value.Value).ToDisplayString()));
 		}
 
@@ -141,9 +166,6 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		return result.ToArray();
 	}
 
-	/// <summary>
-	/// Returns name of types from generic arguments of the attribute.
-	/// </summary>
 	private static string[] ExtractServiceTypesFromGenericArguments(INamedTypeSymbol classSymbol, AttributeData attributeData)
 	{
 		return attributeData.AttributeClass.TypeArguments
@@ -152,14 +174,14 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			.ToArray();
 	}
 
-	private static void GenerateSourceCode(ImmutableArray<ServiceRegistrationEntry> serviceRegistrations, SourceProductionContext context)
+	private static void GenerateSourceCode(ServiceRegistrationsGeneratorData serviceRegistrationsGeneratorData, SourceProductionContext context)
 	{
-		if (!serviceRegistrations.Any())
+		if (!serviceRegistrationsGeneratorData.ServiceRegistrationEntries.Any())
 		{
 			return;
 		}
 
-		context.AddSource(GeneratedOutputFileName, SourceText.From(ServiceRegistrationsCodeBuilder.GenerateCode(serviceRegistrations), Encoding.UTF8));
+		context.AddSource(GeneratedOutputFileName, SourceText.From(ServiceRegistrationsCodeBuilder.GenerateCode(serviceRegistrationsGeneratorData), Encoding.UTF8));
 	}
 
 }

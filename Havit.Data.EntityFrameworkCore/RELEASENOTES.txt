@@ -1,4 +1,7 @@
-﻿v2.9.0 (12.11.2024)
+﻿v2.9.1 (2.12.2024)
+• Zavedení závislosti Microsoft.Data.SqlClient 5.2.2 pro částečný workaround issue Reading large data (binary, text) asynchronously is extremely slow #593 (https://github.com/dotnet/SqlClient/issues/593)
+
+v2.9.0 (12.11.2024)
 • Aktualizace na EF Core 9
 • DbContext.Add[Range]For[Insert/Update/Delete] (a další)): optimalizace alokací paměti
 • IDbContextFactory odstraněn

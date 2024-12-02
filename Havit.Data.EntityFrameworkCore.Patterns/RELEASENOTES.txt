@@ -1,6 +1,8 @@
-﻿v2.9.0 (12.11.2024)
-• Aktualizace na EF Core 9
+﻿v2.9.2 (20.11.2024)
+• Uvolnění příliš omezující podmínky v QueryBase
 
+v2.9.0 (12.11.2024)
+• Aktualizace na EF Core 9
 
 Novinky, úpravy:
 • IUnitOfWork.Clear() pro vyčištění change trackeru (a samotného unit of worku)
@@ -16,7 +18,6 @@ Novinky, úpravy:
 • Odstranění obsolete memberů [BREAKING CHANGE]
 • Spousta optimalizací alokací paměti a výkonu
 
-
 Dependency Injection [BREAKING CHANGE]
 • Odstranění IEntityPatternInstaller, WithEntityPatternsInstaller, použito jen IServiceCollection
 • Registrace DbContextu pomocí prostředků samotného EF Core
@@ -24,7 +25,6 @@ Dependency Injection [BREAKING CHANGE]
 • AddDataLayer - metoda nahrazena generovanou metodou AddDayaLayerServices
 • AddDataLayer/AddDayaLayerServices nově neregistruje data seedy a potřebuje explicitní registraci
 • ComponentRegistrationOptions již nemá DbUnitOfWorkType (vlastní unit of work lze zaregistrovat samostatně)
-
 
 Optimalizace:
 • DbUnitOfWork.Commit[Async] - optimalizace alokací paměti a využití reflexe v BeforeCommitProcessorech+EntityValidators

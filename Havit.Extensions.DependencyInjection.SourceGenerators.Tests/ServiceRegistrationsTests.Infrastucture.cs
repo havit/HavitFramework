@@ -27,10 +27,13 @@ public partial class ServiceRegistrationsTests
 			TestState =
 			{
 				Sources = { sourceInput },
-				AnalyzerConfigFiles = { ("/.editorconfig", @$"
-is_global=true
-build_property.RootNamespace = Havit.TestProject.Services
-" )}
+				AnalyzerConfigFiles =
+				{
+					("/.editorconfig", $@"""
+						is_global=true
+						build_property.RootNamespace = Havit.TestProject.Services
+						""")
+				}
 			}
 		};
 

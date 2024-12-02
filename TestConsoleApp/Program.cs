@@ -17,11 +17,3 @@ public class Program
 		}
 	}
 }
-
-[Service]
-public class MyService : IMyService
-{
-
-}
-
-public interface IMyService { }

@@ -33,7 +33,7 @@ internal sealed class SourceCodeWriter : IDisposable
 		if (StartBlockText is not null)
 		{
 			_indentingStringWriter.WriteLine(StartBlockText);
-		}
+		}	
 
 		return IndentAndWriteLineAtEndOfIndent(EndBlockText + statement);
 	}

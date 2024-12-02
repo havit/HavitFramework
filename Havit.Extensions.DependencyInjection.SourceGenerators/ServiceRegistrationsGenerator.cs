@@ -151,15 +151,14 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 
 		if (result.Count == 0)
 		{
-			// když není určen žádný typ (což je 99+ scénářů), zkusíme najít interface mezi implementovanými interfaces
-			string namespaceName = classSymbol.ContainingNamespace.ToDisplayString();
+			// když není určen žádný typ (což je 99%+ scénářů), zkusíme najít interface mezi implementovanými interfaces
 			string className = classSymbol.Name;
+			string interfaceCandidateName = "I" + className;
 
-			string interfaceCandidateName = namespaceName + ".I" + className;
-
-			if (classSymbol.AllInterfaces.Any(interfaceTypeSymbol => interfaceTypeSymbol.ToDisplayString() == interfaceCandidateName))
+			INamedTypeSymbol interfaceType = classSymbol.AllInterfaces.OrderBy(item => item.ToDisplayString()).FirstOrDefault(interfaceTypeSymbol => interfaceTypeSymbol.Name == interfaceCandidateName);
+			if (interfaceType != null)
 			{
-				result.Add(interfaceCandidateName);
+				result.Add(interfaceType.ToDisplayString());
 			}
 		}
 

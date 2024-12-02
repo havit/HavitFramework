@@ -15,9 +15,6 @@ using Havit.Extensions.DependencyInjection.Abstractions;
 namespace Havit.TestProject.Services.ServiceTypes.NonGenerics;
 
 [Service]
-public partial class MyService0: IMyService1 { }
-
-[Service]
 public partial class MyService1 { }
 public partial class MyService1 : IMyService1 { }
 
@@ -49,7 +46,6 @@ public static class ServiceCollectionExtensions
 	{
 		if (profileName == ""@DefaultProfile"")
 		{
-			#warning no registration found
 			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
 			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService2, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService2>();
 			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService3, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
@@ -69,4 +65,93 @@ public static class ServiceCollectionExtensions
 
 		await VerifyGeneratorAsync(input, expectedOutput);
 	}
+
+	[TestMethod]
+	public async Task ServiceRegistration_ServiceTypes_NonGenerics_MissingRegistration()
+	{
+		const string input = @"
+using Microsoft.Extensions.DependencyInjection;
+using Havit.Extensions.DependencyInjection.Abstractions;
+
+namespace Havit.TestProject.Services.ServiceTypes.NonGenerics;
+
+[Service]
+public partial class MyService1: IMyService2 { }
+
+public interface IMyService2 { }
+";
+
+		// TODO: doplnit
+		const string expectedOutput = @"using Microsoft.Extensions.DependencyInjection;
+
+namespace Havit.TestProject.Services;
+
+public static class ServiceCollectionExtensions
+{
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	{
+		if (profileName == ""@DefaultProfile"")
+		{
+			throw new System.InvalidOperationException(""Type(s) Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1 implement(s) no interface to register."");
+		}
+		else
+		{
+			throw new System.InvalidOperationException(""Unknown profile name."");
+		}
+
+		return services;
+	}
+}
+";
+
+		await VerifyGeneratorAsync(input, expectedOutput);
+	}
+
+	[TestMethod]
+	public async Task ServiceRegistration_ServiceTypes_NonGenerics_DifferentNamespaces()
+	{
+		const string input = @"
+using Microsoft.Extensions.DependencyInjection;
+using Havit.Extensions.DependencyInjection.Abstractions;
+
+namespace Havit.TestProject.Services.ServiceTypes.NonGenerics
+{
+	[Service]
+	public partial class MyService1: Havit.TestProject.Contracts.IMyService1 { }
+}
+
+namespace Havit.TestProject.Contracts
+{
+	public interface IMyService1 { }
+}
+
+";
+
+		// TODO: doplnit
+		const string expectedOutput = @"using Microsoft.Extensions.DependencyInjection;
+
+namespace Havit.TestProject.Services;
+
+public static class ServiceCollectionExtensions
+{
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	{
+		if (profileName == ""@DefaultProfile"")
+		{
+			services.AddTransient<Havit.TestProject.Contracts.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
+		}
+		else
+		{
+			throw new System.InvalidOperationException(""Unknown profile name."");
+		}
+
+		return services;
+	}
+}
+";
+
+		await VerifyGeneratorAsync(input, expectedOutput);
+	}
+
+
 }

@@ -72,20 +72,25 @@ internal static class ServiceRegistrationsCodeBuilder
 		sourceCodeWriter.WriteLine($"{elseIf}if (profileName == \"{profileName.Replace("\"", "\\\"")}\")");
 		using (sourceCodeWriter.BeginWriteBlock())
 		{
-			foreach (var serviceRegistration in profileServiceRegistrationEntries.OrderBy(item => item.ImplementationType).ThenBy(item => item.ServiceTypes.FirstOrDefault()))
+			if (profileServiceRegistrationEntries.Any(item => item.ServiceTypes.Length == 0))
 			{
-				WriteServiceRegistration(sourceCodeWriter, serviceRegistration);
+				var registrationsWithMissingServiceType = profileServiceRegistrationEntries.Where(item => item.ServiceTypes.Length == 0).ToList();
+				var registrationsWithMissingServiceTypeJoined = String.Join(", ", registrationsWithMissingServiceType.OrderBy(item => item.ImplementationType).Select(item => item.ImplementationType));
+				sourceCodeWriter.WriteLine($"throw new System.InvalidOperationException(\"Type(s) {registrationsWithMissingServiceTypeJoined} implement(s) no interface to register.\");");
+			}
+			else
+			{
+				foreach (var serviceRegistration in profileServiceRegistrationEntries.OrderBy(item => item.ImplementationType).ThenBy(item => item.ServiceTypes.FirstOrDefault()))
+				{
+					WriteServiceRegistration(sourceCodeWriter, serviceRegistration);
+				}
 			}
 		}
 	}
 
 	private static void WriteServiceRegistration(SourceCodeWriter sourceCodeWriter, ServiceRegistrationEntry serviceRegistration)
 	{
-		if (serviceRegistration.ServiceTypes.Length == 0)
-		{
-			sourceCodeWriter.WriteLine($"#warning no registration found");
-		}
-		else if ((serviceRegistration.ServiceTypes.Length == 1) || (serviceRegistration.Lifetime == ServiceLifetime.Transient))
+		if ((serviceRegistration.ServiceTypes.Length == 1) || (serviceRegistration.Lifetime == ServiceLifetime.Transient))
 		{
 			foreach (var serviceType in serviceRegistration.ServiceTypes)
 			{

@@ -13,7 +13,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.0-pre01</PackageVersion>
+		<PackageVersion>0.0.9-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - SourceGenerators</Description>
 	</PropertyGroup>
 	<ItemGroup>
@@ -22,5 +22,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- Include analyzers in the package -->
+		<None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 </Project>

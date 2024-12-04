@@ -28,7 +28,7 @@ internal static class ServiceRegistrationsCodeBuilder
 			using (sourceCodeWriter.BeginWriteBlock())
 			{
 				string methodName = GetMethodName(rootNamespace);
-				sourceCodeWriter.WriteLine($"public static IServiceCollection {methodName}(IServiceCollection services, string profileName)");
+				sourceCodeWriter.WriteLine($"public static IServiceCollection {methodName}(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)");
 				using (sourceCodeWriter.BeginWriteBlock())
 				{
 					bool first = true;

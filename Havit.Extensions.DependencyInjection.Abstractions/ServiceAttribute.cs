@@ -13,6 +13,9 @@ public class ServiceAttribute : ServiceAttributeBase
 	/// <summary>
 	/// Výchozí název profilu (pokud není specifikován).
 	/// </summary>
+	/// <remarks>
+	/// Při změně pozor na nutnost úpravy ve třídě ServiceAttributeContants.
+	/// </remarks>
 	public const string DefaultProfile = "@DefaultProfile";
 
 	/// <summary>

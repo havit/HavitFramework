@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
-using Havit.Extensions.DependencyInjection.Abstractions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,11 +24,11 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext initializationContext)
 	{
 		// přečteme data z atributů (máme jich několik - negenerické a generické s různým počtem generických parametrů
-		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationNonGenericProvider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute), ExtractServiceTypesFromNamedParameters);
-		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric1Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<>), ExtractServiceTypesFromGenericArguments);
-		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric2Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,>), ExtractServiceTypesFromGenericArguments);
-		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric3Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,,>), ExtractServiceTypesFromGenericArguments);
-		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric4Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, typeof(ServiceAttribute<,,,>), ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationNonGenericProvider = GetServiceRegistrationEntriesValuesProvider(initializationContext, ServiceAttributeConstants.ServiceAttributeNonGenericFullname, ExtractServiceTypesFromNamedParameters);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric1Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, ServiceAttributeConstants.ServiceAttributeGeneric1Fullname, ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric2Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, ServiceAttributeConstants.ServiceAttributeGeneric2Fullname, ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric3Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, ServiceAttributeConstants.ServiceAttributeGeneric3Fullname, ExtractServiceTypesFromGenericArguments);
+		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> serviceRegistrationGeneric4Provider = GetServiceRegistrationEntriesValuesProvider(initializationContext, ServiceAttributeConstants.ServiceAttributeGeneric4Fullname, ExtractServiceTypesFromGenericArguments);
 		IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> allServiceRegistrationsProvider = serviceRegistrationNonGenericProvider.Concat(serviceRegistrationGeneric1Provider).Concat(serviceRegistrationGeneric2Provider).Concat(serviceRegistrationGeneric3Provider).Concat(serviceRegistrationGeneric4Provider);
 
 		// přečteme konfiguraci projektu
@@ -59,13 +58,13 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 
 	private IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> GetServiceRegistrationEntriesValuesProvider(
 		IncrementalGeneratorInitializationContext initializationContext,
-		Type attributeType,
+		string attributeTypeFullname,
 		Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
 	{
 		return initializationContext
 			.SyntaxProvider
 			.ForAttributeWithMetadataName(
-				fullyQualifiedMetadataName: attributeType.FullName,
+				fullyQualifiedMetadataName: attributeTypeFullname,
 				predicate: static (node, _) => node is ClassDeclarationSyntax,
 				transform: (context, _) => GetServiceRegistrationEntries(context, serviceTypeReader))
 			.SelectMany((items, _) => items)
@@ -96,17 +95,15 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 
 	private static ServiceLifetime ExtractLifetime(AttributeData attributeData)
 	{
-		ServiceLifetime defaultLifetime = ServiceLifetime.Transient;
-
-		KeyValuePair<string, TypedConstant> lifetimeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.Lifetime));
+		KeyValuePair<string, TypedConstant> lifetimeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.LifetimePropertyName);
 		if (EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(lifetimeArgument, default))
 		{
-			return defaultLifetime;
+			return ServiceAttributeConstants.DefaultLifetime;
 		}
 
 		if (lifetimeArgument.Value.Kind == TypedConstantKind.Error)
 		{
-			return defaultLifetime;
+			return ServiceAttributeConstants.DefaultLifetime;
 		}
 
 		return (ServiceLifetime)lifetimeArgument.Value.Value;
@@ -114,15 +111,15 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 
 	private static string ExtractProfile(AttributeData attributeData)
 	{
-		KeyValuePair<string, TypedConstant> profileArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.Profile));
+		KeyValuePair<string, TypedConstant> profileArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.ProfilePropertyName);
 		if (EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(profileArgument, default))
 		{
-			return ServiceAttribute.DefaultProfile;
+			return ServiceAttributeConstants.DefaultProfile;
 		}
 
 		if (profileArgument.Value.Kind == TypedConstantKind.Error)
 		{
-			return ServiceAttribute.DefaultProfile;
+			return ServiceAttributeConstants.DefaultProfile;
 		}
 
 		return (string)profileArgument.Value.Value;
@@ -132,14 +129,14 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 	{
 		List<string> result = new List<string>();
 
-		KeyValuePair<string, TypedConstant> serviceTypeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.ServiceType));
+		KeyValuePair<string, TypedConstant> serviceTypeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.ServiceTypePropertyName);
 		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypeArgument, default)
 			&& serviceTypeArgument.Value.Kind == TypedConstantKind.Type)
 		{
 			result.Add(((INamedTypeSymbol)serviceTypeArgument.Value.Value).ToDisplayString());
 		}
 
-		KeyValuePair<string, TypedConstant> serviceTypesArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == nameof(ServiceAttribute.ServiceTypes));
+		KeyValuePair<string, TypedConstant> serviceTypesArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.ServiceTypesPropertyName);
 		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypesArgument, default) && serviceTypesArgument.Value.Kind != TypedConstantKind.Error)
 		{
 			result.AddRange(

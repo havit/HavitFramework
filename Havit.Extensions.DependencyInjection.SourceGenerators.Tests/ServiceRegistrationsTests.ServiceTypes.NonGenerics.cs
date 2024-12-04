@@ -42,7 +42,7 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
 		if (profileName == ""@DefaultProfile"")
 		{
@@ -88,7 +88,7 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
 		if (profileName == ""@DefaultProfile"")
 		{
@@ -134,7 +134,7 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName)
+	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
 		if (profileName == ""@DefaultProfile"")
 		{

@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProces
 /// Během operace Insert nad entitou, která má vlastnost Created typu DateTime s hodnotou default(DateTime),
 /// nastaví hodnotu této vlastnosti na aktuální datum/čas.
 /// </summary>
-public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitProcessor<object>
+public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : BeforeCommitProcessor<object>
 {
 	private readonly ITimeService _timeService;
 	private readonly ConcurrentDictionary<Type, PropertyInfo> _createdProperties = new ConcurrentDictionary<Type, PropertyInfo>();
@@ -24,7 +24,7 @@ public class SetCreatedToInsertingEntitiesBeforeCommitProcessor : IBeforeCommitP
 	/// <summary>
 	/// Pro změnu Insert, pokud má entita vlastnost Created typu DateTime s hodnotou default(DateTime), nastaví hodnotu této vlastnosti na aktuální datum/čas.
 	/// </summary>
-	public ChangeTrackerImpact Run(ChangeType changeType, object changingEntity)
+	public override ChangeTrackerImpact Run(ChangeType changeType, object changingEntity)
 	{
 		if (changeType == ChangeType.Insert)
 		{

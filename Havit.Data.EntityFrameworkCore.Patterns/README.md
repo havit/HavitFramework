@@ -6,7 +6,10 @@
 * Aktualizovat dotnet tool Havit.Data.EntityFrameworkCore.CodeGenerator.Tool (`dotnet tool update Havit.Data.EntityFrameworkCore.CodeGenerator.Tool`).
 * Zkompilovat projekt Entity (build celé solution selže).
 * Spustit generátor kódu.
-* Upravit Before Commit Processory (doplnění nové návratové hodnoty), jsou-li.
+* Upravit Before Commit Processory:
+    * V implementacích nahradit IBeforeCommitProcessor<TEntity> za bázovou třídu BeforeCommitProcessor<TEntity>.
+	* Použít nové návratové hodnoty dle chování before commit processoru.
+	* Neměnit registraci do DI.
 * Upravit přetížení metod PerformAddForInsert/Update/Delete pro vlastní Unit Of Work, pokud je potřeba.
 * Upravit registraci služeb do dependency injection:
     * odstranit volání WithEntityPatterns,

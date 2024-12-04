@@ -12,11 +12,7 @@ public interface IBeforeCommitProcessor<in TEntity> : IBeforeCommitProcessorInte
 	/// </summary>
 	/// <param name="changeType">Prováděná operace s entitou (Insert/Update/Delete).</param>
 	/// <param name="changingEntity">Entita, nad níž bude operace provedena.</param>
-	ChangeTrackerImpact Run(ChangeType changeType, TEntity changingEntity)
-	{
-		// default interface implementation
-		return ChangeTrackerImpact.NoImpact;
-	}
+	ChangeTrackerImpact Run(ChangeType changeType, TEntity changingEntity);
 
 	/// <summary>
 	/// Template metoda pro provedení akce před Commitem na UoW.
@@ -24,11 +20,7 @@ public interface IBeforeCommitProcessor<in TEntity> : IBeforeCommitProcessorInte
 	/// <param name="changeType">Prováděná operace s entitou (Insert/Update/Delete).</param>
 	/// <param name="changingEntity">Entita, nad níž bude operace provedena.</param>
 	/// <param name="cancellationToken">Cancellation token.</param>
-	ValueTask<ChangeTrackerImpact> RunAsync(ChangeType changeType, TEntity changingEntity, CancellationToken cancellationToken = default)
-	{
-		// default interface implementation
-		return new ValueTask<ChangeTrackerImpact>(ChangeTrackerImpact.NoImpact);
-	}
+	ValueTask<ChangeTrackerImpact> RunAsync(ChangeType changeType, TEntity changingEntity, CancellationToken cancellationToken = default);
 
 	#region IBeforeCommitProcessorInternal explicit interface implementation
 	ChangeTrackerImpact IBeforeCommitProcessorInternal.Run(ChangeType changeType, object changingEntity)

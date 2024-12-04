@@ -1,4 +1,7 @@
-﻿v2.9.2 (20.11.2024)
+﻿v2.9.3 (4.12.2024)
+• Odstranění výchozí implementace v IBeforeCommitProcessor<>, doplnění bázové třídy BeforeCommitProcessor.
+
+v2.9.2 (20.11.2024)
 • Uvolnění příliš omezující podmínky v QueryBase
 
 v2.9.0 (12.11.2024)

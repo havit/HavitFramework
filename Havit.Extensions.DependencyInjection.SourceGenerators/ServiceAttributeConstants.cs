@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Havit.Extensions.DependencyInjection.SourceGenerators;
+﻿namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
 internal static class ServiceAttributeConstants
 {
@@ -17,5 +15,5 @@ internal static class ServiceAttributeConstants
 
 	public const string DefaultProfile = "@DefaultProfile";
 
-	public const ServiceLifetime DefaultLifetime = ServiceLifetime.Transient;
+	public const string DefaultLifetime = "Transient";
 }

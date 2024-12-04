@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
@@ -8,7 +7,7 @@ internal class ServiceRegistrationEntry
 	public string[] ServiceTypes { get; set; }
 	public string ImplementationType { get; set; }
 	public string Profile { get; set; }
-	public ServiceLifetime Lifetime { get; set; }
+	public string Lifetime { get; set; }
 
 	public string GetCode()
 	{

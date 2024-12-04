@@ -56,6 +56,6 @@ public class ServiceAttributeConstantsTests
 		var serviceAttribute = new ServiceAttribute();
 
 		// Act +Assert
-		Assert.AreEqual(ServiceAttributeConstants.DefaultLifetime, serviceAttribute.Lifetime);
+		Assert.AreEqual(ServiceAttributeConstants.DefaultLifetime, serviceAttribute.Lifetime.ToString());
 	}
 }

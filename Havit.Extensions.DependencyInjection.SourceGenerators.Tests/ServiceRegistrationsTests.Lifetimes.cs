@@ -38,9 +38,18 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, params string[] profileNames)
 	{
-		if (profileName == ""@DefaultProfile"")
+		foreach (string profileName in profileNames)
+		{
+			AddServicesProjectServices(services, profileName);
+		}
+		return services;
+	}
+
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	{
+		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			services.AddTransient<Havit.TestProject.Services.Lifetimes.IMyDefaultService, Havit.TestProject.Services.Lifetimes.MyDefaultService>();
 			services.AddScoped<Havit.TestProject.Services.Lifetimes.IMyScopedService, Havit.TestProject.Services.Lifetimes.MyScopedService>();

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Havit.Extensions.DependencyInjection.SourceGenerators.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
@@ -28,7 +27,20 @@ internal static class ServiceRegistrationsCodeBuilder
 			using (sourceCodeWriter.BeginWriteBlock())
 			{
 				string methodName = GetMethodName(rootNamespace);
-				sourceCodeWriter.WriteLine($"public static IServiceCollection {methodName}(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)");
+
+				sourceCodeWriter.WriteLine($"public static IServiceCollection {methodName}(this IServiceCollection services, params string[] profileNames)");
+				using (sourceCodeWriter.BeginWriteBlock())
+				{
+					sourceCodeWriter.WriteLine("foreach (string profileName in profileNames)");
+					using (sourceCodeWriter.BeginWriteBlock())
+					{
+						sourceCodeWriter.WriteLine($"{methodName}(services, profileName);");
+					}
+					sourceCodeWriter.WriteLine("return services;");
+				}
+				sourceCodeWriter.WriteNewLine();
+
+				sourceCodeWriter.WriteLine($"public static IServiceCollection {methodName}(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)");
 				using (sourceCodeWriter.BeginWriteBlock())
 				{
 					bool first = true;
@@ -69,7 +81,15 @@ internal static class ServiceRegistrationsCodeBuilder
 	private static void WriteProfile(SourceCodeWriter sourceCodeWriter, string profileName, IEnumerable<ServiceRegistrationEntry> profileServiceRegistrationEntries, bool isFirst)
 	{
 		string elseIf = isFirst ? null : "else ";
-		sourceCodeWriter.WriteLine($"{elseIf}if (profileName == \"{profileName.Replace("\"", "\\\"")}\")");
+		if (profileName == ServiceAttributeConstants.DefaultProfile)
+		{
+			sourceCodeWriter.WriteLine($"{elseIf}if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)");
+		}
+		else
+		{
+			sourceCodeWriter.WriteLine($"{elseIf}if (profileName == \"{profileName.Replace("\"", "\\\"")}\")");
+		}
+
 		using (sourceCodeWriter.BeginWriteBlock())
 		{
 			if (profileServiceRegistrationEntries.Any(item => item.ServiceTypes.Length == 0))
@@ -90,7 +110,7 @@ internal static class ServiceRegistrationsCodeBuilder
 
 	private static void WriteServiceRegistration(SourceCodeWriter sourceCodeWriter, ServiceRegistrationEntry serviceRegistration)
 	{
-		if ((serviceRegistration.ServiceTypes.Length == 1) || (serviceRegistration.Lifetime == ServiceLifetime.Transient))
+		if ((serviceRegistration.ServiceTypes.Length == 1) || (serviceRegistration.Lifetime == "Transient"))
 		{
 			foreach (var serviceType in serviceRegistration.ServiceTypes)
 			{

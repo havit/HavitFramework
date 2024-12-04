@@ -42,9 +42,18 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, params string[] profileNames)
 	{
-		if (profileName == ""@DefaultProfile"")
+		foreach (string profileName in profileNames)
+		{
+			AddServicesProjectServices(services, profileName);
+		}
+		return services;
+	}
+
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	{
+		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
 			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService2, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService2>();
@@ -88,9 +97,18 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, params string[] profileNames)
 	{
-		if (profileName == ""@DefaultProfile"")
+		foreach (string profileName in profileNames)
+		{
+			AddServicesProjectServices(services, profileName);
+		}
+		return services;
+	}
+
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	{
+		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			throw new System.InvalidOperationException(""Type(s) Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1 implement(s) no interface to register."");
 		}
@@ -134,9 +152,18 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, params string[] profileNames)
 	{
-		if (profileName == ""@DefaultProfile"")
+		foreach (string profileName in profileNames)
+		{
+			AddServicesProjectServices(services, profileName);
+		}
+		return services;
+	}
+
+	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	{
+		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			services.AddTransient<Havit.TestProject.Contracts.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
 		}
@@ -152,6 +179,4 @@ public static class ServiceCollectionExtensions
 
 		await VerifyGeneratorAsync(input, expectedOutput);
 	}
-
-
 }

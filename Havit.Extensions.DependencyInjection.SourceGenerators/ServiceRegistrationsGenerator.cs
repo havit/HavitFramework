@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
@@ -93,7 +92,7 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static ServiceLifetime ExtractLifetime(AttributeData attributeData)
+	private static string ExtractLifetime(AttributeData attributeData)
 	{
 		KeyValuePair<string, TypedConstant> lifetimeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.LifetimePropertyName);
 		if (EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(lifetimeArgument, default))
@@ -106,7 +105,11 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			return ServiceAttributeConstants.DefaultLifetime;
 		}
 
-		return (ServiceLifetime)lifetimeArgument.Value.Value;
+		int value = (int)lifetimeArgument.Value.Value; // získáme hodnotu lifetime, ovšem jako int hodnotu podkladového int
+		return lifetimeArgument.Value.Type.GetMembers() // tak budeme dohledávat v podkladovém enumu mezi hodnotami
+			.Where(item => (int)((IFieldSymbol)item).ConstantValue == value) // tu, jejíž hodnota odpovídá
+			.Select(item => item.Name)
+			.FirstOrDefault();
 	}
 
 	private static string ExtractProfile(AttributeData attributeData)

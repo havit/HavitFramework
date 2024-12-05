@@ -56,10 +56,6 @@ public static class ServiceCollectionExtensions
 			services.AddSingleton<Havit.TestProject.Services.Lifetimes.IMySingletonService, Havit.TestProject.Services.Lifetimes.MySingletonService>();
 			services.AddTransient<Havit.TestProject.Services.Lifetimes.IMyTransientService, Havit.TestProject.Services.Lifetimes.MyTransientService>();
 		}
-		else
-		{
-			throw new System.InvalidOperationException(""Unknown profile name."");
-		}
 
 		return services;
 	}

@@ -50,22 +50,11 @@ internal static class ServiceRegistrationsCodeBuilder
 						WriteProfile(sourceCodeWriter, profileName, serviceRegistrationEntriesByProfile[profileName], first);
 						first = false;
 					}
-					if (first)
+					if (!first)
 					{
-						sourceCodeWriter.WriteLine($"throw new System.InvalidOperationException(\"Unknown profile name.\");");
-					}
-					else
-					{
-						sourceCodeWriter.WriteLine($"else");
-						using (sourceCodeWriter.BeginWriteBlock())
-						{
-							sourceCodeWriter.WriteLine($"throw new System.InvalidOperationException(\"Unknown profile name.\");");
-						}
-
 						sourceCodeWriter.WriteNewLine();
-						sourceCodeWriter.WriteLine("return services;");
-
 					}
+					sourceCodeWriter.WriteLine("return services;");
 				}
 			}
 

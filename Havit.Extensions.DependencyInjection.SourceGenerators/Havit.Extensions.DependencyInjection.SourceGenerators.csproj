@@ -13,8 +13,10 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<!-- TODO: distribuovat bez obsahu, aby PrivateAssets=all -->
-		<PackageVersion>0.0.9-local08</PackageVersion>
+		<PackageVersion>0.9.0-pre01</PackageVersion>
+		<!-- https://roslyn-analyzers.readthedocs.io/en/latest/create-nuget-package.html -->
+		<IncludeBuildOutput>false</IncludeBuildOutput> 
+		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - SourceGenerators</Description>
 	</PropertyGroup>
 	<ItemGroup>

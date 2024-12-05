@@ -51,10 +51,6 @@ public static class ServiceCollectionExtensions
 			services.AddTransient(typeof(Havit.TestProject.Services.ServiceTypes.Generics.IMyService2<>), typeof(Havit.TestProject.Services.ServiceTypes.Generics.MyService2<>));
 			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService3<int>, Havit.TestProject.Services.ServiceTypes.Generics.MyService3>();
 		}
-		else
-		{
-			throw new System.InvalidOperationException(""Unknown profile name."");
-		}
 
 		return services;
 	}

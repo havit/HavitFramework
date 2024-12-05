@@ -61,10 +61,6 @@ public static class ServiceCollectionExtensions
 		{
 			services.AddTransient<Havit.TestProject.Services.Profiles.IMyProfile2Service, Havit.TestProject.Services.Profiles.MyProfile2Service>();
 		}
-		else
-		{
-			throw new System.InvalidOperationException(""Unknown profile name."");
-		}
 
 		return services;
 	}

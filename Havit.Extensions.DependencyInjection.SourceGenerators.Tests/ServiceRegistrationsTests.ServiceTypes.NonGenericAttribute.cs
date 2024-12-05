@@ -62,10 +62,6 @@ public static class ServiceCollectionExtensions
 			services.AddSingleton<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService5>();
 			services.AddSingleton<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6>(sp => (Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6)sp.GetService<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5>());
 		}
-		else
-		{
-			throw new System.InvalidOperationException(""Unknown profile name."");
-		}
 
 		return services;
 	}
@@ -111,10 +107,6 @@ public static class ServiceCollectionExtensions
 		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			throw new System.InvalidOperationException(""Type(s) Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1 implement(s) no interface to register."");
-		}
-		else
-		{
-			throw new System.InvalidOperationException(""Unknown profile name."");
 		}
 
 		return services;
@@ -166,10 +158,6 @@ public static class ServiceCollectionExtensions
 		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			services.AddTransient<Havit.TestProject.Contracts.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
-		}
-		else
-		{
-			throw new System.InvalidOperationException(""Unknown profile name."");
 		}
 
 		return services;

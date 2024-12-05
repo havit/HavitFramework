@@ -13,7 +13,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>0.9.0-pre01</PackageVersion>
+		<PackageVersion>0.9.0-pre02</PackageVersion>
 		<!-- https://roslyn-analyzers.readthedocs.io/en/latest/create-nuget-package.html -->
 		<IncludeBuildOutput>false</IncludeBuildOutput> 
 		<NoPackageAnalysis>true</NoPackageAnalysis>

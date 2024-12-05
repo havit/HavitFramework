@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Havit.Extensions.DependencyInjection.SourceGenerators.Infrastructure;
+using Microsoft.CodeAnalysis;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 
@@ -95,12 +96,12 @@ internal static class ServiceRegistrationsCodeBuilder
 			if (profileServiceRegistrationEntries.Any(item => item.ServiceTypes.Length == 0))
 			{
 				var registrationsWithMissingServiceType = profileServiceRegistrationEntries.Where(item => item.ServiceTypes.Length == 0).ToList();
-				var registrationsWithMissingServiceTypeJoined = String.Join(", ", registrationsWithMissingServiceType.OrderBy(item => item.ImplementationType).Select(item => item.ImplementationType));
+				var registrationsWithMissingServiceTypeJoined = String.Join(", ", registrationsWithMissingServiceType.Select(item => item.ImplementationType.ToDisplayString()).OrderBy(item => item));
 				sourceCodeWriter.WriteLine($"throw new System.InvalidOperationException(\"Type(s) {registrationsWithMissingServiceTypeJoined} implement(s) no interface to register.\");");
 			}
 			else
 			{
-				foreach (var serviceRegistration in profileServiceRegistrationEntries.OrderBy(item => item.ImplementationType).ThenBy(item => item.ServiceTypes.FirstOrDefault()))
+				foreach (var serviceRegistration in profileServiceRegistrationEntries.OrderBy(item => item.ImplementationType.ToDisplayString()).ThenBy(item => item.ServiceTypes.Select(serviceType => serviceType.ToDisplayString()).FirstOrDefault()))
 				{
 					WriteServiceRegistration(sourceCodeWriter, serviceRegistration);
 				}
@@ -110,20 +111,52 @@ internal static class ServiceRegistrationsCodeBuilder
 
 	private static void WriteServiceRegistration(SourceCodeWriter sourceCodeWriter, ServiceRegistrationEntry serviceRegistration)
 	{
+		void WriteServiceWithLifetime(INamedTypeSymbol serviceType, INamedTypeSymbol implementationType)
+		{
+			// Situace:
+			// (1) service type IService<>, implementation type Service<T> -> chceme implementation type Service<> (použití z [Service(ServiceType= typeof(IService<>)])
+			// (2) service type IService<>, implementation type Service -> je chybou, nelze použít
+			// (3) service type IService<T>, implementation type Service<T> -> chceme service type IService<>, implementation type Service<> (použití z [ServiceAttribute])
+			// (4) service type IService<T>, implementation type Service -> je chybou, nelze použít
+			// (5) service type IService<int>, implementation type Service -> chceme, jak je - service type IService<int>, implementation type Service
+			// (6) service type IService<int>, implementation type Service<T> -> je chybou, nelze použít (museli bychom registrovat pod Service<int>)
+
+			bool useTypeOfArguments = serviceType.IsUnboundGenericType || implementationType.IsGenericType; // (1), (2), (3), (4)
+			string serviceTypeDisplayString = serviceType.IsGenericType && implementationType.IsGenericType // (3), (6)
+				? serviceType.ConstructUnboundGenericType().ToDisplayString()
+				: serviceType.ToDisplayString();
+
+			string implementationTypeDisplayString = serviceType.IsGenericType && implementationType.IsGenericType // (1), (3), (6)
+				? implementationType.ConstructUnboundGenericType().ToDisplayString()
+				: implementationType.ToDisplayString();
+
+			if (useTypeOfArguments)
+			{
+				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}(typeof({serviceTypeDisplayString}), typeof({implementationTypeDisplayString}));");
+			}
+			else
+			{
+				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{serviceTypeDisplayString}, {implementationTypeDisplayString}>();");
+			}
+
+
+		}
+
 		if ((serviceRegistration.ServiceTypes.Length == 1) || (serviceRegistration.Lifetime == "Transient"))
 		{
-			foreach (var serviceType in serviceRegistration.ServiceTypes)
+			foreach (INamedTypeSymbol serviceType in serviceRegistration.ServiceTypes)
 			{
-				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{serviceType}, {serviceRegistration.ImplementationType}>();");
+				WriteServiceWithLifetime(serviceType, serviceRegistration.ImplementationType);
 			}
 		}
 		else
 		{
-			var firstServiceType = serviceRegistration.ServiceTypes.First();
-			sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{firstServiceType}, {serviceRegistration.ImplementationType}>();");
-			foreach (var serviceType in serviceRegistration.ServiceTypes.Skip(1))
+			INamedTypeSymbol firstServiceType = serviceRegistration.ServiceTypes.First();
+			WriteServiceWithLifetime(firstServiceType, serviceRegistration.ImplementationType);
+			foreach (INamedTypeSymbol serviceType in serviceRegistration.ServiceTypes.Skip(1))
 			{
-				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{serviceType}>(sp => ({serviceType})sp.GetService<{firstServiceType}>());");
+				// varianty s generickými parametry nejsou pro další parametry aktuálně řešeny.
+				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{serviceType.ToDisplayString()}>(sp => ({serviceType.ToDisplayString()})sp.GetService<{firstServiceType.ToDisplayString()}>());");
 			}
 		}
 	}

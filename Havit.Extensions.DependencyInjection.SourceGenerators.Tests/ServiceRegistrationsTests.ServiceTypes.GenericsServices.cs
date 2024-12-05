@@ -6,7 +6,7 @@ namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 public partial class ServiceRegistrationsTests
 {
 	[TestMethod]
-	public async Task ServiceRegistration_ServiceTypes_Generics()
+	public async Task ServiceRegistration_ServiceTypes_GenericServices()
 	{
 		const string input = @"
 using Microsoft.Extensions.DependencyInjection;
@@ -14,13 +14,18 @@ using Havit.Extensions.DependencyInjection.Abstractions;
 
 namespace Havit.TestProject.Services.ServiceTypes.Generics;
 
-[Service<IMyService1, IMyService2, IMyService3, IMyService4>]
-public class MyService : IMyService1, IMyService2, IMyService3, IMyService4 { }
+[Service]
+public class MyService1<T> : IMyService1<T> { }
 
-public interface IMyService1 { }
-public interface IMyService2 { }
-public interface IMyService3 { }
-public interface IMyService4 { }
+[Service(ServiceType = typeof(IMyService2<>))]
+public class MyService2<T> : IMyService2<T> { }
+
+[Service<IMyService3<int>>]
+public class MyService3 : IMyService3<int> { }
+
+public interface IMyService1<T> { }
+public interface IMyService2<T> { }
+public interface IMyService3<T> { }
 ";
 
 		const string expectedOutput = @"using Microsoft.Extensions.DependencyInjection;
@@ -42,10 +47,9 @@ public static class ServiceCollectionExtensions
 	{
 		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService1, Havit.TestProject.Services.ServiceTypes.Generics.MyService>();
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService2, Havit.TestProject.Services.ServiceTypes.Generics.MyService>();
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService3, Havit.TestProject.Services.ServiceTypes.Generics.MyService>();
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService4, Havit.TestProject.Services.ServiceTypes.Generics.MyService>();
+			services.AddTransient(typeof(Havit.TestProject.Services.ServiceTypes.Generics.IMyService1<>), typeof(Havit.TestProject.Services.ServiceTypes.Generics.MyService1<>));
+			services.AddTransient(typeof(Havit.TestProject.Services.ServiceTypes.Generics.IMyService2<>), typeof(Havit.TestProject.Services.ServiceTypes.Generics.MyService2<>));
+			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService3<int>, Havit.TestProject.Services.ServiceTypes.Generics.MyService3>();
 		}
 		else
 		{

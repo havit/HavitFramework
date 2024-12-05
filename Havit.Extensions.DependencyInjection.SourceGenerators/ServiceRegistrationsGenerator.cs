@@ -58,7 +58,7 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 	private IncrementalValueProvider<ImmutableArray<ServiceRegistrationEntry>> GetServiceRegistrationEntriesValuesProvider(
 		IncrementalGeneratorInitializationContext initializationContext,
 		string attributeTypeFullname,
-		Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
+		Func<INamedTypeSymbol, AttributeData, INamedTypeSymbol[]> serviceTypeReader)
 	{
 		return initializationContext
 			.SyntaxProvider
@@ -70,7 +70,7 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			.Collect();
 	}
 
-	private static IEnumerable<ServiceRegistrationEntry> GetServiceRegistrationEntries(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, string[]> serviceTypeReader)
+	private static IEnumerable<ServiceRegistrationEntry> GetServiceRegistrationEntries(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, INamedTypeSymbol[]> serviceTypeReader)
 	{
 		if (context.TargetNode is not ClassDeclarationSyntax classDeclarationSyntax)
 		{
@@ -78,13 +78,12 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		}
 
 		INamedTypeSymbol classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
-		string classTypeName = classSymbol.ToDisplayString();
 
 		foreach (AttributeData attribute in context.Attributes)
 		{
 			yield return new ServiceRegistrationEntry
 			{
-				ImplementationType = classTypeName,
+				ImplementationType = classSymbol,
 				Lifetime = ExtractLifetime(attribute),
 				Profile = ExtractProfile(attribute),
 				ServiceTypes = serviceTypeReader(classSymbol, attribute)
@@ -128,28 +127,29 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		return (string)profileArgument.Value.Value;
 	}
 
-	private static string[] ExtractServiceTypesFromNamedParameters(INamedTypeSymbol classSymbol, AttributeData attributeData)
+	private static INamedTypeSymbol[] ExtractServiceTypesFromNamedParameters(INamedTypeSymbol classSymbol, AttributeData attributeData)
 	{
-		List<string> result = new List<string>();
+		List<INamedTypeSymbol> result = new List<INamedTypeSymbol>();
 
 		KeyValuePair<string, TypedConstant> serviceTypeArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.ServiceTypePropertyName);
-		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypeArgument, default)
-			&& serviceTypeArgument.Value.Kind == TypedConstantKind.Type)
+		bool hasServiceTypeArgument = !EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypeArgument, default);
+		if (hasServiceTypeArgument && (serviceTypeArgument.Value.Kind == TypedConstantKind.Type))
 		{
-			result.Add(((INamedTypeSymbol)serviceTypeArgument.Value.Value).ToDisplayString());
+			result.Add(((INamedTypeSymbol)serviceTypeArgument.Value.Value));
 		}
 
 		KeyValuePair<string, TypedConstant> serviceTypesArgument = attributeData.NamedArguments.SingleOrDefault(a => a.Key == ServiceAttributeConstants.ServiceTypesPropertyName);
-		if (!EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypesArgument, default) && serviceTypesArgument.Value.Kind != TypedConstantKind.Error)
+		bool hasServiceTypesArgument = !EqualityComparer<KeyValuePair<string, TypedConstant>>.Default.Equals(serviceTypesArgument, default);
+		if (hasServiceTypesArgument && serviceTypesArgument.Value.Kind != TypedConstantKind.Error)
 		{
 			result.AddRange(
 				serviceTypesArgument.Value.Values
 				.Where(value => value.Kind == TypedConstantKind.Type)
 				.Where(value => ((ISymbol)value.Value).Kind != SymbolKind.ErrorType)
-				.Select(value => ((INamedTypeSymbol)value.Value).ToDisplayString()));
+				.Select(value => ((INamedTypeSymbol)value.Value)));
 		}
 
-		if (result.Count == 0)
+		if (!hasServiceTypeArgument && !hasServiceTypesArgument)
 		{
 			// když není určen žádný typ (což je 99%+ scénářů), zkusíme najít interface mezi implementovanými interfaces
 			string className = classSymbol.Name;
@@ -158,18 +158,18 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			INamedTypeSymbol interfaceType = classSymbol.AllInterfaces.OrderBy(item => item.ToDisplayString()).FirstOrDefault(interfaceTypeSymbol => interfaceTypeSymbol.Name == interfaceCandidateName);
 			if (interfaceType != null)
 			{
-				result.Add(interfaceType.ToDisplayString());
+				result.Add(interfaceType);
 			}
 		}
 
 		return result.ToArray();
 	}
 
-	private static string[] ExtractServiceTypesFromGenericArguments(INamedTypeSymbol classSymbol, AttributeData attributeData)
+	private static INamedTypeSymbol[] ExtractServiceTypesFromGenericArguments(INamedTypeSymbol classSymbol, AttributeData attributeData)
 	{
 		return attributeData.AttributeClass.TypeArguments
 			.Where(item => item.Kind != SymbolKind.ErrorType)
-			.Select(typeArgument => typeArgument.ToDisplayString())
+			.Select(typeArgument => (INamedTypeSymbol)typeArgument)
 			.ToArray();
 	}
 

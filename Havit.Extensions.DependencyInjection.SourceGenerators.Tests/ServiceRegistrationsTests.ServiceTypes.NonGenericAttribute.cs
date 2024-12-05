@@ -6,7 +6,7 @@ namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 public partial class ServiceRegistrationsTests
 {
 	[TestMethod]
-	public async Task ServiceRegistration_ServiceTypes_NonGenerics()
+	public async Task ServiceRegistration_ServiceTypes_NonGenericAttribute()
 	{
 		const string input = @"
 using Microsoft.Extensions.DependencyInjection;
@@ -76,7 +76,7 @@ public static class ServiceCollectionExtensions
 	}
 
 	[TestMethod]
-	public async Task ServiceRegistration_ServiceTypes_NonGenerics_MissingRegistration()
+	public async Task ServiceRegistration_ServiceTypes_NonGenericAttribute_MissingRegistration()
 	{
 		const string input = @"
 using Microsoft.Extensions.DependencyInjection;
@@ -126,7 +126,7 @@ public static class ServiceCollectionExtensions
 	}
 
 	[TestMethod]
-	public async Task ServiceRegistration_ServiceTypes_NonGenerics_DifferentNamespaces()
+	public async Task ServiceRegistration_ServiceTypes_NonGenericAttribute_DifferentNamespaces()
 	{
 		const string input = @"
 using Microsoft.Extensions.DependencyInjection;

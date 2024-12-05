@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Havit.Extensions.DependencyInjection.Abstractions\Havit.Extensions.DependencyInjection.Abstractions.csproj" />
+    <ProjectReference Include="..\Havit.Extensions.DependencyInjection.SourceGenerators\Havit.Extensions.DependencyInjection.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Havit.Services.Sftp\Havit.Services.Sftp.csproj" />
   </ItemGroup>
 

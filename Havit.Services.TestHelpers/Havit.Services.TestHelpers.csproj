@@ -3,12 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<ImplicitUsings>true</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
+		<PackageReference Include="MSTest" Version="3.6.4" />
 	</ItemGroup>
 	
 	<ItemGroup>

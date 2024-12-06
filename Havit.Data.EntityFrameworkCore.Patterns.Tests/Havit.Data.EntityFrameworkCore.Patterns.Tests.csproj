@@ -3,6 +3,8 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>true</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
 		<NoWarn>($NoWarn);EF1001</NoWarn>
@@ -11,10 +13,8 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
 		<PackageReference Include="Moq" Version="4.20.72" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
+		<PackageReference Include="MSTest" Version="3.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>

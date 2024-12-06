@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
@@ -113,8 +114,11 @@ public static class ServiceCollectionExtensions
 	}
 }
 ";
+		var expectedDiagnostics = new DiagnosticResult(Diagnostics.ServiceAttributeCannotDetermineServiceType)
+			.WithArguments("Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1")
+			.WithLocation(8, 22);
 
-		await VerifyGeneratorAsync(input, expectedOutput);
+		await VerifyGeneratorAsync(input, expectedOutput, [expectedDiagnostics]);
 	}
 
 	[TestMethod]

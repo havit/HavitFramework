@@ -51,6 +51,7 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 		// vygenerujeme kód
 		initializationContext.RegisterSourceOutput(serviceRegistrationsGeneratorDataProvider, static (sourceContext, source) =>
 		{
+			ReportDiagnostic(source, sourceContext);
 			GenerateSourceCode(source, sourceContext);
 		});
 	}
@@ -171,6 +172,17 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			.Where(item => item.Kind != SymbolKind.ErrorType)
 			.Select(typeArgument => (INamedTypeSymbol)typeArgument)
 			.ToArray();
+	}
+
+	private static void ReportDiagnostic(ServiceRegistrationsGeneratorData source, SourceProductionContext sourceContext)
+	{
+		foreach (var serviceRegistration in source.ServiceRegistrationEntries)
+		{
+			if (serviceRegistration.ServiceTypes.Length == 0)
+			{
+				sourceContext.ReportDiagnostic(Diagnostic.Create(Diagnostics.ServiceAttributeCannotDetermineServiceType, serviceRegistration.ImplementationType.Locations.First(), serviceRegistration.ImplementationType.ToDisplayString()));
+			}
+		}
 	}
 
 	private static void GenerateSourceCode(ServiceRegistrationsGeneratorData serviceRegistrationsGeneratorData, SourceProductionContext context)

@@ -1,10 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\DiagnosticsIdentifiers.cs" Link="DiagnosticsIdentifiers.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Havit.Extensions.DependencyInjection.SourceGenerators.Tests" />
@@ -13,10 +17,11 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>0.9.0-pre02</PackageVersion>
+		<PackageVersion>0.9.0-pre03</PackageVersion>
 		<!-- https://roslyn-analyzers.readthedocs.io/en/latest/create-nuget-package.html -->
-		<IncludeBuildOutput>false</IncludeBuildOutput> 
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<DevelopmentDependency>true</DevelopmentDependency>
 		<Description>HAVIT .NET Framework Extensions - Dependency Injection Extensions - SourceGenerators</Description>
 	</PropertyGroup>
 	<ItemGroup>

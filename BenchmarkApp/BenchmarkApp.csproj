@@ -10,12 +10,5 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.6" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\EFCoreTests\DataLayer\DataLayer.csproj" />
-		<ProjectReference Include="..\EFCoreTests\Entity\Entity.csproj" />
-		<ProjectReference Include="..\EFCoreTests\Model\Model.csproj" />
 	</ItemGroup>
 </Project>

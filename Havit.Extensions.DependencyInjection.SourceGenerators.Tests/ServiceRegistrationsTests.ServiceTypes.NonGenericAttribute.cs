@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -118,7 +119,7 @@ public static class ServiceCollectionExtensions
 			.WithArguments("Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1")
 			.WithLocation(8, 22);
 
-		await VerifyGeneratorAsync(input, expectedOutput, [expectedDiagnostics]);
+		await VerifyGeneratorAsync(input, expectedOutput, new List<DiagnosticResult> { expectedDiagnostics });
 	}
 
 	[TestMethod]

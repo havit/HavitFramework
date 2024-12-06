@@ -259,7 +259,7 @@
     <Content Include="Error.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="sections\getting-started\getting-started.aspx" />
-    <Content Include="packages.config">
+    <Content Include="_packages.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Config\mailSettings-smtp.config" />

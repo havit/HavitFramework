@@ -85,7 +85,7 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="packages.config" />
+    <Content Include="_packages.config" />
     <Content Include="Content\site.less" />
     <Content Include="robots.txt" />
     <Content Include="Default.aspx" />

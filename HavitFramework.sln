@@ -51,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solutio
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		DiagnosticsIdentifiers.cs = DiagnosticsIdentifiers.cs
 		Directory.Build.props = Directory.Build.props
+		NuGet.config = NuGet.config
 		NuGet.targets = NuGet.targets
 		PackagesDependencyChart.dgml = PackagesDependencyChart.dgml
 	EndProjectSection

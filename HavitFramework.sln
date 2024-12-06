@@ -229,8 +229,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Ares.Tests", "Havit.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.PersonalDataInterchange", "Havit.PersonalDataInterchange\Havit.PersonalDataInterchange.csproj", "{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenchmarkApp", "EFCoreTests\BenchmarkApp\BenchmarkApp.csproj", "{57D637DA-71D5-4E0F-A0E0-B42BB627B7E8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.PersonalDataInterchange.Tests", "Havit.PersonalDataInterchange.Tests\Havit.PersonalDataInterchange.Tests.csproj", "{E5E1F7B1-54F7-4595-8232-283602CFB8EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Havit.Services.Net8.Tests", "Havit.Services.Net8.Tests\Havit.Services.Net8.Tests.csproj", "{FAC7D619-0F90-4E85-974A-D31088388E51}"
@@ -238,6 +236,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Extensions.DependencyInjection.SourceGenerators", "Havit.Extensions.DependencyInjection.SourceGenerators\Havit.Extensions.DependencyInjection.SourceGenerators.csproj", "{CEB3312D-3E46-4553-B877-5D1F9D58B371}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Extensions.DependencyInjection.SourceGenerators.Tests", "Havit.Extensions.DependencyInjection.SourceGenerators.Tests\Havit.Extensions.DependencyInjection.SourceGenerators.Tests.csproj", "{2B6400DB-EF5B-4566-9A7D-0BE1F292A9EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkApp", "BenchmarkApp\BenchmarkApp.csproj", "{9B7122E4-63E0-44AC-BC17-E69DF4114421}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -593,10 +593,6 @@ Global
 		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67A6F0A1-8633-40BC-AA3B-48C13BDFC01C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57D637DA-71D5-4E0F-A0E0-B42BB627B7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57D637DA-71D5-4E0F-A0E0-B42BB627B7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57D637DA-71D5-4E0F-A0E0-B42BB627B7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57D637DA-71D5-4E0F-A0E0-B42BB627B7E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E5E1F7B1-54F7-4595-8232-283602CFB8EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E5E1F7B1-54F7-4595-8232-283602CFB8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5E1F7B1-54F7-4595-8232-283602CFB8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -613,6 +609,10 @@ Global
 		{2B6400DB-EF5B-4566-9A7D-0BE1F292A9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B6400DB-EF5B-4566-9A7D-0BE1F292A9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B6400DB-EF5B-4566-9A7D-0BE1F292A9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B7122E4-63E0-44AC-BC17-E69DF4114421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B7122E4-63E0-44AC-BC17-E69DF4114421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B7122E4-63E0-44AC-BC17-E69DF4114421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B7122E4-63E0-44AC-BC17-E69DF4114421}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -719,6 +719,7 @@ Global
 		{FAC7D619-0F90-4E85-974A-D31088388E51} = {3C2FD345-B555-4C43-A930-761AC2517EFD}
 		{CEB3312D-3E46-4553-B877-5D1F9D58B371} = {97109FED-C671-49FA-8614-C63D8E5935B9}
 		{2B6400DB-EF5B-4566-9A7D-0BE1F292A9EA} = {AF3363A0-2BB8-4372-8937-21BDADB8FD9E}
+		{9B7122E4-63E0-44AC-BC17-E69DF4114421} = {9D3050E0-20E0-4CE6-BCBE-CF095A71C394}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

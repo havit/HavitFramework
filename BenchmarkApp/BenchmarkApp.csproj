@@ -14,8 +14,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\DataLayer\DataLayer.csproj" />
-		<ProjectReference Include="..\Entity\Entity.csproj" />
-		<ProjectReference Include="..\Model\Model.csproj" />
+		<ProjectReference Include="..\EFCoreTests\DataLayer\DataLayer.csproj" />
+		<ProjectReference Include="..\EFCoreTests\Entity\Entity.csproj" />
+		<ProjectReference Include="..\EFCoreTests\Model\Model.csproj" />
 	</ItemGroup>
 </Project>

@@ -19,13 +19,13 @@ using Havit.Data.Entity.Patterns.Windsor.Installers;
 using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer;
 using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Entity;
 using Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.Model;
+using Havit.Data.Entity6.Patterns.Windsor.Tests.TestHelpers;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.TimeServices;
-using Havit.TestHelpers.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity6.Patterns.Windsor.Tests;

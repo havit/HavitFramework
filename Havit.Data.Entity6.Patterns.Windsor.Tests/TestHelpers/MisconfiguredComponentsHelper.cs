@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Havit.TestHelpers.CastleWindsor;
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests.TestHelpers;
 
 
 public static class MisconfiguredComponentsHelper

@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Havit.TestHelpers.CastleWindsor;
+namespace Havit.Data.Entity6.Patterns.Windsor.Tests.TestHelpers;
 
 public static class PotentialLifestyleMismatchesHelper
 {
@@ -17,7 +17,7 @@ public static class PotentialLifestyleMismatchesHelper
 		AssertPotentialLifestyleMismatches(container, cm => true);
 	}
 
-	public static void AssertPotentialLifestyleMismatches(IWindsorContainer container, Predicate<ComponentModel> componentModelPredicate)
+	public static void AssertPotentialLifestyleMismatches(IWindsorContainer container, Predicate<Castle.Core.ComponentModel> componentModelPredicate)
 	{
 		var diagnostic = new PotentialLifestyleMismatchesDiagnostic(container.Kernel);
 		IHandler[][] handlersArray = diagnostic.Inspect().Where(ha => componentModelPredicate(ha.Last().ComponentModel)).ToArray();
@@ -60,7 +60,7 @@ public static class PotentialLifestyleMismatchesHelper
 							 indirect);
 	}
 
-	private static string GetNameDescription(ComponentModel componentModel)
+	private static string GetNameDescription(Castle.Core.ComponentModel componentModel)
 	{
 		if (componentModel.ComponentName.SetByUser)
 		{

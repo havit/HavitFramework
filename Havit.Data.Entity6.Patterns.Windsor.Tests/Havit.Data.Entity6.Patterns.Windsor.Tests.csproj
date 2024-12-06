@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Castle.Windsor" Version="5.1.2" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj" />
-    <ProjectReference Include="..\Havit.TestHelpers\Havit.TestHelpers.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.Entity6.Patterns.Windsor\Havit.Data.Entity6.Patterns.Windsor.csproj" />
+	</ItemGroup>
 
 </Project>
 

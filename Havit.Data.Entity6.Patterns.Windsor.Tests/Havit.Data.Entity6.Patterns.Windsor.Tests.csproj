@@ -8,7 +8,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Castle.Windsor" Version="5.1.2" />
-		<PackageReference Include="MSTest" Version="3.4.3" />
+		<PackageReference Include="MSTest" Version="3.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>

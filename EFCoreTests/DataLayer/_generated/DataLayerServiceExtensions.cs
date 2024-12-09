@@ -7,6 +7,7 @@
 
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Repositories;
@@ -26,8 +27,6 @@ public static partial class DataLayerServiceExtensions
 		AddRepositories(services);
 		AddDataEntries(services);
 		AddEntityKeyAccessors(services);
-
-		AddNextDataLayerServices(services); // partial method for custom extensibility
 
 		return services;
 	}
@@ -117,6 +116,4 @@ public static partial class DataLayerServiceExtensions
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.StateLocalization, int>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.StateLocalization, int>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.User, int>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.User, int>>();
 	}
-
-	static partial void AddNextDataLayerServices(IServiceCollection services);
 }

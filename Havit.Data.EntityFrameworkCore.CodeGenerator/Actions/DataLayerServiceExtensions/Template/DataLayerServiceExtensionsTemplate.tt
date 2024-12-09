@@ -31,8 +31,6 @@ public static partial class DataLayerServiceExtensions
 		AddDataEntries(services);
 		AddEntityKeyAccessors(services);
 
-		AddNextDataLayerServices(services); // partial method for custom extensibility
-
 		return services;
 	}
 
@@ -72,6 +70,4 @@ public static partial class DataLayerServiceExtensions
 		services.TryAddTransient<IEntityKeyAccessor<<#= repositoryModel.ModelClassFullName #>, int>, DbEntityKeyAccessor<<#= repositoryModel.ModelClassFullName #>, int>>();
 <# } #>
 	}
-
-	static partial void AddNextDataLayerServices(IServiceCollection services);
 }

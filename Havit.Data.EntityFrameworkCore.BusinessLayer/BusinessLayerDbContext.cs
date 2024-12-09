@@ -93,6 +93,8 @@ public abstract class BusinessLayerDbContext : DbContext
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 	{
+		base.ConfigureConventions(configurationBuilder);
+
 		configurationBuilder.AddModelExtensionRegistrationConvention();
 	}
 }

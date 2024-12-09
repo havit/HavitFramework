@@ -1,4 +1,8 @@
-﻿v2.9.3 (4.12.2024)
+﻿v2.9.4 (9.12.2024)
+• DbUnitOfWork - Podpora registrace asynchronních after commit akcí (použitelné jen v CommmitAsync)
+• ComponentRegistrationOptions - oprava (ne)možnosti vytvoření instance
+
+v2.9.3 (4.12.2024)
 • Odstranění výchozí implementace v IBeforeCommitProcessor<>, doplnění bázové třídy BeforeCommitProcessor.
 
 v2.9.2 (20.11.2024)

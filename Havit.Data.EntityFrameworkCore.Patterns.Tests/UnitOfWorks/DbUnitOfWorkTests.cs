@@ -170,6 +170,7 @@ public class DbUnitOfWorkTests
 		{
 			mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
 			mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Never);
+			mockDbUnitOfWork.Verify(m => m.AfterCommitAsync(It.IsAny<CancellationToken>()), Times.Never);
 		});
 
 		// Act
@@ -179,6 +180,7 @@ public class DbUnitOfWorkTests
 		mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
 		mockDbContext.Verify(m => m.SaveChanges(true), Times.Once);
 		mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Once);
+		mockDbUnitOfWork.Verify(m => m.AfterCommitAsync(It.IsAny<CancellationToken>()), Times.Never);
 	}
 
 	[TestMethod]
@@ -202,6 +204,28 @@ public class DbUnitOfWorkTests
 		// Assert
 		mockBeforeCommitProcessorsRunner.Verify(m => m.Run(It.IsAny<Changes>()), Times.Once);
 		mockBeforeCommitProcessorsRunner.Verify(m => m.RunAsync(It.IsAny<Changes>(), It.IsAny<CancellationToken>()), Times.Never);
+	}
+
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
+	public void DbUnitOfWork_Commit_ThrowsWhenAsyncAfterCommitActionIsRegistered()
+	{
+		// Arrange
+		Mock<IDbContext> mockDbContext = new Mock<IDbContext>();
+		mockDbContext.Setup(m => m.SaveChanges(true));
+
+		Mock<ISoftDeleteManager> mockSoftDeleteManager = new Mock<ISoftDeleteManager>();
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		dbUnitOfWork.RegisterAfterCommitAction(async _ => await Task.Yield());
+
+		// Act
+		dbUnitOfWork.Commit();
+
+		// Assert by method attribute
 	}
 
 	[TestMethod]
@@ -244,6 +268,7 @@ public class DbUnitOfWorkTests
 			{
 				mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
 				mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Never);
+				mockDbUnitOfWork.Verify(m => m.AfterCommitAsync(It.IsAny<CancellationToken>()), Times.Never);
 			})
 			.Returns(Task.CompletedTask);
 
@@ -253,7 +278,8 @@ public class DbUnitOfWorkTests
 		// Assert
 		mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
 		mockDbContext.Verify(m => m.SaveChangesAsync(true, It.IsAny<CancellationToken>()), Times.Once);
-		mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Once);
+		mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Never);
+		mockDbUnitOfWork.Verify(m => m.AfterCommitAsync(It.IsAny<CancellationToken>()), Times.Once);
 	}
 
 	[TestMethod]
@@ -415,6 +441,7 @@ public class DbUnitOfWorkTests
 			Assert.AreEqual(EntityState.Modified, ((IDbContext)testDbContext).GetEntityState(itemWithDeleted));
 		}
 	}
+
 	[TestMethod]
 	public void DbUnitOfWork_AddForUpdate_UpdatesFromNonTrackedObject()
 	{
@@ -478,10 +505,12 @@ public class DbUnitOfWorkTests
 		language.UiCulture = "";
 		dbUnitOfWork.AddForUpdate(language);
 		dbUnitOfWork.RegisterAfterCommitAction(() => { /* something */ });
+		dbUnitOfWork.RegisterAfterCommitAction(async (CancellationToken _) => await Task.Yield() /* something */);
 
 		// Prerequisities
 		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Items.Count());
-		Assert.AreEqual(1, dbUnitOfWork._afterCommits.Count);
+		Assert.AreEqual(1, dbUnitOfWork._afterCommitActions.Count);
+		Assert.AreEqual(1, dbUnitOfWork._asyncAfterCommitsActions.Count);
 		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 
 		// Act
@@ -490,7 +519,8 @@ public class DbUnitOfWorkTests
 		// Assert
 		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Items.Count());
 		Assert.AreEqual(0, dbUnitOfWork._updateRegistrations.Count);
-		Assert.IsNull(dbUnitOfWork._afterCommits);
+		Assert.IsNull(dbUnitOfWork._afterCommitActions);
+		Assert.IsNull(dbUnitOfWork._asyncAfterCommitsActions);
 		Assert.AreEqual(0, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 	}
 

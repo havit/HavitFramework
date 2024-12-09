@@ -8,6 +8,7 @@ using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
 using Havit.EFCoreTests.DataLayer;
 using Havit.EFCoreTests.DataLayer.DataSources;
@@ -96,12 +97,19 @@ public static class Program
 		var personRepository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
 		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
+		var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-		Person person1 = personRepository.GetObject(1);
-		dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		unitOfWork.RegisterAfterCommitAction(() => Console.WriteLine(0));
+		unitOfWork.RegisterAfterCommitAction((CancellationToken ct) => { Console.WriteLine(1); return Task.CompletedTask; });
 
-		Person person2 = personRepository.GetObject(2);
-		await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
+		//unitOfWork.Commit();
+		await unitOfWork.CommitAsync(cancellationToken);
+
+		//Person person1 = personRepository.GetObject(1);
+		//dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+
+		//Person person2 = personRepository.GetObject(2);
+		//await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
 		//	var parameter = Expression.Parameter(typeof(Person), "item");
 		//	Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;

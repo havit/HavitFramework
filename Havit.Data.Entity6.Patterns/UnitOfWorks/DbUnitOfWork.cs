@@ -292,7 +292,16 @@ public class DbUnitOfWork : IUnitOfWork
 	/// Vyhazuje výjimku NotSupportedException.
 	/// </summary>
 	/// <exception cref="NotSupportedException">Always.</exception>
-	public void Clear()
+	void IUnitOfWork.Clear()
+	{
+		throw new NotSupportedException();
+	}
+
+	/// <summary>
+	/// Vyhazuje výjimku NotSupportedException.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Always.</exception>
+	void IUnitOfWork.RegisterAfterCommitAction(Func<CancellationToken, Task> asyncAction)
 	{
 		throw new NotSupportedException();
 	}

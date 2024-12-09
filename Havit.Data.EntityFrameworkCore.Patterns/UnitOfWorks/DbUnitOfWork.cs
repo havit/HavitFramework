@@ -19,7 +19,8 @@ public class DbUnitOfWork : IUnitOfWork
 	private readonly ILookupDataInvalidationRunner _lookupDataInvalidationRunner;
 
 	// internal: unit testy ověřují stav
-	internal List<Action> _afterCommits = null;
+	internal List<Action> _afterCommitActions = null;
+	internal List<Func<CancellationToken, Task>> _asyncAfterCommitsActions = null;
 	internal readonly HashSet<object> _updateRegistrations = new HashSet<object>();
 
 	/// <summary>
@@ -117,7 +118,7 @@ public class DbUnitOfWork : IUnitOfWork
 		await DbContext.SaveChangesAsync(suppressDetectChanges: true, cancellationToken: cancellationToken).ConfigureAwait(false); // change tracker byl zavolán a nepotřebujeme jej volat znovu
 		Commit_AfterSaveChanges(allKnownChanges, cacheInvalidationOperation);
 
-		AfterCommit();
+		await AfterCommitAsync(cancellationToken).ConfigureAwait(false);
 	}
 
 	private void Commit_AfterSaveChanges(Changes allKnownChanges, CacheInvalidationOperation cacheInvalidationOperation)
@@ -143,14 +144,58 @@ public class DbUnitOfWork : IUnitOfWork
 	/// <summary>
 	/// Spuštěno po  commitu.
 	/// Zajišťuje volání registrovaných after commit akcí (viz RegisterAfterCommitAction).
+	/// V případě registrace asynchronní after commit akce vyhodí výjimku.
 	/// </summary>
 	protected internal virtual void AfterCommit()
 	{
-		List<Action> registeredAfterCommitActiond = _afterCommits;
+		if (_asyncAfterCommitsActions != null)
+		{
+			throw new InvalidOperationException($"Cannot use asynchronous after commit actions for {nameof(Commit)} method method. Call {nameof(CommitAsync)} method or use only synchronous after commit actions.");
+		}
+
+		List<Action> registeredAfterCommitActions = _afterCommitActions;
 		// Neprve vyčistíme afterCommits, pak je teprve spustíme.
 		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
-		_afterCommits = null;
-		registeredAfterCommitActiond?.ForEach(item => item.Invoke());
+		_afterCommitActions = null;
+
+		if (registeredAfterCommitActions != null)
+		{
+			foreach (var registeredAfterCommitAction in registeredAfterCommitActions)
+			{
+				registeredAfterCommitAction.Invoke();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Spuštěno po commitu.
+	/// Zajišťuje volání registrovaných after commit akcí (viz RegisterAfterCommitAction).
+	/// Podporuje synchronní i asynchronní after commit akce.
+	/// </summary>
+	protected internal virtual async Task AfterCommitAsync(CancellationToken cancellationToken)
+	{
+		List<Action> registeredAfterCommitActions = _afterCommitActions;
+		List<Func<CancellationToken, Task>> registeredAsyncAfterCommitActions = _asyncAfterCommitsActions;
+		// Neprve vyčistíme afterCommits a asyncAfterCommits, pak je teprve spustíme.
+		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
+		_afterCommitActions = null;
+		_asyncAfterCommitsActions = null;
+
+		if (registeredAfterCommitActions != null)
+		{
+			foreach (var registeredAfterCommitAction in registeredAfterCommitActions)
+			{
+				registeredAfterCommitAction.Invoke();
+			}
+		}
+
+		if (registeredAsyncAfterCommitActions != null)
+		{
+			foreach (var registeredAsyncAfterCommitAction in registeredAsyncAfterCommitActions)
+			{
+				await registeredAsyncAfterCommitAction(cancellationToken).ConfigureAwait(false);
+			}
+		}
 	}
 
 	/// <summary>
@@ -160,11 +205,25 @@ public class DbUnitOfWork : IUnitOfWork
 	public void RegisterAfterCommitAction(Action action)
 	{
 		ArgumentNullException.ThrowIfNull(action);
-		if (_afterCommits == null)
+		if (_afterCommitActions == null)
 		{
-			_afterCommits = new List<Action>();
+			_afterCommitActions = new List<Action>(1);
 		}
-		_afterCommits.Add(action);
+		_afterCommitActions.Add(action);
+	}
+
+	/// <summary>
+	/// Registruje asynchronní akci k provedení po commitu. Akce je provedena metodou AfterCommit.
+	/// Při opakovaném commitu již akce není volána.
+	/// </summary>
+	public void RegisterAfterCommitAction(Func<CancellationToken, Task> asyncAction)
+	{
+		ArgumentNullException.ThrowIfNull(asyncAction);
+		if (_asyncAfterCommitsActions == null)
+		{
+			_asyncAfterCommitsActions = new List<Func<CancellationToken, Task>>(1);
+		}
+		_asyncAfterCommitsActions.Add(asyncAction);
 	}
 
 	/// <summary>
@@ -411,7 +470,8 @@ public class DbUnitOfWork : IUnitOfWork
 	public void Clear()
 	{
 		ClearRegistrationHashSets();
-		_afterCommits = null;
+		_afterCommitActions = null;
+		_asyncAfterCommitsActions = null;
 		DbContext.ChangeTracker.Clear();
 	}
 }

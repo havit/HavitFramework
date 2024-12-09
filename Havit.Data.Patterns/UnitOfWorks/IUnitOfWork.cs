@@ -54,9 +54,15 @@ public interface IUnitOfWork
 		where TEntity : class;
 
 	/// <summary>
-	/// Registruje akci k provedení po commitu. Akce je provedena metodou AfterCommit.
+	/// Registruje akci k provedení po (synchronním i asynchronním) commitu.
 	/// </summary>
 	void RegisterAfterCommitAction(Action action);
+
+	/// <summary>
+	/// Registruje asynchronní akci k provedení po asynchronním commitu.
+	/// Použití synchronního commitu po registraci asynchronní akce vyhodí výjimku.
+	/// </summary>
+	void RegisterAfterCommitAction(Func<CancellationToken, Task> asyncAction);
 
 	/// <summary>
 	/// Vyčistí registrace objektů, after commit actions, atp. (vč. podkladového DbContextu a jeho changetrackeru).

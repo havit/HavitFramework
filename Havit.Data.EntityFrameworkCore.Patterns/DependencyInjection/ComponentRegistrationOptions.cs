@@ -22,7 +22,7 @@ public class ComponentRegistrationOptions
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	internal ComponentRegistrationOptions()
+	public ComponentRegistrationOptions()
 	{
 		CachingInstaller = new DefaultCachingInstaller();
 	}

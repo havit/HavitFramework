@@ -10,24 +10,27 @@ public static class ComponentRegistrationOptionsExtensions
 	/// <summary>
 	/// Řekne, že má být zaregistrována služba, která neprovádí žádné cachování.
 	/// </summary>
-	public static void ConfigureNoCaching(this ComponentRegistrationOptions componentRegistrationOptions)
+	public static ComponentRegistrationOptions ConfigureNoCaching(this ComponentRegistrationOptions componentRegistrationOptions)
 	{
 		componentRegistrationOptions.CachingInstaller = new NoCachingInstaller();
+		return componentRegistrationOptions;
 	}
 
 	/// <summary>
 	/// Řekne, že má být zaregistrována služba, která cachuje úplně všechno se sliding expirací.
 	/// </summary>
-	public static void ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(this ComponentRegistrationOptions componentRegistrationOptions, TimeSpan slidingExpiration)
+	public static ComponentRegistrationOptions ConfigureCacheAllEntitiesWithDefaultSlidingExpirationCaching(this ComponentRegistrationOptions componentRegistrationOptions, TimeSpan slidingExpiration)
 	{
 		componentRegistrationOptions.CachingInstaller = new CacheAllEntitiesWithDefaultSlidingExpirationCachingInstaller(slidingExpiration);
+		return componentRegistrationOptions;
 	}
 
 	/// <summary>
 	/// Řekne, že má být zaregistrována služba vlastním installerem.
 	/// </summary>
-	public static void ConfigureCustomCaching(this ComponentRegistrationOptions componentRegistrationOptions, ICachingInstaller installer)
+	public static ComponentRegistrationOptions ConfigureCustomCaching(this ComponentRegistrationOptions componentRegistrationOptions, ICachingInstaller installer)
 	{
 		componentRegistrationOptions.CachingInstaller = installer;
+		return componentRegistrationOptions;
 	}
 }

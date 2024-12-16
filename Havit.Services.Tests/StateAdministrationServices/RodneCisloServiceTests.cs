@@ -19,8 +19,8 @@ public class RodneCisloServiceTests
 	//[DataRow(true, "9950010004")] 
 	//[DataRow(true, "995001/0004")]
 
-	[DataRow(true, "404040404")] // správný formát, nelze validovat
-	[DataRow(true, "404040/404")] // správný formát, nelze validovat
+	[DataRow(false, "404040404")]
+	[DataRow(false, "404040/404")]
 	[DataRow(false, "40404/4040")] // chybný formát
 	[DataRow(false, "40404//4040")] // chybný formát
 	[DataRow(false, "7909172990")]
@@ -45,6 +45,11 @@ public class RodneCisloServiceTests
 	[DataRow(false, "990132/0004")]
 	[DataRow(true, "000229/0002")] // přestupný rok
 	[DataRow(false, "990229/0002")] // nepřestupný rok
+	[DataRow(true, "992311/4927")]
+	[DataRow(true, "017112/7154")] // přičteno 70 u měsíce
+	[DataRow(true, "992301/0009")] // přičteno 20 u měsíce
+	[DataRow(false, "992301/0008")]
+	[DataRow(true, "505822/332")] // před rokem 1954
 	public void RodneCisloServices_Validate_Samples(bool expected, string rodneCislo)
 	{
 		var result = RodneCisloServices.Validate(rodneCislo);

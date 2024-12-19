@@ -12,5 +12,6 @@ public sealed class NoCachingInstaller : ICachingInstaller
 	public void Install(IServiceCollection services)
 	{
 		services.AddSingleton<IEntityCacheManager, NoCachingEntityCacheManager>();
+		services.AddSingleton<IEntityCacheDependencyManager, NoCachingEntityCacheDependencyManager>();
 	}
 }

@@ -33,7 +33,7 @@ public class ServiceCollectionExtensionsTests
 		// noop
 
 		// Act
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(false);
+		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: false);
 
 		// Assert
 		using var scope = serviceProvider.CreateScope();
@@ -49,7 +49,7 @@ public class ServiceCollectionExtensionsTests
 		// noop
 
 		// Act
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(true);
+		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
 
 		// Assert
 		using var scope = serviceProvider.CreateScope();
@@ -247,7 +247,25 @@ public class ServiceCollectionExtensionsTests
 		Assert.IsInstanceOfType(dataSeedRunner, typeof(DbDataSeedRunner));
 	}
 
-	internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false)
+
+	[TestMethod]
+	public void ServiceCollectionExtensions_UnitOfWorks_CanBeResolvedWithoutCacheSupport()
+	{
+		// Arrange
+		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(withNoCaching: true);
+
+		// Act
+		using var scope = serviceProvider.CreateScope();
+
+		var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+		var entityCacheManager = scope.ServiceProvider.GetRequiredService<IEntityCacheManager>();
+
+		// Assert
+		Assert.IsInstanceOfType(unitOfWork, typeof(DbUnitOfWork));
+		Assert.IsInstanceOfType(entityCacheManager, typeof(NoCachingEntityCacheManager));
+	}
+
+	internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false, bool withNoCaching = false)
 	{
 		// V Development dochází k více kontrolám
 		var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings { EnvironmentName = "Development" });
@@ -265,11 +283,20 @@ public class ServiceCollectionExtensionsTests
 				.UseDefaultHavitConventions());
 		}
 
+		ComponentRegistrationOptions componentRegistrationOptions = new ComponentRegistrationOptions();
+		if (withNoCaching)
+		{
+			componentRegistrationOptions.ConfigureNoCaching();
+		}
+		else
+		{
+			builder.Services.AddSingleton<ICacheService, NullCacheService>();
+		}
+
 		builder.Services
-			.AddDataLayerServices()
+			.AddDataLayerServices(componentRegistrationOptions)
 			.AddLocalizationServices<Language>();
 		builder.Services.AddSingleton<ITimeService, ServerTimeService>();
-		builder.Services.AddSingleton<ICacheService, NullCacheService>();
 
 		var application = builder.Build();
 		return application.Services;

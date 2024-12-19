@@ -76,6 +76,7 @@ public static class Program
 
 	private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 	{
+		serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IUnitOfWork>().Commit();
 		await serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedDataAsync<PersonsProfile>(forceRun: true, cancellationToken: cancellationToken);
 		//serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IDataSeedRunner>().SeedData<PersonsProfile>(forceRun: true);
 

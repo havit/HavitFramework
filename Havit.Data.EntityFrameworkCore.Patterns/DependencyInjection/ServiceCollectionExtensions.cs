@@ -79,17 +79,6 @@ public static class ServiceCollectionExtensions
 		services.TryAddTransient<IDbEntityKeyAccessorStorageBuilder, DbEntityKeyAccessorStorageBuilder>();
 		services.TryAddSingletonFromScopedServiceProvider<IDbEntityKeyAccessorStorage>(sp => sp.GetRequiredService<IDbEntityKeyAccessorStorageBuilder>().Build());
 		services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
-		services.TryAddSingleton<IReferencingNavigationsService, ReferencingNavigationsService>();
-		services.TryAddTransient<IReferencingNavigationsStorageBuilder, ReferencingNavigationsStorageBuilder>();
-		services.TryAddSingletonFromScopedServiceProvider<IReferencingNavigationsStorage>(sp => sp.GetRequiredService<IReferencingNavigationsStorageBuilder>().Build());
-		services.TryAddSingleton<INavigationTargetService, NavigationTargetService>();
-		services.TryAddTransient<INavigationTargetStorageBuilder, NavigationTargetStorageBuilder>();
-		services.TryAddSingletonFromScopedServiceProvider<INavigationTargetStorage>(sp => sp.GetRequiredService<INavigationTargetStorageBuilder>().Build());
-		services.TryAddSingleton<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
-		services.TryAddTransient<IEntityCacheKeyPrefixStorageBuilder, EntityCacheKeyPrefixStorageBuilder>();
-		services.TryAddSingletonFromScopedServiceProvider<IEntityCacheKeyPrefixStorage>(sp => sp.GetRequiredService<IEntityCacheKeyPrefixStorageBuilder>().Build());
-		services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
-		services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
 
 		services.TryAddSingleton<IRepositoryQueryProvider, RepositoryQueryProvider>();
 		services.TryAddSingleton<IRepositoryQueryStore, RepositoryQueryStore>();

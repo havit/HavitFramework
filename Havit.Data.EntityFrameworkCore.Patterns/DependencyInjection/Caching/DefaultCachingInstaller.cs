@@ -1,4 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -13,6 +14,19 @@ public class DefaultCachingInstaller : ICachingInstaller
 	public void Install(IServiceCollection services)
 	{
 		services.TryAddTransient<IEntityCacheManager, EntityCacheManager>();
+
+		services.TryAddSingleton<IReferencingNavigationsService, ReferencingNavigationsService>();
+		services.TryAddTransient<IReferencingNavigationsStorageBuilder, ReferencingNavigationsStorageBuilder>();
+		services.TryAddSingletonFromScopedServiceProvider<IReferencingNavigationsStorage>(sp => sp.GetRequiredService<IReferencingNavigationsStorageBuilder>().Build());
+		services.TryAddSingleton<INavigationTargetService, NavigationTargetService>();
+		services.TryAddTransient<INavigationTargetStorageBuilder, NavigationTargetStorageBuilder>();
+		services.TryAddSingletonFromScopedServiceProvider<INavigationTargetStorage>(sp => sp.GetRequiredService<INavigationTargetStorageBuilder>().Build());
+		services.TryAddSingleton<IEntityCacheKeyPrefixService, EntityCacheKeyPrefixService>();
+		services.TryAddTransient<IEntityCacheKeyPrefixStorageBuilder, EntityCacheKeyPrefixStorageBuilder>();
+		services.TryAddSingletonFromScopedServiceProvider<IEntityCacheKeyPrefixStorage>(sp => sp.GetRequiredService<IEntityCacheKeyPrefixStorageBuilder>().Build());
+		services.TryAddTransient<IEntityCacheDependencyKeyGenerator, EntityCacheDependencyKeyGenerator>();
+		services.TryAddTransient<IEntityCacheDependencyManager, EntityCacheDependencyManager>();
+
 		RegisterEntityCacheOptionsGenerator(services);
 		RegisterEntityCacheKeyGenerator(services);
 		RegisterEntityCacheSupportDecision(services);

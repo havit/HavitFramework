@@ -17,6 +17,13 @@ public class CodeWriter
 	/// <summary>
 	/// Zapíšeme obsah do souboru (jen tehdy, pokud se neliší od současného obsahu souboru).
 	/// </summary>
+	public Task SaveAsync(string filename, string content, bool canOverwriteExistingFile = true, CancellationToken cancellationToken = default)
+	{
+		// TODO Vyměnit za asynchroní implementaci
+		Save(filename, content, canOverwriteExistingFile);
+		return Task.CompletedTask;
+	}
+
 	public void Save(string filename, string content, bool canOverwriteExistingFile = true)
 	{
 		if (!this.AlreadyExistsTheSame(filename, content) || !this.HasByteOrderMask(filename))
@@ -33,7 +40,6 @@ public class CodeWriter
 				File.WriteAllText(filename, content, Encoding.UTF8);
 			}
 		}
-		project.AddOrUpdate(filename);
 	}
 
 	/// <summary>

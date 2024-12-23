@@ -18,21 +18,17 @@ public class GenericGenerator<TModel>
 		this.canOverwriteExistingFile = canOverwriteExistingFile;
 	}
 
-	public void Generate()
+	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		List<TModel> models = modelSource.GetModels().ToList();
 
-#if DEBUG
-		models.ForEach(model =>
-#else
-		Parallel.ForEach(models, model =>
-#endif
+		await Task.WhenAll(models.Select(async model =>
 		{
 			ITemplate template = templateFactory.CreateTemplate(model);
 
 			string content = template.TransformText();
 			string filename = fileNamingService.GetFilename(model);
-			codeWriter.Save(filename, content, canOverwriteExistingFile);
-		});
+			await codeWriter.SaveAsync(filename, content, canOverwriteExistingFile, cancellationToken);
+		}));
 	}
 }

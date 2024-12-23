@@ -2,7 +2,7 @@
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-public class ProjectFactory
+public class ProjectFactory : IProjectFactory
 {
 	public IProject Create(string folderOrCsprojPath)
 	{
@@ -24,13 +24,12 @@ public class ProjectFactory
 		XDocument content = XDocument.Load(csprojPath, LoadOptions.PreserveWhitespace);
 		if (IsDotNetCoreProject(content))
 		{
-			return new NetCoreProject(csprojPath, content);
+			return new Project(csprojPath, content);
 		}
 
 		Console.ForegroundColor = ConsoleColor.Red;
 		Console.WriteLine($"{csprojPath} has an old csproj format, use the new csproj format.");
-		Console.ResetColor();
-		return new LegacyProject(csprojPath, content);
+		return null;
 	}
 
 	private bool IsDotNetCoreProject(XDocument content)

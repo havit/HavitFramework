@@ -2,19 +2,27 @@
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-public class NetCoreProject : ProjectBase
+public class Project : IProject
 {
-	public NetCoreProject(string filename, XDocument content)
-		: base(filename, content)
+	public const string ModelProjectKey = nameof(ModelProjectKey);
+	public const string MetadataProjectKey = nameof(MetadataProjectKey);
+	public const string DataLayerProjectKey = nameof(DataLayerProjectKey);
+
+	protected XDocument Content { get; }
+	public string Filename { get; }
+
+	public Project(string filename, XDocument content)
 	{
+		Filename = filename;
+		Content = content;
 	}
 
-	public override void AddOrUpdate(string filename)
+	public string GetProjectRootPath()
 	{
-		// noop in .NET Core project
+		return System.IO.Path.GetDirectoryName(Filename);
 	}
 
-	public override string GetProjectRootNamespace()
+	public string GetProjectRootNamespace()
 	{
 		// support for default root namespace:
 		// Microsoft.NET.Sdk.props
@@ -32,18 +40,12 @@ public class NetCoreProject : ProjectBase
 		return GetProjectRootNamespaceCore("") ?? Path.GetFileNameWithoutExtension(Filename);
 	}
 
-	public override string[] GetUnusedGeneratedFiles()
+	protected string GetProjectRootNamespaceCore(XNamespace @namespace)
 	{
-		return new string[0];
+		return (string)Content.Root
+			.Elements(@namespace + "PropertyGroup")
+			.Elements(@namespace + "RootNamespace")
+			.FirstOrDefault();
 	}
 
-	public override void RemoveUnusedGeneratedFiles()
-	{
-		// noop in .NET Core project
-	}
-
-	public override void SaveChanges()
-	{
-		// noop in .NET Core project
-	}
 }

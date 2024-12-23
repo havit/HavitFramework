@@ -17,6 +17,11 @@ using Microsoft.EntityFrameworkCore.Design;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Template;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Model;
+using Microsoft.Extensions.Hosting;
+using System.CodeDom.Compiler;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.Configuration;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
@@ -34,70 +39,72 @@ public static class Program
 		string solutionDirectory = args[0];
 		string entityAssemblyName = args[1];
 
+		var hostBuilder = Host.CreateApplicationBuilder();
+		hostBuilder.Configuration.AddConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build());
+		hostBuilder.Services.AddSingleton<DbContext>(sp => GetDbContext(entityAssemblyName));
+		hostBuilder.Services.AddSingleton<CodeGeneratorConfiguration>(sp => GetConfiguration(new DirectoryInfo(solutionDirectory)));
+		hostBuilder.Services.AddSingleton<IProjectFactory, ProjectFactory>();
+		hostBuilder.Services.AddSingleton<CammelCaseNamingStrategy>();
 
-		Console.WriteLine($"Reading configuration...");
-		CodeGeneratorConfiguration configuration = GetConfiguration(new DirectoryInfo(solutionDirectory));
+		hostBuilder.Services.AddKeyedSingleton<IProject>(Project.ModelProjectKey, (sp, serviceKey) => sp.GetRequiredService<IProjectFactory>().Create(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().ModelProjectPath)));
+		hostBuilder.Services.AddKeyedSingleton<IProject>(Project.MetadataProjectKey, (sp, serviceKey) => sp.GetRequiredService<IProjectFactory>().Create(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().MetadataProjectPath)));
+		hostBuilder.Services.AddKeyedSingleton<IProject>(Project.DataLayerProjectKey, (sp, serviceKey) => sp.GetRequiredService<IProjectFactory>().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj")));
 
-		IProject modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.ModelProjectPath));
-		IProject metadataProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, configuration.MetadataProjectPath));
-		IProject dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj"));
+		hostBuilder.Services.AddSingleton<IDataLayerGeneratorRunner, DataLayerGeneratorRunner>();
+		hostBuilder.Services.AddSingleton<IDataLayerGenerator, RepositoriesGenerator>();
 
-		Console.WriteLine($"Initializing DbContext...");
-		if (!TryGetDbContext(entityAssemblyName, out DbContext dbContext))
-		{
-			return Task.CompletedTask;
-		}
+		var host = hostBuilder.Build();
+		//await host.Services.GetRequiredService<IDataLayerGeneratorRunner>().RunAsync();
 
 		Console.WriteLine($"Generating code...");
-		CammelCaseNamingStrategy cammelCaseNamingStrategy = new CammelCaseNamingStrategy();
-		var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
+		return Task.CompletedTask;
+		//var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
-		Parallel.Invoke(
-			() => GenerateMetadata(metadataProject, modelProject, dbContext, configuration),
-			() => GenerateDataSources(dataLayerProject, modelProject, dbContext),
-			() => GenerateDataEntries(dataLayerProject, modelProject, dbContext, dataEntriesModelSource),
-			() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource),
-			() => GenerateDataLayerServiceExtensions(modelProject, dataLayerProject, dbContext)
-		);
+		//Parallel.Invoke(
+		//	() => GenerateMetadata(metadataProject, modelProject, dbContext, configuration),
+		//	() => GenerateDataSources(dataLayerProject, modelProject, dbContext),
+		//	() => GenerateDataEntries(dataLayerProject, modelProject, dbContext, dataEntriesModelSource),
+		//	() => GenerateRepositories(dataLayerProject, dbContext, modelProject, dataEntriesModelSource),
+		//	() => GenerateDataLayerServiceExtensions(modelProject, dataLayerProject, dbContext)
+		//);
 
-		string[] unusedDataLayerFiles = null;
-		string[] unusedModelFiles = null;
+		//string[] unusedDataLayerFiles = null;
+		//string[] unusedModelFiles = null;
 
-		Parallel.Invoke(
-			() =>
-			{
-				unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
-				modelProject.RemoveUnusedGeneratedFiles();
-				modelProject.SaveChanges();
-			},
-			() =>
-			{
-				unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
-				dataLayerProject.RemoveUnusedGeneratedFiles();
-				dataLayerProject.SaveChanges();
-			});
+		//Parallel.Invoke(
+		//	() =>
+		//	{
+		//		unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
+		//		modelProject.RemoveUnusedGeneratedFiles();
+		//		modelProject.SaveChanges();
+		//	},
+		//	() =>
+		//	{
+		//		unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
+		//		dataLayerProject.RemoveUnusedGeneratedFiles();
+		//		dataLayerProject.SaveChanges();
+		//	});
 
-		unusedModelFiles.Concat(unusedDataLayerFiles).ToList().ForEach(item =>
-		{
-			try
-			{
-				File.SetAttributes(item, FileAttributes.Normal);
-				File.Delete(item);
-			}
-			catch
-			{
-				// NOOP
-			}
-		});
+		//unusedModelFiles.Concat(unusedDataLayerFiles).ToList().ForEach(item =>
+		//{
+		//	try
+		//	{
+		//		File.SetAttributes(item, FileAttributes.Normal);
+		//		File.Delete(item);
+		//	}
+		//	catch
+		//	{
+		//		// NOOP
+		//	}
+		//});
 
 		stopwatch.Stop();
 		Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);
-
-		return Task.CompletedTask;
 	}
 
-	private static bool TryGetDbContext(string entityAssemblyName, out DbContext dbContext)
+	private static DbContext GetDbContext(string entityAssemblyName)
 	{
+		Console.WriteLine("Initializing DbContext...");
 		Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
 
 		Type[] assemblyTypes = null;
@@ -129,27 +136,26 @@ public static class Program
 					.ForEach(message => Console.WriteLine(message));
 			}
 			Console.ResetColor();
-			dbContext = null;
-			return false;
+			throw new InvalidOperationException();
 		}
 
 		Type dbContextType = assemblyTypes.SingleOrDefault(type => !type.IsAbstract && type.GetInterfaces().Contains(typeof(IDbContext)));
 		if (dbContextType == null)
 		{
 			Console.WriteLine("No IDbContext implementation was found.");
-			dbContext = null;
-			return false;
+			throw new InvalidOperationException();
 		}
 
 		// Pokud nejde zkompilovat následující řádek, velmi pravděpodobně se do CSPROJ při aktualizaci nuget balíčku Microsoft.Data.EntityFrameworkCore.Design dostalo
 		// nastavení privateAssets, které je třeba odebrat. Nastavení se tam dostává, neboť .Data.EntityFrameworkCore.Design je zejména toolingový balíček.
 		// Přestože to zní příšerně, to doporučeno, abychom si po každé aktualizaci csproj ručně upravili.
-		dbContext = (DbContext)DbContextActivator.CreateInstance(dbContextType);
-		return true;
+		return (DbContext)DbContextActivator.CreateInstance(dbContextType);
 	}
 
 	private static CodeGeneratorConfiguration GetConfiguration(DirectoryInfo solutionPath, DirectoryInfo currentPath = null)
 	{
+		Console.WriteLine($"Reading configuration...");
+
 		if (currentPath == null)
 		{
 			currentPath = new DirectoryInfo(Environment.CurrentDirectory);
@@ -176,7 +182,7 @@ public static class Program
 		MetadataClassTemplateFactory factory = new MetadataClassTemplateFactory();
 		MetadataClassModelSource modelSource = new MetadataClassModelSource(dbContext, metadataProject, modelProject, configuration);
 		var metadataGenerator = new GenericGenerator<MetadataClass>(modelSource, factory, fileNamingService, codeWriter);
-		metadataGenerator.Generate();
+		//metadataGenerator.Generate();
 	}
 
 	private static void GenerateDataSources(IProject dataLayerProject, IProject modelProject, DbContext dbContext)
@@ -188,9 +194,9 @@ public static class Program
 		var interfaceDataSourceGenerator = new GenericGenerator<InterfaceDataSourceModel>(interfaceDataSourceModelSource, new InterfaceDataSourceTemplateFactory(), new InterfaceDataSourceFileNamingService(dataLayerProject), codeWriter);
 		var dbDataSourceGenerator = new GenericGenerator<DbDataSourceModel>(dbDataSourceModelSource, new DbDataSourceTemplateFactory(), new DbDataSourceFileNamingService(dataLayerProject), codeWriter);
 		var fakeDataSourceGenerator = new GenericGenerator<FakeDataSourceModel>(fakeDataSourceModelSource, new FakeDataSourceTemplateFactory(), new FakeDataSourceFileNamingService(dataLayerProject), codeWriter);
-		interfaceDataSourceGenerator.Generate();
-		dbDataSourceGenerator.Generate();
-		fakeDataSourceGenerator.Generate();
+		//interfaceDataSourceGenerator.Generate();
+		//dbDataSourceGenerator.Generate();
+		//fakeDataSourceGenerator.Generate();
 	}
 
 	private static void GenerateDataEntries(IProject dataLayerProject, IProject modelProject, DbContext dbContext, DataEntriesModelSource dataEntriesModelSource)
@@ -198,25 +204,10 @@ public static class Program
 		CodeWriter codeWriter = new CodeWriter(dataLayerProject);
 		var interfaceDataEntriesGenerator = new GenericGenerator<DataEntriesModel>(dataEntriesModelSource, new InterfaceDataEntriesTemplateFactory(), new InterfaceDataEntriesFileNamingService(dataLayerProject), codeWriter);
 		var dbDataEntriesGenerator = new GenericGenerator<DataEntriesModel>(dataEntriesModelSource, new DbDataEntriesTemplateFactory(), new DbDataEntriesFileNamingService(dataLayerProject), codeWriter);
-		interfaceDataEntriesGenerator.Generate();
-		dbDataEntriesGenerator.Generate();
+		//interfaceDataEntriesGenerator.Generate();
+		//dbDataEntriesGenerator.Generate();
 	}
 
-	private static void GenerateRepositories(IProject dataLayerProject, DbContext dbContext, IProject modelProject, DataEntriesModelSource dataEntriesModelSource)
-	{
-		CodeWriter codeWriter = new CodeWriter(dataLayerProject);
-		var dbRepositoryModelSource = new RepositoryModelSource(dbContext, modelProject, dataLayerProject, dataEntriesModelSource);
-		var dbRepositoryBaseGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(dataLayerProject), codeWriter);
-		var interfaceRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryGeneratedTemplateFactory(), new InterfaceRepositoryGeneratedFileNamingService(dataLayerProject), codeWriter);
-		var dbRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryGeneratedTemplateFactory(), new DbRepositoryGeneratedFileNamingService(dataLayerProject), codeWriter);
-		var interfaceRepositoryGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryTemplateFactory(), new InterfaceRepositoryFileNamingService(dataLayerProject), codeWriter, false);
-		var dbRepositoryGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryTemplateFactory(), new DbRepositoryFileNamingService(dataLayerProject), codeWriter, false);
-		interfaceRepositoryGeneratedGenerator.Generate();
-		interfaceRepositoryGenerator.Generate();
-		dbRepositoryBaseGeneratedGenerator.Generate();
-		dbRepositoryGeneratedGenerator.Generate();
-		dbRepositoryGenerator.Generate();
-	}
 
 	private static void GenerateDataLayerServiceExtensions(IProject modelProject, IProject dataLayerProject, DbContext dbContext)
 	{
@@ -231,6 +222,6 @@ public static class Program
 		DataLayerServiceExtensionsModelSource modelSource = new DataLayerServiceExtensionsModelSource(dataLayerProject, dataEntriesModelSource, dbDataSourceModelSource, repositoryModelSource);
 		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(modelSource.GetModels().Single());
 		codeWriter.Save(targetFilename, template.TransformText(), true);
-		dataLayerProject.SaveChanges();
+		//dataLayerProject.SaveChanges();
 	}
 }

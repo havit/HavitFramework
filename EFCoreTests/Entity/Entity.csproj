@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>Havit.EFCoreTests.Entity</AssemblyName>
 		<RootNamespace>Havit.EFCoreTests.Entity</RootNamespace>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>

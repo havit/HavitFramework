@@ -15,8 +15,6 @@ using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.Repositories;
 using Havit.EFCoreTests.DataLayer.Seeds.Persons;
-using Havit.EFCoreTests.Model;
-using Havit.Linq.Expressions;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
@@ -33,21 +31,19 @@ public static class Program
 {
 	public static async Task Main(string[] args)
 	{
-		var host = Host.CreateDefaultBuilder(args)
-			.ConfigureAppConfiguration(configurationBuilder =>
-				configurationBuilder.AddJsonFile("appsettings.ConsoleApp.json", optional: false)
-			)
-			.ConfigureLogging((hostingContext, logging) => logging
-			.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] "))
-			.ConfigureServices((hostingContext, services) => ConfigureServices(hostingContext, services))
-			.Build();
+		var hostBuilder = Host.CreateApplicationBuilder();
+		hostBuilder.Configuration.AddJsonFile("appsettings.ConsoleApp.json", optional: false);
+		hostBuilder.Logging.AddSimpleConsole(config => config.TimestampFormat = "[hh:MM:ss.ffff] ");
+		hostBuilder.Services.ConfigureServices();
 
-		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
+		var host = hostBuilder.Build();
+
+//		await UpdateDatabaseAsync(host.Services, CancellationToken.None);
 		await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}
 
-	private static void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
+	private static void ConfigureServices(this IServiceCollection services)
 	{
 		services.AddDbContext<IDbContext, Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 				optionsBuilder

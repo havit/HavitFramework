@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 public interface IProjectFactory
 {

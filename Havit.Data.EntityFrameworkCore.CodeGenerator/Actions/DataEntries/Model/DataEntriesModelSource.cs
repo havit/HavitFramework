@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -10,14 +11,12 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	private readonly DbContext dbContext;
 	private readonly IProject modelProject;
 	private readonly IProject dataLayerProject;
-	private readonly CammelCaseNamingStrategy cammelCaseNamingStrategy;
 
-	public DataEntriesModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, CammelCaseNamingStrategy cammelCaseNamingStrategy)
+	public DataEntriesModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject)
 	{
 		this.dbContext = dbContext;
 		this.modelProject = modelProject;
 		this.dataLayerProject = dataLayerProject;
-		this.cammelCaseNamingStrategy = cammelCaseNamingStrategy;
 	}
 
 	public IEnumerable<DataEntriesModel> GetModels()
@@ -44,7 +43,7 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 						.Select(item => new DataEntriesModel.Entry
 						{
 							PropertyName = item,
-							FieldName = cammelCaseNamingStrategy.GetCammelCase(item),
+							FieldName = CammelCaseNamingStrategy.GetCammelCase(item),
 							IsObsolete = IsValueObsolete(entriesEnumType, item),
 							ObsoleteMessage = GetValueObsoleteMessage(entriesEnumType, item)
 						})

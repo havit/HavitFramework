@@ -2,33 +2,32 @@
 
 public class GenericGenerator<TModel>
 {
-	private readonly IModelSource<TModel> modelSource;
-	private readonly ITemplateFactory<TModel> templateFactory;
-	private readonly IFileNamingService<TModel> fileNamingService;
-	private readonly CodeWriter codeWriter;
+	private readonly IModelSource<TModel> _modelSource;
+	private readonly ITemplateFactory<TModel> _templateFactory;
+	private readonly IFileNamingService<TModel> _fileNamingService;
+	private readonly ICodeWriter _codeWriter;
+	private readonly OverwriteBahavior _overwriteBahavior;
 
-	private readonly bool canOverwriteExistingFile;
-
-	public GenericGenerator(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, CodeWriter codeWriter, bool canOverwriteExistingFile = true)
+	public GenericGenerator(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, ICodeWriter codeWriter, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists)
 	{
-		this.modelSource = modelSource;
-		this.templateFactory = templateFactory;
-		this.fileNamingService = fileNamingService;
-		this.codeWriter = codeWriter;
-		this.canOverwriteExistingFile = canOverwriteExistingFile;
+		this._modelSource = modelSource;
+		this._templateFactory = templateFactory;
+		this._fileNamingService = fileNamingService;
+		this._codeWriter = codeWriter;
+		this._overwriteBahavior = overwriteBahavior;
 	}
 
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
-		List<TModel> models = modelSource.GetModels().ToList();
+		List<TModel> models = _modelSource.GetModels().ToList();
 
 		await Task.WhenAll(models.Select(async model =>
 		{
-			ITemplate template = templateFactory.CreateTemplate(model);
+			ITemplate template = _templateFactory.CreateTemplate(model);
 
 			string content = template.TransformText();
-			string filename = fileNamingService.GetFilename(model);
-			await codeWriter.SaveAsync(filename, content, canOverwriteExistingFile, cancellationToken);
+			string filename = _fileNamingService.GetFilename(model);
+			await _codeWriter.SaveAsync(filename, content, _overwriteBahavior, cancellationToken);
 		}));
 	}
 }

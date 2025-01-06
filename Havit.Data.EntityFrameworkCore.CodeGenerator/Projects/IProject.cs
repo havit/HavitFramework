@@ -1,9 +1,7 @@
-﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 public interface IProject
 {
-	string Filename { get; }
-
 	string GetProjectRootNamespace();
 
 	string GetProjectRootPath();

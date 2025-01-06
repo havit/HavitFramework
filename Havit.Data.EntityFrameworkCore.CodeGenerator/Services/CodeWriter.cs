@@ -5,28 +5,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 /// <summary>
 /// Třída CodeWriter zajišťuje generování kódu. Zajišťuje odsazení, v budoucnu může zajišťovat ochranu před maximální délkou řádky kódu, apod.
 /// </summary>
-public class CodeWriter
+public class CodeWriter : ICodeWriter
 {
-	private readonly IProject project;
-
-	public CodeWriter(IProject project)
-	{
-		this.project = project;
-	}
-
 	/// <summary>
 	/// Zapíšeme obsah do souboru (jen tehdy, pokud se neliší od současného obsahu souboru).
 	/// </summary>
-	public Task SaveAsync(string filename, string content, bool canOverwriteExistingFile = true, CancellationToken cancellationToken = default)
+	public async Task SaveAsync(string filename, string content, OverwriteBahavior overwriteBahavior, CancellationToken cancellationToken = default)
 	{
-		// TODO Vyměnit za asynchroní implementaci
-		Save(filename, content, canOverwriteExistingFile);
-		return Task.CompletedTask;
-	}
-
-	public void Save(string filename, string content, bool canOverwriteExistingFile = true)
-	{
-		if (!this.AlreadyExistsTheSame(filename, content) || !this.HasByteOrderMask(filename))
+		if (!(await this.AlreadyExistsTheSameAsync(filename, content, cancellationToken)) || !this.HasByteOrderMask(filename))
 		{
 			string directory = Path.GetDirectoryName(filename);
 			if (!String.IsNullOrEmpty(directory))
@@ -35,9 +21,9 @@ public class CodeWriter
 			}
 
 			bool exists = File.Exists(filename);
-			if (canOverwriteExistingFile || !exists)
+			if ((overwriteBahavior == OverwriteBahavior.OverwriteWhenFileAlreadyExists) || !exists)
 			{
-				File.WriteAllText(filename, content, Encoding.UTF8);
+				await File.WriteAllTextAsync(filename, content, Encoding.UTF8, cancellationToken);
 			}
 		}
 	}
@@ -45,9 +31,9 @@ public class CodeWriter
 	/// <summary>
 	/// Vrací true, pokud již existuje soubor se stejným jménem a obsahem.
 	/// </summary>
-	public bool AlreadyExistsTheSame(string filename, string content)
+	private async Task<bool> AlreadyExistsTheSameAsync(string filename, string content, CancellationToken cancellationToken = default)
 	{
-		return (File.Exists(filename) && (File.ReadAllText(filename) == content));
+		return (File.Exists(filename) && (await File.ReadAllTextAsync(filename, cancellationToken) == content));
 	}
 
 	/// <summary>

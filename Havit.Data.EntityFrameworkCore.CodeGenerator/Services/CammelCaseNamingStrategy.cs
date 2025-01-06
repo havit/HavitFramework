@@ -1,11 +1,11 @@
 ﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-public class CammelCaseNamingStrategy
+public static class CammelCaseNamingStrategy
 {
 	/// <summary>
 	/// Zdroj: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/
 	/// </summary>
-	private readonly HashSet<string> csharpKeywords = new HashSet<string>
+	private static readonly HashSet<string> s_csharpKeywords = new HashSet<string>
 	{
 		"abstract",
 		"as",
@@ -115,10 +115,10 @@ public class CammelCaseNamingStrategy
 		"yield"
 	};
 
-	public string GetCammelCase(string name)
+	public static string GetCammelCase(string name)
 	{
 		string result = name[0].ToString().ToLower() + name.Substring(1);
-		return csharpKeywords.Contains(result)
+		return s_csharpKeywords.Contains(result)
 			? "@" + result
 			: result;
 	}

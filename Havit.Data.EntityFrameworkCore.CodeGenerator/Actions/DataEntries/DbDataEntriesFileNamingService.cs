@@ -1,16 +1,11 @@
 ﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries;
 
-public class DbDataEntriesFileNamingService : FileNamingServiceBase<DataEntriesModel>
+public class DbDataEntriesFileNamingService(IProject _project) : FileNamingServiceBase<DataEntriesModel>(_project)
 {
-	public DbDataEntriesFileNamingService(IProject project)
-		: base(project)
-	{
-
-	}
-
 	protected override string GetClassName(DataEntriesModel model)
 	{
 		return model.DbClassName;

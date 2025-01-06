@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Model;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Template;

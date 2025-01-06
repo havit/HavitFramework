@@ -1,12 +1,14 @@
-﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
+
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 {
-	private readonly IProject project;
+	private readonly IProject _project;
 
 	protected FileNamingServiceBase(IProject project)
 	{
-		this.project = project;
+		this._project = project;
 	}
 
 	protected virtual bool UseGeneratedFolder
@@ -23,8 +25,8 @@ public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 		bool useGeneratedFolder = this.UseGeneratedFolder;
 		string className = GetClassName(model);
 
-		string projectRootPath = project.GetProjectRootPath();
-		string projectRootNamespace = project.GetProjectRootNamespace();
+		string projectRootPath = _project.GetProjectRootPath();
+		string projectRootNamespace = _project.GetProjectRootNamespace();
 
 		string namespaceFolder;
 		if (namespaceName.StartsWith(projectRootNamespace))

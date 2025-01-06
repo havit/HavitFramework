@@ -1,4 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories;
 

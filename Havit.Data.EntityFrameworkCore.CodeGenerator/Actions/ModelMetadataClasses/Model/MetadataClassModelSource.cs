@@ -1,6 +1,7 @@
 ﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 using Havit.Data.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model;
 

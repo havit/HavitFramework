@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 public class ProjectFactory : IProjectFactory
 {
@@ -13,7 +13,7 @@ public class ProjectFactory : IProjectFactory
 		}
 		else
 		{
-			var csprojFile = new System.IO.DirectoryInfo(folderOrCsprojPath).EnumerateFiles("*.csproj").SingleOrDefault();
+			var csprojFile = new DirectoryInfo(folderOrCsprojPath).EnumerateFiles("*.csproj").SingleOrDefault();
 			if (csprojFile == null)
 			{
 				throw new InvalidOperationException($"No csproj found in {folderOrCsprojPath}.");

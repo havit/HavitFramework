@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 public class Project : IProject
 {
@@ -9,7 +9,7 @@ public class Project : IProject
 	public const string DataLayerProjectKey = nameof(DataLayerProjectKey);
 
 	protected XDocument Content { get; }
-	public string Filename { get; }
+	protected string Filename { get; }
 
 	public Project(string filename, XDocument content)
 	{
@@ -19,7 +19,7 @@ public class Project : IProject
 
 	public string GetProjectRootPath()
 	{
-		return System.IO.Path.GetDirectoryName(Filename);
+		return Path.GetDirectoryName(Filename);
 	}
 
 	public string GetProjectRootNamespace()

@@ -17,7 +17,7 @@ public class DbDataSourceModelSource : IModelSource<DbDataSourceModel>
 		_dataLayerProject = dataLayerProject;
 	}
 
-	public IEnumerable<DbDataSourceModel> GetModels()
+	public List<DbDataSourceModel> GetModels()
 	{
 		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new DbDataSourceModel

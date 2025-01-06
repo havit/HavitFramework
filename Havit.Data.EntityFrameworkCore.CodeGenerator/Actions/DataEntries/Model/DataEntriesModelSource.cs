@@ -12,6 +12,8 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	private readonly IModelProject _modelProject;
 	private readonly IDataLayerProject _dataLayerProject;
 
+	private List<DataEntriesModel> _models;
+
 	public DataEntriesModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject)
 	{
 		_dbContext = dbContext;
@@ -19,36 +21,37 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 		_dataLayerProject = dataLayerProject;
 	}
 
-	public IEnumerable<DataEntriesModel> GetModels()
+	public List<DataEntriesModel> GetModels()
 	{
-		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
-				let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
-				where (entriesEnumType != null)
-				select new DataEntriesModel
-				{
-					UseDataEntrySymbolStorage = registeredEntity.FindPrimaryKey().Properties.Any(property =>
-						 // Snaha o identifikaci použití sloupce Identity
-						 // viz DbDataSeedProvider.PropertyIsIdentity
-						 property.ClrType == typeof(Int32) // Identity definujeme jen na typu Int32
-							&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
-							&& String.IsNullOrEmpty(property.GetDefaultValueSql())), // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
-					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
-					InterfaceName = "I" + registeredEntity.ClrType.Name + "Entries",
-					DbClassName = registeredEntity.ClrType.Name + "Entries",
-					ModelClassFullName = registeredEntity.ClrType.FullName,
-					ModelEntriesEnumerationFullName = registeredEntity.ClrType.FullName + ".Entry",
-					RepositoryDependencyFullName = GetRepositoryDependencyFullName(registeredEntity.ClrType),
-					Entries = System.Enum.GetNames(entriesEnumType)
-						.OrderBy(item => item, StringComparer.InvariantCulture)
-						.Select(item => new DataEntriesModel.Entry
-						{
-							PropertyName = item,
-							FieldName = CammelCaseNamingStrategy.GetCammelCase(item),
-							IsObsolete = IsValueObsolete(entriesEnumType, item),
-							ObsoleteMessage = GetValueObsoleteMessage(entriesEnumType, item)
-						})
-						.ToList()
-				}).ToList();
+		return _models ??= (
+			from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+			let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
+			where (entriesEnumType != null)
+			select new DataEntriesModel
+			{
+				UseDataEntrySymbolStorage = registeredEntity.FindPrimaryKey().Properties.Any(property =>
+						// Snaha o identifikaci použití sloupce Identity
+						// viz DbDataSeedProvider.PropertyIsIdentity
+						property.ClrType == typeof(Int32) // Identity definujeme jen na typu Int32
+						&& property.ValueGenerated.HasFlag(ValueGenerated.OnAdd) // Je zajištěno, že hodnotu generuje SQL Server
+						&& String.IsNullOrEmpty(property.GetDefaultValueSql())), // Identita není použita, pokud je na sloupci definována výchozí hodnota pomocí SQL.
+				NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
+				InterfaceName = "I" + registeredEntity.ClrType.Name + "Entries",
+				DbClassName = registeredEntity.ClrType.Name + "Entries",
+				ModelClassFullName = registeredEntity.ClrType.FullName,
+				ModelEntriesEnumerationFullName = registeredEntity.ClrType.FullName + ".Entry",
+				RepositoryDependencyFullName = GetRepositoryDependencyFullName(registeredEntity.ClrType),
+				Entries = System.Enum.GetNames(entriesEnumType)
+					.OrderBy(item => item, StringComparer.InvariantCulture)
+					.Select(item => new DataEntriesModel.Entry
+					{
+						PropertyName = item,
+						FieldName = CammelCaseNamingStrategy.GetCammelCase(item),
+						IsObsolete = IsValueObsolete(entriesEnumType, item),
+						ObsoleteMessage = GetValueObsoleteMessage(entriesEnumType, item)
+					})
+					.ToList()
+			}).ToList();
 	}
 
 	private Type GetEntriesEnum(Type type)

@@ -9,18 +9,21 @@ public class DataSourcesGenerator(
 	IDataLayerProject _dataLayerProject,
 	IModelProject _modelProject,
 	DbContext _dbContext,
-	ICodeWriter _codeWriter) : IDataLayerGenerator
+	IGenericGenerator _genericGenerator) : IDataLayerGenerator
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		IModelSource<InterfaceDataSourceModel> interfaceDataSourceModelSource = new InterfaceDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
 		IModelSource<DbDataSourceModel> dbDataSourceModelSource = new DbDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
 		IModelSource<FakeDataSourceModel> fakeDataSourceModelSource = new FakeDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
-		var interfaceDataSourceGenerator = new GenericGenerator<InterfaceDataSourceModel>(interfaceDataSourceModelSource, new InterfaceDataSourceTemplateFactory(), new InterfaceDataSourceFileNamingService(_dataLayerProject), _codeWriter);
-		var dbDataSourceGenerator = new GenericGenerator<DbDataSourceModel>(dbDataSourceModelSource, new DbDataSourceTemplateFactory(), new DbDataSourceFileNamingService(_dataLayerProject), _codeWriter);
-		var fakeDataSourceGenerator = new GenericGenerator<FakeDataSourceModel>(fakeDataSourceModelSource, new FakeDataSourceTemplateFactory(), new FakeDataSourceFileNamingService(_dataLayerProject), _codeWriter);
-		await interfaceDataSourceGenerator.GenerateAsync(cancellationToken);
-		await dbDataSourceGenerator.GenerateAsync(cancellationToken);
-		await fakeDataSourceGenerator.GenerateAsync(cancellationToken);
+
+		// interface data sources
+		await _genericGenerator.GenerateAsync(interfaceDataSourceModelSource, new InterfaceDataSourceTemplateFactory(), new InterfaceDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+
+		// db data sources
+		await _genericGenerator.GenerateAsync(dbDataSourceModelSource, new DbDataSourceTemplateFactory(), new DbDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+
+		// fake data sources
+		await _genericGenerator.GenerateAsync(fakeDataSourceModelSource, new FakeDataSourceTemplateFactory(), new FakeDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
 	}
 }

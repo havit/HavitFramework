@@ -38,6 +38,7 @@ public static class Program
 		services.AddSingleton<IDataLayerProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<DataLayerProject>(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj")));
 
 		services.AddSingleton<ICodeWriter, CodeWriter>();
+		services.AddSingleton<IGenericGenerator, GenericGenerator>();
 
 		services.AddSingleton<IDataLayerGeneratorRunner, DataLayerGeneratorRunner>();
 		services.AddSingleton<IDataLayerGenerator, MetadataGenerator>();

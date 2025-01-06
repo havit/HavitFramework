@@ -18,13 +18,19 @@ public class DataLayerServiceExtensionsGenerator(
 	{
 		string targetFilename = Path.Combine(_dataLayerProject.GetProjectRootPath(), "_generated\\DataLayerServiceExtensions.cs");
 
-		// TODO: Lépe pomocí DI? Nebo místo sources rovnou řešit modely?
 		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(_dbContext, _modelProject, _dataLayerProject);
 		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
 		RepositoryModelSource repositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject);
 
-		DataLayerServiceExtensionsModelSource modelSource = new DataLayerServiceExtensionsModelSource(_dataLayerProject, dataEntriesModelSource, dbDataSourceModelSource, repositoryModelSource);
-		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(modelSource.GetModels().Single());
+		var dataLayerServiceExtensionsModel = new DataLayerServiceExtensionsModel
+		{
+			NamespaceName = _dataLayerProject.GetProjectRootNamespace(),
+			DataEntries = dataEntriesModelSource.GetModels(),
+			DataSources = dbDataSourceModelSource.GetModels(),
+			Repositories = repositoryModelSource.GetModels()
+		};
+
+		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(dataLayerServiceExtensionsModel);
 		await _codeWriter.SaveAsync(targetFilename, template.TransformText(), OverwriteBahavior.OverwriteWhenFileAlreadyExists, cancellationToken);
 	}
 }

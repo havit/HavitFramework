@@ -17,7 +17,7 @@ public class InterfaceDataSourceModelSource : IModelSource<InterfaceDataSourceMo
 		_dataLayerProject = dataLayerProject;
 	}
 
-	public IEnumerable<InterfaceDataSourceModel> GetModels()
+	public List<InterfaceDataSourceModel> GetModels()
 	{
 		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new InterfaceDataSourceModel

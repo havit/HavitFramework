@@ -17,7 +17,7 @@ public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 		_dataLayerProject = dataLayerProject;
 	}
 
-	public IEnumerable<FakeDataSourceModel> GetModels()
+	public List<FakeDataSourceModel> GetModels()
 	{
 		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new FakeDataSourceModel

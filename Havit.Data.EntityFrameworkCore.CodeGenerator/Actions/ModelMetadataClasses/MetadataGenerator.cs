@@ -11,14 +11,14 @@ public class MetadataGenerator(
 	IModelProject _modelProject,
 	DbContext _dbContext,
 	CodeGeneratorConfiguration _configuration,
-	ICodeWriter _codeWriter) : IDataLayerGenerator
+	IGenericGenerator _genericGenerator) : IDataLayerGenerator
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(_metadataProject);
 		MetadataClassTemplateFactory factory = new MetadataClassTemplateFactory();
 		MetadataClassModelSource modelSource = new MetadataClassModelSource(_dbContext, _metadataProject, _modelProject, _configuration);
-		var metadataGenerator = new GenericGenerator<MetadataClass>(modelSource, factory, fileNamingService, _codeWriter);
-		await metadataGenerator.GenerateAsync(cancellationToken);
+
+		await _genericGenerator.GenerateAsync(modelSource, factory, fileNamingService, cancellationToken: cancellationToken);
 	}
 }

@@ -9,20 +9,25 @@ public class RepositoriesGenerator(
 	DbContext _dbContext,
 	IDataLayerProject _dataLayerProject,
 	IModelProject _modelProject,
-	ICodeWriter _codeWriter) : IDataLayerGenerator
+	IGenericGenerator _genericGenerator) : IDataLayerGenerator
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		var dbRepositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject);
-		var dbRepositoryBaseGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(_dataLayerProject), _codeWriter);
-		var interfaceRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryGeneratedTemplateFactory(), new InterfaceRepositoryGeneratedFileNamingService(_dataLayerProject), _codeWriter);
-		var dbRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryGeneratedTemplateFactory(), new DbRepositoryGeneratedFileNamingService(_dataLayerProject), _codeWriter);
-		var interfaceRepositoryGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryTemplateFactory(), new InterfaceRepositoryFileNamingService(_dataLayerProject), _codeWriter, OverwriteBahavior.SkipWhenAlreadyExists);
-		var dbRepositoryGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryTemplateFactory(), new DbRepositoryFileNamingService(_dataLayerProject), _codeWriter, OverwriteBahavior.SkipWhenAlreadyExists);
-		await interfaceRepositoryGeneratedGenerator.GenerateAsync(cancellationToken);
-		await interfaceRepositoryGenerator.GenerateAsync(cancellationToken);
-		await dbRepositoryBaseGeneratedGenerator.GenerateAsync(cancellationToken);
-		await dbRepositoryGeneratedGenerator.GenerateAsync(cancellationToken);
-		await dbRepositoryGenerator.GenerateAsync(cancellationToken);
+
+		// interface repository (generated/...)
+		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, new InterfaceRepositoryGeneratedTemplateFactory(), new InterfaceRepositoryGeneratedFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+
+		// interface repository
+		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, new InterfaceRepositoryTemplateFactory(), new InterfaceRepositoryFileNamingService(_dataLayerProject), OverwriteBahavior.SkipWhenAlreadyExists, cancellationToken);
+
+		// db repository base (generated/...)
+		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+
+		// db repository (generated/...)
+		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, new DbRepositoryGeneratedTemplateFactory(), new DbRepositoryGeneratedFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+
+		// db repository
+		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, new DbRepositoryTemplateFactory(), new DbRepositoryFileNamingService(_dataLayerProject), OverwriteBahavior.SkipWhenAlreadyExists, cancellationToken);
 	}
 }

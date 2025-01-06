@@ -2,5 +2,5 @@
 
 public interface IModelSource<TModel>
 {
-	IEnumerable<TModel> GetModels();
+	List<TModel> GetModels();
 }

@@ -1,33 +1,25 @@
 ﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
-public class GenericGenerator<TModel>
+public class GenericGenerator : IGenericGenerator
 {
-	private readonly IModelSource<TModel> _modelSource;
-	private readonly ITemplateFactory<TModel> _templateFactory;
-	private readonly IFileNamingService<TModel> _fileNamingService;
 	private readonly ICodeWriter _codeWriter;
-	private readonly OverwriteBahavior _overwriteBahavior;
 
-	public GenericGenerator(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, ICodeWriter codeWriter, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists)
+	public GenericGenerator(ICodeWriter codeWriter, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists)
 	{
-		_modelSource = modelSource;
-		_templateFactory = templateFactory;
-		_fileNamingService = fileNamingService;
 		_codeWriter = codeWriter;
-		_overwriteBahavior = overwriteBahavior;
 	}
 
-	public async Task GenerateAsync(CancellationToken cancellationToken)
+	public async Task GenerateAsync<TModel>(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists, CancellationToken cancellationToken = default)
 	{
-		List<TModel> models = _modelSource.GetModels().ToList();
+		List<TModel> models = modelSource.GetModels();
 
 		await Task.WhenAll(models.Select(async model =>
 		{
-			ITemplate template = _templateFactory.CreateTemplate(model);
+			ITemplate template = templateFactory.CreateTemplate(model);
 
 			string content = template.TransformText();
-			string filename = _fileNamingService.GetFilename(model);
-			await _codeWriter.SaveAsync(filename, content, _overwriteBahavior, cancellationToken);
+			string filename = fileNamingService.GetFilename(model);
+			await _codeWriter.SaveAsync(filename, content, overwriteBahavior, cancellationToken);
 		}));
 	}
 }

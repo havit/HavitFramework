@@ -10,6 +10,8 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>
 	private readonly IModelProject _modelProject;
 	private readonly IDataLayerProject _dataLayerProject;
 
+	private List<RepositoryModel> _models;
+
 	public RepositoryModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject)
 	{
 		_dbContext = dbContext;
@@ -17,20 +19,21 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>
 		_dataLayerProject = dataLayerProject;
 	}
 
-	public IEnumerable<RepositoryModel> GetModels()
+	public List<RepositoryModel> GetModels()
 	{
-		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
-				select new RepositoryModel
-				{
-					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
-					DbRepositoryName = registeredEntity.ClrType.Name + "DbRepository",
-					DbRepositoryBaseName = registeredEntity.ClrType.Name + "DbRepositoryBase",
-					InterfaceRepositoryName = "I" + registeredEntity.ClrType.Name + "Repository",
-					ModelClassNamespace = registeredEntity.ClrType.Namespace,
-					ModelClassFullName = registeredEntity.ClrType.FullName,
-					//GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum,
-					//DataSourceDependencyFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, "DataSources") + ".I" + registeredEntity.ClrType.Name + "DataSource"
-				}).ToList();
+		return _models ??= (
+			from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+			select new RepositoryModel
+			{
+				NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
+				DbRepositoryName = registeredEntity.ClrType.Name + "DbRepository",
+				DbRepositoryBaseName = registeredEntity.ClrType.Name + "DbRepositoryBase",
+				InterfaceRepositoryName = "I" + registeredEntity.ClrType.Name + "Repository",
+				ModelClassNamespace = registeredEntity.ClrType.Namespace,
+				ModelClassFullName = registeredEntity.ClrType.FullName,
+				//GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum,
+				//DataSourceDependencyFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, "DataSources") + ".I" + registeredEntity.ClrType.Name + "DataSource"
+			}).ToList();
 	}
 
 	private string GetNamespaceName(string namespaceName, string typeNamespace = "Repositories")

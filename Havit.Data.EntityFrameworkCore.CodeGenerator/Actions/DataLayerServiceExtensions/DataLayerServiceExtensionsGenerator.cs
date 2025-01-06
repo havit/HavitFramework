@@ -21,11 +21,10 @@ public class DataLayerServiceExtensionsGenerator(
 		// TODO: Lépe pomocí DI? Nebo místo sources rovnou řešit modely?
 		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(_dbContext, _modelProject, _dataLayerProject);
 		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
-		RepositoryModelSource repositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject, dataEntriesModelSource);
+		RepositoryModelSource repositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject);
 
 		DataLayerServiceExtensionsModelSource modelSource = new DataLayerServiceExtensionsModelSource(_dataLayerProject, dataEntriesModelSource, dbDataSourceModelSource, repositoryModelSource);
 		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(modelSource.GetModels().Single());
 		await _codeWriter.SaveAsync(targetFilename, template.TransformText(), OverwriteBahavior.OverwriteWhenFileAlreadyExists, cancellationToken);
-		//dataLayerProject.SaveChanges();
 	}
 }

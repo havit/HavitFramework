@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
+﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
@@ -14,9 +13,7 @@ public class RepositoriesGenerator(
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
-		var dataEntriesModelSource = new DataEntriesModelSource(_dbContext, _modelProject, _dataLayerProject);
-
-		var dbRepositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject, dataEntriesModelSource);
+		var dbRepositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject);
 		var dbRepositoryBaseGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryBaseGeneratedTemplateFactory(), new DbRepositoryBaseGeneratedFileNamingService(_dataLayerProject), _codeWriter);
 		var interfaceRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new InterfaceRepositoryGeneratedTemplateFactory(), new InterfaceRepositoryGeneratedFileNamingService(_dataLayerProject), _codeWriter);
 		var dbRepositoryGeneratedGenerator = new GenericGenerator<RepositoryModel>(dbRepositoryModelSource, new DbRepositoryGeneratedTemplateFactory(), new DbRepositoryGeneratedFileNamingService(_dataLayerProject), _codeWriter);

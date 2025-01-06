@@ -18,12 +18,12 @@ public class DataSourcesGenerator(
 		IModelSource<FakeDataSourceModel> fakeDataSourceModelSource = new FakeDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
 
 		// interface data sources
-		await _genericGenerator.GenerateAsync(interfaceDataSourceModelSource, new InterfaceDataSourceTemplateFactory(), new InterfaceDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(interfaceDataSourceModelSource, interfaceDataSourceModel => new InterfaceDataSourceTemplate(interfaceDataSourceModel), new InterfaceDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
 
 		// db data sources
-		await _genericGenerator.GenerateAsync(dbDataSourceModelSource, new DbDataSourceTemplateFactory(), new DbDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(dbDataSourceModelSource, dbDataSourceModel => new DbDataSourceTemplate(dbDataSourceModel), new DbDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
 
 		// fake data sources
-		await _genericGenerator.GenerateAsync(fakeDataSourceModelSource, new FakeDataSourceTemplateFactory(), new FakeDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(fakeDataSourceModelSource, fakeDataSourceModel => new FakeDataSourceTemplate(fakeDataSourceModel), new FakeDataSourceFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
 	}
 }

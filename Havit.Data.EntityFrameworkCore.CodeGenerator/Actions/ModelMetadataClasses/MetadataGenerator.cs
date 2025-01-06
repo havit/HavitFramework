@@ -16,9 +16,8 @@ public class MetadataGenerator(
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(_metadataProject);
-		MetadataClassTemplateFactory factory = new MetadataClassTemplateFactory();
 		MetadataClassModelSource modelSource = new MetadataClassModelSource(_dbContext, _metadataProject, _modelProject, _configuration);
 
-		await _genericGenerator.GenerateAsync(modelSource, factory, fileNamingService, cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(modelSource, metadataClass => new MetadataClassTemplate(metadataClass), fileNamingService, cancellationToken: cancellationToken);
 	}
 }

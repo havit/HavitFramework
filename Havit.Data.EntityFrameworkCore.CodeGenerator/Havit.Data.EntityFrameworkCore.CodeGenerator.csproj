@@ -68,9 +68,6 @@
 		<Compile Update="Actions\DataSources\Template\InterfaceDataSourceTemplate.partial.cs">
 			<SubType>Code</SubType>
 		</Compile>
-		<Compile Update="Actions\DataSources\Template\InterfaceDataSourceTemplateFactory.cs">
-			<SubType>Code</SubType>
-		</Compile>
 		<Compile Update="Actions\ModelMetadataClasses\Template\MetadataClassTemplate.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

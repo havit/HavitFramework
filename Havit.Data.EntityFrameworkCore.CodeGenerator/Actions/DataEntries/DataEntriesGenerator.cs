@@ -16,9 +16,9 @@ public class DataEntriesGenerator(
 		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(_dbContext, _modelProject, _dataLayerProject);
 
 		// interface data entries
-		await _genericGenerator.GenerateAsync(dataEntriesModelSource, new InterfaceDataEntriesTemplateFactory(), new InterfaceDataEntriesFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(dataEntriesModelSource, dataEntriesModel => new InterfaceDataEntriesTemplate(dataEntriesModel), new InterfaceDataEntriesFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
 
 		// db data entries
-		await _genericGenerator.GenerateAsync(dataEntriesModelSource, new DbDataEntriesTemplateFactory(), new DbDataEntriesFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(dataEntriesModelSource, dataEntriesModel => new DbDataEntriesTemplate(dataEntriesModel), new DbDataEntriesFileNamingService(_dataLayerProject), cancellationToken: cancellationToken);
 	}
 }

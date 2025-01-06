@@ -9,13 +9,13 @@ public class GenericGenerator : IGenericGenerator
 		_codeWriter = codeWriter;
 	}
 
-	public async Task GenerateAsync<TModel>(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists, CancellationToken cancellationToken = default)
+	public async Task GenerateAsync<TModel>(IModelSource<TModel> modelSource, Func<TModel, ITemplate> templateFactory, IFileNamingService<TModel> fileNamingService, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists, CancellationToken cancellationToken = default)
 	{
 		List<TModel> models = modelSource.GetModels();
 
 		await Task.WhenAll(models.Select(async model =>
 		{
-			ITemplate template = templateFactory.CreateTemplate(model);
+			ITemplate template = templateFactory(model);
 
 			string content = template.TransformText();
 			string filename = fileNamingService.GetFilename(model);

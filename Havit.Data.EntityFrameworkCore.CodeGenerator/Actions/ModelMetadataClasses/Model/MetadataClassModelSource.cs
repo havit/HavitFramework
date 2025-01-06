@@ -7,22 +7,22 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 
 public class MetadataClassModelSource : IModelSource<MetadataClass>
 {
-	private readonly DbContext dbContext;
-	private readonly IProject metadataProject;
-	private readonly IProject modelProject;
-	private readonly CodeGeneratorConfiguration configuration;
+	private readonly DbContext _dbContext;
+	private readonly IMetadataProject _metadataProject;
+	private readonly IModelProject _modelProject;
+	private readonly CodeGeneratorConfiguration _configuration;
 
-	public MetadataClassModelSource(DbContext dbContext, IProject metadataProject, IProject modelProject, CodeGeneratorConfiguration configuration)
+	public MetadataClassModelSource(DbContext dbContext, IMetadataProject metadataProject, IModelProject modelProject, CodeGeneratorConfiguration configuration)
 	{
-		this.dbContext = dbContext;
-		this.metadataProject = metadataProject;
-		this.modelProject = modelProject;
-		this.configuration = configuration;
+		_dbContext = dbContext;
+		_metadataProject = metadataProject;
+		_modelProject = modelProject;
+		_configuration = configuration;
 	}
 
 	public IEnumerable<MetadataClass> GetModels()
 	{
-		List<MetadataClass> result = (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+		List<MetadataClass> result = (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 									  select new MetadataClass
 									  {
 										  NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
@@ -47,15 +47,15 @@ public class MetadataClassModelSource : IModelSource<MetadataClass>
 
 	private string GetNamespaceName(string namespaceName)
 	{
-		string metadataProjectNamespace = metadataProject.GetProjectRootNamespace();
-		string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+		string metadataProjectNamespace = _metadataProject.GetProjectRootNamespace();
+		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 		if (namespaceName.StartsWith(modelProjectNamespace))
 		{
-			return metadataProjectNamespace + "." + configuration.MetadataNamespace + namespaceName.Substring(modelProjectNamespace.Length);
+			return metadataProjectNamespace + "." + _configuration.MetadataNamespace + namespaceName.Substring(modelProjectNamespace.Length);
 		}
 		else
 		{
-			return namespaceName + "." + configuration.MetadataNamespace;
+			return namespaceName + "." + _configuration.MetadataNamespace;
 		}
 	}
 }

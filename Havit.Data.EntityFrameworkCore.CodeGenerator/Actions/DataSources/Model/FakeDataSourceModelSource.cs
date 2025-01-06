@@ -6,20 +6,20 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model
 
 public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 {
-	private readonly DbContext dbContext;
-	private readonly IProject modelProject;
-	private readonly IProject dataLayerProject;
+	private readonly DbContext _dbContext;
+	private readonly IModelProject _modelProject;
+	private readonly IDataLayerProject _dataLayerProject;
 
-	public FakeDataSourceModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject)
+	public FakeDataSourceModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject)
 	{
-		this.dbContext = dbContext;
-		this.modelProject = modelProject;
-		this.dataLayerProject = dataLayerProject;
+		_dbContext = dbContext;
+		_modelProject = modelProject;
+		_dataLayerProject = dataLayerProject;
 	}
 
 	public IEnumerable<FakeDataSourceModel> GetModels()
 	{
-		return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new FakeDataSourceModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace, true),
@@ -31,12 +31,12 @@ public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 
 	private string GetNamespaceName(string namespaceName, bool addFakes)
 	{
-		string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 		string fakesString = addFakes ? ".Fakes" : "";
 
 		if (namespaceName.StartsWith(modelProjectNamespace))
 		{
-			return dataLayerProject.GetProjectRootNamespace() + ".DataSources" + namespaceName.Substring(modelProjectNamespace.Length) + fakesString;
+			return _dataLayerProject.GetProjectRootNamespace() + ".DataSources" + namespaceName.Substring(modelProjectNamespace.Length) + fakesString;
 		}
 		else
 		{

@@ -6,8 +6,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources;
 
 public class FakeDataSourceFileNamingService : FileNamingServiceBase<FakeDataSourceModel>
 {
-	public FakeDataSourceFileNamingService(IProject project)
-		: base(project)
+	public FakeDataSourceFileNamingService(IDataLayerProject dataLayerProject)
+		: base(dataLayerProject)
 	{
 
 	}

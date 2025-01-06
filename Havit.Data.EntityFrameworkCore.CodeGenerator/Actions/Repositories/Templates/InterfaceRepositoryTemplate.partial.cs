@@ -9,6 +9,6 @@ public partial class InterfaceRepositoryTemplate : ITemplate
 
 	public InterfaceRepositoryTemplate(RepositoryModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

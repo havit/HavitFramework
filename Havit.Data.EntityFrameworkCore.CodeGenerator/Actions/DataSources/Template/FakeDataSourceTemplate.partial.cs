@@ -9,6 +9,6 @@ public partial class FakeDataSourceTemplate : ITemplate
 
 	public FakeDataSourceTemplate(FakeDataSourceModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

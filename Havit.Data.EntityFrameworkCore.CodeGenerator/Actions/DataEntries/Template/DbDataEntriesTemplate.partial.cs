@@ -9,6 +9,6 @@ public partial class DbDataEntriesTemplate : ITemplate
 
 	public DbDataEntriesTemplate(DataEntriesModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

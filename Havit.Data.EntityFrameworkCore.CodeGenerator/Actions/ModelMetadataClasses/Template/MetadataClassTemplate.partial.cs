@@ -9,6 +9,6 @@ public partial class MetadataClassTemplate : ITemplate
 
 	public MetadataClassTemplate(MetadataClass model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

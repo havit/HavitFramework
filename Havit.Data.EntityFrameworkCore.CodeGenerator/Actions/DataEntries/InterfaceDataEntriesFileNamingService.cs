@@ -4,7 +4,7 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries;
 
-public class InterfaceDataEntriesFileNamingService(IProject _project) : FileNamingServiceBase<DataEntriesModel>(_project)
+public class InterfaceDataEntriesFileNamingService(IDataLayerProject dataLayerProject) : FileNamingServiceBase<DataEntriesModel>(dataLayerProject)
 {
 	protected override string GetClassName(DataEntriesModel model)
 	{

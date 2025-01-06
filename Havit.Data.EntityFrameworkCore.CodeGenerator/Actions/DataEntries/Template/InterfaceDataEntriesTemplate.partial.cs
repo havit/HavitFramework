@@ -9,6 +9,6 @@ public partial class InterfaceDataEntriesTemplate : ITemplate
 
 	public InterfaceDataEntriesTemplate(DataEntriesModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

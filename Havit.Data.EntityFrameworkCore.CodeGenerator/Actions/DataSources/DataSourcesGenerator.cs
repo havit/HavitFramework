@@ -2,13 +2,12 @@
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Template;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources;
 
 public class DataSourcesGenerator(
-	[FromKeyedServices(Project.DataLayerProjectKey)] IProject _dataLayerProject,
-	[FromKeyedServices(Project.ModelProjectKey)] IProject _modelProject,
+	IDataLayerProject _dataLayerProject,
+	IModelProject _modelProject,
 	DbContext _dbContext,
 	ICodeWriter _codeWriter) : IDataLayerGenerator
 {

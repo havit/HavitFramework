@@ -12,7 +12,7 @@ public class CodeWriter : ICodeWriter
 	/// </summary>
 	public async Task SaveAsync(string filename, string content, OverwriteBahavior overwriteBahavior, CancellationToken cancellationToken = default)
 	{
-		if (!(await this.AlreadyExistsTheSameAsync(filename, content, cancellationToken)) || !this.HasByteOrderMask(filename))
+		if (!(await AlreadyExistsTheSameAsync(filename, content, cancellationToken)) || !HasByteOrderMask(filename))
 		{
 			string directory = Path.GetDirectoryName(filename);
 			if (!String.IsNullOrEmpty(directory))

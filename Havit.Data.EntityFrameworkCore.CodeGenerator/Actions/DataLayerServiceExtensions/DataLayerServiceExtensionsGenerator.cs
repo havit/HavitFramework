@@ -5,13 +5,12 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions;
 
 public class DataLayerServiceExtensionsGenerator(
-	[FromKeyedServices(Project.ModelProjectKey)] IProject _modelProject,
-	[FromKeyedServices(Project.DataLayerProjectKey)] IProject _dataLayerProject,
+	IModelProject _modelProject,
+	IDataLayerProject _dataLayerProject,
 	DbContext _dbContext,
 	ICodeWriter _codeWriter) : IDataLayerGenerator
 {

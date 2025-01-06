@@ -7,24 +7,24 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Mode
 
 public class RepositoryModelSource : IModelSource<RepositoryModel>
 {
-	private readonly DbContext dbContext;
-	private readonly IProject modelProject;
-	private readonly IProject dataLayerProject;
-	private readonly DataEntriesModelSource dataEntriesModelSource;
+	private readonly DbContext _dbContext;
+	private readonly IModelProject _modelProject;
+	private readonly IDataLayerProject _dataLayerProject;
+	private readonly DataEntriesModelSource _dataEntriesModelSource;
 
-	public RepositoryModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject, DataEntriesModelSource dataEntriesModelSource)
+	public RepositoryModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject, DataEntriesModelSource dataEntriesModelSource)
 	{
-		this.dbContext = dbContext;
-		this.modelProject = modelProject;
-		this.dataLayerProject = dataLayerProject;
-		this.dataEntriesModelSource = dataEntriesModelSource;
+		_dbContext = dbContext;
+		_modelProject = modelProject;
+		_dataLayerProject = dataLayerProject;
+		_dataEntriesModelSource = dataEntriesModelSource;
 	}
 
 	public IEnumerable<RepositoryModel> GetModels()
 	{
-		IEnumerable<DataEntriesModel> dataEntriesModels = dataEntriesModelSource.GetModels();
+		IEnumerable<DataEntriesModel> dataEntriesModels = _dataEntriesModelSource.GetModels();
 
-		return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new RepositoryModel
 				{
 					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace),
@@ -40,10 +40,10 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>
 
 	private string GetNamespaceName(string namespaceName, string typeNamespace = "Repositories")
 	{
-		string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 		if (namespaceName.StartsWith(modelProjectNamespace))
 		{
-			return dataLayerProject.GetProjectRootNamespace() + "." + typeNamespace + namespaceName.Substring(modelProjectNamespace.Length);
+			return _dataLayerProject.GetProjectRootNamespace() + "." + typeNamespace + namespaceName.Substring(modelProjectNamespace.Length);
 		}
 		else
 		{

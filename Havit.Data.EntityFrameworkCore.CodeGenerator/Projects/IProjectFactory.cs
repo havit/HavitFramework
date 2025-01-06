@@ -2,5 +2,6 @@
 
 public interface IProjectFactory
 {
-	IProject Create(string folderOrCsprojPath);
+	TProject Create<TProject>(string folderOrCsprojPath)
+		where TProject : ProjectBase, new();
 }

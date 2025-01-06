@@ -3,13 +3,12 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses;
 
 public class MetadataGenerator(
-	[FromKeyedServices(Project.MetadataProjectKey)] IProject _metadataProject,
-	[FromKeyedServices(Project.ModelProjectKey)] IProject _modelProject,
+	IMetadataProject _metadataProject,
+	IModelProject _modelProject,
 	DbContext _dbContext,
 	CodeGeneratorConfiguration _configuration,
 	ICodeWriter _codeWriter) : IDataLayerGenerator

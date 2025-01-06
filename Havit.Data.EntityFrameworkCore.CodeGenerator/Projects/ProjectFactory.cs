@@ -4,7 +4,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
 public class ProjectFactory : IProjectFactory
 {
-	public IProject Create(string folderOrCsprojPath)
+	public TProject Create<TProject>(string folderOrCsprojPath)
+		where TProject : ProjectBase, new()
 	{
 		string csprojPath;
 		if (folderOrCsprojPath.EndsWith(".csproj"))
@@ -24,7 +25,13 @@ public class ProjectFactory : IProjectFactory
 		XDocument content = XDocument.Load(csprojPath, LoadOptions.PreserveWhitespace);
 		if (IsDotNetCoreProject(content))
 		{
-			return new Project(csprojPath, content);
+			TProject project = new TProject()
+			{
+				Filename = csprojPath,
+				Content = content,
+			};
+
+			return project;
 		}
 
 		Console.ForegroundColor = ConsoleColor.Red;

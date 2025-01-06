@@ -2,20 +2,10 @@
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 
-public class Project : IProject
+public abstract class ProjectBase : IProject
 {
-	public const string ModelProjectKey = nameof(ModelProjectKey);
-	public const string MetadataProjectKey = nameof(MetadataProjectKey);
-	public const string DataLayerProjectKey = nameof(DataLayerProjectKey);
-
-	protected XDocument Content { get; }
-	protected string Filename { get; }
-
-	public Project(string filename, XDocument content)
-	{
-		Filename = filename;
-		Content = content;
-	}
+	public XDocument Content { get; init; }
+	public string Filename { get; init; }
 
 	public string GetProjectRootPath()
 	{

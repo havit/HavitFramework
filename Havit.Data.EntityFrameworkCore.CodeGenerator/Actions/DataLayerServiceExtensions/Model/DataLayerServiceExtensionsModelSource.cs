@@ -8,13 +8,13 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceE
 
 public class DataLayerServiceExtensionsModelSource : IModelSource<DataLayerServiceExtensionsModel>
 {
-	private readonly IProject _dataLayerProject;
+	private readonly IDataLayerProject _dataLayerProject;
 	private readonly DataEntriesModelSource _dataEntriesModelSource;
 	private readonly DbDataSourceModelSource _dbDataSourceModelSource;
 	private readonly RepositoryModelSource _repositoryModelSource;
 
 	public DataLayerServiceExtensionsModelSource(
-		IProject dataLayerProject,
+		IDataLayerProject dataLayerProject,
 		DataEntriesModelSource dataEntriesModelSource,
 		DbDataSourceModelSource dbDataSourceModelSource,
 		RepositoryModelSource repositoryModelSource)

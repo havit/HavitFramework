@@ -9,6 +9,6 @@ public partial class DbDataSourceTemplate : ITemplate
 
 	public DbDataSourceTemplate(DbDataSourceModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

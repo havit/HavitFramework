@@ -8,20 +8,20 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model
 
 public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 {
-	private readonly DbContext dbContext;
-	private readonly IProject modelProject;
-	private readonly IProject dataLayerProject;
+	private readonly DbContext _dbContext;
+	private readonly IModelProject _modelProject;
+	private readonly IDataLayerProject _dataLayerProject;
 
-	public DataEntriesModelSource(DbContext dbContext, IProject modelProject, IProject dataLayerProject)
+	public DataEntriesModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject)
 	{
-		this.dbContext = dbContext;
-		this.modelProject = modelProject;
-		this.dataLayerProject = dataLayerProject;
+		_dbContext = dbContext;
+		_modelProject = modelProject;
+		_dataLayerProject = dataLayerProject;
 	}
 
 	public IEnumerable<DataEntriesModel> GetModels()
 	{
-		return (from registeredEntity in dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
 				where (entriesEnumType != null)
 				select new DataEntriesModel
@@ -63,10 +63,10 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 
 	private string GetNamespaceName(string namespaceName)
 	{
-		string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 		if (namespaceName.StartsWith(modelProjectNamespace))
 		{
-			return dataLayerProject.GetProjectRootNamespace() + ".DataEntries" + namespaceName.Substring(modelProjectNamespace.Length);
+			return _dataLayerProject.GetProjectRootNamespace() + ".DataEntries" + namespaceName.Substring(modelProjectNamespace.Length);
 		}
 		else
 		{
@@ -77,10 +77,10 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	private string GetRepositoryDependencyFullName(Type entityType)
 	{
 		string entityNamespaceName = entityType.Namespace;
-		string modelProjectNamespace = modelProject.GetProjectRootNamespace();
+		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 
 		string repositoryNamespace = entityNamespaceName.StartsWith(modelProjectNamespace)
-			? dataLayerProject.GetProjectRootNamespace() + ".Repositories" + entityNamespaceName.Substring(modelProjectNamespace.Length)
+			? _dataLayerProject.GetProjectRootNamespace() + ".Repositories" + entityNamespaceName.Substring(modelProjectNamespace.Length)
 			: entityNamespaceName + ".Repositories";
 
 		return repositoryNamespace + ".I" + entityType.Name + "Repository";

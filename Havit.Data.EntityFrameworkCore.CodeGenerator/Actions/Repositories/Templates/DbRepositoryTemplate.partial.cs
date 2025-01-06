@@ -9,6 +9,6 @@ public partial class DbRepositoryTemplate : ITemplate
 
 	public DbRepositoryTemplate(RepositoryModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

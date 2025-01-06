@@ -9,6 +9,6 @@ public partial class InterfaceDataSourceTemplate : ITemplate
 
 	public InterfaceDataSourceTemplate(InterfaceDataSourceModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

@@ -8,7 +8,7 @@ public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 
 	protected FileNamingServiceBase(IProject project)
 	{
-		this._project = project;
+		_project = project;
 	}
 
 	protected virtual bool UseGeneratedFolder
@@ -22,7 +22,7 @@ public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 	public virtual string GetFilename(TModel model)
 	{
 		string namespaceName = GetNamespaceName(model);
-		bool useGeneratedFolder = this.UseGeneratedFolder;
+		bool useGeneratedFolder = UseGeneratedFolder;
 		string className = GetClassName(model);
 
 		string projectRootPath = _project.GetProjectRootPath();

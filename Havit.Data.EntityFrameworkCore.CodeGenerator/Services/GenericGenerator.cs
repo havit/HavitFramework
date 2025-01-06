@@ -10,11 +10,11 @@ public class GenericGenerator<TModel>
 
 	public GenericGenerator(IModelSource<TModel> modelSource, ITemplateFactory<TModel> templateFactory, IFileNamingService<TModel> fileNamingService, ICodeWriter codeWriter, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists)
 	{
-		this._modelSource = modelSource;
-		this._templateFactory = templateFactory;
-		this._fileNamingService = fileNamingService;
-		this._codeWriter = codeWriter;
-		this._overwriteBahavior = overwriteBahavior;
+		_modelSource = modelSource;
+		_templateFactory = templateFactory;
+		_fileNamingService = fileNamingService;
+		_codeWriter = codeWriter;
+		_overwriteBahavior = overwriteBahavior;
 	}
 
 	public async Task GenerateAsync(CancellationToken cancellationToken)

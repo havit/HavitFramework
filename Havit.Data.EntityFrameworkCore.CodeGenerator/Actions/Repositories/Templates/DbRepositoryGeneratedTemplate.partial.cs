@@ -9,6 +9,6 @@ public partial class DbRepositoryGeneratedTemplate : ITemplate
 
 	public DbRepositoryGeneratedTemplate(RepositoryModel model)
 	{
-		this.Model = model;
+		Model = model;
 	}
 }

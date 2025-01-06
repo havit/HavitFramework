@@ -29,14 +29,15 @@ public static class Program
 
 		IServiceCollection services = new ServiceCollection();
 
-		services.AddSingleton<DbContext>(sp => GetDbContext(entityAssemblyName));
-		services.AddSingleton<CodeGeneratorConfiguration>(sp => GetConfiguration(new DirectoryInfo(solutionDirectory)));
-		services.AddSingleton<IProjectFactory, ProjectFactory>();
-		services.AddSingleton<ICodeWriter, CodeWriter>();
+		services.AddSingleton<DbContext>(GetDbContext(entityAssemblyName));
+		services.AddSingleton<CodeGeneratorConfiguration>(GetConfiguration(new DirectoryInfo(solutionDirectory)));
 
-		services.AddKeyedSingleton<IProject>(Project.ModelProjectKey, (sp, serviceKey) => sp.GetRequiredService<IProjectFactory>().Create(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().ModelProjectPath)));
-		services.AddKeyedSingleton<IProject>(Project.MetadataProjectKey, (sp, serviceKey) => sp.GetRequiredService<IProjectFactory>().Create(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().MetadataProjectPath)));
-		services.AddKeyedSingleton<IProject>(Project.DataLayerProjectKey, (sp, serviceKey) => sp.GetRequiredService<IProjectFactory>().Create(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj")));
+		services.AddSingleton<IProjectFactory, ProjectFactory>();
+		services.AddSingleton<IModelProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<ModelProject>(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().ModelProjectPath)));
+		services.AddSingleton<IMetadataProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<MetadataProject>(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().MetadataProjectPath)));
+		services.AddSingleton<IDataLayerProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<DataLayerProject>(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj")));
+
+		services.AddSingleton<ICodeWriter, CodeWriter>();
 
 		services.AddSingleton<IDataLayerGeneratorRunner, DataLayerGeneratorRunner>();
 		services.AddSingleton<IDataLayerGenerator, MetadataGenerator>();

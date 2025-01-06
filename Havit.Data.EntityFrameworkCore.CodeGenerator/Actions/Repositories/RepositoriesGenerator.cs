@@ -3,14 +3,13 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Templates;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories;
 
 public class RepositoriesGenerator(
 	DbContext _dbContext,
-	[FromKeyedServices(Project.DataLayerProjectKey)] IProject _dataLayerProject,
-	[FromKeyedServices(Project.ModelProjectKey)] IProject _modelProject,
+	IDataLayerProject _dataLayerProject,
+	IModelProject _modelProject,
 	ICodeWriter _codeWriter) : IDataLayerGenerator
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)

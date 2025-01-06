@@ -38,7 +38,7 @@ public static class Program
 
 		var host = hostBuilder.Build();
 
-//		await UpdateDatabaseAsync(host.Services, CancellationToken.None);
+		// await UpdateDatabaseAsync(host.Services, CancellationToken.None);
 		await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}

@@ -8,7 +8,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.20</PackageVersion>
+		<PackageVersion>2.0.21</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core MVC/Web API Extensions</Description>
 		<ImplicitUsings>true</ImplicitUsings>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -20,7 +20,10 @@
 
 	<ItemGroup>
 		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.1-packages-->
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="[2.1.38,2.2)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<!-- update vulnerable dependencies to fixed versions -->
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 	</ItemGroup>
 
 	<ItemGroup>

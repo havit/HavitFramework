@@ -13,7 +13,9 @@
   <!-- Pro různé komplikovanosti s publikováním konzolovky s použití SMO delegujeme generování do samostatného projektu. -->	
   
   <ItemGroup>
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="171.30.0" />
+	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="172.52.0" />
+	<!-- update vulnerable dependencies to fixed versions -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" /> <!-- Microsoft.SqlServer.SqlManagementObjects používá starší Microsoft.Data.SqlClient, jehož závislosti obsahují zranitelnosti -->
   </ItemGroup>
 
   <ItemGroup>

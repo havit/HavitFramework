@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -66,19 +67,19 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 			.ForAttributeWithMetadataName(
 				fullyQualifiedMetadataName: attributeTypeFullname,
 				predicate: static (node, _) => node is ClassDeclarationSyntax,
-				transform: (context, _) => GetServiceRegistrationEntries(context, serviceTypeReader))
+				transform: (context, cancellationToken) => GetServiceRegistrationEntries(context, serviceTypeReader, cancellationToken))
 			.SelectMany((items, _) => items)
 			.Collect();
 	}
 
-	private static IEnumerable<ServiceRegistrationEntry> GetServiceRegistrationEntries(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, INamedTypeSymbol[]> serviceTypeReader)
+	private static IEnumerable<ServiceRegistrationEntry> GetServiceRegistrationEntries(GeneratorAttributeSyntaxContext context, Func<INamedTypeSymbol, AttributeData, INamedTypeSymbol[]> serviceTypeReader, CancellationToken cancellationToken)
 	{
 		if (context.TargetNode is not ClassDeclarationSyntax classDeclarationSyntax)
 		{
 			yield break;
 		}
 
-		INamedTypeSymbol classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
+		INamedTypeSymbol classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax, cancellationToken);
 
 		foreach (AttributeData attribute in context.Attributes)
 		{

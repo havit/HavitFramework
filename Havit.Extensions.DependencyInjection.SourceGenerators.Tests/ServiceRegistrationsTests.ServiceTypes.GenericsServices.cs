@@ -34,16 +34,16 @@ namespace Havit.TestProject.Services;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, params string[] profileNames)
+	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, params string[] profileNames)
 	{
 		foreach (string profileName in profileNames)
 		{
-			AddServicesProjectServices(services, profileName);
+			AddServicesByServiceAttribute(services, profileName);
 		}
 		return services;
 	}
 
-	public static IServiceCollection AddServicesProjectServices(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
 		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{

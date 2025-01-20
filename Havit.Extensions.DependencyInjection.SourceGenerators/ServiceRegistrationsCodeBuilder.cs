@@ -65,7 +65,7 @@ internal static class ServiceRegistrationsCodeBuilder
 	private static string GetMethodName(string rootNamespace)
 	{
 		string namespaceSegment = rootNamespace?.Split('.').Last() ?? "";
-		return $"Add{namespaceSegment}ProjectServices";
+		return $"Add{namespaceSegment}ByServiceAttribute";
 	}
 
 	private static void WriteProfile(SourceCodeWriter sourceCodeWriter, string profileName, IEnumerable<ServiceRegistrationEntry> profileServiceRegistrationEntries, bool isFirst)

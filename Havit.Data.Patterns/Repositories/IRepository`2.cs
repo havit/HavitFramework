@@ -3,6 +3,9 @@
 /// <summary>
 /// Repository objektů typu TEntity.
 /// </summary>
+/// <remarks>
+/// Základní interface pro repository v Entity Framework Core.
+/// </remarks>
 public interface IRepository<TEntity, TKey>
 	where TEntity : class
 {

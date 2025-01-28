@@ -5,7 +5,7 @@ using Havit.Data.Patterns.Repositories;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 
 /// <summary>
-/// Bázová třída pro vyhledávání entit dle klíče (jednoduchého i složeného).
+/// Bázová třída pro vyhledávání entit dle klíče (jednoduchého i složeného) pro entity s primárním klíčem typu System.Int32.
 /// Použití:
 /// 1) Podědit od této třídy a implementovat abstrakční vlastností
 /// 2) Eventuelně nakonfigurovat chování overridováním virtuálních vlastností.

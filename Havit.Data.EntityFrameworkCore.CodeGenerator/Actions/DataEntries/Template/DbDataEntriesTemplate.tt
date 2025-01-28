@@ -9,7 +9,7 @@
 namespace <#= Model.NamespaceName #>;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntries<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceName #> 
+public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntries<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>, <#= Model.InterfaceName #>
 {
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
 	private <#= Model.ModelClassFullName #> <#= entry.FieldName #>;
@@ -30,7 +30,7 @@ public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntr
 <# } #>
 
 <# if (Model.UseDataEntrySymbolStorage) { #>
-	public <#= Model.DbClassName #>(Havit.Data.Patterns.DataEntries.IDataEntrySymbolService<<#= Model.ModelClassFullName #>> dataEntrySymbolService, <#= Model.RepositoryDependencyFullName #> repository)
+	public <#= Model.DbClassName #>(Havit.Data.Patterns.DataEntries.IDataEntrySymbolService<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>> dataEntrySymbolService, <#= Model.RepositoryDependencyFullName #> repository)
 		: base(dataEntrySymbolService, repository)
 <# } else { #>
 	public <#= Model.DbClassName #>(<#= Model.RepositoryDependencyFullName #> repository)

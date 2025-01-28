@@ -121,6 +121,10 @@ public static partial class DataLayerServiceExtensions
 
 	private static void AddDataEntries(IServiceCollection services)
 	{
+		services.TryAddScoped<Havit.EFCoreTests.DataLayer.DataEntries.ILanguageEntries, Havit.EFCoreTests.DataLayer.DataEntries.LanguageEntries>();
+		services.TryAddTransient<IDataEntrySymbolService<Havit.EFCoreTests.Model.Language, System.Int32>, DataEntrySymbolService<Havit.EFCoreTests.Model.Language, System.Int32>>();
+		services.TryAddSingleton<IDataEntrySymbolStorage<Havit.EFCoreTests.Model.Language, System.Int32>, DataEntrySymbolStorage<Havit.EFCoreTests.Model.Language, System.Int32>>();
+
 	}
 
 	private static void AddEntityKeyAccessors(IServiceCollection services)

@@ -10,4 +10,13 @@ public class Language : ILanguage
 
 	public string UiCulture { get; set; }
 
+	public string Symbol { get; set; }
+
+	public enum Entry
+	{
+		Czech,
+		English
+	}
 }
+
+

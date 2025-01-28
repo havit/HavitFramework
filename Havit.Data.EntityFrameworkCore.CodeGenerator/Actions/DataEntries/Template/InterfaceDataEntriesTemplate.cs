@@ -50,7 +50,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
             
             #line default
             #line hidden
-            this.Write(" : Havit.Data.Patterns.DataEntries.IDataEntries\r\n{\r\n");
+            this.Write("\r\n{\r\n");
             
             #line 14 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\InterfaceDataEntriesTemplate.tt"
  foreach (DataEntriesModel.Entry entry in Model.Entries) { 

@@ -25,7 +25,7 @@ public class DataEntrySymbolServiceTests
 			new SupportedClass { Id = 3, Symbol = SupportedClass.Entry.Third.ToString() });
 
 		// Act
-		DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+		DataEntrySymbolService<SupportedClass, int> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass, int>(new DataEntrySymbolStorage<SupportedClass, int>(), fakeDataSource);
 		int id = dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.Second);
 
 		// Assert
@@ -38,7 +38,7 @@ public class DataEntrySymbolServiceTests
 	{
 		// Arrange
 		FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource();
-		DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+		DataEntrySymbolService<SupportedClass, int> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass, int>(new DataEntrySymbolStorage<SupportedClass, int>(), fakeDataSource);
 
 		// Act
 		dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
@@ -55,7 +55,7 @@ public class DataEntrySymbolServiceTests
 		FakeNotSupportedClassDataSource fakeDataSource = new FakeNotSupportedClassDataSource();
 
 		// Act
-		new DataEntrySymbolService<NotSupportedClass>(new DataEntrySymbolStorage<NotSupportedClass>(), fakeDataSource);
+		new DataEntrySymbolService<NotSupportedClass, int>(new DataEntrySymbolStorage<NotSupportedClass, int>(), fakeDataSource);
 
 		// Assert by method attribute 
 	}
@@ -67,7 +67,7 @@ public class DataEntrySymbolServiceTests
 		FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource(new SupportedClass { Id = 1, Symbol = SupportedClass.Entry.First.ToString(), Deleted = DateTime.Now });
 
 		// Act
-		DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+		DataEntrySymbolService<SupportedClass, int> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass, int>(new DataEntrySymbolStorage<SupportedClass, int>(), fakeDataSource);
 		int id = dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
 
 		// Assert
@@ -84,7 +84,7 @@ public class DataEntrySymbolServiceTests
 			new SupportedClass { Id = 3, Symbol = String.Empty });
 
 		// Act
-		DataEntrySymbolService<SupportedClass> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass>(new DataEntrySymbolStorage<SupportedClass>(), fakeDataSource);
+		DataEntrySymbolService<SupportedClass, int> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass, int>(new DataEntrySymbolStorage<SupportedClass, int>(), fakeDataSource);
 		dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
 
 		// Assert

@@ -57,6 +57,13 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
             
             #line default
             #line hidden
+            this.Write(", ");
+            
+            #line 12 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
             this.Write(">, ");
             
             #line 12 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
@@ -64,7 +71,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
             
             #line default
             #line hidden
-            this.Write(" \r\n{\r\n");
+            this.Write("\r\n{\r\n");
             
             #line 14 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  foreach (DataEntriesModel.Entry entry in Model.Entries) { 
@@ -212,6 +219,13 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Templ
             
             #line 33 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 33 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden

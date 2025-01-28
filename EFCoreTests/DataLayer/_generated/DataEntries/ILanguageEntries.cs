@@ -5,12 +5,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Havit.EFCoreTests.Model.Metadata;
+namespace Havit.EFCoreTests.DataLayer.DataEntries;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public static class LanguageMetadata
+public interface ILanguageEntries
 {
-	public const int CultureMaxLength = Int32.MaxValue;
-	public const int SymbolMaxLength = Int32.MaxValue;
-	public const int UiCultureMaxLength = Int32.MaxValue;
+	Havit.EFCoreTests.Model.Language Czech { get; }
+	Havit.EFCoreTests.Model.Language English { get; }
 }

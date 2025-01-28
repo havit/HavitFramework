@@ -39,6 +39,7 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 				InterfaceName = "I" + registeredEntity.ClrType.Name + "Entries",
 				DbClassName = registeredEntity.ClrType.Name + "Entries",
 				ModelClassFullName = registeredEntity.ClrType.FullName,
+				ModelClassPrimaryKeyTypeName = registeredEntity.FindPrimaryKey().Properties.Single().ClrType.FullName,
 				ModelEntriesEnumerationFullName = registeredEntity.ClrType.FullName + ".Entry",
 				RepositoryDependencyFullName = GetRepositoryDependencyFullName(registeredEntity.ClrType),
 				Entries = System.Enum.GetNames(entriesEnumType)

@@ -5,7 +5,7 @@ namespace Havit.Data.Patterns.Tests.DataEntries.Infrastructure;
 
 public class SystemCodebookEntryDataEntries : DataEntries<SystemCodebookEntry>
 {
-	public SystemCodebookEntryDataEntries(IDataEntrySymbolService<SystemCodebookEntry> dataEntrySymbolService, IRepository<SystemCodebookEntry> repository) : base(dataEntrySymbolService, repository)
+	public SystemCodebookEntryDataEntries(IDataEntrySymbolService<SystemCodebookEntry, int> dataEntrySymbolService, IRepository<SystemCodebookEntry> repository) : base(dataEntrySymbolService, repository)
 	{
 	}
 

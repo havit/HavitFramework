@@ -9,16 +9,16 @@ namespace Havit.Data.Patterns.DataEntries;
 /// <summary>
 /// Zajišťuje mapování párovacích symbolů a identifikátorů objektů, resp. získání identifikátoru (primárního klíče) na základě symbolu.
 /// </summary>
-public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
+public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEntity, TKey>
 	where TEntity : class
 {
-	private readonly IDataEntrySymbolStorage<TEntity> _dataEntrySymbolStorage;
+	private readonly IDataEntrySymbolStorage<TEntity, TKey> _dataEntrySymbolStorage;
 	private readonly IDataSource<TEntity> _dataSource; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbDataSource.
 
 	/// <summary>
 	/// Konstructor.
 	/// </summary>
-	public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
+	public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity, TKey> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
 	{
 		PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");
 		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DbDataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
@@ -32,11 +32,11 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 	/// Vrací hodnotu identifikátoru (primárního klíče) na základě symbolu.
 	/// </summary>
 	/// <param name="entry">"Symbol".</param>
-	public int GetEntryId(Enum entry)
+	public TKey GetEntryId(Enum entry)
 	{
-		Dictionary<string, int> identifiersByEntry = GetIdentifiersByEntry();
+		Dictionary<string, TKey> identifiersByEntry = GetIdentifiersByEntry();
 
-		int id;
+		TKey id;
 		if (identifiersByEntry.TryGetValue(entry.ToString(), out id))
 		{
 			return id;
@@ -47,7 +47,7 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 		}
 	}
 
-	private Dictionary<string, int> GetIdentifiersByEntry()
+	private Dictionary<string, TKey> GetIdentifiersByEntry()
 	{
 		if (_dataEntrySymbolStorage.Value == null)
 		{
@@ -62,7 +62,7 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 		return _dataEntrySymbolStorage.Value;
 	}
 
-	private Dictionary<string, int> GetStorageData()
+	private Dictionary<string, TKey> GetStorageData()
 	{
 		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 
@@ -70,15 +70,15 @@ public class DataEntrySymbolService<TEntity> : IDataEntrySymbolService<TEntity>
 		Expression<Func<TEntity, bool>> whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.Not(Expression.Call(null, typeof(String).GetMethod(nameof(String.IsNullOrEmpty)), Expression.Property(parameter, "Symbol"))), parameter);
 
 		// item => new EntryIdentification { Id = item.Id, Symbol = item.Symbol }
-		Expression<Func<TEntity, EntryIdentification>> projectionExpression = (Expression<Func<TEntity, EntryIdentification>>)Expression.Lambda(
+		Expression<Func<TEntity, EntryIdentification<TKey>>> projectionExpression = (Expression<Func<TEntity, EntryIdentification<TKey>>>)Expression.Lambda(
 			Expression.MemberInit(
-				Expression.New(typeof(EntryIdentification)),
-				Expression.Bind(typeof(EntryIdentification).GetProperty("Id"), Expression.Property(parameter, "Id")),
-				Expression.Bind(typeof(EntryIdentification).GetProperty("Symbol"), Expression.Property(parameter, "Symbol"))
+				Expression.New(typeof(EntryIdentification<TKey>)),
+				Expression.Bind(typeof(EntryIdentification<TKey>).GetProperty("Id"), Expression.Property(parameter, "Id")),
+				Expression.Bind(typeof(EntryIdentification<TKey>).GetProperty("Symbol"), Expression.Property(parameter, "Symbol"))
 			),
 			parameter);
 
-		Dictionary<string, int> result;
+		Dictionary<string, TKey> result;
 		result = _dataSource.DataIncludingDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
 
 		return result;

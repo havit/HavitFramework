@@ -150,8 +150,8 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			{
 				Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
 
-				container.Register(Component.For(typeof(IDataEntrySymbolService<>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolService<>).MakeGenericType(entityType)).LifestyleTransient());
-				container.Register(Component.For(typeof(IDataEntrySymbolStorage<>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolStorage<>).MakeGenericType(entityType)).LifestyleSingleton());
+				container.Register(Component.For(typeof(IDataEntrySymbolService<,>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolService<,>).MakeGenericType(entityType, typeof(int))).LifestyleTransient());
+				container.Register(Component.For(typeof(IDataEntrySymbolStorage<,>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolStorage<,>).MakeGenericType(entityType, typeof(int))).LifestyleSingleton());
 			}
 		}
 		return this;

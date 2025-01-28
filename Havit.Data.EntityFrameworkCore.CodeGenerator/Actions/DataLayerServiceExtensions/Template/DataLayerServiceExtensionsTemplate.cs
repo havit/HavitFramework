@@ -320,10 +320,24 @@ public static partial class DataLayerServiceExtensions
             
             #line default
             #line hidden
+            this.Write(", ");
+            
+            #line 65 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
             this.Write(">, DataEntrySymbolService<");
             
             #line 65 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 65 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
@@ -334,6 +348,13 @@ public static partial class DataLayerServiceExtensions
             
             #line default
             #line hidden
+            this.Write(", ");
+            
+            #line 66 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
             this.Write(">, DataEntrySymbolStorage<");
             
             #line 66 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
@@ -341,7 +362,14 @@ public static partial class DataLayerServiceExtensions
             
             #line default
             #line hidden
-            this.Write(">>();\t\r\n");
+            this.Write(", ");
+            
+            #line 66 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(dataEntriesModel.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
+            this.Write(">>();\r\n");
             
             #line 67 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\DataLayerServiceExtensions\Template\DataLayerServiceExtensionsTemplate.tt"
  } 

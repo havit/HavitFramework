@@ -16,7 +16,7 @@ public class DataEntriesTests
 	public void DbDataEntries_GetEntry_UsesDataEntrySymbolServiceAndRepository()
 	{
 		// Arrange
-		Mock<IDataEntrySymbolService<SystemCodebookEntry>> mockDataEntrySymbolService = new Mock<IDataEntrySymbolService<SystemCodebookEntry>>(MockBehavior.Strict);
+		Mock<IDataEntrySymbolService<SystemCodebookEntry, int>> mockDataEntrySymbolService = new Mock<IDataEntrySymbolService<SystemCodebookEntry, int>>(MockBehavior.Strict);
 		mockDataEntrySymbolService.Setup(mock => mock.GetEntryId(SystemCodebookEntry.Entry.First)).Returns(1);
 		Mock<IRepository<SystemCodebookEntry>> mockRepository = new Mock<IRepository<SystemCodebookEntry>>(MockBehavior.Strict);
 		mockRepository.Setup(m => m.GetObject(1)).Returns(new SystemCodebookEntry());

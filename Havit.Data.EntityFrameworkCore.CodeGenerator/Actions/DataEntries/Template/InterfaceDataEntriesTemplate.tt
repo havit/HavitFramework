@@ -9,7 +9,7 @@
 namespace <#= Model.NamespaceName #>;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public interface <#= Model.InterfaceName #> : Havit.Data.Patterns.DataEntries.IDataEntries
+public interface <#= Model.InterfaceName #>
 {
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
 <# if (entry.IsObsolete) { #>

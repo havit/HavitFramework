@@ -62,8 +62,8 @@ public static partial class DataLayerServiceExtensions
 <# foreach (DataEntriesModel dataEntriesModel in Model.DataEntries) { #>
 		services.TryAddScoped<<#= dataEntriesModel.NamespaceName #>.<#= dataEntriesModel.InterfaceName #>, <#= dataEntriesModel.NamespaceName #>.<#= dataEntriesModel.DbClassName #>>();
 <# if (dataEntriesModel.UseDataEntrySymbolStorage) { #>
-		services.TryAddTransient<IDataEntrySymbolService<<#= dataEntriesModel.ModelClassFullName #>>, DataEntrySymbolService<<#= dataEntriesModel.ModelClassFullName #>>>();
-		services.TryAddSingleton<IDataEntrySymbolStorage<<#= dataEntriesModel.ModelClassFullName #>>, DataEntrySymbolStorage<<#= dataEntriesModel.ModelClassFullName #>>>();	
+		services.TryAddTransient<IDataEntrySymbolService<<#= dataEntriesModel.ModelClassFullName #>, <#= dataEntriesModel.ModelClassPrimaryKeyTypeName #>>, DataEntrySymbolService<<#= dataEntriesModel.ModelClassFullName #>, <#= dataEntriesModel.ModelClassPrimaryKeyTypeName #>>>();
+		services.TryAddSingleton<IDataEntrySymbolStorage<<#= dataEntriesModel.ModelClassFullName #>, <#= dataEntriesModel.ModelClassPrimaryKeyTypeName #>>, DataEntrySymbolStorage<<#= dataEntriesModel.ModelClassFullName #>, <#= dataEntriesModel.ModelClassPrimaryKeyTypeName #>>>();
 <# } #>
 
 <# } #>

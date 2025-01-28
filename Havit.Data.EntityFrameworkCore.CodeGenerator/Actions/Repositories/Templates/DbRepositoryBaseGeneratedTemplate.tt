@@ -16,9 +16,13 @@ using Havit.Data.Patterns.Infrastructure;
 namespace <#= Model.NamespaceName #>;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
+<# if (Model.ModelClassPrimaryKeyIsInt32) { #>
 public abstract class <#= Model.DbRepositoryBaseName #> : DbRepository<<#= Model.ModelClassFullName #>>
+<# } else { #>
+public abstract class <#= Model.DbRepositoryBaseName #> : DbRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>
+<# } #>
 {
-	protected <#= Model.DbRepositoryBaseName #>(IDbContext dbContext, IEntityKeyAccessor<<#= Model.ModelClassFullName #>, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+	protected <#= Model.DbRepositoryBaseName #>(IDbContext dbContext, IEntityKeyAccessor<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>> repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}

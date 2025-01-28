@@ -18,7 +18,7 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class AddressDbRepository : AddressDbRepositoryBase, IAddressRepository
 {
-	public AddressDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.Address, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+	public AddressDbRepository(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.Address, System.Int32> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<Havit.EFCoreTests.Model.Address, System.Int32> repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}

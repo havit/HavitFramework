@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrast
 
 public class LanguageRepository : DbRepository<Language>, ILanguageRepository
 {
-	public LanguageRepository(IDbContext dbContext, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryCompiledQueryProvider)
+	public LanguageRepository(IDbContext dbContext, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<Language, int> repositoryCompiledQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryCompiledQueryProvider)
 	{
 

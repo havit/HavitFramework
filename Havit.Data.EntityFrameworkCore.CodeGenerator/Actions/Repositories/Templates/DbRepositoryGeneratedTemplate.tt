@@ -18,7 +18,7 @@ namespace <#= Model.NamespaceName #>;
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
 public partial class <#= Model.DbRepositoryName #> : <#= Model.DbRepositoryBaseName #>, <#= Model.InterfaceRepositoryName #>
 {
-	public <#= Model.DbRepositoryName #>(IDbContext dbContext, IEntityKeyAccessor<<#= Model.ModelClassFullName #>, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+	public <#= Model.DbRepositoryName #>(IDbContext dbContext, IEntityKeyAccessor<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>> repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
 	{
 	}

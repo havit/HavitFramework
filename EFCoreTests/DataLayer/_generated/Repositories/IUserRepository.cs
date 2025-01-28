@@ -10,6 +10,6 @@ using Havit.Data.Patterns.Repositories;
 namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public partial interface IUserRepository : IRepository<Havit.EFCoreTests.Model.User>
+public partial interface IUserRepository : IRepository<Havit.EFCoreTests.Model.User, System.Guid>
 {
 }

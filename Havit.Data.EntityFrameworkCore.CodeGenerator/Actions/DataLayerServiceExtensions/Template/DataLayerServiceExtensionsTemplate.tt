@@ -47,9 +47,13 @@ public static partial class DataLayerServiceExtensions
 	{
 <# foreach (RepositoryModel repositoryModel in Model.Repositories) { #>
 		services.TryAddScoped<<#= repositoryModel.NamespaceName #>.<#= repositoryModel.InterfaceRepositoryName#>, <#= repositoryModel.NamespaceName #>.<#= repositoryModel.DbRepositoryName #>>();
+		services.TryAddScoped<IRepository<<#= repositoryModel.ModelClassFullName #>, <#= repositoryModel.ModelClassPrimaryKeyTypeName #>>>(sp => sp.GetRequiredService<<#= repositoryModel.NamespaceName #>.<#= repositoryModel.InterfaceRepositoryName#>>());
+<# if (repositoryModel.ModelClassPrimaryKeyIsInt32) { #>
 		services.TryAddScoped<IRepository<<#= repositoryModel.ModelClassFullName #>>>(sp => sp.GetRequiredService<<#= repositoryModel.NamespaceName #>.<#= repositoryModel.InterfaceRepositoryName#>>());
+<# } // if #>
+	    // TODO: IRepositoryQueryProvider<<#= repositoryModel.ModelClassFullName #>, <#= repositoryModel.ModelClassPrimaryKeyTypeName #>>
 
-<# } #>
+<# } // foreach #>
 	}
 
 	private static void AddDataEntries(IServiceCollection services)
@@ -67,7 +71,7 @@ public static partial class DataLayerServiceExtensions
 	private static void AddEntityKeyAccessors(IServiceCollection services)
 	{
 <# foreach (RepositoryModel repositoryModel in Model.Repositories) { #>
-		services.TryAddTransient<IEntityKeyAccessor<<#= repositoryModel.ModelClassFullName #>, int>, DbEntityKeyAccessor<<#= repositoryModel.ModelClassFullName #>, int>>();
+		services.TryAddTransient<IEntityKeyAccessor<<#= repositoryModel.ModelClassFullName #>, <#= repositoryModel.ModelClassPrimaryKeyTypeName #>>, DbEntityKeyAccessor<<#= repositoryModel.ModelClassFullName #>, <#= repositoryModel.ModelClassPrimaryKeyTypeName #>>>();
 <# } #>
 	}
 }

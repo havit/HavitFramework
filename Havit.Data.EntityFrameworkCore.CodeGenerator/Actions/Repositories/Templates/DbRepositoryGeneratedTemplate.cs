@@ -87,11 +87,30 @@ namespace ");
             
             #line default
             #line hidden
-            this.Write(@", int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
-		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)
-	{
-	}
-}");
+            this.Write(", ");
+            
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
+            this.Write("> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager" +
+                    ", IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<");
+            
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
+            this.Write("> repositoryQueryProvider)\r\n\t\t: base(dbContext, entityKeyAccessor, dataLoader, so" +
+                    "ftDeleteManager, entityCacheManager, repositoryQueryProvider)\r\n\t{\r\n\t}\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }

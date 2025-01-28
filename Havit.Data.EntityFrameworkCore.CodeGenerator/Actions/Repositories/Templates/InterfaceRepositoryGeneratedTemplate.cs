@@ -42,44 +42,86 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             #line default
             #line hidden
             this.Write(";\r\n\r\n[System.CodeDom.Compiler.GeneratedCode(\"Havit.Data.EntityFrameworkCore.CodeG" +
-                    "enerator\", \"1.0\")]\r\npublic partial interface ");
+                    "enerator\", \"1.0\")]\r\n");
             
             #line 13 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+ if (Model.ModelClassPrimaryKeyIsInt32) { 
+            
+            #line default
+            #line hidden
+            this.Write("public partial interface ");
+            
+            #line 14 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
             
             #line default
             #line hidden
             this.Write(" : IRepository<");
             
-            #line 13 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            #line 14 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(">\r\n{\r\n");
+            this.Write(">\r\n");
             
             #line 15 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+ } else { 
+            
+            #line default
+            #line hidden
+            this.Write("public partial interface ");
+            
+            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceRepositoryName));
+            
+            #line default
+            #line hidden
+            this.Write(" : IRepository<");
+            
+            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(", ");
+            
+            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
+            this.Write(">\r\n");
+            
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("{\r\n");
+            
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
  if (Model.GenerateGetObjectByEntryEnumMethod) { 
             
             #line default
             #line hidden
             this.Write("\t");
             
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" GetObject(");
             
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(".Entry entry);\r\n");
             
-            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
  } 
             
             #line default
@@ -110,7 +152,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
         /// <summary>
         /// The string builder that generation-time code is using to assemble generated output
         /// </summary>
-        protected System.Text.StringBuilder GenerationEnvironment
+        public System.Text.StringBuilder GenerationEnvironment
         {
             get
             {

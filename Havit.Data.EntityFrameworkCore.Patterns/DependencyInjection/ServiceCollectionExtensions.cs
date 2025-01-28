@@ -80,10 +80,6 @@ public static class ServiceCollectionExtensions
 		services.TryAddSingletonFromScopedServiceProvider<IDbEntityKeyAccessorStorage>(sp => sp.GetRequiredService<IDbEntityKeyAccessorStorageBuilder>().Build());
 		services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
 
-		services.TryAddSingleton<IRepositoryQueryProvider, RepositoryQueryProvider>();
-		services.TryAddSingleton<IRepositoryQueryStore, RepositoryQueryStore>();
-		services.TryAddSingleton<IRepositoryQueryBuilder, RepositoryCompiledQueryBuilder>();
-
 		return services;
 	}
 

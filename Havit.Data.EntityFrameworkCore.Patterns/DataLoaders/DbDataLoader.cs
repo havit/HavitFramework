@@ -23,7 +23,7 @@ public partial class DbDataLoader : IDataLoader
 	/// Ovlivňuje maximální počet hodnot v WHERE Id IN (...) s SQL statementu.
 	/// Viz komentář v <see cref="LoadCollectionPropertyInternal" />.
 	/// </summary>
-	internal const int ChunkSize = DbRepository<object>.GetObjectsChunkSize;
+	internal const int ChunkSize = DbRepository<object, object>.GetObjectsChunkSize;
 
 	private readonly IDbContext _dbContext;
 	private readonly IPropertyLoadSequenceResolver _propertyLoadSequenceResolver;

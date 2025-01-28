@@ -1,40 +1,38 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
-using Havit.Data.Patterns.Infrastructure;
-
-namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
+﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 
 /// <summary>
 /// Poskytuje dotazy pro použití v repository.
 /// </summary>
-public interface IRepositoryQueryProvider
+public interface IRepositoryQueryProvider<TEntity, TKey>
+	where TEntity : class
 {
 	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity}.GetObject(int)" />.
+	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetObject(TKey)" />.
 	/// </summary>
-	Func<DbContext, int, TEntity> GetGetObjectCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor) where TEntity : class;
+	Func<DbContext, TKey, TEntity> GetGetObjectQuery();
 
 	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity}.GetObjectAsync(int, CancellationToken)" />.
+	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetObjectAsync(TKey, CancellationToken)" />.
 	/// </summary>
-	Func<DbContext, int, CancellationToken, Task<TEntity>> GetGetObjectAsyncCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor) where TEntity : class;
+	Func<DbContext, TKey, CancellationToken, Task<TEntity>> GetGetObjectAsyncQuery();
 
 	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity}.GetObjects(int[])" />.
+	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetObjects(TKey[])" />.
 	/// </summary>
-	Func<DbContext, int[], IEnumerable<TEntity>> GetGetObjectsCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor) where TEntity : class;
+	Func<DbContext, TKey[], IEnumerable<TEntity>> GetGetObjectsQuery();
 
 	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity}.GetObjectsAsync(int[], CancellationToken)" />.
+	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetObjectsAsync(TKey[], CancellationToken)" />.
 	/// </summary>
-	Func<DbContext, int[], IAsyncEnumerable<TEntity>> GetGetObjectsAsyncCompiledQuery<TEntity>(Type repositoryType, IEntityKeyAccessor<TEntity, int> entityKeyAccessor) where TEntity : class;
+	Func<DbContext, TKey[], IAsyncEnumerable<TEntity>> GetGetObjectsAsyncQuery();
 
 	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity}.GetAll" />.
+	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetAll" />.
 	/// </summary>
-	Func<DbContext, IEnumerable<TEntity>> GetGetAllCompiledQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager) where TEntity : class;
+	Func<DbContext, IEnumerable<TEntity>> GetGetAllQuery();
 
 	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity}.GetAllAsync(CancellationToken)" />.
+	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetAllAsync(CancellationToken)" />.
 	/// </summary>
-	Func<DbContext, IAsyncEnumerable<TEntity>> GetGetAllAsyncCompiledQuery<TEntity>(Type repositoryType, ISoftDeleteManager softDeleteManager) where TEntity : class;
+	Func<DbContext, IAsyncEnumerable<TEntity>> GetGetAllAsyncQuery();
 }

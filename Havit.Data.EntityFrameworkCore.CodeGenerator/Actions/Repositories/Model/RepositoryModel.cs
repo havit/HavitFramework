@@ -8,5 +8,7 @@ public class RepositoryModel
 	public string InterfaceRepositoryName { get; set; }
 	public string ModelClassNamespace { get; set; }
 	public string ModelClassFullName { get; set; }
+	public string ModelClassPrimaryKeyTypeName { get; set; }
+	public bool ModelClassPrimaryKeyIsInt32 { get; set; }
 	public bool GenerateGetObjectByEntryEnumMethod { get; set; }
 }

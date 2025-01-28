@@ -1,5 +1,6 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
@@ -20,6 +21,8 @@ public static class DataLayerServiceExtensions
 
 		services.TryAddScoped<ILanguageRepository, LanguageRepository>();
 		services.TryAddScoped<IRepository<Language>>(sp => sp.GetRequiredService<ILanguageRepository>());
+		services.TryAddScoped<IRepository<Language, int>>(sp => sp.GetRequiredService<ILanguageRepository>());
+		services.TryAddScoped<IRepositoryQueryProvider<Language, int>, LanguageRepositoryQueryProvider>();
 
 		services.TryAddScoped<IEntityKeyAccessor<Language, int>, DbEntityKeyAccessor<Language, int>>();
 

@@ -12,14 +12,14 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 /// <summary>
 /// Repository objektů typu TEntity.
 /// </summary>
-public abstract class DbRepository<TEntity> : IRepository<TEntity>
+public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	 where TEntity : class
 {
 	internal const int GetObjectsChunkSize = 5_000;
 
 	private readonly IDbContext dbContext;
-	private readonly IEntityKeyAccessor<TEntity, int> entityKeyAccessor;
-	private readonly IRepositoryQueryProvider repositoryQueryProvider;
+	private readonly IEntityKeyAccessor<TEntity, TKey> entityKeyAccessor;
+	private readonly IRepositoryQueryProvider<TEntity, TKey> repositoryQueryProvider;
 
 	private List<TEntity> _all;
 	private bool? _isEntityCachable;
@@ -68,7 +68,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider repositoryQueryProvider)
+	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, TKey> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<TEntity, TKey> repositoryQueryProvider)
 	{
 		this.dbContext = dbContext;
 		this.entityKeyAccessor = entityKeyAccessor;
@@ -84,9 +84,12 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekt má načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-	public TEntity GetObject(int id)
+	public TEntity GetObject(TKey id)
 	{
-		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
+		if (EqualityComparer<TKey>.Default.Equals(id, default))
+		{
+			throw new ArgumentOutOfRangeException(nameof(id));
+		}
 
 		// hledáme v identity mapě
 		TEntity result = DbSet.FindTracked(id);
@@ -100,7 +103,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			Func<DbContext, int, TEntity> query = repositoryQueryProvider.GetGetObjectCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			Func<DbContext, TKey, TEntity> query = repositoryQueryProvider.GetGetObjectQuery();
 			result = query((DbContext)dbContext, id);
 
 			if (result != null)
@@ -124,9 +127,12 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekt má načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Objekt s daným Id nebyl nalezen.</exception>
-	public async Task<TEntity> GetObjectAsync(int id, CancellationToken cancellationToken = default)
+	public async Task<TEntity> GetObjectAsync(TKey id, CancellationToken cancellationToken = default)
 	{
-		ArgumentOutOfRangeException.ThrowIfEqual(id, default);
+		if (EqualityComparer<TKey>.Default.Equals(id, default))
+		{
+			throw new ArgumentOutOfRangeException(nameof(id));
+		}
 
 		TEntity result = DbSet.FindTracked(id);
 
@@ -139,7 +145,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			Func<DbContext, int, CancellationToken, Task<TEntity>> query = repositoryQueryProvider.GetGetObjectAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			Func<DbContext, TKey, CancellationToken, Task<TEntity>> query = repositoryQueryProvider.GetGetObjectAsyncQuery();
 			result = await query((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
 
 			if (result != null)
@@ -164,17 +170,20 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
-	public List<TEntity> GetObjects(params int[] ids)
+	public List<TEntity> GetObjects(params TKey[] ids)
 	{
 		ArgumentNullException.ThrowIfNull(ids);
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
-		HashSet<int> idsToLoad = new HashSet<int>();
+		HashSet<TKey> idsToLoad = new HashSet<TKey>();
 
 		bool isEntityCachable = IsEntityCachable();
-		foreach (int id in ids)
+		foreach (TKey id in ids)
 		{
-			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
+			if (EqualityComparer<TKey>.Default.Equals(id, default))
+			{
+				throw new ArgumentOutOfRangeException(nameof(id));
+			}
 
 			TEntity trackedEntity = DbSet.FindTracked(id);
 			if (trackedEntity != null)
@@ -197,7 +206,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 		if (idsToLoad.Count > 0)
 		{
-			Func<DbContext, int[], IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsCompiledQuery(this.GetType(), entityKeyAccessor);
+			Func<DbContext, TKey[], IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsQuery();
 
 			List<TEntity> loadedObjects;
 			if ((idsToLoad.Count <= GetObjectsChunkSize) || dbContext.SupportsSqlServerOpenJson())
@@ -207,7 +216,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				loadedObjects = new List<TEntity>();
-				foreach (int[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
+				foreach (TKey[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
 				{
 					loadedObjects.AddRange(query((DbContext)dbContext, idsToLoadChunk).ToList());
 				}
@@ -215,7 +224,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
-				int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
+				TKey[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
@@ -240,17 +249,20 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 	/// Objekty mají načtené vlastnosti definované v metodě GetLoadReferences. 
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
-	public async Task<List<TEntity>> GetObjectsAsync(int[] ids, CancellationToken cancellationToken = default)
+	public async Task<List<TEntity>> GetObjectsAsync(TKey[] ids, CancellationToken cancellationToken = default)
 	{
 		ArgumentNullException.ThrowIfNull(ids);
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
-		HashSet<int> idsToLoad = new HashSet<int>();
+		HashSet<TKey> idsToLoad = new HashSet<TKey>();
 
 		bool isEntityCachable = IsEntityCachable();
-		foreach (int id in ids)
+		foreach (TKey id in ids)
 		{
-			ArgumentOutOfRangeException.ThrowIfEqual(id, default);
+			if (EqualityComparer<TKey>.Default.Equals(id, default))
+			{
+				throw new ArgumentOutOfRangeException(nameof(id));
+			}
 
 			TEntity trackedEntity = DbSet.FindTracked(id);
 			if (trackedEntity != null)
@@ -273,7 +285,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 		if (idsToLoad.Count > 0)
 		{
-			Func<DbContext, int[], IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsAsyncCompiledQuery<TEntity>(this.GetType(), entityKeyAccessor);
+			Func<DbContext, TKey[], IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsAsyncQuery();
 			List<TEntity> loadedObjects;
 			if ((idsToLoad.Count <= GetObjectsChunkSize) || dbContext.SupportsSqlServerOpenJson())
 			{
@@ -282,7 +294,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			else
 			{
 				loadedObjects = new List<TEntity>(idsToLoad.Count);
-				foreach (int[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
+				foreach (TKey[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
 				{
 					loadedObjects.AddRange(await query((DbContext)dbContext, idsToLoadChunk).ToListAsync(cancellationToken).ConfigureAwait(false));
 				}
@@ -290,7 +302,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
-				int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
+				TKey[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
@@ -325,12 +337,12 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 			{
 				// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-				allData = GetObjects((int[])keys);
+				allData = GetObjects((TKey[])keys);
 			}
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
-				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllQuery();
 				allData = query((DbContext)dbContext).ToList();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
@@ -369,12 +381,12 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 			if (EntityCacheManager.TryGetAllKeys<TEntity>(out object keys))
 			{
 				// pokud ano, načteme je přes GetObjects (což umožní využití cache pro samotné entity)
-				allData = await GetObjectsAsync((int[])keys, cancellationToken).ConfigureAwait(false);
+				allData = await GetObjectsAsync((TKey[])keys, cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
-				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncCompiledQuery<TEntity>(this.GetType(), SoftDeleteManager);
+				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncQuery();
 				allData = await query((DbContext)dbContext).ToListAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
@@ -436,7 +448,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity>
 		return Enumerable.Empty<Expression<Func<TEntity, object>>>();
 	}
 
-	private void ThrowObjectNotFoundException(params int[] missingIds)
+	private void ThrowObjectNotFoundException(params TKey[] missingIds)
 	{
 		ArgumentNullException.ThrowIfNull(missingIds);
 		ArgumentOutOfRangeException.ThrowIfZero(missingIds.Length);

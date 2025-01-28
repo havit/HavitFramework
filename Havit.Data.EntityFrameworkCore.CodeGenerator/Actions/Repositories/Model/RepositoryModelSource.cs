@@ -31,6 +31,8 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>
 				InterfaceRepositoryName = "I" + registeredEntity.ClrType.Name + "Repository",
 				ModelClassNamespace = registeredEntity.ClrType.Namespace,
 				ModelClassFullName = registeredEntity.ClrType.FullName,
+				ModelClassPrimaryKeyTypeName = registeredEntity.FindPrimaryKey().Properties.Single().ClrType.FullName,
+				ModelClassPrimaryKeyIsInt32 = registeredEntity.FindPrimaryKey().Properties.Single().ClrType == typeof(Int32),
 				//GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum,
 				//DataSourceDependencyFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, "DataSources") + ".I" + registeredEntity.ClrType.Name + "DataSource"
 			}).ToList();

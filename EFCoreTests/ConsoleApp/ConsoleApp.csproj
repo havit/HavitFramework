@@ -5,6 +5,7 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>Havit.EFCoreTests.ConsoleApp</AssemblyName>
 		<RootNamespace>Havit.EFCoreTests.ConsoleApp</RootNamespace>
+		<ImplicitUsings>true</ImplicitUsings>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 

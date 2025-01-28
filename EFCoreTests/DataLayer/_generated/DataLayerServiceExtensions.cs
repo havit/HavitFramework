@@ -7,6 +7,7 @@
 
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Infrastructure;
@@ -70,51 +71,51 @@ public static partial class DataLayerServiceExtensions
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IAddressRepository, Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Address, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IAddressRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Address>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IAddressRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.Address, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.Address, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IBusinessCaseRepository, Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IBusinessCaseRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.BusinessCase>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IBusinessCaseRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.BusinessCase, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.BusinessCase, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.ICheckedEntityRepository, Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.ICheckedEntityRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.CheckedEntity>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.ICheckedEntityRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.ILanguageRepository, Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Language, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.ILanguageRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Language>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.ILanguageRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.Language, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.Language, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IModelationRepository, Havit.EFCoreTests.DataLayer.Repositories.ModelationDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Modelation, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IModelationRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Modelation>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IModelationRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.Modelation, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.Modelation, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.ModelationDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IPersonRepository, Havit.EFCoreTests.DataLayer.Repositories.PersonDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Person, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IPersonRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Person>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IPersonRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.Person, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.Person, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.PersonDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IPropertyWithProtectedMembersRepository, Havit.EFCoreTests.DataLayer.Repositories.PropertyWithProtectedMembersDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IPropertyWithProtectedMembersRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IPropertyWithProtectedMembersRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.PropertyWithProtectedMembersDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IStateRepository, Havit.EFCoreTests.DataLayer.Repositories.StateDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.State, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IStateRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.State>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IStateRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.State, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.State, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.StateDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IStateLocalizationRepository, Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IStateLocalizationRepository>());
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.StateLocalization>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IStateLocalizationRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.StateLocalization, System.Int32>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.StateLocalization, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepositoryQueryProvider>();
 
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IUserRepository, Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.User, System.Guid>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IUserRepository>());
-	    // TODO: IRepositoryQueryProvider<Havit.EFCoreTests.Model.User, System.Guid>
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.User, System.Guid>, Havit.EFCoreTests.DataLayer.Repositories.UserDbRepositoryQueryProvider>();
 
 	}
 

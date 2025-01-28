@@ -93,6 +93,11 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>InterfaceRepositoryGeneratedTemplate.tt</DependentUpon>
 		</Compile>
+		<Compile Update="Actions\Repositories\Templates\RepositoryQueryProviderTemplate.cs">
+		  <DependentUpon>RepositoryQueryProviderTemplate.tt</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		</Compile>
 		<Compile Update="Actions\Repositories\Templates\InterfaceRepositoryTemplate.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -152,6 +157,10 @@
 		<None Update="Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>
 			<LastGenOutput>InterfaceRepositoryGeneratedTemplate.cs</LastGenOutput>
+		</None>
+		<None Update="Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt">
+		  <LastGenOutput>RepositoryQueryProviderTemplate.cs</LastGenOutput>
+		  <Generator>TextTemplatingFilePreprocessor</Generator>
 		</None>
 		<None Update="Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>

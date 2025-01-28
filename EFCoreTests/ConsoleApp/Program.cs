@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore;
+﻿using Havit.Data.EntityFrameworkCore;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.UnitOfWorks;
-using Havit.Diagnostics.Contracts;
 using Havit.EFCoreTests.DataLayer;
 using Havit.EFCoreTests.DataLayer.DataSources;
 using Havit.EFCoreTests.DataLayer.Lookups;
 using Havit.EFCoreTests.DataLayer.Repositories;
 using Havit.EFCoreTests.DataLayer.Seeds.Persons;
+using Havit.EFCoreTests.Model;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +33,7 @@ public static class Program
 		var host = hostBuilder.Build();
 
 		// await UpdateDatabaseAsync(host.Services, CancellationToken.None);
-		await SeedDatabaseAsync(host.Services, CancellationToken.None);
+		// await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}
 
@@ -91,6 +85,16 @@ public static class Program
 	private static async Task DebugAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
 	{
 		using var scope = serviceProvider.CreateScope();
+
+		//var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+		//userRepository.GetObject(Guid.NewGuid());
+		//userRepository.GetObjects(Guid.NewGuid(), Guid.NewGuid());
+		//userRepository.GetAll();
+
+		//await userRepository.GetObjectAsync(Guid.NewGuid(), cancellationToken);
+		//await userRepository.GetObjectsAsync([Guid.NewGuid(), Guid.NewGuid()], cancellationToken);
+		//await userRepository.GetAllAsync(cancellationToken);
+
 		var personRepository = scope.ServiceProvider.GetRequiredService<IPersonRepository>();
 		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
@@ -102,8 +106,8 @@ public static class Program
 		//unitOfWork.Commit();
 		await unitOfWork.CommitAsync(cancellationToken);
 
-		//Person person1 = personRepository.GetObject(1);
-		//dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		Person person1 = personRepository.GetObject(1);
+		dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
 
 		//Person person2 = personRepository.GetObject(2);
 		//await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);

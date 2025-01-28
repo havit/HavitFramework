@@ -29,5 +29,8 @@ public class RepositoriesGenerator(
 
 		// db repository
 		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, repositoryModel => new DbRepositoryTemplate(repositoryModel), new DbRepositoryFileNamingService(_dataLayerProject), OverwriteBahavior.SkipWhenAlreadyExists, cancellationToken);
+
+		// repository query provider
+		await _genericGenerator.GenerateAsync(dbRepositoryModelSource, repositoryModel => new RepositoryQueryProviderTemplate(repositoryModel), new DbRepositoryQueryProviderFileGeneratedNamingService(_dataLayerProject), OverwriteBahavior.OverwriteWhenFileAlreadyExists, cancellationToken);
 	}
 }

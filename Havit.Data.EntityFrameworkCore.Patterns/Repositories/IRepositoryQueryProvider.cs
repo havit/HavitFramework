@@ -3,6 +3,9 @@
 /// <summary>
 /// Poskytuje dotazy pro použití v repository.
 /// </summary>
+/// <remarks>
+/// API je šité na míru pro kompilované dotazy EF Core.
+/// </remarks>
 public interface IRepositoryQueryProvider<TEntity, TKey>
 	where TEntity : class
 {

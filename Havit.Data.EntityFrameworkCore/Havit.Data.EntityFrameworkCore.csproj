@@ -15,7 +15,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.9.1</PackageVersion>
+		<PackageVersion>2.9.2-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions</Description>
 	</PropertyGroup>
 

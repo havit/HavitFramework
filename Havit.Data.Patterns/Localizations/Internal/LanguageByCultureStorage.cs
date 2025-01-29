@@ -3,10 +3,10 @@
 /// <summary>
 /// Úložiště párování culture na jazyk.
 /// </summary>
-public class LanguageByCultureStorage : ILanguageByCultureStorage
+public class LanguageByCultureStorage<TLanguageKey> : ILanguageByCultureStorage<TLanguageKey>
 {
 	/// <summary>
 	/// Úložiště párování cultura jazyka.
 	/// </summary>
-	public Dictionary<string, int> Value { get; set; }
+	public Dictionary<string, TLanguageKey> Value { get; set; }
 }

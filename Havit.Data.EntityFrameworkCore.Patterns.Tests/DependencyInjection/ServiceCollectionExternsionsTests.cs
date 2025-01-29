@@ -78,8 +78,8 @@ public class ServiceCollectionExtensionsTests
 		Assert.AreNotSame(languageService1, languageService2);
 		Assert.AreNotSame(localizationService1, localizationService2);
 
-		Assert.IsInstanceOfType(languageService1, typeof(LanguageService<Language>));
-		Assert.IsInstanceOfType(languageService2, typeof(LanguageService<Language>));
+		Assert.IsInstanceOfType(languageService1, typeof(LanguageService<Language, int>));
+		Assert.IsInstanceOfType(languageService2, typeof(LanguageService<Language, int>));
 
 	}
 

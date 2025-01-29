@@ -94,16 +94,26 @@ public static class ServiceCollectionExtensions
 
 	/// <summary>
 	/// Registruje do DI containeru služby pro lokalizaci.
+	/// Předpokládá, že typ primárního klíče jazyka je Int32.
 	/// </summary>
 	public static IServiceCollection AddLocalizationServices<TLanguage>(this IServiceCollection services)
 		where TLanguage : class, ILanguage
 	{
-		Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
-		Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
+		return services.AddLocalizationServices<TLanguage, int>();
+	}
+
+	/// <summary>
+	/// Registruje do DI containeru služby pro lokalizaci.
+	/// </summary>
+	public static IServiceCollection AddLocalizationServices<TLanguage, TLanguageKey>(this IServiceCollection services)
+		where TLanguage : class, ILanguage
+	{
+		Type currentLanguageServiceType = typeof(LanguageService<,>).MakeGenericType(typeof(TLanguage), typeof(TLanguageKey));
+		Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<,>).MakeGenericType(typeof(TLanguage), typeof(TLanguageKey));
 
 		services.TryAddScoped(typeof(ILanguageService), currentLanguageServiceType);
-		services.TryAddTransient(typeof(ILanguageByCultureService), currentLanguageByCultureServiceType);
-		services.TryAddSingleton<ILanguageByCultureStorage, LanguageByCultureStorage>();
+		services.TryAddTransient(typeof(ILanguageByCultureService<TLanguageKey>), currentLanguageByCultureServiceType);
+		services.TryAddSingleton<ILanguageByCultureStorage<TLanguageKey>, LanguageByCultureStorage<TLanguageKey>>();
 		services.TryAddTransient<ILocalizationService, LocalizationService>();
 
 		return services;

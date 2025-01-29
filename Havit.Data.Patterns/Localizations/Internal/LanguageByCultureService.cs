@@ -10,17 +10,17 @@ namespace Havit.Data.Patterns.Localizations.Internal;
 /// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 /// Jazyky jsou načteny do lokální proměné a nejsou nikdy invalidovány.
 /// </summary>
-public class LanguageByCultureService<TLanguage> : ILanguageByCultureService
+public class LanguageByCultureService<TLanguage, TLanguageKey> : ILanguageByCultureService<TLanguageKey>
 	where TLanguage : class, ILanguage
 {
-	private readonly ILanguageByCultureStorage languageByCultureStorage;
-	private readonly IRepository<TLanguage> languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
-	private readonly IEntityKeyAccessor<TLanguage, int> entityKeyAccessor;
+	private readonly ILanguageByCultureStorage<TLanguageKey> languageByCultureStorage;
+	private readonly IRepository<TLanguage, TLanguageKey> languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
+	private readonly IEntityKeyAccessor<TLanguage, TLanguageKey> entityKeyAccessor;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public LanguageByCultureService(ILanguageByCultureStorage languageByCultureStorage, IRepository<TLanguage> languageRepository, IEntityKeyAccessor<TLanguage, int> entityKeyAccessor)
+	public LanguageByCultureService(ILanguageByCultureStorage<TLanguageKey> languageByCultureStorage, IRepository<TLanguage, TLanguageKey> languageRepository, IEntityKeyAccessor<TLanguage, TLanguageKey> entityKeyAccessor)
 	{
 		this.languageByCultureStorage = languageByCultureStorage;
 		this.languageRepository = languageRepository;
@@ -33,11 +33,11 @@ public class LanguageByCultureService<TLanguage> : ILanguageByCultureService
 	/// <exception cref="InvalidOperationException">
 	/// Není-li jazyk podle culture nalezen.
 	/// </exception>
-	public int GetLanguageId(string cultureName)
+	public TLanguageKey GetLanguageId(string cultureName)
 	{
-		Dictionary<string, int> languagesByCulture = GetLanguagesByCulture();
+		Dictionary<string, TLanguageKey> languagesByCulture = GetLanguagesByCulture();
 
-		int tmp;
+		TLanguageKey tmp;
 
 		// nejprve zkusíme hledat podle plného názvu
 		if (languagesByCulture.TryGetValue(cultureName, out tmp))
@@ -66,7 +66,7 @@ public class LanguageByCultureService<TLanguage> : ILanguageByCultureService
 	/// <summary>
 	/// Zajistí načtení jazyků do paměti pro opakované použití.
 	/// </summary>
-	private Dictionary<string, int> GetLanguagesByCulture()
+	private Dictionary<string, TLanguageKey> GetLanguagesByCulture()
 	{
 		if (languageByCultureStorage.Value == null)
 		{

@@ -8,16 +8,16 @@ namespace Havit.Data.Patterns.Localizations;
 /// Služba vrací aktuální jazyk nebo jazyk dle culture.
 /// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 /// </summary>	
-public class LanguageService<TLanguage> : ILanguageService
+public class LanguageService<TLanguage, TLanguageKey> : ILanguageService
 	where TLanguage : class, ILanguage
 {
-	private readonly IRepository<TLanguage> _languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
-	private readonly ILanguageByCultureService _languageByCultureService;
+	private readonly IRepository<TLanguage, TLanguageKey> _languageRepository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
+	private readonly ILanguageByCultureService<TLanguageKey> _languageByCultureService;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public LanguageService(IRepository<TLanguage> languageRepository, ILanguageByCultureService languageByCultureService)
+	public LanguageService(IRepository<TLanguage, TLanguageKey> languageRepository, ILanguageByCultureService<TLanguageKey> languageByCultureService)
 	{
 		this._languageRepository = languageRepository;
 		this._languageByCultureService = languageByCultureService;
@@ -36,7 +36,7 @@ public class LanguageService<TLanguage> : ILanguageService
 	/// </summary>
 	public ILanguage GetLanguage(string cultureName)
 	{
-		int languageId = _languageByCultureService.GetLanguageId(cultureName);
+		TLanguageKey languageId = _languageByCultureService.GetLanguageId(cultureName);
 		return _languageRepository.GetObject(languageId);
 	}
 }

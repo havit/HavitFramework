@@ -6,7 +6,7 @@ namespace Havit.Data.Patterns.Localizations.Internal;
 /// Služba vrací na základě culture (např. "en-US", "cs-CZ", "sk", "") ID jazyka.
 /// Jazykem se rozumí instance třídy modelu (implementující <see cref="ILanguage"/>).
 /// </summary>
-public interface ILanguageByCultureService
+public interface ILanguageByCultureService<TLanguageKey>
 {
 	/// <summary>
 	/// Vrací identifikátor jazyka podle culture.		
@@ -14,5 +14,5 @@ public interface ILanguageByCultureService
 	/// <exception cref="InvalidOperationException">
 	/// Není-li jazyk podle culture nalezen.
 	/// </exception>
-	int GetLanguageId(string cultureName);
+	TLanguageKey GetLanguageId(string cultureName);
 }

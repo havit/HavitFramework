@@ -33,7 +33,7 @@ public class LanguageServiceTests
 		dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKeyValue(It.IsAny<Language>())).Returns<Language>(language => language.Id);
 
 		// Act
-		LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepository.Object, new LanguageByCultureService<Language>(new LanguageByCultureStorage(), mockRepository.Object, dataEntryIdentifierAccessorMock.Object));
+		LanguageService<Language, int> dbLanguageService = new LanguageService<Language, int>(mockRepository.Object, new LanguageByCultureService<Language, int>(new LanguageByCultureStorage<int>(), mockRepository.Object, dataEntryIdentifierAccessorMock.Object));
 		ILanguage languageResult1 = dbLanguageService.GetLanguage("");
 		ILanguage languageResult2 = dbLanguageService.GetLanguage("en");
 		ILanguage languageResult3 = dbLanguageService.GetLanguage("en-GB");
@@ -70,7 +70,7 @@ public class LanguageServiceTests
 		dataEntryIdentifierAccessorMock.Setup(m => m.GetEntityKeyValue(It.IsAny<Language>())).Returns<Language>(language => language.Id);
 
 		// Act
-		LanguageService<Language> dbLanguageService = new LanguageService<Language>(mockRepository.Object, new LanguageByCultureService<Language>(new LanguageByCultureStorage(), mockRepository.Object, dataEntryIdentifierAccessorMock.Object));
+		LanguageService<Language, int> dbLanguageService = new LanguageService<Language, int>(mockRepository.Object, new LanguageByCultureService<Language, int>(new LanguageByCultureStorage<int>(), mockRepository.Object, dataEntryIdentifierAccessorMock.Object));
 		ILanguage languageResult1 = dbLanguageService.GetDefaultLanguage();
 
 		// Assert

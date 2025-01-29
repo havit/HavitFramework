@@ -78,17 +78,17 @@ public class ModelValidatorTests
 	}
 
 	[TestMethod]
-	public void ModelValidator_CheckPrimaryKeyType_ReportsNonIntKeys()
+	public void ModelValidator_CheckPrimaryKeyType_ReportsUnsupportedKeys()
 	{
 		// Arrange
 		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errors = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.Model.FindEntityType(typeof(StringIdClass))).ToArray();
+		string[] errors = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.Model.FindEntityType(typeof(DateTimeIdClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errors.Any(item => item.Contains("type int (System.Int32) is expected")));
+		Assert.IsTrue(errors.Any(item => item.Contains("of unsupported type")));
 	}
 
 	[TestMethod]

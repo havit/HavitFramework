@@ -2,8 +2,8 @@
 
 namespace Havit.Data.EntityFrameworkCore.Tests.ModelValidation.Infrastructure.Model;
 
-public class StringIdClass
+public class DateTimeIdClass
 {
 	[Key]
-	public string Id { get; set; }
+	public DateTime Id { get; set; }
 }

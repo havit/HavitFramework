@@ -84,16 +84,40 @@ public class ModelValidator
 		}
 	}
 
+	// source: https://learn.microsoft.com/en-us/dotnet/standard/numerics
+	private readonly HashSet<Type> supportedKeyTypes = new HashSet<Type>
+	{
+		// signed integer types
+		typeof(SByte),
+		typeof(Int16),
+		typeof(Int32),
+		typeof(Int64),
+		//typeof(Int128),
+		//typeof(BigIngeter),
+
+		// unsigned integer types
+		typeof(Byte),
+		typeof(UInt16),
+		typeof(UInt32),
+		typeof(UInt64),
+		//typeof(UInt128),
+
+		// other types
+		typeof(string),
+		typeof(Guid)
+	};
+
 	/// <summary>
-	/// Kontroluje, zda je primární klíč typu System.Int32.
+	/// Kontroluje typ primárního klíče.
 	/// </summary>
 	internal IEnumerable<string> CheckPrimaryKeyType(IReadOnlyEntityType entityType)
 	{
 		foreach (IReadOnlyProperty keyProperty in entityType.FindPrimaryKey().Properties)
 		{
-			if (keyProperty.ClrType != typeof(int))
+			if (!supportedKeyTypes.Contains(keyProperty.ClrType))
 			{
-				yield return $"Class {entityType.ClrType.Name} has a primary key named '{keyProperty.Name}' of type {keyProperty.ClrType}, but type int (System.Int32) is expected.";
+				string supportedTypes = String.Join(", ", supportedKeyTypes.Select(type => type.FullName).OrderBy(item => item));
+				yield return $"Class {entityType.ClrType.Name} has a primary key named '{keyProperty.Name}' of unsupported type {keyProperty.ClrType}. Supported types are {supportedTypes}.";
 			}
 		}
 	}

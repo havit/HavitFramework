@@ -10,7 +10,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Lookups.Infrastructure;
 public class UzivatelLookupService : LookupServiceBase<string, Uzivatel>
 {
 
-	public UzivatelLookupService(IEntityLookupDataStorage lookupStorage, IRepository<Uzivatel> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager) : base(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager)
+	public UzivatelLookupService(IEntityLookupDataStorage lookupStorage, IRepository<Uzivatel, int> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager) : base(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager)
 	{
 	}
 

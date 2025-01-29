@@ -114,9 +114,9 @@ public class ServiceCollectionExtensionsTests
 		using var scope2 = serviceProvider.CreateScope();
 
 		var languageRepository1a = scope1.ServiceProvider.GetRequiredService<ILanguageRepository>();
-		var languageRepository1b = scope1.ServiceProvider.GetRequiredService<IRepository<Language>>();
+		var languageRepository1b = scope1.ServiceProvider.GetRequiredService<IRepository<Language, int>>();
 		var languageRepository2a = scope2.ServiceProvider.GetRequiredService<ILanguageRepository>();
-		var languageRepository2b = scope2.ServiceProvider.GetRequiredService<IRepository<Language>>();
+		var languageRepository2b = scope2.ServiceProvider.GetRequiredService<IRepository<Language, int>>();
 
 		// Assert			
 		Assert.AreSame(languageRepository1a, languageRepository1b);

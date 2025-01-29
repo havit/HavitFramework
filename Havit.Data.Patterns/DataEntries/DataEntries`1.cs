@@ -16,7 +16,7 @@ public abstract class DataEntries<TEntity> : DataEntries<TEntity, int>
 	/// Hodnota enumu je přímo mapována na identifikátor.
 	/// </summary>
 	/// <param name="repository">Repository pro získání objektu dle identifikátoru.</param>
-	protected DataEntries(IRepository<TEntity> repository) : base(repository)
+	protected DataEntries(IRepository<TEntity, int> repository) : base(repository)
 	{
 	}
 
@@ -26,7 +26,7 @@ public abstract class DataEntries<TEntity> : DataEntries<TEntity, int>
 	/// </summary>
 	/// <param name="dataEntrySymbolService">Úložiště mapování párovacích symbolů a identifikátorů objektů.</param>
 	/// <param name="repository">Repository pro získání objektu dle identifikátoru.</param>
-	protected DataEntries(IDataEntrySymbolService<TEntity, int> dataEntrySymbolService, IRepository<TEntity> repository)
+	protected DataEntries(IDataEntrySymbolService<TEntity, int> dataEntrySymbolService, IRepository<TEntity, int> repository)
 		: base(dataEntrySymbolService, repository)
 	{
 	}

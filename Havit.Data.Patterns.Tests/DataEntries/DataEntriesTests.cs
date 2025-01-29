@@ -18,7 +18,7 @@ public class DataEntriesTests
 		// Arrange
 		Mock<IDataEntrySymbolService<SystemCodebookEntry, int>> mockDataEntrySymbolService = new Mock<IDataEntrySymbolService<SystemCodebookEntry, int>>(MockBehavior.Strict);
 		mockDataEntrySymbolService.Setup(mock => mock.GetEntryId(SystemCodebookEntry.Entry.First)).Returns(1);
-		Mock<IRepository<SystemCodebookEntry>> mockRepository = new Mock<IRepository<SystemCodebookEntry>>(MockBehavior.Strict);
+		Mock<IRepository<SystemCodebookEntry, int>> mockRepository = new Mock<IRepository<SystemCodebookEntry, int>>(MockBehavior.Strict);
 		mockRepository.Setup(m => m.GetObject(1)).Returns(new SystemCodebookEntry());
 		SystemCodebookEntryDataEntries supportClassDataEntries = new SystemCodebookEntryDataEntries(mockDataEntrySymbolService.Object, mockRepository.Object);
 
@@ -37,7 +37,7 @@ public class DataEntriesTests
 	{
 		// Arrange
 		var first = new SystemCodebookEntry();
-		Mock<IRepository<SystemCodebookEntry>> mockRepository = new Mock<IRepository<SystemCodebookEntry>>(MockBehavior.Strict);
+		Mock<IRepository<SystemCodebookEntry, int>> mockRepository = new Mock<IRepository<SystemCodebookEntry, int>>(MockBehavior.Strict);
 		mockRepository.Setup(m => m.GetObject(1)).Returns(first);
 		SystemCodebookEntryDataEntries supportClassDataEntries = new SystemCodebookEntryDataEntries(mockRepository.Object);
 

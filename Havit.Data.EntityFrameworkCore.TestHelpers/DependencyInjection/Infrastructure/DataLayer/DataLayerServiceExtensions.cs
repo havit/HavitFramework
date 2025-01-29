@@ -20,7 +20,6 @@ public static class DataLayerServiceExtensions
 		services.TryAddTransient<IDataSource<Language>, LanguageDataSource>();
 
 		services.TryAddScoped<ILanguageRepository, LanguageRepository>();
-		services.TryAddScoped<IRepository<Language>>(sp => sp.GetRequiredService<ILanguageRepository>());
 		services.TryAddScoped<IRepository<Language, int>>(sp => sp.GetRequiredService<ILanguageRepository>());
 		services.TryAddScoped<IRepositoryQueryProvider<Language, int>, LanguageRepositoryQueryProvider>();
 

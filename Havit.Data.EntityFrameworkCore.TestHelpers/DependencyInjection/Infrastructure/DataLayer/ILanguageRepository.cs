@@ -3,6 +3,6 @@ using Havit.Data.Patterns.Repositories;
 
 namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
 
-public interface ILanguageRepository : IRepository<Language>
+public interface ILanguageRepository : IRepository<Language, int>
 {
 }

@@ -3,13 +3,13 @@ using Havit.Data.Patterns.Repositories;
 
 namespace Havit.Data.Patterns.Tests.DataEntries.Infrastructure;
 
-public class SystemCodebookEntryDataEntries : DataEntries<SystemCodebookEntry>
+public class SystemCodebookEntryDataEntries : DataEntries<SystemCodebookEntry, int>
 {
-	public SystemCodebookEntryDataEntries(IDataEntrySymbolService<SystemCodebookEntry, int> dataEntrySymbolService, IRepository<SystemCodebookEntry> repository) : base(dataEntrySymbolService, repository)
+	public SystemCodebookEntryDataEntries(IDataEntrySymbolService<SystemCodebookEntry, int> dataEntrySymbolService, IRepository<SystemCodebookEntry, int> repository) : base(dataEntrySymbolService, repository)
 	{
 	}
 
-	public SystemCodebookEntryDataEntries(IRepository<SystemCodebookEntry> repository) : base(repository)
+	public SystemCodebookEntryDataEntries(IRepository<SystemCodebookEntry, int> repository) : base(repository)
 	{
 	}
 

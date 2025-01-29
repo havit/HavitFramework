@@ -358,7 +358,7 @@ public class LookupServiceBaseTests
 
 	private static UzivatelLookupService CreateLookupService(List<Uzivatel> uzivatele)
 	{
-		Mock<IRepository<Uzivatel>> uzivatelRepositoryMock = new Mock<IRepository<Uzivatel>>(MockBehavior.Strict);
+		Mock<IRepository<Uzivatel, int>> uzivatelRepositoryMock = new Mock<IRepository<Uzivatel, int>>(MockBehavior.Strict);
 		uzivatelRepositoryMock.Setup(m => m.GetObject(It.IsAny<int>())).Returns((int id) => uzivatele.Single(u => u.Id == id));
 		uzivatelRepositoryMock.Setup(m => m.GetObjectAsync(It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync((int id, CancellationToken _) => uzivatele.Single(u => u.Id == id));
 		uzivatelRepositoryMock.Setup(m => m.GetObjects(It.IsAny<int[]>())).Returns((int[] ids) => uzivatele.Where(u => ids.Contains(u.Id)).ToList());

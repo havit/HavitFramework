@@ -22,7 +22,7 @@ public class LanguageServiceTests
 		Language language3 = new Language { Id = 3, Culture = "en-GB", UiCulture = "en-GB" };
 		Language language4 = new Language { Id = 4, Culture = "sk-SK", UiCulture = "sk-SK" };
 
-		Mock<IRepository<Language>> mockRepository = new Mock<IRepository<Language>>();
+		Mock<IRepository<Language, int>> mockRepository = new Mock<IRepository<Language, int>>();
 		mockRepository.Setup(m => m.GetObject(1)).Returns(language1);
 		mockRepository.Setup(m => m.GetObject(2)).Returns(language2);
 		mockRepository.Setup(m => m.GetObject(3)).Returns(language3);
@@ -59,7 +59,7 @@ public class LanguageServiceTests
 		Language language3 = new Language { Id = 3, Culture = "en-GB", UiCulture = "en-GB" };
 		Language language4 = new Language { Id = 4, Culture = "sk-SK", UiCulture = "sk-SK" };
 
-		Mock<IRepository<Language>> mockRepository = new Mock<IRepository<Language>>();
+		Mock<IRepository<Language, int>> mockRepository = new Mock<IRepository<Language, int>>();
 		mockRepository.Setup(m => m.GetObject(1)).Returns(language1);
 		mockRepository.Setup(m => m.GetObject(2)).Returns(language2);
 		mockRepository.Setup(m => m.GetObject(3)).Returns(language3);

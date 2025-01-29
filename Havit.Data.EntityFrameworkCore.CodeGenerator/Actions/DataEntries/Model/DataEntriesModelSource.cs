@@ -47,7 +47,7 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 					.Select(item => new DataEntriesModel.Entry
 					{
 						PropertyName = item,
-						FieldName = CammelCaseNamingStrategy.GetCammelCase(item),
+						FieldName = FieldNamingStrategy.GetFieldName(item),
 						IsObsolete = IsValueObsolete(entriesEnumType, item),
 						ObsoleteMessage = GetValueObsoleteMessage(entriesEnumType, item)
 					})

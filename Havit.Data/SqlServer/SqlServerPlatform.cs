@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Data.SqlServer;
+﻿namespace Havit.Data.SqlServer;
 
 /// <summary>
 /// Platforma (verze) Microsoft SQL Serveru.

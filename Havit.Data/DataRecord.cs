@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 
 namespace Havit.Data;
 
@@ -114,7 +113,7 @@ public class DataRecord
 	/// <param name="record">datový zdroj <see cref="System.Data.IDataRecord"/> (např. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
 	[Obsolete]
 	public DataRecord(IDataRecord record) : this(record, true)
-	{			
+	{
 	}
 
 	/// <summary>
@@ -169,7 +168,7 @@ public class DataRecord
 					{
 						try
 						{
-							target = (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus např. pro konverzi decimal -> double
+							target = (T)Convert.ChangeType(value, typeof(T));    // poslední pokus např. pro konverzi decimal -> double
 						}
 						catch (InvalidCastException e)
 						{
@@ -255,7 +254,7 @@ public class DataRecord
 					{
 						try
 						{
-							target = (T)Convert.ChangeType(value, typeof(T));	 // poslední pokus např. pro konverzi decimal -> double
+							target = (T)Convert.ChangeType(value, typeof(T));    // poslední pokus např. pro konverzi decimal -> double
 							return true;
 						}
 						catch (InvalidCastException e)

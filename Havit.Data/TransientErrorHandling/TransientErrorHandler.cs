@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Havit.Data.TransientErrorHandling;
@@ -30,7 +27,7 @@ internal static class TransientErrorHandler
 			try
 			{
 				attemptNumber += 1;
-                    return action();
+				return action();
 			}
 			catch (Exception exception)
 			{

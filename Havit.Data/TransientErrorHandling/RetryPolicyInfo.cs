@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Data.TransientErrorHandling;
+﻿namespace Havit.Data.TransientErrorHandling;
 
 /// <summary>
 /// Informace o záměru opakovat akci, jež selhala.

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data;
+﻿namespace Havit.Data;
 
 /// <summary>
 /// Rozsah dat v datovém zdroji.

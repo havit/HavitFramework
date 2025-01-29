@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
 using Havit.Data.Extensions;
 using Havit.Data.Trace;
@@ -122,7 +119,7 @@ public class DbConnector
 	/// <param name="commandType">typ příkazu <see cref="CommandType"/></param>
 	private DbCommand CreateCommand(string commandText, CommandType commandType)
 	{
-		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Argument commandText nesmí být null ani String.Empty."); 
+		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(commandText), "Argument commandText nesmí být null ani String.Empty.");
 		// CommandType nemůže být null a není potřeba ho kontrolovat
 
 		DbCommand cmd = this.ProviderFactory.CreateCommand();
@@ -222,7 +219,7 @@ public class DbConnector
 			command.Connection.Close();
 		}
 
-		dbConnectorTrace.Trace(this.commandExecutionTrace);	
+		dbConnectorTrace.Trace(this.commandExecutionTrace);
 
 		return result;
 	}
@@ -292,9 +289,9 @@ public class DbConnector
 					recordsCount,
 					(recordsCount == 1) ? "" : "s"));
 			}
-			
+
 			dbConnectorTrace.Trace(this.commandExecutionTrace);
-			
+
 			return ds;
 		}
 	}
@@ -482,7 +479,7 @@ public class DbConnector
 	public DataRecord ExecuteDataRecord(DbCommand command, CommandBehavior behavior, DataLoadPower dataLoadPower)
 	{
 		Contract.Requires<ArgumentNullException>(command != null, nameof(command));
-		
+
 		using (DbDataReader reader = ExecuteReader(command, behavior))
 		{
 			if (reader.Read())
@@ -650,7 +647,7 @@ public class DbConnector
 	public void ExecuteTransaction(DbTransactionDelegate transactionWork, DbTransaction outerTransaction, IsolationLevel isolationLevel)
 	{
 		Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
-		
+
 		DbTransaction currentTransaction = outerTransaction;
 		DbConnection connection;
 
@@ -669,7 +666,7 @@ public class DbConnector
 			connection = outerTransaction.Connection;
 		}
 
-		if ((outerTransaction == null) || 
+		if ((outerTransaction == null) ||
 			((isolationLevel != IsolationLevel.Unspecified) && (outerTransaction.IsolationLevel != isolationLevel)))
 		{
 			if (isolationLevel == IsolationLevel.Unspecified)

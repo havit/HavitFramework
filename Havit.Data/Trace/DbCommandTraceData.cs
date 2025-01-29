@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Trace;
 
@@ -65,18 +63,18 @@ public class DbCommandTraceData
 		sb.AppendLine(base.ToString());
 		sb.AppendLine($"  Operation: {this.Operation}");
 		sb.AppendLine($"  Command Text: {this.CommandText}");
-			
+
 		if (this.Parameters.Count > 0)
 		{
 			sb.AppendLine("  Parameters:");
 			foreach (var parameter in Parameters)
-			{					
+			{
 				sb.AppendLine($"    {parameter.ParameterName}: {parameter.Value} (DbType.{parameter.DbType}, {parameter.Direction})");
 			}
 		}
 		decimal durationMs = this.DurationTicks / (decimal)TimeSpan.TicksPerMillisecond;
-            sb.AppendLine($"  Duration: {durationMs:N2} ms");
-		
+		sb.AppendLine($"  Duration: {durationMs:N2} ms");
+
 		if (ResultSet)
 		{
 			sb.AppendLine($"  Result: {this.Result ?? "null"} ");
@@ -98,4 +96,4 @@ public class DbCommandTraceData
 		result.ResultSet = false;
 		return result;
 	}
-}	
+}

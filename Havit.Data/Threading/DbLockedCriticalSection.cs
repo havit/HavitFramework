@@ -1,12 +1,7 @@
 ﻿using Havit.Diagnostics.Contracts;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +31,15 @@ public class DbLockedCriticalSection
 		this.options = options;
 	}
 
-	/// <inheritdoc />
+	/// <summary>
+	/// Executes the given action under the lock.
+	/// </summary>
+	/// <param name="lockValue">
+	/// Lock. 
+	/// Unlike a regular lock (or Monitor), it locks over its value, not its instance.
+	/// Therefore, the lock can be anything that correctly implements the comparison operator (string, business object, ...).
+	/// </param>
+	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
 	public void ExecuteAction(string lockValue, Action criticalSection)
 	{
 		using (SqlConnection sqlConnection = new SqlConnection(options.ConnectionString))
@@ -65,7 +68,16 @@ public class DbLockedCriticalSection
 		}
 	}
 
-	/// <inheritdoc />
+	/// <summary>
+	/// Executes the given action under the lock.
+	/// </summary>
+	/// <param name="lockValue">
+	/// Lock. 
+	/// Unlike a regular lock (or Monitor), it locks over its value, not its instance.
+	/// Therefore, the lock can be anything that correctly implements the comparison operator (string, business object, ...).
+	/// </param>
+	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
+	/// <param name="cancellationToken">Cancellation token.</param>
 	public async Task ExecuteActionAsync(string lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default)
 	{
 		using (SqlConnection sqlConnection = new SqlConnection(options.ConnectionString))

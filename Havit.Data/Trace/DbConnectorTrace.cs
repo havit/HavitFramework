@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Trace;
 
@@ -43,4 +38,4 @@ internal class DbConnectorTrace
 		traceData.DurationTicks = durationStopWatch.Elapsed.Ticks;
 		traceSource.TraceData(TraceEventType.Information, 0, traceData);
 	}
-}	
+}

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
+﻿using System.Data.Common;
 using System.Security;
 using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Common.Specialized;
 

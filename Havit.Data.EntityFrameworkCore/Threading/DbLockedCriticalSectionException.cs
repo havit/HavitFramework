@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Threading.Internal;
+﻿namespace Havit.Data.EntityFrameworkCore.Threading;
 
 /// <summary>
 /// The exception that is thrown when an attempt is made to lock on SQL server resource, but the attempt was not successful.

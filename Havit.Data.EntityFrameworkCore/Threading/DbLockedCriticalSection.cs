@@ -1,86 +1,177 @@
 ﻿using System.Data.Common;
-using Havit.Threading;
 using Microsoft.Data.SqlClient;
 
-namespace Havit.Data.EntityFrameworkCore.Threading.Internal;
+namespace Havit.Data.EntityFrameworkCore.Threading;
 
-/// <summary>
-/// Kritická sekce zamčená databázovým zámkem.
-/// </summary>
-/// <remarks>
-/// Duplikuje Havit.Data.Threading.DbLockedCriticalSection, kde je použit System.Data.SqlClient, avšak zde používáme Microsoft.Data.SqlClient.
-/// </remarks>
-public class DbLockedCriticalSection : ICriticalSection<string>
+/// <inheritdoc />
+public class DbLockedCriticalSection : IDbLockedCriticalSection
 {
-	private readonly SqlConnection _sqlConnection;
+	private readonly Func<SqlConnection> _sqlConnectionFactory;
+	private readonly bool _ownsConnection;
 
 	/// <summary>
-	/// Konstruktor.
+	/// Constructor.
+	/// </summary>
+	public DbLockedCriticalSection(string connectionString)
+	{
+		_sqlConnectionFactory = () => new SqlConnection(connectionString);
+		_ownsConnection = true;
+	}
+
+	/// <summary>
+	/// Constructor.
 	/// </summary>
 	public DbLockedCriticalSection(SqlConnection sqlConnection)
 	{
-		this._sqlConnection = sqlConnection;
+		_sqlConnectionFactory = () => sqlConnection;
+		_ownsConnection = false;
 	}
 
 	/// <inheritdoc />
-	public void ExecuteAction(string lockValue, Action criticalSection)
+	public IDisposable EnterScope(string lockValue)
 	{
+		SqlConnection sqlConnection = _sqlConnectionFactory();
+
 		bool mustClose = false;
-		if (_sqlConnection.State != System.Data.ConnectionState.Open)
+		if (sqlConnection.State != System.Data.ConnectionState.Open)
 		{
-			_sqlConnection.Open();
+			sqlConnection.Open();
 			mustClose = true;
 		}
 
 		try
 		{
-			GetLock(lockValue, _sqlConnection);
+			GetLock(lockValue, sqlConnection);
+		}
+		catch
+		{
+			// v případě chyby získání zámku zavřeme spojení
+			// a to opatrně, abychom nezamaskovali výjimku v případě selhání získání zámku z důvodu nefunkčního spojení
 			try
 			{
-				criticalSection();
+				if (mustClose)
+				{
+					sqlConnection.Close();
+				}
+
+				if (_ownsConnection)
+				{
+					sqlConnection.Dispose();
+				}
+			}
+			catch
+			{
+				// NOOP
+			}
+
+			throw;
+		}
+
+		return new Scope(() =>
+		{
+			try
+			{
+				ReleaseLock(lockValue, sqlConnection);
 			}
 			finally
 			{
-				ReleaseLock(lockValue, _sqlConnection);
+				try
+				{
+					if (mustClose)
+					{
+						sqlConnection.Close();
+					}
+
+					if (_ownsConnection)
+					{
+						sqlConnection.Dispose();
+					}
+				}
+				catch
+				{
+					// NOOP
+				}
 			}
-		}
-		finally
+		});
+	}
+
+	/// <inheritdoc />
+	public async Task<IAsyncDisposable> EnterScopeAsync(string lockValue, CancellationToken cancellationToken = default)
+	{
+		SqlConnection sqlConnection = _sqlConnectionFactory();
+
+		bool mustClose = false;
+		if (sqlConnection.State != System.Data.ConnectionState.Open)
 		{
-			if (mustClose)
+			await sqlConnection.OpenAsync(cancellationToken).ConfigureAwait(false);
+			mustClose = true;
+		}
+
+		try
+		{
+			await GetLockAsync(lockValue, sqlConnection, cancellationToken).ConfigureAwait(false);
+		}
+		catch
+		{
+			// v případě chyby získání zámku zavřeme spojení
+			// a to opatrně, abychom nezamaskovali výjimku v případě selhání získání zámku z důvodu nefunkčního spojení
+			try
 			{
-				_sqlConnection.Close();
+				if (mustClose)
+				{
+					await sqlConnection.CloseAsync().ConfigureAwait(false);
+				}
+
+				if (_ownsConnection)
+				{
+					await sqlConnection.DisposeAsync().ConfigureAwait(false);
+				}
 			}
+			catch
+			{
+				// NOOP
+			}
+
+			throw;
+		}
+
+		return new AsyncScope(async () =>
+		{
+			try
+			{
+				await ReleaseLockAsync(lockValue, sqlConnection).ConfigureAwait(false); // NO CANCELLATION TOKEN (uvolnit zámek chceme bez ohledu na cancellation token)
+			}
+			finally
+			{
+				if (mustClose)
+				{
+					await sqlConnection.CloseAsync().ConfigureAwait(false);
+				}
+
+				if (_ownsConnection)
+				{
+					await sqlConnection.DisposeAsync().ConfigureAwait(false);
+				}
+			}
+		});
+	}
+
+	/// <inheritdoc />
+	public void ExecuteAction(string lockValue, Action criticalSection)
+	{
+		using (EnterScope(lockValue))
+		{
+			criticalSection();
 		}
 	}
 
 	/// <inheritdoc />
 	public async Task ExecuteActionAsync(string lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default)
 	{
-		bool mustClose = false;
-		if (_sqlConnection.State != System.Data.ConnectionState.Open)
+		IAsyncDisposable scope = await EnterScopeAsync(lockValue, cancellationToken).ConfigureAwait(false);
+		await using (scope.ConfigureAwait(false))
 		{
-			await _sqlConnection.OpenAsync(cancellationToken).ConfigureAwait(false);
-			mustClose = true;
-		}
-
-		try
-		{
-			await GetLockAsync(lockValue, _sqlConnection, cancellationToken).ConfigureAwait(false);
-			try
-			{
-				await criticalSection().ConfigureAwait(false);
-			}
-			finally
-			{
-				await ReleaseLockAsync(lockValue, _sqlConnection).ConfigureAwait(false); // NO CANCELLATION TOKEN (uvolnit zámek chceme bez ohledu na cancellation token)
-			}
-		}
-		finally
-		{
-			if (mustClose)
-			{
-				await _sqlConnection.CloseAsync().ConfigureAwait(false);
-			}
+			await criticalSection().ConfigureAwait(false);
 		}
 	}
 
@@ -236,5 +327,35 @@ public class DbLockedCriticalSection : ICriticalSection<string>
 		/// Indicates a parameter validation or other call error.
 		/// </summary>
 		Error = -999
+	}
+
+	internal class Scope : IDisposable
+	{
+		private readonly Action _disposeAction;
+
+		public Scope(Action disposeAction)
+		{
+			_disposeAction = disposeAction;
+		}
+
+		void IDisposable.Dispose()
+		{
+			_disposeAction();
+		}
+	}
+
+	internal class AsyncScope : IAsyncDisposable
+	{
+		private Func<Task> _disposeAction;
+
+		public AsyncScope(Func<Task> disposeAction)
+		{
+			_disposeAction = disposeAction;
+		}
+
+		async ValueTask IAsyncDisposable.DisposeAsync()
+		{
+			await _disposeAction().ConfigureAwait(false);
+		}
 	}
 }

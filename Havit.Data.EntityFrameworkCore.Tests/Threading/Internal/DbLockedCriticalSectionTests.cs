@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
-using Havit.Data.EntityFrameworkCore.Threading.Internal;
+using Havit.Data.EntityFrameworkCore.Threading;
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

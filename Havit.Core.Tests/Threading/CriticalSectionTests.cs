@@ -1,8 +1,5 @@
 ﻿using Havit.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Havit.Tests.Threading;
@@ -60,7 +57,7 @@ public class CriticalSectionTests
 
 		string lockValue1 = "ABC";
 		string lockValue2 = "abc".ToUpper();
-		
+
 		// Preconditions
 		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count);
 		Assert.AreNotSame(lockValue1, lockValue2);
@@ -89,7 +86,7 @@ public class CriticalSectionTests
 		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count, "Precondition failed.");
 
 		// Act
-		criticalSection.ExecuteAction(1, () => { });					
+		criticalSection.ExecuteAction(1, () => { });
 
 		// Assert
 		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count); // dojde k vyčištění?

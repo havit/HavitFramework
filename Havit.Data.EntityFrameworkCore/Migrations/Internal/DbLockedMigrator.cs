@@ -1,4 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Threading.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Threading;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

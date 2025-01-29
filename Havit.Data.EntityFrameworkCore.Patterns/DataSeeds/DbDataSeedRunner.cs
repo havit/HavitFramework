@@ -1,5 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
-using Havit.Data.EntityFrameworkCore.Threading.Internal;
+using Havit.Data.EntityFrameworkCore.Threading;
 using Havit.Data.Patterns.DataSeeds;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

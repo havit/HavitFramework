@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +13,7 @@ namespace Havit.Threading;
 /// Although the class facilitates the possibility of being used as a service thanks to the interface, such use is not required.
 /// Without hesitation, where we need to, we create instances without a DI container.
 /// </remarks>
-public class CriticalSection<TKey> : ICriticalSection<TKey>
+public class CriticalSection<TKey>
 {
 	private readonly Dictionary<TKey, CriticalSectionLock> criticalSectionLocks;
 	internal Dictionary<TKey, CriticalSectionLock> CriticalSectionLocks => criticalSectionLocks; // for unit tests
@@ -38,6 +35,45 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	}
 
 	/// <summary>
+	/// Enters the critical section and returns a disposable object that releases the lock when disposed.
+	/// </summary>
+	/// <param name="lockValue">The value to lock on.</param>
+	/// <returns>A disposable object that releases the lock when disposed.</returns>
+	public IDisposable EnterScope(TKey lockValue)
+	{
+		// enter the critical section
+		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
+		criticalSectionLock.Semaphore.Wait();
+
+		// when disposed, exit the critical section
+		return new Scope(() =>
+		{
+			criticalSectionLock.Semaphore.Release();
+			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
+		});
+	}
+
+	/// <summary>
+	/// Enters the critical section asynchronously and returns a disposable object that releases the lock when disposed.
+	/// </summary>
+	/// <param name="lockValue">The value to lock on.</param>
+	/// <param name="cancellationToken">A cancellation token to observe while waiting for the lock.</param>
+	/// <returns>A disposable object that releases the lock when disposed.</returns>
+	public async Task<IDisposable> EnterScopeAsync(TKey lockValue, CancellationToken cancellationToken)
+	{
+		// enter the critical section
+		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
+		await criticalSectionLock.Semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+
+		// when disposed, exit the critical section
+		return new Scope(() =>
+		{
+			criticalSectionLock.Semaphore.Release();
+			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
+		});
+	}
+
+	/// <summary>
 	/// Executes the given action under the lock.
 	/// </summary>
 	/// <param name="lockValue">
@@ -48,18 +84,9 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	/// <param name="criticalSection">The code of the critical section executed under the lock.</param>
 	public void ExecuteAction(TKey lockValue, Action criticalSection)
 	{
-		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
-
-		criticalSectionLock.Semaphore.Wait();
-		try
+		using (EnterScope(lockValue))
 		{
 			criticalSection();
-		}
-		finally
-		{
-			criticalSectionLock.Semaphore.Release();
-
-			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
 		}
 	}
 
@@ -75,20 +102,11 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 	/// <param name="cancellationToken">Cancellation token.</param>
 	public async Task ExecuteActionAsync(TKey lockValue, Func<Task> criticalSection, CancellationToken cancellationToken = default)
 	{
-		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
-
-		await criticalSectionLock.Semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
-		try
+		using (await EnterScopeAsync(lockValue, cancellationToken).ConfigureAwait(false))
 		{
 #pragma warning disable CAC001 // ConfigureAwaitChecker
 			await criticalSection();
 #pragma warning restore CAC001 // ConfigureAwaitChecker
-		}
-		finally
-		{
-			criticalSectionLock.Semaphore.Release();
-
-			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
 		}
 	}
 
@@ -141,5 +159,20 @@ public class CriticalSection<TKey> : ICriticalSection<TKey>
 		/// Usage counter. The default value is 1.
 		/// </summary>
 		public int UsageCounter { get; set; } = 1;
+	}
+
+	internal class Scope : IDisposable
+	{
+		private readonly Action _disposeAction;
+
+		public Scope(Action disposeAction)
+		{
+			_disposeAction = disposeAction;
+		}
+
+		void IDisposable.Dispose()
+		{
+			_disposeAction();
+		}
 	}
 }

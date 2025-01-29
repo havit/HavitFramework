@@ -69,12 +69,12 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 	public IEntityPatternsInstaller RegisterLocalizationServices<TLanguage>()
 		where TLanguage : class, ILanguage
 	{
-		Type currentLanguageServiceType = typeof(LanguageService<>).MakeGenericType(typeof(TLanguage));
-		Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<>).MakeGenericType(typeof(TLanguage));
+		Type currentLanguageServiceType = typeof(LanguageService<,>).MakeGenericType(typeof(TLanguage), typeof(int));
+		Type currentLanguageByCultureServiceType = typeof(LanguageByCultureService<,>).MakeGenericType(typeof(TLanguage), typeof(int));
 		container.Register(
 			Component.For(typeof(ILanguageService)).ImplementedBy(currentLanguageServiceType).ApplyLifestyle(componentRegistrationOptions.GeneralLifestyle),
-			Component.For(typeof(ILanguageByCultureService)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleTransient(),
-			Component.For<ILanguageByCultureStorage>().ImplementedBy<LanguageByCultureStorage>().LifestyleSingleton(),
+			Component.For(typeof(ILanguageByCultureService<int>)).ImplementedBy(currentLanguageByCultureServiceType).LifestyleTransient(),
+			Component.For<ILanguageByCultureStorage<int>>().ImplementedBy<LanguageByCultureStorage<int>>().LifestyleSingleton(),
 			Component.For<ILocalizationService>().ImplementedBy<LocalizationService>().LifestyleTransient(),
 
 			// Registrujeme jen pro TLanguage, možná bude časem třeba pro všechny modelové třídy (pak bychom přesunuli do jiné metody v této třídě).
@@ -124,7 +124,11 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			// proto registrujeme přes IDataSource<KonkrétníTyp> pomocí metody WithServiceConstructedInterface.
 			// Dále registrujeme přes potomky IDataSource<>, např. IKonkrétníTypDataSource.
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbDataSource<>)).WithServiceConstructedInterface(typeof(IDataSource<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataSource<>)).LifestyleTransient(),
-			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceConstructedInterface(typeof(IRepository<>)).WithServiceFromInterface(typeof(IRepository<>)).ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
+			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute)
+				.WithServiceConstructedInterface(typeof(IRepository<,>)) // Zaregistrujeme IRepository<TEntity, int>
+				.WithServiceConstructedInterface(typeof(IRepository<>)) // Zaregistrujeme IRepository<TEntity>
+				.WithServiceFromInterface(typeof(IRepository<>)) // Zaregistrujeme IRepository<>
+				.ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
 		);
 

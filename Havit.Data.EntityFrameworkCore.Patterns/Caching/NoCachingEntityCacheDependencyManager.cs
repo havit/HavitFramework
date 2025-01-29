@@ -1,6 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
-using Havit.Data.Patterns.Infrastructure;
-using Havit.Services.Caching;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 

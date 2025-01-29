@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata.Conventions;
-using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors.Internal;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;

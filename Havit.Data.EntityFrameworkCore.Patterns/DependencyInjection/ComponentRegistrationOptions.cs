@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection.Caching;
-using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 

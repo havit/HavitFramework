@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using Havit.Extensions.DependencyInjection.Abstractions;
-using Havit.Text.RegularExpressions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Havit.Text.RegularExpressions;
 
 namespace TestConsoleApp;
 

@@ -4,7 +4,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>Havit.HangfireApp</AssemblyName>
 		<RootNamespace>Havit.HangfireApp</RootNamespace>
-		<UserSecretsId>600bb2a9-6f48-43f6-9b93-f3940362e1f6</UserSecretsId>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

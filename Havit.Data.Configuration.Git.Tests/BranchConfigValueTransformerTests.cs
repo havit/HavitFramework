@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.Configuration.Git.Core;
+﻿using Havit.Data.Configuration.Git.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Configuration.Git.Tests;

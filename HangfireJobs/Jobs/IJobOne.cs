@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Havit.HangfireJobs.Jobs;
 
-namespace Havit.HangfireJobs.Jobs;
-
-    public interface IJobOne : IRunnableJob
-    {
-    }
+public interface IJobOne : IRunnableJob
+{
+}

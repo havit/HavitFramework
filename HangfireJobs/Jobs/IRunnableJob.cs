@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Havit.HangfireJobs.Jobs;
+﻿namespace Havit.HangfireJobs.Jobs;
 
 /// <summary>
 /// Základní bezparametrický job, který lze spouštět z konzolovky a hangfire.

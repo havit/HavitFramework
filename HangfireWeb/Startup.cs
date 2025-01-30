@@ -1,12 +1,6 @@
-using System.Collections.Generic;
 using Hangfire;
 using Hangfire.Dashboard;
 using Havit.HangfireWeb.Infrastructure.ConfigurationExtensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace HangfireWeb;
 

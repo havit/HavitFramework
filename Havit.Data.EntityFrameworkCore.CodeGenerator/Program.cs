@@ -10,6 +10,7 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
@@ -47,12 +48,22 @@ public static class Program
 		services.AddSingleton<IDataLayerGenerator, RepositoriesGenerator>();
 		services.AddSingleton<IDataLayerGenerator, DataLayerServiceExtensionsGenerator>();
 
+		services.AddSingleton<IModelErrorsProvider, ModelErrorsProvider>();
+		services.AddSingleton<IModelSourceErrorsProvider, RepositoryModelSource>();
+
 		var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
 
 		var dataLayerGeneratorRunner = serviceProvider.GetRequiredService<IDataLayerGeneratorRunner>();
 
 		Console.WriteLine($"Generating code...");
 		await dataLayerGeneratorRunner.RunAsync(CancellationToken.None);
+
+		IModelErrorsProvider modelErrorsProvider = serviceProvider.GetRequiredService<IModelErrorsProvider>();
+		List<string> errors = modelErrorsProvider.GetErrors();
+		if (errors.Count > 0)
+		{
+			errors.ForEach(Console.Error.Write);
+		}
 
 		stopwatch.Stop();
 		Console.WriteLine("Completed in {0} ms.", (int)stopwatch.Elapsed.TotalMilliseconds);

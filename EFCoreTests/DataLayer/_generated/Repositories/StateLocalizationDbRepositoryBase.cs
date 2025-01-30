@@ -16,7 +16,7 @@ using Havit.Data.Patterns.Infrastructure;
 namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public abstract class StateLocalizationDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.StateLocalization>
+public abstract class StateLocalizationDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>
 {
 	protected StateLocalizationDbRepositoryBase(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.StateLocalization, System.Int32> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<Havit.EFCoreTests.Model.StateLocalization, System.Int32> repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)

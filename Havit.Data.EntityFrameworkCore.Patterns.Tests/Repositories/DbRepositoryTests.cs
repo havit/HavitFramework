@@ -26,7 +26,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		repository.GetObject(maxId + 1);
@@ -48,7 +48,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		await repository.GetObjectAsync(maxId + 1);
@@ -70,7 +70,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		ItemWithDeleted repositoryResult = repository.GetObject(ids[0]);
@@ -93,7 +93,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		ItemWithDeleted repositoryResult = await repository.GetObjectAsync(ids[0]);
@@ -113,7 +113,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		List<ItemWithDeleted> result = repository.GetAll();
@@ -131,7 +131,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		List<ItemWithDeleted> result1 = repository.GetAll();
@@ -161,7 +161,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		List<ItemWithDeleted> result1 = await repository.GetAllAsync();
@@ -193,7 +193,7 @@ public class DbRepositoryTests
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
-		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
+		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
 		// Act
 		List<ItemWithDeleted> result = await repository.GetAllAsync();

@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace Havit.Data.Entity6.Patterns.Windsor.Tests.Infrastructure.DataLayer;
 
-public interface ILanguageRepository : IRepository<Language>
+public interface ILanguageRepository : IRepository<Language, int>
 {
 }

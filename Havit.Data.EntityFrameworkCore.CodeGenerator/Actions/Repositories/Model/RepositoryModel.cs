@@ -13,7 +13,6 @@ public class RepositoryModel
 
 	public string ModelClassPrimaryKeyTypeName { get; set; }
 	public string ModelClassPrimaryKeyPropertyName { get; set; }
-	public bool ModelClassPrimaryKeyIsInt32 { get; set; }
 
 	public bool GenerateGetObjectByEntryEnumMethod { get; set; }
 }

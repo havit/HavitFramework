@@ -6,7 +6,7 @@ using Havit.Data.Patterns.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 
-public class DbItemWithDeletedRepository : DbRepository<ItemWithDeleted>
+public class DbItemWithDeletedRepository : DbRepository<ItemWithDeleted, int>
 {
 	public DbItemWithDeletedRepository(IDbContext dbContext, IEntityKeyAccessor<ItemWithDeleted, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<ItemWithDeleted, int> repositoryCompiledQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryCompiledQueryProvider)

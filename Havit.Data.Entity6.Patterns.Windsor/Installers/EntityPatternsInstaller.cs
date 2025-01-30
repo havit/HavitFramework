@@ -126,8 +126,6 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbDataSource<>)).WithServiceConstructedInterface(typeof(IDataSource<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataSource<>)).LifestyleTransient(),
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute)
 				.WithServiceConstructedInterface(typeof(IRepository<,>)) // Zaregistrujeme IRepository<TEntity, int>
-				.WithServiceConstructedInterface(typeof(IRepository<>)) // Zaregistrujeme IRepository<TEntity>
-				.WithServiceFromInterface(typeof(IRepository<>)) // Zaregistrujeme IRepository<>
 				.ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
 		);

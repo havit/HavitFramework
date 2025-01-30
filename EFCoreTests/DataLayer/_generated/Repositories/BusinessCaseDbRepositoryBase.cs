@@ -16,7 +16,7 @@ using Havit.Data.Patterns.Infrastructure;
 namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-public abstract class BusinessCaseDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.BusinessCase>
+public abstract class BusinessCaseDbRepositoryBase : DbRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>
 {
 	protected BusinessCaseDbRepositoryBase(IDbContext dbContext, IEntityKeyAccessor<Havit.EFCoreTests.Model.BusinessCase, System.Int32> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<Havit.EFCoreTests.Model.BusinessCase, System.Int32> repositoryQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryQueryProvider)

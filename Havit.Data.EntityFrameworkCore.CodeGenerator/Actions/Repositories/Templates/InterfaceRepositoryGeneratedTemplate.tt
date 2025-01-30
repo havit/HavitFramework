@@ -10,11 +10,7 @@ using Havit.Data.Patterns.Repositories;
 namespace <#= Model.NamespaceName #>;
 
 [System.CodeDom.Compiler.GeneratedCode("Havit.Data.EntityFrameworkCore.CodeGenerator", "1.0")]
-<# if (Model.ModelClassPrimaryKeyIsInt32) { #>
-public partial interface <#= Model.InterfaceRepositoryName #> : IRepository<<#= Model.ModelClassFullName #>>
-<# } else { #>
 public partial interface <#= Model.InterfaceRepositoryName #> : IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>
-<# } #>
 {
 <# if (Model.GenerateGetObjectByEntryEnumMethod) { #>
 	<#= Model.ModelClassFullName #> GetObject(<#= Model.ModelClassFullName #>.Entry entry);

@@ -23,7 +23,7 @@ namespace Havit.Data.Entity.Patterns.Repositories;
 /// <summary>
 /// Repository objektů typu TEntity.
 /// </summary>
-public abstract class DbRepository<TEntity> : IRepository<TEntity>
+public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 	 where TEntity : class
 {
 	private readonly IDbContext dbContext;

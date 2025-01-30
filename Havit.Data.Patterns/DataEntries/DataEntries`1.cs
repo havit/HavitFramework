@@ -5,9 +5,6 @@ namespace Havit.Data.Patterns.DataEntries;
 /// <summary>
 /// Předek pro implementace IDataEntries pro jednotlivé entity.
 /// </summary>
-/// <remarks>
-/// Určeno pro Entity Framework 6, který používá <see cref="IRepository{TEntity}"/>, ale nikoliv <see cref="IRepository{TEntity, TKey}"/>.
-/// </remarks>
 public abstract class DataEntries<TEntity> : DataEntries<TEntity, int>
 	where TEntity : class
 {

@@ -7,7 +7,7 @@ using Havit.Data.Patterns.Infrastructure;
 
 namespace Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
 
-public class LanguageRepository : DbRepository<Language>, ILanguageRepository
+public class LanguageRepository : DbRepository<Language, int>, ILanguageRepository
 {
 	public LanguageRepository(IDbContext dbContext, IEntityKeyAccessor<Language, int> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<Language, int> repositoryCompiledQueryProvider)
 		: base(dbContext, entityKeyAccessor, dataLoader, softDeleteManager, entityCacheManager, repositoryCompiledQueryProvider)

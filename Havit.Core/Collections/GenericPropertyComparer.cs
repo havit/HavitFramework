@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Collections;
+﻿namespace Havit.Collections;
 
 /// <summary>
 /// Compares the values of properties of two objects. Property names are provided and compared in the specified order.

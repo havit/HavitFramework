@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Security;
+﻿namespace Havit.Security;
 
 /// <summary>
 /// Set of characters from which <see cref="PasswordGenerator"/> selects characters for password generation.

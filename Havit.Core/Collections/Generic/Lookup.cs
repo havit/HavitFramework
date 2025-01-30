@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Collections.Generic;
+﻿namespace Havit.Collections.Generic;
 
 /// <summary>
 /// ILookup with the ability to add and remove items.

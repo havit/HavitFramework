@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Havit.Diagnostics.Contracts;
 
@@ -23,8 +18,8 @@ public static class Contract
 #if NET6_0_OR_GREATER
 	public static void Requires([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-    public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+	public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 	{
 		if (!condition)
@@ -41,8 +36,8 @@ public static class Contract
 #if NET6_0_OR_GREATER
 	public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-    public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+	public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		where TException : Exception
 	{
@@ -59,8 +54,8 @@ public static class Contract
 #if NET6_0_OR_GREATER
 	public static void Assert([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-    public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+	public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 	{
 		if (!condition)
@@ -86,8 +81,8 @@ public static class Contract
 #if NET6_0_OR_GREATER
 	public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
-    [JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-    public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
+	public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		where TException : Exception
 	{

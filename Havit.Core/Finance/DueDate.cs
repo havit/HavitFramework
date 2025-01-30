@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Finance;
+﻿namespace Havit.Finance;
 
 /// <summary>Indicates when payments are due when calling financial methods.</summary>
 public enum DueDate

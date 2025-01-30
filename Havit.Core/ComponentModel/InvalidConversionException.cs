@@ -1,7 +1,4 @@
-﻿using System;
-
-namespace Havit.ComponentModel;
-
+﻿namespace Havit.ComponentModel;
 
 /// <summary>
 /// The exception that is thrown when a conversion is invalid.

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Exception for recoverable failures which should be presented to the user.

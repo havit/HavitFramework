@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Text;
+﻿namespace Havit.Text;
 
 /// <summary>
 /// Format file size as text, main goal is to show same size as Internet Explorer when downloading file.

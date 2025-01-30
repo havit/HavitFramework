@@ -1,5 +1,4 @@
 ﻿using Havit.Diagnostics.Contracts;
-using System;
 
 namespace Havit.Finance;
 
@@ -43,7 +42,7 @@ public static class FinanceMath
 				num = 1.0;
 			}
 			double num2 = Math.Pow(interestRate + 1.0, numberOfPeriods);
-			result = (-futureValue - presentValue * num2) / (num * (num2 - 1.0)) * interestRate;
+			result = (-futureValue - (presentValue * num2)) / (num * (num2 - 1.0)) * interestRate;
 		}
 		return result;
 	}
@@ -108,11 +107,11 @@ public static class FinanceMath
 	{
 		if (interestRate == 0.0)
 		{
-			return 0.0 - presentValue - paymentAmount * numberOfPeriods;
+			return 0.0 - presentValue - (paymentAmount * numberOfPeriods);
 		}
 		double num = ((due == DueDate.EndOfPeriod) ? 1.0 : (1.0 + interestRate));
 		double num2 = Math.Pow(1.0 + interestRate, numberOfPeriods);
-		return (0.0 - presentValue) * num2 - paymentAmount / interestRate * num * (num2 - 1.0);
+		return ((0.0 - presentValue) * num2) - (paymentAmount / interestRate * num * (num2 - 1.0));
 	}
 
 	/// <summary>
@@ -130,10 +129,10 @@ public static class FinanceMath
 	{
 		if (interestRate == 0.0)
 		{
-			return 0.0 - futureValue - paymentAmount * numberOfPeriods;
+			return 0.0 - futureValue - (paymentAmount * numberOfPeriods);
 		}
 		double num = ((due == DueDate.EndOfPeriod) ? 1.0 : (1.0 + interestRate));
 		double num2 = Math.Pow(1.0 + interestRate, numberOfPeriods);
-		return (-(futureValue + paymentAmount * num * ((num2 - 1.0) / interestRate)) / num2);
+		return (-(futureValue + (paymentAmount * num * ((num2 - 1.0) / interestRate)) / num2));
 	}
 }

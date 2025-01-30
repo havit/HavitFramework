@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Collections;
+﻿namespace Havit.Collections;
 
 /// <summary>
 /// Specifies the sorting direction.

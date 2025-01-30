@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.ComponentModel;
+﻿namespace Havit.ComponentModel;
 
 /// <summary>
 /// Marks interfaces which should be published/consumed as API.

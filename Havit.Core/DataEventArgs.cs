@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Event arguments for the DataEventHandler, through which the event invocation and handling can pass data (in both directions).

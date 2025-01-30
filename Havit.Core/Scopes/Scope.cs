@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Scopes;

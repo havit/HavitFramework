@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Indicates range of date - start date and end date.

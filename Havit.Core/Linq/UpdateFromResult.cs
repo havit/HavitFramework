@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Linq;
+﻿namespace Havit.Linq;
 
 /// <summary>
 /// Output of the UpdateFrom() extension method

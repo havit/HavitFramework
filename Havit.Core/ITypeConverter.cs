@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Interface for type conversion.

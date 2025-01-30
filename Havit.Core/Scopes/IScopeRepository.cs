@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Scopes;
+﻿namespace Havit.Scopes;
 
 /// <summary>
 /// Interface for classes implementing the scope repository - a repository that allows storing and loading a value into the scope.

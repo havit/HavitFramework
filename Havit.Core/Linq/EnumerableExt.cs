@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 
 namespace Havit.Linq;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Provides methods related to the basic enumeration type System.Enum.

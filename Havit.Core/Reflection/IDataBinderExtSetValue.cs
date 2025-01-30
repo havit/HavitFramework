@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Reflection;
+﻿namespace Havit.Reflection;
 
 /// <summary>
 /// Interface that marks the type whose DataBinderExt.SetValue should work in a non-standard way.

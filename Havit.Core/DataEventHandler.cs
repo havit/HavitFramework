@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Delegate for an event passing between the caller and the called data object.

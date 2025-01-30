@@ -1,9 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.Storage;
 using Hangfire.Storage.Monitoring;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Havit.Hangfire.Extensions.BackgroundJobs;
 

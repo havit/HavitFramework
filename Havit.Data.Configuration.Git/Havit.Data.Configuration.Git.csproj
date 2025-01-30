@@ -2,6 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 

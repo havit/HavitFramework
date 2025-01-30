@@ -1,14 +1,5 @@
-﻿using Hangfire;
-using Hangfire.Storage;
-using Hangfire.Storage.Monitoring;
-using Havit.Hangfire.Extensions.RecurringJobs;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Havit.Hangfire.Extensions.BackgroundJobs;
 

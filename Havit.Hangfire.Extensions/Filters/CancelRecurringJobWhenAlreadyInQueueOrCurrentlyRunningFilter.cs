@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using Hangfire;
+﻿using Hangfire;
 using Hangfire.Storage;
-using System.Collections.Generic;
 using Hangfire.Common;
 using Hangfire.Client;
 using Hangfire.States;

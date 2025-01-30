@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Hangfire.Common;
+﻿using Hangfire.Common;
 using Havit.Hangfire.Extensions.RecurringJobs.Services;
 
 namespace Havit.Hangfire.Extensions.Helpers;

@@ -1,13 +1,8 @@
-﻿using Hangfire;
-using Hangfire.Client;
-using Hangfire.Common;
+﻿using Hangfire.Common;
 using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
 using Havit.Diagnostics.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Havit.Hangfire.Extensions.Filters;
 

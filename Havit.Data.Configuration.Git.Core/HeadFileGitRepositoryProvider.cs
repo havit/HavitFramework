@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Havit.Data.Configuration.Git.Core;
 

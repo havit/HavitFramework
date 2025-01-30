@@ -1,7 +1,4 @@
 ﻿using Hangfire;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs;
 

@@ -1,14 +1,5 @@
-﻿using System;
-using System.Linq;
-using Hangfire;
-using Hangfire.Storage;
-using System.Collections.Generic;
-using Hangfire.Common;
-using Hangfire.Client;
-using Hangfire.States;
-using Hangfire.Storage.Monitoring;
+﻿using Hangfire.States;
 using Havit.Hangfire.Extensions.RecurringJobs.Services;
-using System.Net.Mime;
 
 namespace Havit.Hangfire.Extensions.Filters;
 

@@ -1,10 +1,6 @@
 ﻿using Hangfire.Common;
 using Hangfire.Server;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Havit.Hangfire.Extensions.Filters;
 

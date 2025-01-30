@@ -1,9 +1,5 @@
 ﻿using Havit.Data.Configuration.Git.Core;
-using System;
-using System.Collections.Specialized;
 using System.Configuration;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Havit.Data.Configuration.Git;

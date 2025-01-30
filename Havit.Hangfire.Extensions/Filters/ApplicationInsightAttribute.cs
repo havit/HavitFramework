@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Hangfire;
-using Hangfire.Client;
+﻿using Hangfire;
 using Hangfire.Common;
 using Hangfire.Server;
-using Hangfire.States;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;

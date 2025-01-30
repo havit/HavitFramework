@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Hangfire;
+﻿using Hangfire;
 using Havit.Diagnostics.Contracts;
 using Microsoft.Extensions.Logging;
 

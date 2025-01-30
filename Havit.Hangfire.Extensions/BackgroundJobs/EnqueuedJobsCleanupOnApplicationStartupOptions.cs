@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Hangfire.Extensions.BackgroundJobs;
+﻿namespace Havit.Hangfire.Extensions.BackgroundJobs;
 
 /// <summary>
 /// Options for EnqueuedJobsCleanupOnApplicationStartup.

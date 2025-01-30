@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Data.Configuration.Git.Core;
+﻿namespace Havit.Data.Configuration.Git.Core;
 /// <summary>
 /// Class for transforming config values (as strings) via placeholders and branch name
 /// </summary>

@@ -18,7 +18,7 @@
 		<PackageVersion>2.0.46</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Services</Description>
 		<LangVersion>default</LangVersion>
-		<NoWarn>1701;1702;1591</NoWarn>
+		<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
 	</PropertyGroup>
 
 	<!-- Conditional dependencies: see https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#adding-a-packagereference-condition -->

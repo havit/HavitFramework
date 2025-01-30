@@ -62,7 +62,7 @@ public static class Program
 		List<string> errors = modelErrorsProvider.GetErrors();
 		if (errors.Count > 0)
 		{
-			errors.ForEach(Console.Error.Write);
+			errors.ForEach(Console.Error.WriteLine);
 		}
 
 		stopwatch.Stop();

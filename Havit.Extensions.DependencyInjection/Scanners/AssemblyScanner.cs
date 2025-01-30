@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Linq;
+﻿using System.Reflection;
 using Havit.Extensions.DependencyInjection.Abstractions;
 
 namespace Havit.Extensions.DependencyInjection.Scanners;

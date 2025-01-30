@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Havit.Extensions.DependencyInjection.Abstractions;
+﻿namespace Havit.Extensions.DependencyInjection.Abstractions;
 
 /// <summary>
 /// Slouží k označení tříd, které mají být automaticky zaregistrovány do IoC containeru.

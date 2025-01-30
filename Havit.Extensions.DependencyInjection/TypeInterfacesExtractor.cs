@@ -1,8 +1,4 @@
 ﻿using Havit.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Havit.Extensions.DependencyInjection;
 
@@ -36,7 +32,7 @@ public static class TypeInterfacesExtractor
 			// MyService<T1> cannot be registered as IService<T, string>
 			.WhereIf(implementationType.IsGenericTypeDefinition, interfaceType => interfaceType.IsConstructedGenericType
 				&& Enumerable.SequenceEqual(
-					implementationType.GetGenericArguments() /* closed generic type or the type parameters of a generic type definition */, 
+					implementationType.GetGenericArguments() /* closed generic type or the type parameters of a generic type definition */,
 					interfaceType.GenericTypeArguments /* generic type (generic class) arguments, arguments are of generic type (property IsGenericParameter is true */))
 			.Where(interfaceType => implementationType.Name.Contains(GetInterfaceName(interfaceType)))
 			// Generic types from Type.GetInterfaces have false IsGenericTypeDefinition!!!

@@ -1,6 +1,4 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.IO;
+﻿using System.CodeDom.Compiler;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators.Infrastructure;
 
@@ -33,7 +31,7 @@ internal sealed class SourceCodeWriter : IDisposable
 		if (StartBlockText is not null)
 		{
 			_indentingStringWriter.WriteLine(StartBlockText);
-		}	
+		}
 
 		return IndentAndWriteLineAtEndOfIndent(EndBlockText + statement);
 	}

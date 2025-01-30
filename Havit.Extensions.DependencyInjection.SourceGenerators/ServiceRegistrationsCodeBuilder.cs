@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Extensions.DependencyInjection.SourceGenerators.Infrastructure;
+﻿using Havit.Extensions.DependencyInjection.SourceGenerators.Infrastructure;
 using Microsoft.CodeAnalysis;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators;

@@ -133,6 +133,6 @@ public static class FinanceMath
 		}
 		double num = ((due == DueDate.EndOfPeriod) ? 1.0 : (1.0 + interestRate));
 		double num2 = Math.Pow(1.0 + interestRate, numberOfPeriods);
-		return (-(futureValue + (paymentAmount * num * ((num2 - 1.0) / interestRate)) / num2));
+		return (-(futureValue + (paymentAmount * num * ((num2 - 1.0) / interestRate) / num2)));
 	}
 }

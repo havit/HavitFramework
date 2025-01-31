@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Collections.Generic;
 
@@ -23,7 +18,7 @@ public class LookupTests
 	[TestMethod]
 	public void Lookup_Count_ReturnsNumberOfKeys()
 	{
-		var lookup = new Havit.Collections.Generic.Lookup<int, int>(new int[] { 1, 2, 3 }.ToLookup(i => 0));		
+		var lookup = new Havit.Collections.Generic.Lookup<int, int>(new int[] { 1, 2, 3 }.ToLookup(i => 0));
 
 		Assert.AreEqual(1, lookup.Count());
 	}

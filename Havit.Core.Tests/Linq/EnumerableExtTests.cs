@@ -1,18 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.Linq;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 
 namespace Havit.Tests.Linq;
 
 [TestClass]
-    [SuppressMessage("SonarLint", "S2114", Justification = "Pravidlo pro nás není vhodné, všechny tyto vznikné duplicity v seznamech pro účely testu chceme.")]
-    // Warning S2114 Change one instance of 'Enumerable.Range(1, 5)' to a different value; This operation will probably result in an unexpected behavior.
+[SuppressMessage("SonarLint", "S2114", Justification = "Pravidlo pro nás není vhodné, všechny tyto vznikné duplicity v seznamech pro účely testu chceme.")]
+// Warning S2114 Change one instance of 'Enumerable.Range(1, 5)' to a different value; This operation will probably result in an unexpected behavior.
 
-    public class EnumerableExtTests
+public class EnumerableExtTests
 {
 	[TestMethod]
 	public void EnumerableExt_WhereIf()
@@ -40,7 +36,7 @@ namespace Havit.Tests.Linq;
 		Assert.AreEqual(14, joinedData1.Count);
 		Assert.AreEqual(14, joinedData2.Count);
 	}
-	
+
 	[TestMethod]
 	public void EnumerableExt_RightJoin()
 	{
@@ -122,46 +118,46 @@ namespace Havit.Tests.Linq;
 		Assert.AreEqual(2, last);
 	}
 
-        [TestMethod]
-    public void Enumerable_ContainsAll_ReturnsTrueWhenSourceContainsAllLookupItems()
-    {
-        // Arrange
-        int[] source = { 1, 2 };
-        int[] lookupItems = { 1 };
-        
-            // Act
-        bool result = source.ContainsAll(lookupItems);
-        
-            // Assert
-            Assert.IsTrue(result);
-    }
+	[TestMethod]
+	public void Enumerable_ContainsAll_ReturnsTrueWhenSourceContainsAllLookupItems()
+	{
+		// Arrange
+		int[] source = { 1, 2 };
+		int[] lookupItems = { 1 };
 
-    [TestMethod]
-    public void Enumerable_ContainsAll_ReturnsTrueWhenSourceDoesNotContainAllLookupItems()
-    {
-        // Arrange
-        int[] source = { 1 };
-        int[] lookupItems = { 1, 2 };
+		// Act
+		bool result = source.ContainsAll(lookupItems);
 
-        // Act
-        bool result = source.ContainsAll(lookupItems);
+		// Assert
+		Assert.IsTrue(result);
+	}
 
-        // Assert
-        Assert.IsFalse(result);
-    }
+	[TestMethod]
+	public void Enumerable_ContainsAll_ReturnsTrueWhenSourceDoesNotContainAllLookupItems()
+	{
+		// Arrange
+		int[] source = { 1 };
+		int[] lookupItems = { 1, 2 };
 
-    [TestMethod]
-    public void Enumerable_ContainsAll_ReturnsTrueWhenLookupItemsIsEmpty()
-    {
-        // Arrange
-        int[] source = { 1 };
-        int[] lookupItems = { };
+		// Act
+		bool result = source.ContainsAll(lookupItems);
 
-        // Act
-        bool result = source.ContainsAll(lookupItems);
+		// Assert
+		Assert.IsFalse(result);
+	}
 
-        // Assert
-        Assert.IsTrue(result);
-    }
+	[TestMethod]
+	public void Enumerable_ContainsAll_ReturnsTrueWhenLookupItemsIsEmpty()
+	{
+		// Arrange
+		int[] source = { 1 };
+		int[] lookupItems = { };
 
-    }
+		// Act
+		bool result = source.ContainsAll(lookupItems);
+
+		// Assert
+		Assert.IsTrue(result);
+	}
+
+}

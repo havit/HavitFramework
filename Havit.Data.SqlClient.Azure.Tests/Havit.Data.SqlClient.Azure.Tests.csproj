@@ -3,6 +3,8 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<RootNamespace>Havit.Tests</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>

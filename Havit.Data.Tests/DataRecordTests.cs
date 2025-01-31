@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Data;
-using Havit.Data;
 using Moq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 
 namespace Havit.Data.Tests;
 
@@ -20,9 +15,9 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0]);
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
 		string fieldName = "ColumnName";
 
@@ -45,9 +40,9 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(object));
 		table.Rows.Add(DBNull.Value);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0]);
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
 		string fieldName = "ColumnName";
 
@@ -70,9 +65,9 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0]);
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
 		string fieldName = "ColumnName";
 
@@ -95,9 +90,9 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(decimal));
 		table.Rows.Add(10.1M);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0]);
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
 		string fieldName = "ColumnName";
 
@@ -121,9 +116,9 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0]);
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
 		string fieldName = "ColumnName";
 
@@ -142,9 +137,9 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0]);
-#pragma warning restore 612,618
+#pragma warning restore 612, 618
 
 		string fieldName = "ColumnName_Jiny";
 
@@ -162,10 +157,10 @@ public class DataRecordTests
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
 
-#pragma warning disable 612,618
+#pragma warning disable 612, 618
 		DataRecord record = new DataRecord(table.Rows[0], false);
-#pragma warning restore 612,618
-//			record.FullLoad = false;
+#pragma warning restore 612, 618
+		//			record.FullLoad = false;
 
 		string fieldName = "ColumnName_Jiny";
 

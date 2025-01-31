@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
@@ -410,147 +406,147 @@ public class DbDataLoaderTests
 		// Arrange
 		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
-            Child child = new Child();
+		Child child = new Child();
 
 		dbContext.Child.Add(child);
 
-	    IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-            ExecuteWithDisabledDatabaseOperations(dbContext, () =>
-	    {
-	        // Act
-	        dataLoader.Load(child, item => item.Parent);
-            });
+		ExecuteWithDisabledDatabaseOperations(dbContext, () =>
+	{
+		// Act
+		dataLoader.Load(child, item => item.Parent);
+	});
 
 		// Assert
 		// no exception was thrown
 	}
 
-    [TestMethod]
-    public async Task DbDataLoader_LoadAsync_OneToMany_OnNewObject()
-    {
-        // Arrange
-        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+	[TestMethod]
+	public async Task DbDataLoader_LoadAsync_OneToMany_OnNewObject()
+	{
+		// Arrange
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 
-        Child child = new Child();
+		Child child = new Child();
 
-        dbContext.Child.Add(child);
+		dbContext.Child.Add(child);
 
-        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
-        {
-            // Act
-            IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+		await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
+		{
+			// Act
+			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-            await dataLoader.LoadAsync(child, item => item.Parent);
-        });
+			await dataLoader.LoadAsync(child, item => item.Parent);
+		});
 
-        // Assert
-        // no exception was thrown
-    }
+		// Assert
+		// no exception was thrown
+	}
 
-    [TestMethod]
-    public void DbDataLoader_Load_ManyToMany_OnNewObject_WithoutInitializedCollection()
-    {
-        // Arrange
-        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-        LoginAccount loginAccount = new LoginAccount();
+	[TestMethod]
+	public void DbDataLoader_Load_ManyToMany_OnNewObject_WithoutInitializedCollection()
+	{
+		// Arrange
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		LoginAccount loginAccount = new LoginAccount();
 
-        dbContext.LoginAccount.Add(loginAccount);
+		dbContext.LoginAccount.Add(loginAccount);
 
-        IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-        // Precondition            
-        Assert.IsNull(loginAccount.Roles);
+		// Precondition            
+		Assert.IsNull(loginAccount.Roles);
 
-        // Act
-            ExecuteWithDisabledDatabaseOperations(dbContext, () =>
-            {
-    	        dataLoader.Load(loginAccount, item => item.Roles);
-            });
+		// Act
+		ExecuteWithDisabledDatabaseOperations(dbContext, () =>
+		{
+			dataLoader.Load(loginAccount, item => item.Roles);
+		});
 
-        // Assert
-        // no exception was thrown
-        Assert.IsNotNull(loginAccount.Roles);
-    }
+		// Assert
+		// no exception was thrown
+		Assert.IsNotNull(loginAccount.Roles);
+	}
 
-    [TestMethod]		
-    public async Task DbDataLoader_LoadAsync_ManyToMany_OnNewObject_WithoutInitializedCollection()
-    {
-        // Arrange
-        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-        LoginAccount loginAccount = new LoginAccount();
+	[TestMethod]
+	public async Task DbDataLoader_LoadAsync_ManyToMany_OnNewObject_WithoutInitializedCollection()
+	{
+		// Arrange
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		LoginAccount loginAccount = new LoginAccount();
 
-        dbContext.LoginAccount.Add(loginAccount);
+		dbContext.LoginAccount.Add(loginAccount);
 
-        IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
-	    
-        // Precondition            
-        Assert.IsNull(loginAccount.Roles);
-		
-        // Act
-        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
-        {
-            await dataLoader.LoadAsync(loginAccount, item => item.Roles);
-        });
+		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-        // Assert
-        // no exception was thrown
-        Assert.IsNotNull(loginAccount.Roles);
-    }
+		// Precondition            
+		Assert.IsNull(loginAccount.Roles);
 
-        [TestMethod]
-    public void DbDataLoader_Load_ManyToMany_OnNewObject_WithInitializedCollection()
-    {
-        // Arrange
-        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-        LoginAccount loginAccount = new LoginAccount();
-            List<Role> roles = new List<Role>();
-        loginAccount.Roles = roles;
+		// Act
+		await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
+		{
+			await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+		});
 
-        dbContext.LoginAccount.Add(loginAccount);
+		// Assert
+		// no exception was thrown
+		Assert.IsNotNull(loginAccount.Roles);
+	}
 
-        IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+	[TestMethod]
+	public void DbDataLoader_Load_ManyToMany_OnNewObject_WithInitializedCollection()
+	{
+		// Arrange
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		LoginAccount loginAccount = new LoginAccount();
+		List<Role> roles = new List<Role>();
+		loginAccount.Roles = roles;
 
-            // Precondition            
-            Assert.IsNotNull(loginAccount.Roles);
+		dbContext.LoginAccount.Add(loginAccount);
 
-            // Act
-        ExecuteWithDisabledDatabaseOperations(dbContext, () =>
-        {
-            dataLoader.Load(loginAccount, item => item.Roles);
-        });
+		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-            // Assert
-        Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
-    }
+		// Precondition            
+		Assert.IsNotNull(loginAccount.Roles);
 
-        [TestMethod]
-    public async Task DbDataLoader_LoadAsync_ManyToMany_OnNewObject_WithInitializedCollection()
-    {
-        // Arrange
-        DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
-        LoginAccount loginAccount = new LoginAccount();
-        List<Role> roles = new List<Role>();
-        loginAccount.Roles = roles;
+		// Act
+		ExecuteWithDisabledDatabaseOperations(dbContext, () =>
+		{
+			dataLoader.Load(loginAccount, item => item.Roles);
+		});
 
-        dbContext.LoginAccount.Add(loginAccount);
+		// Assert
+		Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
+	}
 
-        IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
+	[TestMethod]
+	public async Task DbDataLoader_LoadAsync_ManyToMany_OnNewObject_WithInitializedCollection()
+	{
+		// Arrange
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		LoginAccount loginAccount = new LoginAccount();
+		List<Role> roles = new List<Role>();
+		loginAccount.Roles = roles;
 
-        // Precondition            
-        Assert.IsNotNull(loginAccount.Roles);
+		dbContext.LoginAccount.Add(loginAccount);
 
-        // Act
-        await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
-        {
-            await dataLoader.LoadAsync(loginAccount, item => item.Roles);
-        });
+		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-        // Assert
-        Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
-    }
+		// Precondition            
+		Assert.IsNotNull(loginAccount.Roles);
 
-        [TestMethod]
+		// Act
+		await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
+		{
+			await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+		});
+
+		// Assert
+		Assert.AreSame(roles, loginAccount.Roles); // instance nebyla vyměněna
+	}
+
+	[TestMethod]
 	[ExpectedException(typeof(InvalidOperationException))]
 	public void DbDataLoader_Load_ThrowsExceptionForNontrackedObjects()
 	{
@@ -578,12 +574,12 @@ public class DbDataLoaderTests
 				Child child = new Child();
 				child.Parent = master;
 				child.Deleted = i >= 5 ? DateTime.Now : null;
-				
+
 				dbContext.Master.Add(master);
 				dbContext.Child.Add(child);
 			}
 		}
-		
+
 		dbContext.Child.Add(new Child());
 		dbContext.Child.Add(new Child());
 
@@ -635,34 +631,34 @@ public class DbDataLoaderTests
 		}
 	}
 
-    private void ExecuteWithDisabledDatabaseOperations(DbContext dbContext, Action action)
-    {
-        var originalLog = dbContext.Database.Log;
+	private void ExecuteWithDisabledDatabaseOperations(DbContext dbContext, Action action)
+	{
+		var originalLog = dbContext.Database.Log;
 
-            try
-        {
-                dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-            action();
-        }
-        finally
-            {
-                dbContext.Database.Log = originalLog;
-            }
-    }
+		try
+		{
+			dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+			action();
+		}
+		finally
+		{
+			dbContext.Database.Log = originalLog;
+		}
+	}
 
-    private async Task ExecuteWithDisabledDatabaseOperationsAsync(DbContext dbContext, Func<Task> action)
-    {
-        var originalLog = dbContext.Database.Log;
+	private async Task ExecuteWithDisabledDatabaseOperationsAsync(DbContext dbContext, Func<Task> action)
+	{
+		var originalLog = dbContext.Database.Log;
 
-        try
-        {
-            dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
-            await action();
-        }
-        finally
-        {
-            dbContext.Database.Log = originalLog;
-        }
-    }
+		try
+		{
+			dbContext.Database.Log = s => throw new InvalidOperationException("Databázové operace jsou zakázány.");
+			await action();
+		}
+		finally
+		{
+			dbContext.Database.Log = originalLog;
+		}
+	}
 
-    }
+}

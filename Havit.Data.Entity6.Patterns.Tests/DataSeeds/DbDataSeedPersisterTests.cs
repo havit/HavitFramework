@@ -3,9 +3,6 @@ using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataSeeds;

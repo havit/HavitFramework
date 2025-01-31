@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Havit.Linq;
+﻿using Havit.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Linq;
@@ -555,7 +551,7 @@ public class CollectionExtTests
 			targetKeySelector: target => target.Id,
 			sourceKeySelector: source => source.Id,
 			newItemCreateFunc: source => null,
-			updateItemAction: (source, target) => {	},
+			updateItemAction: (source, target) => { },
 			removeItemAction: (target) => { },
 			removeItemFromCollection: false
 		);

@@ -1,38 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace Havit.Tests.GoPay.Matchers;
 
-namespace Havit.Tests.GoPay.Matchers;
+/// <summary>
+/// Matches requests on request content
+/// </summary>
+public class ContentMatcher : IMockedRequestMatcher
+{
+	private readonly string content;
 
-    /// <summary>
-    /// Matches requests on request content
-    /// </summary>
-    public class ContentMatcher : IMockedRequestMatcher
-    {
-        private readonly string content;
+	/// <summary>
+	/// Constructs a new instance of ContentMatcher
+	/// </summary>
+	/// <param name="content">The content to match</param>
+	public ContentMatcher(string content)
+	{
+		this.content = content;
+	}
 
-        /// <summary>
-        /// Constructs a new instance of ContentMatcher
-        /// </summary>
-        /// <param name="content">The content to match</param>
-        public ContentMatcher(string content)
-        {
-            this.content = content;
-        }
-
-        /// <summary>
-        /// Determines whether the implementation matches a given request
-        /// </summary>
-        /// <param name="message">The request message being evaluated</param>
-        /// <returns>true if the request was matched; false otherwise</returns>
-        public bool Matches(System.Net.Http.HttpRequestMessage message)
-        {
-        if (message.Content == null)
-        {
+	/// <summary>
+	/// Determines whether the implementation matches a given request
+	/// </summary>
+	/// <param name="message">The request message being evaluated</param>
+	/// <returns>true if the request was matched; false otherwise</returns>
+	public bool Matches(System.Net.Http.HttpRequestMessage message)
+	{
+		if (message.Content == null)
+		{
 			return false;
 		}
-            string actualContent = message.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            return actualContent == content;
-        }
-    }
+		string actualContent = message.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+		return actualContent == content;
+	}
+}

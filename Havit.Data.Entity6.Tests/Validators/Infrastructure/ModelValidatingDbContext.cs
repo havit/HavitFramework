@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 
 namespace Havit.Data.Entity.Tests.Validators.Infrastructure;
 

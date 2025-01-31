@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Havit.Data.Entity.Patterns.DataSources;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
@@ -38,7 +34,7 @@ public class DbDataSourceTests
 
 		// Act
 		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-		List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();			
+		List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();
 
 		// Assert
 		Assert.AreEqual(2, result.Count);
@@ -61,7 +57,7 @@ public class DbDataSourceTests
 
 		// Act
 		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-		List<ItemWithDeleted> result = dataSource.Data.ToList();			
+		List<ItemWithDeleted> result = dataSource.Data.ToList();
 
 		// Assert
 		Assert.AreEqual(1, result.Count);

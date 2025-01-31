@@ -1,12 +1,8 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
 using Havit.Data.Patterns.DataEntries;
-using Havit.Data.Patterns.DataSources;
-using Havit.Data.Patterns.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataEntries;
 

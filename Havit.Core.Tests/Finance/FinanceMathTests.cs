@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Finance;
+﻿using Havit.Finance;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.FinanceTests;

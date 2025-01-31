@@ -1,5 +1,4 @@
-﻿using Castle.Core;
-using Castle.MicroKernel;
+﻿using Castle.MicroKernel;
 using Castle.Windsor;
 using Castle.Windsor.Diagnostics;
 using Castle.Windsor.Diagnostics.Helpers;

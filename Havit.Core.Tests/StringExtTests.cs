@@ -1,11 +1,10 @@
-﻿using Havit;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests;
 
 [TestClass]
 public class StringExtTests
-{		
+{
 	[TestMethod]
 	public void StringExt_NormalizeForUrl_BasicScenario()
 	{

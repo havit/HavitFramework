@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
-using Havit.Data.Entity.Tests.Validators.Infrastructure;
 using Havit.Diagnostics.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Havit.Data.Entity.Tests;
 

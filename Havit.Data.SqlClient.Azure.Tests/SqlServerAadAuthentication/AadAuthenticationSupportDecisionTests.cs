@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.Data.SqlClient.Azure.SqlServerAadAuthentication;
 
 namespace Havit.Data.SqlClient.Azure.Tests.SqlServerAadAuthentication;

@@ -3,7 +3,6 @@ using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.Tests.Helpers;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
-using Havit.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Havit.Data.Entity.Patterns.Transactions.Internal;

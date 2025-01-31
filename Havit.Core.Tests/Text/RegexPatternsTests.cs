@@ -1,13 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.RegularExpressions;
 using Havit.Text.RegularExpressions;
 
 namespace Havit.Tests.Text;
 
-[TestClass]	
+[TestClass]
 public class RegexPatternsTests
 {
 	[TestMethod]

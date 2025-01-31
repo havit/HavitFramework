@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
-using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
+﻿using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -50,7 +44,7 @@ public class EntityValidationRunnerTests
 		entityValidatorMock.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
 		entityValidatorMock.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);
 		entityValidatorMock.Verify(m => m.Validate(It.IsAny<ChangeType>(), It.IsAny<Entity>()), Times.Exactly(3));
-		
+
 		entityValidatorMock2.Verify(m => m.Validate(ChangeType.Insert, entityInserting), Times.Once);
 		entityValidatorMock2.Verify(m => m.Validate(ChangeType.Update, entityUpdating), Times.Once);
 		entityValidatorMock2.Verify(m => m.Validate(ChangeType.Delete, entityDeleting), Times.Once);

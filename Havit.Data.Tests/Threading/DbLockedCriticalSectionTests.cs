@@ -1,14 +1,6 @@
 ﻿using Havit.Data.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Tests.Threading;
 
@@ -168,28 +160,28 @@ public class DbLockedCriticalSectionTests
 		Assert.AreEqual(DbLockedCriticalSection.SpReleaseAppLockResultCode.Released, criticalSection.ReleaseAppLockResultCode);
 	}
 
-        [TestMethod]
-        public async Task DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter()
-        {
-            // Arrange
-            DbLockedCriticalSectionOptions options = GetDbLockedCriticalSectionOptions();
-            DbLockedCriticalSection criticalSection1 = new DbLockedCriticalSection(options);
-            DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options);
+	[TestMethod]
+	public async Task DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter()
+	{
+		// Arrange
+		DbLockedCriticalSectionOptions options = GetDbLockedCriticalSectionOptions();
+		DbLockedCriticalSection criticalSection1 = new DbLockedCriticalSection(options);
+		DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options);
 
-            // Act - simulation of parallel actions
-            _ = criticalSection1.ExecuteActionAsync("FakeResource", async () =>
-            {
-                // simulation of doing something
-                await Task.Delay(1000);
-            });
-            await Task.Delay(500);
-            await criticalSection2.ExecuteActionAsync("FakeResource", () => Task.CompletedTask);
+		// Act - simulation of parallel actions
+		_ = criticalSection1.ExecuteActionAsync("FakeResource", async () =>
+		{
+			// simulation of doing something
+			await Task.Delay(1000);
+		});
+		await Task.Delay(500);
+		await criticalSection2.ExecuteActionAsync("FakeResource", () => Task.CompletedTask);
 
-            // Assert
-            Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.LockedAfterWaiting, criticalSection2.GetAppLockResultCode);
-        }
+		// Assert
+		Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.LockedAfterWaiting, criticalSection2.GetAppLockResultCode);
+	}
 
-        [TestMethod]
+	[TestMethod]
 	[ExpectedException(typeof(DbLockedCriticalSectionException))]
 	public async Task DbLockedCriticalSection_ExecuteActionAsync_CanTimeout()
 	{

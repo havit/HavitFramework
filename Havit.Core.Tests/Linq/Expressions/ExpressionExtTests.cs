@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Components.DictionaryAdapter;
 using Havit.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
+﻿using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -55,6 +53,6 @@ public class BeforeCommitProcessorsRunnerTests
 
 	public class Entity
 	{
-		
+
 	}
 }

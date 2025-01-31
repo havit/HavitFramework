@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
+﻿namespace Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
 
 public class SupportedClass
 {

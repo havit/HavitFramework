@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.Tests.Helpers;
-using Havit.Data.Patterns.DataLoaders;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.Repositories;
 
@@ -25,7 +15,7 @@ public class DbRepositoryTests
 {
 	[ClassInitialize]
 	public static void Initialize(TestContext testContext)
-        {
+	{
 		using (TestDbContext testDbContext = new TestDbContext())
 		{
 			testDbContext.Database.Initialize(true);
@@ -236,7 +226,7 @@ public class DbRepositoryTests
 		var dataLoader = new DbDataLoader(testDbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 		var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
-		
+
 		// Act
 		List<ItemWithDeleted> result = repository.GetObjects(ids);
 
@@ -491,7 +481,7 @@ public class DbRepositoryTests
 
 		// po uložení změn dojde k reinicializaci dictionary, ovšem až si na něj šahneme a uložíme do proměné, protože je vyměněna celá instance dictionary
 		Dictionary<int, ItemWithDeleted> dbSetLocalsDictionary = repository.DbSetLocalsDictionary; // (bug 24218 - zde aplikace spadla)
-		
+
 		// Assert
 		Assert.IsTrue(dbSetLocalsDictionary.ContainsKey(itemWithDeleted.Id)); // ověříme, že se ID dostalo do dictionary
 	}

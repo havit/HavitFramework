@@ -1,9 +1,5 @@
-﻿using System;
-using System.Data;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Data;
 using System.Configuration;
-using Havit.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Data.SqlClient;
@@ -21,8 +17,8 @@ public class DbConnectorTests
 		ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["Test"];
 		DbConnector target = new DbConnector(connectionStringSettings);
 
-            Assert.AreEqual(target.ConnectionString, connectionStringSettings.ConnectionString);
-            Assert.AreEqual(target.ProviderFactory.GetType(), typeof(OleDbFactory));
+		Assert.AreEqual(target.ConnectionString, connectionStringSettings.ConnectionString);
+		Assert.AreEqual(target.ProviderFactory.GetType(), typeof(OleDbFactory));
 	}
 
 	[TestMethod]
@@ -33,8 +29,8 @@ public class DbConnectorTests
 
 		DbConnector target = new DbConnector(connectionString, providerFactory);
 
-            Assert.AreEqual(target.ConnectionString, connectionString);
-            Assert.AreEqual(target.ProviderFactory, providerFactory);
+		Assert.AreEqual(target.ConnectionString, connectionString);
+		Assert.AreEqual(target.ProviderFactory, providerFactory);
 	}
 
 	[TestMethod]
@@ -46,7 +42,7 @@ public class DbConnectorTests
 		DbConnector target = new DbConnector(connectionString, providerInvariantName);
 
 		Assert.AreEqual(target.ConnectionString, connectionString);
-            Assert.AreEqual(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
+		Assert.AreEqual(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
 	}
 
 	[TestMethod]

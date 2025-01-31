@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.DataLoaders;
-using Havit.Data.Entity.Patterns.DataLoaders.Internal;
-using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
-using Havit.Data.Entity.Patterns.Tests.Helpers;
-using Havit.Data.Patterns.DataLoaders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Data.Entity.Patterns.Tests.DataLoader;
+﻿namespace Havit.Data.Entity.Patterns.Tests.DataLoader;
 
 ///// <summary>
 ///// Při opakovaném volání dbDataLoader.Load se opakovaně volal change tracker.

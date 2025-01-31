@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests;
 
@@ -12,7 +11,7 @@ public class DateTimeExtTests
 	{
 		// Act
 		DateTimeExt.Min();
-		
+
 		// Assert by method attribute
 	}
 

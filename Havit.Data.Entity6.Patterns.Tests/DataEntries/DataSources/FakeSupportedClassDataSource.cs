@@ -9,5 +9,5 @@ public class FakeSupportedClassDataSource : FakeDataSource<SupportedClass>
 		: base(data)
 	{
 	}
-	
+
 }

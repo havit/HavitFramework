@@ -1,23 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-	<RootNamespace>Havit.Data.Entity.Tests</RootNamespace>
-	 <IsPackable>false</IsPackable>
-	 <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<RootNamespace>Havit.Data.Entity.Tests</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="MSTest" Version="3.6.4" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Moq" Version="4.20.72" />
+		<PackageReference Include="MSTest" Version="3.6.4" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Configuration" />
+	</ItemGroup>
 
 </Project>

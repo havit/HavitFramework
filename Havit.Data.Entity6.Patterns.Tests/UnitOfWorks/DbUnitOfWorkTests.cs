@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Havit.Data.Entity.Patterns.DataLoaders;
 using Havit.Data.Entity.Patterns.DataLoaders.Internal;
-using Havit.Data.Entity.Patterns.DataSources.Fakes;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
@@ -94,7 +89,7 @@ public class DbUnitOfWorkTests
 		Language language = new Language();
 		language.Culture = "";
 		language.UiCulture = "";
-		
+
 		// Act
 		dbUnitOfWork.AddForInsert(language);
 		await dbUnitOfWork.CommitAsync();
@@ -351,7 +346,7 @@ public class DbUnitOfWorkTests
 		var dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
 		var dbRepository = new DbItemWithDeletedRepository(dbContext, dataSource, dbDataLoader, softDeleteManager);
 		Dictionary<int, ItemWithDeleted> dbRepositoryDbSetLocalsDictionary = dbRepository.DbSetLocalsDictionary;
-		
+
 		// Act
 		dbUnitOfWork.AddForInsert(new ItemWithDeleted());
 		dbUnitOfWork.AddForInsert(new ItemWithDeleted());

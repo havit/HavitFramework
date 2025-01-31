@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Data.SqlClient;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Tests.TransientErrorHandling;
 

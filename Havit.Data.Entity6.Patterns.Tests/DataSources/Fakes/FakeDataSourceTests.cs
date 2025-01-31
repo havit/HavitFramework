@@ -1,11 +1,7 @@
 ﻿using Havit.Data.Entity.Patterns.DataSources.Fakes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataSources.Fakes;
 

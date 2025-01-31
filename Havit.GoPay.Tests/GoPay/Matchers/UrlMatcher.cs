@@ -1,95 +1,92 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 
 namespace Havit.Tests.GoPay.Matchers;
 
-    /// <summary>
-    /// Matches requests on their URL
-    /// </summary>
-    public class UrlMatcher : IMockedRequestMatcher
-    {
-        private readonly string url;
+/// <summary>
+/// Matches requests on their URL
+/// </summary>
+public class UrlMatcher : IMockedRequestMatcher
+{
+	private readonly string url;
 
-        /// <summary>
-        /// Constructs a new instance of UrlMatcher
-        /// </summary>
-        /// <param name="url">The url (relative or absolute) to match</param>
-        public UrlMatcher(string url)
-        {
-            Uri uri;
-        if (Uri.TryCreate(url, UriKind.Absolute, out uri))
-        {
+	/// <summary>
+	/// Constructs a new instance of UrlMatcher
+	/// </summary>
+	/// <param name="url">The url (relative or absolute) to match</param>
+	public UrlMatcher(string url)
+	{
+		Uri uri;
+		if (Uri.TryCreate(url, UriKind.Absolute, out uri))
+		{
 			url = uri.AbsoluteUri;
 		}
 
-            this.url = url;
-        }
+		this.url = url;
+	}
 
-        /// <summary>
-        /// Determines whether the implementation matches a given request
-        /// </summary>
-        /// <param name="message">The request message being evaluated</param>
-        /// <returns>true if the request was matched; false otherwise</returns>
-        public bool Matches(HttpRequestMessage message)
-        {
-        if (String.IsNullOrEmpty(url) || url == "*")
-        {
+	/// <summary>
+	/// Determines whether the implementation matches a given request
+	/// </summary>
+	/// <param name="message">The request message being evaluated</param>
+	/// <returns>true if the request was matched; false otherwise</returns>
+	public bool Matches(HttpRequestMessage message)
+	{
+		if (String.IsNullOrEmpty(url) || url == "*")
+		{
 			return true;
 		}
 
-            string matchUrl = GetUrlToMatch(message.RequestUri);
+		string matchUrl = GetUrlToMatch(message.RequestUri);
 
-            bool startsWithWildcard = url.StartsWith("*");
-            bool endsWithWildcard = url.EndsWith("*");
+		bool startsWithWildcard = url.StartsWith("*");
+		bool endsWithWildcard = url.EndsWith("*");
 
-            string[] matchParts = url.Split(new[] { '*' }, StringSplitOptions.RemoveEmptyEntries);
+		string[] matchParts = url.Split(new[] { '*' }, StringSplitOptions.RemoveEmptyEntries);
 
-        if (matchParts.Length == 0)
-        {
+		if (matchParts.Length == 0)
+		{
 			return true;
 		}
 
-            if (!startsWithWildcard)
-            {
-            if (!matchUrl.StartsWith(matchParts[0]))
-            {
+		if (!startsWithWildcard)
+		{
+			if (!matchUrl.StartsWith(matchParts[0]))
+			{
 				return false;
 			}
-            }
+		}
 
-            int position = 0;
+		int position = 0;
 
-            foreach (var matchPart in matchParts)
-            {
-                position = matchUrl.IndexOf(matchPart, position);
+		foreach (var matchPart in matchParts)
+		{
+			position = matchUrl.IndexOf(matchPart, position);
 
-            if (position == -1)
-            {
+			if (position == -1)
+			{
 				return false;
 			}
 
-                position += matchPart.Length;
-            }
+			position += matchPart.Length;
+		}
 
-            if (!endsWithWildcard && (position != matchUrl.Length))
-            {
-                return false;
-            }
+		if (!endsWithWildcard && (position != matchUrl.Length))
+		{
+			return false;
+		}
 
-            return true;
-        }
+		return true;
+	}
 
-        private string GetUrlToMatch(Uri urlToMatch)
-        {
-            bool matchingFullUrl = Uri.IsWellFormedUriString(this.url.Replace('*', '-'), UriKind.Absolute);
+	private string GetUrlToMatch(Uri urlToMatch)
+	{
+		bool matchingFullUrl = Uri.IsWellFormedUriString(this.url.Replace('*', '-'), UriKind.Absolute);
 
-            string source = matchingFullUrl
-                ? new UriBuilder(urlToMatch) {  Query = String.Empty }.Uri.AbsoluteUri
-                : urlToMatch.LocalPath;
+		string source = matchingFullUrl
+			? new UriBuilder(urlToMatch) { Query = String.Empty }.Uri.AbsoluteUri
+			: urlToMatch.LocalPath;
 
-            return source;
-        }
-    }
+		return source;
+	}
+}

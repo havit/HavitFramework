@@ -148,7 +148,7 @@ public static class BitmapExt
 					destinationBitmapGraphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
 					destinationBitmapGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 				}
-				
+
 				destinationBitmapGraphics.DrawImage(originalBitmap, 0, 0, destinationSize.Width, destinationSize.Height);
 			}
 

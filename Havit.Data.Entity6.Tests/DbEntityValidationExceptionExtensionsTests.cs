@@ -4,7 +4,6 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using Havit.Data.Entity.Helpers;
 using Havit.Data.Entity.Tests.Helpers;
-using Havit.Data.Entity.Tests.Infrastructure;
 
 namespace Havit.Data.Entity.Tests;
 

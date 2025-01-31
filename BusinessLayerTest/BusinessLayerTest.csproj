@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<ImplicitUsings>disable</ImplicitUsings> <!-- Generovaný kód obsahuje spoustu usingů -->
+		<EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild> <!-- Generovaný kód obsahuje kosmetické formátovací chyby -->
 	</PropertyGroup>
 
 	<ItemGroup>

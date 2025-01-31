@@ -2,11 +2,8 @@
 using Havit.Data.Entity.Tests.Validators.Infrastructure.Model;
 using Havit.Data.Entity.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using Havit.Data.Entity.Mapping.Internal;
-using System.Collections.Generic;
 using Havit.Data.Entity.Tests.Helpers;
-using Havit.Data.Entity.Tests.Infrastructure;
 
 namespace Havit.Data.Entity.Tests.Validators;
 
@@ -31,53 +28,53 @@ public class DbContextConventionsValidatorTests
 
 		// Assert			
 		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("only one is expected")));
-        }
+	}
 
-        [TestMethod]
-        public void DbContextConventionsValidator_CheckPrimaryKey_ReportsNonIntKeys()
-        {
-            // Arrange
-            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-            ModelValidator modelValidator = new ModelValidator();
+	[TestMethod]
+	public void DbContextConventionsValidator_CheckPrimaryKey_ReportsNonIntKeys()
+	{
+		// Arrange
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+		ModelValidator modelValidator = new ModelValidator();
 
-            // Act
-            string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(StringIdClass))).ToArray();
+		// Act
+		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(StringIdClass))).ToArray();
 
-            // Assert			
-            Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
-        }
+		// Assert			
+		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
+	}
 
-        [TestMethod]
-        public void DbContextConventionsValidator_CheckPrimaryKeyName_ReportsInvalidNamedKeys()
-        {
-            // Arrange
-            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-            ModelValidator modelValidator = new ModelValidator();
+	[TestMethod]
+	public void DbContextConventionsValidator_CheckPrimaryKeyName_ReportsInvalidNamedKeys()
+	{
+		// Arrange
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+		ModelValidator modelValidator = new ModelValidator();
 
-            // Act
-            string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(InvalidNameOfPrimaryKey))).ToArray();
+		// Act
+		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(InvalidNameOfPrimaryKey))).ToArray();
 
-            // Assert			
-            Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("but 'Id' is expected")));
-        }
+		// Assert			
+		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("but 'Id' is expected")));
+	}
 
-        [TestMethod]
-        public void DbContextConventionsValidator_CheckPrimaryKey_DoesNotReportOnePrimaryKeys()
-        {
-            // Arrange
-            ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
-            ModelValidator modelValidator = new ModelValidator();
+	[TestMethod]
+	public void DbContextConventionsValidator_CheckPrimaryKey_DoesNotReportOnePrimaryKeys()
+	{
+		// Arrange
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+		ModelValidator modelValidator = new ModelValidator();
 
-            // Act
-            List<string> errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToList();
-            errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
-            errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
+		// Act
+		List<string> errorsOneCorrectKeyClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToList();
+		errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
+		errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
 
-            // Assert			
-            Assert.IsFalse(errorsOneCorrectKeyClass.Any());
-        }
+		// Assert			
+		Assert.IsFalse(errorsOneCorrectKeyClass.Any());
+	}
 
-        [TestMethod]
+	[TestMethod]
 	public void DbContextConventionsValidator_CheckIdNamingConvention_ReportsCapitalId()
 	{
 		// Arrange
@@ -222,6 +219,6 @@ public class DbContextConventionsValidatorTests
 		Assert.IsFalse(errorsEntryWithPrimaryKeyAndNoSymbol.Any()); // neobsahuje chybu
 		Assert.IsTrue(errorsEntryWithPrimaryKeyAndWithSymbol.Any()); // obsahuje chybu (duplicitní možnost párování)
 
-        }
-    }
+	}
+}
 

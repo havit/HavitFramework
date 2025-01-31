@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Data.Entity.Patterns.Tests.Helpers;
+﻿namespace Havit.Data.Entity.Patterns.Tests.Helpers;
 
 public static class DeleteDatabaseHelper
 {

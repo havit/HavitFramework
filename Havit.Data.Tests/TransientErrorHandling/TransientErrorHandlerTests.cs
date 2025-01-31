@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 using Havit.Data.TransientErrorHandling;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

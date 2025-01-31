@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
+﻿using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Services.TimeServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,7 +19,7 @@ public class SetCreatedToInsertingEntitiesBeforeCommitProcessorTests
 		Mock<ITimeService> mockTimeService = new Mock<ITimeService>(MockBehavior.Strict);
 		mockTimeService.Setup(m => m.GetCurrentTime()).Returns(now);
 		SetCreatedToInsertingEntitiesBeforeCommitProcessor processor = new SetCreatedToInsertingEntitiesBeforeCommitProcessor(mockTimeService.Object);
-		
+
 		// Act
 		processor.Run(ChangeType.Insert, entity);
 

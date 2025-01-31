@@ -1,22 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-  
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-	<PackageVersion>2.0.30</PackageVersion>
-	<Description>HAVIT .NET Framework Extensions - PayPal Library</Description>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-	<Reference Include="System.Data.DataSetExtensions" Pack="false" />
-	<Reference Include="System.Web" Pack="false" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.0.30</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - PayPal Library</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Data.DataSetExtensions" Pack="false" />
+		<Reference Include="System.Web" Pack="false" />
+	</ItemGroup>
 </Project>

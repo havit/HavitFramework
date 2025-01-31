@@ -667,7 +667,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 			for (byte i = negative; i < l; i++)
 			{
 				//char letter = value[i];
-				result = 10 * (result + (value[i] - 48));
+				result = (10 * result) + (value[i] - 48);
 			}
 
 			return negative == 0 ? result : -1 * result;

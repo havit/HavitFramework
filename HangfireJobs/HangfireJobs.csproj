@@ -4,8 +4,6 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>Havit.HangfireJobs</AssemblyName>
 		<RootNamespace>Havit.HangfireJobs</RootNamespace>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

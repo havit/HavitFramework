@@ -3,8 +3,6 @@
 	<PropertyGroup>
 		<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<ImplicitUsings>true</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,7 +15,6 @@
 	<PropertyGroup>
 		<PackageVersion>2.0.46</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Services</Description>
-		<LangVersion>default</LangVersion>
 		<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
 	</PropertyGroup>
 

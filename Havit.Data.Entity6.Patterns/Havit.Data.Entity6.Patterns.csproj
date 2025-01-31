@@ -4,8 +4,6 @@
 		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Havit.Data.Entity.Patterns</RootNamespace>
-		<ImplicitUsings>true</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,7 +16,6 @@
 	<PropertyGroup>
 		<PackageVersion>2.2.34-pre03</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Data Patterns</Description>
-		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

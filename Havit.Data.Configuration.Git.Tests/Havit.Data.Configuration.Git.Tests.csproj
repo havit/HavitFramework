@@ -4,9 +4,6 @@
     <TargetFramework>net48</TargetFramework>
 	<IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-	<ImplicitUsings>true</ImplicitUsings>
-	<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
   </PropertyGroup>
 
   <ItemGroup>

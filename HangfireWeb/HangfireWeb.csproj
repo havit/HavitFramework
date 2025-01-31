@@ -4,8 +4,6 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>Havit.HangfireApp</AssemblyName>
 		<RootNamespace>Havit.HangfireApp</RootNamespace>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -3,8 +3,6 @@
 	<PropertyGroup>
 		<!--<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>-->
 		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 

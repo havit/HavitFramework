@@ -4,8 +4,6 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>Havit.EFCoreTests.Entity</AssemblyName>
 		<RootNamespace>Havit.EFCoreTests.Entity</RootNamespace>
-		<ImplicitUsings>true</ImplicitUsings>
-		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

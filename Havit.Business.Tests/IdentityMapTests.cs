@@ -1,9 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Text;
-using System.Collections.Generic;
-using Havit.Business;
-using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;
 
@@ -20,9 +15,9 @@ public class IdentityMapTests
 		TestingBusinessObject businessObject2 = new TestingBusinessObject(10);
 
 		target.Store(businessObject1);
-		target.Store(businessObject2);			
+		target.Store(businessObject2);
 	}
-	
+
 	[TestMethod]
 	public void IdentityMap_Get_ReturnsStoredObject()
 	{
@@ -42,7 +37,7 @@ public class IdentityMapTests
 	{
 		IdentityMap target = new IdentityMap();
 		TestingBusinessObject actual = target.Get<TestingBusinessObject>(10);
-					
+
 		Assert.IsNull(actual);
 	}
 

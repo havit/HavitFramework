@@ -1,7 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Text;
-using System.Collections.Generic;
 using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 namespace Havit.Business.Tests;

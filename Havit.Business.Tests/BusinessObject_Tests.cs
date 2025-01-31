@@ -1,13 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Text;
-using System.Collections.Generic;
 using Havit.BusinessLayerTest;
-using Havit.Data;
-using System.Data.Common;
-using System.Linq;
-using Havit.Business;
-using Havit.Business.TestExtensions;
 
 namespace Havit.Business.Tests;
 
@@ -43,7 +35,7 @@ public class BusinessObject_Tests
 	}
 
 	[TestMethod]
-	
+
 	public void BusinessObjectBase_GetNullableID_ReturnsNullForNull()
 	{
 		BusinessObjectBase businessObject = null;

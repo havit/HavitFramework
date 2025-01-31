@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Business;
+﻿using System.Data.Common;
 using Havit.Business.Query;
 using Havit.Business.TestExtensions;
 using Havit.BusinessLayerTest;
@@ -201,7 +195,7 @@ public class BusinessObject_DisconnectedObjectsTests
 	public void BusinesObject_Save_DoNotSaveNewDisconnectedObjects()
 	{
 		// protože se smysluplně neumím nabourat do SaveFullInsert, který potřebuheme potlačit (a který je generovaný), 
-	    // implementujeme test jako black-box test
+		// implementujeme test jako black-box test
 		using (new IdentityMapScope())
 		{
 			Subjekt subjekt = Subjekt.CreateDisconnectedObject();

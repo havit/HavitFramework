@@ -1,11 +1,4 @@
-﻿using System.Linq;
-
-using Havit.Business;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;

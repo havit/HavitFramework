@@ -1,8 +1,5 @@
 ﻿using Havit.Extensions.DependencyInjection.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Havit.Extensions.DependencyInjection.Tests;
 

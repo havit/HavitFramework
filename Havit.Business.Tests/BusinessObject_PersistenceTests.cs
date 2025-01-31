@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Business;
+﻿using System.Data.Common;
 using Havit.BusinessLayerTest;
 using Havit.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -75,7 +69,7 @@ public class BusinessObject_PersistenceTests
 
 			// Assert
 			Assert.AreEqual("hfw@havit.local", uzivatel.Email);
-			
+
 			// Cleanup
 			uzivatel.Delete();
 		}

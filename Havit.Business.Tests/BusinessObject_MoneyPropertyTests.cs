@@ -1,10 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.BusinessLayerTest;
-using Havit.Business;
 
 namespace Havit.Business.Tests;
 
@@ -18,7 +13,7 @@ public class BusinessObject_MoneyPropertyTests
 		{
 			decimal castka = 555M;
 			Currency mena = Currency.CreateObject();
-			
+
 			CenikItem cenikItem = CenikItem.CreateObject();
 
 			Money money = new Money(castka, mena);

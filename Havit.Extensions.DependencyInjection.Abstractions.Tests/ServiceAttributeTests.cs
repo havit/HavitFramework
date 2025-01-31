@@ -2,11 +2,6 @@
 using Havit.Extensions.DependencyInjection.Abstractions.Tests.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Extensions.DependencyInjection.Tests;
 
@@ -82,7 +77,7 @@ public class ServiceAttributeTests
 		{
 			Profile = "MyProfile",
 			Lifetime = ServiceLifetime.Singleton,
-			ServiceTypes = new Type[] { typeof(IFirstService), typeof(ISecondService) }				
+			ServiceTypes = new Type[] { typeof(IFirstService), typeof(ISecondService) }
 		}.ToString();
 
 		// Assert

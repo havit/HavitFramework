@@ -1,8 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Text;
-using System.Collections.Generic;
-using Havit.Business;
 using Havit.BusinessLayerTest;
 using Havit.Business.Query;
 
@@ -25,7 +21,7 @@ public class BusinessObject_IdentityMapTests
 			Assert.AreSame(uzivatel1, uzivatel2);
 		}
 	}
-	
+
 	[TestMethod]
 	public void BusinessObject_GetFirst_StoresLoadedObjectToIdentityMap()
 	{

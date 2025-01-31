@@ -1050,7 +1050,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 				object insertRowDataItem = GetInsertRowDataItem();
 				if (AllowPaging)
 				{
-					int pageCount = (insertingData.Count - 1) / (this.PageSize - 1) + 1; // funguje i pro insertingData.Count == 0
+					int pageCount = ((insertingData.Count - 1) / (this.PageSize - 1)) + 1; // funguje i pro insertingData.Count == 0
 
 					// pokud by InsertingRow mělo zbýt samotné na poslední stránce, pak snížíme počet stránek (může se stát po smazání poslední položky)
 					if ((this.PageIndex > 0) && ((this.PageSize - 1) * (this.PageIndex)) == insertingData.Count)

@@ -1,14 +1,5 @@
 ﻿using Havit.BusinessLayerTest;
-using Havit.Data;
-using Havit.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Havit.Business.Tests;
 
@@ -51,7 +42,7 @@ public class BusinessObject_Load
 				{
 					var roleLocalization = RoleLocalization.GetObject(1);
 					RoleLocalizationCollection collection = new RoleLocalizationCollection { roleLocalization };
-					
+
 					// Act
 					// pod pokličkou zavolá RoleLocalization.Load(DataRecord), jejíž paralelní běh ověřujeme
 					collection.LoadAll();
@@ -62,7 +53,7 @@ public class BusinessObject_Load
 					// pokud je objekt ve stavu IsLoaded, ale nemá hodnoty property holderů,
 					// vyhazuje výjimku InvalidOperationException (Hodnota nebyla inicializována.),
 					// více viz PropertyHolderBase.CheckInitialization.
-					Assert.IsFalse(String.IsNullOrEmpty(roleLocalization.Nazev)); 
+					Assert.IsFalse(String.IsNullOrEmpty(roleLocalization.Nazev));
 				}
 			});
 		}

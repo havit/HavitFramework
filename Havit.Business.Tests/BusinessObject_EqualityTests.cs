@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Business;
-using Havit.BusinessLayerTest;
+﻿using Havit.BusinessLayerTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.Tests;
@@ -26,7 +20,7 @@ public class BusinessObject_EqualityTests
 		subjekt1 = Subjekt.CreateObject();
 
 		// Act + Assert
-		Assert.IsTrue(role1.Equals(role1));			
+		Assert.IsTrue(role1.Equals(role1));
 #pragma warning disable 1718 // cílem je otestovat porovnání se sebou samým
 		Assert.IsTrue(role1 == role1);
 #pragma warning restore 1718

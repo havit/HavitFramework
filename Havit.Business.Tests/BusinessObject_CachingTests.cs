@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Cache;
+﻿using System.Globalization;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Havit.Business;
 using Havit.Business.Caching;
-using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 using Havit.BusinessLayerTest.Resources;
-using Havit.Data;
 using Havit.Services.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -41,7 +28,7 @@ public class BusinessObject_CachingTests
 	}
 
 	[TestCleanup]
-	public void TestCleanup()		
+	public void TestCleanup()
 	{
 		identityMapScope.Dispose();
 	}
@@ -51,7 +38,7 @@ public class BusinessObject_CachingTests
 	{
 		// Arrange
 		string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetDataRecordCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { CurrencyWellKnownID }));
-		
+
 		// Precondition
 		Assert.IsFalse(cacheService.Contains(cacheKey));
 
@@ -84,7 +71,7 @@ public class BusinessObject_CachingTests
 		// Arrange
 		string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetDataRecordCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { CurrencyWellKnownID }));
 
-		Currency currency = Currency.GetObject(CurrencyWellKnownID);			
+		Currency currency = Currency.GetObject(CurrencyWellKnownID);
 		currency.Load();
 
 		// Precondition
@@ -232,7 +219,7 @@ public class BusinessObject_CachingTests
 	public void BusinessObject_Save_NewObject_InvalidatesAnySaveCacheDependencyKey()
 	{
 		// Arrange
-		Currency currency = Currency.CreateObject();			
+		Currency currency = Currency.CreateObject();
 
 		string cacheKey = Currency.GetAnySaveCacheDependencyKey();
 

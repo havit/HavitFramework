@@ -1,11 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Havit.BusinessLayerTest;
-using Havit.Data;
-using System.Data.Common;
-using Havit.Business;
 
 namespace Havit.Business.Tests;
 
@@ -18,12 +12,12 @@ public class ActiveRecordBusinessObjectBaseTests
 	[TestMethod]
 	[ExpectedException(typeof(ConstraintViolationException))]
 	public void ActiveRecordBusinessObjectBase_MinimalInsert_UsesCheckConstraint()
-	{			
+	{
 		// Arrange
 		Subjekt subjekt = Subjekt.CreateObject();
-		Uzivatel uzivatel = Uzivatel.CreateObject(); 
+		Uzivatel uzivatel = Uzivatel.CreateObject();
 		subjekt.Uzivatel = uzivatel;
-		
+
 		// nastavíme řetězec delší, než je povoleno
 		string username = "";
 		while (username.Length <= Uzivatel.Properties.Username.MaximumLength)

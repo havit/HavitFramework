@@ -99,7 +99,7 @@ public abstract class HighlightingGridView : GridView
 		if (index >= 0)
 		{
 			int targetPageIndex = (!AllowPaging) ? 0 : index / PageSize;
-			int targetSelectedIndex = index - targetPageIndex * PageSize;
+			int targetSelectedIndex = index - (targetPageIndex * PageSize);
 
 			if (Hightlighting.AutoPageChangeEnabled && Hightlighting.PageChangeEnabled)
 			{

@@ -1,12 +1,6 @@
 ﻿using Castle.Windsor;
 using Havit.Extensions.DependencyInjection.CastleWindsor.Tests.Infrastructure;
-using Havit.Extensions.DependencyInjection.CastleWindsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Castle.MicroKernel;
 
 namespace Havit.Extensions.DependencyInjection.CastleWindsor.Tests;
@@ -79,7 +73,7 @@ public class WindsorContainerExtensionsTests
 		WindsorContainer container = new WindsorContainer();
 
 		// Act
-		container.InstallByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));			
+		container.InstallByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
 		IService firstService = container.Resolve<IFirstService>();
 		IService secondService = container.Resolve<ISecondService>();
 
@@ -117,7 +111,7 @@ public class WindsorContainerExtensionsTests
 		// Act
 
 		// MyGenericService<> is a generic type implementing generic interface IGenericService<>.
-		container.InstallByServiceAttribute(typeof(MyGenericService<,>).Assembly, nameof(MyGenericService<object, object>)); 
+		container.InstallByServiceAttribute(typeof(MyGenericService<,>).Assembly, nameof(MyGenericService<object, object>));
 
 		// Assert
 		container.Resolve<IGenericService<string, string>>();
@@ -132,7 +126,7 @@ public class WindsorContainerExtensionsTests
 		// Tento test má za cíl jen ukázat chování, jak jsou služby zaregistrovány a co lze použít s Castle Windsor.
 		// Nejde o předpis chování, které bychom potřebovali zachovat a ověřit.			
 		// Upozornění: Chování Castle Windsor se liší od chování ServiceProvideru!
-		
+
 		// Arrange
 		WindsorContainer container = new WindsorContainer();
 

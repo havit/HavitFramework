@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.PayMuzo;
+﻿namespace Havit.PayMuzo;
 
 /// <summary>
 /// Obecná výjimka PayMUZO subsystému. Použito zejména jako bázová třída pro další výjimky.

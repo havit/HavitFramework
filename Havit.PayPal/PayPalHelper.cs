@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Net;
-using System.IO;
-using System.Web;
 using System.Collections.Specialized;
 
 namespace Havit.PayPal;
@@ -39,7 +33,7 @@ public static class PayPalHelper
 	{
 		PayPalRequestData request = CreateSetExpressCheckoutRequest(amount, returnUrl, cancelUrl, paymentAction, currency, landingPage, true, false, paymentName, null, null, null, null, null, null, null);
 
-		return request;			
+		return request;
 	}
 
 	/// <summary>
@@ -92,11 +86,11 @@ public static class PayPalHelper
 		if (amount <= 0)
 		{
 			throw new ArgumentOutOfRangeException("amount", "amount musí být kladné číslo");
-		}			
+		}
 
 		request.Add("PAYMENTREQUEST_0_AMT", amount.ToString(CultureInfo.InvariantCulture));
 		request.Add("PAYMENTREQUEST_0_ITEMAMT", amount.ToString(CultureInfo.InvariantCulture));
-		request.Add("L_PAYMENTREQUEST_0_AMT0", amount.ToString(CultureInfo.InvariantCulture));			
+		request.Add("L_PAYMENTREQUEST_0_AMT0", amount.ToString(CultureInfo.InvariantCulture));
 		request.Add("PAYMENTREQUEST_0_CURRENCYCODE", currency.Code);
 		request.Add("PAYMENTREQUEST_0_PAYMENTACTION", PayPalPaymentActionHelper.GetPayPalPaymentActionCode(paymentAction));
 		request.Add("LANDINGPAGE", PayPalLandingPageHelper.GetPayPalLandingPageCode(landingPage));
@@ -121,8 +115,8 @@ public static class PayPalHelper
 
 		if (!String.IsNullOrEmpty(paymentName))
 		{
-			request.Add("L_PAYMENTREQUEST_0_NAME0", paymentName);				
-		}		
+			request.Add("L_PAYMENTREQUEST_0_NAME0", paymentName);
+		}
 
 		request.Add("GIFTMESSAGEENABLE", "0");
 		request.Add("GIFTRECEIPTENABLE", "0");
@@ -144,7 +138,7 @@ public static class PayPalHelper
 		if (!String.IsNullOrEmpty(shipToStreet2))
 		{
 			request.Add("PAYMENTREQUEST_0_SHIPTOSTREET2", shipToStreet2);
-		}		
+		}
 
 		if (!String.IsNullOrEmpty(shipToCity))
 		{
@@ -164,7 +158,7 @@ public static class PayPalHelper
 		if (!String.IsNullOrEmpty(shipToPayPalCountryCode))
 		{
 			request.Add("PAYMENTREQUEST_0_SHIPTOCOUNTRY", shipToPayPalCountryCode);
-		}	
+		}
 
 		return request;
 	}
@@ -195,7 +189,7 @@ public static class PayPalHelper
 		request.Add("PAYERID", payerID);
 		request.Add("PAYMENTREQUEST_0_PAYMENTACTION", PayPalPaymentActionHelper.GetPayPalPaymentActionCode(paymentAction));
 		request.Add("PAYMENTREQUEST_0_CURRENCYCODE", currency.Code);
-		request.Add("PAYMENTREQUEST_0_AMT", amount.ToString(CultureInfo.InvariantCulture));			
+		request.Add("PAYMENTREQUEST_0_AMT", amount.ToString(CultureInfo.InvariantCulture));
 
 		return request;
 	}
@@ -206,7 +200,7 @@ public static class PayPalHelper
 	/// <param name="requestData">Hodnoty pro request</param>
 	/// <param name="credentials">Credentials pro PayPal API</param>
 	public static NameValueCollection ExecutePayPalRequest(PayPalRequestData requestData, PayPalApiCredentials credentials)
-	{			
+	{
 		string postQueryString = requestData.GetQueryString(credentials);
 
 		HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(credentials.ApiEndpointUrl);
@@ -214,7 +208,7 @@ public static class PayPalHelper
 		objRequest.Method = "POST";
 		objRequest.ContentLength = postQueryString.Length;
 		PayPalResponseData responseData;
-		
+
 		using (StreamWriter myWriter = new StreamWriter(objRequest.GetRequestStream()))
 		{
 			myWriter.Write(postQueryString);
@@ -228,8 +222,8 @@ public static class PayPalHelper
 			result = sr.ReadToEnd();
 		}
 
-		responseData = new PayPalResponseData(result);			
-		
+		responseData = new PayPalResponseData(result);
+
 		return responseData;
 	}
 

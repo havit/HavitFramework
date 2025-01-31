@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Collections.Specialized;
 using System.Web;
 
@@ -36,7 +33,7 @@ public class PayPalRequestData : NameValueCollection
 		if (!this.AllKeys.Contains("VERSION"))
 		{
 			this.Add("VERSION", credentials.ApiVersion);
-		}			
+		}
 
 		StringBuilder sb = new StringBuilder();
 		bool firstPair = true;

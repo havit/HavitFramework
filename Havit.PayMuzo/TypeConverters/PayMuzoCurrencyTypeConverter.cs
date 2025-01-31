@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.PayMuzo.TypeConverters;
+﻿namespace Havit.PayMuzo.TypeConverters;
 
 /// <summary>
 /// Základní type-converter k PayMuzoCurrency, který je připraven k použití v BL

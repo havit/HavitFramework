@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.PayPal;
+﻿namespace Havit.PayPal;
 
 /// <summary>
 /// Třída reprezentující PayPal API credentials.
@@ -24,12 +19,12 @@ public class PayPalApiCredentials
 	/// Heslo k PayPal API.
 	/// </summary>
 	public string ApiPassword { get; protected set; }
-	
+
 	/// <summary>
 	/// Signature k PayPal API.
 	/// </summary>
 	public string ApiSignature { get; protected set; }
-	
+
 	/// <summary>
 	/// Verze PayPal API (vrací aktuální verzi API pro použití v Havit.PayPal).
 	/// </summary>
@@ -47,6 +42,6 @@ public class PayPalApiCredentials
 		this.ApiEndpointUrl = apiEndpointUrl;
 		this.ApiUsername = apiUsername;
 		this.ApiPassword = apiPassword;
-		this.ApiSignature = apiSignature;			
+		this.ApiSignature = apiSignature;
 	}
 }

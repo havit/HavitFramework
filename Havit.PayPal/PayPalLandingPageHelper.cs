@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.PayPal;
+﻿namespace Havit.PayPal;
 
 /// <summary>
 /// Enum popisující typ PayPal page, která se má zobrazit uživateli po příchodu na PayPal.

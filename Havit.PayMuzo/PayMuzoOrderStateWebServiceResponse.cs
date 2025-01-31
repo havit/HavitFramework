@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.PayMuzo;
+﻿namespace Havit.PayMuzo;
 
 /// <summary>
 /// Třída pro zpracování odezvy webové služby ORDER STATE.

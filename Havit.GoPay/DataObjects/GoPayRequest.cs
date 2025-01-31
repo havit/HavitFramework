@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.GoPay.Codebooks;
+﻿using Havit.GoPay.Codebooks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Globalization;
 
 namespace Havit.PayPal;
@@ -235,7 +231,7 @@ public class PayPalDoExpressCheckoutPaymentResponse : PayPalResponseBase
 		}
 
 		if (!String.IsNullOrEmpty(rawResponseData["PAYMENTINFO_0_ORDERTIME"]))
-		{				
+		{
 			DateTime orderTime;
 			if (DateTime.TryParse(rawResponseData["PAYMENTINFO_0_ORDERTIME"], out orderTime))
 			{
@@ -303,7 +299,7 @@ public class PayPalDoExpressCheckoutPaymentResponse : PayPalResponseBase
 		}
 
 		if (!String.IsNullOrEmpty(rawResponseData["SUCCESSPAGEREDIRECTREQUESTED"]))
-		{				
+		{
 			bool successPageRedirectRequested;
 			if (Boolean.TryParse(rawResponseData["SUCCESSPAGEREDIRECTREQUESTED"], out successPageRedirectRequested))
 			{

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Havit.Diagnostics.Contracts;
 using Havit.GoPay.Codebooks;
 using Havit.GoPay.DataObjects;
-using Havit.GoPay.DataObjects.Errors;
 using Newtonsoft.Json;
 
 namespace Havit.GoPay;
@@ -244,7 +238,7 @@ public class GoPayClient : IGoPayClient
 			{
 				throw new GoPayResponseException($"Unable to process GoPay response: {resultStringValue}", ex);
 			}
-			
+
 		}
 		return response;
 	}

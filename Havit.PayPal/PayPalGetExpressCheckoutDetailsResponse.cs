@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Globalization;
 
 namespace Havit.PayPal;
@@ -220,7 +216,7 @@ public class PayPalGetExpressCheckoutDetailsResponse : PayPalResponseBase
 		get { return _middleName; }
 		protected set { _middleName = value; }
 	}
-	private string _middleName; 
+	private string _middleName;
 
 	/// <summary>
 	/// Payer’s last name. Character length and limitations: 25 single-byte characters.
@@ -463,7 +459,7 @@ public class PayPalGetExpressCheckoutDetailsResponse : PayPalResponseBase
 		{
 			this.CheckoutStatus = rawResponseData["CHECKOUTSTATUS"];
 		}
-		
+
 		//---------------------------------------------------------------------------
 		// Payer Name Fields
 		//---------------------------------------------------------------------------
@@ -491,7 +487,7 @@ public class PayPalGetExpressCheckoutDetailsResponse : PayPalResponseBase
 		{
 			this.Suffix = rawResponseData["SUFFIX"];
 		}
-		
+
 		//---------------------------------------------------------------------------
 		// Address Type Fields
 		//---------------------------------------------------------------------------
@@ -503,7 +499,7 @@ public class PayPalGetExpressCheckoutDetailsResponse : PayPalResponseBase
 		if (!String.IsNullOrEmpty(rawResponseData["PAYMENTREQUEST_0_SHIPTOSTREET"]))
 		{
 			this.ShipToStreet = rawResponseData["PAYMENTREQUEST_0_SHIPTOSTREET"];
-		}		
+		}
 
 		if (!String.IsNullOrEmpty(rawResponseData["PAYMENTREQUEST_0_SHIPTOSTREET2"]))
 		{

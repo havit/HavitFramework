@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections.Specialized;
+﻿using System.Text;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -178,7 +175,7 @@ public static class PayMuzoHelper
 		signFormatter.SetHashAlgorithm("SHA1");
 
 		// podpis RSASSA-PKCS1
-//			byte[] signedData = signFormatter.CreateSignature(hashAlg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data)));
+		//			byte[] signedData = signFormatter.CreateSignature(hashAlg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data)));
 		byte[] signedData = signFormatter.CreateSignature(hashAlg.ComputeHash(System.Text.Encoding.GetEncoding(1250).GetBytes(data)));
 
 		// výstup má být zakódován pomocí BASE64
@@ -240,7 +237,7 @@ public static class PayMuzoHelper
 
 		// hash SHA-1
 		HashAlgorithm hashAlg = HashAlgorithm.Create("SHA1");
-//			byte[] dataHash = hashAlg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data));
+		//			byte[] dataHash = hashAlg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(data));
 		byte[] dataHash = hashAlg.ComputeHash(System.Text.Encoding.GetEncoding(1250).GetBytes(data));
 
 		// verifikace

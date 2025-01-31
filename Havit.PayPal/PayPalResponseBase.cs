@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 
 namespace Havit.PayPal;
 
@@ -155,11 +151,11 @@ public abstract class PayPalResponseBase
 		if (!String.IsNullOrEmpty(rawResponseData["ACK"]))
 		{
 			this.Acknowledgment = rawResponseData["ACK"];
-			
+
 			if ((this.Acknowledgment == "Success") || (this.Acknowledgment == "SuccessWithWarning"))
 			{
 				this.IsSuccess = true;
-			}				
+			}
 		}
 
 		if (!String.IsNullOrEmpty(rawResponseData["ERRORCODE0"]))
@@ -179,8 +175,8 @@ public abstract class PayPalResponseBase
 
 		if (!String.IsNullOrEmpty(rawResponseData["L_SEVERITYCODE0"]))
 		{
-			this.SeverityCode = rawResponseData["L_SEVERITYCODE0"];			
-		}			
-		
+			this.SeverityCode = rawResponseData["L_SEVERITYCODE0"];
+		}
+
 	}
 }

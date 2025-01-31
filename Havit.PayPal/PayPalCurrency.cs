@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
+﻿using System.Collections;
 
 namespace Havit.PayPal;
 
@@ -20,12 +16,12 @@ public class PayPalCurrency
 	/// EUR
 	/// </summary>
 	public static PayPalCurrency Eur { get { return FindByCurrencyCode("EUR"); } }
-	
+
 	/// <summary>
 	/// GBP
 	/// </summary>
 	public static PayPalCurrency Gbp { get { return FindByCurrencyCode("GBP"); } }
-	
+
 	/// <summary>
 	/// USD
 	/// </summary>
@@ -73,7 +69,7 @@ public class PayPalCurrency
 	private PayPalCurrency(string code, int numericCode)
 	{
 		_code = code;
-		_numericCode = numericCode;			
+		_numericCode = numericCode;
 	}
 
 	/*******************************************************************************************************/
@@ -88,7 +84,7 @@ public class PayPalCurrency
 	/// Statický constructor
 	/// </summary>
 	static PayPalCurrency()
-	{			
+	{
 		currencyCodes = new Hashtable();
 		numericCodes = new Hashtable();
 
@@ -120,7 +116,7 @@ public class PayPalCurrency
 		if (!numericCodes.ContainsKey(currency.NumericCode))
 		{
 			numericCodes.Add(currency.NumericCode, currency);
-		}	
+		}
 	}
 
 	/// <summary>
@@ -138,6 +134,6 @@ public class PayPalCurrency
 	/// <param name="currencyCode">Kód měny</param>
 	public static PayPalCurrency FindByCurrencyCode(string currencyCode)
 	{
-		return (PayPalCurrency)currencyCodes[currencyCode.ToUpper()];		
+		return (PayPalCurrency)currencyCodes[currencyCode.ToUpper()];
 	}
 }

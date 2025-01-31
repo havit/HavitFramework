@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Havit.GoPay.Codebooks;
+﻿using Havit.GoPay.Codebooks;
 using Newtonsoft.Json;
 
 namespace Havit.GoPay.DataObjects;
@@ -37,5 +36,5 @@ public class GoPayPaymentInstrumentItem
 	/// Povolené banky resp. jejich SWIFT kódy
 	/// </summary>
 	[JsonProperty("enabledSwifts")]
-	public Dictionary<string, GoPayEnabledSwift> EnabledSwifts { get; set; } 
+	public Dictionary<string, GoPayEnabledSwift> EnabledSwifts { get; set; }
 }

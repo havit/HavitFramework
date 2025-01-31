@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.PayPal.TypeConverters;
+﻿namespace Havit.PayPal.TypeConverters;
 
 /// <summary>
 /// Základní type-converter k PayPalCurrency, který je připraven k použití v BL
 /// pro ukládání property typu <see cref="PayPalCurrency"/> pomocí její hodnoty <see cref="PayPalCurrency.NumericCode"/>.
 /// </summary>
-public class PayPalCurrencyTypeConverter : ITypeConverter<PayPalCurrency> 	
+public class PayPalCurrencyTypeConverter : ITypeConverter<PayPalCurrency>
 {
 	/// <summary>
 	/// Returns whether this converter can convert the object to the specified type.

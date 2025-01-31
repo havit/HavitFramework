@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Havit.PayMuzo.WebServiceProxies;
+﻿using Havit.PayMuzo.WebServiceProxies;
 using System.Security.Cryptography.X509Certificates;
 using Havit.Diagnostics.Contracts;
 
@@ -76,7 +73,7 @@ public class PayMuzoWebServiceClient
 	public PayMuzoOrderState QueryOrderState(int orderNumber)
 	{
 		Contract.Requires<ArgumentOutOfRangeException>(orderNumber >= 0, nameof(orderNumber));
-		
+
 		PayMuzoRequestData request = new PayMuzoRequestData();
 		request.Add("MERCHANTNUMBER", merchantNumber.ToString());
 		request.Add("ORDERNUMBER", orderNumber.ToString());

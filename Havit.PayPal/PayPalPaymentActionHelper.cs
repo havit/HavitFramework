@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.PayPal;
+﻿namespace Havit.PayPal;
 
 /// <summary>
 /// Enum popisující typy PaymentAction (Handling Payment Settlements).

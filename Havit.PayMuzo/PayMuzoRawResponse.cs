@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 
 namespace Havit.PayMuzo;
 
@@ -20,7 +17,7 @@ public abstract class PayMuzoRawResponse : PayMuzoResponse
 
 		ParseResponseData(rawResponseData);
 	}
-	
+
 	/// <summary>
 	/// Normalizuje data na vstupu, do správného pořadí.
 	/// </summary>

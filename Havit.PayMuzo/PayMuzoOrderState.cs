@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.PayMuzo;
+﻿namespace Havit.PayMuzo;
 
 /// <summary>
 /// Stavy objednávky v systému PayMUZO. Výsledek operace queryOrderState.

@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
-using Havit.Data.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 
 // TODO: EF Core 3.0: Dodělat BusinessLayerIndexesConventions
 

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 

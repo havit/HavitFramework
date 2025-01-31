@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
 using Microsoft.EntityFrameworkCore;

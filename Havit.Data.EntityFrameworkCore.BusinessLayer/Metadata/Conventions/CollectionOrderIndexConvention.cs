@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Havit.Data.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore;
+﻿using Havit.Data.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;

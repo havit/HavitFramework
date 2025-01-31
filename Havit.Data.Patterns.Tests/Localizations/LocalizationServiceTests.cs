@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Tests.Localizations.Model;
 using Havit.Model.Localizations;

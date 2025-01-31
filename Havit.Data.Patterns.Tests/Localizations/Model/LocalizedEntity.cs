@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.Patterns.Tests.Localizations.Model;
+﻿namespace Havit.Data.Patterns.Tests.Localizations.Model;
 
 public class LocalizedEntity : ILocalized<LocalizedEntityLocalization>
 {

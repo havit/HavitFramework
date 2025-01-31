@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Extensions;

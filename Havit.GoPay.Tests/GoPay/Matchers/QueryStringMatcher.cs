@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Havit.Tests.GoPay.Matchers;
+﻿namespace Havit.Tests.GoPay.Matchers;
 
 /// <summary>
 /// Matches requests on querystring values

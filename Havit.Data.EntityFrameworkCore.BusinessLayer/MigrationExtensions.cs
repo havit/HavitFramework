@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Migrations;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;

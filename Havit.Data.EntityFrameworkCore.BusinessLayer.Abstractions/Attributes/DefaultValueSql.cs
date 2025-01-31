@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes;
 
 /// <summary>
 /// Výrazy pro opakované použití s DefaultValueSqlAttribute.

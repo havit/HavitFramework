@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Diagnostics.Contracts;
 

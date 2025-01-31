@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer;
 
 internal static class DictionaryExtensions
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 
 /// <summary>
 /// Priorita položky v cache.

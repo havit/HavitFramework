@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Havit.Model.Collections.Generic;
+﻿using Havit.Model.Collections.Generic;
 
 namespace Havit.EFCoreTests.Model;
 

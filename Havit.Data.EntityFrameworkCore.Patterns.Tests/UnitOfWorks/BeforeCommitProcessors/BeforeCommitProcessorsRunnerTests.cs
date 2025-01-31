@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors.Internal;

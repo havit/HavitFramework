@@ -1,8 +1,6 @@
-﻿using System;
-using Havit.Data.EntityFrameworkCore;
+﻿using Havit.Data.EntityFrameworkCore;
 using Havit.EFCoreTests.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Havit.EFCoreTests.Entity;
 

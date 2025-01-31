@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Internal;
-using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

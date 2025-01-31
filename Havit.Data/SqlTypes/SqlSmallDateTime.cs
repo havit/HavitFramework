@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.SqlTypes;
+﻿namespace Havit.Data.SqlTypes;
 
 /// <summary>
 /// Reprezentuje pomocné hodnoty pro databázový typ smalldatetime.

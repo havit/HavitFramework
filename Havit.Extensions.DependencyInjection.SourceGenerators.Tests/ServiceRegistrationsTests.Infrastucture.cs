@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
 using Havit.Extensions.DependencyInjection.SourceGenerators.Tests.Infrastructure;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;

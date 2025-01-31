@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

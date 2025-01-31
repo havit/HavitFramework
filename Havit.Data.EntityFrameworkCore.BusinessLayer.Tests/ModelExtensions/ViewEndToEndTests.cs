@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ModelExtensions.ExtendedProperties.Attributes;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.Views;

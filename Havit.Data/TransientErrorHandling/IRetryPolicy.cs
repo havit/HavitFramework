@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.TransientErrorHandling;
+﻿namespace Havit.Data.TransientErrorHandling;
 
 /// <summary>
 /// Získává informaci o tom, zda má být pokus o provedení dané akce v případě neúspěchu opakován.

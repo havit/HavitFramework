@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments;

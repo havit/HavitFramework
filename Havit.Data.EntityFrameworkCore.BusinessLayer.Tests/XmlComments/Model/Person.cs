@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments.Model;
 
 /// <summary>
 /// Person object

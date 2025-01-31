@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Havit.PersonalDataInterchange;
+﻿namespace Havit.PersonalDataInterchange;
 
 /// <summary>
 /// Base class for representing a document in a personal data interchange format.

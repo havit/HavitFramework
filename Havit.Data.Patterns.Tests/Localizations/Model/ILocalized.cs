@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Havit.Model.Localizations;
+﻿using Havit.Model.Localizations;
 
 namespace Havit.Data.Patterns.Tests.Localizations.Model;
 

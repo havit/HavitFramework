@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 using Havit.Tests.GoPay.Matchers;
 
 namespace Havit.Tests.GoPay;

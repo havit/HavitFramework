@@ -1,7 +1,4 @@
-﻿using Havit.Linq;
-using Havit.Services.Caching;
-using Havit.Services.SignalR.Caching.Hubs;
-using Havit.Services.SignalR.Caching.Internal;
+﻿using Havit.Services.Caching;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 

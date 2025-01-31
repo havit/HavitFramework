@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.TestHelpers;

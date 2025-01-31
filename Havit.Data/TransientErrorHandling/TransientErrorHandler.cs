@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Havit.Data.TransientErrorHandling;
+﻿namespace Havit.Data.TransientErrorHandling;
 
 /// <summary>
 /// Provádí akci s opakováním v případě selhání.

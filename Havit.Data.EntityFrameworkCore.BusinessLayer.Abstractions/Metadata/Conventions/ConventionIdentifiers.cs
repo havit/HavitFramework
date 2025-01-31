@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;
 
 /// <summary>
 /// Identifikátory konvencí pro možnost potlačení konvencí v modelu.

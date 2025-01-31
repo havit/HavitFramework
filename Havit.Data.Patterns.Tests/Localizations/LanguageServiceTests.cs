@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Havit.Data.Patterns.Infrastructure;
+﻿using Havit.Data.Patterns.Infrastructure;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
 
 public class XmlCommentType : XmlCommentMember
 {

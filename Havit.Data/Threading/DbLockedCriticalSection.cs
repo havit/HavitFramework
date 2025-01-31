@@ -1,9 +1,6 @@
 ﻿using Havit.Diagnostics.Contracts;
-using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Threading;
 

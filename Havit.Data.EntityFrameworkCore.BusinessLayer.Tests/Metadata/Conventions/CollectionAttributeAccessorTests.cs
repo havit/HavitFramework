@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;

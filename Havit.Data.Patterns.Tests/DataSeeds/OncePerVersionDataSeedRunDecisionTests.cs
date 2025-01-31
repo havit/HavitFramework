@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Havit.Data.Patterns.DataSeeds;
+﻿using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

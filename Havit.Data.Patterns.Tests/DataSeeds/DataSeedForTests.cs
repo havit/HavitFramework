@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Data.Patterns.DataSeeds;
+﻿using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Tests.Localizations.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

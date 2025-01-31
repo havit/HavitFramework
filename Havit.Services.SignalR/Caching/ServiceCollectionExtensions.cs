@@ -1,6 +1,5 @@
 ﻿using Havit.Services.Caching;
 using Havit.Services.SignalR.Caching.BackgroundServices;
-using Havit.Services.SignalR.Caching.Hubs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;

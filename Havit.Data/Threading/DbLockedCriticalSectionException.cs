@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Data.Threading;
+﻿namespace Havit.Data.Threading;
 
 /// <summary>
 /// The exception that is thrown when an attempt is made to lock on SQL server resource, but the attempt was not successful.

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Havit.Tests.GoPay.Matchers;
+﻿namespace Havit.Tests.GoPay.Matchers;
 
 /// <summary>
 /// A composite matcher that suceeds if any of it's composed matchers succeed

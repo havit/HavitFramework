@@ -1,8 +1,4 @@
-﻿using Havit.Services.Caching;
-using Havit.Services.SignalR.Caching.Hubs;
-using Havit.Services.SignalR.Caching.Internal;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Havit.Services.SignalR.Caching.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.Services.SignalR.Caching.BackgroundServices;

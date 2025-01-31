@@ -1,10 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 
 using Havit.Data.Extensions;
 using Havit.Data.Trace;

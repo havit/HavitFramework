@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
-using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;

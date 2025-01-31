@@ -1,6 +1,5 @@
 ﻿using Havit.Services.Caching;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.Services.SignalR.Caching.Hubs;

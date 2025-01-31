@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
+﻿namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 
 /// <summary>
 /// Určuje režim klonování prvků kolekce při klonování objektu. Kolekce typu 1:N nepodporují klonování typu Shallow.

@@ -1,5 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
-using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
+﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources.Fakes;

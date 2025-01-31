@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
+﻿using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

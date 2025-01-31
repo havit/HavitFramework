@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
+﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Attributes.ExtendedProperties;
 using Havit.Diagnostics.Contracts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata;

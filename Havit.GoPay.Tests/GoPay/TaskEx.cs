@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Havit.Tests.GoPay;
+﻿namespace Havit.Tests.GoPay;
 
 internal static class TaskEx
 {

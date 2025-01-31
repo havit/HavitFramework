@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Ares.FinancniSprava;
+﻿using Havit.Ares.FinancniSprava;
 
 namespace Havit.Ares.Tests.FinancniSprava;
 

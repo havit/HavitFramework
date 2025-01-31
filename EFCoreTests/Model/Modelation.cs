@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.EFCoreTests.Model;
+﻿namespace Havit.EFCoreTests.Model;
 
 public class Modelation
 {

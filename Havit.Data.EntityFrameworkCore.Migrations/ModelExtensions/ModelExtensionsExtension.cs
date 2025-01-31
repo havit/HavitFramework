@@ -1,11 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Reflection;
-using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure;
 using Havit.Data.EntityFrameworkCore.Migrations.Infrastructure.ModelExtensions;
-using Havit.Data.EntityFrameworkCore.Migrations.Metadata.Conventions;
 using Havit.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

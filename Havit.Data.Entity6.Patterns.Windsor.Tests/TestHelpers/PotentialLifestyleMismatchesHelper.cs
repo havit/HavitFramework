@@ -3,8 +3,6 @@ using Castle.Windsor;
 using Castle.Windsor.Diagnostics;
 using Castle.Windsor.Diagnostics.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 using System.Text;
 
 namespace Havit.Data.Entity6.Patterns.Windsor.Tests.TestHelpers;

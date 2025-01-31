@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Conventions;

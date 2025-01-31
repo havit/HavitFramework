@@ -1,5 +1,4 @@
 ﻿using Havit.Diagnostics.Contracts;
-using System;
 using System.Collections;
 using System.Web;
 using System.Web.Caching;
@@ -17,7 +16,7 @@ public static class HttpServerUtilityExt
 	public static void ClearCache()
 	{
 		Cache cache = HttpRuntime.Cache;
-            foreach (DictionaryEntry de in cache)
+		foreach (DictionaryEntry de in cache)
 		{
 			cache.Remove(de.Key.ToString());
 		}
@@ -36,7 +35,7 @@ public static class HttpServerUtilityExt
 	{
 		if (url.Length == 0 || url[0] != '~')
 		{
-			return url;		// there is no ~ in the first character position, just return the url
+			return url;     // there is no ~ in the first character position, just return the url
 		}
 		else
 		{

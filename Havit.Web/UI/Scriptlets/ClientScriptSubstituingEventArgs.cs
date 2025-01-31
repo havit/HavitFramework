@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Web.UI.Scriptlets;
+﻿namespace Havit.Web.UI.Scriptlets;
 
 /// <summary>
 /// Argumenty události ScriptSubstituing.

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Web.UI.WebControls.ControlsValues;
+﻿namespace Havit.Web.UI.WebControls.ControlsValues;
 
 /// <summary>
 /// Delegát události předávající parametry typu ControlValueEventArgs.

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Web.UI.WebControls;
-using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.WebControls;
 
@@ -47,7 +41,7 @@ public class BasicModalDialog : ModalDialogBase
 			ViewState["Height"] = value;
 		}
 	}
-	
+
 	/// <summary>
 	/// Určeno pro centrování dialogu: Posun dialogu doleva vůči středu. 
 	/// </summary>
@@ -104,9 +98,9 @@ public class BasicModalDialog : ModalDialogBase
 			"havitSetDialogSize('{0}', '{1}', '{2}', '{3}', '{4}'); havitShowDialog('{0}');",
 			GetDialogContainer().ClientID,
 			Width.ToString(),
-                Height.ToString(),
-                MarginLeft.ToString(),
-                MarginTop.ToString());
+				Height.ToString(),
+				MarginLeft.ToString(),
+				MarginTop.ToString());
 		return script;
 	}
 
@@ -126,7 +120,7 @@ public class BasicModalDialog : ModalDialogBase
 		// šahnutím na hodnotu property se ID vygeneruje a VYRENDERUJE!
 		// My jej musíme vyrenderovat vždy, protože jinak nefungují správně klientské skripty.
 		string tmp = _dialogPanel.ClientID;
-		
+
 		CheckDialogSize();
 
 		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, "jquery");

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Havit.Diagnostics.Contracts;
 using Havit.Web.UI;
 
 namespace Havit.Web.Bootstrap.UI.WebControls;
@@ -34,7 +26,7 @@ internal static class ValidatorRenderExtender
 	/// - Display = "None"
 	/// </summary>
 	internal static void Setup(System.Web.UI.WebControls.BaseValidator validator)
-	{			
+	{
 		validator.Display = ValidatorDisplay.None;
 		validator.SetFocusOnError = false;
 	}

@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Text;
-using System.IO;
-
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls;
 
-    /// <summary>Used for writing out JSON data code.</summary>
-    /// <remarks>This class inherits from System.Web.UI.HtmlTextWriter class which contains many methods for writing out Html.</remarks>
-    internal class XJsonWriter : StringWriter
-    {
-    public void WriteNameValue(string name, object value)
+/// <summary>Used for writing out JSON data code.</summary>
+/// <remarks>This class inherits from System.Web.UI.HtmlTextWriter class which contains many methods for writing out Html.</remarks>
+internal class XJsonWriter : StringWriter
+{
+	public void WriteNameValue(string name, object value)
 	{
 		WriteNameValue(name, value, true);
 	}
 
-    public void WriteNameValue(string name, object value, bool formatValue)
+	public void WriteNameValue(string name, object value, bool formatValue)
 	{
 		string valueText = GetValueText(value, formatValue);
 
@@ -37,12 +31,12 @@ namespace Havit.Web.UI.WebControls;
 		this.Write("\"" + name + "\": " + valueText);
 	}
 
-    public void WriteList(string name, IList list)
+	public void WriteList(string name, IList list)
 	{
 		WriteList(name, list, true);
 	}
 
-    public void WriteList(string name, IList list, bool formatValues)
+	public void WriteList(string name, IList list, bool formatValues)
 	{
 		string valueText;
 		StringBuilder sb = new StringBuilder();
@@ -63,7 +57,7 @@ namespace Havit.Web.UI.WebControls;
 		WriteNameValue(name, listText, false);
 	}
 
-    private string GetValueText(object value, bool formatValue)
+	private string GetValueText(object value, bool formatValue)
 	{
 		string valueText;
 		if (value == null)
@@ -95,10 +89,10 @@ namespace Havit.Web.UI.WebControls;
 		return valueText;
 	}
 
-    public override string ToString()
+	public override string ToString()
 	{
 		string result = base.ToString();
 		result = "{" + this.NewLine + result + this.NewLine + "}";
 		return result;
 	}
-    }
+}

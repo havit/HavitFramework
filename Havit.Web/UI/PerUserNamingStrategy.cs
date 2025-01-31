@@ -1,9 +1,4 @@
 ﻿using Havit.Services.FileStorage;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -107,7 +102,7 @@ public partial class FilePageStatePersister
 		{
 			return Path.Combine(GetFolderForUserName(HttpContext.Current.User.Identity.Name), Guid.NewGuid().ToString());
 		}
-		
+
 		/// <summary>
 		/// Viz IFileNamingStrategy.GetFilename.
 		/// </summary>

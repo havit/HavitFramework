@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 // Soubor je použit (přilinkován) k Havit.Business.BusinessLayerGeneratoru, který využívá metodu HtmlEncode.
 // Důstojnou alternativu k této metodě jsem v .NET světě nenašel (ani System.Net, ani AntiXSS nuget balíček, či jiné).

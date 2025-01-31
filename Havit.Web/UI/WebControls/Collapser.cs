@@ -1,8 +1,6 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
 
 namespace Havit.Web.UI.WebControls;
 
@@ -210,7 +208,7 @@ public class Collapser : WebControl
 		{
 			RegisterClientScript();
 		}
-		
+
 		ScriptManager.RegisterHiddenField(this, this.ClientID + "State", "");
 
 		base.OnPreRender(e);
@@ -302,9 +300,9 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 	collapserState.value = 'expanded';
 
 }";
-		 
+
 		ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), clientScriptKey, toggleCollapser, true);
-		
+
 		string toggleScript = String.Format("havitCollapserToggle('{0}', '{0}State', '{1}', '{2}', '{3}');",
 			this.ClientID,
 			ResolveID(this.ContentElement),

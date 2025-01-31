@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web;
 
 namespace Havit.Web.UI.Scriptlets;
 
-    /// <summary>
-    /// Control extender pro jednoduché Controly (WebControls).
-    /// Extender tvoří skript jen tak, že najde příslušný element
-    /// ve stránce a použije jej jako hodnotu parametru.    
-    /// </summary>
-    public class SimpleControlExtender : IControlExtender
-    {
-    private readonly Type controlType;
+/// <summary>
+/// Control extender pro jednoduché Controly (WebControls).
+/// Extender tvoří skript jen tak, že najde příslušný element
+/// ve stránce a použije jej jako hodnotu parametru.    
+/// </summary>
+public class SimpleControlExtender : IControlExtender
+{
+	private readonly Type controlType;
 	private readonly int priority;
 	private readonly string[] changeEvents;
 
@@ -41,10 +38,10 @@ namespace Havit.Web.UI.Scriptlets;
 	/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetInitializeClientSideValueScript")]/*' />
 	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 	public void GetInitializeClientSideValueScript(string parameterPrefix, IScriptletParameter parameter, Control control, ScriptBuilder scriptBuilder)
-        {
-            // vytvoříme objekt
+	{
+		// vytvoříme objekt
 		scriptBuilder.AppendFormat("{0}.{1} = document.getElementById(\"{2}\");\n", parameterPrefix, parameter.Name, control.ClientID);
-        }
+	}
 
 	/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetAttachEventsScript")]/*' />
 	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
@@ -80,6 +77,6 @@ namespace Havit.Web.UI.Scriptlets;
 					eventName,
 					scriptletFunctionCallDelegate));
 			}
-		}	
+		}
 	}
-    }
+}

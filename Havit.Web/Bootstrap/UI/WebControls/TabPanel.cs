@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Diagnostics.Contracts;
-using Havit.Web.UI;
 
 namespace Havit.Web.Bootstrap.UI.WebControls;
 
@@ -42,7 +34,7 @@ public class TabPanel : WebControl
 			this._contentTemplate = value;
 			_contentTemplateContainer = new Control();
 			_contentTemplate.InstantiateIn(this._contentTemplateContainer);
-			this.Controls.Add(_contentTemplateContainer);				
+			this.Controls.Add(_contentTemplateContainer);
 		}
 
 	}
@@ -180,7 +172,7 @@ public class TabPanel : WebControl
 	internal void RenderHeader(HtmlTextWriter writer)
 	{
 		if (Visible)
-		{				
+		{
 			if (Active)
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Class, "active");
@@ -204,7 +196,7 @@ public class TabPanel : WebControl
 			}
 
 			writer.RenderBeginTag(HtmlTextWriterTag.A);
-			
+
 			if (_headerTemplateContainer != null)
 			{
 				_headerTemplateContainer.RenderControl(writer);

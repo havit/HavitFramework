@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 
 namespace Havit.Web.UI.WebControls;
 
@@ -16,7 +13,7 @@ internal class SessionMessenger : Messenger
 	{
 		get
 		{
-			List<MessengerMessage> messages = (List<MessengerMessage>)GetCurrentContext().Session[SessionKey];			
+			List<MessengerMessage> messages = (List<MessengerMessage>)GetCurrentContext().Session[SessionKey];
 			if (messages == null)
 			{
 				messages = new List<MessengerMessage>();

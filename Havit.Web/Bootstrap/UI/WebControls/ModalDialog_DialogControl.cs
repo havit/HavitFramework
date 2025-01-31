@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.ComponentModel;
-using System.Drawing;
-using System.Web;
-using Havit.Web.UI;
-using Havit.Web.UI.WebControls;
+﻿using System.Web.UI;
 
 namespace Havit.Web.Bootstrap.UI.WebControls;
 

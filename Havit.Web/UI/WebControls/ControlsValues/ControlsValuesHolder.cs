@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI;
-using System.Xml.Serialization;
-using System.Linq;
+﻿using System.Xml.Serialization;
 using System.Xml;
-using System.IO;
 using Havit.Diagnostics.Contracts;
 using System.Reflection;
 
@@ -26,7 +20,7 @@ public class ControlsValuesHolder
 	/// </summary>
 	public ControlsValuesHolder()
 	{
-		_values = new Dictionary<string, object>();			
+		_values = new Dictionary<string, object>();
 	}
 
 	/// <summary>
@@ -52,7 +46,7 @@ public class ControlsValuesHolder
 	/// </summary>
 	public void SetValue(string key, object value)
 	{
-		_values[key] = value;			
+		_values[key] = value;
 	}
 
 	/// <summary>
@@ -65,7 +59,7 @@ public class ControlsValuesHolder
 		XmlDocument result;
 
 		//Type[] extenderTypes = PersisterControlExtenderRepository.Default.GetExtenderValuesTypes();
-		
+
 		//XmlSerializer valueSerializer = new XmlSerializer(typeof(object), extenderTypes);
 		//using (MemoryStream memoryStream = new MemoryStream())
 		//{
@@ -101,25 +95,25 @@ public class ControlsValuesHolder
 
 		using (MemoryStream memoryStream = new MemoryStream())
 		{
-		    XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-		    xmlWriterSettings.OmitXmlDeclaration = true; // s xml deklarací se nedaří uložit do databáze
+			XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
+			xmlWriterSettings.OmitXmlDeclaration = true; // s xml deklarací se nedaří uložit do databáze
 
-		    XmlWriter writer = XmlWriter.Create(memoryStream, xmlWriterSettings);
+			XmlWriter writer = XmlWriter.Create(memoryStream, xmlWriterSettings);
 
 			XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 			ns.Add("", ""); // zajišťuje vynechání výchozích namespaces (při použití v metodě Serialize)
 
-		    writer.WriteStartElement("ControlsValuesHolder");
-		    writer.WriteAttributeString("version", "2");
+			writer.WriteStartElement("ControlsValuesHolder");
+			writer.WriteAttributeString("version", "2");
 
-		    foreach (string key in _values.Keys)
-		    {
-		        writer.WriteStartElement("Item");
+			foreach (string key in _values.Keys)
+			{
+				writer.WriteStartElement("Item");
 
-		        writer.WriteElementString("Key", key);
+				writer.WriteElementString("Key", key);
 
-		        writer.WriteStartElement("Value");
-		        object value = GetValue(key);
+				writer.WriteStartElement("Value");
+				object value = GetValue(key);
 				if (value == null)
 				{
 					writer.WriteAttributeString("isNull", "true");
@@ -138,17 +132,17 @@ public class ControlsValuesHolder
 					valueSerializer.Serialize(writer, value);
 				}
 
-		    	writer.WriteEndElement(); // Value
+				writer.WriteEndElement(); // Value
 
-		        writer.WriteEndElement(); // Item
-		    }
-		    writer.WriteEndElement(); // ControlsValuesHolder
-		    writer.Close();
+				writer.WriteEndElement(); // Item
+			}
+			writer.WriteEndElement(); // ControlsValuesHolder
+			writer.Close();
 
-		    memoryStream.Seek(0, SeekOrigin.Begin);
+			memoryStream.Seek(0, SeekOrigin.Begin);
 
-		    result = new XmlDocument();
-		    result.Load(memoryStream);
+			result = new XmlDocument();
+			result.Load(memoryStream);
 		}
 
 		return result;
@@ -210,7 +204,7 @@ public class ControlsValuesHolder
 			reader.MoveToContent();
 		}
 		reader.ReadEndElement();
-		
+
 		return result;
 	}
 
@@ -233,7 +227,7 @@ public class ControlsValuesHolder
 			reader.ReadEndElement();
 
 			Contract.Assert(reader.IsStartElement("Value"));
-			
+
 			bool valueIsNull = String.Equals("true", reader.GetAttribute("isNull"));
 			string valueAssembly = reader.GetAttribute("assembly");
 			string valueType = reader.GetAttribute("type");
@@ -241,7 +235,7 @@ public class ControlsValuesHolder
 
 			// null hodnoty mají valueIsNull = true
 			// systémové typy (mscorlib) nemají uvedenu hodnotu assembly
-			
+
 			object value;
 			if (valueIsNull)
 			{
@@ -276,7 +270,7 @@ public class ControlsValuesHolder
 			{
 				reader.ReadEndElement(); // Value
 			}
-			
+
 			result.SetValue(key, value);
 
 			reader.ReadEndElement(); // Item

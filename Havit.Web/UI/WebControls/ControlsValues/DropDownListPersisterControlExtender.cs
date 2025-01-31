@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using System.Web.UI;
-using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls.ControlsValues;
 
@@ -24,7 +20,7 @@ public class DropDownListPersisterControlExtender : IPersisterControlExtender
 	/// Získá typ hodnoty zadaného controlu.
 	/// </summary>		
 	public Type GetValueType()
-	{			
+	{
 		return typeof(String);
 	}
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Web.UI.WebControls.ControlsValues;
+﻿namespace Havit.Web.UI.WebControls.ControlsValues;
 
 /// <summary>
 /// Reprezentuje stav AutoCompleteTextBox pro uložení persisterem.

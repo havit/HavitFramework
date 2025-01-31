@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls;
 
-    /// <summary>
-    /// Argumenty události oznamující nabidnování hodnoty do seznamového prvku (DropDownList, CheckBoxList, EnumDropDownList, apod.)
-    /// </summary>
+/// <summary>
+/// Argumenty události oznamující nabidnování hodnoty do seznamového prvku (DropDownList, CheckBoxList, EnumDropDownList, apod.)
+/// </summary>
 public class ListControlItemDataBoundEventArgs : EventArgs
 {
 	/// <summary>

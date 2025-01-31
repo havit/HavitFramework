@@ -1,7 +1,4 @@
 ﻿using Havit.Web.Bootstrap.UI.WebControls.ControlsValues;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls.ControlsValues;
@@ -58,7 +55,7 @@ public class PersisterControlExtenderRepository : List<IPersisterControlExtender
 		int bestExtenderPriority = Int32.MinValue;
 		IPersisterControlExtender bestExtender = null;
 
-		this.ForEach(delegate(IPersisterControlExtender currentExtender)
+		this.ForEach(delegate (IPersisterControlExtender currentExtender)
 		{
 			int? currentPriority = currentExtender.GetPriority(control);
 			if (currentPriority != null && currentPriority >= bestExtenderPriority)

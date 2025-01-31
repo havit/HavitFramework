@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Web;
-using System.IO;
-using System.Collections.Specialized;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web;
@@ -47,18 +43,18 @@ public class PageNavigator
 	/// </summary>
 	protected List<string> HistoryUrls
 	{
-            get
-            {
-                return _historyUrls;
-            }
-            private set
-            {
-                _historyUrls = value;
-            }
+		get
+		{
+			return _historyUrls;
+		}
+		private set
+		{
+			_historyUrls = value;
+		}
 	}
-        private List<string> _historyUrls;
+	private List<string> _historyUrls;
 
-        /// <summary>
+	/// <summary>
 	/// Konstruktor.
 	/// Inicializuje kolekci HistoryUrls.
 	/// </summary>
@@ -68,7 +64,7 @@ public class PageNavigator
 		InitializeHistoryUrls();
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Inicializuje kolekci HistoryUrls, voláno z konstruktoru.
 	/// </summary>
 	private void InitializeHistoryUrls()
@@ -114,7 +110,7 @@ public class PageNavigator
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Provede přesměrování s předáním adres navigace. Do historie adres navigace není přidána žádná adresa.
 	/// </summary>
 	/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -127,7 +123,7 @@ public class PageNavigator
 		_currentContext.Response.Redirect(redirectUrl);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Provede přesměrování s předáním adres navigace. Do historie adres navigace ja přidána adresa v parametru fromUrls.
 	/// </summary>
 	/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
@@ -144,7 +140,7 @@ public class PageNavigator
 		_currentContext.Response.Redirect(redirectUrl);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Provede přesměrování s předáním adres navigace. Jako adresa pro návrat na aktuální stránku se použije HttpRequest.RawUrl.
 	/// </summary>
 	/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -157,7 +153,7 @@ public class PageNavigator
 		_currentContext.Response.Redirect(redirectUrl);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Provede přesměrování na poslední adresu v historii adres.
 	/// </summary>
 	/// <exception cref="System.InvalidOperationException">
@@ -174,7 +170,7 @@ public class PageNavigator
 		_currentContext.Response.Redirect(targetUrl);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Udává, zda je možné provést navigaci zpět (tj. zda je k dispozici adresa pro návrat).
 	/// </summary>
 	public bool CanNavigateBack()
@@ -182,7 +178,7 @@ public class PageNavigator
 		return HistoryUrls.Count > 0;
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrátí adresu pro přesměrování s předáním adres navigace. Do historie adres navigace není přidána žádná adresa.
 	/// </summary>
 	/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -197,7 +193,7 @@ public class PageNavigator
 		return GetNavigationToUrlInternal(null, toUrl, true);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrátí url pro přesměrování s předáním adres navigace.
 	/// </summary>
 	/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
@@ -219,7 +215,7 @@ public class PageNavigator
 		return GetNavigationToUrlInternal(fromUrl, toUrl, true);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrátí adresu pro přesměrování s předáním adres navigace. Jako adresa pro návrat na aktuální stránku se použije HttpRequest.RawUrl.
 	/// </summary>
 	/// <param name="toUrl">Adresa, na kterou bude přesměrováno.</param>
@@ -233,10 +229,10 @@ public class PageNavigator
 		string fromUrl = GetUrlWithoutNavigationUrlParameter(_currentContext.Request.RawUrl);
 		toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
 
-            return GetNavigationToUrlInternal(fromUrl, toUrl, true);
+		return GetNavigationToUrlInternal(fromUrl, toUrl, true);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrátí adresu pro přesměrování zpět. Adresa pro návrat zpět se bere z historie, ostatních adres v historie se zachovají.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
@@ -256,7 +252,7 @@ public class PageNavigator
 		return targetUrl;
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrátí adresu pro přesměrování s předáním adres navigace.
 	/// </summary>
 	/// <param name="fromUrl">Adresa, která bude přidána do adres navigace (slouží pro návrat na aktuální stránku).</param>
@@ -312,7 +308,7 @@ public class PageNavigator
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrací hodnotu parametru, který nese seznam adres historie.
 	/// </summary>
 	/// <param name="fromUrl">Url pro návrat na aktuální stránku.</param>
@@ -320,32 +316,32 @@ public class PageNavigator
 	/// <returns>Encodovaná hodnota, je možné ji přímo použít do url.</returns>
 	private string GetNavigationUrlsValue(string fromUrl, int maxSerializeIndex)
 	{
-	    byte[] buffer;
-	    using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
-	    {
-	        using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Compress, true))
-	        {
-	            using (System.IO.StreamWriter writer = new System.IO.StreamWriter(compressStream, Encoding.UTF8))
-	            {
-	                if (!String.IsNullOrEmpty(fromUrl))
-	                {
-	                    writer.WriteLine(fromUrl);
-	                }
-	                for (int i = 0; i < maxSerializeIndex; i++)
-	                {
-	                    writer.WriteLine(HistoryUrls[i]);
-	                }
-	            }                    
-	        }
+		byte[] buffer;
+		using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
+		{
+			using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Compress, true))
+			{
+				using (System.IO.StreamWriter writer = new System.IO.StreamWriter(compressStream, Encoding.UTF8))
+				{
+					if (!String.IsNullOrEmpty(fromUrl))
+					{
+						writer.WriteLine(fromUrl);
+					}
+					for (int i = 0; i < maxSerializeIndex; i++)
+					{
+						writer.WriteLine(HistoryUrls[i]);
+					}
+				}
+			}
 
-	        buffer = new byte[(int)memoryStream.Length];
-	        memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
-	        memoryStream.Read(buffer, 0, buffer.Length);
-	    }
-	    return HttpServerUtility.UrlTokenEncode(buffer);
+			buffer = new byte[(int)memoryStream.Length];
+			memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+			memoryStream.Read(buffer, 0, buffer.Length);
+		}
+		return HttpServerUtility.UrlTokenEncode(buffer);
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vrátí url adresu bez parametru s historií adres navigace.
 	/// </summary>
 	private string GetUrlWithoutNavigationUrlParameter(string url)

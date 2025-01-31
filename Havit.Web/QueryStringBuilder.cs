@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Collections.Specialized;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
@@ -162,7 +160,7 @@ public class QueryStringBuilder : NameValueCollection
 	[SuppressMessage("SonarLint", "S127", Justification = "Z důvodu bezpečnosti (jistoty) nechci do kódu zasáhnout. (Do not update the loop counter \"i\" within the loop body.)")]
 	public void FillFromString(string queryString, bool urlEncoded)
 	{
-		int length = (queryString != null) ? queryString.Length : 0;  
+		int length = (queryString != null) ? queryString.Length : 0;
 		for (int i = 0; i < length; i++)
 		{
 			int startIndex = i;

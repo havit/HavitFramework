@@ -1,7 +1,4 @@
-﻿using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
 using Havit.Reflection;
 
@@ -18,7 +15,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 	/// </summary>
 	/// <remarks>Nedělá se ResolveUrl.</remarks>
 	[Description("Vrátí nebo nastaví cílové URL formuláře. Atribut Action formuláře.")]
-        [Category("Behavior")]
+	[Category("Behavior")]
 	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public new virtual string Action
 	{
@@ -50,7 +47,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 	/// <summary>
 	/// Overriden. Zajišťuje vlastní renderování atributu Action
 	/// </summary>
-	protected override void RenderAttributes(System.Web.UI.HtmlTextWriter writer) 
+	protected override void RenderAttributes(System.Web.UI.HtmlTextWriter writer)
 	{
 		writer.WriteAttribute("name", this.Name);
 		this.Attributes.Remove("name");
@@ -64,7 +61,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 		string submitEvent = this.Page_ClientOnSubmitEvent;
 		if ((submitEvent != null) && (submitEvent.Length > 0))
 		{
-			if (this.Attributes["onsubmit"] != null) 
+			if (this.Attributes["onsubmit"] != null)
 			{
 				submitEvent = submitEvent + this.Attributes["onsubmit"];
 				this.Attributes.Remove("onsubmit");
@@ -77,7 +74,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 		{
 			writer.WriteAttribute("id", this.ClientID);
 		}
-		
+
 		// nelze volat base.RenderAttributes(), takže
 		// voláno z HtmlContainerControl
 		this.ViewState.Remove("innerhtml");
@@ -90,7 +87,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 	/// Pomocí reflexe vrátí původní private base.GetActionAttribute()
 	/// </summary>
 	/// <returns>Microsoft implementace action atributu formuláře</returns>
-	private string GetBaseActionAttribute() 
+	private string GetBaseActionAttribute()
 	{
 		Type formType = typeof(System.Web.UI.HtmlControls.HtmlForm);
 		MethodInfo actionMethod = formType.GetMethod("GetActionAttribute", BindingFlags.Instance | BindingFlags.NonPublic);

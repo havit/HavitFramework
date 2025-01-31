@@ -1,8 +1,4 @@
 ﻿#pragma warning disable 1591
-using System;
-using System.Text;
-using System.Web;
-
 namespace Havit.Web.UI.WebControls;
 
 /// <summary>Data structure for menu items in suggestion div</summary>

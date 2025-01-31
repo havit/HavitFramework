@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI;
@@ -227,7 +222,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 	{
 		get
 		{
-			return (int?)ViewState["EditorExtenderEditIndex"];				
+			return (int?)ViewState["EditorExtenderEditIndex"];
 		}
 		set
 		{
@@ -718,7 +713,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 			throw new InvalidOperationException("Není nastavena property DataKeyNames, nelze pracovat s klíči.");
 		}
 
-		GridViewRow row = GetRow(control);			
+		GridViewRow row = GetRow(control);
 		return DataKeys[row.RowIndex];
 	}
 
@@ -770,7 +765,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 	/// <param name="control">Control, na základě něhož se hledá GridViewRow.</param>
 	/// <returns>Nalezený GridViewRow.</returns>
 	public GridViewRow GetRow(Control control)
-	{			
+	{
 		if ((control == null) || (control.Parent == null))
 		{
 			throw new ArgumentException("Nepodařilo dohledat příslušný GridViewRow.", "control");
@@ -857,7 +852,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		autoFilterControls = new List<IAutoFilterControl>();
 		// pokud zobrazujeme filtr, pak chceme, aby se zobrazil grid i bez dat
 		// stejně tak potřebujeme grid, pokud vkládáme nový záznam pomocí editor extenderu
-		overrideShowHeaderWhenEmptyToTrue = ShowFilter || (AllowInserting && (EditorExtender != null)); 
+		overrideShowHeaderWhenEmptyToTrue = ShowFilter || (AllowInserting && (EditorExtender != null));
 
 		string originalEmptyDataText = this.EmptyDataText;
 		EmptyDataText = HttpUtilityExt.GetResourceString(EmptyDataText);
@@ -865,13 +860,13 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		EmptyDataText = originalEmptyDataText;
 
 		overrideShowHeaderWhenEmptyToTrue = false;
-		
+
 		// zajistíme přidání filtrovacího řádku
-		if (ShowFilter)	
-		{				
+		if (ShowFilter)
+		{
 			this.CreateFilterChildControls(dataBinding);
 		}
-		
+
 		return result;
 	}
 
@@ -888,7 +883,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 	/// Přidá filtrovací řádek do gridu.
 	/// </summary>
 	private void CreateFilterChildControls(bool dataBinding)
-	{			
+	{
 		if (this._fields != null)
 		{
 			Table table = ChildTable;
@@ -904,10 +899,10 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 				table.Rows.AddAt((this.HeaderRow != null) ? table.Rows.GetRowIndex(this.HeaderRow) + 1 : 0, _filterRow);
 				return;
 			}
-			
+
 			_filterRow = new GridViewRow(-1, -1, DataControlRowType.Header, DataControlRowState.Normal);
 			_filterRow.ID = "FilterRow";
-			
+
 			GridViewRowEventArgs e = new GridViewRowEventArgs(_filterRow);
 
 			this.InitializeFilterRow(_filterRow, this._fields);
@@ -917,7 +912,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 			OnFilterRowCreated(e);
 
 			table.Rows.AddAt((this.HeaderRow != null) ? table.Rows.GetRowIndex(this.HeaderRow) + 1 : 0, _filterRow);
-			
+
 			if (dataBinding)
 			{
 				_filterRow.DataItem = this._performDataBindingData;
@@ -1194,7 +1189,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		}
 
 		if (row.RowType == DataControlRowType.Header)
-		{ 
+		{
 			row.TableSection = TableRowSection.TableHeader;
 		}
 
@@ -1226,14 +1221,14 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 				GridViewRowCustomizingCommandButtonEventArgs args = new GridViewRowCustomizingCommandButtonEventArgs(RowClickCommandName, e.Row.RowIndex, e.Row.DataItem);
 				args.Enabled = !((RowClickCommandName == CommandNames.Edit) && ((e.Row.RowIndex == EditIndex) || (e.Row.RowIndex == InsertIndex))) && !((RowClickCommandName == CommandNames.Select) && (e.Row.RowIndex == SelectedIndex));
 				args.Visible = true;
-                    this.OnRowCustomizingCommandButton(args);
+				this.OnRowCustomizingCommandButton(args);
 				if (args.Enabled && args.Visible)
 				{
 					e.Row.Attributes["data-rowclick"] = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "RowClick$" + e.Row.RowIndex.ToString()));
 					if (!String.IsNullOrEmpty(RowClickCssClass))
 					{
 						e.Row.CssClass = (e.Row.CssClass + " " + RowClickCssClass).Trim();
-                        }
+					}
 				}
 			}
 			base.OnRowDataBound(e);
@@ -1490,7 +1485,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 	protected override void OnRowEditing(GridViewEditEventArgs e)
 	{
 		base.OnRowEditing(e);
-		
+
 		if (!e.Cancel)
 		{
 			if (EditorExtender != null)
@@ -1990,7 +1985,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		{
 			AddBootstrapPagerButton(container, pagerSettings.FirstPageText, "first", "First", !isFirstPage);
 		}
-		
+
 		AddBootstrapPagerButton(container, pagerSettings.PreviousPageText, "previous", "Prev", !isFirstPage);
 		AddBootstrapPagerButton(container, pagerSettings.NextPageText, "next", "Next", !isLastPage);
 
@@ -2093,11 +2088,11 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		Contract.Requires(row != null);
 		Contract.Requires(dataObject != null);
 
-		System.Collections.Specialized.IOrderedDictionary fieldValues = new System.Collections.Specialized.OrderedDictionary();			
+		System.Collections.Specialized.IOrderedDictionary fieldValues = new System.Collections.Specialized.OrderedDictionary();
 		this.ExtractRowValues(fieldValues, row, false, false);
 		DataBinderExt.SetValues(dataObject, fieldValues);
 	}
-	
+
 	/// <summary>
 	/// Renders the Web server control content to the client's browser using the specified System.Web.UI.HtmlTextWriter object.
 	/// </summary>
@@ -2339,26 +2334,26 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 				}
 			};
 
-            Action seachDataItemOnPage = () =>
-            {
-                RowDataBound += detectDataObjectInRow;
-                // eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
-                if ((DataSource != null) && (DataSource is IEnumerable))
-                {
-                    PerformDataBinding((IEnumerable)DataSource);
-                }
-                else
-                {
-                    DataBind();
-                }
-                RowDataBound -= detectDataObjectInRow;
-            };
-            
-            if (AllowCustomPaging && (VirtualItemCount > 0))
-            {
-                seachDataItemOnPage();
-                return found;
-            }
+		Action seachDataItemOnPage = () =>
+		{
+			RowDataBound += detectDataObjectInRow;
+			// eliminujeme opakované volání události DataBind a tím třeba opakované vytahování dat z databáze
+			if ((DataSource != null) && (DataSource is IEnumerable))
+			{
+				PerformDataBinding((IEnumerable)DataSource);
+			}
+			else
+			{
+				DataBind();
+			}
+			RowDataBound -= detectDataObjectInRow;
+		};
+
+		if (AllowCustomPaging && (VirtualItemCount > 0))
+		{
+			seachDataItemOnPage();
+			return found;
+		}
 
 		while (!found)
 		{
@@ -2382,9 +2377,9 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 
 			PageIndex = i;
 
-                seachDataItemOnPage();
+			seachDataItemOnPage();
 
-                i = i + 1;
+			i = i + 1;
 		}
 		return true;
 	}
@@ -2466,7 +2461,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 
 		if (EditorExtenderEditIndex > 0)
 		{
-			EditorExtenderEditIndex = EditorExtenderEditIndex - 1;				
+			EditorExtenderEditIndex = EditorExtenderEditIndex - 1;
 		}
 		else if ((EditorExtenderEditIndex == 0) && (PageIndex > 0))
 		{
@@ -2487,7 +2482,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 			e.Cancel = true;
 			return;
 		}
-		
+
 		if (EditorExtenderEditIndex == (Rows.Count - 1))
 		{
 			PageIndex = PageIndex + 1;

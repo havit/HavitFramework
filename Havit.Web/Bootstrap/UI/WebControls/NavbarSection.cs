@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Caching;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Havit.Diagnostics.Contracts;
+﻿using System.Web.UI;
 
 namespace Havit.Web.Bootstrap.UI.WebControls;
 

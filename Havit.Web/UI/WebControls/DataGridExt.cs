@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -254,8 +252,8 @@ public class DataGridExt : System.Web.UI.WebControls.DataGrid
 			this.SortExpression = String.Empty;
 		}
 		else if ((previousSorts.Length != wantedSorts.Length)
-			|| (!this.EnableViewState)	// není-li použitelný ViewState, funguje jen jednosměrný sortění
-			|| (!Page.EnableViewState)	// není zřejmé, co se stane, když DG bude jako child-control s vypnutým ViewState
+			|| (!this.EnableViewState)  // není-li použitelný ViewState, funguje jen jednosměrný sortění
+			|| (!Page.EnableViewState)  // není zřejmé, co se stane, když DG bude jako child-control s vypnutým ViewState
 			|| (this.SortExpression == null)
 			|| (this.SortExpression.Length == 0)) // různý počet znamená různé sortění
 		{

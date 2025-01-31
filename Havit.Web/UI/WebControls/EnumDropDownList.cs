@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls;
@@ -91,7 +88,7 @@ public class EnumDropDownList : DropDownListExt
 			if (value == null)
 			{
 				EnsureAutoDataBind(); // jinak následný databinding zlikviduje vybranou hodnotu
-				// pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
+									  // pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
 				EnsureEmptyItem();
 				SelectedIndex = 0;
 			}

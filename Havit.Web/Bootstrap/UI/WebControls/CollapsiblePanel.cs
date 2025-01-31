@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.SessionState;
+﻿using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.UI;
 using Havit.Diagnostics.Contracts;
-using Havit.Web.Bootstrap.UI.WebControls.ControlsValues;
-using System.Runtime.Serialization;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Web.Script.Serialization;
 
 namespace Havit.Web.Bootstrap.UI.WebControls;
 
@@ -219,13 +207,13 @@ public class CollapsiblePanel : Control, INamingContainer
 		string autoPostBackScript = AutoPostBack ? this.Page.ClientScript.GetPostBackEventReference(this, String.Empty) : String.Empty;
 		ScriptManager.RegisterStartupScript(
 			this, // zde nechceme page, jinak se nam budou v JS navazovat udalosti vicekrat
-			GetType(), 
+			GetType(),
 			$"Havit_CollapsiblePanel_Init_{this.ClientID}",
 			$@"Havit_CollapsiblePanel_Init(
 					""{this.ClientID}"",
 					""{collapsedHiddenField.ClientID}"",
 					""{autoPostBackScript}""
-				); ", true);		
+				); ", true);
 	}
 
 	/// <summary>

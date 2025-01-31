@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Reflection;
 
 namespace Havit.Web.UI;
@@ -25,7 +21,7 @@ public class UpdatePanelExt : UpdatePanel
 	protected override void OnInit(EventArgs e)
 	{
 		base.OnInit(e);
-		this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);			
+		this.Page.PreRenderComplete += new EventHandler(Page_PreRenderComplete);
 	}
 
 	private void Page_PreRenderComplete(object sender, EventArgs e)

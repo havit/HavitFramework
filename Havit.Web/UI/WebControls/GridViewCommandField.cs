@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Reflection;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -522,7 +518,7 @@ public class GridViewCommandField : CommandFieldExt
 					{
 						insertSpace = false;
 						if (showUpdateButton)
-						{ 
+						{
 							Control control = (Control)this.AddButtonToCell(cell, "Update", HttpUtilityExt.GetResourceString(this.UpdateText), HttpUtilityExt.GetResourceString(this.UpdateTooltip), UpdateCssClass, UpdateDisabledCssClass, causesValidation, validationGroup, rowIndex, this.UpdateImageUrl);
 							control.PreRender += (sender, ea) => RegisterDefaultButton(control); // v tento okamžik není dostupný NamingContainer (control ještě není v řádku)
 							insertSpace = true;
@@ -585,7 +581,7 @@ public class GridViewCommandField : CommandFieldExt
 		}
 		else
 		{
-			base.InitializeCell(cell, cellType, rowState, rowIndex);					
+			base.InitializeCell(cell, cellType, rowState, rowIndex);
 		}
 	}
 
@@ -665,7 +661,7 @@ public class GridViewCommandField : CommandFieldExt
 				control = imageButton;
 				break;
 		}
-		
+
 		control.Text = buttonText;
 		control.CommandName = commandName;
 		control.CommandArgument = rowIndex.ToString(CultureInfo.InvariantCulture);
@@ -723,7 +719,7 @@ public class GridViewCommandField : CommandFieldExt
 		// nastavíme výsledek z argumentů do buttonu
 
 		control.Visible = args.Visible;
-		
+
 		// pokud je ZA controlem mezera (LiteralControl), chceme ji taky zobrazit/schovat
 		int index = control.Parent.Controls.IndexOf(control);
 		if ((index < control.Parent.Controls.Count - 1) && (control.Parent.Controls[index + 1] is LiteralControl))

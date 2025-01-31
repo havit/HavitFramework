@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
-using System.Drawing.Design;
-using System.Drawing;
-using System.Web;
 
 namespace Havit.Web.UI.WebControls;
 
@@ -50,7 +43,7 @@ public class AjaxModalDialog : BasicModalDialog
 		_updatePanel.ID = this.ID + "__UP";
 		_contentPlaceHolder.ID = this.ID + "__CPH";
 
-		_updatePanel.ContentTemplateContainer.Controls.Add(_contentPlaceHolder);			
+		_updatePanel.ContentTemplateContainer.Controls.Add(_contentPlaceHolder);
 		_basicContainer = base.GetContentContainer();
 		_basicContainer.Controls.Add(_updatePanel);
 		base.CreateChildControls();

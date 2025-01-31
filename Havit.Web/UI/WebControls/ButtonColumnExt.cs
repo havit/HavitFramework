@@ -1,8 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls;
@@ -23,7 +20,7 @@ public class ButtonColumnExt : System.Web.UI.WebControls.ButtonColumn
 	{
 		get
 		{
-			string text = (string)ViewState["ConfirmationText"]; 
+			string text = (string)ViewState["ConfirmationText"];
 			if (text != null)
 			{
 				return text;
@@ -47,7 +44,7 @@ public class ButtonColumnExt : System.Web.UI.WebControls.ButtonColumn
 	{
 		get
 		{
-			string text = (string)ViewState["ConfirmationTextField"]; 
+			string text = (string)ViewState["ConfirmationTextField"];
 			if (text != null)
 			{
 				return text;
@@ -73,7 +70,7 @@ public class ButtonColumnExt : System.Web.UI.WebControls.ButtonColumn
 	{
 		get
 		{
-			string text = (string)ViewState["ConfirmationTextFormatString"]; 
+			string text = (string)ViewState["ConfirmationTextFormatString"];
 			if (text != null)
 			{
 				return text;

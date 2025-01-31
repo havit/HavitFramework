@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.WebControls;
 
@@ -160,7 +153,7 @@ public abstract class ModalDialogBase : Control
 	{
 		if (DialogVisible)
 		{
-			CancelEventArgs cancelEventArgs = new CancelEventArgs();				
+			CancelEventArgs cancelEventArgs = new CancelEventArgs();
 			OnDialogHiding(cancelEventArgs);
 			if (!cancelEventArgs.Cancel)
 			{
@@ -293,7 +286,7 @@ public abstract class ModalDialogBase : Control
 		// To se může stát, že control již není ve stránce (např. byl v repeateru, který byl rebindován) 
 		// nebo je nadřazený element schovaný a pak se nevyvolá OnPreRender,
 		// proto zkusíme control schovat v každém případě (Page.PreRenderComplete)
-					
+
 		if (!DialogVisible && _dialogCurrentlyHiding)
 		{
 			RegisterHideScriptFromPreRenderComplete();

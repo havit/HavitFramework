@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
-using System.Web;
-using System.Web.UI;
-using System.ComponentModel;
-using System.Reflection;
-
-namespace Havit.Web.UI.WebControls;
+﻿namespace Havit.Web.UI.WebControls;
 
 /// <summary>
 /// Sloupec pro zobrazení boolean hodnoty.
@@ -39,8 +30,8 @@ public class BooleanField : BoundFieldExt
 			return (string)ViewState["FalseText"];
 		}
 		set
-		{ 
-			ViewState["FalseText"] = value; 
+		{
+			ViewState["FalseText"] = value;
 		}
 	}
 
@@ -50,7 +41,7 @@ public class BooleanField : BoundFieldExt
 	/// <param name="value">Hodnota ke zformátování.</param>
 	/// <returns>Text k zobrazení.</returns>
 	public override string FormatDataValue(object value)
-	{	
+	{
 		if ((value != null) && (value is bool))
 		{
 			return (bool)value ? TrueText : FalseText;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Web.UI.WebControls;
+﻿namespace Havit.Web.UI.WebControls;
 
 /// <summary>
 /// Sloupec, který se umí identifikovat (má ID).

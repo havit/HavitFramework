@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using Havit.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.Bootstrap.UI.ClientScripts;
@@ -56,7 +49,7 @@ public class CheckBoxList : System.Web.UI.WebControls.CheckBoxList, IRadioButton
 	public CheckBoxList()
 	{
 		this.RepeatLayout = RepeatLayout.Flow;
-		this.RepeatDirection = RepeatDirection.Horizontal;			
+		this.RepeatDirection = RepeatDirection.Horizontal;
 	}
 
 	/// <summary>
@@ -82,7 +75,7 @@ public class CheckBoxList : System.Web.UI.WebControls.CheckBoxList, IRadioButton
 	/// </summary>
 	protected override void RenderItem(ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo,
 		HtmlTextWriter writer)
-	{			
+	{
 		RadioButtonListCheckBoxListHelper.RenderItem(this, itemType, repeatIndex, repeatInfo, writer,
 			() => base.RenderItem(itemType, repeatIndex, repeatInfo, writer));
 	}

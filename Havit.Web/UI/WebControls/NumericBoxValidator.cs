@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls;
@@ -33,7 +30,7 @@ public class NumericBoxValidator : BaseValidator
 	/// Testuje platnost čísla.
 	/// </summary>
 	protected override bool EvaluateIsValid()
-	{			
+	{
 		Control control = FindControl(ControlToValidate);
 
 		if (control == null)
@@ -92,7 +89,7 @@ public class NumericBoxValidator : BaseValidator
 		{
 			tempValue *= 10;
 			tmpDecimals -= 1;
-		}			
+		}
 		if (Math.Abs(tempValue) != Math.Floor(Math.Abs(tempValue))) // je více desetinným míst
 		{
 			return false;

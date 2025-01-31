@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using System.Linq;
+﻿using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls.ControlsValues;
 
@@ -38,7 +33,7 @@ public class ControlsValuesPersister : Control
 	/// Nastaví stav controlů dle předaných hodnot.
 	/// </summary>
 	public void ApplyValues(ControlsValuesHolder dataHolder)
-	{			
+	{
 		ApplyValues(dataHolder, this, this, this.PersisterExtenders, (args) => this.OnControlValueSet(args));
 	}
 
@@ -56,7 +51,7 @@ public class ControlsValuesPersister : Control
 	/// Uloží stav controlů do předaného úložiště.
 	/// </summary>
 	public void RetrieveValues(ControlsValuesHolder dataHolder)
-	{			
+	{
 		RetrieveValues(dataHolder, this, this, PersisterExtenders);
 	}
 
@@ -83,26 +78,26 @@ public class ControlsValuesPersister : Control
 	}
 
 	private static void RetrieveValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository)
-	{			
-		IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);		
+	{
+		IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);
 		if (persisterExtender != null)
 		{
 			string key = GetControlKey(control, containerControl);
-			object value = persisterExtender.GetValue(control);				
+			object value = persisterExtender.GetValue(control);
 			dataHolder.SetValue(key, value);
 			if (!persisterExtender.PersistsChildren(control))
 			{
 				return;
 			}
 		}
-				
+
 		if (control.HasControls())
 		{
 			foreach (Control nestedCotrol in control.Controls)
 			{
 				RetrieveValues(dataHolder, nestedCotrol, containerControl, persisterControlExtenderRepository);
 			}
-		}			
+		}
 	}
 
 	/// <summary>
@@ -120,7 +115,7 @@ public class ControlsValuesPersister : Control
 
 	private static void ApplyValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository, Action<ControlValueEventArgs> callback = null)
 	{
-		IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);			
+		IPersisterControlExtender persisterExtender = persisterControlExtenderRepository.FindExtender(control);
 		if (persisterExtender != null)
 		{
 			string key = GetControlKey(control, containerControl);

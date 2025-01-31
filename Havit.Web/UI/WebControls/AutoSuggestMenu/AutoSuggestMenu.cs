@@ -1,17 +1,9 @@
 ﻿#pragma warning disable 1591
-using System;
-using System.Text;
-using System.Collections;
-using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
-using System.Collections.Specialized;
-using System.Collections.Generic;
-
-using Havit.Web.UI.ClientScripts;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenu.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoSuggestMenu.AutoSuggestMenuItem.js", "text/javascript")]
@@ -22,10 +14,10 @@ using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.WebControls;
 
-     /// <summary>Represents a control for extending TextBox with suggestions. Not compatible with UpdatePanel.</summary>
-    [ValidationProperty("SelectedValue")]
-    [DefaultProperty("SelectedValue")]
-    [ToolboxData("<{0}:AutoSuggestMenu runat=server></{0}:AutoSuggestMenu>")]
+/// <summary>Represents a control for extending TextBox with suggestions. Not compatible with UpdatePanel.</summary>
+[ValidationProperty("SelectedValue")]
+[DefaultProperty("SelectedValue")]
+[ToolboxData("<{0}:AutoSuggestMenu runat=server></{0}:AutoSuggestMenu>")]
 public class AutoSuggestMenu : WebControl, INamingContainer
 {
 	private string _targetControlID;
@@ -33,31 +25,31 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 	private string _messageOnClearText;
 	private bool _autoPostBack = false;
 
-        private int _minSuggestChars;
+	private int _minSuggestChars;
 	private int _maxSuggestChars;
-	private int _keyPressDelay;	
+	private int _keyPressDelay;
 	private bool _usePaging;
-        private int _pageSize;
+	private int _pageSize;
 	private string _context;
 
-        private Unit _maxHeight;
+	private Unit _maxHeight;
 	private string _menuItemCssClass;
 	private string _selMenuItemCssClass;
-        private string _navigationLinkCssClass;
+	private string _navigationLinkCssClass;
 
-        private bool _updateTextBoxOnUpDown;
+	private bool _updateTextBoxOnUpDown;
 	private bool _useIFrame;
 	//private string _resourcesDir;
 
-        private bool _usePageMethods;
+	private bool _usePageMethods;
 
-        private string _onGetSuggestions;
-        private string _onClientTextBoxUpdate;
+	private string _onGetSuggestions;
+	private string _onClientTextBoxUpdate;
 
-    //Internal
-        private HiddenField _hdnSelectedValue;
+	//Internal
+	private HiddenField _hdnSelectedValue;
 
-        /// <summary>
+	/// <summary>
 	/// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
 	/// Výchozí hodnota je true.
 	/// </summary>
@@ -73,7 +65,7 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 		}
 	}
 
-        public AutoSuggestMenuMode Mode
+	public AutoSuggestMenuMode Mode
 	{
 		get { return _mode; }
 		set { _mode = value; }
@@ -95,41 +87,41 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 		set { _autoPostBack = value; }
 	}
 
-        public string TargetControlID
-        {
-            get { return _targetControlID; }
-            set { _targetControlID = value; }
-        }
+	public string TargetControlID
+	{
+		get { return _targetControlID; }
+		set { _targetControlID = value; }
+	}
 
-        public int MinSuggestChars
-        {
-            get { return _minSuggestChars; }
-            set { _minSuggestChars = value; }
-        }
+	public int MinSuggestChars
+	{
+		get { return _minSuggestChars; }
+		set { _minSuggestChars = value; }
+	}
 
 	public int MaxSuggestChars
 	{
-		get	{ return _maxSuggestChars; }
-		set	{ _maxSuggestChars = value; }
+		get { return _maxSuggestChars; }
+		set { _maxSuggestChars = value; }
 	}
 
 	public int KeyPressDelay
 	{
-		get	{ return _keyPressDelay; }
-		set	{ _keyPressDelay = value; }
+		get { return _keyPressDelay; }
+		set { _keyPressDelay = value; }
 	}
 
 	public bool UsePaging
 	{
-		get	{ return _usePaging; }
-            set { _usePaging = value; }
+		get { return _usePaging; }
+		set { _usePaging = value; }
 	}
 
-        public int PageSize
-        {
-            get { return _pageSize; }
-            set { _pageSize = value; }
-        }
+	public int PageSize
+	{
+		get { return _pageSize; }
+		set { _pageSize = value; }
+	}
 
 	/// <summary>
 	/// Kontext, v jakém je AutoSuggestMenu použito.
@@ -141,40 +133,40 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 		set { _context = value; }
 	}
 
-        public Unit MaxHeight
-        {
-            get { return _maxHeight; }
-            set { _maxHeight = value; }
-        }
+	public Unit MaxHeight
+	{
+		get { return _maxHeight; }
+		set { _maxHeight = value; }
+	}
 
 	public string MenuItemCssClass
 	{
-            get { return _menuItemCssClass; }
-            set { _menuItemCssClass = value; }
+		get { return _menuItemCssClass; }
+		set { _menuItemCssClass = value; }
 	}
 
 	public string SelMenuItemCssClass
 	{
-            get { return _selMenuItemCssClass; }
-            set { _selMenuItemCssClass = value; }
+		get { return _selMenuItemCssClass; }
+		set { _selMenuItemCssClass = value; }
 	}
 
-        public string NavigationLinkCssClass
-        {
-            get { return _navigationLinkCssClass; }
-            set { _navigationLinkCssClass = value; }
-        }
+	public string NavigationLinkCssClass
+	{
+		get { return _navigationLinkCssClass; }
+		set { _navigationLinkCssClass = value; }
+	}
 
-        public bool UpdateTextBoxOnUpDown
-        {
-            get { return _updateTextBoxOnUpDown; }
-            set { _updateTextBoxOnUpDown = value; }
-        }
+	public bool UpdateTextBoxOnUpDown
+	{
+		get { return _updateTextBoxOnUpDown; }
+		set { _updateTextBoxOnUpDown = value; }
+	}
 
 	public bool UseIFrame
 	{
-		get	{ return _useIFrame; }
-		set	{ _useIFrame = value; }
+		get { return _useIFrame; }
+		set { _useIFrame = value; }
 	}
 
 	//public string ResourcesDir
@@ -183,40 +175,40 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 	//    set	{_resourcesDir=value;}
 	//}
 
-        public bool UsePageMethods
-        {
-            get { return _usePageMethods; }
-            set { _usePageMethods = value; }
-        }
+	public bool UsePageMethods
+	{
+		get { return _usePageMethods; }
+		set { _usePageMethods = value; }
+	}
 
-        public string OnGetSuggestions
-        {
-            get { return _onGetSuggestions; }
-            set { _onGetSuggestions = value; }
-        }
+	public string OnGetSuggestions
+	{
+		get { return _onGetSuggestions; }
+		set { _onGetSuggestions = value; }
+	}
 
-        public string OnClientTextBoxUpdate
-        {
-            get { return _onClientTextBoxUpdate; }
-            set { _onClientTextBoxUpdate = value; }
-        }
+	public string OnClientTextBoxUpdate
+	{
+		get { return _onClientTextBoxUpdate; }
+		set { _onClientTextBoxUpdate = value; }
+	}
 
-        public string SelectedValue
-        {
-            get
-            {
-                EnsureChildControls();
-                return _hdnSelectedValue.Value;
-            }
+	public string SelectedValue
+	{
+		get
+		{
+			EnsureChildControls();
+			return _hdnSelectedValue.Value;
+		}
 
-            set
-            {
-                EnsureChildControls();
-                _hdnSelectedValue.Value = value;
-            }
-        }
+		set
+		{
+			EnsureChildControls();
+			_hdnSelectedValue.Value = value;
+		}
+	}
 
-        /// <summary>
+	/// <summary>
 	/// Cesta k webové službě, která má být přilinkována.
 	/// </summary>
 	public string ServicePath
@@ -432,13 +424,13 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 		writer.WriteLine("menu.blankPage=\"" + Page.ClientScript.GetWebResourceUrl(typeof(AutoSuggestMenu), resourceName) + "\";");  // RH, místo resourcesDir
 
 		if (Mode == AutoSuggestMenuMode.ClearTextOnNoSelection)
-		{ 
+		{
 			writer.WriteLine("menu.clearTextOnNoSelection=true;");
 		}
 
 		if (AutoPostBack)
 		{
-			
+
 			writer.WriteLine(String.Format("menu.autoPostBackScript=\"{0}\";", Page.ClientScript.GetPostBackEventReference(this, "")));
 			// Pro kompatibilitu s UpdatePanelem je pravděpodobně nutno odpojit se od události kliknutí na HTML element, avšak to následně způsobí dvojí postback.
 			//writer.WriteLine(String.Format("menu.autoPostBackScript=\" window.setTimeout(function() {{ {0} }}, 1);\"", Page.ClientScript.GetPostBackEventReference(this, "")));
@@ -603,10 +595,10 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 	}
 
 	//==========================================
-        //Utility methods for registering javascript
-        //==========================================
+	//Utility methods for registering javascript
+	//==========================================
 
-        //Methods for handling Client Script in both scenarious - when using partial postback and when not using it
+	//Methods for handling Client Script in both scenarious - when using partial postback and when not using it
 	private bool IsInPartialRendering()
 	{
 		ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);

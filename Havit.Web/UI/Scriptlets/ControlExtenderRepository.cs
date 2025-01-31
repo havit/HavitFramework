@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Web;
 
 namespace Havit.Web.UI.Scriptlets;
 
-    /// <summary>
+/// <summary>
 /// Výchozí implementace <see cref="IControlExtenderRepository">IControlExtenderRepository</see>.
-    /// </summary>
-    public class ControlExtenderRepository : List<IControlExtender>, IControlExtenderRepository
+/// </summary>
+public class ControlExtenderRepository : List<IControlExtender>, IControlExtenderRepository
 {
 	/// <summary>
 	/// Výchozí seznam control extenderů.
@@ -58,7 +55,7 @@ namespace Havit.Web.UI.Scriptlets;
 		int bestExtenderPriority = Int32.MinValue;
 		IControlExtender bestExtender = null;
 
-		this.ForEach(delegate(IControlExtender currentExtender)
+		this.ForEach(delegate (IControlExtender currentExtender)
 		{
 			int? currentPriority = currentExtender.GetPriority(control);
 			if (currentPriority != null && currentPriority >= bestExtenderPriority)

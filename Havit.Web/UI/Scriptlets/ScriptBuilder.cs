@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace Havit.Web.UI.Scriptlets;
 
-    /// <summary>
-    /// Jednoduchý skládač řetězce. 
-    /// Vnitřně používá StringBuilder, na rozdíl od něj umožňuje text
-    /// jen přidávat, neumožňuje jej modifikovat.
-    /// </summary>
+/// <summary>
+/// Jednoduchý skládač řetězce. 
+/// Vnitřně používá StringBuilder, na rozdíl od něj umožňuje text
+/// jen přidávat, neumožňuje jej modifikovat.
+/// </summary>
 public class ScriptBuilder
 {
 	private readonly StringBuilder builder = new StringBuilder();
@@ -32,7 +30,7 @@ public class ScriptBuilder
 	{
 		builder.Append(value);
 	}
-	
+
 	/// <summary>
 	/// Připojí řetězec na konec textu a vloží symbol konce řádku (Environment.NewLine).
 	/// </summary>
@@ -52,7 +50,7 @@ public class ScriptBuilder
 	{
 		builder.AppendFormat(value, parameters);
 	}
-	
+
 	/// <summary>
 	/// Po zformátování připojí řetězec na konec textu a doplní jej symbolem pro konec řádky.
 	/// </summary>
@@ -65,9 +63,9 @@ public class ScriptBuilder
 	}
 
 	/// <summary>
-        /// Vrátí složený text.
-        /// </summary>
-        /// <returns>Složený text.</returns>
+	/// Vrátí složený text.
+	/// </summary>
+	/// <returns>Složený text.</returns>
 	public override string ToString()
 	{
 		return builder.ToString();

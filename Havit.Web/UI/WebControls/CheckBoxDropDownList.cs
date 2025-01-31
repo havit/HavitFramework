@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Drawing.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -102,7 +94,7 @@ public class CheckBoxDropDownList : ListBoxExt
 		}
 		set
 		{
-			ViewState["ItemWidth"] = value;				
+			ViewState["ItemWidth"] = value;
 		}
 	}
 
@@ -217,7 +209,7 @@ public class CheckBoxDropDownList : ListBoxExt
 	public override bool SupportsDisabledAttribute
 	{
 		get
-		{				
+		{
 			return true;
 		}
 

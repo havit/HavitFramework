@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Havit.Web.UI.WebControls.ControlsValues;
-using Havit.Web.UI.WebControls;
-using System.Web.UI.WebControls;
-using System.Web.UI;
+﻿using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls.ControlsValues;
 
@@ -27,11 +20,11 @@ internal class EnumDropDownListPersisterControlExtender : IPersisterControlExten
 	public void SetValue(Control control, object value)
 	{
 		EnumDropDownList enumDropDownList = (EnumDropDownList)control;
-		
+
 		enumDropDownList.ClearSelection();
 		if (value != null)
 		{
-			enumDropDownList.SelectedEnumValue = Enum.Parse(enumDropDownList.EnumType, value.ToString());		
+			enumDropDownList.SelectedEnumValue = Enum.Parse(enumDropDownList.EnumType, value.ToString());
 		}
 	}
 

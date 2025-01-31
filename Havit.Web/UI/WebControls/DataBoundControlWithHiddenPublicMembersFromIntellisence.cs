@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.WebControls;
@@ -40,7 +34,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.BackColor = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -54,7 +48,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.BorderColor = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -68,7 +62,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.BorderStyle = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -82,7 +76,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.BorderWidth = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -110,7 +104,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.DataMember = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -124,7 +118,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.DataSource = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -138,7 +132,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.DataSourceID = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -152,7 +146,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.Enabled = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -166,7 +160,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.EnableTheming = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -190,7 +184,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.ForeColor = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -204,7 +198,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.Height = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -242,7 +236,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.TabIndex = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -256,7 +250,7 @@ public abstract class DataBoundControlWithHiddenPublicMembersFromIntellisence : 
 		set
 		{
 			base.ToolTip = value;
-		}			
+		}
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Advanced)]

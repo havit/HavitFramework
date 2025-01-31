@@ -1,8 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 using Havit.Diagnostics.Contracts;
-using Havit.Reflection;
 
 namespace Havit.Web;
 
@@ -35,7 +32,7 @@ public static class HttpResponseExt
 
 		url = response.ApplyAppPathModifier(url);
 		url = HttpUtilityExt.UrlEncodePathWithQueryString(url);
-		
+
 		response.Clear();
 		response.StatusCode = 301;
 		response.StatusDescription = "Moved Permanently";

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.Scriptlets;
 
-    /// <summary>
-    /// Parametr Skriptletu reprezentující renderovaný control Control.
-    /// </summary>
-    public class ControlParameter : ParameterBase
-    {
+/// <summary>
+/// Parametr Skriptletu reprezentující renderovaný control Control.
+/// </summary>
+public class ControlParameter : ParameterBase
+{
 
 	/* Parametry ControlParametru *************** */
 
@@ -111,7 +106,7 @@ namespace Havit.Web.UI.Scriptlets;
 	{
 		// najdeme control
 		Control control = GetControl(parentControl);
-		DoJobOnExtender(control, delegate(IControlExtender extender)
+		DoJobOnExtender(control, delegate (IControlExtender extender)
 		{
 			extender.GetInitializeClientSideValueScript(parameterPrefix, this, control, scriptBuilder);
 		});
@@ -123,7 +118,7 @@ namespace Havit.Web.UI.Scriptlets;
 	{
 		// najdeme control
 		Control control = GetControl(parentControl);
-		DoJobOnExtender(control, delegate(IControlExtender extender)
+		DoJobOnExtender(control, delegate (IControlExtender extender)
 		{
 			extender.GetAttachEventsScript(parameterPrefix, this, control, scriptletFunctionCallDelegate, scriptBuilder);
 		});
@@ -135,7 +130,7 @@ namespace Havit.Web.UI.Scriptlets;
 	{
 		// najdeme control
 		Control control = GetControl(parentControl);
-		DoJobOnExtender(control, delegate(IControlExtender extender)
+		DoJobOnExtender(control, delegate (IControlExtender extender)
 		{
 			extender.GetDetachEventsScript(parameterPrefix, this, control, scriptletFunctionCallDelegate, scriptBuilder);
 		});
@@ -180,7 +175,7 @@ namespace Havit.Web.UI.Scriptlets;
 		{
 			result = parentControl.FindControl(controlName);
 		}
-		
+
 		if (result == null)
 		{
 			throw new HttpException(String.Format("Control {0} nebyl nalezen.", ControlName));
@@ -188,4 +183,4 @@ namespace Havit.Web.UI.Scriptlets;
 
 		return result;
 	}
-    }
+}

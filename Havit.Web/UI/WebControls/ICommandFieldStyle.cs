@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Web.UI.WebControls;
+﻿namespace Havit.Web.UI.WebControls;
 
 /// <summary>
 /// Interface, který implementují controly, když chtějí být nositelem skinovatelných properties pro CommandField.

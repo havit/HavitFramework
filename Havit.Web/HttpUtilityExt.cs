@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Web;
 using System.Globalization;
 using System.Resources;
@@ -204,4 +203,4 @@ public static partial class HttpUtilityExt
 
 		return ub.Uri;
 	}
-}	
+}

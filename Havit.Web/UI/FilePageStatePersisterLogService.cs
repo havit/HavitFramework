@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.ServiceModel.Channels;
+﻿using System.Diagnostics;
 
 namespace Havit.Web.UI;
 
@@ -13,7 +11,7 @@ internal class FilePageStatePersisterLogService : FilePageStatePersister.ILogSer
 
 	public FilePageStatePersisterLogService()
 	{
-		traceSource = new TraceSource("FilePageStatePersister", SourceLevels.All);				
+		traceSource = new TraceSource("FilePageStatePersister", SourceLevels.All);
 	}
 
 	/// <summary>

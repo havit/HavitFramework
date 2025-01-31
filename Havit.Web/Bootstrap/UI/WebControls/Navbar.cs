@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Havit.Web.Bootstrap.UI.WebControls;
 
@@ -141,7 +135,7 @@ public class Navbar : Control
 	public object DataSource
 	{
 		get { return _mainMenuSection.DataSource; }
-		set { _mainMenuSection.DataSource = value; }			
+		set { _mainMenuSection.DataSource = value; }
 	}
 
 	/// <summary>

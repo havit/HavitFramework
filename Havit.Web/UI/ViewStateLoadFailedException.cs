@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Web.UI;
+﻿namespace Havit.Web.UI;
 
 /// <summary>
 /// Výjimka oznamující nenačtení viewstate.
@@ -16,7 +11,7 @@ public class ViewStateLoadFailedException : Exception
 	/// </summary>
 	public ViewStateLoadFailedException()
 	{
-		
+
 	}
 
 	/// <summary>

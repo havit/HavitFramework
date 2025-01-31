@@ -1,11 +1,6 @@
 ﻿using Havit.Collections;
 using Havit.Diagnostics.Contracts;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -30,7 +25,7 @@ public class AutoFilterDropDownList : DropDownListBaseExt, IAutoFilterControl
 		}
 		set
 		{
-			ViewState["NoFilterText"] = value;				
+			ViewState["NoFilterText"] = value;
 		}
 	}
 
@@ -74,7 +69,7 @@ public class AutoFilterDropDownList : DropDownListBaseExt, IAutoFilterControl
 		}
 	}
 	private static readonly object eventValueChanged = new object();
-	
+
 	/// <summary>
 	/// Vyvolá událost ValueChanged.
 	/// </summary>

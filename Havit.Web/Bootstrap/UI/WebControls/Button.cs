@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 
@@ -15,7 +10,7 @@ namespace Havit.Web.Bootstrap.UI.WebControls;
 /// Gives Text property support of localization.
 /// </summary>
 [ParseChildren(false)]
-    [PersistChildren(true)] // Enables child controls
+[PersistChildren(true)] // Enables child controls
 public class Button : System.Web.UI.WebControls.Button
 {
 	/// <summary>

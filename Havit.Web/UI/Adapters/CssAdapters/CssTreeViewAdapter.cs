@@ -1,16 +1,9 @@
 ﻿#pragma warning disable 1591
-using System;
 using System.Collections.Specialized;
-using System.Configuration;
-using System.Data;
 using System.Web;
-using System.Web.Configuration;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using System.Reflection;
 
 [assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssTreeViewAdapter.js", "text/javascript")]
 [assembly: WebResource("Havit.Web.UI.Adapters.CssAdapters.CssTreeViewAdapter.css", "text/css")]

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net.Cache;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -137,7 +131,7 @@ public class TabContainer : Control
 	/// </summary>
 	public TabContainer()
 	{
-		_activeTabHiddenField = new HiddenField();			
+		_activeTabHiddenField = new HiddenField();
 		_activeTabHiddenField.ValueChanged += ActiveTabHiddenField_ValueChanged;
 	}
 
@@ -279,7 +273,7 @@ public class TabContainer : Control
 				{
 					yield return nestedTabPanel;
 				}
-			}				
+			}
 		}
 	}
 }

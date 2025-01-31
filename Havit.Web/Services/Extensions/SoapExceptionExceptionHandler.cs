@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Management;
-using System.Web.Services.Protocols;
-using Havit.Web.Management;
-using System.Web;
+﻿using System.Web.Services.Protocols;
 
 namespace Havit.Web.Services.Extensions;
 
@@ -26,7 +19,7 @@ public abstract class SoapExceptionExceptionHandler : System.Web.Services.Protoc
 			{
 				if (message.Exception != null)
 				{
-					ProcessMessageException(message);						
+					ProcessMessageException(message);
 				}
 			}
 		}

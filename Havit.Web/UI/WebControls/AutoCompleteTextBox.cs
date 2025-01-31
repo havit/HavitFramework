@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Havit.Diagnostics.Contracts;
 using Havit.Web.UI.ClientScripts;
-using Havit.Web.UI.Scriptlets;
 
 [assembly: WebResource("Havit.Web.UI.WebControls.AutoCompleteTextBox.css", "text/css")]
 
@@ -61,9 +54,9 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 
 	private readonly TextBox valueTextBox;
 	private readonly HiddenField valueHiddenField;
-        private readonly HyperLink clearTextLink;
+	private readonly HyperLink clearTextLink;
 
-        /// <summary>
+	/// <summary>
 	/// Udává, zda má po změně hodnoty V ui dojít k postbacku.
 	/// </summary>
 	public bool AutoPostBack
@@ -72,7 +65,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { ViewState["AutoPostBack"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// URL Služby poskytující data.
 	/// </summary>
 	public string ServiceUrl
@@ -81,7 +74,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { ViewState["ServiceUrl"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Kontext prvku. Předává se službě v parametru "context".
 	/// </summary>
 	public new string Context
@@ -96,7 +89,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Minimální počet znaků při kterých se nabídnou položky. Default = 1
 	/// </summary>
 	public int MinSuggestedChars
@@ -105,7 +98,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { ViewState["MinSuggestedChars"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Udává, zda se používá klientská cache. Default = false.
 	/// </summary>
 	public bool UseClientCache
@@ -114,7 +107,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { ViewState["UseClientCache"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Maximální výška našeptávače v px.
 	/// </summary>
 	public int MaxHeight
@@ -123,7 +116,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { ViewState["MaxHeight"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Čas v milsekundách o který se zpozdí dotaz do služby.
 	/// </summary>
 	public int DeferRequest
@@ -132,7 +125,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { ViewState["DeferRequest"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vyplněný text
 	/// </summary>
 	public string Text
@@ -141,7 +134,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { valueTextBox.Text = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Vyplněná hodnota
 	/// </summary>
 	public string SelectedValue
@@ -156,7 +149,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Styly vnitřního textboxu.
 	/// </summary>
 	public Style TextBoxStyle
@@ -164,7 +157,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		get { return valueTextBox.ControlStyle; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Gets or sets the tab order of the control within its container.
 	/// </summary>
 	public short TabIndex
@@ -179,7 +172,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Gets or sets the text displayed when the mouse pointer hovers over the Web server control.
 	/// </summary>
 	public string ToolTip
@@ -194,7 +187,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Set text, which is shown before text is entered
 	/// </summary>
 	public string PlaceHolderText
@@ -203,7 +196,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set { valueTextBox.Attributes["placeholder"] = value; }
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Gets or sets a value indicating whether this <see cref="AutoCompleteTextBox"/> is enabled.
 	/// </summary>
 	public bool Enabled
@@ -215,11 +208,11 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		set
 		{
 			valueTextBox.Enabled = value;
-                clearTextLink.Visible = value;
-            }
+			clearTextLink.Visible = value;
+		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Orientace našeptávacího dialogu. Default = bottom
 	/// </summary>
 	public AutoCompleteTextBoxOrientation Orientation
@@ -234,7 +227,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Pokud je hodnota false (default), při opuštění textového pole, se nevalidní hodnota vymaže.
 	/// Pokud je hodnota true, nevymaže se v textovém poli nevalidní hodnota při opuštění editace. Určeno pro možnost zakládání nových položek.
 	/// </summary>
@@ -250,7 +243,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Pokud je hodnota false (default), tak prázdná hodnota v textovém poli není považována za validní
 	/// Pokud je hodnota true, tak je prázdná hodnota považována za validní
 	/// </summary>
@@ -266,7 +259,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Udává, zda se má zobrazit v nabídkovém pruhu informace o prázdné nabídce. (nejsou nabídnuty žádné položky)
 	/// </summary>
 	public bool ShowNoSuggestionNotice
@@ -281,7 +274,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Informace, která se zobrazí v nabídkovém pruhu v případě, že žádná položka neodpovídá zadanému řetězci. (nejsou nabídnuty žádné položky)
 	/// </summary>
 	public string NoSuggestionNotice
@@ -296,7 +289,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// ValidationGroup pro validaci.
 	/// </summary>
 	public string ValidationGroup
@@ -311,7 +304,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Určuje, zda dochází k validaci při postbacku způsobeným tímto controlem (autopostback).
 	/// </summary>
 	public bool CausesValidation
@@ -326,7 +319,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Skript vyvolaný v případě výběru hodnoty. Pokud script vrátí false, potom neproběhne AutoPostBack.
 	/// </summary>
 	public string OnClientSelectScript
@@ -341,7 +334,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		}
 	}
 
-        /// <summary>
+	/// <summary>
 	/// ClientID (overriden).
 	/// Vrací ClientID obsaženého TextBoxu pro zadávání hodnoty.
 	/// To řeší klientské validátory, které natrvdo předpokládají, že validovaný control (podle ClientID)
@@ -367,41 +360,41 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 	}
 
 	/// <summary>
-        /// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
-        /// Výchozí hodnota je true.
-        /// </summary>
-        public bool AutoRegisterStyleSheets
-        {
-            get
-            {
-                return (bool)(ViewState["AutoRegisterStyleSheets"] ?? true);
-            }
-            set
-            {
-                ViewState["AutoRegisterStyleSheets"] = value;
-            }
-        }
+	/// Indikuje, zda má dojít k automatické registraci CSS v OnPreRenderu.
+	/// Výchozí hodnota je true.
+	/// </summary>
+	public bool AutoRegisterStyleSheets
+	{
+		get
+		{
+			return (bool)(ViewState["AutoRegisterStyleSheets"] ?? true);
+		}
+		set
+		{
+			ViewState["AutoRegisterStyleSheets"] = value;
+		}
+	}
 
 	/// <summary>
-        /// Initializes a new instance of the <see cref="AutoCompleteTextBox"/> class.
-        /// </summary>
-        public AutoCompleteTextBox()
+	/// Initializes a new instance of the <see cref="AutoCompleteTextBox"/> class.
+	/// </summary>
+	public AutoCompleteTextBox()
 	{
 		valueTextBox = new TextBox();
 		valueTextBox.ID = "ValueTextBox";
 
-            valueHiddenField = new HiddenField();
+		valueHiddenField = new HiddenField();
 		valueHiddenField.ID = "ValueHiddenField";
 		valueHiddenField.EnableViewState = false;
 
-            clearTextLink = new HyperLink();
-            clearTextLink.ID = nameof(clearTextLink);
-            clearTextLink.EnableViewState = false;
-            clearTextLink.NavigateUrl = "#";
-            clearTextLink.Text = "&times;";
-            clearTextLink.Attributes.Add("data-clearText", "true");
-            clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation            
-        }
+		clearTextLink = new HyperLink();
+		clearTextLink.ID = nameof(clearTextLink);
+		clearTextLink.EnableViewState = false;
+		clearTextLink.NavigateUrl = "#";
+		clearTextLink.Text = "&times;";
+		clearTextLink.Attributes.Add("data-clearText", "true");
+		clearTextLink.Attributes.Add("tabindex", "-1"); // skip the link in page navigation            
+	}
 
 	/// <summary>
 	/// Vyčistí vybranou hodnotu.
@@ -422,7 +415,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		Controls.Add(valueTextBox);
 		Controls.Add(valueHiddenField);
 		Controls.Add(clearTextLink);
-        }
+	}
 
 	/// <summary>
 	/// Outputs server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter" /> object and stores tracing information about the control if tracing is enabled.
@@ -500,36 +493,36 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
 		ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", true);
 		if (AutoRegisterStyleSheets)
-            {
-                RegisterStylesheets(this.Page);
-            }
-        }
+		{
+			RegisterStylesheets(this.Page);
+		}
+	}
 
 	/// <summary>
-        /// Vytvoří do head odkaz na CSS menu.
-        /// </summary>
-        public static void RegisterStylesheets(Page page)
-        {
-            bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] ?? false);
+	/// Vytvoří do head odkaz na CSS menu.
+	/// </summary>
+	public static void RegisterStylesheets(Page page)
+	{
+		bool registered = (bool)(HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] ?? false);
 
-            if (!registered)
-            {
-                HtmlLink htmlLink = new HtmlLink();
-                string resourceName = "Havit.Web.UI.WebControls.AutoCompleteTextBox.css";
-                htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(AutoCompleteTextBox), resourceName);
-                htmlLink.Attributes.Add("rel", "stylesheet");
-                htmlLink.Attributes.Add("type", "text/css");
-                page.Header.Controls.Add(htmlLink);
-                HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] = true;
-            }
-        }
+		if (!registered)
+		{
+			HtmlLink htmlLink = new HtmlLink();
+			string resourceName = "Havit.Web.UI.WebControls.AutoCompleteTextBox.css";
+			htmlLink.Href = page.ClientScript.GetWebResourceUrl(typeof(AutoCompleteTextBox), resourceName);
+			htmlLink.Attributes.Add("rel", "stylesheet");
+			htmlLink.Attributes.Add("type", "text/css");
+			page.Header.Controls.Add(htmlLink);
+			HttpContext.Current.Items["Havit.Web.UI.WebControls.AutoCompleteTextBox.RegisterCss_registered"] = true;
+		}
+	}
 
 	/// <summary>
-        /// Loads the post data.
-        /// </summary>
-        /// <param name="postDataKey">The post data key.</param>
-        /// <param name="postCollection">The post collection.</param>
-        public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+	/// Loads the post data.
+	/// </summary>
+	/// <param name="postDataKey">The post data key.</param>
+	/// <param name="postCollection">The post collection.</param>
+	public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 	{
 		string postedValue = postCollection[valueHiddenField.UniqueID];
 		if (!SelectedValue.Equals(postedValue))

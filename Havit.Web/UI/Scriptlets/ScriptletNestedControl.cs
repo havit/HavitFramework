@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 
 namespace Havit.Web.UI.Scriptlets;
@@ -21,12 +18,12 @@ public abstract class ScriptletNestedControl : Control
 			{
 				return ((IScriptletParameter)Parent).Scriptlet;
 			}
-			
+
 			if (!(Parent is Scriptlet))
 			{
 				throw new InvalidOperationException("Scriptlet nebyl nalezen - control se nachází na neznámém místě ve stromu controlů.");
 			}
-			
+
 			return (Scriptlet)Parent;
 		}
 	}

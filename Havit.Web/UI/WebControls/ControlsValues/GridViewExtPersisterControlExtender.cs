@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.UI;
-using Havit.Web.UI.WebControls.ControlsValues;
+﻿using System.Web.UI;
 using Havit.Collections;
-using System.Xml.Serialization;
 
 namespace Havit.Web.UI.WebControls.ControlsValues;
 
@@ -32,7 +26,7 @@ internal class GridViewExtPersisterControlExtender : IPersisterControlExtender
 
 	public void SetValue(System.Web.UI.Control control, object value)
 	{
-		GridViewExt gridView = (GridViewExt)control;			
+		GridViewExt gridView = (GridViewExt)control;
 		GridViewExtValue gridViewExtValue = (GridViewExtValue)value;
 
 		gridView.AllowPaging = gridViewExtValue.AllowPaging;
@@ -42,7 +36,7 @@ internal class GridViewExtPersisterControlExtender : IPersisterControlExtender
 		foreach (SortItem sortItem in gridViewExtValue.SortItems)
 		{
 			gridView.SortExpressions.SortItems.Add(sortItem);
-		}			
+		}
 	}
 
 	public int? GetPriority(Control control)

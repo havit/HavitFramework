@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Configuration;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Net.Mime;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Management;
 
 namespace Havit.Web.Management;
@@ -91,7 +82,7 @@ public class SmtpWebEventProvider : WebEventProvider
 		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpServer", name, ref _smtpServer);
 		ProviderUtil.GetAndRemoveIntegerAttribute(config, "smtpPort", name, ref _smtpPort);
 		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpUsername", name, ref _smtpUsername);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpPassword", name, ref _smtpPassword);			
+		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpPassword", name, ref _smtpPassword);
 		ProviderUtil.GetAndRemoveBooleanAttribute(config, "smtpEnableSsl", name, ref _smtpEnableSsl);
 		ProviderUtil.GetAndRemoveStringAttribute(config, "subjectPrefix", name, ref _subjectPrefix);
 
@@ -203,7 +194,7 @@ public class SmtpWebEventProvider : WebEventProvider
 	protected virtual string GetMailMessageSubject(WebBaseEvent raisedEvent)
 	{
 		string message = (raisedEvent is WebRequestErrorEventExt) ? ((WebRequestErrorEventExt)raisedEvent).ErrorException.Message : raisedEvent.Message;
-		
+
 		// předmět mailu nesmí obsahovat znaky \r a \n
 		if (message.Contains('\r'))
 		{

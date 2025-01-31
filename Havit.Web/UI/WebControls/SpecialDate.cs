@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Web.UI.WebControls;
+﻿namespace Havit.Web.UI.WebControls;
 
 /// <summary>
 /// Třída implementující special date zobrazovaný v DateTimeBox-u.

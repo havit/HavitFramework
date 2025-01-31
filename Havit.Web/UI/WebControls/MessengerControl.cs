@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Diagnostics;
@@ -20,7 +18,7 @@ public class MessengerControl : Literal
 	{
 		get
 		{
-			return _messenger == null ? Messenger.Default : _messenger;                
+			return _messenger == null ? Messenger.Default : _messenger;
 		}
 		set
 		{
@@ -229,7 +227,7 @@ public class MessengerControl : Literal
 			}
 			return sb.ToString();
 		}
-		return String.Empty;			
+		return String.Empty;
 	}
 
 	private void AddToastrScript(MessengerMessage message, StringBuilder sb)

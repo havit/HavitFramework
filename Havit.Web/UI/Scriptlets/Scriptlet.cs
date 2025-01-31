@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using Havit.Web.UI.ClientScripts;
 
 namespace Havit.Web.UI.Scriptlets;
 
 /// <summary>
 /// Scriptlet umožňuje snadnou tvorbu klientských skriptů.
 /// </summary>
-[ControlBuilder(typeof(NoLiteralContolBuilder))]	
+[ControlBuilder(typeof(NoLiteralContolBuilder))]
 public sealed class Scriptlet : Control, IScriptControl
 {
 	private readonly string[] _clientScriptScriptletFunctionParameters = new string[] { "parameters" };
@@ -170,7 +164,8 @@ public sealed class Scriptlet : Control, IScriptControl
 	/// <summary>
 	/// Ověří, zda jsou správně zadány parametry scriptletu (testuje, zda byl zadán ClientScript).
 	/// </summary>
-	/*protected virtual*/ private void CheckControlConditions()
+	/*protected virtual*/
+	private void CheckControlConditions()
 	{
 		if (clientScript == null)
 		{

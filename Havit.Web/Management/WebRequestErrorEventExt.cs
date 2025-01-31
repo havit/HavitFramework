@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
+﻿using System.Globalization;
 using System.Text;
 using System.Web;
 using System.Web.Management;
@@ -22,21 +18,21 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 	private readonly CultureInfo _currentCulture;
 	private readonly CultureInfo _currentUiCulture;
 
-        private readonly string _requestInfo_HttpMethod = String.Empty;
-        private readonly string _requestInfo_UrlReferrer = String.Empty;
-        private readonly string _requestInfo_UserAgent = String.Empty;
-        private readonly string _userInfo_IdentityName = String.Empty;
-        private readonly string _userInfo_IsAuthenticated = String.Empty;
-        private readonly string _userInfo_AuthenticationType = String.Empty;
+	private readonly string _requestInfo_HttpMethod = String.Empty;
+	private readonly string _requestInfo_UrlReferrer = String.Empty;
+	private readonly string _requestInfo_UserAgent = String.Empty;
+	private readonly string _userInfo_IdentityName = String.Empty;
+	private readonly string _userInfo_IsAuthenticated = String.Empty;
+	private readonly string _userInfo_AuthenticationType = String.Empty;
 
-        /// <summary>
-        /// Konstruktor.
-        /// </summary>
-        [Obsolete]		
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	[Obsolete]
 	public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, null)
 	{
 	}
-	
+
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
@@ -44,20 +40,20 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 		: base(message, eventSource, WebEventCodes.WebExtendedBase + 999, UnwrapException(exception))
 	{
 		this._currentHttpContext = currentHttpContext;
-            if (currentHttpContext != null)
-            {
-                _requestInfo_HttpMethod = GetValueWithExceptionHandling(() => currentHttpContext.Request?.HttpMethod ?? String.Empty);
-                _requestInfo_UrlReferrer = GetValueWithExceptionHandling(() => currentHttpContext.Request?.UrlReferrer?.ToString() ?? String.Empty);
-                _requestInfo_UserAgent = GetValueWithExceptionHandling(() => currentHttpContext.Request?.UserAgent ?? String.Empty);
-                _userInfo_IdentityName = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.Name ?? String.Empty);
-                _userInfo_IsAuthenticated = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.IsAuthenticated.ToString() ?? String.Empty);
-                _userInfo_AuthenticationType = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.AuthenticationType ?? String.Empty);
+		if (currentHttpContext != null)
+		{
+			_requestInfo_HttpMethod = GetValueWithExceptionHandling(() => currentHttpContext.Request?.HttpMethod ?? String.Empty);
+			_requestInfo_UrlReferrer = GetValueWithExceptionHandling(() => currentHttpContext.Request?.UrlReferrer?.ToString() ?? String.Empty);
+			_requestInfo_UserAgent = GetValueWithExceptionHandling(() => currentHttpContext.Request?.UserAgent ?? String.Empty);
+			_userInfo_IdentityName = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.Name ?? String.Empty);
+			_userInfo_IsAuthenticated = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.IsAuthenticated.ToString() ?? String.Empty);
+			_userInfo_AuthenticationType = GetValueWithExceptionHandling(() => currentHttpContext.User?.Identity?.AuthenticationType ?? String.Empty);
 
-                if (currentHttpContext.ApplicationInstance != null)
-		    {
-                    this._currentApplicationInstanceType = currentHttpContext.ApplicationInstance.GetType();
-                }
-            }
+			if (currentHttpContext.ApplicationInstance != null)
+			{
+				this._currentApplicationInstanceType = currentHttpContext.ApplicationInstance.GetType();
+			}
+		}
 
 		_currentCulture = CultureInfo.CurrentCulture;
 		_currentUiCulture = CultureInfo.CurrentUICulture;
@@ -113,7 +109,7 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 		sb.AppendLine();
 		sb.AppendLine("Thread information: ");
 		FormatThreadInformation(sb, this.ThreadInformation);
-		
+
 		return sb.ToString();
 	}
 
@@ -195,18 +191,18 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 		}
 	}
 
-        /// <summary>
-        /// Získá hodnotu z dané funkce, pokud dojde k výjimce, vrací ExceptionText.
-        /// </summary>
-        private string GetValueWithExceptionHandling(Func<string> valueFunc)
-        {
-            try
-            {
-                return valueFunc();
-            }
-            catch
-            {
-                return ExceptionText;
-            }
-        }
+	/// <summary>
+	/// Získá hodnotu z dané funkce, pokud dojde k výjimce, vrací ExceptionText.
+	/// </summary>
+	private string GetValueWithExceptionHandling(Func<string> valueFunc)
+	{
+		try
+		{
+			return valueFunc();
+		}
+		catch
+		{
+			return ExceptionText;
+		}
+	}
 }

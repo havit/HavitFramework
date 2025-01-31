@@ -1,8 +1,5 @@
 ﻿#pragma warning disable 1591
-using System;
-using System.IO;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
@@ -20,8 +17,8 @@ namespace Havit.Web.UI.Adapters.CssAdapters;
 /// ASP.NET 2.0 CSS Friendly Control Adapters 1.0, http://www.asp.net/CSSAdapters/, This version was last updated on 20 November 2006.
 /// </remarks>
 public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
-    {
-    private WebControlAdapterExtender Extender
+{
+	private WebControlAdapterExtender Extender
 	{
 		get
 		{
@@ -370,5 +367,5 @@ public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
 
 		return bRet;
 	}
-    }
+}
 #pragma warning restore 1591

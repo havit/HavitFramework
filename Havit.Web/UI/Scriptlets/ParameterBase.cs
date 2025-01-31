@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Web;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Havit.Web.UI.Scriptlets;
 
-    /// <summary>
-    /// Předek pro tvorbu klientských parametrů.
-    /// </summary>
+/// <summary>
+/// Předek pro tvorbu klientských parametrů.
+/// </summary>
 [ControlBuilder(typeof(NoLiteralContolBuilder))]
 public abstract class ParameterBase : ScriptletNestedControl, IScriptletParameter
 {

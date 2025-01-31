@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Web.UI.WebControls;
-using Havit.Web.UI.WebControls;
 using System.Web.UI;
-using System.Threading;
 using System.Globalization;
 using Havit.Web.UI.ClientScripts;
 
@@ -199,7 +193,7 @@ public class DateTimeBox : Control, INamingContainer
 				{
 					((IStateManager)_containerStyle).TrackViewState();
 				}
-			
+
 			}
 			return _containerStyle;
 		}
@@ -286,16 +280,16 @@ public class DateTimeBox : Control, INamingContainer
 	public DateTime? Value
 	{
 		get
-		{				
+		{
 			if (!IsValid)
 			{
 				throw new InvalidOperationException("Nelze číst Value, pokud IsValid je false.");
 			}
 
-//				DateTime? result = (DateTime?)ViewState["Value"];
+			//				DateTime? result = (DateTime?)ViewState["Value"];
 			DateTime? result = _value;
 			// pokud jsme v řežimu zobrazení data bez času, nevracíme čas (mohl být zadaný setterem property Value nebo mohlo po postbacku dojít k přepnutí vlastnosti DateTimeMode)
-			if ((result != null) && (DateTimeMode == DateTimeMode.Date)) 
+			if ((result != null) && (DateTimeMode == DateTimeMode.Date))
 			{
 				return result.Value.Date;
 			}
@@ -374,7 +368,7 @@ public class DateTimeBox : Control, INamingContainer
 	/// EventHandler pro získání customizace renderování hodnot v kalendáři.
 	/// </summary>
 	public event DateTimeBoxDateCustomizationEventHandler GetDateTimeBoxCustomization;
-	
+
 	/// <summary>
 	/// EventHandler pro získání výchozí customizace renderování hodnot v kalendáři.
 	/// </summary>
@@ -480,11 +474,11 @@ public class DateTimeBox : Control, INamingContainer
 		dateTimePickerImage.ID = "DateTimePickerImage";
 
 		dateTimePickerIcon = new System.Web.UI.WebControls.WebControl(HtmlTextWriterTag.I);
-		dateTimePickerIcon.ID = "DateTimePickerIcon";			
-		
+		dateTimePickerIcon.ID = "DateTimePickerIcon";
+
 		dateTimePickerDynarchCalendar = new DynarchCalendar();
 		dateTimePickerDynarchCalendar.ID = "DateTimePickerDynarchCalendar";
-		dateTimePickerDynarchCalendar.Electric = false;			
+		dateTimePickerDynarchCalendar.Electric = false;
 		dateTimePickerDynarchCalendar.InputField = "ValueTextBox";
 	}
 
@@ -492,13 +486,13 @@ public class DateTimeBox : Control, INamingContainer
 	/// OnInit (overriden).
 	/// </summary>
 	protected override void OnInit(EventArgs e)
-	{			
-		base.OnInit(e);			
+	{
+		base.OnInit(e);
 		this.Page.PreLoad += new EventHandler(Page_PreLoad);
 		valueTextBox.TextChanged += new EventHandler(ValueTextBox_TextChanged);
 		EnsureChildControls();
 	}
-	
+
 	private void Page_PreLoad(object sender, EventArgs e)
 	{
 		// Řeší, aby byla value dostupná v OnLoad.
@@ -632,7 +626,7 @@ public class DateTimeBox : Control, INamingContainer
 
 			_dateStatusFunction = args.DateCustomization.GetDatesCustomizationFunction(this.Page);
 		}
-		
+
 		if (IsEnabled)
 		{
 			HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
@@ -645,7 +639,7 @@ public class DateTimeBox : Control, INamingContainer
 	protected override void Render(HtmlTextWriter writer)
 	{
 		valueTextBox.Enabled = this.IsEnabled;
-	
+
 		seperatorLiteralControl.Visible = ShowDateTimePicker;
 
 		dateTimePickerImage.Visible = ShowDateTimePicker && (this.DateTimePickerElement == DateTimePickerElement.Image);
@@ -692,14 +686,14 @@ public class DateTimeBox : Control, INamingContainer
 		dateTimePickerDynarchCalendar.Visible = ShowDateTimePicker;
 		dateTimePickerDynarchCalendar.FirstDay = (int)this.FirstDayOfWeek; // číslování enumu v .NETu sedí s předpokládanou hodnotou pro dynarchcalendar			
 		dateTimePickerDynarchCalendar.WeekNumbers = ShowWeekNumbers;
-		
+
 		if (!String.IsNullOrEmpty(_dateStatusFunction))
 		{
 			dateTimePickerDynarchCalendar.DateStatusFunction = _dateStatusFunction;
 		}
 		switch (DateTimeMode)
 		{
-			case DateTimeMode.Date: 
+			case DateTimeMode.Date:
 				dateTimePickerDynarchCalendar.ShowsTime = false;
 				if (valueTextBox.MaxLength == 0)
 				{

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
-using System.Web;
+﻿using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.ComponentModel;
-using System.Reflection;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web.UI.WebControls;
@@ -78,7 +73,7 @@ public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiable
 		set
 		{
 			base.DataFormatString = value;
-			
+
 			// pokud není explicitně nastaveno HtmlEncode, pak ho vypneme
 			if (ViewState["HtmlEncode"] == null)
 			{
@@ -277,10 +272,10 @@ public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiable
 	/// <param name="control">Control, do kterého se má obsah inicializovat.</param>
 	/// <param name="rowState">RowState.</param>
 	protected virtual void InitializeDataCellContent(Control control, DataControlRowState rowState)
-	{			
+	{
 		Literal literal = new Literal();
 		control.Controls.Add(literal);
-		literal.DataBinding += delegate(object sender, EventArgs e)
+		literal.DataBinding += delegate (object sender, EventArgs e)
 		{
 			object value = GetValue(literal.NamingContainer);
 			literal.Text = FormatDataValue(value);

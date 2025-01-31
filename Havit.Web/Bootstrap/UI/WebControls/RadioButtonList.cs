@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using Havit.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Web.Bootstrap.UI.ClientScripts;
 
@@ -55,7 +47,7 @@ public class RadioButtonList : System.Web.UI.WebControls.RadioButtonList, IRadio
 	public RadioButtonList()
 	{
 		this.RepeatLayout = RepeatLayout.Flow;
-		this.RepeatDirection = RepeatDirection.Horizontal;			
+		this.RepeatDirection = RepeatDirection.Horizontal;
 	}
 
 	/// <summary>

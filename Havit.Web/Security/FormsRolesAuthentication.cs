@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.Configuration;
+﻿using System.Web.Configuration;
 using System.Configuration;
 using System.Web.Security;
 using System.Web;
@@ -50,7 +47,7 @@ public static class FormsRolesAuthentication
 	public static void ApplyAuthenticationTicket(FormsAuthenticationTicket ticket)
 	{
 		Contract.Requires<ArgumentNullException>(ticket != null, nameof(ticket));
-		
+
 		HttpContext context = HttpContext.Current;
 		Contract.Requires<InvalidOperationException>(context != null, "HttpContext.Current not available");
 
@@ -101,12 +98,12 @@ public static class FormsRolesAuthentication
 	public static FormsAuthenticationTicket GetAuthTicket(string username, string[] roles, bool createPersistent, string cookiePath, int? timeout)
 	{
 		Contract.Requires((createPersistent && (timeout == null)) || (!createPersistent && (timeout != null)), "Pro perzistentní cookie nelze zadat timeout, pro neperzistentní je timeout povinný.");
-		
+
 		if (username == null)
 		{
 			username = String.Empty;
 		}
-		
+
 		string userData = string.Empty;
 		if (roles != null)
 		{
@@ -124,24 +121,24 @@ public static class FormsRolesAuthentication
 		if (createPersistent)
 		{
 			authTicket = new FormsAuthenticationTicket(
-				2,											// version
-				username,									// name
-				DateTime.Now,								// issueDate
-				DateTime.Now.AddYears(50),					// expiration
-				true,										// isPersistent
-				userData,									// userData
-				cookiePath);								// cookiePath
+				2,                                          // version
+				username,                                   // name
+				DateTime.Now,                               // issueDate
+				DateTime.Now.AddYears(50),                  // expiration
+				true,                                       // isPersistent
+				userData,                                   // userData
+				cookiePath);                                // cookiePath
 		}
 		else
 		{
 			authTicket = new FormsAuthenticationTicket(
-				2,												// version
-				username,										// name
-				DateTime.Now,									// issueDate
-				DateTime.Now.AddMinutes(timeout.Value),	// expiration
-				false,											// isPersistent
-				userData,										// userData
-				cookiePath);									// cookiePath
+				2,                                              // version
+				username,                                       // name
+				DateTime.Now,                                   // issueDate
+				DateTime.Now.AddMinutes(timeout.Value), // expiration
+				false,                                          // isPersistent
+				userData,                                       // userData
+				cookiePath);                                    // cookiePath
 		}
 		return authTicket;
 	}
@@ -269,7 +266,7 @@ public static class FormsRolesAuthentication
 
 			HttpCookie authCookie = GetAuthCookie(username, roles, createPersistentCookie, cookiePath);
 			context.Response.Cookies.Add(authCookie);
-			
+
 			return authCookie;
 		}
 		return null;

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using System.Collections;
-using System.Globalization;
 using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls;
 
-    /// <summary>
-    /// Vylepšený <see cref="System.Web.UI.WebControls.CheckBoxList"/>.
-    /// Podporuje lepší zpracování hodnoty DataTextField při databindingu.
-    /// </summary>
+/// <summary>
+/// Vylepšený <see cref="System.Web.UI.WebControls.CheckBoxList"/>.
+/// Podporuje lepší zpracování hodnoty DataTextField při databindingu.
+/// </summary>
 [ValidationProperty("SelectedValue")]
 public class CheckBoxListExt : CheckBoxList
 {

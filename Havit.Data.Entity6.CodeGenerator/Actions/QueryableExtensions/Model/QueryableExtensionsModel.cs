@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
+﻿namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
 
 public class QueryableExtensionsModel
 {

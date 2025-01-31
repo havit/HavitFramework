@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Entity;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.Entity.CodeGenerator.Services;
 using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model;
@@ -22,13 +19,13 @@ public class DbDataSourceModelSource : IModelSource<DbDataSourceModel>
 	public IEnumerable<DbDataSourceModel> GetModels()
 	{
 		return (from registeredEntity in dbContext.GetRegisteredEntities()
-			select new DbDataSourceModel
-			{
-				NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),
-				InterfaceDataSourceFullName = "I" + registeredEntity.ClassName + "DataSource",
-				DbDataSourceClassName = registeredEntity.ClassName + "DbDataSource",
-				ModelClassFullName = registeredEntity.FullName
-			}).ToList();
+				select new DbDataSourceModel
+				{
+					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName),
+					InterfaceDataSourceFullName = "I" + registeredEntity.ClassName + "DataSource",
+					DbDataSourceClassName = registeredEntity.ClassName + "DbDataSource",
+					ModelClassFullName = registeredEntity.FullName
+				}).ToList();
 	}
 
 	// TODO: Opakující se kód (obdobný)

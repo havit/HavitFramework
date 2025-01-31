@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
+﻿namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
 
 public class DataEntriesModel
 {

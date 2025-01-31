@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+﻿using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
 
 namespace Havit.Data.Entity.Patterns.DataSources;

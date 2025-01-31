@@ -8,7 +8,7 @@ public class DbDataEntriesFileNamingService : FileNamingServiceBase<DataEntriesM
 	public DbDataEntriesFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(DataEntriesModel model)

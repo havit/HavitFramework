@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Xml.Linq;
-using Havit.Data.Entity.Patterns.SoftDeletes;
 
 namespace Havit.Data.Entity.CodeGenerator.Services;
 

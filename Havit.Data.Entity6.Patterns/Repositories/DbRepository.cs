@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data.Entity;
-using System.Data.Entity.Core;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.XPath;
 using Havit.Data.Entity.Patterns.Infrastructure;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders;
@@ -61,7 +54,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 	/// DbSet, nad kterým je DbRepository postaven.
 	/// </summary>
 	protected DbSet<TEntity> DbSet => _dbSet.Value;
-	
+
 	/// <summary>
 	/// Implementačně jako Lazy, aby kontruktor nevyzvedával DbSet. To umožňuje psát unit testy s mockem dbContextu bez setupu metody Set (dbContext nemusí nic umět).
 	/// </summary>
@@ -110,10 +103,10 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 				case NotifyCollectionChangedAction.Add:
 					if (_dbSetLocalsDictionary != null)
 					{
-                            foreach (var entity in e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState))
-                            {
-                                _dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKeyValue(entity), entity);
-                            }
+						foreach (var entity in e.NewItems.Cast<TEntity>().Where(EntityNotInAddedState))
+						{
+							_dbSetLocalsDictionary.Add(entityKeyAccessor.GetEntityKeyValue(entity), entity);
+						}
 					}
 					break;
 
@@ -183,7 +176,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 		TEntity result = await dbContext.ExecuteWithoutAutoDetectChanges(() => DbSet.FindAsync(cancellationToken, new object[] { id })).ConfigureAwait(false);
 		if (result == null)
 		{
-			ThrowObjectNotFoundException(id);					
+			ThrowObjectNotFoundException(id);
 		}
 
 		await LoadReferencesAsync(new TEntity[] { result }, cancellationToken).ConfigureAwait(false);
@@ -196,7 +189,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 	/// </summary>
 	/// <exception cref="Havit.Data.Patterns.Exceptions.ObjectNotFoundException">Alespoň jeden objekt nebyl nalezen.</exception>
 	public List<TEntity> GetObjects(params int[] ids)
-	{			
+	{
 		Contract.Requires<ArgumentNullException>(ids != null, nameof(ids));
 
 		HashSet<TEntity> loadedEntities = new HashSet<TEntity>();
@@ -227,7 +220,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
 				int[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
-				ThrowObjectNotFoundException(missingObjectIds);					
+				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
 			result.AddRange(loadedObjects);
@@ -341,17 +334,17 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 						.GetMethods(BindingFlags.Public | BindingFlags.Static)
 						 .Where(m => m.Name == "Contains")
 						 .Select(m => new
-							 {
-								 Method = m,
-								 Params = m.GetParameters(),
-								 Args = m.GetGenericArguments()
-							 })
+						 {
+							 Method = m,
+							 Params = m.GetParameters(),
+							 Args = m.GetGenericArguments()
+						 })
 						 .Where(x => x.Params.Length == 2)
 						 .Select(x => x.Method)
 						 .First()
 						.MakeGenericMethod(typeof(int)),
 				Expression.Constant(ids),
-				Expression.Property(parameter, typeof(TEntity), "Id")), 
+				Expression.Property(parameter, typeof(TEntity), "Id")),
 			parameter);
 		return DbSet.Where(expression);
 	}

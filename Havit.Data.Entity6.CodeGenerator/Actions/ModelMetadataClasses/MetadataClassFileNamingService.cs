@@ -8,7 +8,7 @@ public class MetadataClassFileNamingService : FileNamingServiceBase<MetadataClas
 	public MetadataClassFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(MetadataClass model)

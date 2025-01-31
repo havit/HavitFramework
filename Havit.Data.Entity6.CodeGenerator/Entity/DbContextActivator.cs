@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.DependencyResolution;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Entity.CodeGenerator.Entity;
 
@@ -31,7 +26,7 @@ public class DbContextActivator
 
 		// pokud konfigurace není udělána a existuje bezparametrický konstruktor, funguje tento přístup
 		var dbContextInfo = new DbContextInfo(dbContextType);
-		return (DbContext)dbContextInfo.CreateInstance();			
+		return (DbContext)dbContextInfo.CreateInstance();
 	}
 
 }

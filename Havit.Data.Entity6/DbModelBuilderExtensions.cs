@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Linq;
 using System.Reflection;
 using Havit.Diagnostics.Contracts;
 
@@ -36,7 +33,7 @@ public static class DbModelBuilderExtensions
 			else
 			{
 				modelBuilder.RegisterEntityType(assemblyType);
-			}				
+			}
 		}
 	}
 }

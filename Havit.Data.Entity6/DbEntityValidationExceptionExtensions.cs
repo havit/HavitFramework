@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Havit.Data.Entity;
+﻿namespace Havit.Data.Entity;
 
 /// <summary>
 /// Extension metody k třídě DbEntityValidationException.

@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
 
 namespace Havit.Data.Entity.CodeGenerator.Services;

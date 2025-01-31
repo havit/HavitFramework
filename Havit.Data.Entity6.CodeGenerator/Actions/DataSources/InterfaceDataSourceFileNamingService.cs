@@ -8,7 +8,7 @@ public class InterfaceDataSourceFileNamingService : FileNamingServiceBase<Interf
 	public InterfaceDataSourceFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(InterfaceDataSourceModel model)

@@ -24,4 +24,4 @@ public class SymbolPropertyIndexConvention : IStoreModelConvention<EdmProperty>
 			}
 		}
 	}
-    }
+}

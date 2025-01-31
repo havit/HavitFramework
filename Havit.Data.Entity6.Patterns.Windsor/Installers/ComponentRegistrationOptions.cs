@@ -1,5 +1,4 @@
-﻿using System;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Registration.Lifestyle;
 using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;

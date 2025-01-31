@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.Model;
-using Havit.Data.Patterns.DataSeeds;
+﻿using Havit.Data.Patterns.DataSeeds;
 
 namespace Havit.Data.Entity.Patterns.DataSeeds;
 
@@ -24,30 +18,30 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 		this.dbContext = dbContext;
 	}
 
-        /// <summary>
-        /// Přečte aktuální stav.
-        /// Není-li dosud evidován, vrací null.
-        /// </summary>
-        /// <param name="profileName">Název profilu, jehož stav je čten.</param>
-        /// <returns>Aktuální stav</returns>
-        /// <remarks>
-        /// Stav je držen ve třídě DataSeed (tabulka __DataSeed) v záznamu s Id = 1.
-        /// </remarks>
-        public string ReadCurrentState(string profileName)
+	/// <summary>
+	/// Přečte aktuální stav.
+	/// Není-li dosud evidován, vrací null.
+	/// </summary>
+	/// <param name="profileName">Název profilu, jehož stav je čten.</param>
+	/// <returns>Aktuální stav</returns>
+	/// <remarks>
+	/// Stav je držen ve třídě DataSeed (tabulka __DataSeed) v záznamu s Id = 1.
+	/// </remarks>
+	public string ReadCurrentState(string profileName)
 	{
 		Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.ProfileName == profileName);
 		return dataSeedVersion?.Version;
 	}
 
-        /// <summary>
-        /// Zapíše aktuální stav do databáze (vč. provedení dbContext.SaveChanges).
-        /// </summary>
-        /// <param name="profileName">Název profilu, ke kterému je zapisován stav.</param>
+	/// <summary>
+	/// Zapíše aktuální stav do databáze (vč. provedení dbContext.SaveChanges).
+	/// </summary>
+	/// <param name="profileName">Název profilu, ke kterému je zapisován stav.</param>
 	/// <param name="currentState">Aktuální stav k zapsání.</param>
-        /// <remarks>
-        /// Stav je držen ve třídě DataSeed (tabulka __DataSeed) v záznamu s Id = 1.
-        /// </remarks>
-        public void WriteCurrentState(string profileName, string currentState)
+	/// <remarks>
+	/// Stav je držen ve třídě DataSeed (tabulka __DataSeed) v záznamu s Id = 1.
+	/// </remarks>
+	public void WriteCurrentState(string profileName, string currentState)
 	{
 		Model.DataSeedVersion dataSeedVersion = dbContext.Set<Model.DataSeedVersion>().SingleOrDefault(item => item.ProfileName == profileName);
 		if (dataSeedVersion == null)

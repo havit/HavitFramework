@@ -1,28 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Havit.Data.Entity.Patterns.Windsor</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RootNamespace>Havit.Data.Entity.Patterns.Windsor</RootNamespace>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.2.33-pre03</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Installers for Castle Windsor</Description>
-  </PropertyGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.2.33-pre03</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Installers for Castle Windsor</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Castle.Windsor" Version="5.1.2" />
-	  <!-- update vulnerable dependencies to fixed versions -->
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	  <PackageReference Include="System.Net.Http" Version="4.3.4" />
-	  <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Castle.Windsor" Version="5.1.2" />
+		<!-- update vulnerable dependencies to fixed versions -->
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.Entity6.Patterns\Havit.Data.Entity6.Patterns.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity.Infrastructure.Annotations;
+﻿using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Reflection;
 

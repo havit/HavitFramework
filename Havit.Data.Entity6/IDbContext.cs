@@ -1,9 +1,4 @@
-﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 
 namespace Havit.Data.Entity;
 
@@ -80,17 +75,17 @@ public interface IDbContext
 	bool IsEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class;
 
-    /// <summary>
-    /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbReferenceEntry.IsLoaded.
-    /// </summary>
-    void SetEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
-        where TEntity : class;
+	/// <summary>
+	/// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbReferenceEntry.IsLoaded.
+	/// </summary>
+	void SetEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+		where TEntity : class;
 
-        /// <summary>
-        /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbCollectionEntry.IsLoaded.
-        /// </summary>
-        void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
-        where TEntity : class;
+	/// <summary>
+	/// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbCollectionEntry.IsLoaded.
+	/// </summary>
+	void SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	where TEntity : class;
 
 	/// <summary>
 	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.

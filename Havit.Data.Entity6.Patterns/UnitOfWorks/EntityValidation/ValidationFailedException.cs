@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
+﻿namespace Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 
 /// <summary>
 /// Výjimka informující o chybě při validaci.
@@ -19,7 +15,7 @@ public class ValidationFailedException : Exception
 	/// </summary>
 	public ValidationFailedException(IEnumerable<string> validationErrors)
 	{
-		ValidationErrors = validationErrors.ToList().AsReadOnly();			
+		ValidationErrors = validationErrors.ToList().AsReadOnly();
 	}
 
 	/// <summary>

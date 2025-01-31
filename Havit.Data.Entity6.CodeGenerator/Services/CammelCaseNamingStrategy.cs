@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace Havit.Data.Entity.CodeGenerator.Services;
+﻿namespace Havit.Data.Entity.CodeGenerator.Services;
 
 public class CammelCaseNamingStrategy
 {
@@ -120,7 +115,7 @@ public class CammelCaseNamingStrategy
 		"yield"
 	};
 
-public string GetCammelCase(string name)
+	public string GetCammelCase(string name)
 	{
 		string result = name[0].ToString().ToLower() + name.Substring(1);
 		return csharpKeywords.Contains(result)

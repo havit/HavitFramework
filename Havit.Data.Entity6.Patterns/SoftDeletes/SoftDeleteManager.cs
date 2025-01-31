@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 using Havit.Diagnostics.Contracts;
@@ -87,7 +85,7 @@ public class SoftDeleteManager : ISoftDeleteManager
 		{
 			throw new NotSupportedException(String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
 		}
-		
+
 		if (_getNotDeletedExpressionLambdaDictionary.TryGetValue(typeof(TEntity), out var result))
 		{
 			return (Expression<Func<TEntity, bool>>)result;

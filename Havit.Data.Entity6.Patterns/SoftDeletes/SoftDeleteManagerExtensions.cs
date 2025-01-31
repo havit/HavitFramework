@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Diagnostics.Contracts;
+﻿using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Entity.Patterns.SoftDeletes;
 
@@ -22,7 +17,7 @@ public static class SoftDeleteManagerExtensions
 
 		if (softDeleteManager.IsSoftDeleteSupported<TSource>())
 		{
-			return source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>()); 
+			return source.Where(softDeleteManager.GetNotDeletedExpressionLambda<TSource>());
 		}
 		else
 		{

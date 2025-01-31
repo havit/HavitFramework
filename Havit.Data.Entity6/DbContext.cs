@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Havit.Data.Entity.Conventions;
 using Havit.Data.Entity.Model;
 using ForeignKeyIndexConvention = Havit.Data.Entity.Conventions.ForeignKeyIndexConvention;
@@ -24,7 +17,7 @@ public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 	/// <summary>
 	/// Singleton pro použití v konstruktoru používající DbContextDefaultDatabase.
 	/// </summary>
-	public static DbContextDefaultDatabase DefaultDatabase { get; } = new DbContextDefaultDatabase();	
+	public static DbContextDefaultDatabase DefaultDatabase { get; } = new DbContextDefaultDatabase();
 
 	/// <summary>
 	/// Registr akcí k provedení po uložení změn.
@@ -97,7 +90,7 @@ public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 		dataSeedVersionEntity.ToTable("__DataSeed");
 		dataSeedVersionEntity.HasKey(item => item.ProfileName);
 		dataSeedVersionEntity.Property(item => item.Version);
-		
+
 		// EF standardně pojmenovává tabulky v databázi v množném čísle (anglicky).
 		// Chceme pojmenovat tabulky v jednotném čísle (a nemrvnit češtinu ala "Fakturas"),
 		// proto odebereme konvenci zajišťující pojmenování v množném čísle.
@@ -129,20 +122,20 @@ public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 		// Použijeme proto vlastní konvenci, která toto řeší (a řeší i pojmenování indexu).
 		modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.ForeignKeyIndexConvention>();
 		modelBuilder.Conventions.Add<ForeignKeyIndexConvention>();
-		
+
 		// Pro sloupce pojmenované "Symbol" automaticky vytvoří unikátní index.
 		modelBuilder.Conventions.Add<SymbolPropertyIndexConvention>();
 
 		// Pro lokalizační tabulky vytvoří unikátní index na sloupcích ParentId a LanguageId.
 		modelBuilder.Conventions.Add<LocalizationTableIndexConvention>();
 	}
-	
+
 	/// <summary>
 	/// Saves all changes made in this context to the underlying database.
 	/// </summary>
 	public override int SaveChanges()
 	{
-		int result = ExecuteWithSaveChangesExceptionHandling(base.SaveChanges);			
+		int result = ExecuteWithSaveChangesExceptionHandling(base.SaveChanges);
 		AfterSaveChanges();
 		return result;
 	}
@@ -273,31 +266,31 @@ public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 		return ExecuteWithoutAutoDetectChanges(() => Entry(entity).Collection(propertyName).IsLoaded);
 	}
 
-    /// <summary>
-    /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbReferenceEntry.IsLoaded.
-    /// </summary>
-    void IDbContext.SetEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
-    {
-        ExecuteWithoutAutoDetectChanges(() => Entry(entity).Reference(propertyName).IsLoaded = loadedValue);
-    }
+	/// <summary>
+	/// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbReferenceEntry.IsLoaded.
+	/// </summary>
+	void IDbContext.SetEntityReferenceLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	{
+		ExecuteWithoutAutoDetectChanges(() => Entry(entity).Reference(propertyName).IsLoaded = loadedValue);
+	}
 
-        /// <summary>
-        /// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbCollectionEntry.IsLoaded.
-        /// </summary>
-        void IDbContext.SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
-    {
-        ExecuteWithoutAutoDetectChanges(() => Entry(entity).Collection(propertyName).IsLoaded = loadedValue);
-    }
+	/// <summary>
+	/// Nastaví informaci o tom, zda byla daná vlastnost dané entity načtena. Viz DbCollectionEntry.IsLoaded.
+	/// </summary>
+	void IDbContext.SetEntityCollectionLoaded<TEntity>(TEntity entity, string propertyName, bool loadedValue)
+	{
+		ExecuteWithoutAutoDetectChanges(() => Entry(entity).Collection(propertyName).IsLoaded = loadedValue);
+	}
 
-        /// <summary>
-        /// Volá DetectChanges na ChangeTrackeru.
-        /// </summary>
-        void IDbContext.DetectChanges()
+	/// <summary>
+	/// Volá DetectChanges na ChangeTrackeru.
+	/// </summary>
+	void IDbContext.DetectChanges()
 	{
 		this.ChangeTracker.DetectChanges();
 	}
 
-        /// <summary>
+	/// <summary>
 	/// Provede akci s AutoDetectChangesEnabled nastaveným na false, přičemž je poté AutoDetectChangesEnabled nastaven na původní hodnotu.
 	/// </summary>
 	public TResult ExecuteWithoutAutoDetectChanges<TResult>(Func<TResult> action)
@@ -351,5 +344,5 @@ public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 		internal DbContextDefaultDatabase()
 		{
 		}
-	}	
+	}
 }

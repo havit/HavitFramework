@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Castle.Core.Internal;
+﻿using System.Reflection;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -13,7 +10,6 @@ using Havit.Data.Entity.Patterns.Infrastructure;
 using Havit.Data.Entity.Patterns.Repositories;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Transactions.Internal;
-using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Data.Patterns.Attributes;

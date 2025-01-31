@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Entity;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.Entity.CodeGenerator.Services;
 using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.DataSources.Model;
@@ -22,13 +19,13 @@ public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 	public IEnumerable<FakeDataSourceModel> GetModels()
 	{
 		return (from registeredEntity in dbContext.GetRegisteredEntities()
-			select new FakeDataSourceModel
-			{
-				NamespaceName = GetNamespaceName(registeredEntity.NamespaceName, true),
-				InterfaceDataSourceFullName = GetNamespaceName(registeredEntity.NamespaceName, false) + ".I" + registeredEntity.ClassName + "DataSource",
-				FakeDataSourceClassName = "Fake" + registeredEntity.ClassName + "DataSource",
-				ModelClassFullName = registeredEntity.FullName
-			}).ToList();
+				select new FakeDataSourceModel
+				{
+					NamespaceName = GetNamespaceName(registeredEntity.NamespaceName, true),
+					InterfaceDataSourceFullName = GetNamespaceName(registeredEntity.NamespaceName, false) + ".I" + registeredEntity.ClassName + "DataSource",
+					FakeDataSourceClassName = "Fake" + registeredEntity.ClassName + "DataSource",
+					ModelClassFullName = registeredEntity.FullName
+				}).ToList();
 	}
 
 	private string GetNamespaceName(string namespaceName, bool addFakes)

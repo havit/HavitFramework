@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
+﻿using System.Data.Entity.Core.Metadata.Edm;
 using System.Text;
 using Havit.Diagnostics.Contracts;
 
@@ -27,7 +25,7 @@ internal static class IndexNameHelper
 			indexNameBuilder.Append("U");
 		}
 		indexNameBuilder.Append("IDX_");
-            indexNameBuilder.Append(columns.First().DeclaringType.Name);
+		indexNameBuilder.Append(columns.First().DeclaringType.Name);
 
 		foreach (EdmProperty property in columns)
 		{

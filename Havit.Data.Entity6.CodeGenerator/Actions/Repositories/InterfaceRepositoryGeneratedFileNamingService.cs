@@ -8,7 +8,7 @@ public class InterfaceRepositoryGeneratedFileNamingService : FileNamingServiceBa
 	public InterfaceRepositoryGeneratedFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(RepositoryModel model)

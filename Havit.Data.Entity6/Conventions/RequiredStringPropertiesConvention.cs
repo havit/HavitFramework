@@ -16,7 +16,7 @@ public class RequiredStringPropertiesConvention : IConceptualModelConvention<Edm
 	{
 		if ((item.PrimitiveType != null) && (item.PrimitiveType.ClrEquivalentType == typeof(string)))
 		{
-			item.Nullable = false;			
+			item.Nullable = false;
 		}
 	}
 }

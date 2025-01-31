@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.Entity.Patterns.SoftDeletes;
+﻿using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.TimeServices;
@@ -43,7 +41,7 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	protected FakeDataSource(params TEntity[] data)
 		: this(data.AsEnumerable(), null)
-	{			
+	{
 	}
 
 	/// <summary>

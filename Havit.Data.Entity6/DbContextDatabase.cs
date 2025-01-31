@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -42,7 +41,7 @@ internal class DbContextDatabase : IDbContextDatabase
 
 	/// <inheritdoc />
 	public DbContextTransaction BeginTransaction() => dbContext.Database.BeginTransaction();
-	
+
 	/// <inheritdoc />
 	public DbContextTransaction BeginTransaction(IsolationLevel isolationLevel) => dbContext.Database.BeginTransaction(isolationLevel);
 

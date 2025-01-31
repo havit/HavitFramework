@@ -8,7 +8,7 @@ public class FakeDataSourceFileNamingService : FileNamingServiceBase<FakeDataSou
 	public FakeDataSourceFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(FakeDataSourceModel model)

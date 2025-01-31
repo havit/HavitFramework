@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
+﻿namespace Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 
 /// <summary>
 /// Validátor, který se spustí před provedením Commitu na UoW.

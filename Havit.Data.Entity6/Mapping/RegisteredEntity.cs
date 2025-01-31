@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace Havit.Data.Entity.Mapping.Internal;
 
@@ -27,12 +22,12 @@ public class RegisteredEntity
 	/// Full name of registered entity.
 	/// </summary>
 	public string FullName { get; set; }
-	
+
 	/// <summary>
 	/// Type of registered entity
 	/// </summary>
 	public Type Type { get; set; }
-	
+
 	/// <summary>
 	/// Identifier if registered entity is enum value.
 	/// </summary>
@@ -44,7 +39,7 @@ public class RegisteredEntity
 	/// Identifier if registered entity has primary key.
 	/// </summary>
 	public bool HasDatabaseGeneratedIdentity { get; set; }
-	
+
 	/// <summary>
 	/// Properties of registered entity.
 	/// </summary>

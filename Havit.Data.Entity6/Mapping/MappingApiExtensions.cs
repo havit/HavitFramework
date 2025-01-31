@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Havit.Data.Entity.ModelConfiguration.Edm;
 
 namespace Havit.Data.Entity.Mapping.Internal;
 
@@ -134,7 +128,7 @@ public static class MappingApiExtensions
 		{
 			var result = new RegisteredProperty()
 			{
-				
+
 				PropertyName = member.Name,
 				Type = ((member is EdmProperty) && (((EdmProperty)member).IsPrimitiveType))
 					? ((PrimitiveType)member.TypeUsage.EdmType).ClrEquivalentType
@@ -164,9 +158,9 @@ public static class MappingApiExtensions
 				// SSpace Child {ChildId-Identity, MasterId-None}
 				// CSpace Child {Master, Id-None, MasterId-None}
 				result.StoreGeneratedPattern = ((EdmProperty)member).StoreGeneratedPattern; // je vždy None - tato informace je obsažena v SSpace
-				//var sEntityType = objectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.SSpace).Single(item => item.Name == ((EdmProperty)member).DeclaringType.Name);
-				//result.StoreGeneratedPattern = ((EdmProperty) sEntityType.DeclaredMembers.Where(dm => dm.Name == member.Name))
-				//	.StoreGeneratedPattern;
+																							//var sEntityType = objectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.SSpace).Single(item => item.Name == ((EdmProperty)member).DeclaringType.Name);
+																							//result.StoreGeneratedPattern = ((EdmProperty) sEntityType.DeclaredMembers.Where(dm => dm.Name == member.Name))
+																							//	.StoreGeneratedPattern;
 				result.Nullable = ((EdmProperty)member).Nullable;
 				result.IsKeyProperty = entityType.KeyProperties.Contains(member.Name);
 

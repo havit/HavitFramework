@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
+﻿using System.Data.Entity.Core.Metadata.Edm;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Havit.Data.Entity.Mapping.Internal;
 
@@ -23,7 +18,7 @@ public class RegisteredProperty
 	/// Type of property
 	/// </summary>
 	public Type Type { get; set; }
-	
+
 	/// <summary>
 	/// Identifier that the property is nullable.
 	/// </summary>

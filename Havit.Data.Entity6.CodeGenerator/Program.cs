@@ -1,12 +1,8 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Havit.Data.Entity.CodeGenerator.Actions.DataEntries;
 using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
 using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template;
@@ -25,7 +21,6 @@ using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
 using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
-using Havit.Data.Entity.Patterns;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Services.TimeServices;
 
@@ -41,7 +36,7 @@ internal static class Program
 		ISourceControlClient sourceControlClient = new NullSourceControlClient();
 
 		DirectoryInfo solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
-		
+
 		while (System.IO.Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
 		{
 			if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
@@ -113,7 +108,7 @@ internal static class Program
 
 		Stopwatch codeGenerationStopwath = Stopwatch.StartNew();
 		Console.WriteLine($"Generating code...");
-		
+
 		var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 		Parallel.Invoke(
@@ -128,18 +123,18 @@ internal static class Program
 		string[] unusedModelFiles = null;
 
 		Parallel.Invoke(
-	        () =>
-	        {
-		        unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
+			() =>
+			{
+				unusedModelFiles = modelProject.GetUnusedGeneratedFiles();
 				modelProject.RemoveUnusedGeneratedFiles();
-	            modelProject.SaveChanges();
-	        },
-	        () =>
-	        {
-		        unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
-	            dataLayerProject.RemoveUnusedGeneratedFiles();
-	            dataLayerProject.SaveChanges();
-	        });
+				modelProject.SaveChanges();
+			},
+			() =>
+			{
+				unusedDataLayerFiles = dataLayerProject.GetUnusedGeneratedFiles();
+				dataLayerProject.RemoveUnusedGeneratedFiles();
+				dataLayerProject.SaveChanges();
+			});
 
 		sourceControlClient.Delete(unusedModelFiles.Concat(unusedDataLayerFiles).ToArray());
 		unusedModelFiles.Concat(unusedDataLayerFiles).ToList().ForEach(item =>
@@ -169,7 +164,7 @@ internal static class Program
 				CustomAttributeData attribute = assembly.CustomAttributes.Where(customDataAttribute => typeof(System.Runtime.Versioning.TargetFrameworkAttribute).IsAssignableFrom(customDataAttribute.AttributeType)).SingleOrDefault();
 				CustomAttributeNamedArgument? namedArgument = attribute?.NamedArguments?.Where(na => na.MemberName == nameof(System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkDisplayName)).SingleOrDefault();
 				if (namedArgument != null)
-				{						
+				{
 					Console.WriteLine("Target framework: " + namedArgument.Value.TypedValue.ToString().Trim('\"'));
 					return;
 				}

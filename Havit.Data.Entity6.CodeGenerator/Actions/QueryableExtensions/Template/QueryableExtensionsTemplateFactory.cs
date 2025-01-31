@@ -1,5 +1,4 @@
-﻿using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
+﻿using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;
 using Havit.Data.Entity.CodeGenerator.Services;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Template;

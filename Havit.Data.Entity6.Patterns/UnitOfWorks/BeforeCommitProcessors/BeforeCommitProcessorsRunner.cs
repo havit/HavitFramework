@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 
@@ -30,7 +27,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 	{
 		// z výkonových důvodů - omezení procházení pole processorů - seskupíme objekty podle typu,
 		// vyhledáme procesor pro daný typ a spustíme jej nad všemi objekty ve skupině.
-		
+
 		var changeGroups = changes.Inserts.Select(item => new { Change = ChangeType.Insert, Entity = item })
 			.Concat(changes.Updates.Select(item => new { Change = ChangeType.Update, Entity = item }))
 			.Concat(changes.Deletes.Select(item => new { Change = ChangeType.Delete, Entity = item }))

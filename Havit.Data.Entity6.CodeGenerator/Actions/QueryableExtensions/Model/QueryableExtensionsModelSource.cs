@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Model;
-using Havit.Data.Entity.CodeGenerator.Entity;
-using Havit.Data.Entity.CodeGenerator.Services;
+﻿using Havit.Data.Entity.CodeGenerator.Services;
 using Havit.Data.Entity.Mapping.Internal;
 
 namespace Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Model;

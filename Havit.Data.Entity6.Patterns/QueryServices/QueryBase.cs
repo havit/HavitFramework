@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 
 namespace Havit.Data.Entity.Patterns.QueryServices;
 
@@ -18,7 +14,7 @@ public abstract class QueryBase<TQueryResult>
 	/// Definuje Query.
 	/// </summary>
 	protected abstract IQueryable<TQueryResult> Query();
-	
+
 	/// <summary>
 	/// Vrátí všechny objekty dle Query.
 	/// </summary>

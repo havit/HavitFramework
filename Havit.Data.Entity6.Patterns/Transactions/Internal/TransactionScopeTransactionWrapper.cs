@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.Common;
-using System.Transactions;
+﻿using System.Transactions;
 
 namespace Havit.Data.Entity.Patterns.Transactions.Internal;
 

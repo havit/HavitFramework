@@ -1,6 +1,4 @@
-﻿using System;
-using Havit.Data.Patterns.Infrastructure;
-using Havit.Model.Localizations;
+﻿using Havit.Data.Patterns.Infrastructure;
 
 namespace Havit.Data.Entity.Patterns.Infrastructure;
 

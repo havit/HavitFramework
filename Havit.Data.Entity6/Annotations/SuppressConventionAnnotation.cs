@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
+﻿using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure.Annotations;
-using System.Linq;
 using Havit.Data.Entity.ModelConfiguration.Edm;
 using Havit.Diagnostics.Contracts;
 
@@ -37,7 +34,7 @@ internal sealed class SuppressConventionAnnotation : IMergeableAnnotation
 		SupressedConventions.Add(supressedConvention);
 	}
 
-        public override string ToString()
+	public override string ToString()
 	{
 		return typeof(SuppressConventionAnnotation).Name + ": " + String.Join(", ", SupressedConventions.Select(item => item.FullName).OrderBy(item => item).ToArray());
 	}

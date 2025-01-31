@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Configuration;
-using System.Linq;
 using System.Reflection;
 using Havit.Data.Entity.Annotations;
 using Havit.Data.Entity.ModelConfiguration.Configuration;
@@ -31,13 +28,13 @@ public static class EntityTypeConfigurationExtensions
 	public static void HasUniqueIndex<TEntity>(this EntityTypeConfiguration<TEntity> configuration, string indexName, params PrimitivePropertyConfiguration[] properties)
 		where TEntity : class
 	{
-		HasIndexInternal(indexName, properties, true);						
+		HasIndexInternal(indexName, properties, true);
 	}
 
 	private static void HasIndexInternal(string indexName, PrimitivePropertyConfiguration[] properties, bool isUnique)
 	{
 		for (int i = 0; i < properties.Length; i++)
-		{				
+		{
 			IndexAttribute newIndex = new IndexAttribute(indexName, i + 1) { IsUnique = isUnique };
 
 			IndexAnnotation indexAnnotation = (IndexAnnotation)properties[i].GetAnnotation(IndexAnnotation.AnnotationName);
@@ -65,7 +62,7 @@ public static class EntityTypeConfigurationExtensions
 		SuppressConventionAnnotation suppressConventionAnnotation = (SuppressConventionAnnotation)configuration.GetAnnotation("HasSuppressedConvention");
 		if (suppressConventionAnnotation != null)
 		{
-			suppressConventionAnnotation.AddSupressedConvention(conventionType);	
+			suppressConventionAnnotation.AddSupressedConvention(conventionType);
 		}
 		else
 		{

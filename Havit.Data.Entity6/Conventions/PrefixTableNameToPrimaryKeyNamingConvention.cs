@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
 
 namespace Havit.Data.Entity.Conventions;
 
@@ -20,7 +19,7 @@ public class PrefixTableNameToPrimaryKeyNamingConvention : IStoreModelConvention
 		if (parentEntityType != null)
 		{
 			EntityType entityTypeCSpace = model.ConceptualModel.EntityTypes.FirstOrDefault(i => (i.Name == parentEntityType.Name));
-			bool isEntity = entityTypeCSpace != null; 
+			bool isEntity = entityTypeCSpace != null;
 
 			if (isEntity // eliminujeme vztahové tabulky
 				&& (parentEntityType.KeyMembers.Count == 1) // nechceme vazební tabulky

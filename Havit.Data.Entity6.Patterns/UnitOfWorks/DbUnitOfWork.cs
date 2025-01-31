@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
-using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Diagnostics.Contracts;
-using Havit.Services;
 
 namespace Havit.Data.Entity.Patterns.UnitOfWorks;
 
@@ -102,7 +92,7 @@ public class DbUnitOfWork : IUnitOfWork
 	/// Zajišťuje volání registrovaných after commit akcí (viz RegisterAfterCommitAction).
 	/// </summary>
 	protected internal virtual void AfterCommit()
-	{			
+	{
 		List<Action> registeredAfterCommitActiond = afterCommits;
 		// Neprve vyčistíme afterCommits, pak je teprve spustíme.
 		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.

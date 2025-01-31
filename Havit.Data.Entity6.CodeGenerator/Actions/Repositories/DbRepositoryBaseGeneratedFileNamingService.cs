@@ -8,7 +8,7 @@ public class DbRepositoryBaseGeneratedFileNamingService : FileNamingServiceBase<
 	public DbRepositoryBaseGeneratedFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(RepositoryModel model)

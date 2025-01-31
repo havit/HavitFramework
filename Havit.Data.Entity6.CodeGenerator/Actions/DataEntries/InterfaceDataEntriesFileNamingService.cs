@@ -8,7 +8,7 @@ public class InterfaceDataEntriesFileNamingService : FileNamingServiceBase<DataE
 	public InterfaceDataEntriesFileNamingService(IProject project)
 		: base(project)
 	{
-		
+
 	}
 
 	protected override string GetClassName(DataEntriesModel model)

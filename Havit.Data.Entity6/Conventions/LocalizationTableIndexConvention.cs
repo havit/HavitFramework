@@ -1,8 +1,6 @@
-﻿using System;
-using System.Data.Entity.Core.Metadata.Edm;
+﻿using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
 using Havit.Data.Entity.Internal;
 using Havit.Data.Entity.ModelConfiguration.Edm;
 using Havit.Model.Localizations;

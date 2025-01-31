@@ -4,6 +4,8 @@
 		<TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<RootNamespace>Havit.Data.Entity.Azure</RootNamespace>
+		<ImplicitUsings>true</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
 	</PropertyGroup>
 

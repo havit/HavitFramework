@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System.Reflection;
 using Havit.Diagnostics.Contracts;
 
@@ -41,7 +38,7 @@ internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 
 			default:
 				throw new NotSupportedException($"There is unsupported node \"{node.NodeType}\" in the expression \"{propertyPathString}\".");
-            }
+		}
 	}
 
 	protected override Expression VisitMethodCall(MethodCallExpression node)

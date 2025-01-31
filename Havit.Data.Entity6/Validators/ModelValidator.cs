@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using Havit.Data.Entity.Mapping.Internal;
 using Havit.Data.Entity.Model;
@@ -24,82 +18,82 @@ public class ModelValidator
 	/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
 	public string Validate(DbContext dbContext)
 	{
-            return Validate(dbContext, new ValidationRules());
+		return Validate(dbContext, new ValidationRules());
 	}
 
-        /// <summary>
-        /// Kontroluje pravidla modelu s možnosti zapnout či vypnout konkrétní pravidla.
-        /// </summary>
-        /// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
-        public string Validate(DbContext dbContext, ValidationRules validationRules)
-        {
-            RegisteredEntity[] entityMaps = dbContext.GetRegisteredEntities();
+	/// <summary>
+	/// Kontroluje pravidla modelu s možnosti zapnout či vypnout konkrétní pravidla.
+	/// </summary>
+	/// <returns>Vrací seznam chyb (nebo prázdný řetězec).</returns>
+	public string Validate(DbContext dbContext, ValidationRules validationRules)
+	{
+		RegisteredEntity[] entityMaps = dbContext.GetRegisteredEntities();
 
-            List<string> errors = entityMaps.
-                Where(item => item.Type != typeof(DataSeedVersion))
-                .SelectMany(entityMap => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityMap))
-                    .Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityMap)))
-                    .Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityMap)))
-                    .Concat(CheckWhenEnabled(validationRules.CheckIdPascalCaseNamingConvention, () => CheckIdPascalCaseNamingConvention(entityMap)))
-                    .Concat(CheckWhenEnabled(validationRules.CheckStringsHaveMaxLengths, () => CheckStringsHaveMaxLengths(entityMap)))
-                    .Concat(CheckWhenEnabled(validationRules.CheckSupportedNestedTypes, () => CheckSupportedNestedTypes(entityMap)))
-                    .Concat(CheckWhenEnabled(validationRules.CheckSymbolVsPrimaryKeyForEntries, () => CheckSymbolVsPrimaryKeyForEntries(entityMap)))
-                    ).ToList();
+		List<string> errors = entityMaps.
+			Where(item => item.Type != typeof(DataSeedVersion))
+			.SelectMany(entityMap => CheckWhenEnabled(validationRules.CheckPrimaryKeyIsNotComposite, () => CheckPrimaryKeyIsNotComposite(entityMap))
+				.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyName, () => CheckPrimaryKeyName(entityMap)))
+				.Concat(CheckWhenEnabled(validationRules.CheckPrimaryKeyType, () => CheckPrimaryKeyType(entityMap)))
+				.Concat(CheckWhenEnabled(validationRules.CheckIdPascalCaseNamingConvention, () => CheckIdPascalCaseNamingConvention(entityMap)))
+				.Concat(CheckWhenEnabled(validationRules.CheckStringsHaveMaxLengths, () => CheckStringsHaveMaxLengths(entityMap)))
+				.Concat(CheckWhenEnabled(validationRules.CheckSupportedNestedTypes, () => CheckSupportedNestedTypes(entityMap)))
+				.Concat(CheckWhenEnabled(validationRules.CheckSymbolVsPrimaryKeyForEntries, () => CheckSymbolVsPrimaryKeyForEntries(entityMap)))
+				).ToList();
 
-            return String.Join(Environment.NewLine, errors);
-        }
+		return String.Join(Environment.NewLine, errors);
+	}
 
-        /// <summary>
-        /// Vrací výsledek action, pokud je enabled true. Jinak vrací prázdný enumerátor.
-        /// </summary>
-        internal IEnumerable<string> CheckWhenEnabled(bool enabled, Func<IEnumerable<string>> action)
-        {
-            return enabled ? action() : Enumerable.Empty<string>();
-        }
+	/// <summary>
+	/// Vrací výsledek action, pokud je enabled true. Jinak vrací prázdný enumerátor.
+	/// </summary>
+	internal IEnumerable<string> CheckWhenEnabled(bool enabled, Func<IEnumerable<string>> action)
+	{
+		return enabled ? action() : Enumerable.Empty<string>();
+	}
 
-        /// <summary>
-        /// Kontroluje, zda třída obsahuje právě jeden primární klíč.
-        /// </summary>
-        internal IEnumerable<string> CheckPrimaryKeyIsNotComposite(RegisteredEntity entityMap)
-        {
-            if (entityMap.PrimaryKeys.Count > 1)
-            {
-                yield return $"Class {entityMap.Type.Name} has {entityMap.PrimaryKeys.Count} key members but only one is expected.";
-            }
-        }
+	/// <summary>
+	/// Kontroluje, zda třída obsahuje právě jeden primární klíč.
+	/// </summary>
+	internal IEnumerable<string> CheckPrimaryKeyIsNotComposite(RegisteredEntity entityMap)
+	{
+		if (entityMap.PrimaryKeys.Count > 1)
+		{
+			yield return $"Class {entityMap.Type.Name} has {entityMap.PrimaryKeys.Count} key members but only one is expected.";
+		}
+	}
 
-        /// <summary>
-        /// Kontroluje, zda je primární klíč pojmenovaný "Id".
-        /// </summary>
-        internal IEnumerable<string> CheckPrimaryKeyName(RegisteredEntity entityMap)
-        {
-            foreach (var keyProperty in entityMap.PrimaryKeys)
-            {
-                if (keyProperty.PropertyName != "Id")
-                {
-                    yield return $"Class {entityMap.Type.Name} has a primary key named '{keyProperty.PropertyName}' but 'Id' is expected.";
-                }
-            }
-        }
+	/// <summary>
+	/// Kontroluje, zda je primární klíč pojmenovaný "Id".
+	/// </summary>
+	internal IEnumerable<string> CheckPrimaryKeyName(RegisteredEntity entityMap)
+	{
+		foreach (var keyProperty in entityMap.PrimaryKeys)
+		{
+			if (keyProperty.PropertyName != "Id")
+			{
+				yield return $"Class {entityMap.Type.Name} has a primary key named '{keyProperty.PropertyName}' but 'Id' is expected.";
+			}
+		}
+	}
 
-        /// <summary>
-        /// Kontroluje, zda je primární klíč typu System.Int32.
-        /// </summary>
-        internal IEnumerable<string> CheckPrimaryKeyType(RegisteredEntity entityMap)
-        {
-            foreach (var keyProperty in entityMap.PrimaryKeys)
-            {
-                if (keyProperty.Type != typeof(int))
-                {
-                    yield return $"Class {entityMap.Type.Name} has a primary key named '{keyProperty.PropertyName}' of type {keyProperty.Type}, but type int (System.Int32) is expected.";
-                }
-            }
-        }
+	/// <summary>
+	/// Kontroluje, zda je primární klíč typu System.Int32.
+	/// </summary>
+	internal IEnumerable<string> CheckPrimaryKeyType(RegisteredEntity entityMap)
+	{
+		foreach (var keyProperty in entityMap.PrimaryKeys)
+		{
+			if (keyProperty.Type != typeof(int))
+			{
+				yield return $"Class {entityMap.Type.Name} has a primary key named '{keyProperty.PropertyName}' of type {keyProperty.Type}, but type int (System.Int32) is expected.";
+			}
+		}
+	}
 
-        /// <summary>
-        /// Kontroluje, že žádná vlastnost nekončí na "ID" (kapitálkami).
-        /// </summary>
-        internal IEnumerable<string> CheckIdPascalCaseNamingConvention(RegisteredEntity entityMap)
+	/// <summary>
+	/// Kontroluje, že žádná vlastnost nekončí na "ID" (kapitálkami).
+	/// </summary>
+	internal IEnumerable<string> CheckIdPascalCaseNamingConvention(RegisteredEntity entityMap)
 	{
 		foreach (var property in entityMap.Properties)
 		{
@@ -131,7 +125,7 @@ public class ModelValidator
 						yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with zero value, it is expected to be greater then 0 (or -1 as 'max allowable').";
 					}
 					// -1 == MaxAllowableLength --> NOOP
-					if (maxLengthAttribute.Length < -1) 
+					if (maxLengthAttribute.Length < -1)
 					{
 						yield return $"Class {entityMap.Type.Name} has a string property {property.PropertyName} with negative value, it is expected to be greater then 0 (or -1 as 'max allowable').";
 					}

@@ -1,11 +1,10 @@
-﻿using System.IO;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 
 namespace Havit.Data.Entity.CodeGenerator.Services;
 
 public class NetCoreProject : ProjectBase
 {
-	public NetCoreProject(string filename, XDocument content) 
+	public NetCoreProject(string filename, XDocument content)
 		: base(filename, content)
 	{
 	}

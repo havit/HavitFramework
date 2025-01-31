@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
-using Havit.Business.BusinessLayerGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Generators;

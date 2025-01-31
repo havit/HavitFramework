@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Business;
+﻿namespace Havit.Business;
 
 /// <summary>
 /// Třída pro objekt, který nese hodnotu a vlastnosti jednotlivé property BusinessObjectu.

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using Havit.Business.BusinessLayerGenerator.Helpers.Types;
-using Havit.Business.BusinessLayerGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Helpers;

@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Business.BusinessLayerGenerator.Helpers;
+﻿using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Havit.Business.BusinessLayerGenerator.Settings;
 using Microsoft.SqlServer.Management.Smo;

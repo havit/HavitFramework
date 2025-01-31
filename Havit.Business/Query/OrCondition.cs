@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Business.Query;
+﻿namespace Havit.Business.Query;
 
 /// <summary>
 /// Kompozitní podmínka. Výsledek je pravdivý, je-li pravdivá alespoň jedna členská podmínka.

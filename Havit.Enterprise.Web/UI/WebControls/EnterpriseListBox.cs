@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using Havit.Business;
 using System.Web.UI;
 using Havit.Collections;
@@ -10,9 +7,9 @@ using Havit.Diagnostics.Contracts;
 
 namespace Havit.Web.UI.WebControls;
 
-    /// <summary>
-    /// EnterpriseListBox zajišťuje pohodlnější práci s ListBoxem, jehož položky představují business objekty.	
-    /// </summary>
+/// <summary>
+/// EnterpriseListBox zajišťuje pohodlnější práci s ListBoxem, jehož položky představují business objekty.	
+/// </summary>
 public class EnterpriseListBox : ListBoxExt
 {
 	/// <summary>
@@ -150,7 +147,7 @@ public class EnterpriseListBox : ListBoxExt
 		}
 		set
 		{
-                Contract.Requires(value != null);
+			Contract.Requires(value != null);
 
 			if (isDataBinding)
 			{

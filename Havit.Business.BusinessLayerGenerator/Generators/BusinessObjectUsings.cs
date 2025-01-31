@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Havit.Business.BusinessLayerGenerator.Helpers;
+﻿using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Writers;
 
 namespace Havit.Business.BusinessLayerGenerator.Generators;

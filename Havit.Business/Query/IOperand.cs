@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
+﻿using System.Data.Common;
 using Havit.Data.SqlServer;
 
 namespace Havit.Business.Query;

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI;
+﻿using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Business;
-using Havit.Collections;
 using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls;
@@ -128,7 +123,7 @@ public class EnterpriseDropDownList : DropDownListExt
 			if (value == null)
 			{
 				EnsureAutoDataBind(); // jinak následný databinding zlikviduje vybranou hodnotu
-				// pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
+									  // pokud nastavujeme null, zajistime, aby existoval prazdny radek a vybereme jej
 				EnsureEmptyItem();
 				SelectedValue = "";
 			}

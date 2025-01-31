@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Business.BusinessLayerGenerator.Helpers;
+﻿namespace Havit.Business.BusinessLayerGenerator.Helpers;
 
 /// <summary>
 /// Vrací kód pro generování podmínek code contracts.

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Business;
+﻿namespace Havit.Business;
 
 /// <summary>
 /// Delegát na metodu CreateObject bez perametrů.

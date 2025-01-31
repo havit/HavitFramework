@@ -1,26 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>    
-    <TargetFramework>net48</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageId>Havit.Business.BLGenerator</PackageId>
-    <PackageVersion>2.0.42</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
-    <!-- Publikujeme výstup buildu jiného projektu. -->
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-	<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
-	<NoWarn>$(NoWarn);NU5128</NoWarn>  
-  </PropertyGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageId>Havit.Business.BLGenerator</PackageId>
+		<PackageVersion>2.0.42</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Business Layer - Code Generator</Description>
+		<!-- Publikujeme výstup buildu jiného projektu. -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<!-- Projects which set IncludeBuildOutput=false are likely to hit NU5128 - https://github.com/NuGet/Home/issues/8583 -->
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="..\Havit.Business.BusinessLayerGenerator\bin\$(Configuration)\net48\**">
-      <Pack>true</Pack>
-      <PackagePath>tools\BLG</PackagePath>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="..\Havit.Business.BusinessLayerGenerator\bin\$(Configuration)\net48\**">
+			<Pack>true</Pack>
+			<PackagePath>tools\BLG</PackagePath>
+		</Content>
+	</ItemGroup>
 
 </Project>

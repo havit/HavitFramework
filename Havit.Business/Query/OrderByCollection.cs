@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Havit.Collections;
+﻿using Havit.Collections;
 
 namespace Havit.Business.Query;
 

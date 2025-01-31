@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Web;
+﻿using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Havit.Business;
@@ -331,7 +325,7 @@ public class EnterpriseGridView : GridViewExt
 	/// <summary>
 	/// Slouží pro uložení typu datového objektu k řádkům gridu.
 	/// </summary>
-	[Serializable]		
+	[Serializable]
 	internal class DataItemTypeEntry
 	{
 		public Type Type { get; set; }

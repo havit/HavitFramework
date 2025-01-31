@@ -1,25 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-	<OutputType>Exe</OutputType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\Havit.Web\HttpUtilityExt.HtmlEncode.cs" Link="HttpUtilityExt.HtmlEncode.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\Havit.Web\HttpUtilityExt.HtmlEncode.cs" Link="HttpUtilityExt.HtmlEncode.cs" />
+	</ItemGroup>
 
-  <!-- NuGet -->
-  <!-- Pro různé komplikovanosti s publikováním konzolovky s použití SMO delegujeme generování do samostatného projektu. -->	
-  
-  <ItemGroup>
-	<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="172.52.0" />
-	<!-- update vulnerable dependencies to fixed versions -->
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" /> <!-- Microsoft.SqlServer.SqlManagementObjects používá starší Microsoft.Data.SqlClient, jehož závislosti obsahují zranitelnosti -->
-  </ItemGroup>
+	<!-- NuGet -->
+	<!-- Pro různé komplikovanosti s publikováním konzolovky s použití SMO delegujeme generování do samostatného projektu. -->
 
-  <ItemGroup>
-	<ProjectReference Include="..\Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="172.52.0" />
+		<!-- update vulnerable dependencies to fixed versions -->
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" /> <!-- Microsoft.SqlServer.SqlManagementObjects používá starší Microsoft.Data.SqlClient, jehož závislosti obsahují zranitelnosti -->
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Data.Configuration.Git\Havit.Data.Configuration.Git.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Havit.Business.Query;
+﻿namespace Havit.Business.Query;
 
 /// <summary>
 /// Vytváří podmínky, které nic netestují.

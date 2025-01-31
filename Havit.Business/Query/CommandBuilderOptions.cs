@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Havit.Business.Query;
+﻿namespace Havit.Business.Query;
 
 /// <summary>
 /// Nastavenžadavků pro tvorbu databázových dotazů.

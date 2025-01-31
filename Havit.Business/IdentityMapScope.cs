@@ -1,5 +1,4 @@
-﻿using System;
-using Havit.Scopes;
+﻿using Havit.Scopes;
 
 namespace Havit.Business;
 

@@ -1,5 +1,4 @@
 ﻿using System.Xml.Linq;
-using Havit.Business.BusinessLayerGenerator.Csproj;
 
 namespace Havit.Business.BusinessLayerGenerator.Csproj;
 

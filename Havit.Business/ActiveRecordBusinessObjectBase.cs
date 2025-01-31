@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Havit.Diagnostics.Contracts;
-using System.Text;
 using System.Data.Common;
 using Havit.Data;
-using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Business;

@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Havit.Data.EntityFrameworkCore.BusinessLayer</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>Havit.Data.EntityFrameworkCore.BusinessLayer</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <!-- NuGet -->
-  <Import Project="../NuGet.targets" />
-  <PropertyGroup>
-    <PackageVersion>2.1.0</PackageVersion>
-    <Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer - Abstractions</Description>
-  </PropertyGroup>
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.1.0</PackageVersion>
+		<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer - Abstractions</Description>
+	</PropertyGroup>
 
 </Project>

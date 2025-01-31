@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI.WebControls;
 using Havit.Business;
 using System.Web.UI;
 using Havit.Collections;
@@ -11,9 +8,9 @@ using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls;
 
-    /// <summary>
-    /// EnterpriseCheckBoxList zajišťuje pohodlnější práci s CheckBoxListem, jehož položky představují business objekty.	
-    /// </summary>
+/// <summary>
+/// EnterpriseCheckBoxList zajišťuje pohodlnější práci s CheckBoxListem, jehož položky představují business objekty.	
+/// </summary>
 public class EnterpriseCheckBoxList : CheckBoxListExt
 {
 	/// <summary>
@@ -151,7 +148,7 @@ public class EnterpriseCheckBoxList : CheckBoxListExt
 		}
 		set
 		{
-		    Contract.Requires(value != null);
+			Contract.Requires(value != null);
 
 			if (isDataBinding)
 			{
@@ -328,7 +325,7 @@ public class EnterpriseCheckBoxList : CheckBoxListExt
 		}
 
 		DataBindPerformed = true;
-		
+
 	}
 
 	/// <summary>

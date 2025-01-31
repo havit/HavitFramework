@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Havit.Business;
 using Havit.Collections;
 using Havit.Diagnostics.Contracts;
-using Havit.Web.UI.WebControls;
 using Havit.Web.UI.WebControls.ControlsValues;
 
 namespace Havit.Web.UI.WebControls;
@@ -133,7 +127,7 @@ public class EnterpriseCheckBoxDropDownList : CheckBoxDropDownList
 		}
 		set
 		{
-                Contract.Requires(value != null);
+			Contract.Requires(value != null);
 
 			if (isDataBinding)
 			{

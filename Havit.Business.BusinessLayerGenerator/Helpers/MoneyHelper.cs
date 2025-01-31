@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
+﻿using Havit.Business.BusinessLayerGenerator.Helpers.NamingConventions;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Havit.Business.BusinessLayerGenerator.Helpers;

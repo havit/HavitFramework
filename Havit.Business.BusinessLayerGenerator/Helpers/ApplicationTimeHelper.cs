@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Havit.Business.BusinessLayerGenerator.Helpers;
+﻿namespace Havit.Business.BusinessLayerGenerator.Helpers;
 
 /// <summary>
 /// Pomocné metody pro práci s aplikačním časem.

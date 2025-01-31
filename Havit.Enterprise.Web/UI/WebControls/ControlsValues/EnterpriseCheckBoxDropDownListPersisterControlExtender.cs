@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Havit.Web.UI.WebControls.ControlsValues;
-using Havit.Web.UI.WebControls;
-using System.Web.UI;
+﻿using System.Web.UI;
 
 namespace Havit.Web.UI.WebControls.ControlsValues;
 
@@ -15,7 +9,7 @@ internal class EnterpriseCheckBoxDropDownListPersisterControlExtender : IPersist
 {
 	public object GetValue(Control control)
 	{
-		return ((EnterpriseCheckBoxDropDownList)control).SelectedIds;			
+		return ((EnterpriseCheckBoxDropDownList)control).SelectedIds;
 	}
 
 	public Type GetValueType()
@@ -24,10 +18,10 @@ internal class EnterpriseCheckBoxDropDownListPersisterControlExtender : IPersist
 	}
 
 	public void SetValue(Control control, object value)
-	{			
+	{
 		int[] selectedIDs = (int[])value;
 		EnterpriseCheckBoxDropDownList enterpriseCheckBoxList = (EnterpriseCheckBoxDropDownList)control;
-		enterpriseCheckBoxList.SelectExistingItems(selectedIDs);			
+		enterpriseCheckBoxList.SelectExistingItems(selectedIDs);
 	}
 
 	public int? GetPriority(Control control)

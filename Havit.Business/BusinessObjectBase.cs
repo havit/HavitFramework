@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using Havit.Data;
+﻿using System.ComponentModel;
 using System.Data.Common;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Business;
@@ -673,7 +667,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 			for (byte i = negative; i < l; i++)
 			{
 				//char letter = value[i];
-				result = 10 * result + (value[i] - 48);
+				result = 10 * (result + (value[i] - 48));
 			}
 
 			return negative == 0 ? result : -1 * result;

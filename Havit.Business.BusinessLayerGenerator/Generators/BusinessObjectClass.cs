@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Havit.Business.BusinessLayerGenerator.Csproj;
+﻿using Havit.Business.BusinessLayerGenerator.Csproj;
 using Havit.Business.BusinessLayerGenerator.Helpers;
 using Havit.Business.BusinessLayerGenerator.Writers;
 using Microsoft.SqlServer.Management.Smo;

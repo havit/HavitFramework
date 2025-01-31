@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Havit.Business.BusinessLayerGenerator.Helpers;
+﻿namespace Havit.Business.BusinessLayerGenerator.Helpers;
 
 public static class ConsoleHelper
 {

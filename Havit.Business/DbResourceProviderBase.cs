@@ -1,11 +1,7 @@
 ﻿#if NETFRAMEWORK
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Resources;
-using System.Text;
 using System.Web.Compilation;
 
 namespace Havit.Business;

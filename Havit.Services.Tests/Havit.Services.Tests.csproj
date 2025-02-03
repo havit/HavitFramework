@@ -2,9 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
 		<None Remove="FileStorage\EmbeddedResources\file.txt" />

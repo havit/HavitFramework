@@ -1,21 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<TargetFramework>net48</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-	<PackageReference Include="Moq" Version="4.20.72" />
-	<PackageReference Include="MSTest" Version="3.6.4" />
-  </ItemGroup>
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
-  <ItemGroup>
-	<ProjectReference Include="..\Havit.GoPay\Havit.GoPay.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Moq" Version="4.20.72" />
+		<PackageReference Include="MSTest" Version="3.6.4" />
+	</ItemGroup>
 
-  <ItemGroup>
-	<Reference Include="System.Net" />
-	<Reference Include="System.Net.Http" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.GoPay\Havit.GoPay.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.Net" />
+		<Reference Include="System.Net.Http" />
+	</ItemGroup>
 
 </Project>

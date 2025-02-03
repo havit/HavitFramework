@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net48</TargetFrameworks>
+		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<RootNamespace>Havit.Tests</RootNamespace>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Moq" Version="4.20.72" />

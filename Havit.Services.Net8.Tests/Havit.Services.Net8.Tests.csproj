@@ -9,9 +9,10 @@
 	-->
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />

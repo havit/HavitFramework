@@ -2,9 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<PropertyGroup>
 		<NoWarn>$(NoWarn);1701;1702;CS1591;EF1001</NoWarn>

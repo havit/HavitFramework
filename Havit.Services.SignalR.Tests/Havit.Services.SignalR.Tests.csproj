@@ -2,12 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<PublishDir>obj\$(Configuration)\publish</PublishDir>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
-		<EnableMSTestRunner>true</EnableMSTestRunner>
-		<OutputType>Exe</OutputType>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />

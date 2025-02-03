@@ -2,11 +2,12 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
 		<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
 		<NoWarn>($NoWarn);EF1001</NoWarn>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />

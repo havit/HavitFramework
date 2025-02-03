@@ -3,9 +3,10 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<RootNamespace>Havit.Tests</RootNamespace>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Moq" Version="4.20.72" />

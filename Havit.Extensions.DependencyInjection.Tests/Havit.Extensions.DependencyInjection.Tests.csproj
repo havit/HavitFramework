@@ -4,6 +4,9 @@
 		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
+
 	<PropertyGroup>
 		<NoWarn>$(NoWarn);1701;1702;CS1591</NoWarn>
 	</PropertyGroup>

@@ -16,7 +16,7 @@ public class DataLayerServiceExtensionsGenerator(
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
-		string targetFilename = Path.Combine(_dataLayerProject.GetProjectRootPath(), "_generated\\DataLayerServiceExtensions.cs");
+		string targetFilename = Path.Combine(_dataLayerProject.GetProjectRootPath(), "_generated", "DataLayerServiceExtensions.cs");
 
 		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(_dbContext, _modelProject, _dataLayerProject);
 		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);

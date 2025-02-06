@@ -14,6 +14,6 @@
 * V rámci registrace služeb do DI containeru použijte tuto vygenerovanou metodu (`services.Add[ProjectName]ByServiceAttribute(profileName)`)
 
 ## Migrace z předchozích řešení
-* Odebrat nuget balíček `Havit.Extensions.DependencyInjection` ze všech projektů v solution
-  (vč. případného pozůstatku v `Directory.Packages.props`).
-* Nahradit volání `AddByServiceAttribute(...)`, které používá reflexi, postupem popsaným výše.
+* Tam, kde používáme předchozí řešení spočívající ve volání extension metody `AddByServiceAttribute`, musíme odebrat nuget balíček `Havit.Extensions.DependencyInjection` ze všech projektů v solution
+  (vč. případného pozůstatku v `Directory.Packages.props`). Typicky jde o jeden projekt v solution.
+* Odstranit volání extension metody `AddByServiceAttribute(...)`, která používá reflexi, resp. nahradit toto volání postupem popsaným výše.

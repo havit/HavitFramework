@@ -84,11 +84,12 @@ public class DbLockedMigrator : Migrator
 			}
 		}
 
-		// Databáze je založena, můžeme použít bezpečně použít dodaný connection string.
-		new DbLockedCriticalSection((SqlConnection)_connection.DbConnection).ExecuteAction(EfCoreMigrationsLockValue, () =>
+		// Databáze je založena, můžeme použít bezpečně použít dodanou connection.
+		var criticalSection = new DbLockedCriticalSection((SqlConnection)_connection.DbConnection);
+		using (criticalSection.EnterScope(EfCoreMigrationsLockValue))
 		{
 			base.Migrate(targetMigration);
-		});
+		}
 	}
 
 	/// <inheritdoc />
@@ -108,10 +109,11 @@ public class DbLockedMigrator : Migrator
 		}
 
 		// Databáze je založena, můžeme použít bezpečně použít dodaný connection string.
-		await new DbLockedCriticalSection((SqlConnection)_connection.DbConnection).ExecuteActionAsync(EfCoreMigrationsLockValue, async () =>
+		var criticalSection = new DbLockedCriticalSection((SqlConnection)_connection.DbConnection);
+		await using ((await criticalSection.EnterScopeAsync(EfCoreMigrationsLockValue, cancellationToken).ConfigureAwait(false)).ConfigureAwait(false))
 		{
 			await base.MigrateAsync(targetMigration, cancellationToken).ConfigureAwait(false);
-		}, cancellationToken).ConfigureAwait(false);
+		}
 	}
 }
 #pragma warning restore EF1001 // Internal EF Core API usage.

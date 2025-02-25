@@ -29,34 +29,34 @@ internal class <#= Model.RepositoryQueryProviderClassName #> : IRepositoryQueryP
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, <#= Model.ModelClassPrimaryKeyTypeName #> id) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(<#= Model.NamespaceName #>.<#= Model.DbRepositoryName #>), nameof(Data.Patterns.Repositories.IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>.GetObject)))
+			.TagWith("<#= Model.DbRepositoryName #>.GetObject")
 			.Where(entity => entity.<#= Model.ModelClassPrimaryKeyPropertyName #> == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, <#= Model.ModelClassPrimaryKeyTypeName #> id, CancellationToken cancellationToken) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(<#= Model.NamespaceName #>.<#= Model.DbRepositoryName #>), nameof(Data.Patterns.Repositories.IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>.GetObjectAsync)))
+			.TagWith("<#= Model.DbRepositoryName #>.GetObjectAsync")
 			.Where(entity => entity.<#= Model.ModelClassPrimaryKeyPropertyName #> == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, <#= Model.ModelClassPrimaryKeyTypeName #>[] ids) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(<#= Model.NamespaceName #>.<#= Model.DbRepositoryName #>), nameof(Data.Patterns.Repositories.IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>.GetObjects)))
+			.TagWith("<#= Model.DbRepositoryName #>.GetObjects")
 			.Where(entity => ids.Contains(entity.<#= Model.ModelClassPrimaryKeyPropertyName #>)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, <#= Model.ModelClassPrimaryKeyTypeName #>[] ids) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(<#= Model.NamespaceName #>.<#= Model.DbRepositoryName #>), nameof(Data.Patterns.Repositories.IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>.GetObjectsAsync)))
+			.TagWith("<#= Model.DbRepositoryName #>.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.<#= Model.ModelClassPrimaryKeyPropertyName #>)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(<#= Model.NamespaceName #>.<#= Model.DbRepositoryName #>), nameof(Data.Patterns.Repositories.IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>.GetAll)))
+			.TagWith("<#= Model.DbRepositoryName #>.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(<#= Model.NamespaceName #>.<#= Model.DbRepositoryName #>), nameof(Data.Patterns.Repositories.IRepository<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>.GetAllAsync)))
+			.TagWith("<#= Model.DbRepositoryName #>.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

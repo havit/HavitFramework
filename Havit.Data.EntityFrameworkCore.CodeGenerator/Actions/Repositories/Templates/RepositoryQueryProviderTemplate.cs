@@ -157,35 +157,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(");
-            
-            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
-            
-            #line default
-            #line hidden
-            this.Write(".");
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
             
             #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
-            this.Write("), nameof(Data.Patterns.Repositories.IRepository<");
-            
-            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write(">.GetObject)))\r\n\t\t\t.Where(entity => entity.");
+            this.Write(".GetObject\")\r\n\t\t\t.Where(entity => entity.");
             
             #line 33 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
@@ -207,35 +186,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(");
-            
-            #line 38 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
-            
-            #line default
-            #line hidden
-            this.Write(".");
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
             
             #line 38 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
-            this.Write("), nameof(Data.Patterns.Repositories.IRepository<");
-            
-            #line 38 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 38 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write(">.GetObjectAsync)))\r\n\t\t\t.Where(entity => entity.");
+            this.Write(".GetObjectAsync\")\r\n\t\t\t.Where(entity => entity.");
             
             #line 39 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
@@ -257,35 +215,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(");
-            
-            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
-            
-            #line default
-            #line hidden
-            this.Write(".");
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
             
             #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
-            this.Write("), nameof(Data.Patterns.Repositories.IRepository<");
-            
-            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write(">.GetObjects)))\r\n\t\t\t.Where(entity => ids.Contains(entity.");
+            this.Write(".GetObjects\")\r\n\t\t\t.Where(entity => ids.Contains(entity.");
             
             #line 45 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
@@ -306,35 +243,14 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(");
-            
-            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
-            
-            #line default
-            #line hidden
-            this.Write(".");
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
             
             #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
-            this.Write("), nameof(Data.Patterns.Repositories.IRepository<");
-            
-            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write(">.GetObjectsAsync)))\r\n\t\t\t.Where(entity => ids.Contains(entity.");
+            this.Write(".GetObjectsAsync\")\r\n\t\t\t.Where(entity => ids.Contains(entity.");
             
             #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
@@ -349,72 +265,30 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(");
-            
-            #line 54 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
-            
-            #line default
-            #line hidden
-            this.Write(".");
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
             
             #line 54 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
-            this.Write("), nameof(Data.Patterns.Repositories.IRepository<");
-            
-            #line 54 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 54 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write(">.GetAll)))\r\n\t\t\t.WhereNotDeleted(_softDeleteManager));\r\n\r\n\t\t_getAllAsyncQuery = E" +
-                    "F.CompileAsyncQuery((DbContext dbContext) => dbContext\r\n\t\t\t.Set<");
+            this.Write(".GetAll\")\r\n\t\t\t.WhereNotDeleted(_softDeleteManager));\r\n\r\n\t\t_getAllAsyncQuery = EF." +
+                    "CompileAsyncQuery((DbContext dbContext) => dbContext\r\n\t\t\t.Set<");
             
             #line 58 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(");
-            
-            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
-            
-            #line default
-            #line hidden
-            this.Write(".");
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
             
             #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
-            this.Write("), nameof(Data.Patterns.Repositories.IRepository<");
-            
-            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(", ");
-            
-            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write(">.GetAllAsync)))\r\n\t\t\t.WhereNotDeleted(_softDeleteManager));\r\n\t}\r\n\r\n\tpublic Func<D" +
-                    "bContext, ");
+            this.Write(".GetAllAsync\")\r\n\t\t\t.WhereNotDeleted(_softDeleteManager));\r\n\t}\r\n\r\n\tpublic Func<DbC" +
+                    "ontext, ");
             
             #line 63 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));

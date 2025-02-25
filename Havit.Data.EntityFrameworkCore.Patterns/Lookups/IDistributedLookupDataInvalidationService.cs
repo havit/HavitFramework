@@ -8,5 +8,5 @@ public interface IDistributedLookupDataInvalidationService
 	/// <summary>
 	/// Invaliduje data v úložišti s daným klíčem.
 	/// </summary>
-	public void Invalidate(string storageKey);
+	void Invalidate(string storageKey);
 }

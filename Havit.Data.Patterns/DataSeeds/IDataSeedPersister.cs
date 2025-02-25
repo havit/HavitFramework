@@ -8,7 +8,7 @@ public interface IDataSeedPersister
 	/// <summary>
 	/// Řekne persisteru, jaký data seed bude seedovat.
 	/// </summary>
-	public void AttachDataSeed(IDataSeed dataSeed);
+	void AttachDataSeed(IDataSeed dataSeed);
 
 	/// <summary>
 	/// Ukládá seedovaná data.

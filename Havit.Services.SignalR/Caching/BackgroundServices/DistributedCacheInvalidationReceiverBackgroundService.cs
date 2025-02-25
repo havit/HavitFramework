@@ -49,7 +49,7 @@ public class DistributedCacheInvalidationReceiverBackgroundService(
 			_logger.LogInformation("Clearing local cache after connecting to SignalR hub...");
 			_localCacheService.Clear();
 			_logger.LogInformation("Local cache cleared.");
-		};
+		}
 
 		connection.Closed += HandleConnectionClosedAsync;
 

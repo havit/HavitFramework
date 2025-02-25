@@ -10,5 +10,5 @@ public interface ICachingInstaller
 	/// <summary>
 	/// Zaregistruje služby.
 	/// </summary>
-	public void Install(IServiceCollection serviceCollection);
+	void Install(IServiceCollection serviceCollection);
 }

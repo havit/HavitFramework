@@ -43,7 +43,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 					if (supportedProcessor.Run(change.ChangeType, change.Entity) == ChangeTrackerImpact.StateChanged)
 					{
 						result = ChangeTrackerImpact.StateChanged;
-					};
+					}
 
 					ValueTask<ChangeTrackerImpact> task = supportedProcessor.RunAsync(change.ChangeType, change.Entity);
 					if (!task.IsCompleted)
@@ -87,7 +87,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 					if (supportedProcessor.Run(change.ChangeType, change.Entity) == ChangeTrackerImpact.StateChanged)
 					{
 						result = ChangeTrackerImpact.StateChanged;
-					};
+					}
 
 					if ((await supportedProcessor.RunAsync(change.ChangeType, change.Entity, cancellationToken).ConfigureAwait(false)) == ChangeTrackerImpact.StateChanged)
 					{

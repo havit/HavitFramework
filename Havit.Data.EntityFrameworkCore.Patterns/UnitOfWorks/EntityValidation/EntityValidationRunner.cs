@@ -53,7 +53,7 @@ public class EntityValidationRunner : IEntityValidationRunner
 				{
 					IEnumerable<string> entityValidationErrors = (IEnumerable<string>)runMethod.Invoke(supportedValidator, runMethodParameters);
 					allValidationErrors.AddRange(entityValidationErrors);
-				};
+				}
 			}
 		}
 

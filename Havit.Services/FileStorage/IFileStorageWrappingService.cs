@@ -8,5 +8,5 @@ public interface IFileStorageWrappingService : IFileStorageService
 	/// <summary>
 	/// Vrátí wrappovanou službu file storage.
 	/// </summary>
-	public IFileStorageService GetWrappedFileStorageService();
+	IFileStorageService GetWrappedFileStorageService();
 }

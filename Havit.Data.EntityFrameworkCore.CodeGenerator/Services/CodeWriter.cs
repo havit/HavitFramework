@@ -7,11 +7,19 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 /// </summary>
 public class CodeWriter : ICodeWriter
 {
+	private readonly ICodeWriteReporter _codeWriteReporter;
+
+	public CodeWriter(ICodeWriteReporter codeWriteReporter)
+	{
+		_codeWriteReporter = codeWriteReporter;
+	}
+
 	/// <summary>
 	/// Zapíšeme obsah do souboru (jen tehdy, pokud se neliší od současného obsahu souboru).
 	/// </summary>
 	public async Task SaveAsync(string filename, string content, OverwriteBahavior overwriteBahavior, CancellationToken cancellationToken = default)
 	{
+		_codeWriteReporter.ReportWriteFile(filename);
 		if (!(await AlreadyExistsTheSameAsync(filename, content, cancellationToken)) || !HasByteOrderMask(filename))
 		{
 			string directory = Path.GetDirectoryName(filename);

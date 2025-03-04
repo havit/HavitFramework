@@ -8,6 +8,11 @@ public class CodeGeneratorConfiguration
 	public string MetadataProjectPath { get; set; } = Path.Combine("Model", "Model.csproj");
 	public string MetadataNamespace { get; set; } = @"Metadata";
 
+	/// <summary>
+	/// Umožní potlačit mazání repositories při čištění pozůstalých souborů.
+	/// </summary>
+	public bool SuppressRemovingRelicRepositories { get; set; } = false;
+
 	public static CodeGeneratorConfiguration Defaults => new CodeGeneratorConfiguration();
 
 	public static CodeGeneratorConfiguration ReadFromFile(string configurationFileName)

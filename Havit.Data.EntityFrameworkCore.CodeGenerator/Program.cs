@@ -39,6 +39,7 @@ public static class Program
 		services.AddSingleton<IDataLayerProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<DataLayerProject>(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj")));
 
 		services.AddSingleton<ICodeWriter, CodeWriter>();
+		services.AddSingleton<ICodeWriteReporter, CodeWriteReporter>();
 		services.AddSingleton<IGenericGenerator, GenericGenerator>();
 
 		services.AddSingleton<IDataLayerGeneratorRunner, DataLayerGeneratorRunner>();
@@ -51,12 +52,16 @@ public static class Program
 		services.AddSingleton<IModelErrorsProvider, ModelErrorsProvider>();
 		services.AddSingleton<IModelSourceErrorsProvider, RepositoryModelSource>();
 
+		services.AddSingleton<IRelicsCleaner, RelicsCleaner>();
+
 		var serviceProvider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
 
 		var dataLayerGeneratorRunner = serviceProvider.GetRequiredService<IDataLayerGeneratorRunner>();
+		var relicsCleaner = serviceProvider.GetRequiredService<IRelicsCleaner>();
 
-		Console.WriteLine($"Generating code...");
 		await dataLayerGeneratorRunner.RunAsync(CancellationToken.None);
+
+		await relicsCleaner.CleanRelicsAsync(CancellationToken.None);
 
 		IModelErrorsProvider modelErrorsProvider = serviceProvider.GetRequiredService<IModelErrorsProvider>();
 		List<string> errors = modelErrorsProvider.GetErrors();

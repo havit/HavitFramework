@@ -29,34 +29,34 @@ internal class LanguageDbRepositoryQueryProvider : IRepositoryQueryProvider<Havi
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.Language>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Language, System.Int32>.GetObject)))
+			.TagWith("LanguageDbRepository.GetObject")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32 id, CancellationToken cancellationToken) => dbContext
 			.Set<Havit.EFCoreTests.Model.Language>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Language, System.Int32>.GetObjectAsync)))
+			.TagWith("LanguageDbRepository.GetObjectAsync")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.Language>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Language, System.Int32>.GetObjects)))
+			.TagWith("LanguageDbRepository.GetObjects")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.Language>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Language, System.Int32>.GetObjectsAsync)))
+			.TagWith("LanguageDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.Language>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Language, System.Int32>.GetAll)))
+			.TagWith("LanguageDbRepository.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.Language>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.LanguageDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Language, System.Int32>.GetAllAsync)))
+			.TagWith("LanguageDbRepository.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

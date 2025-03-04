@@ -29,34 +29,34 @@ internal class CheckedEntityDbRepositoryQueryProvider : IRepositoryQueryProvider
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.CheckedEntity>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>.GetObject)))
+			.TagWith("CheckedEntityDbRepository.GetObject")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32 id, CancellationToken cancellationToken) => dbContext
 			.Set<Havit.EFCoreTests.Model.CheckedEntity>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>.GetObjectAsync)))
+			.TagWith("CheckedEntityDbRepository.GetObjectAsync")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.CheckedEntity>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>.GetObjects)))
+			.TagWith("CheckedEntityDbRepository.GetObjects")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.CheckedEntity>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>.GetObjectsAsync)))
+			.TagWith("CheckedEntityDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.CheckedEntity>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>.GetAll)))
+			.TagWith("CheckedEntityDbRepository.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.CheckedEntity>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.CheckedEntityDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.CheckedEntity, System.Int32>.GetAllAsync)))
+			.TagWith("CheckedEntityDbRepository.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

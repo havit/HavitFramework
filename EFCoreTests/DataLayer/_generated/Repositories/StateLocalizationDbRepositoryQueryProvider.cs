@@ -29,34 +29,34 @@ internal class StateLocalizationDbRepositoryQueryProvider : IRepositoryQueryProv
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.StateLocalization>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>.GetObject)))
+			.TagWith("StateLocalizationDbRepository.GetObject")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32 id, CancellationToken cancellationToken) => dbContext
 			.Set<Havit.EFCoreTests.Model.StateLocalization>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>.GetObjectAsync)))
+			.TagWith("StateLocalizationDbRepository.GetObjectAsync")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.StateLocalization>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>.GetObjects)))
+			.TagWith("StateLocalizationDbRepository.GetObjects")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.StateLocalization>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>.GetObjectsAsync)))
+			.TagWith("StateLocalizationDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.StateLocalization>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>.GetAll)))
+			.TagWith("StateLocalizationDbRepository.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.StateLocalization>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.StateLocalizationDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.StateLocalization, System.Int32>.GetAllAsync)))
+			.TagWith("StateLocalizationDbRepository.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

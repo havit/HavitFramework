@@ -29,34 +29,34 @@ internal class BusinessCaseDbRepositoryQueryProvider : IRepositoryQueryProvider<
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.BusinessCase>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>.GetObject)))
+			.TagWith("BusinessCaseDbRepository.GetObject")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32 id, CancellationToken cancellationToken) => dbContext
 			.Set<Havit.EFCoreTests.Model.BusinessCase>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>.GetObjectAsync)))
+			.TagWith("BusinessCaseDbRepository.GetObjectAsync")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.BusinessCase>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>.GetObjects)))
+			.TagWith("BusinessCaseDbRepository.GetObjects")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.BusinessCase>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>.GetObjectsAsync)))
+			.TagWith("BusinessCaseDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.BusinessCase>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>.GetAll)))
+			.TagWith("BusinessCaseDbRepository.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.BusinessCase>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.BusinessCaseDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.BusinessCase, System.Int32>.GetAllAsync)))
+			.TagWith("BusinessCaseDbRepository.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

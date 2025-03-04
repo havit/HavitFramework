@@ -29,34 +29,34 @@ internal class AddressDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.Address>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Address, System.Int32>.GetObject)))
+			.TagWith("AddressDbRepository.GetObject")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32 id, CancellationToken cancellationToken) => dbContext
 			.Set<Havit.EFCoreTests.Model.Address>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Address, System.Int32>.GetObjectAsync)))
+			.TagWith("AddressDbRepository.GetObjectAsync")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.Address>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Address, System.Int32>.GetObjects)))
+			.TagWith("AddressDbRepository.GetObjects")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Int32[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.Address>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Address, System.Int32>.GetObjectsAsync)))
+			.TagWith("AddressDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.Address>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Address, System.Int32>.GetAll)))
+			.TagWith("AddressDbRepository.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.Address>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.AddressDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.Address, System.Int32>.GetAllAsync)))
+			.TagWith("AddressDbRepository.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

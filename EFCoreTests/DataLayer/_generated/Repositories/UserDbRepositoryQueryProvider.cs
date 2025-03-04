@@ -29,34 +29,34 @@ internal class UserDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.EF
 
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Guid id) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.User, System.Guid>.GetObject)))
+			.TagWith("UserDbRepository.GetObject")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Guid id, CancellationToken cancellationToken) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.User, System.Guid>.GetObjectAsync)))
+			.TagWith("UserDbRepository.GetObjectAsync")
 			.Where(entity => entity.Id == id)
 			.FirstOrDefault());
 
 		_getObjectsQuery = EF.CompileQuery((DbContext dbContext, System.Guid[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.User, System.Guid>.GetObjects)))
+			.TagWith("UserDbRepository.GetObjects")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, System.Guid[] ids) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.User, System.Guid>.GetObjectsAsync)))
+			.TagWith("UserDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
 
 		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.User, System.Guid>.GetAll)))
+			.TagWith("UserDbRepository.GetAll")
 			.WhereNotDeleted(_softDeleteManager));
 
 		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith(Data.EntityFrameworkCore.QueryTagBuilder.CreateTag(typeof(Havit.EFCoreTests.DataLayer.Repositories.UserDbRepository), nameof(Data.Patterns.Repositories.IRepository<Havit.EFCoreTests.Model.User, System.Guid>.GetAllAsync)))
+			.TagWith("UserDbRepository.GetAllAsync")
 			.WhereNotDeleted(_softDeleteManager));
 	}
 

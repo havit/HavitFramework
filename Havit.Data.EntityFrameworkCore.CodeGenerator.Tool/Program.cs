@@ -11,18 +11,37 @@ public class Program
 		Console.WriteLine("HAVIT Entity Framework Core CodeGenerator Tool");
 		Console.WriteLine("----------------------------------------------");
 
-		DirectoryInfo solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
-		while (Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
+		var arguments = new CommandLine.Utility.Arguments(args);
+		string solutionDirectoryCommandLineArgument = arguments["solutiondirectory"];
+		string entityDirectoryCommandLineArgument = arguments["entitydirectory"];
+
+		DirectoryInfo solutionDirectory;
+		if (!String.IsNullOrEmpty(solutionDirectoryCommandLineArgument))
 		{
-			if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
+			solutionDirectory = new DirectoryInfo(solutionDirectoryCommandLineArgument);
+			if (!solutionDirectory.Exists)
 			{
-				Console.WriteLine("Solution file (*.sln) was not found.");
+				Console.WriteLine($"Solution directory ({solutionDirectory.FullName}) does not exist.");
 				return;
 			}
-			solutionDirectory = solutionDirectory.Parent;
+		}
+		else
+		{
+			solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
+			while (Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
+			{
+				if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
+				{
+					Console.WriteLine("Solution file (*.sln) was not found.");
+					return;
+				}
+				solutionDirectory = solutionDirectory.Parent;
+			}
 		}
 
-		var entityBinDirectory = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "Entity", "bin"));
+		DirectoryInfo entityBinDirectory = !String.IsNullOrEmpty(entityDirectoryCommandLineArgument )
+			? new DirectoryInfo(Path.Combine(solutionDirectory.FullName, entityDirectoryCommandLineArgument))
+			: new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "Entity", "bin"));
 		if (!entityBinDirectory.Exists)
 		{
 			Console.WriteLine($"Bin directory for project Entity ({entityBinDirectory}) does not exists.");

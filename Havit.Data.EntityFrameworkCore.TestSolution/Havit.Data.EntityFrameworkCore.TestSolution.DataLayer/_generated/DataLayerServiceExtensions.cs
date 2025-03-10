@@ -34,6 +34,9 @@ public static partial class DataLayerServiceExtensions
 
 	private static void AddDataSources(IServiceCollection services)
 	{
+		services.TryAddTransient<Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.Common.ILanguageDataSource, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.Common.LanguageDbDataSource>();
+		services.TryAddTransient<IDataSource<Havit.Data.EntityFrameworkCore.TestSolution.Model.Common.Language>, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.Common.LanguageDbDataSource>();
+
 		services.TryAddTransient<Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.IRoleDataSource, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.RoleDbDataSource>();
 		services.TryAddTransient<IDataSource<Havit.Data.EntityFrameworkCore.TestSolution.Model.Role>, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.RoleDbDataSource>();
 
@@ -44,6 +47,10 @@ public static partial class DataLayerServiceExtensions
 
 	private static void AddRepositories(IServiceCollection services)
 	{
+		services.TryAddScoped<Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.Common.ILanguageRepository, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.Common.LanguageDbRepository>();
+		services.TryAddScoped<IRepository<Havit.Data.EntityFrameworkCore.TestSolution.Model.Common.Language, System.Int32>>(sp => sp.GetRequiredService<Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.Common.ILanguageRepository>());
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.Data.EntityFrameworkCore.TestSolution.Model.Common.Language, System.Int32>, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.Common.LanguageDbRepositoryQueryProvider>();
+
 		services.TryAddScoped<Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.IRoleRepository, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.RoleDbRepository>();
 		services.TryAddScoped<IRepository<Havit.Data.EntityFrameworkCore.TestSolution.Model.Role, System.Int32>>(sp => sp.GetRequiredService<Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.IRoleRepository>());
 		services.TryAddSingleton<IRepositoryQueryProvider<Havit.Data.EntityFrameworkCore.TestSolution.Model.Role, System.Int32>, Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.RoleDbRepositoryQueryProvider>();
@@ -60,6 +67,7 @@ public static partial class DataLayerServiceExtensions
 
 	private static void AddEntityKeyAccessors(IServiceCollection services)
 	{
+		services.TryAddTransient<IEntityKeyAccessor<Havit.Data.EntityFrameworkCore.TestSolution.Model.Common.Language, System.Int32>, DbEntityKeyAccessor<Havit.Data.EntityFrameworkCore.TestSolution.Model.Common.Language, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.Data.EntityFrameworkCore.TestSolution.Model.Role, System.Int32>, DbEntityKeyAccessor<Havit.Data.EntityFrameworkCore.TestSolution.Model.Role, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.Data.EntityFrameworkCore.TestSolution.Model.User, System.Int32>, DbEntityKeyAccessor<Havit.Data.EntityFrameworkCore.TestSolution.Model.User, System.Int32>>();
 	}

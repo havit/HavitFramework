@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="efcore.codegenerator.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="efcore.codegenerator.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution.Entity\Havit.Data.EntityFrameworkCore.TestSolution.Entity.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution.Model\Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj" />
+	</ItemGroup>
+
+</Project>

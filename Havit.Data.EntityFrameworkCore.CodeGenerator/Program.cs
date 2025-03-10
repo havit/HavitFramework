@@ -36,7 +36,7 @@ public static class Program
 		services.AddSingleton<IProjectFactory, ProjectFactory>();
 		services.AddSingleton<IModelProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<ModelProject>(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().ModelProjectPath)));
 		services.AddSingleton<IMetadataProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<MetadataProject>(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().MetadataProjectPath)));
-		services.AddSingleton<IDataLayerProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<DataLayerProject>(Path.Combine(solutionDirectory, "DataLayer", "DataLayer.csproj")));
+		services.AddSingleton<IDataLayerProject>(sp => sp.GetRequiredService<IProjectFactory>().Create<DataLayerProject>(Path.Combine(solutionDirectory, sp.GetRequiredService<CodeGeneratorConfiguration>().DataLayerProjectPath)));
 
 		services.AddSingleton<ICodeWriter, CodeWriter>();
 		services.AddSingleton<ICodeWriteReporter, CodeWriteReporter>();

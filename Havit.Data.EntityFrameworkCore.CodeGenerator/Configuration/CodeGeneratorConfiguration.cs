@@ -6,6 +6,7 @@ public class CodeGeneratorConfiguration
 {
 	public string ModelProjectPath { get; set; } = Path.Combine("Model", "Model.csproj");
 	public string MetadataProjectPath { get; set; } = Path.Combine("Model", "Model.csproj");
+	public string DataLayerProjectPath { get; set; } = Path.Combine("DataLayer", "DataLayer.csproj");
 	public string MetadataNamespace { get; set; } = @"Metadata";
 
 	/// <summary>

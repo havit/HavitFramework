@@ -1,0 +1,6 @@
+{
+	"ModelProjectPath": "Havit.Data.EntityFrameworkCore.TestSolution.Model/Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj",
+	"MetadataProjectPath": "Havit.Data.EntityFrameworkCore.TestSolution.Model/Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj",
+	"DataLayerProjectPath": "Havit.Data.EntityFrameworkCore.TestSolution.DataLayer/Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.csproj",
+	"MetadataNamespace": "ModelMetadata"
+}

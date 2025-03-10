@@ -39,7 +39,7 @@ public class Program
 			}
 		}
 
-		DirectoryInfo entityBinDirectory = !String.IsNullOrEmpty(entityDirectoryCommandLineArgument )
+		DirectoryInfo entityBinDirectory = !String.IsNullOrEmpty(entityDirectoryCommandLineArgument)
 			? new DirectoryInfo(Path.Combine(solutionDirectory.FullName, entityDirectoryCommandLineArgument))
 			: new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "Entity", "bin"));
 		if (!entityBinDirectory.Exists)

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Abstractions\Havit.Data.EntityFrameworkCore.Abstractions.csproj" />
+		<ProjectReference Include="..\..\Havit.Model\Havit.Model.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="_generated\" />
+	</ItemGroup>
+
+</Project>

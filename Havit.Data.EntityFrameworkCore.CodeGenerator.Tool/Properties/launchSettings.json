@@ -2,11 +2,10 @@
   "profiles": {
     "EFCoreTests": {
       "commandName": "Project",
-      "commandLineArgs": "-solutiondirectory=..\\..\\..\\..\\EFCoreTests"
+      "workingDirectory": "..\\EFCoreTests\\DataLayer"
     },
     "Havit.Data.EntityFrameworkCore.TestSolution": {
       "commandName": "Project",
-      "commandLineArgs": "-solutiondirectory=.. -entitydirectory=Havit.Data.EntityFrameworkCore.TestSolution.Entity\\bin",
       "workingDirectory": "..\\Havit.Data.EntityFrameworkCore.TestSolution\\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer"
     }
   }

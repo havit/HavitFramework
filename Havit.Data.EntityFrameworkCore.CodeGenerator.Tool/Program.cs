@@ -11,46 +11,13 @@ public class Program
 		Console.WriteLine("HAVIT Entity Framework Core CodeGenerator Tool");
 		Console.WriteLine("----------------------------------------------");
 
-		var arguments = new CommandLine.Utility.Arguments(args);
-		string solutionDirectoryCommandLineArgument = arguments["solutiondirectory"];
-		string entityDirectoryCommandLineArgument = arguments["entitydirectory"];
-
-		DirectoryInfo solutionDirectory;
-		if (!String.IsNullOrEmpty(solutionDirectoryCommandLineArgument))
+		if (!CodeGeneratorToolConfiguration.TryGetConfiguration(out var codeGeneratorToolConfiguration))
 		{
-			solutionDirectory = new DirectoryInfo(solutionDirectoryCommandLineArgument);
-			if (!solutionDirectory.Exists)
-			{
-				Console.WriteLine($"Solution directory ({solutionDirectory.FullName}) does not exist.");
-				return;
-			}
-		}
-		else
-		{
-			solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
-			while (Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
-			{
-				if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
-				{
-					Console.WriteLine("Solution file (*.sln) was not found.");
-					return;
-				}
-				solutionDirectory = solutionDirectory.Parent;
-			}
-		}
-
-		DirectoryInfo entityBinDirectory = !String.IsNullOrEmpty(entityDirectoryCommandLineArgument)
-			? new DirectoryInfo(Path.Combine(solutionDirectory.FullName, entityDirectoryCommandLineArgument))
-			: new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "Entity", "bin"));
-		if (!entityBinDirectory.Exists)
-		{
-			Console.WriteLine($"Bin directory for project Entity ({entityBinDirectory}) does not exists.");
-			Console.WriteLine("Make sure the Entity project is properly built.");
 			return;
 		}
 
-		FileInfo[] files = entityBinDirectory
-			.GetFiles("*.Entity.dll", SearchOption.AllDirectories)
+		FileInfo[] files = codeGeneratorToolConfiguration.EntityProjectDirectory
+			.GetFiles(codeGeneratorToolConfiguration.EntityAssemblyName + ".dll", SearchOption.AllDirectories)
 			.Where(file => !file.Name.EndsWith("Havit.Entity.dll"))
 			.Where(file => !file.Name.Contains("ref"))
 			.OrderByDescending(item => item.LastAccessTime)
@@ -58,14 +25,14 @@ public class Program
 
 		if (files.Length == 0)
 		{
-			Console.WriteLine("Assembly *.Entity.dll was not found.");
+			Console.WriteLine($"Assembly {codeGeneratorToolConfiguration.EntityAssemblyName}.dll was not found.");
 			return;
 		}
 
 		FileInfo applicationEntityAssemblyFileInfo = files.First();
 		Console.WriteLine($"Using {applicationEntityAssemblyFileInfo.FullName}.");
 
-		var entityDepsFile = new FileInfo(applicationEntityAssemblyFileInfo.FullName.Replace(".Entity.dll", ".Entity.deps.json"));
+		var entityDepsFile = new FileInfo(applicationEntityAssemblyFileInfo.FullName.Replace(".dll", ".deps.json"));
 		if (!entityDepsFile.Exists)
 		{
 			Console.WriteLine($"Deps.json file for {applicationEntityAssemblyFileInfo.Name} not found in the {entityDepsFile.FullName} folder.");
@@ -130,7 +97,7 @@ public class Program
 
 		Task mainTask = (Task)main.Invoke(null, new object[]
 		{
-			new string[] { solutionDirectory.FullName, Path.GetFileNameWithoutExtension(applicationEntityAssemblyFileInfo.FullName) }
+			new string[] { codeGeneratorToolConfiguration.SolutionDirectory.FullName, Path.GetFileNameWithoutExtension(applicationEntityAssemblyFileInfo.FullName) }
 		});
 
 		if (mainTask == null)

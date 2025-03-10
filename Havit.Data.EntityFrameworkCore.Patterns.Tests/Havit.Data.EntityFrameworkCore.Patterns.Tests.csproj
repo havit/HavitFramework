@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="MSTest" Version="3.8.2" />
@@ -18,7 +19,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
-		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestHelpers\Havit.Data.EntityFrameworkCore.TestHelpers.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution\Havit.Data.EntityFrameworkCore.TestSolution.Entity\Havit.Data.EntityFrameworkCore.TestSolution.Entity.csproj" />
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution\Havit.Data.EntityFrameworkCore.TestSolution.Model\Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj" />
 		<ProjectReference Include="..\Havit.Services.TestHelpers\Havit.Services.TestHelpers.csproj" />
 		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
 	</ItemGroup>

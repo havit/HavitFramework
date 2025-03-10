@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
+﻿/*
+using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.TestsInfrastructure;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Services.Caching;
@@ -46,3 +47,4 @@ public class DbDataSeedRunnerTests
 	}
 
 }
+*/

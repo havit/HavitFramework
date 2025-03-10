@@ -1,18 +1,22 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.Caching;
+using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds;
 using Havit.Data.EntityFrameworkCore.Patterns.DependencyInjection;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks;
 using Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProcessors;
-using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.DataLayer;
-using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Entity;
-using Havit.Data.EntityFrameworkCore.TestHelpers.DependencyInjection.Infrastructure.Model;
+using Havit.Data.EntityFrameworkCore.TestSolution.DataLayer;
+using Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.DataSources.Common;
+using Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories.Common;
+using Havit.Data.EntityFrameworkCore.TestSolution.Model.Common;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.UnitOfWorks;
+using Havit.EntityFrameworkCore.TestSolution.Entity;
 using Havit.Services.Caching;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
@@ -99,8 +103,8 @@ public class ServiceCollectionExtensionsTests
 		// Assert			
 		Assert.AreNotSame(languageDataSource1, languageDataSource2);
 
-		Assert.IsInstanceOfType(languageDataSource1, typeof(LanguageDataSource));
-		Assert.IsInstanceOfType(languageDataSource2, typeof(LanguageDataSource));
+		Assert.IsInstanceOfType(languageDataSource1, typeof(LanguageDbDataSource));
+		Assert.IsInstanceOfType(languageDataSource2, typeof(LanguageDbDataSource));
 	}
 
 	[TestMethod]
@@ -123,8 +127,8 @@ public class ServiceCollectionExtensionsTests
 		Assert.AreSame(languageRepository2a, languageRepository2b);
 		Assert.AreNotSame(languageRepository1a, languageRepository2a);
 
-		Assert.IsInstanceOfType(languageRepository1a, typeof(LanguageRepository));
-		Assert.IsInstanceOfType(languageRepository2a, typeof(LanguageRepository));
+		Assert.IsInstanceOfType(languageRepository1a, typeof(LanguageDbRepository));
+		Assert.IsInstanceOfType(languageRepository2a, typeof(LanguageDbRepository));
 	}
 
 	[TestMethod]
@@ -247,7 +251,6 @@ public class ServiceCollectionExtensionsTests
 		Assert.IsInstanceOfType(dataSeedRunner, typeof(DbDataSeedRunner));
 	}
 
-
 	[TestMethod]
 	public void ServiceCollectionExtensions_UnitOfWorks_CanBeResolvedWithoutCacheSupport()
 	{
@@ -265,21 +268,39 @@ public class ServiceCollectionExtensionsTests
 		Assert.IsInstanceOfType(entityCacheManager, typeof(NoCachingEntityCacheManager));
 	}
 
-	internal static IServiceProvider CreateAndSetupServiceProvider(bool pooling = false, bool withNoCaching = false)
+	//[TestMethod]
+	public void ServiceCollectionExtensions_SoftDeleteManager_CanBeRegisteredAsScoped()
+	{
+		// Arrange + Act
+		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(servicesAction: services =>
+		{
+			services.AddScoped<ISoftDeleteManager, SoftDeleteManager>();
+		});
+
+		// Assert
+		// No exception was thrown
+	}
+
+	internal static IServiceProvider CreateAndSetupServiceProvider(Action<IServiceCollection> servicesAction = null, bool pooling = false, bool withNoCaching = false)
 	{
 		// V Development dochází k více kontrolám
 		var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings { EnvironmentName = "Development" });
 
+		if (servicesAction != null)
+		{
+			servicesAction(builder.Services);
+		}
+
 		if (pooling)
 		{
-			builder.Services.AddDbContextPool<IDbContext, TestDbContext>(options => options
-				.UseSqlServer("Data Source=FAKE")
+			builder.Services.AddDbContextPool<IDbContext, ApplicationDbContext>(options => options
+				.UseSqlite("Data Source=FAKE.DAT")
 				.UseDefaultHavitConventions());
 		}
 		else
 		{
-			builder.Services.AddDbContext<IDbContext, TestDbContext>(options => options
-				.UseSqlServer("Data Source=FAKE")
+			builder.Services.AddDbContext<IDbContext, ApplicationDbContext>(options => options
+				.UseSqlite("Data Source=FAKE.DAT")
 				.UseDefaultHavitConventions());
 		}
 

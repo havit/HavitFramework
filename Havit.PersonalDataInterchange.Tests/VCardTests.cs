@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Havit.PersonalDataInterchange.Tests;
 
@@ -47,7 +47,7 @@ public class VCardTests
 			var vCardContent = reader.ReadToEnd();
 
 			// Assert
-			Assert.AreEqual("BEGIN:VCARD\r\nVERSION:2.1\r\nN;CHARSET=UTF-8:Doe;John;M;Mr.;Jr.\r\nFN;CHARSET=UTF-8:John Doe\r\nTITLE;CHARSET=UTF-8:Manager\r\nORG;CHARSET=UTF-8:Havit\r\nEMAIL;PREF;INTERNET:john.doe@example.com\r\nEMAIL;INTERNET:john.doe@example.com\r\nTEL;CELL;VOICE:1234567890\r\nTEL;WORK;FAX:9876543210\r\nURL;WORK:https://www.example.com\r\nTEL;WORK;VOICE:5555555555\r\nTEL;HOME;VOICE:9999999999\r\nADR;WORK;PREF;CHARSET=UTF-8:;;123 Main St, City, State, Country\r\nADR;HOME;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:;;456 Second St, City, State, Country\r\nNOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:This is a test note\r\nEND:VCARD\r\n", vCardContent);
+			Assert.AreEqual("BEGIN:VCARD\r\nVERSION:2.1\r\nN;CHARSET=utf-8:Doe;John;M;Mr.;Jr.\r\nFN;CHARSET=utf-8:John Doe\r\nTITLE;CHARSET=utf-8:Manager\r\nORG;CHARSET=utf-8:Havit\r\nEMAIL;PREF;INTERNET:john.doe@example.com\r\nEMAIL;INTERNET:john.doe@example.com\r\nTEL;CELL;VOICE:1234567890\r\nTEL;WORK;FAX:9876543210\r\nURL;WORK:https://www.example.com\r\nTEL;WORK;VOICE:5555555555\r\nTEL;HOME;VOICE:9999999999\r\nADR;WORK;PREF;CHARSET=utf-8:;;123 Main St, City, State, Country\r\nADR;HOME;CHARSET=utf-8;ENCODING=QUOTED-PRINTABLE:;;456 Second St, City, State, Country\r\nNOTE;CHARSET=utf-8;ENCODING=QUOTED-PRINTABLE:This is a test note\r\nEND:VCARD\r\n", vCardContent);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class VCardTests
 			var vCardContent = reader.ReadToEnd();
 
 			// Assert
-			Assert.AreEqual("BEGIN:VCARD\r\nVERSION:2.1\r\nN;CHARSET=WINDOWS-1250:Doe;John;M;Mr.;Jr.\r\nFN;CHARSET=WINDOWS-1250:John Doe\r\nTITLE;CHARSET=WINDOWS-1250:Manager\r\nORG;CHARSET=WINDOWS-1250:Havit\r\nEMAIL;PREF;INTERNET:john.doe@example.com\r\nEMAIL;INTERNET:john.doe@example.com\r\nTEL;CELL;VOICE:1234567890\r\nTEL;WORK;FAX:9876543210\r\nURL;WORK:https://www.example.com\r\nTEL;WORK;VOICE:5555555555\r\nTEL;HOME;VOICE:9999999999\r\nADR;WORK;PREF;CHARSET=WINDOWS-1250:;;123 Main St, City, State, Country\r\nADR;HOME;CHARSET=WINDOWS-1250;ENCODING=QUOTED-PRINTABLE:;;456 Second St, City, State, Country\r\nNOTE;CHARSET=WINDOWS-1250;ENCODING=QUOTED-PRINTABLE:This is a test note\r\nEND:VCARD\r\n", vCardContent);
+			Assert.AreEqual("BEGIN:VCARD\r\nVERSION:2.1\r\nN;CHARSET=windows-1250:Doe;John;M;Mr.;Jr.\r\nFN;CHARSET=windows-1250:John Doe\r\nTITLE;CHARSET=windows-1250:Manager\r\nORG;CHARSET=windows-1250:Havit\r\nEMAIL;PREF;INTERNET:john.doe@example.com\r\nEMAIL;INTERNET:john.doe@example.com\r\nTEL;CELL;VOICE:1234567890\r\nTEL;WORK;FAX:9876543210\r\nURL;WORK:https://www.example.com\r\nTEL;WORK;VOICE:5555555555\r\nTEL;HOME;VOICE:9999999999\r\nADR;WORK;PREF;CHARSET=windows-1250:;;123 Main St, City, State, Country\r\nADR;HOME;CHARSET=windows-1250;ENCODING=QUOTED-PRINTABLE:;;456 Second St, City, State, Country\r\nNOTE;CHARSET=windows-1250;ENCODING=QUOTED-PRINTABLE:This is a test note\r\nEND:VCARD\r\n", vCardContent);
 		}
 	}
 }

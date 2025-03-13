@@ -101,7 +101,7 @@ public class VCard : VDocumentBase
 	/// <param name="writer">The stream writer</param>
 	public override void WriteToStream(StreamWriter writer)
 	{
-		var charset = writer.Encoding.WebName?.ToUpper();
+		var charset = writer.Encoding.WebName;
 		writer.WriteLine("BEGIN:VCARD");
 		writer.WriteLine($"VERSION:{Version.ToString().Replace(',', '.')}");
 		writer.WriteLine($"N;CHARSET={charset}:{N.LastName};{N.FirstName};{N.MiddleName};{N.Title};{N.Suffix}");

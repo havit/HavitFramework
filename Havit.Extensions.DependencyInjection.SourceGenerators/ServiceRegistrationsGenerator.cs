@@ -184,11 +184,6 @@ public class ServiceRegistrationsGenerator : IIncrementalGenerator
 
 	private static void GenerateSourceCode(ServiceRegistrationsGeneratorData serviceRegistrationsGeneratorData, SourceProductionContext context)
 	{
-		if (!serviceRegistrationsGeneratorData.ServiceRegistrationEntries.Any())
-		{
-			return;
-		}
-
 		context.AddSource(GeneratedOutputFileName, SourceText.From(ServiceRegistrationsCodeBuilder.GenerateCode(serviceRegistrationsGeneratorData), Encoding.UTF8));
 	}
 

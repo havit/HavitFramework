@@ -48,7 +48,7 @@ public abstract class DataEntries<TEntity, TKey>
 	{
 		// najdeme identifikátor objektu
 		TKey id = (_dataEntrySymbolService == null)
-			? (TKey)(object)entry // pokud hodnota enumu odpovídá identifikátoru, vezmeme ji přímo
+			? (TKey)Convert.ChangeType(entry, typeof(TKey)) // pokud hodnota enumu odpovídá identifikátoru, vezmeme ji přímo
 			: _dataEntrySymbolService.GetEntryId(entry); // pokud hodnota enum nemusí odpovídat identifikátoru, pak jej hledáme ve slovníku
 
 		// vrátíme objekt z repository

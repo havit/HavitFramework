@@ -122,6 +122,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbDataSource<>)).WithServiceConstructedInterface(typeof(IDataSource<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataSource<>)).LifestyleTransient(),
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(DbRepository<>)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute)
 				.WithServiceConstructedInterface(typeof(IRepository<,>)) // Zaregistrujeme IRepository<TEntity, int>
+				.WithServiceFromInterface(typeof(IRepository<,>)) // Zaregistrujeme IXyRepository
 				.ApplyLifestyle(componentRegistrationOptions.RepositoriesLifestyle),
 			Classes.FromAssembly(dataLayerAssembly).BasedOn(typeof(IDataEntries)).If(IsNotAbstract).If(DoesNotHaveFakeAttribute).WithServiceFromInterface(typeof(IDataEntries)).ApplyLifestyle(componentRegistrationOptions.DataEntriesLifestyle)
 		);
@@ -131,7 +132,7 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 			.Where(type => type.ImplementsInterface(typeof(IDataEntries)) // musí implementovat IDataEntries
 				&& (type.BaseType != null)
 				&& (type.BaseType.IsGenericType)
-				&& (type.BaseType.GetGenericTypeDefinition() == typeof(DataEntries<>))) // a dědit z DataEntries (pro test konstruktorů, viz dále)
+				&& (type.BaseType.GetGenericTypeDefinition() == typeof(DataEntries<,>))) // a dědit z DataEntries (pro test konstruktorů, viz dále)
 			.ToArray();
 
 		foreach (Type dataEntryType in dataEntryTypes)
@@ -146,10 +147,10 @@ internal class EntityPatternsInstaller : IEntityPatternsInstaller
 
 			if (dataEntryType.GetConstructors().Single().GetParameters().Count() == 2)
 			{
-				Type entityType = dataEntryType.BaseType.GetGenericArguments().Single();  // získáme KonkretníTyp
+				Type entityType = dataEntryType.BaseType.GetGenericArguments().First();  // získáme KonkretníTyp
 
-				container.Register(Component.For(typeof(IDataEntrySymbolService<,>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolService<,>).MakeGenericType(entityType, typeof(int))).LifestyleTransient());
-				container.Register(Component.For(typeof(IDataEntrySymbolStorage<,>).MakeGenericType(entityType)).ImplementedBy(typeof(DataEntrySymbolStorage<,>).MakeGenericType(entityType, typeof(int))).LifestyleSingleton());
+				container.Register(Component.For(typeof(IDataEntrySymbolService<,>).MakeGenericType(entityType, typeof(System.Int32))).ImplementedBy(typeof(DataEntrySymbolService<,>).MakeGenericType(entityType, typeof(int))).LifestyleTransient());
+				container.Register(Component.For(typeof(IDataEntrySymbolStorage<,>).MakeGenericType(entityType, typeof(System.Int32))).ImplementedBy(typeof(DataEntrySymbolStorage<,>).MakeGenericType(entityType, typeof(int))).LifestyleSingleton());
 			}
 		}
 		return this;

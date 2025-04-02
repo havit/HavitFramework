@@ -29,7 +29,7 @@ public class EntityPatternsInstallerTests
 	{
 		// Arrange + Act
 		var container = CreateAndSetupWindsorContainer();
-
+		
 		// Assert
 		MisconfiguredComponentsHelper.AssertMisconfiguredComponents(container);
 	}
@@ -43,6 +43,55 @@ public class EntityPatternsInstallerTests
 		// Assert
 		PotentialLifestyleMismatchesHelper.AssertPotentialLifestyleMismatches(container, cm => cm.Implementation != typeof(TypedFactoryInterceptor));
 	}
+
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterRepository()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<ILanguageRepository>();
+		}
+
+		// Assert
+		// no exception was thrown
+	}
+
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterDataSources()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<ILanguageDataSource>();
+		}
+
+		// Assert
+		// no exception was thrown
+	}
+
+	[TestMethod]
+	public void EntityPatternsInstaller_ShouldRegisterDataEntries()
+	{
+		// Arrange
+		var container = CreateAndSetupWindsorContainer();
+
+		// Act
+		using (container.BeginScope())
+		{
+			container.Resolve<ILanguageEntries>();
+		}
+
+		// Assert
+		// no exception was thrown
+	}
+
 
 	[TestMethod]
 	public void EntityPatternsInstaller_ShouldRegisterLanguageAndLocalizationServices()

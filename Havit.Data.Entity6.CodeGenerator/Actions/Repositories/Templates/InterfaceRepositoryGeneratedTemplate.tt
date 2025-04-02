@@ -15,7 +15,7 @@ using Havit.Data.Patterns.Repositories;
 namespace <#= Model.NamespaceName #>
 {
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
-	public partial interface <#= Model.InterfaceRepositoryName #> : IRepository<<#= Model.ModelClassFullName #>>
+	public partial interface <#= Model.InterfaceRepositoryName #> : IRepository<<#= Model.ModelClassFullName #>, System.Int32>
 	{
 <# if (Model.GenerateGetObjectByEntryEnumMethod) { #>
 		<#= Model.ModelClassFullName #> GetObject(<#= Model.ModelClassFullName #>.Entry entry);

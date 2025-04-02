@@ -18,7 +18,7 @@ using Havit.Data.Patterns.Repositories;
 namespace <#= Model.NamespaceName #>
 {
 	[System.CodeDom.Compiler.GeneratedCode("Havit.Entity.CodeGenerator", "2.0")]
-	public class <#= Model.DbClassName #> : DataEntries<<#= Model.ModelClassFullName #>>, <#= Model.InterfaceName #> 
+	public class <#= Model.DbClassName #> : DataEntries<<#= Model.ModelClassFullName #>, System.Int32>, <#= Model.InterfaceName #> 
 	{
 <# foreach (DataEntriesModel.Entry entry in Model.Entries) { #>
 <# if (entry.IsObsolete) { #>		[Obsolete] 
@@ -38,10 +38,10 @@ namespace <#= Model.NamespaceName #>
 
 <# } #>
 <# if (Model.UseDataEntrySymbolService) { #>
-		public <#= Model.DbClassName #>(IDataEntrySymbolService<<#= Model.ModelClassFullName #>> dataEntrySymbolService, IRepository<<#= Model.ModelClassFullName #>> repository)
+		public <#= Model.DbClassName #>(IDataEntrySymbolService<<#= Model.ModelClassFullName #>, System.Int32> dataEntrySymbolService, IRepository<<#= Model.ModelClassFullName #>, System.Int32> repository)
 			: base(dataEntrySymbolService, repository)
 <# } else { #>
-		public <#= Model.DbClassName #>(IRepository<<#= Model.ModelClassFullName #>> repository)
+		public <#= Model.DbClassName #>(IRepository<<#= Model.ModelClassFullName #>, System.Int32> repository)
 			: base(repository)
 <# } #>
 		{

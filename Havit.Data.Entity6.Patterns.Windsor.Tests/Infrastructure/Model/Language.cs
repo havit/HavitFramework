@@ -9,4 +9,6 @@ public class Language : ILanguage
 	public string Culture { get; }
 
 	public string UiCulture { get; }
+
+	public string Symbol { get; set; }
 }

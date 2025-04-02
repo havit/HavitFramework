@@ -19,7 +19,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+    #line 1 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
     public partial class DbDataEntriesTemplate : DbDataEntriesTemplateBase
     {
@@ -40,7 +40,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
                     "sing Havit.Data.Patterns.DataEntries;\r\nusing Havit.Data.Patterns.Repositories;\r\n" +
                     "\r\nnamespace ");
             
-            #line 18 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.NamespaceName));
             
             #line default
@@ -48,166 +48,166 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
             this.Write("\r\n{\r\n\t[System.CodeDom.Compiler.GeneratedCode(\"Havit.Entity.CodeGenerator\", \"2.0\")" +
                     "]\r\n\tpublic class ");
             
-            #line 21 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbClassName));
             
             #line default
             #line hidden
             this.Write(" : DataEntries<");
             
-            #line 21 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(">, ");
+            this.Write(", System.Int32>, ");
             
-            #line 21 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.InterfaceName));
             
             #line default
             #line hidden
             this.Write(" \r\n\t{\r\n");
             
-            #line 23 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  foreach (DataEntriesModel.Entry entry in Model.Entries) { 
             
             #line default
             #line hidden
             
-            #line 24 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  if (entry.IsObsolete) { 
             
             #line default
             #line hidden
             this.Write("\t\t[Obsolete] \r\n");
             
-            #line 25 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 25 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 26 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 26 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.PropertyName));
             
             #line default
             #line hidden
             this.Write("\r\n        {\r\n            get\r\n            {\r\n\t\t\t\tif (");
             
-            #line 30 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 30 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.FieldName));
             
             #line default
             #line hidden
             this.Write(" == null)\r\n\t\t\t\t{\r\n\t\t\t\t\t");
             
-            #line 32 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.FieldName));
             
             #line default
             #line hidden
             this.Write(" = GetEntry(");
             
-            #line 32 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelEntriesEnumerationFullName));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 32 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.PropertyName));
             
             #line default
             #line hidden
             this.Write(");\r\n\t\t\t\t}\r\n\t\t\t\treturn ");
             
-            #line 34 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 34 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n            }\r\n        }\r\n\t\tprivate ");
             
-            #line 37 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 37 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 37 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 37 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entry.FieldName));
             
             #line default
             #line hidden
             this.Write(";\r\n\r\n");
             
-            #line 39 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 39 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  } 
             
             #line default
             #line hidden
             
-            #line 40 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 40 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  if (Model.UseDataEntrySymbolService) { 
             
             #line default
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 41 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbClassName));
             
             #line default
             #line hidden
             this.Write("(IDataEntrySymbolService<");
             
-            #line 41 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write("> dataEntrySymbolService, IRepository<");
+            this.Write(", System.Int32> dataEntrySymbolService, IRepository<");
             
-            #line 41 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write("> repository)\r\n\t\t\t: base(dataEntrySymbolService, repository)\r\n");
+            this.Write(", System.Int32> repository)\r\n\t\t\t: base(dataEntrySymbolService, repository)\r\n");
             
-            #line 43 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 43 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  } else { 
             
             #line default
             #line hidden
             this.Write("\t\tpublic ");
             
-            #line 44 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbClassName));
             
             #line default
             #line hidden
             this.Write("(IRepository<");
             
-            #line 44 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write("> repository)\r\n\t\t\t: base(repository)\r\n");
+            this.Write(", System.Int32> repository)\r\n\t\t\t: base(repository)\r\n");
             
-            #line 46 "C:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
+            #line 46 "D:\Dev\002.HFW-HavitFramework\Havit.Data.Entity6.CodeGenerator\Actions\DataEntries\Template\DbDataEntriesTemplate.tt"
  } 
             
             #line default
@@ -238,7 +238,7 @@ namespace Havit.Data.Entity.CodeGenerator.Actions.DataEntries.Template
         /// <summary>
         /// The string builder that generation-time code is using to assemble generated output
         /// </summary>
-        protected System.Text.StringBuilder GenerationEnvironment
+        public System.Text.StringBuilder GenerationEnvironment
         {
             get
             {

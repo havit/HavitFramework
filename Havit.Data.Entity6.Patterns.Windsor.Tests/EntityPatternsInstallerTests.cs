@@ -29,7 +29,7 @@ public class EntityPatternsInstallerTests
 	{
 		// Arrange + Act
 		var container = CreateAndSetupWindsorContainer();
-		
+
 		// Assert
 		MisconfiguredComponentsHelper.AssertMisconfiguredComponents(container);
 	}

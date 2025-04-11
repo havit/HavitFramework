@@ -22,7 +22,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[9.0.0,10)" />
-		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.61">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

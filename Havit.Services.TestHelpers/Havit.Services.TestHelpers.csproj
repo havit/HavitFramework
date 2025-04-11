@@ -7,6 +7,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="MSTest" Version="3.8.3" />
+		<!-- Vulnerable transitive dependencies updates -->
+		<PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
 	</ItemGroup>
 	
 	<ItemGroup>

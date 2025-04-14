@@ -15,11 +15,10 @@ public class Person
 
 	public FilteringCollection<Person> SubordinatesIncludingDeleted { get; }
 
-	// TODO JK (po merge s newgendbdataloader): Neudělal jsem migraci, mám v jiné branch tutéž upravu, databáze mi přežívá
-	//public DateTime? Deleted { get; set; }
+	public DateTime? Deleted { get; set; }
 
 	public Person()
 	{
-		SubordinatesIncludingDeleted = new FilteringCollection<Person>(Subordinates, p => true);
+		SubordinatesIncludingDeleted = new FilteringCollection<Person>(Subordinates, p => Deleted == null);
 	}
 }

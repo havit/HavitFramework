@@ -5,35 +5,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.EFCoreTests.Entity.Migrations
 {
-    /// <inheritdoc />
-    public partial class Migration_Person_Deleted : Migration
-    {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Deleted",
-                table: "Person",
-                type: "datetime2",
-                nullable: true);
+	/// <inheritdoc />
+	public partial class Migration_Person_Deleted : Migration
+	{
+		/// <inheritdoc />
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.AddColumn<DateTime>(
+				name: "Deleted",
+				table: "Person",
+				type: "datetime2",
+				nullable: true);
 
-            migrationBuilder.AddColumn<string>(
-                name: "Symbol",
-                table: "Language",
-                type: "nvarchar(max)",
-                nullable: true);
-        }
+			migrationBuilder.AddColumn<string>(
+				name: "Symbol",
+				table: "Language",
+				type: "nvarchar(max)",
+				nullable: true);
+		}
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Deleted",
-                table: "Person");
+		/// <inheritdoc />
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropColumn(
+				name: "Deleted",
+				table: "Person");
 
-            migrationBuilder.DropColumn(
-                name: "Symbol",
-                table: "Language");
-        }
-    }
+			migrationBuilder.DropColumn(
+				name: "Symbol",
+				table: "Language");
+		}
+	}
 }

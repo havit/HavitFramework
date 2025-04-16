@@ -55,6 +55,9 @@ public static partial class DataLayerServiceExtensions
 		services.TryAddTransient<Havit.EFCoreTests.DataLayer.DataSources.IPropertyWithProtectedMembersDataSource, Havit.EFCoreTests.DataLayer.DataSources.PropertyWithProtectedMembersDbDataSource>();
 		services.TryAddTransient<IDataSource<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>, Havit.EFCoreTests.DataLayer.DataSources.PropertyWithProtectedMembersDbDataSource>();
 
+		services.TryAddTransient<Havit.EFCoreTests.DataLayer.DataSources.IRoleDataSource, Havit.EFCoreTests.DataLayer.DataSources.RoleDbDataSource>();
+		services.TryAddTransient<IDataSource<Havit.EFCoreTests.Model.Role>, Havit.EFCoreTests.DataLayer.DataSources.RoleDbDataSource>();
+
 		services.TryAddTransient<Havit.EFCoreTests.DataLayer.DataSources.IStateDataSource, Havit.EFCoreTests.DataLayer.DataSources.StateDbDataSource>();
 		services.TryAddTransient<IDataSource<Havit.EFCoreTests.Model.State>, Havit.EFCoreTests.DataLayer.DataSources.StateDbDataSource>();
 
@@ -96,6 +99,10 @@ public static partial class DataLayerServiceExtensions
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IPropertyWithProtectedMembersRepository>());
 		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.PropertyWithProtectedMembersDbRepositoryQueryProvider>();
 
+		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IRoleRepository, Havit.EFCoreTests.DataLayer.Repositories.RoleDbRepository>();
+		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.Role, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IRoleRepository>());
+		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.Role, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.RoleDbRepositoryQueryProvider>();
+
 		services.TryAddScoped<Havit.EFCoreTests.DataLayer.Repositories.IStateRepository, Havit.EFCoreTests.DataLayer.Repositories.StateDbRepository>();
 		services.TryAddScoped<IRepository<Havit.EFCoreTests.Model.State, System.Int32>>(sp => sp.GetRequiredService<Havit.EFCoreTests.DataLayer.Repositories.IStateRepository>());
 		services.TryAddSingleton<IRepositoryQueryProvider<Havit.EFCoreTests.Model.State, System.Int32>, Havit.EFCoreTests.DataLayer.Repositories.StateDbRepositoryQueryProvider>();
@@ -127,6 +134,7 @@ public static partial class DataLayerServiceExtensions
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.Modelation, System.Int32>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.Modelation, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.Person, System.Int32>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.Person, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>>();
+		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.Role, System.Int32>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.Role, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.State, System.Int32>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.State, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.StateLocalization, System.Int32>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.StateLocalization, System.Int32>>();
 		services.TryAddTransient<IEntityKeyAccessor<Havit.EFCoreTests.Model.User, System.Guid>, DbEntityKeyAccessor<Havit.EFCoreTests.Model.User, System.Guid>>();

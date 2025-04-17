@@ -1,4 +1,7 @@
-﻿v2.9.6 (??.2025)
+﻿v2.9.32 (??.4.2025)
+• SoftDeleteManager může být (opět) registrován s lifetime Scoped.
+
+v2.9.30 (25.2.2025)
 • Podpora non-int primárních klíčů (podporovány jsou SByte, Int16, Int32, Int64 a unsigned varianty, Guid, string)
 • Náhrada IRepository<TEntity> ve prospěch IRepository<TEntity, TKey> a související úpravy
 

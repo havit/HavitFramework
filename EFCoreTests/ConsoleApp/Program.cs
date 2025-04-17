@@ -100,14 +100,8 @@ public static class Program
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 		var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-		unitOfWork.RegisterAfterCommitAction(() => Console.WriteLine(0));
-		unitOfWork.RegisterAfterCommitAction((CancellationToken ct) => { Console.WriteLine(1); return Task.CompletedTask; });
-
-		//unitOfWork.Commit();
-		await unitOfWork.CommitAsync(cancellationToken);
-
-		Person person1 = personRepository.GetObject(1);
-		dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
+		personRepository.GetAll();
+		await personRepository.GetAllAsync(cancellationToken);
 
 		//Person person2 = personRepository.GetObject(2);
 		//await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);

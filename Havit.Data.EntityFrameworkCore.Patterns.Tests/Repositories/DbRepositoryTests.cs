@@ -509,16 +509,6 @@ public class DbRepositoryTests
 
 	internal class FakeRepositoryQueryProvider : IRepositoryQueryProvider<ItemWithDeleted, int>
 	{
-		Func<DbContext, IAsyncEnumerable<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetAllAsyncQuery()
-		{
-			return (DbContext dbContext) => dbContext.Set<ItemWithDeleted>().Where(item => item.Deleted == null).AsAsyncEnumerable();
-		}
-
-		Func<DbContext, IEnumerable<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetAllQuery()
-		{
-			return (DbContext dbContext) => dbContext.Set<ItemWithDeleted>().Where(item => item.Deleted == null);
-		}
-
 		Func<DbContext, int, CancellationToken, Task<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectAsyncQuery()
 		{
 			return (DbContext dbContext, int id, CancellationToken cancellationToken) => dbContext.Set<ItemWithDeleted>().Where(item => item.Id == id).SingleOrDefaultAsync(cancellationToken);

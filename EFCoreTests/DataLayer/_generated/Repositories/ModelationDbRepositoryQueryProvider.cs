@@ -14,19 +14,13 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 internal class ModelationDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.EFCoreTests.Model.Modelation, System.Int32>
 {
-	private readonly ISoftDeleteManager _softDeleteManager;
-
 	private readonly Func<DbContext, System.Int32, Havit.EFCoreTests.Model.Modelation> _getObjectQuery;
 	private readonly Func<DbContext, System.Int32, CancellationToken, Task<Havit.EFCoreTests.Model.Modelation>> _getObjectAsyncQuery;
 	private readonly Func<DbContext, System.Int32[], IEnumerable<Havit.EFCoreTests.Model.Modelation>> _getObjectsQuery;
 	private readonly Func<DbContext, System.Int32[], IAsyncEnumerable<Havit.EFCoreTests.Model.Modelation>> _getObjectsAsyncQuery;
-	private readonly Func<DbContext, IEnumerable<Havit.EFCoreTests.Model.Modelation>> _getAllQuery;
-	private readonly Func<DbContext, IAsyncEnumerable<Havit.EFCoreTests.Model.Modelation>> _getAllAsyncQuery;
 
-	public ModelationDbRepositoryQueryProvider(ISoftDeleteManager softDeleteManager)
+	public ModelationDbRepositoryQueryProvider()
 	{
-		_softDeleteManager = softDeleteManager;
-
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.Modelation>()
 			.TagWith("ModelationDbRepository.GetObject")
@@ -48,22 +42,10 @@ internal class ModelationDbRepositoryQueryProvider : IRepositoryQueryProvider<Ha
 			.Set<Havit.EFCoreTests.Model.Modelation>()
 			.TagWith("ModelationDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
-
-		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
-			.Set<Havit.EFCoreTests.Model.Modelation>()
-			.TagWith("ModelationDbRepository.GetAll")
-			.WhereNotDeleted(_softDeleteManager));
-
-		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
-			.Set<Havit.EFCoreTests.Model.Modelation>()
-			.TagWith("ModelationDbRepository.GetAllAsync")
-			.WhereNotDeleted(_softDeleteManager));
 	}
 
 	public Func<DbContext, System.Int32, Havit.EFCoreTests.Model.Modelation> GetGetObjectQuery() => _getObjectQuery;
 	public Func<DbContext, System.Int32, CancellationToken, Task<Havit.EFCoreTests.Model.Modelation>> GetGetObjectAsyncQuery() => _getObjectAsyncQuery;
 	public Func<DbContext, System.Int32[], IEnumerable<Havit.EFCoreTests.Model.Modelation>> GetGetObjectsQuery() => _getObjectsQuery;
 	public Func<DbContext, System.Int32[], IAsyncEnumerable<Havit.EFCoreTests.Model.Modelation>> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;
-	public Func<DbContext, IAsyncEnumerable<Havit.EFCoreTests.Model.Modelation>> GetGetAllAsyncQuery() => _getAllAsyncQuery;
-	public Func<DbContext, IEnumerable<Havit.EFCoreTests.Model.Modelation>> GetGetAllQuery() => _getAllQuery;
 }

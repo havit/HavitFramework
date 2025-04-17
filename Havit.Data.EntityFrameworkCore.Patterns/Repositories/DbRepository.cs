@@ -342,8 +342,11 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 			else
 			{
 				// pokud ne, načtene data a uložíme data a klíče do cache
-				Func<DbContext, IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllQuery();
-				allData = query((DbContext)dbContext).ToList();
+				// dotazy nepoužívají IRepositoryQueryProvider (a kompilované dotazy), protože SoftDeleteManager může být scoped a vracet podmínku dle kontextu
+				// je zodpovědností implementátora nevracet různé záznamy pro GetAll, pokud je výsledek metody cachovaný
+				allData = DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAll)))
+					.WhereNotDeleted(SoftDeleteManager)
+					.ToList();
 
 				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				if (IsEntityCachable())
@@ -386,8 +389,11 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 			else
 			{
 				// pokud ne, načtene data a uložíme klíče do cache
-				Func<DbContext, IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetAllAsyncQuery();
-				allData = await query((DbContext)dbContext).ToListAsync(cancellationToken).ConfigureAwait(false);
+				// dotazy nepoužívají IRepositoryQueryProvider (a kompilované dotazy), protože SoftDeleteManager může být scoped a vracet podmínku dle kontextu
+				// je zodpovědností implementátora nevracet různé záznamy pro GetAll, pokud je výsledek metody cachovaný
+				allData = await DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAllAsync)))
+					.WhereNotDeleted(SoftDeleteManager)
+					.ToListAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);

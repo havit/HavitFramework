@@ -14,19 +14,13 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 internal class UserDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.EFCoreTests.Model.User, System.Guid>
 {
-	private readonly ISoftDeleteManager _softDeleteManager;
-
 	private readonly Func<DbContext, System.Guid, Havit.EFCoreTests.Model.User> _getObjectQuery;
 	private readonly Func<DbContext, System.Guid, CancellationToken, Task<Havit.EFCoreTests.Model.User>> _getObjectAsyncQuery;
 	private readonly Func<DbContext, System.Guid[], IEnumerable<Havit.EFCoreTests.Model.User>> _getObjectsQuery;
 	private readonly Func<DbContext, System.Guid[], IAsyncEnumerable<Havit.EFCoreTests.Model.User>> _getObjectsAsyncQuery;
-	private readonly Func<DbContext, IEnumerable<Havit.EFCoreTests.Model.User>> _getAllQuery;
-	private readonly Func<DbContext, IAsyncEnumerable<Havit.EFCoreTests.Model.User>> _getAllAsyncQuery;
 
-	public UserDbRepositoryQueryProvider(ISoftDeleteManager softDeleteManager)
+	public UserDbRepositoryQueryProvider()
 	{
-		_softDeleteManager = softDeleteManager;
-
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Guid id) => dbContext
 			.Set<Havit.EFCoreTests.Model.User>()
 			.TagWith("UserDbRepository.GetObject")
@@ -48,22 +42,10 @@ internal class UserDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.EF
 			.Set<Havit.EFCoreTests.Model.User>()
 			.TagWith("UserDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
-
-		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
-			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith("UserDbRepository.GetAll")
-			.WhereNotDeleted(_softDeleteManager));
-
-		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
-			.Set<Havit.EFCoreTests.Model.User>()
-			.TagWith("UserDbRepository.GetAllAsync")
-			.WhereNotDeleted(_softDeleteManager));
 	}
 
 	public Func<DbContext, System.Guid, Havit.EFCoreTests.Model.User> GetGetObjectQuery() => _getObjectQuery;
 	public Func<DbContext, System.Guid, CancellationToken, Task<Havit.EFCoreTests.Model.User>> GetGetObjectAsyncQuery() => _getObjectAsyncQuery;
 	public Func<DbContext, System.Guid[], IEnumerable<Havit.EFCoreTests.Model.User>> GetGetObjectsQuery() => _getObjectsQuery;
 	public Func<DbContext, System.Guid[], IAsyncEnumerable<Havit.EFCoreTests.Model.User>> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;
-	public Func<DbContext, IAsyncEnumerable<Havit.EFCoreTests.Model.User>> GetGetAllAsyncQuery() => _getAllAsyncQuery;
-	public Func<DbContext, IEnumerable<Havit.EFCoreTests.Model.User>> GetGetAllQuery() => _getAllQuery;
 }

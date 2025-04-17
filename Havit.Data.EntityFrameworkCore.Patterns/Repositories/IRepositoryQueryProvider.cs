@@ -28,14 +28,4 @@ public interface IRepositoryQueryProvider<TEntity, TKey>
 	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetObjectsAsync(TKey[], CancellationToken)" />.
 	/// </summary>
 	Func<DbContext, TKey[], IAsyncEnumerable<TEntity>> GetGetObjectsAsyncQuery();
-
-	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetAll" />.
-	/// </summary>
-	Func<DbContext, IEnumerable<TEntity>> GetGetAllQuery();
-
-	/// <summary>
-	/// Vrátí dotaz pro metodu <see cref="DbRepository{TEntity, TKey}.GetAllAsync(CancellationToken)" />.
-	/// </summary>
-	Func<DbContext, IAsyncEnumerable<TEntity>> GetGetAllAsyncQuery();
 }

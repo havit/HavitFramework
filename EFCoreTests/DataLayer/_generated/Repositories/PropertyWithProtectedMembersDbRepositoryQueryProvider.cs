@@ -14,19 +14,13 @@ namespace Havit.EFCoreTests.DataLayer.Repositories;
 
 internal class PropertyWithProtectedMembersDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.EFCoreTests.Model.PropertyWithProtectedMembers, System.Int32>
 {
-	private readonly ISoftDeleteManager _softDeleteManager;
-
 	private readonly Func<DbContext, System.Int32, Havit.EFCoreTests.Model.PropertyWithProtectedMembers> _getObjectQuery;
 	private readonly Func<DbContext, System.Int32, CancellationToken, Task<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> _getObjectAsyncQuery;
 	private readonly Func<DbContext, System.Int32[], IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> _getObjectsQuery;
 	private readonly Func<DbContext, System.Int32[], IAsyncEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> _getObjectsAsyncQuery;
-	private readonly Func<DbContext, IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> _getAllQuery;
-	private readonly Func<DbContext, IAsyncEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> _getAllAsyncQuery;
 
-	public PropertyWithProtectedMembersDbRepositoryQueryProvider(ISoftDeleteManager softDeleteManager)
+	public PropertyWithProtectedMembersDbRepositoryQueryProvider()
 	{
-		_softDeleteManager = softDeleteManager;
-
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>()
 			.TagWith("PropertyWithProtectedMembersDbRepository.GetObject")
@@ -48,22 +42,10 @@ internal class PropertyWithProtectedMembersDbRepositoryQueryProvider : IReposito
 			.Set<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>()
 			.TagWith("PropertyWithProtectedMembersDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
-
-		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
-			.Set<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>()
-			.TagWith("PropertyWithProtectedMembersDbRepository.GetAll")
-			.WhereNotDeleted(_softDeleteManager));
-
-		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
-			.Set<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>()
-			.TagWith("PropertyWithProtectedMembersDbRepository.GetAllAsync")
-			.WhereNotDeleted(_softDeleteManager));
 	}
 
 	public Func<DbContext, System.Int32, Havit.EFCoreTests.Model.PropertyWithProtectedMembers> GetGetObjectQuery() => _getObjectQuery;
 	public Func<DbContext, System.Int32, CancellationToken, Task<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> GetGetObjectAsyncQuery() => _getObjectAsyncQuery;
 	public Func<DbContext, System.Int32[], IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> GetGetObjectsQuery() => _getObjectsQuery;
 	public Func<DbContext, System.Int32[], IAsyncEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;
-	public Func<DbContext, IAsyncEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> GetGetAllAsyncQuery() => _getAllAsyncQuery;
-	public Func<DbContext, IEnumerable<Havit.EFCoreTests.Model.PropertyWithProtectedMembers>> GetGetAllQuery() => _getAllQuery;
 }

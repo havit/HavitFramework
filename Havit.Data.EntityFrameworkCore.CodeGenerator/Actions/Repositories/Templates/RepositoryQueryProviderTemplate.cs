@@ -64,93 +64,106 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(">\r\n{\r\n\tprivate readonly ISoftDeleteManager _softDeleteManager;\r\n\r\n\tprivate readon" +
-                    "ly Func<DbContext, ");
+            this.Write(">\r\n{\r\n\tprivate readonly Func<DbContext, ");
             
-            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write("> _getObjectQuery;\r\n\tprivate readonly Func<DbContext, ");
             
-            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write(", CancellationToken, Task<");
             
-            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 18 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">> _getObjectAsyncQuery;\r\n\tprivate readonly Func<DbContext, ");
             
-            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write("[], IEnumerable<");
             
-            #line 21 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 19 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">> _getObjectsQuery;\r\n\tprivate readonly Func<DbContext, ");
             
-            #line 22 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write("[], IAsyncEnumerable<");
             
+            #line 20 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">> _getObjectsAsyncQuery;\r\n\r\n\tpublic ");
+            
             #line 22 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">> _getObjectsAsyncQuery;\r\n\tprivate readonly Func<DbContext, IEnumerable<");
-            
-            #line 23 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">> _getAllQuery;\r\n\tprivate readonly Func<DbContext, IAsyncEnumerable<");
-            
-            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">> _getAllAsyncQuery;\r\n\r\n\tpublic ");
-            
-            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.RepositoryQueryProviderClassName));
             
             #line default
             #line hidden
-            this.Write("(ISoftDeleteManager softDeleteManager)\r\n\t{\r\n\t\t_softDeleteManager = softDeleteMana" +
-                    "ger;\r\n\r\n\t\t_getObjectQuery = EF.CompileQuery((DbContext dbContext, ");
+            this.Write("()\r\n\t{\r\n\t\t_getObjectQuery = EF.CompileQuery((DbContext dbContext, ");
+            
+            #line 24 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
+            
+            #line default
+            #line hidden
+            this.Write(" id) => dbContext\r\n\t\t\t.Set<");
+            
+            #line 25 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
+            
+            #line default
+            #line hidden
+            this.Write(">()\r\n\t\t\t.TagWith(\"");
+            
+            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
+            
+            #line default
+            #line hidden
+            this.Write(".GetObject\")\r\n\t\t\t.Where(entity => entity.");
+            
+            #line 27 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
+            
+            #line default
+            #line hidden
+            this.Write(" == id)\r\n\t\t\t.FirstOrDefault());\r\n\r\n\t\t_getObjectAsyncQuery = EF.CompileAsyncQuery(" +
+                    "(DbContext dbContext, ");
             
             #line 30 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
-            this.Write(" id) => dbContext\r\n\t\t\t.Set<");
+            this.Write(" id, CancellationToken cancellationToken) => dbContext\r\n\t\t\t.Set<");
             
             #line 31 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
@@ -164,22 +177,22 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(".GetObject\")\r\n\t\t\t.Where(entity => entity.");
+            this.Write(".GetObjectAsync\")\r\n\t\t\t.Where(entity => entity.");
             
             #line 33 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
             
             #line default
             #line hidden
-            this.Write(" == id)\r\n\t\t\t.FirstOrDefault());\r\n\r\n\t\t_getObjectAsyncQuery = EF.CompileAsyncQuery(" +
-                    "(DbContext dbContext, ");
+            this.Write(" == id)\r\n\t\t\t.FirstOrDefault());\r\n\r\n\t\t_getObjectsQuery = EF.CompileQuery((DbContex" +
+                    "t dbContext, ");
             
             #line 36 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
-            this.Write(" id, CancellationToken cancellationToken) => dbContext\r\n\t\t\t.Set<");
+            this.Write("[] ids) => dbContext\r\n\t\t\t.Set<");
             
             #line 37 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
@@ -193,174 +206,98 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             
             #line default
             #line hidden
-            this.Write(".GetObjectAsync\")\r\n\t\t\t.Where(entity => entity.");
+            this.Write(".GetObjects\")\r\n\t\t\t.Where(entity => ids.Contains(entity.");
             
             #line 39 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
             
             #line default
             #line hidden
-            this.Write(" == id)\r\n\t\t\t.FirstOrDefault());\r\n\r\n\t\t_getObjectsQuery = EF.CompileQuery((DbContex" +
-                    "t dbContext, ");
-            
-            #line 42 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
-            
-            #line default
-            #line hidden
-            this.Write("[] ids) => dbContext\r\n\t\t\t.Set<");
-            
-            #line 43 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(\"");
-            
-            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
-            
-            #line default
-            #line hidden
-            this.Write(".GetObjects\")\r\n\t\t\t.Where(entity => ids.Contains(entity.");
-            
-            #line 45 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
-            
-            #line default
-            #line hidden
             this.Write(")));\r\n\r\n\t\t_getObjectsAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext, ");
             
-            #line 47 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 41 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write("[] ids) => dbContext\r\n\t\t\t.Set<");
             
-            #line 48 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 42 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">()\r\n\t\t\t.TagWith(\"");
             
-            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 43 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
             
             #line default
             #line hidden
             this.Write(".GetObjectsAsync\")\r\n\t\t\t.Where(entity => ids.Contains(entity.");
             
-            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 44 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyPropertyName));
             
             #line default
             #line hidden
-            this.Write(")));\r\n\r\n\t\t_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext\r\n\t\t\t." +
-                    "Set<");
+            this.Write(")));\r\n\t}\r\n\r\n\tpublic Func<DbContext, ");
             
-            #line 53 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(\"");
-            
-            #line 54 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
-            
-            #line default
-            #line hidden
-            this.Write(".GetAll\")\r\n\t\t\t.WhereNotDeleted(_softDeleteManager));\r\n\r\n\t\t_getAllAsyncQuery = EF." +
-                    "CompileAsyncQuery((DbContext dbContext) => dbContext\r\n\t\t\t.Set<");
-            
-            #line 58 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">()\r\n\t\t\t.TagWith(\"");
-            
-            #line 59 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.DbRepositoryName));
-            
-            #line default
-            #line hidden
-            this.Write(".GetAllAsync\")\r\n\t\t\t.WhereNotDeleted(_softDeleteManager));\r\n\t}\r\n\r\n\tpublic Func<DbC" +
-                    "ontext, ");
-            
-            #line 63 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 47 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 63 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 47 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write("> GetGetObjectQuery() => _getObjectQuery;\r\n\tpublic Func<DbContext, ");
             
-            #line 64 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 48 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write(", CancellationToken, Task<");
             
-            #line 64 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 48 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">> GetGetObjectAsyncQuery() => _getObjectAsyncQuery;\r\n\tpublic Func<DbContext, ");
             
-            #line 65 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write("[], IEnumerable<");
             
-            #line 65 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 49 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
             this.Write(">> GetGetObjectsQuery() => _getObjectsQuery;\r\n\tpublic Func<DbContext, ");
             
-            #line 66 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassPrimaryKeyTypeName));
             
             #line default
             #line hidden
             this.Write("[], IAsyncEnumerable<");
             
-            #line 66 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
+            #line 50 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
             
             #line default
             #line hidden
-            this.Write(">> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;\r\n\tpublic Func<DbContext, I" +
-                    "AsyncEnumerable<");
-            
-            #line 67 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">> GetGetAllAsyncQuery() => _getAllAsyncQuery;\r\n\tpublic Func<DbContext, IEnumerab" +
-                    "le<");
-            
-            #line 68 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\RepositoryQueryProviderTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(">> GetGetAllQuery() => _getAllQuery;\r\n}\r\n");
+            this.Write(">> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

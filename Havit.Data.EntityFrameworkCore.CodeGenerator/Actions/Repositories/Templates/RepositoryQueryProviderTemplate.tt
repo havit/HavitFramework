@@ -14,19 +14,13 @@ namespace <#= Model.NamespaceName #>;
 
 internal class <#= Model.RepositoryQueryProviderClassName #> : IRepositoryQueryProvider<<#= Model.ModelClassFullName #>, <#= Model.ModelClassPrimaryKeyTypeName #>>
 {
-	private readonly ISoftDeleteManager _softDeleteManager;
-
 	private readonly Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>, <#= Model.ModelClassFullName #>> _getObjectQuery;
 	private readonly Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>, CancellationToken, Task<<#= Model.ModelClassFullName #>>> _getObjectAsyncQuery;
 	private readonly Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>[], IEnumerable<<#= Model.ModelClassFullName #>>> _getObjectsQuery;
 	private readonly Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>[], IAsyncEnumerable<<#= Model.ModelClassFullName #>>> _getObjectsAsyncQuery;
-	private readonly Func<DbContext, IEnumerable<<#= Model.ModelClassFullName #>>> _getAllQuery;
-	private readonly Func<DbContext, IAsyncEnumerable<<#= Model.ModelClassFullName #>>> _getAllAsyncQuery;
 
-	public <#= Model.RepositoryQueryProviderClassName #>(ISoftDeleteManager softDeleteManager)
+	public <#= Model.RepositoryQueryProviderClassName #>()
 	{
-		_softDeleteManager = softDeleteManager;
-
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, <#= Model.ModelClassPrimaryKeyTypeName #> id) => dbContext
 			.Set<<#= Model.ModelClassFullName #>>()
 			.TagWith("<#= Model.DbRepositoryName #>.GetObject")
@@ -48,22 +42,10 @@ internal class <#= Model.RepositoryQueryProviderClassName #> : IRepositoryQueryP
 			.Set<<#= Model.ModelClassFullName #>>()
 			.TagWith("<#= Model.DbRepositoryName #>.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.<#= Model.ModelClassPrimaryKeyPropertyName #>)));
-
-		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
-			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith("<#= Model.DbRepositoryName #>.GetAll")
-			.WhereNotDeleted(_softDeleteManager));
-
-		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
-			.Set<<#= Model.ModelClassFullName #>>()
-			.TagWith("<#= Model.DbRepositoryName #>.GetAllAsync")
-			.WhereNotDeleted(_softDeleteManager));
 	}
 
 	public Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>, <#= Model.ModelClassFullName #>> GetGetObjectQuery() => _getObjectQuery;
 	public Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>, CancellationToken, Task<<#= Model.ModelClassFullName #>>> GetGetObjectAsyncQuery() => _getObjectAsyncQuery;
 	public Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>[], IEnumerable<<#= Model.ModelClassFullName #>>> GetGetObjectsQuery() => _getObjectsQuery;
 	public Func<DbContext, <#= Model.ModelClassPrimaryKeyTypeName #>[], IAsyncEnumerable<<#= Model.ModelClassFullName #>>> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;
-	public Func<DbContext, IAsyncEnumerable<<#= Model.ModelClassFullName #>>> GetGetAllAsyncQuery() => _getAllAsyncQuery;
-	public Func<DbContext, IEnumerable<<#= Model.ModelClassFullName #>>> GetGetAllQuery() => _getAllQuery;
 }

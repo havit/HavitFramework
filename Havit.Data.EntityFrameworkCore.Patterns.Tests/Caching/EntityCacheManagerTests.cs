@@ -576,6 +576,57 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
+	public void EntityCacheManager_CacheInvalidation_SupportsManyToManyRelationships()
+	{
+		// Arrange
+		CachingTestDbContext dbContext = new CachingTestDbContext();
+
+		var classManyToManyB2 = new ClassManyToManyB { Id = 2 };
+		var classManyToManyB3 = new ClassManyToManyB { Id = 3 };
+
+		ClassManyToManyA classManyToManyA = new ClassManyToManyA
+		{
+			Id = 1,
+			Items = new List<ClassManyToManyB> { classManyToManyB2 }
+		};
+
+		dbContext.Attach(classManyToManyA);
+		dbContext.AttachRange(classManyToManyA.Items);
+
+		classManyToManyA.Items.Remove(classManyToManyB2);
+		classManyToManyA.Items.Add(classManyToManyB3);
+		dbContext.ChangeTracker.DetectChanges();
+
+		EntityCacheManager entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext);
+
+		Changes changes = new Changes(new List<Change>
+		{
+			new FakeChange
+			{
+				ChangeType = ChangeType.Delete,
+				ClrType = typeof(IDictionary<string, object>),
+				EntityType = dbContext.Model.FindEntityType(CachingTestDbContext.ClassManyToManyAItemsEntityName),
+				Entity = new Dictionary<string, object>() { { "ClassManyToManyAId", 1 }, { "ItemsId", 2 } },
+				OriginalValues = new Dictionary<string, object> { { "ClassManyToManyAId", 1 }, { "ItemsId", 2 } }
+			},
+			new FakeChange
+			{
+				ChangeType = ChangeType.Insert,
+				ClrType = typeof(IDictionary<string, object>),
+				EntityType = dbContext.Model.FindEntityType(CachingTestDbContext.ClassManyToManyAItemsEntityName),
+				Entity = new Dictionary<string, object>() { { "ClassManyToManyAId", 1 }, { "ItemsId", 3 } },
+				OriginalValues = new Dictionary<string, object>() { { "ClassManyToManyAId", null }, { "ItemsId", null } },
+			}
+		});
+
+		// Act
+		entityCacheManager.PrepareCacheInvalidation(changes).Invalidate();
+
+		// Assert
+		// no exception was thrown
+	}
+
+	[TestMethod]
 	public void EntityCacheManager_CacheInvalidation_SupportsNotRequiredForeignKeyWithNullValue()
 	{
 		// Arrange

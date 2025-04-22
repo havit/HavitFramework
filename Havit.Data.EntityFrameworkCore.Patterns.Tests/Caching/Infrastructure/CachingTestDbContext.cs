@@ -8,6 +8,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure;
 
 public class CachingTestDbContext : DbContext
 {
+	internal const string ClassManyToManyAItemsEntityName = "ClassManyToManyA_Items";
+
 	public CachingTestDbContext()
 	{
 	}
@@ -41,7 +43,7 @@ public class CachingTestDbContext : DbContext
 		modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });
 
 		// ManyToMany
-		modelBuilder.Entity<ClassManyToManyA>().HasMany(classA => classA.Items).WithMany().UsingEntity("ClassManyToManyA_Items");
+		modelBuilder.Entity<ClassManyToManyA>().HasMany(classA => classA.Items).WithMany().UsingEntity(ClassManyToManyAItemsEntityName);
 		modelBuilder.Entity<ClassManyToManyB>();
 	}
 }

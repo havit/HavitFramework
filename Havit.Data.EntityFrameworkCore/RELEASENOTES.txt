@@ -1,4 +1,7 @@
-﻿v2.9.2 (??.2.2025)
+﻿v2.9.32 (22.4.2025)
+• Opravy pádů při použití navigace Many-To-Many.
+
+v2.9.30 (25.2.2025)
 • DbLockedCriticalSection - rozšíření API, zveřejnění přesunem mimo namespace "Internal".
 
 v2.9.1 (2.12.2024)

@@ -15,6 +15,7 @@ public static class ModelExtension
 	{
 		return model.GetEntityTypes()
 			.Where(entityType => entityType.IsApplicationEntity())
+			.Where(entityType => !entityType.HasSharedClrType)
 			.WhereIf(!includeManyToManyEntities, entityType => !entityType.IsManyToManyEntity());
 	}
 }

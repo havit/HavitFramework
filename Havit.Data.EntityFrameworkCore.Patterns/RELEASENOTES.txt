@@ -1,5 +1,6 @@
 ﻿v2.9.32 (??.4.2025)
 • SoftDeleteManager může být (opět) registrován s lifetime Scoped.
+• Opravy pádů při použití navigace Many-To-Many.
 
 v2.9.30 (25.2.2025)
 • Podpora non-int primárních klíčů (podporovány jsou SByte, Int16, Int32, Int64 a unsigned varianty, Guid, string)

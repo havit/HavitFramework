@@ -18,6 +18,11 @@ public class FakeChange : Change
 	/// </summary>
 	public override object GetCurrentValue(IProperty property)
 	{
+		if (Entity is IDictionary<string, object> entityDictionary)
+		{
+			return entityDictionary[property.Name];
+		}
+
 		return Entity.GetType().GetProperty(property.Name).GetValue(Entity, null);
 	}
 

@@ -406,10 +406,14 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		// invalidate entity cache
 
-		object[] entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(change.Entity).ToArray();
+		object[] entityKeyValues = null;
+		if (!change.EntityType.HasSharedClrType)
+		{
+			entityKeyValues = _entityKeyAccessor.GetEntityKeyValues(change.Entity).ToArray();
+		}
 
-		// Entity se složeným klíčem (ManyToMany jakožto dekomponovaný vztah i skip navigation)
-		if (entityKeyValues.Length > 1)
+		// Entity se složeným klíčem (ManyToMany jakožto skip navigation i dekomponovaný vztah)
+		if (change.EntityType.HasSharedClrType || entityKeyValues.Length > 1)
 		{
 			// odebereme všechny prvky, které mohou mít objekt v kolekci
 			PrepareCacheInvalidation_NavigationsInternal(change, cacheKeysToInvalidate);

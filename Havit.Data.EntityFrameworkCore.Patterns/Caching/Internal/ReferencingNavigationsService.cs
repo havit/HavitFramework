@@ -7,20 +7,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
 /// </summary>
 public class ReferencingNavigationsService : IReferencingNavigationsService
 {
-	private readonly IReferencingNavigationsStorage _referencingCollectionsStorage;
+	private readonly IReferencingNavigationsStorage _referencingNavigationsStorage;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public ReferencingNavigationsService(IReferencingNavigationsStorage referencingCollectionsStorage)
+	public ReferencingNavigationsService(IReferencingNavigationsStorage referencingNavigationsStorage)
 	{
-		_referencingCollectionsStorage = referencingCollectionsStorage;
+		_referencingNavigationsStorage = referencingNavigationsStorage;
 	}
 
 	/// <inheritdoc />
 	public List<ReferencingNavigation> GetReferencingNavigations(IEntityType entityType)
 	{
-		if (_referencingCollectionsStorage.Value.TryGetValue(entityType, out var result))
+		if (_referencingNavigationsStorage.Value.TryGetValue(entityType, out var result))
 		{
 			return result;
 		}

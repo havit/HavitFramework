@@ -11,7 +11,7 @@ public class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContextFactory
 	{
 		// Příkazy pro tooling EF Core Migrations (Add-Migration, ...) tooling získávají DbContext z této metody.
 		// Stejně tak  CodeGenerator.
-		// InMemory provider lenze pro tooling EF Core Migrations, je potřeba provider pro SqlServer.
+		// InMemory provider nelze pro tooling EF Core Migrations, je potřeba provider pro SqlServer.
 		// Provider pro SQL Server nejspíš neumí použít connection string z app.configu, lze řešit přes appSettings.json, pokud je startup projectem ASP.NET Core aplikace.
 		string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 

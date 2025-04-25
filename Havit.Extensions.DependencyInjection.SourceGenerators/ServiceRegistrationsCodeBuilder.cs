@@ -23,7 +23,7 @@ internal static class ServiceRegistrationsCodeBuilder
 				sourceCodeWriter.WriteLine($"namespace {rootNamespace};");
 				sourceCodeWriter.WriteNewLine();
 			}
-			sourceCodeWriter.WriteLine("public static class ServiceCollectionExtensions");
+			sourceCodeWriter.WriteLine("public static class ServiceAttributeServiceCollectionExtensions");
 			using (sourceCodeWriter.BeginWriteBlock())
 			{
 				string methodName = GetMethodName(rootNamespace);

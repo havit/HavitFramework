@@ -14,7 +14,7 @@ namespace Havit.Extensions.DependencyInjection.SourceGenerators;
 [Generator]
 public class ServiceRegistrationsGenerator : IIncrementalGenerator
 {
-	internal const string GeneratedOutputFileName = "ServiceCollectionExtension.g.cs";
+	internal const string GeneratedOutputFileName = "ServiceAttributeServiceCollectionExtensions.g.cs";
 
 	/// <inheritdoc />
 	public void Initialize(IncrementalGeneratorInitializationContext initializationContext)

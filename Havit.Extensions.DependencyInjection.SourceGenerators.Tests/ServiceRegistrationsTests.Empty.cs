@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.TestProject.Services;
 
-public static class ServiceCollectionExtensions
+public static class ServiceAttributeServiceCollectionExtensions
 {
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, params string[] profileNames)
 	{

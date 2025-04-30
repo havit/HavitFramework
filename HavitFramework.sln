@@ -42,6 +42,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solution Items", "_Solution Items", "{2E02AA74-2EA7-454D-9D09-FF4254BD0395}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		BuildPipeline-002.HFW-HavitFramework.yml = BuildPipeline-002.HFW-HavitFramework.yml
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		DiagnosticsIdentifiers.cs = DiagnosticsIdentifiers.cs
 		Directory.Build.props = Directory.Build.props

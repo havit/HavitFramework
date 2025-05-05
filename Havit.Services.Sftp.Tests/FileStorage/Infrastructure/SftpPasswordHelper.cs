@@ -1,26 +1,33 @@
 ﻿using Azure.Identity;
-using Microsoft.Extensions.Configuration;
+using Azure.Security.KeyVault.Secrets;
 
 namespace Havit.Services.Sftp.Tests.FileStorage.Infrastructure;
 
 public static class SftpPasswordHelper
 {
-	public static string GetPasswordForPrimaryAccount() => GetPassword("Sftp:Primary:Password");
-	public static string GetPasswordForSecondaryAccount() => GetPassword("Sftp:Secondary:Password");
+	public static string GetPasswordForPrimaryAccount() => GetPassword("Sftp--Primary--Password");
+	public static string GetPasswordForSecondaryAccount() => GetPassword("Sftp--Secondary--Password");
 
 	private static string GetPassword(string section)
 	{
-		var config = new ConfigurationBuilder()
-			.AddEnvironmentVariables()
-			.Build();
-		string password = config.GetValue<string>(section);
+		// Při buildu v Azure máme k dispozici environment variables, resp. variable group 002.HFW-HavitFramework.
+		// Tato variable group je napojená na Azure Key Vault HavitFrameworkConfigKV.
+		string password = System.Environment.GetEnvironmentVariable(section);
 
+		// Při lokálním vývoji nemáme environment variables, ale připojíme se k načtení hesel ke Azure Key Vaultu.
+		// Přístupové údaje jsou řešeny pomocí DefaultAzureCredential, zde tedy obvykle přes Visual Studio sredentials (Visual Studio: Help, Register Visual Studio)
 		if (password is null)
 		{
-			config = new ConfigurationBuilder()
-				.AddAzureKeyVault(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential())
-				.Build();
-			password = config.GetValue<string>(section);
+			var client = new SecretClient(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential());
+			try
+			{
+				KeyVaultSecret secret = client.GetSecret(section);
+				password = secret.Value;
+			}
+			catch (Azure.RequestFailedException)
+			{
+				// NOOP (daný secret neexistuje)
+			}
 		}
 
 		if (password is null)

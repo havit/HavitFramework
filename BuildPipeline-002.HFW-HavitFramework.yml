@@ -15,7 +15,7 @@ resources:
     trigger: none
 
 variables:
-  group: 002.HFW-HavitFramework
-
+  - group: 002.HFW-HavitFramework
+  
 extends:
   template: 002.HFW-HavitFramework/Builds/002.HFW-HavitFramework.yml@pipelines

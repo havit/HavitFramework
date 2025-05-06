@@ -1,5 +1,5 @@
 ﻿using Azure.Identity;
-using Microsoft.Extensions.Configuration;
+using Azure.Security.KeyVault.Secrets;
 
 namespace Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 
@@ -9,17 +9,21 @@ public static class AzureStorageConnectionStringHelper
 
 	private static Lazy<string> AzureBlobStorageConnectionStringLazy = new Lazy<string>(() =>
 	{
-		var config = new ConfigurationBuilder()
-			.AddEnvironmentVariables()
-			.Build();
-		string connectionString = config.GetConnectionString("AzureStorage");
+		string connectionString = System.Environment.GetEnvironmentVariable("ConnectionStrings_AzureStorage");
 
 		if (connectionString is null)
 		{
-			config = new ConfigurationBuilder()
-				.AddAzureKeyVault(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential())
-				.Build();
-			connectionString = config.GetConnectionString("AzureStorage");
+			var client = new SecretClient(new Uri("https://HavitFrameworkConfigKV.vault.azure.net"), new DefaultAzureCredential());
+
+			try
+			{
+				KeyVaultSecret secret = client.GetSecret("ConnectionStrings--AzureStorage");
+				connectionString = secret.Value;
+			}
+			catch (global::Azure.RequestFailedException)
+			{
+				// NOOP (daný secret neexistuje)
+			}
 		}
 
 		if (connectionString is null)

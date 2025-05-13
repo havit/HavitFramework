@@ -19,7 +19,7 @@
 		<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.9.32-pre02</PackageVersion>
+		<PackageVersion>2.9.32</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	</PropertyGroup>
 

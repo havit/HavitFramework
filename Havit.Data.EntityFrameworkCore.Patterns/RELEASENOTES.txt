@@ -1,4 +1,4 @@
-﻿v2.9.32 (??.4.2025)
+﻿v2.9.32 (13.5.2025)
 • SoftDeleteManager může být (opět) registrován s lifetime Scoped.
 • Opravy pádů při použití navigace Many-To-Many.
 

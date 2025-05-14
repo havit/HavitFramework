@@ -11,7 +11,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Exists_ReturnsFalseWhenNotFound(IFileStorageService fileStorageService)
 	{
 		// Act
-		bool exists = fileStorageService.Exists(Guid.NewGuid().ToString()); // spoléháme na náhodné číslo
+		bool exists = fileStorageService.Exists("non-existing-file");
 
 		// Assert
 		Assert.IsFalse(exists);
@@ -20,7 +20,7 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_ExistsAsync_ReturnsFalseWhenNotFound(IFileStorageService fileStorageService)
 	{
 		// Act
-		bool exists = await fileStorageService.ExistsAsync(Guid.NewGuid().ToString()); // spoléháme na náhodné číslo
+		bool exists = await fileStorageService.ExistsAsync("non-existing-file");
 
 		// Assert
 		Assert.IsFalse(exists);
@@ -29,7 +29,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Exists_ReturnsTrueWhenExists(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string blobName = Guid.NewGuid().ToString();
+		string blobName = "exists-returnstruewhenexists";
 
 		// Act
 		using (MemoryStream ms = new MemoryStream())
@@ -49,7 +49,7 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_ExistsAsync_ReturnsTrueWhenExists(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string blobName = Guid.NewGuid().ToString();
+		string blobName = "existsasync-returnstruewhenexists";
 
 		// Act
 		using (MemoryStream ms = new MemoryStream())
@@ -69,7 +69,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_DoesNotExistsAfterDelete(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string blobName = Guid.NewGuid().ToString();
+		string blobName = "does-not-exists-after-delete";
 
 		// Act
 		using (MemoryStream ms = new MemoryStream())
@@ -88,7 +88,7 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_DoesNotExistsAfterDeleteAsync(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string blobName = Guid.NewGuid().ToString();
+		string blobName = "does-not-exists-after-delete-async";
 
 		// Act
 		using (MemoryStream ms = new MemoryStream())
@@ -107,8 +107,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Save_AcceptsPathWithNewSubfolders(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string folderName = Guid.NewGuid().ToString();
-		string fileName = folderName + "/subfolder/" + Guid.NewGuid().ToString();
+		string fileName = "save-acceptspathwithnewsubfolders-folder/subfolder/save-acceptspathwithnewsubfolders";
 
 		// Act
 		using (MemoryStream ms = new MemoryStream())
@@ -126,8 +125,7 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_SaveAsync_AcceptsPathWithNewSubfolders(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string folderName = Guid.NewGuid().ToString();
-		string fileName = folderName + "/" + Guid.NewGuid().ToString();
+		string fileName = "saveasync-acceptspathwithnewsubfolders-folder/subfolder/saveasync-acceptspathwithnewsubfolders";
 
 		// Act
 		using (MemoryStream ms = new MemoryStream())
@@ -144,27 +142,36 @@ public static class FileStorageServiceTestHelpers
 
 	public static void FileStorageService_Save_DoNotAcceptSeekedStream(IFileStorageService fileStorageService)
 	{
-		using (MemoryStream ms = new MemoryStream())
+		// Arrange
+		using MemoryStream ms = new MemoryStream();
+		ms.WriteByte(65 /* A */);
+
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
 		{
-			ms.WriteByte(65 /* A */);
-			fileStorageService.Save("test.txt", ms, "text/plain");
-		}
+			fileStorageService.Save("save-donotacceptseekedstream", ms, "text/plain");
+		});
 	}
 
 	public static async Task FileStorageService_SaveAsyncDoNotAcceptSeekedStream(IFileStorageService fileStorageService)
 	{
-		using (MemoryStream ms = new MemoryStream())
+		// Arrange
+		using MemoryStream ms = new MemoryStream();
+		ms.WriteByte(65 /* A */);
+
+		// Act + Assert
+		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
 		{
-			ms.WriteByte(65 /* A */);
-			await fileStorageService.SaveAsync("test.txt", ms, "text/plain");
-		}
+			await fileStorageService.SaveAsync("saveasync-donotacceptseekedstream", ms, "text/plain");
+		});
 	}
 
-	public static void FileStorageService_SavedAndReadContentsAreSame_Perform(IFileStorageService fileStorageService)
+	public static void FileStorageService_SavedAndReadContentsAreSame_Perform(IFileStorageService fileStorageService, bool isEncrypted = false)
 	{
+		// isEncrypted slouží jen k nastavení filename tak, aby byly testy izolované (tj. aby nesdílely soubor).
+
 		// Arrange
-		string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
-		string filename = Guid.NewGuid().ToString();
+		string content = "abcdefghijklmnopqrstuvwxyz\r\n12346790\t+ěščřžýáíé";
+		string filename = isEncrypted ? "encrypted-savedandreadcontentsaresame-perform" : "savedandreadcontentsaresame-perform";
 
 		using (MemoryStream ms = new MemoryStream())
 		{
@@ -207,11 +214,13 @@ public static class FileStorageServiceTestHelpers
 		fileStorageService.Delete(filename);
 	}
 
-	public static async Task FileStorageService_SavedAndReadContentsAreSame_PerformAsync(IFileStorageService fileStorageService)
+	public static async Task FileStorageService_SavedAndReadContentsAreSame_PerformAsync(IFileStorageService fileStorageService, bool isEncrypted = false)
 	{
+		// isEncrypted slouží jen k nastavení filename tak, aby byly testy izolované (tj. aby nesdílely soubor).
+
 		// Arrange
-		string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
-		string filename = Guid.NewGuid().ToString();
+		string content = "abcdefghijklmnopqrstuvwxyz\r\n12346790\t+ěščřžýáíé";
+		string filename = isEncrypted ? "encrypted-savedandreadcontentsaresame-performasync" : "savedandreadcontentsaresame-performasync";
 
 		using (MemoryStream ms = new MemoryStream())
 		{
@@ -259,7 +268,7 @@ public static class FileStorageServiceTestHelpers
 		// Arrange
 		string content1 = "abcdefghijklmnopqrstuvwxyz";
 		string content2 = "abc"; // Musí být kratší než content!
-		string filename = Guid.NewGuid().ToString();
+		string filename = "save_overwritestargetfile";
 
 		using (MemoryStream ms = new MemoryStream())
 		{
@@ -299,7 +308,7 @@ public static class FileStorageServiceTestHelpers
 		// Arrange
 		string content1 = "abcdefghijklmnopqrstuvwxyz";
 		string content2 = "abc"; // Musí být kratší než content!
-		string filename = Guid.NewGuid().ToString();
+		string filename = "saveasync-overwritestargetfile";
 
 		using (MemoryStream ms = new MemoryStream())
 		{
@@ -530,7 +539,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_EnumerateFiles_HasLastModifiedUtc(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string testFilename = "file.txt";
+		string testFilename = "enumeratefiles-haslastmodifiedutc";
 		using (MemoryStream ms = new MemoryStream())
 		{
 			ms.WriteByte(0); // zapíšeme jeden byte
@@ -549,32 +558,10 @@ public static class FileStorageServiceTestHelpers
 		fileStorageService.Delete(testFilename);
 	}
 
-	public static void FileStorageService_EnumerateFiles_HasSize(IFileStorageService fileStorageService)
-	{
-		// Arrange
-		string testFilename = "file.txt";
-		using (MemoryStream ms = new MemoryStream())
-		{
-			ms.WriteByte(0); // zapíšeme jeden byte
-			ms.Seek(0, SeekOrigin.Begin);
-
-			fileStorageService.Save(testFilename, ms, "text/plain");
-		}
-
-		// Act
-		List<FileInfo> files = fileStorageService.EnumerateFiles(testFilename).ToList();
-
-		// Assert
-		Assert.AreEqual(1, files.Single().Size); // zapsali jsme jeden byte
-
-		// Clean-up
-		fileStorageService.Delete(testFilename);
-	}
-
 	public static async Task FileStorageService_EnumerateFilesAsync_HasLastModifiedUtc(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string testFilename = "file.txt";
+		string testFilename = "enumeratefilesasync_hassize";
 		using (MemoryStream ms = new MemoryStream())
 		{
 			ms.WriteByte(0); // zapíšeme jeden byte
@@ -593,10 +580,32 @@ public static class FileStorageServiceTestHelpers
 		await fileStorageService.DeleteAsync(testFilename);
 	}
 
+	public static void FileStorageService_EnumerateFiles_HasSize(IFileStorageService fileStorageService)
+	{
+		// Arrange
+		string testFilename = "enumeratefiles_hassize";
+		using (MemoryStream ms = new MemoryStream())
+		{
+			ms.WriteByte(0); // zapíšeme jeden byte
+			ms.Seek(0, SeekOrigin.Begin);
+
+			fileStorageService.Save(testFilename, ms, "text/plain");
+		}
+
+		// Act
+		List<FileInfo> files = fileStorageService.EnumerateFiles(testFilename).ToList();
+
+		// Assert
+		Assert.AreEqual(1, files.Single().Size); // zapsali jsme jeden byte
+
+		// Clean-up
+		fileStorageService.Delete(testFilename);
+	}
+
 	public static async Task FileStorageService_EnumerateFilesAsync_HasSize(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string testFilename = "file.txt";
+		string testFilename = "enumeratefilesasynv_hassize";
 		using (MemoryStream ms = new MemoryStream())
 		{
 			ms.WriteByte(0); // zapíšeme jeden byte
@@ -643,8 +652,8 @@ public static class FileStorageServiceTestHelpers
 		Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
 		// Arrange
-		string testFilename = "encryption.txt";
-		string contentLine = "abcdefghijklmnopqrśtuvwxyz";
+		string testFilename = "openread-stopreadingfarbeforeenddoesnotthrowcryptographicexception";
+		string contentLine = "abcdefghijklmnopqrstuvwxyz";
 
 		// zapíšeme 3 řádky
 		using (MemoryStream ms = new MemoryStream())
@@ -682,8 +691,8 @@ public static class FileStorageServiceTestHelpers
 		Contract.Requires(fileStorageService.SupportsBasicEncryption);
 
 		// Arrange
-		string testFilename = "encryption.txt";
-		string contentLine = "abcdefghijklmnopqrśtuvwxyz";
+		string testFilename = "openreadasync-stopreadingfarbeforeenddoesnotthrowcryptographicexception";
+		string contentLine = "abcdefghijklmnopqrstuvwxyz";
 
 		// zapíšeme 3 řádky
 		using (MemoryStream ms = new MemoryStream())
@@ -719,7 +728,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_OpenCreate_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
 	{
 		// Arrange
-		string filename = "openwrite.txt";
+		string filename = "opencreate-overwritesexistingfileandcontent";
 		byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
 
 		using (MemoryStream ms = new MemoryStream())
@@ -750,7 +759,7 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
 	{
 		// Arrange
-		string filename = "openwrite.txt";
+		string filename = "opencreateasync-overwritesexistingfileandcontent";
 		byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
 
 		using (MemoryStream ms = new MemoryStream())
@@ -779,10 +788,12 @@ public static class FileStorageServiceTestHelpers
 		fileStorageService.Delete(filename);
 	}
 
-	public static void FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(FileStorageServiceBase fileStorageService)
+	public static void FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(FileStorageServiceBase fileStorageService, bool isEncrypted = false)
 	{
+		// isEncrypted slouží jen k nastavení filename tak, aby byly testy izolované (tj. aby nesdílely soubor).
+
 		// Arrange
-		string filename = "content.txt";
+		string filename = isEncrypted ? "encrypted-opencreateandopenread_contentsaresame" : "opencreateandopenread_contentsaresame";
 		byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
 		byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
 
@@ -805,10 +816,12 @@ public static class FileStorageServiceTestHelpers
 		fileStorageService.Delete(filename);
 	}
 
-	public static async Task FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(FileStorageServiceBase fileStorageService)
+	public static async Task FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(FileStorageServiceBase fileStorageService, bool isEncrypted = false)
 	{
+		// isEncrypted slouží jen k nastavení filename tak, aby byly testy izolované (tj. aby nesdílely soubor).
+
 		// Arrange
-		string filename = "content.txt";
+		string filename = isEncrypted ? "encrypted-opencreateandopenreadasync_contentsaresame" : "opencreateandopenreadasync_contentsaresame";
 		byte[] writeBuffer = new byte[4] { 65, 66, 67, 68 };
 		byte[] readBuffer = new byte[1000]; // přečteme alespoň o jeden znak více, pokud by byla chyba, než kolik očekáváme
 
@@ -842,11 +855,13 @@ public static class FileStorageServiceTestHelpers
 		return (await fileStorageService.EnumerateFilesAsync(searchPattern).ToListAsync()).Any(fileInfo => String.Equals(fileInfo.Name, testFilename, StringComparison.InvariantCultureIgnoreCase));
 	}
 
-	public static void FileStorageService_Copy(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+	public static void FileStorageService_Copy(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2, string suffix)
 	{
+		// suffix slouží jen k nastavení filename tak, aby byly testy izolované (tj. aby nesdílely soubor).
+
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = @"folder_copy\file2.txt";
+		string sourceFilename = $"copy-{suffix}";
+		string targetFilename = $"folder-copy-{suffix}\\copy-{suffix}";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -868,11 +883,13 @@ public static class FileStorageServiceTestHelpers
 		fileStorageService2.Delete(targetFilename);
 	}
 
-	public static async Task FileStorageService_CopyAsync(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
+	public static async Task FileStorageService_CopyAsync(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2, string suffix)
 	{
+		// suffix slouží jen k nastavení filename tak, aby byly testy izolované (tj. aby nesdílely soubor).
+
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = @"folder_copyasync\file2.txt";
+		string sourceFilename = $"copyasync-{suffix}";
+		string targetFilename = $"folder-copyasync-{suffix}\\copyasync-{suffix}";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -896,8 +913,8 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Copy_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = "file2.txt";
+		string sourceFilename = "copy-overwritestargetfile-1";
+		string targetFilename = "copy-overwritestargetfile-2";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -924,8 +941,8 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_CopyAsync_OverwritesTargetFile(IFileStorageService fileStorageService1, IFileStorageService fileStorageService2)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = "file2.txt";
+		string sourceFilename = "copyasync-overwritestargetfile-1";
+		string targetFilename = "copyasync-overwritestargetfile-2";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -952,8 +969,8 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Move(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = @"folder_move\file2.txt";
+		string sourceFilename = "move";
+		string targetFilename = @"folder-move\move";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -978,8 +995,8 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_MoveAsync(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = @"folder_move\file2.txt";
+		string sourceFilename = "move-async";
+		string targetFilename = @"folder-moveasync\move-async";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1004,8 +1021,8 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Move_OverwritesTargetFile(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = "file2.txt";
+		string sourceFilename = "move-overwritestargetfile-1";
+		string targetFilename = "move-overwritestargetfile-2";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1036,8 +1053,8 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_MoveAsync_OverwritesTargetFile(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = "file2.txt";
+		string sourceFilename = "moveasync-overwritestargetfile-1";
+		string targetFilename = "moveasync-overwritestargetfile-2";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1068,7 +1085,7 @@ public static class FileStorageServiceTestHelpers
 	public static void FileStorageService_Move_DoesNotDeleteFile(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
+		string sourceFilename = "move-doesnotdeletefile";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1091,7 +1108,7 @@ public static class FileStorageServiceTestHelpers
 	public static async Task FileStorageService_MoveAsync_DoesNotDeleteFile(IFileStorageService fileStorageService)
 	{
 		// Arrange
-		string sourceFilename = "file1.txt";
+		string sourceFilename = "moveasync-doesnotdeletefile";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1116,8 +1133,8 @@ public static class FileStorageServiceTestHelpers
 		Contract.Requires(fileStorageService1 != fileStorageService2);
 
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = @"folder_move\file2.txt";
+		string sourceFilename = "move-withfilestorageservice";
+		string targetFilename = @"folder-move-withfilestorageservice\move-withfilestorageservice";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1142,8 +1159,8 @@ public static class FileStorageServiceTestHelpers
 		Contract.Requires(fileStorageService1 != fileStorageService2);
 
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = @"folder_moveasync\file2.txt";
+		string sourceFilename = "moveastnc-withfilestorageservice";
+		string targetFilename = @"folder-moveasync-withfilestorageservice\moveasync-withfilestorageservice";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1168,8 +1185,8 @@ public static class FileStorageServiceTestHelpers
 		Contract.Requires(fileStorageService1 != fileStorageService2);
 
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = "file2.txt";
+		string sourceFilename = "move-withfilestorageservice-overwritestargetfile-1";
+		string targetFilename = "move-withfilestorageservice-overwritestargetfile-2";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1202,8 +1219,8 @@ public static class FileStorageServiceTestHelpers
 		Contract.Requires(fileStorageService1 != fileStorageService2);
 
 		// Arrange
-		string sourceFilename = "file1.txt";
-		string targetFilename = "file2.txt";
+		string sourceFilename = "moveasync-withfilestorageservice-overwritestargetfile-1";
+		string targetFilename = "moveasync-withfilestorageservice-overwritestargetfile-2";
 
 		using (Stream stream = new MemoryStream())
 		{
@@ -1229,5 +1246,11 @@ public static class FileStorageServiceTestHelpers
 
 		// Clean up
 		await fileStorageService2.DeleteAsync(targetFilename);
+	}
+
+	public static string GetTestingScope()
+	{
+		string agentName = Environment.GetEnvironmentVariable("AGENT_NAME");
+		return (!String.IsNullOrEmpty(agentName) ? agentName : Environment.MachineName).ToLower();
 	}
 }

@@ -6,10 +6,26 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Havit.Services.Tests.FileStorage;
 
 [TestClass]
-public class FileStorageWrappingServiceTests
+public class ServiceCollectionExtensionsTests
 {
 	[TestMethod]
-	public void FileStorageWrappingService_DependencyInjectionContainerIntegration()
+	public void ServiceCollectionExtensions_AddFileSystemStorageService()
+	{
+		// Arrange
+		ServiceCollection services = new ServiceCollection();
+
+		// Act
+		services.AddFileSystemStorageService<TestFileStorage>(Path.GetTempPath());
+		var serviceProvider = services.BuildServiceProvider();
+		var service = serviceProvider.GetService<IFileStorageService<TestFileStorage>>();
+
+		// Assert
+		Assert.IsNotNull(service);
+		Assert.IsInstanceOfType(service, typeof(FileSystemStorageService<TestFileStorage>));
+	}
+
+	[TestMethod]
+	public void ServiceCollectionExtensions_AddFileStorageWrappingService()
 	{
 		// Tento test testuje spíše než podmínky v sekci Assert to, jakým způsobem lze v aplikaci pohodlně vytvořit (nebo z důvodu zpětné kompatibility ponechat)
 		// aplikační služby pro použití se file storage services.
@@ -27,4 +43,5 @@ public class FileStorageWrappingServiceTests
 		Assert.IsNotNull(service);
 		Assert.IsInstanceOfType(service, typeof(ApplicationFileStorageService));
 	}
+
 }

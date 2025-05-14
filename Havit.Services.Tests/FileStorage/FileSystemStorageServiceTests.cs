@@ -10,30 +10,52 @@ namespace Havit.Services.Tests.FileStorage;
 [TestClass]
 public class FileSystemStorageServiceTests
 {
+	private const string PrimaryDirectoryName = "hfw-primary";
+	private const string SecondaryDirectoryName = "hfw-secondary";
+
+	private const string EnumerateFilesSupportsSearchPatternDirectoryName = "hfw-enumerate1";
+	private const string EnumerateFilesAsyncSupportsSearchPatternDirectoryName = "hfw-enumerate2";
+	//private const string EnumerateFilesSearchPatternIsCaseSensitiveDirectoryName = "hfw-enumerate3";
+	//private const string EnumerateFilesAsyncSearchPatternIsCaseSensitiveDirectoryName = "hfw-enumerate4";
+	private const string EnumerateFilesSupportsSearchPatternInSubfolderDirectoryName = "hfw-enumerate5";
+	private const string EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName = "hfw-enumerate6";
+	private const string EnumerateFilesDoesNotContainStoragePath = "hfw-enumerate7";
+	private const string EnumerateFilesAsyncDoesNotContainStoragePath = "hfw-enumerate8";
+
+	private readonly static string[] AllDirectoryNames = [
+		PrimaryDirectoryName,
+		SecondaryDirectoryName,
+		EnumerateFilesSupportsSearchPatternDirectoryName,
+		EnumerateFilesAsyncSupportsSearchPatternDirectoryName,
+		EnumerateFilesSupportsSearchPatternInSubfolderDirectoryName,
+		EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName,
+		EnumerateFilesDoesNotContainStoragePath,
+		EnumerateFilesAsyncDoesNotContainStoragePath
+	];
+
 	[ClassInitialize]
 	public static void Initialize(TestContext testContext)
 	{
 		// testy jsou slušné, mažou po sobě
 		// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
 		CleanUp();
-		Directory.CreateDirectory(GetStoragePath());
-		Directory.CreateDirectory(GetStoragePath(secondary: true));
+		Parallel.ForEach(AllDirectoryNames, directoryName =>
+		{
+			Directory.CreateDirectory(GetStoragePath(directoryName));
+		});
 	}
 
 	[ClassCleanup]
 	public static void CleanUp()
 	{
-		string path = GetStoragePath();
-		if (Directory.Exists(path))
+		Parallel.ForEach(AllDirectoryNames, directoryName =>
 		{
-			Directory.Delete(path, true);
-		}
-
-		path = GetStoragePath(secondary: true);
-		if (Directory.Exists(path))
-		{
-			Directory.Delete(path, true);
-		}
+			string path = GetStoragePath(directoryName);
+			if (Directory.Exists(path))
+			{
+				Directory.Delete(path, true);
+			}
+		});
 	}
 
 	[TestMethod]
@@ -114,14 +136,12 @@ public class FileSystemStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void FileSystemStorageService_SaveDoesNotAcceptSeekedStream()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetFileSystemStorageService());
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task FileSystemStorageService_SaveAsyncDoesNotAcceptSeekedStream()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetFileSystemStorageService());
@@ -154,13 +174,13 @@ public class FileSystemStorageServiceTests
 	[TestMethod]
 	public void FileSystemStorageService_SavedAndReadContentsWithEncryptionAreSame()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_Perform(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
 	public async Task FileSystemStorageService_SavedAndReadContentsWithEncryptionAreSame_Async()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
@@ -191,8 +211,8 @@ public class FileSystemStorageServiceTests
 	public void FileSystemStorageService_EnumerateFiles_DoesNotContainStoragePath()
 	{
 		// Arrange
-		string storagePath = GetStoragePath();
-		FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+		string storagePath = GetStoragePath(EnumerateFilesDoesNotContainStoragePath);
+		FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService(EnumerateFilesDoesNotContainStoragePath);
 
 		string testFilename = "test.txt";
 		using (MemoryStream ms = new MemoryStream())
@@ -214,8 +234,8 @@ public class FileSystemStorageServiceTests
 	public async Task FileSystemStorageService_EnumerateFilesAsync_DoesNotContainStoragePath()
 	{
 		// Arrange
-		string storagePath = GetStoragePath();
-		FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
+		string storagePath = GetStoragePath(EnumerateFilesAsyncDoesNotContainStoragePath);
+		FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService(EnumerateFilesAsyncDoesNotContainStoragePath);
 
 		string testFilename = "test.txt";
 		using (MemoryStream ms = new MemoryStream())
@@ -236,13 +256,13 @@ public class FileSystemStorageServiceTests
 	[TestMethod]
 	public void FileSystemStorageService_EnumerateFiles_SupportsSearchPattern()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetFileSystemStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetFileSystemStorageService(EnumerateFilesSupportsSearchPatternDirectoryName));
 	}
 
 	[TestMethod]
 	public async Task FileSystemStorageService_EnumerateFilesAsync_SupportsSearchPattern()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetFileSystemStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetFileSystemStorageService(EnumerateFilesAsyncSupportsSearchPatternDirectoryName));
 	}
 
 	// Vyhledávání není case-sensitivní v části složky.
@@ -263,13 +283,13 @@ public class FileSystemStorageServiceTests
 	[TestMethod]
 	public void FileSystemStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetFileSystemStorageService(EnumerateFilesSupportsSearchPatternInSubfolderDirectoryName));
 	}
 
 	[TestMethod]
 	public async Task FileSystemStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetFileSystemStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetFileSystemStorageService(EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName));
 	}
 
 	[TestMethod]
@@ -334,13 +354,13 @@ public class FileSystemStorageServiceTests
 	[TestMethod]
 	public void FileSystemStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
 	public async Task FileSystemStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
@@ -358,27 +378,27 @@ public class FileSystemStorageServiceTests
 	[TestMethod]
 	public void FileSystemStorageService_Copy()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Copy(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Copy(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public void FileSystemStorageService_Copy_SingleInstance()
 	{
 		FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
-		FileStorageServiceTestHelpers.FileStorageService_Copy(fileSystemStorageService, fileSystemStorageService);
+		FileStorageServiceTestHelpers.FileStorageService_Copy(fileSystemStorageService, fileSystemStorageService, suffix: "single");
 	}
 
 	[TestMethod]
 	public async Task FileSystemStorageService_CopyAsync()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetFileSystemStorageService(), GetFileSystemStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public async Task FileSystemStorageService_CopyAsync_SingleInstance()
 	{
 		FileSystemStorageService fileSystemStorageService = GetFileSystemStorageService();
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(fileSystemStorageService, fileSystemStorageService);
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(fileSystemStorageService, fileSystemStorageService, suffix: "single");
 	}
 
 	[TestMethod]
@@ -546,11 +566,16 @@ public class FileSystemStorageServiceTests
 
 	private static FileSystemStorageService GetFileSystemStorageService(bool secondary = false, EncryptionOptions encryptionOptions = null)
 	{
-		return new FileSystemStorageService(GetStoragePath(secondary), false, encryptionOptions);
+		return GetFileSystemStorageService(secondary ? PrimaryDirectoryName : SecondaryDirectoryName, encryptionOptions);
 	}
 
-	private static string GetStoragePath(bool secondary = false)
+	public static FileSystemStorageService GetFileSystemStorageService(string directoryName, EncryptionOptions encryptionOptions = null)
 	{
-		return Path.Combine(System.IO.Path.GetTempPath(), secondary ? "hfwtests_secondary" : "hfwtests_primary");
+		return new FileSystemStorageService(GetStoragePath(directoryName), false, encryptionOptions);
+	}
+
+	private static string GetStoragePath(string directoryName)
+	{
+		return Path.Combine(System.IO.Path.GetTempPath(), directoryName + "-" + FileStorageServiceTestHelpers.GetTestingScope().ToLower());
 	}
 }

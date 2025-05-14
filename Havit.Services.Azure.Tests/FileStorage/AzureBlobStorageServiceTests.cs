@@ -1,21 +1,42 @@
 ﻿using System.Text;
-using Azure.Core;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Havit.Services.Azure.Tests.FileStorage;
 
 [TestClass]
 public class AzureBlobStorageServiceTests
 {
-	private static string containersSuffix = Guid.NewGuid().ToString("N");
+	private const string PrimaryContainerName = "primary";
+	private const string SecondaryContainerName = "secondary";
+
+	private const string PlainFilesContainerName = "plain";
+	private const string EncryptedFilesContainerName = "enrypted";
+
+	private const string EnumerateFilesSupportsSearchPatternContainerName = "enumerate1";
+	private const string EnumerateFilesAsyncSupportsSearchPatternContainerName = "enumerate2";
+	private const string EnumerateFilesSearchPatternIsCaseSensitiveContainerName = "enumerate3";
+	private const string EnumerateFilesAsyncSearchPatternIsCaseSensitiveContainerName = "enumerate4";
+	private const string EnumerateFilesSupportsSearchPatternInSubfolderContainerName = "enumerate5";
+	private const string EnumerateFilesAsyncSupportsSearchPatternInSubfolderContainerName = "enumerate6";
+
+	private readonly static string[] AllContainerNames = [
+		PrimaryContainerName,
+		SecondaryContainerName,
+		PlainFilesContainerName,
+		EncryptedFilesContainerName,
+		EnumerateFilesSupportsSearchPatternContainerName,
+		EnumerateFilesAsyncSupportsSearchPatternContainerName,
+		EnumerateFilesSearchPatternIsCaseSensitiveContainerName,
+		EnumerateFilesAsyncSearchPatternIsCaseSensitiveContainerName,
+		EnumerateFilesSupportsSearchPatternInSubfolderContainerName,
+		EnumerateFilesAsyncSupportsSearchPatternInSubfolderContainerName
+	];
 
 	[ClassInitialize]
 	public static void InitializeTestClass(TestContext testContext)
@@ -27,18 +48,17 @@ public class AzureBlobStorageServiceTests
 		// dokud je mazán, oznamují chybu 409 Confict s popisem "The specified container is being deleted."
 		// Proto raději smažeme jen bloby.
 
-		AzureBlobStorageService service = GetAzureBlobStorageService();
-		service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
-
-		service = GetAzureBlobStorageService(secondary: true);
-		service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+		Parallel.ForEach(AllContainerNames, containerName =>
+		{
+			AzureBlobStorageService service = GetAzureBlobStorageService(containerName);
+			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+		});
 	}
 
 	[ClassCleanup]
 	public static void CleanUpTestClass()
 	{
-		GetAzureBlobStorageService().GetBlobContainerClient().Delete();
-		GetAzureBlobStorageService(secondary: true).GetBlobContainerClient().Delete();
+		Parallel.ForEach(AllContainerNames, containerName => GetAzureBlobStorageService(containerName).GetBlobContainerClient().Delete());
 	}
 
 	[TestMethod]
@@ -66,14 +86,12 @@ public class AzureBlobStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void AzureBlobStorageService_SaveDoNotAcceptSeekedStream()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetAzureBlobStorageService());
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task AzureBlobStorageService_SaveAsyncDoesNotAcceptSeekedStream()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetAzureBlobStorageService());
@@ -106,13 +124,13 @@ public class AzureBlobStorageServiceTests
 	[TestMethod]
 	public void AzureBlobStorageService_SavedAndReadContentsWithEncryptionAreSame()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_Perform(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_SavedAndReadContentsWithEncryptionAreSame_Async()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		await FileStorageServiceTestHelpers.FileStorageService_SavedAndReadContentsAreSame_PerformAsync(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
@@ -142,37 +160,37 @@ public class AzureBlobStorageServiceTests
 	[TestMethod]
 	public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPattern()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureBlobStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureBlobStorageService(EnumerateFilesSupportsSearchPatternContainerName));
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPattern()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetAzureBlobStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetAzureBlobStorageService(EnumerateFilesAsyncSupportsSearchPatternContainerName));
 	}
 
 	[TestMethod]
 	public void AzureBlobStorageService_EnumerateFiles_SearchPatternIsCaseSensitive()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetAzureBlobStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetAzureBlobStorageService(EnumerateFilesSearchPatternIsCaseSensitiveContainerName));
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetAzureBlobStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetAzureBlobStorageService(EnumerateFilesAsyncSearchPatternIsCaseSensitiveContainerName));
 	}
 
 	[TestMethod]
 	public void AzureBlobStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService(EnumerateFilesSupportsSearchPatternInSubfolderContainerName));
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureBlobStorageService(EnumerateFilesAsyncSupportsSearchPatternInSubfolderContainerName));
 	}
 
 	[TestMethod]
@@ -238,13 +256,13 @@ public class AzureBlobStorageServiceTests
 	[TestMethod]
 	public void AzureBlobStorageService_OpenCreateAndOpenReadWithEncryption_ContentsAreSame()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		FileStorageServiceTestHelpers.FileStorageService_OpenCreateAndOpenRead_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_OpenCreateAsyncAndOpenReadAsyncWithEncryption_ContentsAreSame()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsyncAndOpenReadAsync_ContentsAreSame(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())), isEncrypted: true);
 	}
 
 	[TestMethod]
@@ -262,27 +280,27 @@ public class AzureBlobStorageServiceTests
 	[TestMethod]
 	public void AzureBlobStorageService_Copy()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public void AzureBlobStorageService_Copy_SingleInstance()
 	{
 		AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
-		FileStorageServiceTestHelpers.FileStorageService_Copy(azureBlobStorageService, azureBlobStorageService);
+		FileStorageServiceTestHelpers.FileStorageService_Copy(azureBlobStorageService, azureBlobStorageService, suffix: "single");
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_CopyAsync()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureBlobStorageService(), GetAzureBlobStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public async Task AzureBlobStorageService_CopyAsync_SingleInstance()
 	{
 		AzureBlobStorageService azureBlobStorageService = GetAzureBlobStorageService();
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(azureBlobStorageService, azureBlobStorageService);
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(azureBlobStorageService, azureBlobStorageService, suffix: "single");
 	}
 
 	[TestMethod]
@@ -365,11 +383,11 @@ public class AzureBlobStorageServiceTests
 	public void AzureBlobStorageService_EncryptAndDecryptAllFiles()
 	{
 		// Arrange
-		string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
+		string content = "abcdefghijklmnopqrstuvwxyz\r\n12346790\t+ěščřžýáíé";
 		string testFilename = "encryption.txt";
 
-		var plainStorageService = GetAzureBlobStorageService();
-		var encryptedStorageService = GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String()));
+		var plainStorageService = GetAzureBlobStorageService("plain");
+		var encryptedStorageService = GetAzureBlobStorageService("encrypted", encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String()));
 
 		EncryptDecryptFileStorageService encryptDecryptFileStorageService = new EncryptDecryptFileStorageService();
 
@@ -441,43 +459,11 @@ public class AzureBlobStorageServiceTests
 	}
 
 	[TestMethod]
-	public void AzureBlobStorageService_DependencyInjectionContainerIntegration()
-	{
-		// Arrange
-		ServiceCollection services = new ServiceCollection();
-		services.AddAzureBlobStorageService<TestFileStorage>("DefaultEndpointsProtocol=https;AccountName=fake;AccountKey=fake", "fake");
-		var provider = services.BuildServiceProvider();
-
-		// Act
-		var service = provider.GetService<IFileStorageService<TestFileStorage>>();
-
-		// Assert
-		Assert.IsNotNull(service);
-		Assert.IsInstanceOfType(service, typeof(AzureBlobStorageService<TestFileStorage>));
-	}
-
-	[TestMethod]
-	public void AzureBlobStorageService_DependencyInjectionContainerIntegration_WithTokenCredential()
-	{
-		// Arrange
-		ServiceCollection services = new ServiceCollection();
-		services.AddAzureBlobStorageService<TestFileStorage>("fake", "fake", new Mock<TokenCredential>().Object);
-		var provider = services.BuildServiceProvider();
-
-		// Act
-		var service = provider.GetService<IFileStorageService<TestFileStorage>>();
-
-		// Assert
-		Assert.IsNotNull(service);
-		Assert.IsInstanceOfType(service, typeof(AzureBlobStorageService<TestFileStorage>));
-	}
-
-	[TestMethod]
 	public async Task AzureBlobStorageService_GenerateSasUri()
 	{
 		// Arrange
 		string filename = "file.txt";
-		string content = "abcdefghijklmnopqrśtuvwxyz\r\n12346790\t+ěščřžýáíé";
+		string content = "abcdefghijklmnopqrstuvwxyz\r\n12346790\t+ěščřžýáíé";
 
 		var azureBlobStorageService = GetAzureBlobStorageService();
 		using (MemoryStream ms = new MemoryStream())
@@ -526,14 +512,24 @@ public class AzureBlobStorageServiceTests
 
 	private static AzureBlobStorageService GetAzureBlobStorageService(bool secondary = false, string cacheControl = "", EncryptionOptions encryptionOptions = null)
 	{
+		return GetAzureBlobStorageService(secondary ? SecondaryContainerName : PrimaryContainerName, cacheControl, encryptionOptions);
+	}
+
+	private static AzureBlobStorageService GetAzureBlobStorageService(string containerName, string cacheControl = "", EncryptionOptions encryptionOptions = null)
+	{
 		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 		return new AzureBlobStorageService(
 			new AzureBlobStorageServiceOptions
 			{
 				BlobStorage = AzureStorageConnectionStringHelper.GetConnectionString(),
-				ContainerName = (secondary ? "secondarytests" : "primarytests") + containersSuffix,
+				ContainerName = containerName + GetContainersSuffix(),
 				CacheControl = cacheControl,
 				EncryptionOptions = encryptionOptions
 			});
+	}
+
+	internal static string GetContainersSuffix()
+	{
+		return "-" + FileStorageServiceTestHelpers.GetTestingScope().ToLower();
 	}
 }

@@ -77,14 +77,12 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void SftpStorageService_SaveDoNotAcceptSeekedStream()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetSftpFileStorageService());
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task SftpStorageService_SaveAsyncDoesNotAcceptSeekedStream()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetSftpFileStorageService());
@@ -282,27 +280,27 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public void SftpStorageService_Copy()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Copy(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Copy(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public void SftpStorageService_Copy_SingleInstance()
 	{
 		SftpStorageService sftpStorageService = GetSftpFileStorageService();
-		FileStorageServiceTestHelpers.FileStorageService_Copy(sftpStorageService, sftpStorageService);
+		FileStorageServiceTestHelpers.FileStorageService_Copy(sftpStorageService, sftpStorageService, suffix: "single");
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_CopyAsync()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_CopyAsync_SingleInstance()
 	{
 		SftpStorageService sftpStorageService = GetSftpFileStorageService();
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(sftpStorageService, sftpStorageService);
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(sftpStorageService, sftpStorageService, suffix: "single");
 	}
 
 	[TestMethod]
@@ -405,8 +403,8 @@ public class SftpFileStorageServiceTests
 		string secondarySftpUsername = "hfwsftpteststorage.sftp-secondary.hfwsecondary";
 
 		return secondary
-			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) { MaxSessions = 1 } })
-			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) { MaxSessions = 1 } });
+			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) { MaxSessions = 20 } })
+			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) { MaxSessions = 20 } });
 	}
 	private static SftpStorageService primarySftpStorageService;
 	private static SftpStorageService secondarySftpStorageService;

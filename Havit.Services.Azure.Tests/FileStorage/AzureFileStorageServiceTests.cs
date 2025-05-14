@@ -1,8 +1,6 @@
 ﻿using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
-using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Azure.Tests.FileStorage;
@@ -10,7 +8,26 @@ namespace Havit.Services.Azure.Tests.FileStorage;
 [TestClass]
 public class AzureFileStorageServiceTests
 {
-	private static string testRunSuffix = Guid.NewGuid().ToString("N");
+	private const string PrimaryDirectoryName = "root\\primary";
+	private const string SecondaryDirectoryName = "root\\secondary";
+
+	private const string EnumerateFilesSupportsSearchPatternDirectoryName = "root\\enumerate1";
+	private const string EnumerateFilesAsyncSupportsSearchPatternDirectoryName = "root\\enumerate2";
+	private const string EnumerateFilesSearchPatternIsCaseSensitiveDirectoryName = "root\\enumerate3";
+	private const string EnumerateFilesAsyncSearchPatternIsCaseSensitiveDirectoryName = "root\\enumerate4";
+	private const string EnumerateFilesSupportsSearchPatternInSubfolderDirectoryName = "root\\enumerate5";
+	private const string EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName = "root\\enumerate6";
+
+	private readonly static string[] AllDirectoryNames = [
+		PrimaryDirectoryName,
+		SecondaryDirectoryName,
+		EnumerateFilesSupportsSearchPatternDirectoryName,
+		EnumerateFilesAsyncSupportsSearchPatternDirectoryName,
+		EnumerateFilesSearchPatternIsCaseSensitiveDirectoryName,
+		EnumerateFilesAsyncSearchPatternIsCaseSensitiveDirectoryName,
+		EnumerateFilesSupportsSearchPatternInSubfolderDirectoryName,
+		EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName
+	];
 
 	[ClassInitialize]
 	public static void InitializeTestClass(TestContext testContext)
@@ -21,13 +38,11 @@ public class AzureFileStorageServiceTests
 		// nemůžeme smazat celý FileShare, protože pokud metoda je ukončena před skutečným smazáním. Další operace nad FileSharem,
 		// dokud je mazán, oznamují chybu 409 Confict s popisem "The specified share is being deleted."
 		// Proto raději smažeme jen soubory.
-		AzureFileStorageService service;
-
-		service = GetAzureFileStorageService();
-		service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
-
-		service = GetAzureFileStorageService(secondary: true);
-		service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+		Parallel.ForEach(AllDirectoryNames, directoryName =>
+		{
+			var service = GetAzureFileStorageService(directoryName);
+			service.EnumerateFiles().ToList().ForEach(item => service.Delete(item.Name));
+		});
 	}
 
 	[ClassCleanup]
@@ -61,14 +76,12 @@ public class AzureFileStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void AzureFileStorageService_SaveDoNotAcceptSeekedStream()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Save_DoNotAcceptSeekedStream(GetAzureFileStorageService());
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task AzureFileStorageService_SaveAsyncDoesNotAcceptSeekedStream()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_SaveAsyncDoNotAcceptSeekedStream(GetAzureFileStorageService());
@@ -140,37 +153,37 @@ public class AzureFileStorageServiceTests
 	[TestMethod]
 	public void AzureFileStorageService_EnumerateFiles_SupportsSearchPattern()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetAzureFileStorageService(EnumerateFilesSupportsSearchPatternDirectoryName));
 	}
 
 	[TestMethod]
 	public async Task AzureFileStorageService_EnumerateFilesAsync_SupportsSearchPattern()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetAzureFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetAzureFileStorageService(EnumerateFilesAsyncSupportsSearchPatternDirectoryName));
 	}
 
 	[TestMethod]
 	public void AzureFileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetAzureFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetAzureFileStorageService(EnumerateFilesSearchPatternIsCaseSensitiveDirectoryName));
 	}
 
 	[TestMethod]
 	public async Task AzureFileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetAzureFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetAzureFileStorageService(EnumerateFilesAsyncSearchPatternIsCaseSensitiveDirectoryName));
 	}
 
 	[TestMethod]
 	public void AzureFileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetAzureFileStorageService(EnumerateFilesSupportsSearchPatternInSubfolderDirectoryName));
 	}
 
 	[TestMethod]
 	public async Task AzureFileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetAzureFileStorageService(EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName));
 	}
 
 	[TestMethod]
@@ -266,27 +279,27 @@ public class AzureFileStorageServiceTests
 	[TestMethod]
 	public void AzureFileStorageService_Copy()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Copy(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public void AzureFileStorageService_Copy_SingleInstance()
 	{
 		AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
-		FileStorageServiceTestHelpers.FileStorageService_Copy(azureFileStorageService, azureFileStorageService);
+		FileStorageServiceTestHelpers.FileStorageService_Copy(azureFileStorageService, azureFileStorageService, suffix: "single");
 	}
 
 	[TestMethod]
 	public async Task AzureFileStorageService_CopyAsync()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true), suffix: "multiple");
 	}
 
 	[TestMethod]
 	public async Task AzureFileStorageService_CopyAsync_SingleInstance()
 	{
 		AzureFileStorageService azureFileStorageService = GetAzureFileStorageService();
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(azureFileStorageService, azureFileStorageService);
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(azureFileStorageService, azureFileStorageService, suffix: "single");
 	}
 
 	[TestMethod]
@@ -365,29 +378,20 @@ public class AzureFileStorageServiceTests
 		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(GetAzureFileStorageService(), GetAzureFileStorageService(secondary: true));
 	}
 
-	[TestMethod]
-	public void AzureFileStorageService_DependencyInjectionContainerIntegration()
+	private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
 	{
-		// Arrange
-		ServiceCollection services = new ServiceCollection();
-		services.AddAzureFileStorageService<TestFileStorage>("fake", "fake");
-		var provider = services.BuildServiceProvider();
-
-		// Act
-		var service = provider.GetService<IFileStorageService<TestFileStorage>>();
-
-		// Assert
-		Assert.IsNotNull(service);
-		Assert.IsInstanceOfType(service, typeof(AzureFileStorageService<TestFileStorage>));
+		return GetAzureFileStorageService(rootDirectoryName: secondary ? "root\\sedondary" : "root\\primary");
 	}
 
-	private static AzureFileStorageService GetAzureFileStorageService(bool secondary = false)
+	private static AzureFileStorageService GetAzureFileStorageService(string rootDirectoryName)
 	{
 		return new AzureFileStorageService(new AzureFileStorageServiceOptions
 		{
 			FileStorageConnectionString = AzureStorageConnectionStringHelper.GetConnectionString(),
-			FileShareName = "tests" + testRunSuffix,
-			RootDirectoryName = secondary ? "root\\secondarytests" : "root\\primarytests"
+			FileShareName = "unittests" + GetFileShareSuffix(),
+			RootDirectoryName = rootDirectoryName
 		});
 	}
+
+	internal static string GetFileShareSuffix() => AzureBlobStorageServiceTests.GetContainersSuffix();
 }

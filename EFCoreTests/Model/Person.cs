@@ -11,14 +11,14 @@ public class Person
 	public Person Boss { get; set; }
 	public int? BossId { get; set; }
 
-	public List<Person> Subordinates { get; } = new List<Person>();
+	public FilteringCollection<Person> Subordinates { get; }
 
-	public FilteringCollection<Person> SubordinatesIncludingDeleted { get; }
+	public List<Person> SubordinatesIncludingDeleted { get; } = new List<Person>();
 
 	public DateTime? Deleted { get; set; }
 
 	public Person()
 	{
-		SubordinatesIncludingDeleted = new FilteringCollection<Person>(Subordinates, p => Deleted == null);
+		Subordinates = new FilteringCollection<Person>(SubordinatesIncludingDeleted, p => Deleted == null);
 	}
 }

@@ -5,10 +5,7 @@ namespace Havit.Services.Sftp.Tests.FileStorage.Infrastructure;
 
 public static class SftpPasswordHelper
 {
-	public static string GetPasswordForPrimaryAccount() => GetPassword("Sftp_Primary_Password");
-	public static string GetPasswordForSecondaryAccount() => GetPassword("Sftp_Secondary_Password");
-
-	private static string GetPassword(string variableName)
+	internal static string GetPassword(string variableName)
 	{
 		// Při buildu v Azure máme k dispozici environment variables, resp. variable group 002.HFW-HavitFramework.
 		// Tato variable group je napojená na Azure Key Vault HavitFrameworkConfigKV.
@@ -26,7 +23,9 @@ public static class SftpPasswordHelper
 			}
 			catch (Azure.RequestFailedException)
 			{
-				// NOOP (daný secret neexistuje)
+#if DEBUG
+				throw;
+#endif
 			}
 		}
 

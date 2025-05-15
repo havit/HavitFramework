@@ -24,14 +24,43 @@ namespace Havit.Services.Sftp.Tests.FileStorage;
 [TestClass]
 public class SftpFileStorageServiceTests
 {
+	private static SftpCredentials PrimaryUserCredentials = new SftpCredentials("hfwsftpteststorage.sftp-primary.hfwprimary", "Sftp_Primary_Password");
+	private static SftpCredentials SecondaryUserCredentials = new SftpCredentials("hfwsftpteststorage.sftp-secondary.hfwsecondary", "Sftp_Secondary_Password");
+	private static SftpCredentials EnumerateFilesSupportsSearchPatternUserCredentials = new SftpCredentials("hfwsftpteststorage.sftp-enumerate1.hfwenumerate1", "Sftp_Enumerate1_Password");
+	private static SftpCredentials EnumerateFilesAsyncSupportsSearchPatternUserCredentials = new SftpCredentials("hfwsftpteststorage.sftp-enumerate2.hfwenumerate2", "Sftp_Enumerate2_Password");
+	private static SftpCredentials EnumerateFilesSearchPatternIsCaseSensitiveUserCredentials = new SftpCredentials("hfwsftpteststorage.sftp-enumerate3.hfwenumerate3", "Sftp_Enumerate3_Password");
+	private static SftpCredentials EnumerateFilesAsyncSearchPatternIsCaseSensitiveUserCredentials = new SftpCredentials("hfwsftpteststorage.sftp-enumerate4.hfwenumerate4", "Sftp_Enumerate4_Password");
+	private static SftpCredentials EnumerateFilesSupportsSearchPatternInSubfolder = new SftpCredentials("hfwsftpteststorage.sftp-enumerate5.hfwenumerate5", "Sftp_Enumerate5_Password");
+	private static SftpCredentials EnumerateFilesAsyncSupportsSearchPatternInSubfolder = new SftpCredentials("hfwsftpteststorage.sftp-enumerate6.hfwenumerate6", "Sftp_Enumerate6_Password");
+
+	private static SftpCredentials[] AllUserCredentials = new[]
+	{
+		PrimaryUserCredentials,
+		SecondaryUserCredentials,
+		EnumerateFilesSupportsSearchPatternUserCredentials,
+		EnumerateFilesAsyncSupportsSearchPatternUserCredentials,
+		EnumerateFilesSearchPatternIsCaseSensitiveUserCredentials,
+		EnumerateFilesAsyncSearchPatternIsCaseSensitiveUserCredentials,
+		EnumerateFilesSupportsSearchPatternInSubfolder,
+		EnumerateFilesAsyncSupportsSearchPatternInSubfolder
+	};
+
 	[ClassInitialize]
 	public static void Initialize(TestContext testContext)
+	{
+		CleanUp(testContext);
+	}
+
+	[ClassCleanup]
+	public static void CleanUp(TestContext testContext)
 	{
 		// testy jsou slušné, mažou po sobě
 		// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
 
-		CleanDirectory(GetSftpFileStorageService(), "");
-		CleanDirectory(GetSftpFileStorageService(secondary: true), "");
+		Parallel.ForEach(AllUserCredentials, (sftpCredentials) =>
+		{
+			CleanDirectory(GetSftpFileStorageService(sftpCredentials), "");
+		});
 	}
 
 	private static void CleanDirectory(SftpStorageService sftpStorageService, string directory)
@@ -154,37 +183,37 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public void SftpStorageService_EnumerateFiles_SupportsSearchPattern()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetSftpFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPattern(GetSftpFileStorageService(EnumerateFilesSupportsSearchPatternUserCredentials));
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_EnumerateFilesAsync_SupportsSearchPattern()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetSftpFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPattern(GetSftpFileStorageService(EnumerateFilesAsyncSupportsSearchPatternUserCredentials));
 	}
 
 	[TestMethod]
 	public void SftpStorageService_EnumerateFiles_SearchPatternIsCaseSensitive()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetSftpFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SearchPatternIsCaseSensitive(GetSftpFileStorageService(EnumerateFilesSearchPatternIsCaseSensitiveUserCredentials));
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetSftpFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SearchPatternIsCaseSensitive(GetSftpFileStorageService(EnumerateFilesAsyncSearchPatternIsCaseSensitiveUserCredentials));
 	}
 
 	[TestMethod]
 	public void SftpStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetSftpFileStorageService());
+		FileStorageServiceTestHelpers.FileStorageService_EnumerateFiles_SupportsSearchPatternInSubfolder(GetSftpFileStorageService(EnumerateFilesSupportsSearchPatternInSubfolder));
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetSftpFileStorageService());
+		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_SupportsSearchPatternInSubfolder(GetSftpFileStorageService(EnumerateFilesAsyncSupportsSearchPatternInSubfolder));
 	}
 
 	[TestMethod]
@@ -280,7 +309,7 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public void SftpStorageService_Copy()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Copy(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true), suffix: "multiple");
+		FileStorageServiceTestHelpers.FileStorageService_Copy(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials), suffix: "multiple");
 	}
 
 	[TestMethod]
@@ -293,7 +322,7 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public async Task SftpStorageService_CopyAsync()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true), suffix: "multiple");
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials), suffix: "multiple");
 	}
 
 	[TestMethod]
@@ -306,13 +335,13 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public void SftpStorageService_Copy_OverwritesTargetFile()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Copy_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Copy_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials));
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_CopyAsync_OverwritesTargetFile()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_CopyAsync_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials));
 	}
 
 	[TestMethod]
@@ -358,25 +387,25 @@ public class SftpFileStorageServiceTests
 	[TestMethod]
 	public void SftpStorageService_Move_WithFileStorageService()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials));
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_MoveAsync_WithFileStorageService()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials));
 	}
 
 	[TestMethod]
 	public void SftpStorageService_Move_WithFileStorageService_OverwritesTargetFile()
 	{
-		FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		FileStorageServiceTestHelpers.FileStorageService_Move_WithFileStorageService_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials));
 	}
 
 	[TestMethod]
 	public async Task SftpStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile()
 	{
-		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(secondary: true));
+		await FileStorageServiceTestHelpers.FileStorageService_MoveAsync_WithFileStorageService_OverwritesTargetFile(GetSftpFileStorageService(), GetSftpFileStorageService(SecondaryUserCredentials));
 	}
 
 	[TestMethod]
@@ -395,19 +424,12 @@ public class SftpFileStorageServiceTests
 		Assert.IsInstanceOfType(service, typeof(SftpStorageService<TestFileStorage>));
 	}
 
-	private static SftpStorageService GetSftpFileStorageService(bool secondary = false)
+	private static SftpStorageService GetSftpFileStorageService(SftpCredentials sftpStorageServiceProvider = null)
 	{
 		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
 
-		string primarySftpUsername = "hfwsftpteststorage.sftp-primary.hfwprimary";
-		string secondarySftpUsername = "hfwsftpteststorage.sftp-secondary.hfwsecondary";
+		sftpStorageServiceProvider ??= PrimaryUserCredentials; // default credentials
 
-		return secondary
-			? secondarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", secondarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(secondarySftpUsername, SftpPasswordHelper.GetPasswordForSecondaryAccount())) { MaxSessions = 20 } })
-			: primarySftpStorageService ??= new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", primarySftpUsername, new Renci.SshNet.PasswordAuthenticationMethod(primarySftpUsername, SftpPasswordHelper.GetPasswordForPrimaryAccount())) { MaxSessions = 20 } });
+		return new SftpStorageService(new SftpStorageServiceOptions { ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo("hfwsftpteststorage.blob.core.windows.net", sftpStorageServiceProvider.Username, new Renci.SshNet.PasswordAuthenticationMethod(sftpStorageServiceProvider.Username, sftpStorageServiceProvider.Password)) { MaxSessions = 1 } });
 	}
-	private static SftpStorageService primarySftpStorageService;
-	private static SftpStorageService secondarySftpStorageService;
-
-
 }

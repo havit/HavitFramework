@@ -13,36 +13,35 @@ public class FileStorageDataSeedRunDecisionStatePersisterTests
 	{
 		// Arrange
 		string state = "ABCD";
-		IDataSeedProfile profile = new DefaultProfile();
-
+		string profileName = "FileStorageDataSeedRunDecisionStatePersister_ReadsWritten";
 		// Act
 		FileStorageDataSeedRunDecisionStatePersister persister1 = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
-		persister1.WriteCurrentState(profile.ProfileName, state);
+		persister1.WriteCurrentState(profileName, state);
 
 		// Assert
 		FileStorageDataSeedRunDecisionStatePersister persister2 = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
-		Assert.AreEqual(state, persister2.ReadCurrentState(profile.ProfileName));
+		Assert.AreEqual(state, persister2.ReadCurrentState(profileName));
 
 		// Clean up
-		persister1.DeleteCurrentStateFile(profile.ProfileName);
+		persister1.DeleteCurrentStateFile(profileName);
 	}
 
 	[TestMethod]
 	public void FileStorageDataSeedRunDecisionStatePersister_ShortStateOverwritesLongerState()
 	{
 		// Arrange
+		string profileName = "FileStorageDataSeedRunDecisionStatePersister_ShortStateOverwritesLongerState";
 		FileStorageDataSeedRunDecisionStatePersister persister = new FileStorageDataSeedRunDecisionStatePersister(new FileSystemStorageService(System.IO.Path.GetTempPath()));
-		IDataSeedProfile profile = new DefaultProfile();
 
 		// Act
-		persister.WriteCurrentState(profile.ProfileName, "ABCD");
-		persister.WriteCurrentState(profile.ProfileName, "A"); // zapíšeme kratší text po zápisu delšího
+		persister.WriteCurrentState(profileName, "ABCD");
+		persister.WriteCurrentState(profileName, "A"); // zapíšeme kratší text po zápisu delšího
 
 		// Assert
-		Assert.AreEqual("A", persister.ReadCurrentState(profile.ProfileName));
+		Assert.AreEqual("A", persister.ReadCurrentState(profileName));
 
 		// Clean up
-		persister.DeleteCurrentStateFile(profile.ProfileName);
+		persister.DeleteCurrentStateFile(profileName);
 	}
 
 }

@@ -4,8 +4,7 @@
 		<IsTestProject>true</IsTestProject>
 		<!--<PublishDir>obj\$(Configuration)\publish</PublishDir>-->
 
-		<!-- Povolením začne selhávat test pro ThreadScopeRepository_InstanceDoesNotFlowToNewTask (.NET 8) -->
-		<!--<EnableMSTestRunner>true</EnableMSTestRunner>
-		<OutputType>Exe</OutputType>-->
+		<EnableMSTestRunner>true</EnableMSTestRunner>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 </Project>

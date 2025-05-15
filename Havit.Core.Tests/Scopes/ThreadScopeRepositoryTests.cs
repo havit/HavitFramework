@@ -22,25 +22,26 @@ public class ThreadScopeRepositoryTests
 		}
 	}
 
-	[TestMethod]
-	public void ThreadScopeRepository_InstanceDoesNotFlowToNewTask()
-	{
-		// Arrange 
-		object instance1 = new object();
-		using (new TestThreadScope(instance1))
-		{
-			object instance2 = instance1;
+	// Toto ve skutečnosti není zajištěno. Není zajištěno, že spuštěný task neběží na stejném threadu. A pokud běží, pak sdílí scope.
+	//[TestMethod]
+	//public void ThreadScopeRepository_InstanceDoesNotFlowToNewTask()
+	//{
+	//	// Arrange 
+	//	object instance1 = new object();
+	//	using (new TestThreadScope(instance1))
+	//	{
+	//		object instance2 = instance1;
 
-			// Act
-			Task.Factory.StartNew(() =>
-			{
-				instance2 = TestThreadScope.Current;
-			}).Wait();
+	//		// Act
+	//		Task.Factory.StartNew(() =>
+	//		{
+	//			instance2 = TestThreadScope.Current;
+	//		}).Wait();
 
-			// Assert
-			Assert.IsNull(instance2);
-		}
-	}
+	//		// Assert
+	//		Assert.IsNull(instance2);
+	//	}
+	//}
 
 	[TestMethod]
 	public async Task ThreadScopeRepository_InstanceDoesNotFlowToAsyncAwait()

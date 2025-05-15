@@ -20,7 +20,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act
-		criticalSection.ExecuteAction("FakeResource", () =>
+		criticalSection.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanGetLock", () =>
 		{
 			// Assert
 			Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
@@ -35,7 +35,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act
-		criticalSection.ExecuteAction("FakeResource", () => { });
+		criticalSection.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanReleaseLock", () => { });
 
 		// Assert
 		Assert.AreEqual(DbLockedCriticalSection.SpReleaseAppLockResultCode.Released, criticalSection.ReleaseAppLockResultCode);
@@ -50,7 +50,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options);
 
 		// Act - simulation of parallel actions
-		Action parallelAction1 = () => criticalSection.ExecuteAction("FakeResource", () =>
+		Action parallelAction1 = () => criticalSection.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanWaitOnLockedResourceAndLockAfter", () =>
 		{
 			// simulation of doing something
 			Thread.Sleep(1000);
@@ -60,7 +60,7 @@ public class DbLockedCriticalSectionTests
 		{
 			// Wait for 500ms to ensure parallelAction1 is locked first.
 			Thread.Sleep(500);
-			criticalSection2.ExecuteAction("FakeResource", () => { });
+			criticalSection2.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanWaitOnLockedResourceAndLockAfter", () => { });
 		};
 
 		Parallel.Invoke(parallelAction1, parallelAction2);
@@ -81,7 +81,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options2);
 
 		// Act - simulation of parallel actions
-		Action parallelAction1 = () => criticalSection1.ExecuteAction("FakeResource", () =>
+		Action parallelAction1 = () => criticalSection1.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanTimeout", () =>
 		{
 			// Simulation of doing something longer than lock timeout for next action.
 			Thread.Sleep(1500);
@@ -91,7 +91,7 @@ public class DbLockedCriticalSectionTests
 		{
 			// Wait for 500ms to ensure parallelAction1 is locked first.
 			Thread.Sleep(500);
-			criticalSection2.ExecuteAction("FakeResource", () => { });
+			criticalSection2.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanTimeout", () => { });
 		};
 
 		try
@@ -115,11 +115,11 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act - cascade
-		criticalSection.ExecuteAction("FakeResourceA", () =>
+		criticalSection.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanExecuteCascadeAction_A", () =>
 		{
 			// Assert
 			Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
-			criticalSection.ExecuteAction("FakeResourceB", () =>
+			criticalSection.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanExecuteCascadeAction_B", () =>
 			{
 				Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
 			});
@@ -138,7 +138,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act
-		await criticalSection.ExecuteActionAsync("FakeResource", () =>
+		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanGetLock", () =>
 		{
 			// Assert
 			Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
@@ -154,7 +154,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act
-		await criticalSection.ExecuteActionAsync("FakeResource", () => { return Task.CompletedTask; });
+		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanReleaseLock", () => { return Task.CompletedTask; });
 
 		// Assert
 		Assert.AreEqual(DbLockedCriticalSection.SpReleaseAppLockResultCode.Released, criticalSection.ReleaseAppLockResultCode);
@@ -169,13 +169,13 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options);
 
 		// Act - simulation of parallel actions
-		_ = criticalSection1.ExecuteActionAsync("FakeResource", async () =>
+		_ = criticalSection1.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter", async () =>
 		{
 			// simulation of doing something
 			await Task.Delay(1000);
 		});
 		await Task.Delay(500);
-		await criticalSection2.ExecuteActionAsync("FakeResource", () => Task.CompletedTask);
+		await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter", () => Task.CompletedTask);
 
 		// Assert
 		Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.LockedAfterWaiting, criticalSection2.GetAppLockResultCode);
@@ -193,9 +193,9 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options2);
 
 		// Act
-		await criticalSection.ExecuteActionAsync("FakeResource", async () =>
+		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", async () =>
 		{
-			await criticalSection2.ExecuteActionAsync("FakeResource", () => Task.CompletedTask);
+			await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", () => Task.CompletedTask);
 		});
 
 		// Assert
@@ -210,11 +210,11 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act - cascade
-		await criticalSection.ExecuteActionAsync("FakeResourceA", async () =>
+		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanExecuteCascadeAction_A", async () =>
 		{
 			// Assert
 			Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
-			await criticalSection.ExecuteActionAsync("FakeResourceB", () =>
+			await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanExecuteCascadeAction_B", () =>
 			{
 				Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
 				return Task.CompletedTask;

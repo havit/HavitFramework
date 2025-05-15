@@ -45,22 +45,40 @@ public class SftpFileStorageServiceTests
 		EnumerateFilesAsyncSupportsSearchPatternInSubfolder
 	};
 
+	private static bool _cleanUpEnabled = true;
+
 	[ClassInitialize]
 	public static void Initialize(TestContext testContext)
 	{
-		CleanUp(testContext);
+		try
+		{
+			CleanUp(testContext);
+		}
+		catch (AggregateException aex) when (aex.InnerException is Renci.SshNet.Common.SshConnectionException && aex.InnerException.Message.Contains("SSH/SFTP are not enabled for this account."))
+		{
+			_cleanUpEnabled = false;
+			Assert.Inconclusive("SFTP server ob Azure Blob Storage is disabled.");
+		}
+		catch
+		{
+			_cleanUpEnabled = false;
+			throw;
+		}
 	}
 
 	[ClassCleanup]
 	public static void CleanUp(TestContext testContext)
 	{
-		// testy jsou slušné, mažou po sobě
-		// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
-
-		Parallel.ForEach(AllUserCredentials, (sftpCredentials) =>
+		if (_cleanUpEnabled)
 		{
-			CleanDirectory(GetSftpFileStorageService(sftpCredentials), "");
-		});
+			// testy jsou slušné, mažou po sobě
+			// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy
+
+			Parallel.ForEach(AllUserCredentials, (sftpCredentials) =>
+			{
+				CleanDirectory(GetSftpFileStorageService(sftpCredentials), "");
+			});
+		}
 	}
 
 	private static void CleanDirectory(SftpStorageService sftpStorageService, string directory)

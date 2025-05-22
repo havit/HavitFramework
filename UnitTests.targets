@@ -4,7 +4,12 @@
 		<IsTestProject>true</IsTestProject>
 		<!--<PublishDir>obj\$(Configuration)\publish</PublishDir>-->
 
-		<EnableMSTestRunner>true</EnableMSTestRunner>
-		<OutputType>Exe</OutputType>
+		<!--
+		Pokud použiji jen EnableMSTestRunner, Test Explorer nespustí testy všech projektů.
+		Pokud použiji i OutputType, spustějí se v Test Exploreru všechny testy, ale nespustí se na build serveru.
+		To be solved later.
+		-->
+		<!--<EnableMSTestRunner>true</EnableMSTestRunner>-->
+		<!--<OutputType>Exe</OutputType>-->
 	</PropertyGroup>
 </Project>

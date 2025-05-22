@@ -74,7 +74,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		await using (await criticalSection.EnterScopeAsync("LOCK"))
+		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWithOpenedConnection"))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 		}
@@ -92,7 +92,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		using (criticalSection.EnterScope("LOCK"))
+		using (criticalSection.EnterScope("DbLockedCriticalSection_EnterScope_WorksWhenConnectionIsClosedInAction"))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 			sqlConnection.Close();
@@ -111,7 +111,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		await using (await criticalSection.EnterScopeAsync("LOCK"))
+		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWhenConnectionIsClosedInAction"))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 			await sqlConnection.CloseAsync();
@@ -131,7 +131,7 @@ public class DbLockedCriticalSectionTests
 		// Act
 		try
 		{
-			using (criticalSection.EnterScope("LOCK"))
+			using (criticalSection.EnterScope("DbLockedCriticalSection_EnterScope_WorksWhenExceptionIsThrown"))
 			{
 				throw new TestException();
 			}
@@ -155,7 +155,7 @@ public class DbLockedCriticalSectionTests
 		try
 		{
 			// Act
-			await using (await criticalSection.EnterScopeAsync("LOCK"))
+			await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWhenExceptionIsThrown"))
 			{
 				throw new TestException();
 			}

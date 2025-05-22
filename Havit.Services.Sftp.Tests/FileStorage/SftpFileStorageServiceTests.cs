@@ -58,7 +58,7 @@ public class SftpFileStorageServiceTests
 		catch (AggregateException aex) when (aex.InnerException is Renci.SshNet.Common.SshConnectionException && aex.InnerException.Message.Contains("SSH/SFTP are not enabled for this account."))
 		{
 			_cleanUpEnabled = false;
-			Assert.Inconclusive("SFTP server ob Azure Blob Storage is disabled.");
+			Assert.Inconclusive("SFTP server is disabled (on the Azure Blob Storage).");
 		}
 #endif
 		catch

@@ -6,6 +6,7 @@ using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataLoaders.Fakes;
 using Havit.Services.TimeServices;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories;
 
@@ -483,9 +484,9 @@ public class DbRepositoryTests
 		Assert.AreEqual(EntityState.Unchanged, testDbContext.Entry(entity).State);
 	}
 
-	private void SeedData(bool deleted = false)
+	private void SeedData(bool deleted = false, [CallerMemberName] string databaseName = default)
 	{
-		using (TestDbContext testDbContext = new TestDbContext())
+		using (TestDbContext testDbContext = new TestDbContext(databaseName))
 		{
 			for (int i = 0; i < 3; i++)
 			{

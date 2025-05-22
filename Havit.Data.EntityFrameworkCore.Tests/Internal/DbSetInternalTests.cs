@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Internal;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -66,10 +67,17 @@ public class DbSetInternalTests
 
 	public class TestDbContext : DbContext
 	{
+		private readonly string _databaseName;
+
+		public TestDbContext([CallerMemberName] string databaseName = default)
+		{
+			_databaseName = databaseName;
+		}
+
 		protected override void OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-			optionsBuilder.UseInMemoryDatabase(this.GetType().Name);
+			optionsBuilder.UseInMemoryDatabase(_databaseName);
 		}
 		protected override void CustomizeModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
 		{

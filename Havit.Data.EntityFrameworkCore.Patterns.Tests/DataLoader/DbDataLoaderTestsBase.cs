@@ -1,14 +1,15 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
 
 public abstract class DbDataLoaderTestsBase
 {
-	protected void SeedOneToManyTestData(DataLoaderTestDbContext dbContext = null, bool deleted = false)
+	protected void SeedOneToManyTestData(DataLoaderTestDbContext dbContext = null, bool deleted = false, [CallerMemberName] string databaseName = default)
 	{
 		if (dbContext == null)
 		{
-			dbContext = new DataLoaderTestDbContext();
+			dbContext = new DataLoaderTestDbContext(databaseName);
 		}
 
 		dbContext.Database.DropCreate();
@@ -38,9 +39,9 @@ public abstract class DbDataLoaderTestsBase
 		dbContext.SaveChanges();
 	}
 
-	protected void SeedManyToManyTestData(bool deleted = false)
+	protected void SeedManyToManyTestData(bool deleted = false, [CallerMemberName] string databaseName = default)
 	{
-		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext(databaseName);
 		dbContext.Database.DropCreate();
 
 		for (int i = 0; i < 5; i++)

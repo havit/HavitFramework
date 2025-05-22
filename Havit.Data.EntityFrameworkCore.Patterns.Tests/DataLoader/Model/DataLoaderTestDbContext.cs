@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 
@@ -13,11 +14,17 @@ public class DataLoaderTestDbContext : Havit.Data.EntityFrameworkCore.DbContext
 
 	public DbSet<HiearchyItem> HiearchyItem { get; set; }
 
+	private readonly string _databaseName;
+
+	public DataLoaderTestDbContext([CallerMemberName] string databaseName = default)
+	{
+		_databaseName = databaseName;
+	}
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
 		base.OnConfiguring(optionsBuilder);
 
-		optionsBuilder.UseInMemoryDatabase(nameof(DataLoaderTestDbContext));
+		optionsBuilder.UseInMemoryDatabase(_databaseName);
 	}
 
 	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)

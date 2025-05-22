@@ -116,7 +116,7 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 	public void DbDataLoader_Load_Collection_DoesNotLoadAlreadyLoaded()
 	{
 		// Arrange
-		Mock<DataLoaderTestDbContext> dbContextMock = new Mock<DataLoaderTestDbContext>();
+		Mock<DataLoaderTestDbContext> dbContextMock = new Mock<DataLoaderTestDbContext>(/*databaseName: */nameof(DbDataLoader_Load_Collection_DoesNotLoadAlreadyLoaded));
 		dbContextMock.CallBase = true;
 
 		SeedOneToManyTestData(dbContext: dbContextMock.Object);

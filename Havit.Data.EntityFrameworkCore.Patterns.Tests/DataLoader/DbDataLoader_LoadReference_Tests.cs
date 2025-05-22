@@ -135,7 +135,7 @@ public class DbDataLoader_LoadReference_Tests : DbDataLoaderTestsBase
 	public void DbDataLoader_Load_Reference_DoesNotLoadAlreadyLoadedReferences()
 	{
 		// Arrange
-		Mock<DataLoaderTestDbContext> dbContextMock = new Mock<DataLoaderTestDbContext>();
+		Mock<DataLoaderTestDbContext> dbContextMock = new Mock<DataLoaderTestDbContext>(/*databaseName: */nameof(DbDataLoader_Load_Reference_DoesNotLoadAlreadyLoadedReferences));
 		dbContextMock.CallBase = true;
 
 		dbContextMock.Object.Database.DropCreate();

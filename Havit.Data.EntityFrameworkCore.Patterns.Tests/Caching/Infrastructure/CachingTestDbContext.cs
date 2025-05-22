@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToMany;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.ManyToManyAsTwoOneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToMany;
 using Havit.Data.EntityFrameworkCore.Patterns.Tests.Caching.Infrastructure.Model.OneToOne;
@@ -10,15 +11,18 @@ public class CachingTestDbContext : DbContext
 {
 	internal const string ClassManyToManyAItemsEntityName = "ClassManyToManyA_Items";
 
-	public CachingTestDbContext()
+	private readonly string _databaseName;
+
+	public CachingTestDbContext([CallerMemberName] string databaseName = default)
 	{
+		_databaseName = databaseName;
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
 		base.OnConfiguring(optionsBuilder);
 
-		optionsBuilder.UseInMemoryDatabase(nameof(CachingTestDbContext));
+		optionsBuilder.UseInMemoryDatabase(_databaseName);
 	}
 
 	protected override void CustomizeModelCreating(ModelBuilder modelBuilder)

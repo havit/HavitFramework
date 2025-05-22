@@ -1,4 +1,5 @@
-﻿using Havit.Data.EntityFrameworkCore.Attributes;
+﻿using System.Runtime.CompilerServices;
+using Havit.Data.EntityFrameworkCore.Attributes;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,10 +39,17 @@ public class ConventionSuppressionsExtensionsTests
 
 	public class TestDbContext : DbContext
 	{
+		private readonly string _databaseName;
+
+		public TestDbContext([CallerMemberName] string databaseName = default)
+		{
+			_databaseName = databaseName;
+		}
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
-			optionsBuilder.UseInMemoryDatabase(nameof(TestDbContext));
+			optionsBuilder.UseInMemoryDatabase(_databaseName);
 		}
 
 		protected override void CustomizeModelCreating(ModelBuilder modelBuilder)

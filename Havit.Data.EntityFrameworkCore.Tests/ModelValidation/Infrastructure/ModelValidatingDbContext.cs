@@ -45,6 +45,7 @@ internal class ModelValidatingDbContext : EntityFrameworkCore.DbContext
 	{
 		base.OnConfiguring(optionsBuilder);
 
+		// DbContext slouží jen k validaci modelu, neřeší práci s daty, nepotřebujeme jej tedy mezi testy více izolovat.
 		optionsBuilder.UseInMemoryDatabase(typeof(ModelValidatingDbContext).FullName);
 	}
 }

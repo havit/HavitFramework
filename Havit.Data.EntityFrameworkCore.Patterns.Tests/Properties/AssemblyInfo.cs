@@ -1,4 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // Testy nejsou izolované.
-[assembly: DoNotParallelize]
+[assembly: Parallelize]

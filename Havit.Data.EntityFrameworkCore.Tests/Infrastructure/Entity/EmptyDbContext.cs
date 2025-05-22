@@ -8,6 +8,6 @@ public class EmptyDbContext : DbContext
 	{
 		base.OnConfiguring(optionsBuilder);
 
-		optionsBuilder.UseSqlServer("fake");
+		optionsBuilder.UseInMemoryDatabase(nameof(EmptyDbContext));
 	}
 }

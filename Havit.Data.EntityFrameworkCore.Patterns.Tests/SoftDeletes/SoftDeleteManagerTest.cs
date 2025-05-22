@@ -143,6 +143,7 @@ public class SoftDeleteManagerTest
 		Mock<ITimeService> mockTimeSevice = new Mock<ITimeService>();
 		SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
 
+		// UseSqlServer: Potřebujeme nastavit database provider pro tvorbu sql dotazů.
 		using var dbContext = new SoftDeleteManagerDbContext(new DbContextOptionsBuilder().UseSqlServer("Data Source=FAKE").Options);
 
 		// Precondition

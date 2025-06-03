@@ -26,11 +26,16 @@ public static class EnumerableExt
 	/// <summary>
 	/// Left outer join.
 	/// </summary>
+#if NET10_0_OR_GREATER
+	// see comment for NET6_0_OR_GREATER below
+	public static IEnumerable<TResult> LeftJoin<TLeft, TRight, TKey, TResult>(IEnumerable<TLeft> leftSource,
+#else
 	public static IEnumerable<TResult> LeftJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> leftSource,
-											 IEnumerable<TRight> rightSource,
-											 Func<TLeft, TKey> leftKeySelector,
-											 Func<TRight, TKey> rightKeySelector,
-											 Func<TLeft, TRight, TResult> resultSelector)
+#endif
+		IEnumerable<TRight> rightSource,
+		Func<TLeft, TKey> leftKeySelector,
+		Func<TRight, TKey> rightKeySelector,
+		Func<TLeft, TRight, TResult> resultSelector)
 	{
 		IEnumerable<TResult> result =
 			from l in leftSource
@@ -45,11 +50,16 @@ public static class EnumerableExt
 	/// <summary>
 	/// Right outer join.
 	/// </summary>
+#if NET10_0_OR_GREATER
+	// see comment for NET6_0_OR_GREATER below
+	public static IEnumerable<TResult> RightJoin<TLeft, TRight, TKey, TResult>(IEnumerable<TLeft> leftSource,
+#else
 	public static IEnumerable<TResult> RightJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> leftSource,
-											 IEnumerable<TRight> rightSource,
-											 Func<TLeft, TKey> leftKeySelector,
-											 Func<TRight, TKey> rightKeySelector,
-											 Func<TLeft, TRight, TResult> resultSelector)
+#endif
+		IEnumerable<TRight> rightSource,
+		Func<TLeft, TKey> leftKeySelector,
+		Func<TRight, TKey> rightKeySelector,
+		Func<TLeft, TRight, TResult> resultSelector)
 	{
 		IEnumerable<TResult> result =
 			from r in rightSource

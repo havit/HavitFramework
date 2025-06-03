@@ -1,3 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
+// Testy nejsou izolované.
+[assembly: DoNotParallelize]

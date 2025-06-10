@@ -11,7 +11,7 @@ namespace Havit.WebApplicationTest.HavitWebTests;
 
 public partial class FilePageStatePersisterTest : System.Web.UI.Page
 {
-	private const string ViewStateStorage = @"\\topol\Workspace\002.HFW\ViewState";
+	private const string ViewStateStorage = @"\\topol.havit.local\Workspace\002.HFW\ViewState";
 	
 	private readonly FilePageStatePersister pageStatePersister;
 

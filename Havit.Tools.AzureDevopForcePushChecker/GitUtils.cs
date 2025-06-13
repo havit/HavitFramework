@@ -97,7 +97,7 @@ public class GitUtils
 		{
 			byte b = byteArray[i];
 
-			char first = (char)((b >> 4 & 0x0F) + 0x30);
+			char first = (char)(((b >> 4) & 0x0F) + 0x30);
 			char second = (char)((b & 0x0F) + 0x30);
 
 			sb.Append(first >= 0x3A ? (char)(first + 0x27) : first);

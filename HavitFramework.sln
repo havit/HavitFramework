@@ -248,9 +248,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkCore.TestSolution.DataLayer", "Havit.Data.EntityFrameworkCore.TestSolution\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.csproj", "{08241B85-BB39-F400-950A-B8C9770C58E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.AzureDevopForcePushChecker", "Havit.Tools.AzureDevopForcePushChecker\Havit.Tools.AzureDevopForcePushChecker.csproj", "{F4C33BBE-A0AA-7FDB-96D8-44B28A9D0560}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8AA6AA06-3227-412A-A45D-06093AB10759}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.AzureDevopsPermissionChecker", "Havit.Tools.AzureDevopsPermissionChecker\Havit.Tools.AzureDevopsPermissionChecker.csproj", "{A1C81839-426E-AB7F-362E-F16818205AFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -630,10 +630,10 @@ Global
 		{08241B85-BB39-F400-950A-B8C9770C58E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08241B85-BB39-F400-950A-B8C9770C58E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08241B85-BB39-F400-950A-B8C9770C58E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4C33BBE-A0AA-7FDB-96D8-44B28A9D0560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4C33BBE-A0AA-7FDB-96D8-44B28A9D0560}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4C33BBE-A0AA-7FDB-96D8-44B28A9D0560}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4C33BBE-A0AA-7FDB-96D8-44B28A9D0560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1C81839-426E-AB7F-362E-F16818205AFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1C81839-426E-AB7F-362E-F16818205AFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1C81839-426E-AB7F-362E-F16818205AFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1C81839-426E-AB7F-362E-F16818205AFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -745,7 +745,7 @@ Global
 		{ED693CC9-AEFA-5C8E-BE82-41E586BAFA8A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C880E3D5-01F8-964D-BBF7-D68984AF5034} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{08241B85-BB39-F400-950A-B8C9770C58E8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{F4C33BBE-A0AA-7FDB-96D8-44B28A9D0560} = {8AA6AA06-3227-412A-A45D-06093AB10759}
+		{A1C81839-426E-AB7F-362E-F16818205AFD} = {8AA6AA06-3227-412A-A45D-06093AB10759}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

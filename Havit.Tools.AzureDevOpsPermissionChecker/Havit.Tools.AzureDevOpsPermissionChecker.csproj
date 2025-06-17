@@ -6,9 +6,9 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
-	<Target Name="TfsPublish" AfterTargets="AfterPublish" Condition="'$(PublishDirectory)' != ''">
+	<Target Name="TfsPublish" AfterTargets="AfterBuild" Condition="'$(PublishDirectory)' != ''">
 		<ItemGroup>
-			<PublishToCopy Include="obj\Release\TfsPublish\*.zip" />
+			<PublishToCopy Include="bin\Release\**\*.*" />
 		</ItemGroup>
 		<Copy SourceFiles="@(PublishToCopy)" DestinationFolder="$(PublishDirectory)\Havit.Tools.AzureDevOpsPermissionChecker" />
 	</Target>

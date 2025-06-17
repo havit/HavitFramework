@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<Target Name="TfsPublish" AfterTargets="AfterPublish" Condition="'$(PublishDirectory)' != ''">
+		<ItemGroup>
+			<PublishToCopy Include="obj\Release\TfsPublish\*.zip" />
+		</ItemGroup>
+		<Copy SourceFiles="@(PublishToCopy)" DestinationFolder="$(PublishDirectory)\Havit.Tools.AzureDevOpsPermissionChecker" />
+	</Target>
+</Project>

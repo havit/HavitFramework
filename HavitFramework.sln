@@ -250,7 +250,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Data.EntityFrameworkC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8AA6AA06-3227-412A-A45D-06093AB10759}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.AzureDevopsPermissionChecker", "Havit.Tools.AzureDevopsPermissionChecker\Havit.Tools.AzureDevopsPermissionChecker.csproj", "{A1C81839-426E-AB7F-362E-F16818205AFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.AzureDevOpsPermissionChecker", "Havit.Tools.AzureDevopsPermissionChecker\Havit.Tools.AzureDevOpsPermissionChecker.csproj", "{A1C81839-426E-AB7F-362E-F16818205AFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

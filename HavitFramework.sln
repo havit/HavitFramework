@@ -252,6 +252,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{8AA6AA06
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.AzureDevOpsPermissionChecker", "Havit.Tools.AzureDevopsPermissionChecker\Havit.Tools.AzureDevOpsPermissionChecker.csproj", "{A1C81839-426E-AB7F-362E-F16818205AFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.Win1250ToUtf8", "Havit.Tools.Win1250ToUtf8\Havit.Tools.Win1250ToUtf8.csproj", "{699ABFD0-5A9B-45E1-B75B-7A1AE044B566}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -634,6 +636,10 @@ Global
 		{A1C81839-426E-AB7F-362E-F16818205AFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1C81839-426E-AB7F-362E-F16818205AFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1C81839-426E-AB7F-362E-F16818205AFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699ABFD0-5A9B-45E1-B75B-7A1AE044B566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699ABFD0-5A9B-45E1-B75B-7A1AE044B566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699ABFD0-5A9B-45E1-B75B-7A1AE044B566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699ABFD0-5A9B-45E1-B75B-7A1AE044B566}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -746,6 +752,7 @@ Global
 		{C880E3D5-01F8-964D-BBF7-D68984AF5034} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{08241B85-BB39-F400-950A-B8C9770C58E8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A1C81839-426E-AB7F-362E-F16818205AFD} = {8AA6AA06-3227-412A-A45D-06093AB10759}
+		{699ABFD0-5A9B-45E1-B75B-7A1AE044B566} = {8AA6AA06-3227-412A-A45D-06093AB10759}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44656523-42B6-48E3-9E6D-6F075F0E7FD0}

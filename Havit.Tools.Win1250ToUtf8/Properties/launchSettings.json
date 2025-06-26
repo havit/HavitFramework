@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Havit.Tools.Win1250ToUtf8": {
+      "commandName": "Project",
+      "commandLineArgs": "-patterns:*.cs -mode:warn",
+      "workingDirectory": ".."
+    }
+  }
+}

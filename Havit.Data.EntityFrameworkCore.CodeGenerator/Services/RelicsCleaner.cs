@@ -39,7 +39,10 @@ public class RelicsCleaner : IRelicsCleaner
 			? new List<string>() // pokud máme potlačit mazání relic souborů repository, nebudeme je ani hledat
 			: await GetRepositoryFilesAsync(cancellationToken);
 
-		var relicFiles = allFilesInGeneratedFolders.Concat(allRepositories).Except(allWrittenFiles).ToList();
+		// StringComparer.CurrentCultureIgnoreCase: Teoreticky může být na disku (historický, avšak stále aktivní) soubor repository s jinak
+		// case-sensitive názvem, než je současný název. Názvy souborů se snažíme korigovat, mohou však zůstat jinak pojmenované složky.
+		// Soubory, které se liší jen velikostí písmen, proto nechceme odstraňovat.
+		var relicFiles = allFilesInGeneratedFolders.Concat(allRepositories).Except(allWrittenFiles, StringComparer.CurrentCultureIgnoreCase).ToList();
 		if (relicFiles.Count > 0)
 		{
 			Console.WriteLine($"Removing {relicFiles.Count} relic file(s)...");

@@ -27,7 +27,7 @@ public class Program
 			{
 				int errorLevelFrom;
 				if ((repositoryBranchPermission.RepositoryBranch.BranchName == null)
-					|| (repositoryBranchPermission.RepositoryBranch.BranchName.ToLower() is "master" or "main" or "test" or "production" or "preview" or "staging" or "prodbranch" or "testbranch")
+					|| (repositoryBranchPermission.RepositoryBranch.BranchName.ToLower() is "master" or "main" or "test" or "production" or "preview" or "staging" or "uat")
 					|| repositoryBranchPermission.RepositoryBranch.BranchName.Contains("release"))
 				{
 					errorLevelFrom = 1;

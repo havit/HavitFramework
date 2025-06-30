@@ -16,7 +16,6 @@ public class AzureDevOpsPermissionsReader : AzureDevOpsReaderBase
 	public async Task<List<UserPermissions>> GetBranchPermissionsAsync(RepositoryBranch repositoryBranch)
 	{
 		string logText = repositoryBranch.ToString();
-		Console.Write(logText.Substring(0, Math.Min(75, logText.Length)));
 
 		List<UserPermissions> permissions = new List<UserPermissions>();
 
@@ -48,8 +47,6 @@ public class AzureDevOpsPermissionsReader : AzureDevOpsReaderBase
 				});
 			}
 		}
-
-		Console.Write("\r" + "".PadRight(75) + "\r");
 
 		return permissions;
 	}

@@ -39,25 +39,24 @@ public class Program
 
 				bool errorLevelReached = repositoryBranchPermission.BranchForcePushPermissions.Count >= errorLevelFrom;
 
-				TextWriter writer = errorLevelReached
-					? Console.Error
-					: Console.Out;
-
 				if (errorLevelReached)
 				{
-					Console.ForegroundColor = ConsoleColor.Red;
 					Environment.ExitCode = 2;
-					Console.Write("[ERROR] ");
-				}
 
-				writer.WriteLine($"Repository: {repositoryBranchPermission.RepositoryBranch.RepositoryName}, Branch {repositoryBranchPermission.RepositoryBranch.BranchName}");
-				foreach (var permission in repositoryBranchPermission.BranchForcePushPermissions)
-				{
-					writer.WriteLine("  " + permission.DisplayName);
-				}
-				writer.WriteLine();
+					Console.Write($"Repository: {repositoryBranchPermission.RepositoryBranch.RepositoryName}");
+					if (!String.IsNullOrEmpty(repositoryBranchPermission.RepositoryBranch.BranchName))
+					{
+						Console.Write("Branch { repositoryBranchPermission.RepositoryBranch.BranchName}");
+					}
+					Console.WriteLine(); // end of line
+					foreach (var permission in repositoryBranchPermission.BranchForcePushPermissions)
+					{
+						Console.WriteLine("  " + permission.DisplayName);
+					}
+					Console.WriteLine();
 
-				Console.ForegroundColor = ConsoleColor.Gray;
+					Console.ForegroundColor = ConsoleColor.Gray;
+				}
 			}
 		}
 	}

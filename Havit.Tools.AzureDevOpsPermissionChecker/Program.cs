@@ -46,7 +46,7 @@ public class Program
 					Console.Write($"Repository: {repositoryBranchPermission.RepositoryBranch.RepositoryName}");
 					if (!String.IsNullOrEmpty(repositoryBranchPermission.RepositoryBranch.BranchName))
 					{
-						Console.Write("Branch { repositoryBranchPermission.RepositoryBranch.BranchName}");
+						Console.Write($"Branch {repositoryBranchPermission.RepositoryBranch.BranchName}");
 					}
 					Console.WriteLine(); // end of line
 					foreach (var permission in repositoryBranchPermission.BranchForcePushPermissions)

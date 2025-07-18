@@ -47,9 +47,25 @@ public class CodeWriter : ICodeWriter
 
 			if ((overwriteBahavior == OverwriteBahavior.OverwriteWhenFileAlreadyExists) || !existsCaseInsensitive)
 			{
-				await File.WriteAllTextAsync(filename, content, Encoding.UTF8, cancellationToken);
+				string contentWithNormalizedLineEndings = GetContentWithNormalizedLineEndings(content);
+				await File.WriteAllTextAsync(filename, contentWithNormalizedLineEndings, Encoding.UTF8, cancellationToken);
 			}
 		}
+	}
+
+	/// <summary>
+	/// Normalizuje konce řádků poskytnutého obsahu. Content obsahuje konce řádků ve formátu CRLF (Windows), protože takto přichází z *.tt šablon.
+	/// Na platformě Windows zachová původní konce řádků (CRLF), na ostatních platformách (Linux, Mac) převede Windows-style konce řádků (CRLF) na Unix-style (LF).
+	/// </summary>
+	private static string GetContentWithNormalizedLineEndings(string content)
+	{
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+		{
+			return content;
+		}
+
+		// Na ostatních platformách (Linux, Mac) normalizujeme konce řádků na LF (Unix style).
+		return content.Replace("\r\n", "\n");
 	}
 
 	/// <summary>

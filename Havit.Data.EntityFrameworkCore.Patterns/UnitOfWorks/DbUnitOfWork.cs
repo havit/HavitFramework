@@ -279,6 +279,17 @@ public class DbUnitOfWork : IUnitOfWork
 	}
 
 	/// <summary>
+	/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
+	/// Určeno pro použití s entitami využívajícími asynchronní operace, typicky jen s použití HiLo strategie generování identifikátorů entit.
+	/// </summary>
+	public async ValueTask AddForInsertAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+		where TEntity : class
+	{
+		ArgumentNullException.ThrowIfNull(entity);
+		await PerformAddForInsertAsync(entity, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 	/// </summary>
 	public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
@@ -286,6 +297,17 @@ public class DbUnitOfWork : IUnitOfWork
 	{
 		ArgumentNullException.ThrowIfNull(entities);
 		PerformAddRangeForInsert(entities);
+	}
+
+	/// <summary>
+	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
+	/// Určeno pro použití s entitami využívajícími asynchronní operace, typicky jen s použití HiLo strategie generování identifikátorů entit.
+	/// </summary>
+	public async ValueTask AddRangeForInsertAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+		where TEntity : class
+	{
+		ArgumentNullException.ThrowIfNull(entities);
+		await PerformAddRangeForInsertAsync(entities, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -340,12 +362,30 @@ public class DbUnitOfWork : IUnitOfWork
 	}
 
 	/// <summary>
+	/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
+	/// </summary>
+	protected virtual async ValueTask PerformAddForInsertAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+		where TEntity : class
+	{
+		await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 	/// </summary>
 	protected virtual void PerformAddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
 		where TEntity : class
 	{
 		DbContext.Set<TEntity>().AddRange(entities);
+	}
+
+	/// <summary>
+	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
+	/// </summary>
+	protected virtual async ValueTask PerformAddRangeForInsertAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+		where TEntity : class
+	{
+		await DbContext.Set<TEntity>().AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>

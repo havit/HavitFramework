@@ -304,6 +304,27 @@ public class DbUnitOfWorkTests
 	}
 
 	[TestMethod]
+	public async ValueTask DbUnitOfWork_AddForInsertAsync_EnsuresObjectIsRegistered()
+	{
+		// Arrange
+		TestDbContext testDbContext = new TestDbContext();
+		testDbContext.Database.DropCreate();
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		Language language = new Language();
+
+		// Act
+		await dbUnitOfWork.AddForInsertAsync(language);
+
+		// Assert
+		Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));
+	}
+
+	[TestMethod]
 	public void DbUnitOfWork_AddRangeForInsert_EnsuresObjectIsRegistered()
 	{
 		// Arrange
@@ -319,6 +340,27 @@ public class DbUnitOfWorkTests
 
 		// Act
 		dbUnitOfWork.AddRangeForInsert([language]);
+
+		// Assert
+		Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));
+	}
+
+	[TestMethod]
+	public async ValueTask DbUnitOfWork_AddRangeForInsertAsync_EnsuresObjectIsRegistered()
+	{
+		// Arrange
+		TestDbContext testDbContext = new TestDbContext();
+		testDbContext.Database.DropCreate();
+
+		Mock<IBeforeCommitProcessorsRunner> mockBeforeCommitProcessorsRunner = new Mock<IBeforeCommitProcessorsRunner>();
+		Mock<IEntityValidationRunner> mockEntityValidationRunner = new Mock<IEntityValidationRunner>();
+		IEntityCacheDependencyManager entityCacheDependencyManager = CreateEntityCacheDependencyManager();
+
+		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(testDbContext, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
+		Language language = new Language();
+
+		// Act
+		await dbUnitOfWork.AddRangeForInsertAsync([language]);
 
 		// Assert
 		Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));

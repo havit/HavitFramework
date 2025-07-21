@@ -278,8 +278,23 @@ public class DbUnitOfWork : IUnitOfWork
 		return DbContext.GetObjectsInState(EntityState.Added | EntityState.Modified | EntityState.Deleted).Except(insertRegistrations).Except(updateRegistrations).Except(deleteRegistrations).ToArray();
 	}
 
+	ValueTask IUnitOfWork.AddForInsertAsync<TEntity>(TEntity entity, CancellationToken cancellationToken)
+	{
+		// Pro konzistenci s AddRangeForInsertAsync provedeme fallback na synchronní metodu AddForInsert.
+		AddForInsert(entity);
+		return default; // completed ValueTask
+	}
+
+	ValueTask IUnitOfWork.AddRangeForInsertAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+	{
+		// Vzhledem k použití v DbDataSeedPersisteru nemůžeme vyhazovat výjimku NotSupportedException.
+		// Provedeme proto fallback na synchronní metodu AddRangeForInsert.
+		AddRangeForInsert(entities);
+		return default; // completed ValueTask
+	}
+
 	/// <summary>
-	/// Vyhazuje výjimku NotSupportedException.
+	/// Vyhazuje výjimku <see cref="NotSupportedException"/>.
 	/// </summary>
 	/// <exception cref="NotSupportedException">Always.</exception>
 	void IUnitOfWork.Clear()
@@ -288,7 +303,7 @@ public class DbUnitOfWork : IUnitOfWork
 	}
 
 	/// <summary>
-	/// Vyhazuje výjimku NotSupportedException.
+	/// Vyhazuje výjimku <see cref="NotSupportedException"/>.
 	/// </summary>
 	/// <exception cref="NotSupportedException">Always.</exception>
 	void IUnitOfWork.RegisterAfterCommitAction(Func<CancellationToken, Task> asyncAction)

@@ -22,6 +22,11 @@ public class CodeWriter : ICodeWriter
 	{
 		_codeWriteReporter.ReportWriteFile(filename);
 
+		// Normalizujeme konce řádků poskytnutého obsahu.
+		// Content obsahuje konce řádků ve formátu CRLF (Windows), protože takto přichází z *.tt šablon.
+		// Pro MacOS a Linux převedeme Windows-style konce řádků (CRLF) na Unix-style (LF).
+		content = NormalizePlatformSpecificLineEndings(content);
+
 		// Na windows může existovat soubor s názvem, který se liší jen velikostí písmen (např. "file.csv" a "FILE.csv").
 		// Abychom předešli problémům níže s tím, zda AlreadyExistsTheSameAsync má vrátit true nebo false, provedeme zde kontrolu, zda soubor existuje
 		// s a bez ohledu na case-sensitivitu a případně soubor přejmenujeme na správný název (case sensitivity).
@@ -47,17 +52,16 @@ public class CodeWriter : ICodeWriter
 
 			if ((overwriteBahavior == OverwriteBahavior.OverwriteWhenFileAlreadyExists) || !existsCaseInsensitive)
 			{
-				string contentWithNormalizedLineEndings = GetContentWithNormalizedLineEndings(content);
-				await File.WriteAllTextAsync(filename, contentWithNormalizedLineEndings, Encoding.UTF8, cancellationToken);
+				await File.WriteAllTextAsync(filename, content, Encoding.UTF8, cancellationToken);
 			}
 		}
 	}
 
 	/// <summary>
-	/// Normalizuje konce řádků poskytnutého obsahu. Content obsahuje konce řádků ve formátu CRLF (Windows), protože takto přichází z *.tt šablon.
+	/// Normalizuje konce řádků poskytnutého obsahu. Předpokládá se, že na vstupu jsou konce řádků ve formátu CRLF (Windows), protože takto přichází z *.tt šablon.
 	/// Na platformě Windows zachová původní konce řádků (CRLF), na ostatních platformách (Linux, Mac) převede Windows-style konce řádků (CRLF) na Unix-style (LF).
 	/// </summary>
-	private static string GetContentWithNormalizedLineEndings(string content)
+	private static string NormalizePlatformSpecificLineEndings(string content)
 	{
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 		{

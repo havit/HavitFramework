@@ -254,7 +254,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.AzureDevOpsPerm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Tools.Win1250ToUtf8", "Havit.Tools.Win1250ToUtf8\Havit.Tools.Win1250ToUtf8.csproj", "{699ABFD0-5A9B-45E1-B75B-7A1AE044B566}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Hangfire.Tags", "Havit.Hangfire.Tags\Havit.Hangfire.Tags.csproj", "{98D3108E-1106-4273-A836-0A46E3A88468}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Havit.Hangfire.Extensions.Tags", "Havit.Hangfire.Extensions.Tags\Havit.Hangfire.Extensions.Tags.csproj", "{98D3108E-1106-4273-A836-0A46E3A88468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

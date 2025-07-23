@@ -1,7 +1,7 @@
 using System.Reflection;
 using Hangfire.Dashboard;
 
-namespace Havit.Hangfire.Tags;
+namespace Havit.Hangfire.Extensions.Tags;
 
 
 /// <summary>
@@ -18,10 +18,8 @@ internal static class RouteCollectionExtensions
 	/// <param name="routes">Route collection</param>
 	private static List<Tuple<string, IDashboardDispatcher>> GetDispatchers(this RouteCollection routes)
 	{
-		if (routes is null)
-		{
-			throw new ArgumentNullException(nameof(routes));
-		}
+		ArgumentNullException.ThrowIfNull(routes);
+
 		if (s_dispatchers?.GetValue(routes) is null)
 		{
 			return [];
@@ -39,18 +37,9 @@ internal static class RouteCollectionExtensions
 	/// <param name="dispatcher">Dispatcher to add or append for specified path</param>
 	internal static void Append(this RouteCollection routes, string pathTemplate, IDashboardDispatcher dispatcher)
 	{
-		if (routes is null)
-		{
-			throw new ArgumentNullException(nameof(routes));
-		}
-		if (pathTemplate is null)
-		{
-			throw new ArgumentNullException(nameof(pathTemplate));
-		}
-		if (dispatcher is null)
-		{
-			throw new ArgumentNullException(nameof(dispatcher));
-		}
+		ArgumentNullException.ThrowIfNull(routes);
+		ArgumentNullException.ThrowIfNull(pathTemplate);
+		ArgumentNullException.ThrowIfNull(dispatcher);
 
 		var list = routes.GetDispatchers();
 
@@ -78,11 +67,11 @@ internal static class RouteCollectionExtensions
 	{
 		var assembly = typeof(RouteCollectionExtensions).Assembly;
 		const string jsContentType = "text/javascript";
-		var jsDispatcher = new EmbeddedResourceDispatcher(jsContentType, assembly, "Havit.Hangfire.Tags.CustomizeReccuringJobsList.js");
+		var jsDispatcher = new EmbeddedResourceDispatcher(jsContentType, assembly, "Havit.Hangfire.Extensions.Tags.CustomizeReccuringJobsList.js");
 		routes.Append("/js[0-9]+", jsDispatcher);
 
 		const string cssContentType = "text/css";
-		var cssDispatcher = new EmbeddedResourceDispatcher(cssContentType, assembly, "Havit.Hangfire.Tags.CustomizeTagList.css");
+		var cssDispatcher = new EmbeddedResourceDispatcher(cssContentType, assembly, "Havit.Hangfire.Extensions.Tags.CustomizeTagList.css");
 		routes.Append("/css[0-9]+", cssDispatcher);
 	}
 }

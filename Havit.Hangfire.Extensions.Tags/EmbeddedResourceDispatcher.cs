@@ -1,22 +1,35 @@
 using System.Reflection;
 using Hangfire.Dashboard;
 
-namespace Havit.Hangfire.Tags;
+namespace Havit.Hangfire.Extensions.Tags;
 
-internal sealed class EmbeddedResourceDispatcher(string contentType, Assembly assembly, string resourceName) : IDashboardDispatcher
+internal sealed class EmbeddedResourceDispatcher : IDashboardDispatcher
 {
-	private readonly string _contentType = contentType ?? throw new ArgumentNullException(nameof(contentType));
+	private readonly string _contentType;
+	private readonly Assembly _assembly;
+	private readonly string _resourceName;
+
+	public EmbeddedResourceDispatcher(string contentType, Assembly assembly, string resourceName)
+	{
+		ArgumentNullException.ThrowIfNullOrEmpty(contentType);
+		ArgumentNullException.ThrowIfNull(assembly);
+		ArgumentNullException.ThrowIfNullOrEmpty(resourceName);
+
+		_contentType = contentType;
+		_assembly = assembly;
+		_resourceName = resourceName;
+	}
 
 	public async Task Dispatch(DashboardContext context)
 	{
 		context.Response.ContentType = _contentType;
-		context.Response.SetExpire(DateTimeOffset.Now.AddYears(1));
+		//context.Response.SetExpire(DateTimeOffset.Now.AddYears(1));
 		await WriteResponseAsync(context.Response).ConfigureAwait(continueOnCapturedContext: false);
 	}
 
 	private Task WriteResponseAsync(DashboardResponse response)
 	{
-		return WriteResourceAsync(response, assembly, resourceName);
+		return WriteResourceAsync(response, _assembly, _resourceName);
 	}
 
 	private static async Task WriteResourceAsync(DashboardResponse response, Assembly resourceAssembly, string resourceName)

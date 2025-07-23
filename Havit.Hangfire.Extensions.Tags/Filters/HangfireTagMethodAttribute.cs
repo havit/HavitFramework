@@ -2,7 +2,7 @@ using Hangfire.Common;
 using Hangfire.Server;
 using Hangfire.Tags;
 
-namespace Havit.Hangfire.Tags.Filters;
+namespace Havit.Hangfire.Extensions.Tags.Filters;
 
 /// <summary>
 /// Adds Tag to a Hangfire job based on the method name.

@@ -4,7 +4,7 @@ using Hangfire.SqlServer;
 using Hangfire.Tags;
 using Hangfire.Tags.SqlServer;
 
-namespace Havit.Hangfire.Tags;
+namespace Havit.Hangfire.Extensions.Tags;
 
 /// <summary>
 /// Provides configuration methods for integrating and using Hangfire Tags functionality with SQL storage.
@@ -20,10 +20,7 @@ public static class HangfireConfig
 	/// <exception cref="ArgumentNullException">Thrown when the <paramref name="configuration"/> is null.</exception>
 	public static void UseTags(this IGlobalConfiguration configuration, SqlServerStorageOptions storageOptions, TagsOptions tagsOptions = null)
 	{
-		if (configuration is null)
-		{
-			throw new ArgumentNullException(nameof(configuration));
-		}
+		ArgumentNullException.ThrowIfNull(configuration);
 
 		DashboardRoutes.Routes.AddRecurringJobsTags();
 

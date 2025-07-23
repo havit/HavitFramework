@@ -6,6 +6,8 @@ using Hangfire.Tags.SqlServer;
 
 namespace Havit.Hangfire.Extensions.Tags;
 
+// TODO Hangfire: Zapojit do ukázkové aplikace
+
 /// <summary>
 /// Provides configuration methods for integrating and using Hangfire Tags functionality with SQL storage.
 /// </summary>
@@ -24,14 +26,18 @@ public static class HangfireConfig
 
 		DashboardRoutes.Routes.AddRecurringJobsTags();
 
+		// TODO Hangfire: Zvalidovat, jestli chceme tuto podobu zadrátovat napevno. Spíše ne, nedáme tak možnost použít vlastní název v atributu (což tam nyní není).
+
 		// Register the Hangfire Tag method attribute globally
 		GlobalJobFilters.Filters.Add(new Filters.HangfireTagMethodAttribute());
 
 		TagsOptions usedOptions = tagsOptions ?? new TagsOptions()
 		{
+			//TODO Hangfire: Není pro nás vhodnìjší default None? Pokud to tu (s ohledem na následující komentáø) zùstane.
 			Clean = Clean.Punctuation
 		};
 
+		// TODO Hangfire: Potøebujeme dostat pryè, máme projekty i bez SQL Serveru, nechceme zadrátovat potøebu SQL Serveru
 		configuration.UseTagsWithSql(usedOptions, storageOptions);
 	}
 }

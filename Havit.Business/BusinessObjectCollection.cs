@@ -329,7 +329,6 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	/// <returns>poèet prvkù, které byly skuteènì odstranìny</returns>
 	public virtual int RemoveRange(IEnumerable<TItem> items)
 	{
-		List<TItem> innerList = (List<TItem>)Items;
 		if (items == null)
 		{
 			throw new ArgumentNullException("items");

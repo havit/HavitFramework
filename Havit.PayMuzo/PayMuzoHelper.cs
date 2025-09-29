@@ -165,7 +165,7 @@ public static class PayMuzoHelper
 
 		RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)certificate.PrivateKey;
 
-		string digest = string.Empty;
+		string digest;
 
 		// hash má být SHA-1
 		HashAlgorithm hashAlg = HashAlgorithm.Create("SHA1");

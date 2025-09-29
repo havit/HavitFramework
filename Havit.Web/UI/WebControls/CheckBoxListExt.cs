@@ -92,8 +92,7 @@ public class CheckBoxListExt : CheckBoxList
 		}
 		if (this.cachedSelectedValue != null)
 		{
-			int num = -1;
-			num = FindItemIndexByValue(this.Items, this.cachedSelectedValue);
+			int num = FindItemIndexByValue(this.Items, this.cachedSelectedValue);
 			if (-1 == num)
 			{
 				throw new InvalidOperationException("CheckBoxListExt neobsahuje hodnotu SelectedValue.");

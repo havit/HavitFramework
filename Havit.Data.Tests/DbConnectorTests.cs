@@ -118,7 +118,7 @@ public class DbConnectorTests
 		DbDataReader reader = DbConnector.Default.ExecuteReader(commandText);
 		while (reader.Read())
 		{
-			string symbol = (string)reader["Symbol"];
+			_ = (string)reader["Symbol"];
 		}
 	}
 
@@ -130,6 +130,6 @@ public class DbConnectorTests
 		DataRecord record = DbConnector.Default.ExecuteDataRecord(commandText);
 
 		Assert.IsNotNull(record);
-		string symbol = record.Get<string>("Symbol");
+		_ = record.Get<string>("Symbol");
 	}
 }

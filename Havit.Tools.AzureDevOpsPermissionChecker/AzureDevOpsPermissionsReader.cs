@@ -15,8 +15,6 @@ public class AzureDevOpsPermissionsReader : AzureDevOpsReaderBase
 
 	public async Task<List<UserPermissions>> GetBranchPermissionsAsync(RepositoryBranch repositoryBranch)
 	{
-		string logText = repositoryBranch.ToString();
-
 		List<UserPermissions> permissions = new List<UserPermissions>();
 
 		// Security namespace pro Git repositories

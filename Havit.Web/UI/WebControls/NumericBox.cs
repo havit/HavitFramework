@@ -214,8 +214,7 @@ public class NumericBox : Control, INamingContainer
 			}
 
 			// pokud nemůžeme číslo převést na decimal, je to špatně
-			Decimal resultDecimal;
-			return Decimal.TryParse(numberText, NumberStyles.Number, Thread.CurrentThread.CurrentCulture.NumberFormat, out resultDecimal);
+			return Decimal.TryParse(numberText, NumberStyles.Number, Thread.CurrentThread.CurrentCulture.NumberFormat, out Decimal _);
 		}
 	}
 

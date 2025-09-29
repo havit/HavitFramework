@@ -119,7 +119,7 @@ public class BasicModalDialog : ModalDialogBase
 	{
 		// šahnutím na hodnotu property se ID vygeneruje a VYRENDERUJE!
 		// My jej musíme vyrenderovat vždy, protože jinak nefungují správně klientské skripty.
-		string tmp = _dialogPanel.ClientID;
+		_ = _dialogPanel.ClientID;
 
 		CheckDialogSize();
 

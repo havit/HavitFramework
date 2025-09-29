@@ -1076,7 +1076,7 @@ public class DynarchCalendar : System.Web.UI.Control
 				sb.AppendLine(",");
 			}
 			sb.Append("showOthers : true");
-			firstLine = false;
+			// firstLine = false;
 		}
 
 		sb.AppendLine();

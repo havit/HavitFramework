@@ -19,7 +19,7 @@ public class TextBoxExt : System.Web.UI.WebControls.TextBox
 		// MultiLine TextBox nerenderuje MaxLength, ačkoliv dle HTML5 jde o platný atribut k textarea (a od IE10 i funguje).
 		// Pro zajištění zpětné kompatibility (MS může doplnit renderování) se snažíme zajistit, abychom jej nevyrenderovali podruhé.
 
-		int multilineMaxLength = 0;
+		int multilineMaxLength;
 
 		if ((this.TextMode == TextBoxMode.MultiLine) && (this.MaxLength > 0))
 		{

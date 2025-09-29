@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
@@ -40,7 +41,7 @@ public class CodeWriter : ICodeWriter
 			System.IO.File.Move(filename, filename);
 			existsCaseSensitive = true;
 		}
-		// nyní by existsCaseInsensitive mělo mít stejnou hodnotu, jako existsCaseSensitive
+		Debug.Assert(existsCaseInsensitive == existsCaseSensitive);
 
 		if (!(await AlreadyExistsTheSameAsync(filename, content, cancellationToken)) || !HasByteOrderMask(filename))
 		{

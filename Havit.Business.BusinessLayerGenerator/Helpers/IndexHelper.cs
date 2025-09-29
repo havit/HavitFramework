@@ -14,7 +14,7 @@ public static class IndexHelper
 	{
 		generatorIndexes.Add(index.Name);
 
-		bool ok = true;
+		bool ok;
 
 		Index existingIndex = table.Indexes[index.Name];
 		if (existingIndex == null)

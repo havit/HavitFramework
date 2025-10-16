@@ -37,7 +37,7 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	/// <param name="softDeleteManager">Pro podporu mazání příznakem.</param>
 	protected FakeDataSource(IEnumerable<TEntity> data, ISoftDeleteManager softDeleteManager = null)
-		: this(data.ToArray(), null)
+		: this(data.ToArray(), softDeleteManager)
 	{
 	}
 

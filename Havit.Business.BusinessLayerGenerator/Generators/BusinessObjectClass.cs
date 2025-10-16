@@ -25,7 +25,7 @@ public static class BusinessObjectClass
 			CodeWriter writer = new CodeWriter(FileHelper.ResolvePath(fileName));
 
 			BusinessObjectUsings.WriteUsings(writer);
-			BusinessObjectPartialClass.WriteNamespaceClassBegin(writer, table, false);
+			BusinessObjectPartialClass.WriteNamespaceClassBegin(writer, table);
 			writer.WriteLine();
 			BusinessObjectPartialClass.WriteNamespaceClassEnd(writer);
 

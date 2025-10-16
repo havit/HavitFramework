@@ -24,7 +24,7 @@ public class MockedRequest : IMockedRequest
 	/// <param name="url">An absolute or relative URL that may contain a query string</param>
 	public MockedRequest(string url)
 	{
-		string[] urlParts = StringUtil.Split(url, '?', 2);
+		string[] urlParts = StringUtil.Split(url, '?');
 
 		if (urlParts.Length == 2)
 		{

@@ -70,7 +70,7 @@ public class NavigationTargetStorageBuilder : INavigationTargetStorageBuilder
 			: NavigationType.OneToOne;
 	}
 
-	private NavigationType GetNavigationType(IReadOnlySkipNavigation navigation)
+	private NavigationType GetNavigationType(IReadOnlySkipNavigation _)
 	{
 		return NavigationType.ManyToMany;
 	}

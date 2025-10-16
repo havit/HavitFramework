@@ -27,7 +27,7 @@ public static class MoneyPartialClass
 		writer.WriteCommentSummary("Třída reprezentující peněžní částky s měnou.");
 		writer.WriteLine("public partial class Money : MoneyBase");
 		writer.WriteLine("{");
-		MoneyBaseClass.WriteConstructors(writer, currencyTable, "Money", false);
+		MoneyBaseClass.WriteConstructors(writer, "Money", false);
 		writer.WriteLine("}");
 
 		writer.WriteLine("}");

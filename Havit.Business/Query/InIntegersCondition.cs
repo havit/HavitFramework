@@ -42,7 +42,7 @@ internal class InIntegersCondition : Condition
 		switch (sqlServerPlatform)
 		{
 			case SqlServerPlatform.SqlServerCe35:
-				GetWhereStatementForSqlServerCe35(command, whereBuilder);
+				GetWhereStatementForSqlServerCe35(whereBuilder);
 				return;
 
 			case SqlServerPlatform.SqlServer2005:
@@ -57,7 +57,7 @@ internal class InIntegersCondition : Condition
 	/// <summary>
 	/// Řeší variantu podmínky where pro SQL Server CE 3.5.
 	/// </summary>
-	private void GetWhereStatementForSqlServerCe35(DbCommand command, StringBuilder whereBuilder)
+	private void GetWhereStatementForSqlServerCe35(StringBuilder whereBuilder)
 	{
 		whereBuilder.AppendFormat("({{0}} IN ({0})", String.Join(",", Array.ConvertAll<int, string>(ids, item => item.ToString())));
 	}

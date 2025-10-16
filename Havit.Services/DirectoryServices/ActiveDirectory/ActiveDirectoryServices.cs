@@ -254,7 +254,7 @@ public class ActiveDirectoryServices
 		// vyhledání dle primaryGroupID
 		if (userPrimaryGroupID != null)
 		{
-			string primaryGroup = GetPrimaryGroupForSid(domainName, userSid, userPrimaryGroupID.Value);
+			string primaryGroup = GetPrimaryGroupForSid(userSid, userPrimaryGroupID.Value);
 			if (primaryGroup != null)
 			{
 				result.Add(primaryGroup);
@@ -522,7 +522,7 @@ public class ActiveDirectoryServices
 	/// <summary>
 	/// Returns primary group for user.
 	/// </summary>
-	private string GetPrimaryGroupForSid(string domainName, byte[] userSid, int userPrimaryGroupID)
+	private string GetPrimaryGroupForSid(byte[] userSid, int userPrimaryGroupID)
 	{
 		// http://support.microsoft.com/kb/297951/en-us
 		SecurityIdentifier userSecurityIdentifier = new SecurityIdentifier(userSid, 0);

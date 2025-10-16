@@ -50,7 +50,7 @@ public static class BusinessObjectProperties
 
 		foreach (CollectionProperty collectionProperty in TableHelper.GetCollectionColumns(table))
 		{
-			WriteCollectionProperty(writer, table, collectionProperty);
+			WriteCollectionProperty(writer, collectionProperty);
 		}
 	}
 
@@ -191,7 +191,7 @@ public static class BusinessObjectProperties
 
 	}
 
-	public static void WriteCollectionProperty(CodeWriter writer, Table table, CollectionProperty collectionProperty)
+	public static void WriteCollectionProperty(CodeWriter writer, CollectionProperty collectionProperty)
 	{
 		writer.WriteCommentSummary(collectionProperty.Description);
 

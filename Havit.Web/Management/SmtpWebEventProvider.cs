@@ -73,22 +73,22 @@ public class SmtpWebEventProvider : WebEventProvider
 	/// <summary>
 	/// Načte hodnoty z konfigurace do privátních fieldů, zkontroluje neexistenci neznámé hodnoty v konfiguraci.
 	/// </summary>
-	public override void Initialize(string name, NameValueCollection config)
+	public override void Initialize(string providerName, NameValueCollection config)
 	{
-		ProviderUtil.GetAndRemoveStringAttribute(config, "from", name, ref _from);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "to", name, ref _to);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "cc", name, ref _cc);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "bcc", name, ref _bcc);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpServer", name, ref _smtpServer);
-		ProviderUtil.GetAndRemoveIntegerAttribute(config, "smtpPort", name, ref _smtpPort);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpUsername", name, ref _smtpUsername);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpPassword", name, ref _smtpPassword);
-		ProviderUtil.GetAndRemoveBooleanAttribute(config, "smtpEnableSsl", name, ref _smtpEnableSsl);
-		ProviderUtil.GetAndRemoveStringAttribute(config, "subjectPrefix", name, ref _subjectPrefix);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "from", ref _from);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "to", ref _to);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "cc", ref _cc);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "bcc", ref _bcc);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpServer", ref _smtpServer);
+		ProviderUtil.GetAndRemoveIntegerAttribute(config, "smtpPort", ref _smtpPort);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpUsername", ref _smtpUsername);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "smtpPassword", ref _smtpPassword);
+		ProviderUtil.GetAndRemoveBooleanAttribute(config, "smtpEnableSsl", ref _smtpEnableSsl);
+		ProviderUtil.GetAndRemoveStringAttribute(config, "subjectPrefix", ref _subjectPrefix);
 
-		base.Initialize(name, config);
+		base.Initialize(providerName, config);
 
-		ProviderUtil.CheckUnrecognizedAttributes(config, name);
+		ProviderUtil.CheckUnrecognizedAttributes(config, providerName);
 
 		if (String.IsNullOrEmpty(_smtpServer))
 		{

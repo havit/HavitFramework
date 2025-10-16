@@ -13,21 +13,21 @@ public static class StoredProcedureRulesChecker
 
 		foreach (StoredProcedure procedure in procedures)
 		{
-			CheckRules(table, procedure);
+			CheckRules(procedure);
 		}
 	}
 
-	private static void CheckRules(Table table, StoredProcedure procedure)
+	private static void CheckRules(StoredProcedure procedure)
 	{
-		CheckDescription(table, procedure);
-		CheckResultType(table, procedure);
-		CheckMethodName(table, procedure);
-		CheckDataLoadPower(table, procedure);
-		CheckParameterType(table, procedure);
-		CheckGetResourceValuesForLanguage(table, procedure);
+		CheckDescription(procedure);
+		CheckResultType(procedure);
+		CheckMethodName(procedure);
+		CheckDataLoadPower(procedure);
+		CheckParameterType(procedure);
+		CheckGetResourceValuesForLanguage(procedure);
 	}
 
-	private static void CheckDescription(Table table, StoredProcedure procedure)
+	private static void CheckDescription(StoredProcedure procedure)
 	{
 		string description = ExtendedPropertiesHelper.GetDescription(ExtendedPropertiesKey.FromStoredProcedure(procedure));
 		if (String.IsNullOrEmpty(description))
@@ -36,7 +36,7 @@ public static class StoredProcedureRulesChecker
 		}
 	}
 
-	private static void CheckMethodName(Table table, StoredProcedure procedure)
+	private static void CheckMethodName(StoredProcedure procedure)
 	{
 		string methodName = StoredProcedureHelper.GetMethodName(procedure);
 		if (String.IsNullOrEmpty(methodName))
@@ -45,7 +45,7 @@ public static class StoredProcedureRulesChecker
 		}
 	}
 
-	private static void CheckResultType(object talbe, StoredProcedure procedure)
+	private static void CheckResultType(StoredProcedure procedure)
 	{
 		string resultname = StoredProcedureHelper.GetResult(procedure);
 		if (String.IsNullOrEmpty(resultname))
@@ -59,7 +59,7 @@ public static class StoredProcedureRulesChecker
 		}
 	}
 
-	private static void CheckDataLoadPower(Table table, StoredProcedure procedure)
+	private static void CheckDataLoadPower(StoredProcedure procedure)
 	{
 		if ((StoredProcedureHelper.GetResultType(procedure) == StoreProcedureResultType.Object)
 		 || (StoredProcedureHelper.GetResultType(procedure) == StoreProcedureResultType.Collection))
@@ -76,7 +76,7 @@ public static class StoredProcedureRulesChecker
 		}
 	}
 
-	private static void CheckParameterType(Table table, StoredProcedure procedure)
+	private static void CheckParameterType(StoredProcedure procedure)
 	{
 		foreach (StoredProcedureParameter parameter in procedure.Parameters)
 		{
@@ -87,7 +87,7 @@ public static class StoredProcedureRulesChecker
 		}
 	}
 
-	private static void CheckGetResourceValuesForLanguage(Table table, StoredProcedure procedure)
+	private static void CheckGetResourceValuesForLanguage(StoredProcedure procedure)
 	{
 		if (procedure.Name == "ResourceClass_GetResourceValuesForLanguage")
 		{

@@ -23,7 +23,7 @@ namespace ConsoleApp1;
 
 public static class Program
 {
-	public static async Task Main(string[] args)
+	public static async Task Main()
 	{
 		var hostBuilder = Host.CreateApplicationBuilder();
 		hostBuilder.Configuration.AddJsonFile("appsettings.ConsoleApp.json", optional: false);

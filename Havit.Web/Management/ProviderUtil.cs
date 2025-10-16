@@ -11,7 +11,7 @@ internal static class ProviderUtil
 	/// <summary>
 	/// Vyjme z konfigurace (config) hodnotu pro klíč (attrib) a nastaví ji do val.
 	/// </summary>
-	internal static void GetAndRemoveStringAttribute(NameValueCollection config, string attrib, string providerName, ref string val)
+	internal static void GetAndRemoveStringAttribute(NameValueCollection config, string attrib, ref string val)
 	{
 		val = config.Get(attrib);
 		config.Remove(attrib);
@@ -20,7 +20,7 @@ internal static class ProviderUtil
 	/// <summary>
 	/// Vyjme z konfigurace (config) hodnotu pro klíč (attrib) a nastaví ji do val jako boolean.
 	/// </summary>
-	internal static void GetAndRemoveBooleanAttribute(NameValueCollection config, string attrib, string providerName, ref bool? val)
+	internal static void GetAndRemoveBooleanAttribute(NameValueCollection config, string attrib, ref bool? val)
 	{
 		string value = config.Get(attrib);
 		if (!String.IsNullOrEmpty(value))
@@ -33,7 +33,7 @@ internal static class ProviderUtil
 	/// <summary>
 	/// Vyjme z konfigurace (config) hodnotu pro klíč (attrib) a nastaví ji do val jako int.
 	/// </summary>
-	internal static void GetAndRemoveIntegerAttribute(NameValueCollection config, string attrib, string providerName, ref int? val)
+	internal static void GetAndRemoveIntegerAttribute(NameValueCollection config, string attrib, ref int? val)
 	{
 		string value = config.Get(attrib);
 		if (!String.IsNullOrEmpty(value))

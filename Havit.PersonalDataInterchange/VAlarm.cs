@@ -5,7 +5,7 @@
 /// </summary>
 public class VAlarm
 {
-	internal void WriteToStream(StreamWriter writer)
+	internal void WriteToStream(StreamWriter _)
 	{
 		//NOOP
 	}

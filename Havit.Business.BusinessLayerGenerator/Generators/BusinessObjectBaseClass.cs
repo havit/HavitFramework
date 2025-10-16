@@ -31,7 +31,7 @@ public static class BusinessObjectBaseClass
 
 		WriteStaticConstructor(writer, table);
 
-		BusinessObjectConstructors.WriteConstructors(writer, ClassHelper.GetBaseClassName(table), TableHelper.GetPrimaryKey(table).Name, TableHelper.IsReadOnly(table), true);
+		BusinessObjectConstructors.WriteConstructors(writer, ClassHelper.GetBaseClassName(table), TableHelper.GetPrimaryKey(table).Name, true);
 
 		Converters.WriteConverters(writer, table);
 

@@ -64,7 +64,7 @@ public class HeadersMatcher : IMockedRequestMatcher
 					break;
 				}
 
-				string[] parts = StringUtil.Split(line, ':', 2);
+				string[] parts = StringUtil.Split(line, ':');
 
 				if (parts.Length != 2)
 				{

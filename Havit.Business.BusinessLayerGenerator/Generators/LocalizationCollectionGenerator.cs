@@ -14,7 +14,7 @@ public static class LocalizationCollectionGenerator
 			writer.WriteOpenRegion("Localizations");
 			WriteIndexer(writer, table);
 			WriteCurrentProperty(writer, table);
-			WriteInterfaceMethods(writer, table);
+			WriteInterfaceMethods(writer);
 			writer.WriteCloseRegion();
 		}
 	}
@@ -56,7 +56,7 @@ public static class LocalizationCollectionGenerator
 		writer.WriteLine("");
 	}
 
-	private static void WriteInterfaceMethods(CodeWriter writer, Table table)
+	private static void WriteInterfaceMethods(CodeWriter writer)
 	{
 		//writer.WriteOpenRegion("ILocalizationCollection interface implementation");
 		writer.WriteCommentSummary("Vrací objekt s lokalizovanými daty na základě jazyka, který je předán.");

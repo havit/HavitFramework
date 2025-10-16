@@ -53,14 +53,14 @@ public class RelicsCleaner : IRelicsCleaner
 		}
 	}
 
-	private Task<List<string>> GetFilesInGeneratedFolderAsync(IProject project, CancellationToken cancellationToken)
+	private Task<List<string>> GetFilesInGeneratedFolderAsync(IProject project, CancellationToken _)
 	{
 		var generatedProjectSubfolder = Path.Combine(project.GetProjectRootPath(), "_generated");
 		var generatedFiles = Directory.EnumerateFiles(generatedProjectSubfolder, "*.*", SearchOption.AllDirectories).ToList();
 		return Task.FromResult(generatedFiles);
 	}
 
-	private Task<List<string>> GetRepositoryFilesAsync(CancellationToken cancellationToken)
+	private Task<List<string>> GetRepositoryFilesAsync(CancellationToken _)
 	{
 		var repositoriesFolder = Path.Combine(_dataLayerProject.GetProjectRootPath(), "Repositories");
 		List<string> generatedRepositoryInterfacesFiles = null;

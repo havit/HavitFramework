@@ -31,7 +31,7 @@ public static class MoneyBaseClass
 		writer.WriteLine("public class MoneyBase : Havit.Business.MoneyImplementationBase<Currency, Money>");
 		writer.WriteLine("{");
 		writer.WriteLine();
-		WriteConstructors(writer, currencyTable, "MoneyBase", true);
+		WriteConstructors(writer, "MoneyBase", true);
 		writer.WriteLine("}");
 
 		writer.WriteLine("}");
@@ -39,7 +39,7 @@ public static class MoneyBaseClass
 		writer.Save();
 	}
 
-	public static void WriteConstructors(CodeWriter writer, Table table, string className, bool baseClass)
+	public static void WriteConstructors(CodeWriter writer, string className, bool baseClass)
 	{
 		writer.WriteOpenRegion("Constructors");
 		writer.WriteCommentSummary("Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).");

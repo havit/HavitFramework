@@ -4,7 +4,7 @@ public class GenericGenerator : IGenericGenerator
 {
 	private readonly ICodeWriter _codeWriter;
 
-	public GenericGenerator(ICodeWriter codeWriter, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists)
+	public GenericGenerator(ICodeWriter codeWriter)
 	{
 		_codeWriter = codeWriter;
 	}

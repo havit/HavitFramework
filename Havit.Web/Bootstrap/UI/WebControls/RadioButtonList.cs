@@ -73,7 +73,7 @@ public class RadioButtonList : System.Web.UI.WebControls.RadioButtonList, IRadio
 	/// </summary>
 	protected override void RenderItem(ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo, HtmlTextWriter writer)
 	{
-		RadioButtonListCheckBoxListHelper.RenderItem(this, itemType, repeatIndex, repeatInfo, writer, () => base.RenderItem(itemType, repeatIndex, repeatInfo, writer));
+		RadioButtonListCheckBoxListHelper.RenderItem(this, repeatIndex, writer, () => base.RenderItem(itemType, repeatIndex, repeatInfo, writer));
 	}
 
 	void IRadioButtonListCheckBoxList.AddAttributesToRender(HtmlTextWriter writer)

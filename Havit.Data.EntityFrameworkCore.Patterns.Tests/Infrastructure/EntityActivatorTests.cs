@@ -37,7 +37,7 @@ public class EntityActivatorTests
 
 	private class ClassWithParametirezedPublicConstuctor
 	{
-		public ClassWithParametirezedPublicConstuctor(object o)
+		public ClassWithParametirezedPublicConstuctor(object _)
 		{
 			// NOOP
 		}

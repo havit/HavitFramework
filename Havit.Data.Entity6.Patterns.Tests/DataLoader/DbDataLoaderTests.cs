@@ -13,7 +13,7 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader;
 public class DbDataLoaderTests
 {
 	[ClassInitialize]
-	public static void Initialize(TestContext testContext)
+	public static void Initialize(TestContext _)
 	{
 		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 		dbContext.Database.Initialize(true);

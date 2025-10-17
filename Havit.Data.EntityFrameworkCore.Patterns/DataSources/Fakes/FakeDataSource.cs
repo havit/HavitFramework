@@ -1,6 +1,7 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 using Havit.Data.Patterns.DataSources;
 using Havit.Services.TimeServices;
+using MockQueryable;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 
@@ -8,6 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataSources.Fakes;
 /// Fake implementace <see cref="IDataSource{TSource}" /> pro použití v unit testech. Jako datový zdroj používá data předané v konstruktoru.
 /// </summary>
 public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
+	where TEntity : class
 {
 	private readonly ISoftDeleteManager _softDeleteManager;
 	private readonly TEntity[] _data;
@@ -20,7 +22,11 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// <summary>
 	/// Data z datového zdroje jako IQueryable.
 	/// </summary>
-	public virtual IQueryable<TEntity> DataIncludingDeleted => new MockQueryable.EntityFrameworkCore.TestAsyncEnumerableEfCore<TEntity>(_data);
+	/// <remarks>
+	/// BuildMock v sobě obsahuje callback pro případné odstranění položky z podkladové kolekce.
+	/// Pro odstínění od zdrojových dat (a zamezení odebrání položky) izolujeme jednotlivá volání BuildMock na samostatná pole.
+	/// </remarks>
+	public virtual IQueryable<TEntity> DataIncludingDeleted => _data.ToList().BuildMock();
 
 	/// <summary>
 	/// Konstruktor.

@@ -29,7 +29,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="MockQueryable.EntityFrameworkCore" Version="7.0.3" />
+		<PackageReference Include="MockQueryable.EntityFrameworkCore" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace Havit.Data.EntityFrameworkCore;
+﻿using System.Runtime.CompilerServices;
+
+namespace Havit.Data.EntityFrameworkCore;
 
 /// <summary>
 /// Sestavuje query tagy.
@@ -8,9 +10,9 @@ public static class QueryTagBuilder
 	/// <summary>
 	/// Sestaví Query Tag pro daného membera z daného typu.
 	/// </summary>
-	public static string CreateTag(Type type, string memberName)
+	public static string CreateTag(Type type, [CallerMemberName] string memberName = null)
 	{
-		return memberName != null
+		return !String.IsNullOrEmpty(memberName)
 			? type.Name + "." + memberName
 			: type.Name;
 	}

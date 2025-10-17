@@ -39,7 +39,7 @@ public class AzureBlobStorageServiceTests
 	];
 
 	[ClassInitialize]
-	public static void InitializeTestClass(TestContext testContext)
+	public static void InitializeTestClass(TestContext _)
 	{
 		// testy jsou slušné, mažou po sobě
 		// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy

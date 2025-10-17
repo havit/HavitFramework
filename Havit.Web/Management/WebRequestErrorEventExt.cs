@@ -108,7 +108,7 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 		// Thread information
 		sb.AppendLine();
 		sb.AppendLine("Thread information: ");
-		FormatThreadInformation(sb, this.ThreadInformation);
+		FormatThreadInformation(sb);
 
 		return sb.ToString();
 	}
@@ -174,7 +174,7 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 	/// <summary>
 	/// Zapíše do StringBuilderu informace o threadu
 	/// </summary>
-	private void FormatThreadInformation(StringBuilder sb, WebThreadInformation threadInformation)
+	private void FormatThreadInformation(StringBuilder sb)
 	{
 		sb.AppendLine("    Culture: " + _currentCulture.Name);
 		sb.AppendLine("    UI Culture: " + _currentUiCulture.Name);

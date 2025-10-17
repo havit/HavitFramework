@@ -12,7 +12,7 @@ public class HttpRequestExceptionFormatterTests
 	{
 		// Arrange
 		ServiceCollection services = new ServiceCollection();
-		services.AddTransient<IExceptionFormatter, HttpRequestExceptionFormatter>();
+		services.AddTransient<IExceptionFormatter, ExceptionFormatter>();
 		using (ServiceProvider serviceProvider = services.BuildServiceProvider())
 		{
 			// Act

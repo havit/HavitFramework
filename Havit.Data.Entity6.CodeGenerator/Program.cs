@@ -114,7 +114,7 @@ internal static class Program
 		Parallel.Invoke(
 			() => GenerateMetadata(modelProject, dbContext, sourceControlClient),
 			() => GenerateDataSources(dataLayerProject, sourceControlClient, modelProject, dbContext),
-			() => GenerateDataEntries(dataLayerProject, sourceControlClient, modelProject, dbContext, dataEntriesModelSource),
+			() => GenerateDataEntries(dataLayerProject, sourceControlClient, dataEntriesModelSource),
 			() => GenerateRepositories(dataLayerProject, sourceControlClient, dbContext, modelProject, dataEntriesModelSource)/*,
 			() => GenerateQueryExtensions(dataLayerProject, sourceControlClient, registeredEntityEnumerator)*/
 		);
@@ -205,7 +205,7 @@ internal static class Program
 		fakeDataSourceGenerator.Generate();
 	}
 
-	private static void GenerateDataEntries(IProject dataLayerProject, ISourceControlClient sourceControlClient, IProject modelProject, DbContext dbContext, DataEntriesModelSource dataEntriesModelSource)
+	private static void GenerateDataEntries(IProject dataLayerProject, ISourceControlClient sourceControlClient, DataEntriesModelSource dataEntriesModelSource)
 	{
 		CodeWriter codeWriter = new CodeWriter(dataLayerProject, sourceControlClient);
 		var interfaceDataEntriesGenerator = new GenericGenerator<DataEntriesModel>(dataEntriesModelSource, new InterfaceDataEntriesTemplateFactory(), new InterfaceDataEntriesFileNamingService(dataLayerProject), codeWriter);

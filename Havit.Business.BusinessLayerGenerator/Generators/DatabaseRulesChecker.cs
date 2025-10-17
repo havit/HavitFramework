@@ -11,14 +11,14 @@ public static class DatabaseRulesChecker
 	/// </summary>
 	public static void CheckRules(Database database)
 	{
-		CheckNamespace(database);
+		CheckNamespace();
 		CheckDefinedTypes(database);
 	}
 
 	/// <summary>
 	/// Ověří existenci pravidla pro namespace.
 	/// </summary>
-	private static void CheckNamespace(Database database)
+	private static void CheckNamespace()
 	{
 		if (String.IsNullOrEmpty(ExtendedPropertiesHelper.GetString(ExtendedPropertiesKey.FromDatabase(), "Namespace")))
 		{

@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Security;
+﻿using Havit.Security;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Security;
 
@@ -33,9 +33,7 @@ public class PasswordGeneratorTests
 		bool allowRepeatingCharacters = false;
 		bool allowConsecutiveCharacters = false;
 
-		string actual;
-
-		actual = Havit.Security.PasswordGenerator.Generate(minimumLength, maximumLength, passwordCharacterSet, allowRepeatingCharacters, allowConsecutiveCharacters);
+		_ = Havit.Security.PasswordGenerator.Generate(minimumLength, maximumLength, passwordCharacterSet, allowRepeatingCharacters, allowConsecutiveCharacters);
 	}
 
 }

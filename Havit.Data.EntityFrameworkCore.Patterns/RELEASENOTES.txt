@@ -1,4 +1,10 @@
-﻿v2.9.32 (13.5.2025)
+﻿v2.9.34 (16.10.2025)
+• Oprava FakeDataSource - pokud přijme ISoftDeleteManager, předá jej bázové třídě 
+
+v2.9.33 (21.7.2025)
+• Podpora pro HiLo (IUnitOfWork přidává metody AddForInsertAsync a AddRangeForInsertAsync)
+
+v2.9.32 (13.5.2025)
 • SoftDeleteManager může být (opět) registrován s lifetime Scoped.
 • Opravy pádů při použití navigace Many-To-Many.
 

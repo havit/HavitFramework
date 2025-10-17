@@ -142,25 +142,19 @@ public static partial class HttpUtilityExt
 			{
 				throw new InvalidOperationException("Resource odkaz nesmí být prázdný.");
 			}
-			string resourceClassKey = null;
-			string resourceKey = null;
 			int length = resourceOdkaz.IndexOf(',');
 			if (length == -1)
 			{
 				throw new InvalidOperationException("Resource odkaz není platný");
 			}
-			resourceClassKey = resourceOdkaz.Substring(0, length);
-			resourceKey = resourceOdkaz.Substring(length + 1);
+			var resourceClassKey = resourceOdkaz.Substring(0, length);
+			var resourceKey = resourceOdkaz.Substring(length + 1);
 			string defaultPropertyValue = null;
 			int index = resourceKey.IndexOf(',');
 			if (index != -1)
 			{
 				defaultPropertyValue = resourceKey.Substring(index + 1).Trim(); // default value
 				resourceKey = resourceKey.Substring(0, index);
-			}
-			else
-			{
-				resourceExpression = null;
 			}
 
 			try

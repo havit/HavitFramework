@@ -32,9 +32,8 @@ public static class DataBinderExt
 
 		object currentDataItem = dataItem;
 
-		int i = 0;
 		int lastExpressionIndex = expressionParts.Length - 1;
-		for (i = 0; i <= lastExpressionIndex; i++)
+		for (int i = 0; i <= lastExpressionIndex; i++)
 		{
 			if (currentDataItem == null)
 			{

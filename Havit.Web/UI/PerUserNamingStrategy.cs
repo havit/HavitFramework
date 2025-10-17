@@ -38,8 +38,7 @@ public partial class FilePageStatePersister
 				fileAge = new TimeSpan(1, 0, 0, 0);
 			}
 
-			var files = fileStorageService.EnumerateFiles(GetFolderForUserName(username) + "\\*").ToList();
-			foreach (var file in files)
+			foreach (var file in fileStorageService.EnumerateFiles(GetFolderForUserName(username) + "\\*"))
 			{
 				if ((utcNow - file.LastModifiedUtc) > fileAge.Value)
 				{

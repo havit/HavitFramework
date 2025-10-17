@@ -1346,14 +1346,12 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		base.OnRowCommand(e);
 
 		bool causesValidation = false;
-		string validationGroup = String.Empty;
 		if (e != null)
 		{
 			IButtonControl control = e.CommandSource as IButtonControl;
 			if (control != null)
 			{
 				causesValidation = control.CausesValidation;
-				validationGroup = control.ValidationGroup;
 			}
 		}
 

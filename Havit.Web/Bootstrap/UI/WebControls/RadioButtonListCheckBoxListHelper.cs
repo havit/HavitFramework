@@ -35,7 +35,7 @@ internal static class RadioButtonListCheckBoxListHelper
 	/// <summary>
 	/// Rendres checkboxlist/radiobuttonlist item.
 	/// </summary>
-	internal static void RenderItem(IRadioButtonListCheckBoxList control, ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo, HtmlTextWriter writer, Action baseRenderItem)
+	internal static void RenderItem(IRadioButtonListCheckBoxList control, int repeatIndex, HtmlTextWriter writer, Action baseRenderItem)
 	{
 		ListItem item = control.Items[repeatIndex]; // item to render
 

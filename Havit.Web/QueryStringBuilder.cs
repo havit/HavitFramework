@@ -182,7 +182,7 @@ public class QueryStringBuilder : NameValueCollection
 				i++;
 			}
 			string key = null;
-			string value = null;
+			string value;
 			if (rovnitko >= 0)
 			{
 				key = queryString.Substring(startIndex, rovnitko - startIndex);

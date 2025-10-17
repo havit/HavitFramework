@@ -140,7 +140,7 @@ public class BusinessObject_CachingTests
 		string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
 
 		// Precondition
-		CurrencyCollection currencies = Currency.GetAll();
+		_ = Currency.GetAll();
 		Assert.IsTrue(cacheService.Contains(cacheKey));
 
 		// Act
@@ -163,7 +163,7 @@ public class BusinessObject_CachingTests
 		currency.Save();
 
 		string cacheKey = (string)(typeof(CurrencyBase).GetMethod("GetAllIDsCacheKey", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null));
-		CurrencyCollection currencies = Currency.GetAll();
+		_ = Currency.GetAll();
 
 		// Precondition
 		Assert.IsTrue(cacheService.Contains(cacheKey));

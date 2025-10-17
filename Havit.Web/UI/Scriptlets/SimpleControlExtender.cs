@@ -47,17 +47,17 @@ public class SimpleControlExtender : IControlExtender
 	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 	public void GetAttachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 	{
-		GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder);
+		GetEventsScript(BrowserHelper.GetAttachEventScript, parameterPrefix, parameter, scriptletFunctionCallDelegate, scriptBuilder);
 	}
 
 	/// <include file='IControlExtender.xml' path='doc/members/member[starts-with(@name,"M:Havit.Web.UI.Scriptlets.IControlExtender.GetDetachEventsScript")]/*' />
 	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1604:ElementDocumentationMustHaveSummary", Justification = "Bráno z externího souboru.")]
 	public void GetDetachEventsScript(string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 	{
-		GetEventsScript(BrowserHelper.GetDetachEventScript, parameterPrefix, parameter, control, scriptletFunctionCallDelegate, scriptBuilder);
+		GetEventsScript(BrowserHelper.GetDetachEventScript, parameterPrefix, parameter, scriptletFunctionCallDelegate, scriptBuilder);
 	}
 
-	private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, Control control, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
+	private void GetEventsScript(BrowserHelper.GetAttachDetachEventScriptEventHandler getEventScript, string parameterPrefix, IScriptletParameter parameter, string scriptletFunctionCallDelegate, ScriptBuilder scriptBuilder)
 	{
 		// pokud se má volat klienský skript při změně hodnoty prvku
 		if (((ControlParameter)parameter).StartOnChange)

@@ -16,7 +16,7 @@ public static class EntityTypeConfigurationExtensions
 	/// <summary>
 	/// Zajistí vytvoření indexu s daným jménem na daných vlastnostech (sloupcích).
 	/// </summary>
-	public static void HasIndex<TEntity>(this EntityTypeConfiguration<TEntity> configuration, string indexName, params PrimitivePropertyConfiguration[] properties)
+	public static void HasIndex<TEntity>(this EntityTypeConfiguration<TEntity> _, string indexName, params PrimitivePropertyConfiguration[] properties)
 		where TEntity : class
 	{
 		HasIndexInternal(indexName, properties, false);
@@ -25,7 +25,7 @@ public static class EntityTypeConfigurationExtensions
 	/// <summary>
 	/// Zajistí vytvoření unikátního indexu s daným jménem na daných vlastnostech (sloupcích).
 	/// </summary>
-	public static void HasUniqueIndex<TEntity>(this EntityTypeConfiguration<TEntity> configuration, string indexName, params PrimitivePropertyConfiguration[] properties)
+	public static void HasUniqueIndex<TEntity>(this EntityTypeConfiguration<TEntity> _, string indexName, params PrimitivePropertyConfiguration[] properties)
 		where TEntity : class
 	{
 		HasIndexInternal(indexName, properties, true);

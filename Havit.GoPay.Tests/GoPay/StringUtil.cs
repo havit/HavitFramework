@@ -2,7 +2,7 @@
 
 internal static class StringUtil
 {
-	public static string[] Split(string input, char c, int count)
+	public static string[] Split(string input, char c)
 	{
 		int index = input.IndexOf(c);
 

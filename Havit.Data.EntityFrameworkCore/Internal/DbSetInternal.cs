@@ -56,10 +56,23 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 	}
 
 	/// <inheritdoc />
+	public async ValueTask AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+	{
+		await _dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <inheritdoc />
 	public void AddRange(IEnumerable<TEntity> entities)
 	{
 		_dbSet.AddRange(entities);
 	}
+
+	/// <inheritdoc />
+	public async ValueTask AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+	{
+		await _dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+	}
+
 
 	/// <inheritdoc />
 	public void Update(TEntity entity)

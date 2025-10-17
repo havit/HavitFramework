@@ -19,7 +19,6 @@ public class DistributedCacheInvalidationReceiverBackgroundService(
 {
 	private readonly DistributedCacheInvalidationOptions _optionsValue = _options.Value;
 
-	private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 	private HubConnection _connection;
 
 	/// <inheritdoc />

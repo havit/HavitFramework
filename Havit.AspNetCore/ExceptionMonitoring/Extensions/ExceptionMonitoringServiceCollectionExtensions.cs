@@ -30,7 +30,7 @@ public static class ExceptionMonitoringServiceCollectionExtensions
 		services.AddExceptionHandler<Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers.ExceptionMonitoringExceptionHandler>();
 #endif
 		services.TryAddSingleton<IExceptionMonitoringService, ExceptionMonitoringService>();
-		services.TryAddSingleton<IExceptionFormatter, HttpRequestExceptionFormatter>();
+		services.TryAddSingleton<IExceptionFormatter, ExceptionFormatter>();
 
 		if (exceptionBuffering)
 		{

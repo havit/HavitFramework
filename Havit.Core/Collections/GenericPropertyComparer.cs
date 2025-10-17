@@ -72,7 +72,7 @@ public class GenericPropertyComparer<T> : IComparer<T>
 			value1 = GetValue(y, index);
 		}
 
-		int result = 0;
+		int result;
 
 		if (value1 == null && value2 == null)
 		{

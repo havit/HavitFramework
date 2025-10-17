@@ -22,9 +22,23 @@ public interface IUnitOfWork
 		where TEntity : class;
 
 	/// <summary>
+	/// Zajistí vložení objektu jako nového objektu (při uložení bude vložen).
+	/// Určeno pro použití s entitami využívajícími asynchronní operace, typicky jen s použití HiLo strategie generování identifikátorů entit.
+	/// </summary>
+	ValueTask AddForInsertAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+		where TEntity : class;
+
+	/// <summary>
 	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
 	/// </summary>
 	void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities)
+		where TEntity : class;
+
+	/// <summary>
+	/// Zajistí vložení objektů jako nové objekty (při uložení budou vloženy).
+	/// Určeno pro použití s entitami využívajícími asynchronní operace, typicky jen s použití HiLo strategie generování identifikátorů entit.
+	/// </summary>
+	ValueTask AddRangeForInsertAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
 		where TEntity : class;
 
 	/// <summary>

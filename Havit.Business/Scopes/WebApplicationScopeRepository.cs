@@ -71,8 +71,7 @@ public class WebApplicationScopeRepository<T> : IScopeRepository<T>
 		HttpContext context = HttpContext.Current;
 		if (context != null)
 		{
-			Scope<T> value;
-			_data.TryRemove(context, out value);
+			_data.TryRemove(context, out Scope<T> _);
 		}
 		else
 		{

@@ -69,7 +69,7 @@ public class SftpFileStorageServiceTests
 	}
 
 	[ClassCleanup]
-	public static void CleanUp(TestContext testContext)
+	public static void CleanUp(TestContext _)
 	{
 		if (_cleanUpEnabled)
 		{

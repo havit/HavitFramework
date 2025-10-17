@@ -1,0 +1,8 @@
+{
+  "profiles": {
+	"Havit.Tools.AzureDevopForcePushChecker": {
+		"commandName": "Project",
+		"commandLineArgs": "havit DEV ..."
+	}
+  }
+}

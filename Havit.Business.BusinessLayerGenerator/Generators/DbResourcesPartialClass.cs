@@ -273,7 +273,7 @@ public static class DbResourcesPartialClass
 		{
 			if (ConventionsHelper.IsValidClassName(resourceClass.ClassName))
 			{
-				WriteResourceClassDefinition(writer, resourceClassTable, resourceClass, resourceClass.ClassName);
+				WriteResourceClassDefinition(writer, resourceClass, resourceClass.ClassName);
 			}
 		}
 
@@ -282,7 +282,7 @@ public static class DbResourcesPartialClass
 
 	}
 
-	private static void WriteResourceClassDefinition(CodeWriter writer, Table resourceClassTable, ResourceClass resourceClass, string className)
+	private static void WriteResourceClassDefinition(CodeWriter writer, ResourceClass resourceClass, string className)
 	{
 		writer.WriteOpenRegion(resourceClass.ClassName + " (nested class)");
 

@@ -5,7 +5,7 @@ namespace Havit.Business.BusinessLayerGenerator.Generators;
 
 public static class BusinessObjectConstructors
 {
-	public static void WriteConstructors(CodeWriter writer, string className, string pkFieldName, bool readOnly, bool baseClass)
+	public static void WriteConstructors(CodeWriter writer, string className, string pkFieldName, bool baseClass)
 	{
 		writer.WriteOpenRegion("Constructors");
 

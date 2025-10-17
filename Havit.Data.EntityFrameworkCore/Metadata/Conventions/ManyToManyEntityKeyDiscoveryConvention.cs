@@ -13,16 +13,16 @@ public class ManyToManyEntityKeyDiscoveryConvention : IForeignKeyAddedConvention
 	/// <inheritdoc />
 	public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
 	{
-		TryDiscoverPrimaryKey(relationshipBuilder, context);
+		TryDiscoverPrimaryKey(relationshipBuilder);
 	}
 
 	/// <inheritdoc />
 	public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
 	{
-		TryDiscoverPrimaryKey(relationshipBuilder, context);
+		TryDiscoverPrimaryKey(relationshipBuilder);
 	}
 
-	private void TryDiscoverPrimaryKey(IConventionForeignKeyBuilder relationshipBuilder, IConventionContext context)
+	private void TryDiscoverPrimaryKey(IConventionForeignKeyBuilder relationshipBuilder)
 	{
 		// Systémové tabulky nechceme změnit.
 		if (relationshipBuilder.Metadata.DeclaringEntityType.IsSystemType())

@@ -17,8 +17,7 @@ public static partial class UniversalTypeConverter
 	/// <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
 	public static bool CanConvertTo<T>(object value)
 	{
-		T result;
-		return TryConvertTo(value, out result, CultureInfo.CurrentCulture);
+		return TryConvertTo(value, out T _, CultureInfo.CurrentCulture);
 	}
 
 	/// <summary>
@@ -30,8 +29,7 @@ public static partial class UniversalTypeConverter
 	/// <returns>true if <paramref name="value"/> can be converted to <typeparamref name="T"/>; otherwise, false.</returns>
 	public static bool CanConvertTo<T>(object value, CultureInfo culture)
 	{
-		T result;
-		return TryConvertTo(value, out result, culture);
+		return TryConvertTo(value, out T _, culture);
 	}
 
 	/// <summary>
@@ -94,8 +92,7 @@ public static partial class UniversalTypeConverter
 	/// <returns>true if <paramref name="value"/> can be converted to <paramref name="targetType"/>; otherwise, false.</returns>
 	public static bool CanConvertTo(object value, Type targetType)
 	{
-		object result;
-		return TryConvertTo(value, targetType, out result, CultureInfo.CurrentCulture);
+		return TryConvertTo(value, targetType, out object _, CultureInfo.CurrentCulture);
 	}
 
 	/// <summary>
@@ -107,8 +104,7 @@ public static partial class UniversalTypeConverter
 	/// <returns>true if <paramref name="value"/> can be converted to <paramref name="targetType"/>; otherwise, false.</returns>
 	public static bool CanConvertTo(object value, Type targetType, CultureInfo culture)
 	{
-		object result;
-		return TryConvertTo(value, targetType, out result, culture);
+		return TryConvertTo(value, targetType, out object _, culture);
 	}
 
 	/// <summary>

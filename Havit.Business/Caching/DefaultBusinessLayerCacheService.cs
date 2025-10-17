@@ -43,8 +43,7 @@ public class DefaultBusinessLayerCacheService : IBusinessLayerCacheService
 		{
 			throw new InvalidOperationException("Cache dependencies nejsou podporovány na použité CacheService.");
 		}
-		object tmp;
-		if (!cacheService.TryGet(cacheKey, out tmp))
+		if (!cacheService.TryGet(cacheKey, out object _))
 		{
 			cacheService.Add(cacheKey, new object());
 		}

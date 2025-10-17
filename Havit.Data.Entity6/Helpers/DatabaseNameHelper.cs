@@ -7,14 +7,14 @@ public static class DatabaseNameHelper
 {
 	/// <summary>
 	/// Vrátí název databáze pro účely použití unit testů.
-	/// Pokud existuje proměná prostředí BUILD_BUILDNUMBER, pak se použije databaseNameBase-BUILD_BUILDNUMBER, jinak jen databaseNameBase.
+	/// Pokud existuje proměná prostředí AGENT_NAME, pak se použije databaseNameBase-AGENT_NAME, jinak jen databaseNameBase.
 	/// </summary>
 	public static string GetDatabaseNameForUnitTest(string databaseNameBase)
 	{
-		string buildNumber = Environment.GetEnvironmentVariable("BUILD_BUILDNUMBER");
-		if (!String.IsNullOrEmpty(buildNumber))
+		string agentName = Environment.GetEnvironmentVariable("AGENT_NAME");
+		if (!String.IsNullOrEmpty(agentName))
 		{
-			return databaseNameBase + "-" + buildNumber;
+			return databaseNameBase + "-" + agentName;
 		}
 		return databaseNameBase;
 	}

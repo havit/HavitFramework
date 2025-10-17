@@ -9,18 +9,8 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Formatters;
 /// <summary>
 /// Formatter výjimky s popisem prostředí http serveru.
 /// </summary>
-public class HttpRequestExceptionFormatter : IExceptionFormatter
+public class ExceptionFormatter : IExceptionFormatter
 {
-	private readonly IHttpContextAccessor httpContextAccessor;
-
-	/// <summary>
-	/// Konstruktor.
-	/// </summary>
-	public HttpRequestExceptionFormatter(IHttpContextAccessor httpContextAccessor = null)
-	{
-		this.httpContextAccessor = httpContextAccessor;
-	}
-
 	/// <summary>
 	/// Vrátí text reprezentující lidsky čitelné informace o výjimce (a http requestu a http contextu).
 	/// </summary>
@@ -30,9 +20,9 @@ public class HttpRequestExceptionFormatter : IExceptionFormatter
 
 		AppendExceptionInformation(sb, exception);
 
-		if (httpContextAccessor != null)
+		HttpContext httpContext = exception.Data[nameof(HttpContext)] as HttpContext;
+		if (httpContext != null)
 		{
-			HttpContext httpContext = httpContextAccessor.HttpContext;
 			AppendRequestInformation(sb, httpContext);
 		}
 
@@ -72,6 +62,15 @@ public class HttpRequestExceptionFormatter : IExceptionFormatter
 
 	private void AppendRequestInformation(StringBuilder sb, HttpContext context)
 	{
+#if NET8_0_OR_GREATER
+		// Při spuštění v rámci exception handlingu (od .NET 8) je v případě přesměrování na error page změněna cesta requestu na error page
+		// původní adresa je dostupná přes feature IExceptionHandlerPathFeature.
+		var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+		string requestPath = exceptionHandlerPathFeature?.Path ?? context.Request.Path;
+#else
+		string requestPath = context.Request.Path;
+#endif
+
 		sb.AppendLine("Request information");
 		if (context == null)
 		{
@@ -79,7 +78,7 @@ public class HttpRequestExceptionFormatter : IExceptionFormatter
 		}
 		else
 		{
-			AppendValueLine(sb, "Request URL", () => context.Request.Path);
+			AppendValueLine(sb, "Request URL", () => requestPath);
 			AppendValueLine(sb, "Request verb", () => context.Request.Method);
 			AppendValueLine(sb, "User host address", () => context.Connection.RemoteIpAddress.ToString());
 			AppendValueLine(sb, "Username", () => context.User.Identity.Name);

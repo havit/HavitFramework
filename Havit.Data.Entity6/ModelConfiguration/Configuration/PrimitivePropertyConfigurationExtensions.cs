@@ -18,7 +18,7 @@ internal static class PrimitivePropertyConfigurationExtensions
 			.GetValue(configuration, null);
 
 		object annotation;
-		if (annotations.TryGetValue(IndexAnnotation.AnnotationName, out annotation))
+		if (annotations.TryGetValue(annotationName, out annotation))
 		{
 			return annotation;
 		}

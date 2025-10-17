@@ -46,13 +46,12 @@ public class DataRecordTests
 
 		string fieldName = "ColumnName";
 
-		object tryGetTarget = 10; // fake value
 		object target_expected = null;
 
 		bool expected = true;
 		bool actual;
 
-		actual = record.TryGet(fieldName, out tryGetTarget);
+		actual = record.TryGet(fieldName, out object tryGetTarget);
 
 		Assert.AreEqual(target_expected, tryGetTarget, "target_TryGet_expected was not set correctly.");
 		Assert.AreEqual(expected, actual, "Havit.Data.DataRecord.TryGet<T> did not return the expected value.");
@@ -122,11 +121,7 @@ public class DataRecordTests
 
 		string fieldName = "ColumnName";
 
-		Exception tryGetTarget; // nekompatibilní typ
-
-		bool actual;
-
-		actual = record.TryGet(fieldName, out tryGetTarget);
+		_ = record.TryGet(fieldName, out Exception _); // nekompatibilní typ
 	}
 
 	[TestMethod]
@@ -143,11 +138,7 @@ public class DataRecordTests
 
 		string fieldName = "ColumnName_Jiny";
 
-		int? tryGetTarget;
-
-		bool actual;
-
-		actual = record.TryGet(fieldName, out tryGetTarget);
+		_ = record.TryGet(fieldName, out int? _);
 	}
 
 	[TestMethod]

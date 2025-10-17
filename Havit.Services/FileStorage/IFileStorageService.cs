@@ -46,12 +46,12 @@ public interface IFileStorageService
 	Task SaveAsync(string fileName, Stream fileContent, string contentType, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Vrátí straem pro upload do úložiště.		
+	/// Vrátí stream pro upload do úložiště.		
 	/// </summary>
 	Stream OpenCreate(string fileName, string contentType);
 
 	/// <summary>
-	/// Vrátí straem pro upload do úložiště.
+	/// Vrátí stream pro upload do úložiště.
 	/// </summary>
 	Task<Stream> OpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default);
 

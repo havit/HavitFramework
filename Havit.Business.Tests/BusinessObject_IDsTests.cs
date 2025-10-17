@@ -36,7 +36,7 @@ public class BusinessObject_IDsTests
 	{
 		using (new IdentityMapScope())
 		{
-			Role role = Role.GetObject(Role.NoID);
+			_ = Role.GetObject(Role.NoID);
 		}
 	}
 

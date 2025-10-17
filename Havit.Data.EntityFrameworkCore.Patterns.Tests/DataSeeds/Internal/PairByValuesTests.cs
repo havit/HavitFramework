@@ -45,7 +45,7 @@ public class PairByValuesTests
 	public void PairByValues_GetHashCode_SupportsNullInData()
 	{
 		// Arrange + Act
-		int hashCode = new PairByValues(new object[] { null }).GetHashCode();
+		_ = new PairByValues(new object[] { null }).GetHashCode();
 
 		// Assert
 		// no exception was thown

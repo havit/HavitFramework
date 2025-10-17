@@ -14,7 +14,7 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories;
 public class DbRepositoryTests
 {
 	[ClassInitialize]
-	public static void Initialize(TestContext testContext)
+	public static void Initialize(TestContext _)
 	{
 		using (TestDbContext testDbContext = new TestDbContext())
 		{

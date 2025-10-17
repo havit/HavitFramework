@@ -39,6 +39,26 @@ public interface IDbSet<TEntity>
 	void Add(TEntity entity);
 
 	/// <summary>
+	///     Begins tracking the given entity, and any other reachable entities that are
+	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
+	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
+	/// </summary>
+	/// <remarks>
+	///     <para>
+	///         This method is async only to allow special value generators, such as the one used by
+	///         'Microsoft.EntityFrameworkCore.Metadata.SqlServerValueGenerationStrategy.SequenceHiLo',
+	///         to access the database asynchronously. For all other cases the non async method should be used.
+	///     </para>
+	///     <para>
+	///         Use <see cref="EntityEntry.State" /> to set the state of only a single entity.
+	///     </para>
+	///     <para>
+	///         See <see href="https://aka.ms/efcore-docs-change-tracking">EF Core change tracking</see> for more information and examples.
+	///     </para>
+	/// </remarks>
+	ValueTask AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+
+	/// <summary>
 	///     Begins tracking the given entities, and any other reachable entities that are
 	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
 	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
@@ -50,6 +70,25 @@ public interface IDbSet<TEntity>
 	/// </remarks>
 	/// <param name="entities">The entities to add.</param>
 	void AddRange(IEnumerable<TEntity> entities);
+
+	/// <summary>
+	///     Begins tracking the given entities, and any other reachable entities that are
+	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
+	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.
+	/// </summary>
+	/// <remarks>
+	///     <para>
+	///         This method is async only to allow special value generators, such as the one used by
+	///         'Microsoft.EntityFrameworkCore.Metadata.SqlServerValueGenerationStrategy.SequenceHiLo',
+	///         to access the database asynchronously. For all other cases the non async method should be used.
+	///     </para>
+	///     <para>
+	///         See <see href="https://aka.ms/efcore-docs-change-tracking">EF Core change tracking</see>
+	///         and <see href="https://aka.ms/efcore-docs-attach-range">Using AddRange, UpdateRange, AttachRange, and RemoveRange</see>
+	///         for more information and examples.
+	///     </para>
+	/// </remarks>
+	ValueTask AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	///     Begins tracking the given entity and entries reachable from the given entity using

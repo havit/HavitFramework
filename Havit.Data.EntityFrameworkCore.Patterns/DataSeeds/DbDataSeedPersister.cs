@@ -99,7 +99,14 @@ public class DbDataSeedPersister : IDataSeedPersister
 		}
 
 		Update(configuration, seedDataPairsToUpdate);
-		_unitOfWork.AddRangeForInsert(unpairedSeedDataPairs.Select(item => item.DbEntity));
+		if (synchronizationMode == SynchronizationMode.Synchronous)
+		{
+			_unitOfWork.AddRangeForInsert(unpairedSeedDataPairs.Select(item => item.DbEntity));
+		}
+		else
+		{
+			await _unitOfWork.AddRangeForInsertAsync(unpairedSeedDataPairs.Select(item => item.DbEntity), cancellationToken).ConfigureAwait(false);
+		}
 
 		DoBeforeSaveActions(configuration, seedDataPairs);
 

@@ -56,7 +56,7 @@ public abstract class DbContext : System.Data.Entity.DbContext, IDbContext
 	/// </code>
 	/// </summary>
 #pragma warning disable S3253 // "base()" constructor calls should not be explicitly made // JK: Chci ho zde pro přehlednost!
-	protected DbContext(DbContextDefaultDatabase dbContextDefaultDatabase) : base()
+	protected DbContext(DbContextDefaultDatabase _) : base()
 #pragma warning restore S3253 // "base()" constructor calls should not be explicitly made
 	{
 		Initialize();

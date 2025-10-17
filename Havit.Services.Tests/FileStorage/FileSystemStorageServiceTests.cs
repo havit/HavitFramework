@@ -34,7 +34,7 @@ public class FileSystemStorageServiceTests
 	];
 
 	[ClassInitialize]
-	public static void Initialize(TestContext testContext)
+	public static void Initialize(TestContext _)
 	{
 		// testy jsou slušné, mažou po sobě
 		// ve scénáři, kdy testy procházejí, není nutno tedy čistit před každým testem, ale čistíme pouze preventivně před všemi testy

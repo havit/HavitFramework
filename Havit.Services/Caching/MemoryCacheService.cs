@@ -176,7 +176,7 @@ public class MemoryCacheService : ICacheService
 	/// </summary>
 	public bool Contains(string key)
 	{
-		return memoryCache.TryGetValue(key, out object cacheValue);
+		return memoryCache.TryGetValue(key, out object _);
 	}
 
 	/// <summary>

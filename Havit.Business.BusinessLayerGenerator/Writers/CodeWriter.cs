@@ -192,7 +192,7 @@ public class CodeWriter
 	/// Zapíše contract. Připraveno jako metoda pro případné podmínění projektů, kde nechceme contracty.
 	/// Nyní deaktivováno.
 	/// </summary>
-	public void WriteMicrosoftContract(string line)
+	public void WriteMicrosoftContract(string _)
 	{
 		// Code Contracts deaktivovány.
 		// WriteLine(line);

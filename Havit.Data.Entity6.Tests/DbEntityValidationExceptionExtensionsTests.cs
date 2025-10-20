@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using Havit.Data.Entity.Helpers;
@@ -82,7 +81,7 @@ public class DbEntityValidationExceptionExtensionsTests
 		string formattedMessage = exception.FormatErrorMessage();
 
 		// assert
-		Assert.IsFalse(formattedMessage.Contains("Message."));
+		Assert.DoesNotContain("Message.", formattedMessage);
 	}
 
 }

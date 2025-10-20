@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MSTest" Version="3.8.3" />
-		<!-- Vulnerable transitive dependencies updates -->
-		<PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
+	  <PackageReference Include="MSTest.TestFramework" Version="4.0.1" />
 	</ItemGroup>
 	
 	<ItemGroup>

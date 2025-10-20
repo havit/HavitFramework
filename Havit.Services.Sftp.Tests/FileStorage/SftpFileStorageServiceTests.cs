@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Services.TestHelpers.FileStorage;
+﻿using Havit.Services.TestHelpers.FileStorage;
 using Havit.Services.Sftp.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Renci.SshNet;

@@ -1,7 +1,6 @@
 ﻿using Havit.Services.Caching;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Services.Tests.Caching;
@@ -32,15 +31,17 @@ public class MemoryCacheServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(NotSupportedException))]
 	public void MemoryCacheService_Clear_ThrowsExceptionWhenClearNotPossible()
 	{
+		// Arrange
 		Mock<IMemoryCache> memoryCacheMock = new Mock<IMemoryCache>(MockBehavior.Strict); // nemá "EntriesCollection"!
 		MemoryCacheService memoryCacheService = new MemoryCacheService(memoryCacheMock.Object);
 
-		// Act
-		memoryCacheService.Clear();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<NotSupportedException>(() =>
+		{
+			// Act
+			memoryCacheService.Clear();
+		});
 	}
 }

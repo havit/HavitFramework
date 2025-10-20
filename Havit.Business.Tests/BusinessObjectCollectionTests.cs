@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.BusinessLayerTest;
+﻿using Havit.BusinessLayerTest;
 namespace Havit.Business.Tests;
 
 [TestClass]
@@ -20,9 +19,9 @@ public class BusinessObjectCollectionTests
 	/// Testuje, zda je při zákazu duplicit ověřeno, zda kolekce již neobsahuje duplicity.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void BusinessObjectCollection_AllowDuplicates_ThrowsExceptionWhenSetToFalseAndDuplicityExists()
 	{
+		// Arrange
 		SubjektCollection subjekty = new SubjektCollection();
 		Subjekt subjekt = Subjekt.CreateObject();
 
@@ -30,36 +29,44 @@ public class BusinessObjectCollectionTests
 		subjekty.Add(subjekt);
 		subjekty.Add(subjekt);
 
-		// zapneme test na duplicity
-		subjekty.AllowDuplicates = false;
-		// je-li vyhozena výjimka, je vše ok (viz atribut metody)			
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			// zapneme test na duplicity
+			subjekty.AllowDuplicates = false;
+		});
 	}
 
 	/// <summary>
 	/// Testuje zákaz duplicit - vkládání pomocí insertu.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void BusinessObjectCollection_Add_ThrowsExceptionWhenAddingDuplicityAndAllowDuplicatesDisabled()
 	{
+		// Arrange
 		SubjektCollection subjekty = new SubjektCollection();
 		subjekty.AllowDuplicates = false;
 		Subjekt subjekt = Subjekt.CreateObject();
 
-		// duplicity jsou zakázány
-		// přidáme dvakrát stejný subjekt (stejnou instanci)
-		subjekty.Add(subjekt);
-		subjekty.Add(subjekt);
-		// je-li vyhozena výjimka, je vše ok (viz atribut metody)
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			// duplicity jsou zakázány
+			// přidáme dvakrát stejný subjekt (stejnou instanci)
+			subjekty.Add(subjekt);
+			subjekty.Add(subjekt);
+		});
 	}
 
 	/// <summary>
 	/// Testuje zákaz duplicit - pomocí indexeru.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void BusinessObjectCollection_SetIndexer_ThrowsExceptionWhenAddingDuplicityAndAllowDuplicatesDisabled()
 	{
+		// Arrange
 		using (new IdentityMapScope())
 		{
 			SubjektCollection subjekty = new SubjektCollection();
@@ -68,10 +75,14 @@ public class BusinessObjectCollectionTests
 			Subjekt subjekt1 = Subjekt.GetObject(1);
 			Subjekt subjekt2 = Subjekt.GetObject(1);
 
-			// přidáme dva objekty (různé instance, ale stejné business objekty)
-			subjekty.Add(subjekt1);
-			subjekty.Add(subjekt2);
-			// je-li vyhozena výjimka, je vše ok (viz atribut metody)
+			// Assert
+			Assert.ThrowsExactly<ArgumentException>(() =>
+			{
+				// Act
+				// přidáme dva objekty (různé instance, ale stejné business objekty)
+				subjekty.Add(subjekt1);
+				subjekty.Add(subjekt2);
+			});
 		}
 	}
 
@@ -79,9 +90,9 @@ public class BusinessObjectCollectionTests
 	/// Testuje zákaz duplicit - pomocí indexeru.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void BusinessObjectBase_SetIndexer_ThrowsExceptionWhenAddingDuplicityAndAllowDuplicatesDisabled()
 	{
+		// Arrange
 		SubjektCollection subjekty = new SubjektCollection();
 		subjekty.AllowDuplicates = false;
 
@@ -91,9 +102,14 @@ public class BusinessObjectCollectionTests
 		// vložím dva různé objekty
 		subjekty.Add(subjekt1);
 		subjekty.Add(subjekt2);
-		// druhý objekt přepíšu prvním
-		subjekty[1] = subjekt1;
-		// je-li vyhozena výjimka, je vše ok (viz atribut metody)			
+
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			// druhý objekt přepíšu prvním
+			subjekty[1] = subjekt1;
+		});
 	}
 
 	/// <summary>
@@ -143,12 +159,18 @@ public class BusinessObjectCollectionTests
 	/// Testuje vyvolání výjimky při odebrání prvků ze zamčené kolekce metodou Clear.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void BusinessObjectCollection_Clear_ThrowsExceptionOnFreezedCollection()
 	{
+		// Arrange
 		SubjektCollection collection = new SubjektCollection();
 		collection.Freeze();
-		collection.Clear();
+
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			collection.Clear();
+		});
 	}
 
 	/// <summary>

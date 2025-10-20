@@ -4,7 +4,6 @@ using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.Tests.Helpers;
 using Havit.Services.TimeServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataSources;
 
@@ -37,7 +36,7 @@ public class DbDataSourceTests
 		List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();
 
 		// Assert
-		Assert.AreEqual(2, result.Count);
+		Assert.HasCount(2, result);
 	}
 
 	[TestMethod]
@@ -60,7 +59,7 @@ public class DbDataSourceTests
 		List<ItemWithDeleted> result = dataSource.Data.ToList();
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 	}
 
 	[TestMethod]
@@ -83,7 +82,7 @@ public class DbDataSourceTests
 		List<ItemWithDeleted> result = await dataSource.Data.ToListAsync();
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 	}
 
 	[TestMethod]
@@ -186,8 +185,8 @@ public class DbDataSourceTests
 
 		// Assert
 		Assert.AreEqual(1, count);
-		Assert.AreEqual(1, items.Count);
-		Assert.AreEqual(1, dbContext.Set<ItemWithDeleted>().Local.Count);
+		Assert.HasCount(1, items);
+		Assert.HasCount(1, dbContext.Set<ItemWithDeleted>().Local);
 	}
 
 	[TestMethod]

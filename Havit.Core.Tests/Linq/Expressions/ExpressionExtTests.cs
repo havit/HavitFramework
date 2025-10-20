@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq.Expressions;
 using Havit.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Linq.Expressions;
 
@@ -41,7 +40,7 @@ public class ExpressionExtTests
 		List<A> result = list.Where(conditionLambda).ToList();
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 		Assert.AreSame(list[2], result.Single());
 	}
 
@@ -68,14 +67,17 @@ public class ExpressionExtTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void ExpressionExt_GetMemberAccessMemberName_UnsupportedArgument()
 	{
-		// Act
+		// Arrange
 		Expression<Func<A, bool>> expression = (A a) => a.B.C;
-		string result = ExpressionExt.GetMemberAccessMemberName(expression);
 
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			ExpressionExt.GetMemberAccessMemberName(expression);
+		});
 	}
 
 	internal class A

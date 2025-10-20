@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments;
 

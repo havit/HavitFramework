@@ -3,7 +3,6 @@ using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.Caching;
 using Havit.Services.Tests.FileStorage.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Services.Tests.FileStorage;

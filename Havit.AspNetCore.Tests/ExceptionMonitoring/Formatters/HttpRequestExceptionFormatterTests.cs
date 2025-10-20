@@ -1,6 +1,5 @@
 ﻿using Havit.AspNetCore.ExceptionMonitoring.Formatters;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Formatters;
 

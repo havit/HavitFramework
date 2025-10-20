@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.BusinessLayerTest;
+﻿using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;
 
@@ -31,12 +30,17 @@ public class BusinessObject_IDsTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void BusinessObject_GetObject_ThrowsExceptionForNoID()
 	{
+		// Arrange
 		using (new IdentityMapScope())
 		{
-			_ = Role.GetObject(Role.NoID);
+			// Assert
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
+			{
+				// Act
+				_ = Role.GetObject(Role.NoID);
+			});
 		}
 	}
 

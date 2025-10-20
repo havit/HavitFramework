@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Tests;
@@ -32,7 +31,7 @@ public class ModelBuilderExtensionsTests
 		Assert.IsNull(model.FindEntityType(typeof(ComplexClass)), "ComplexClass is a registered entity.");
 		Assert.IsNull(model.FindEntityType(typeof(StaticClass)), "StaticClass is a registered entity.");
 		Assert.IsNotNull(model.FindEntityType(typeof(KeylessClass)), "KeylessClass is not a registered entity.");
-		Assert.IsTrue(model.FindEntityType(typeof(KeylessClass)).FindPrimaryKey() == null, "KeylessClass is not a keyless entity.");
+		Assert.IsNull(model.FindEntityType(typeof(KeylessClass)).FindPrimaryKey(), "KeylessClass is not a keyless entity.");
 		Assert.IsNotNull(model.FindEntityType(typeof(OwnedClass)), "OwnedClass is not a registered entity.");
 		Assert.IsTrue(model.FindEntityType(typeof(OwnedClass)).IsOwned(), "OwnedClass is not an owned entity.");
 	}

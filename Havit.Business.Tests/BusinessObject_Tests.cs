@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.BusinessLayerTest;
+﻿using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;
 
@@ -16,7 +15,7 @@ public class BusinessObject_Tests
 		{
 			RoleCollection roleCollection1 = Role.GetAll();
 			RoleCollection roleCollection2 = Role.GetAll();
-			Assert.IsTrue(roleCollection1 != roleCollection2);
+			Assert.AreNotEqual(roleCollection2, roleCollection1);
 		}
 	}
 
@@ -48,11 +47,11 @@ public class BusinessObject_Tests
 	[TestMethod]
 	public void BusinessObjectBase_FastIntParse_ParsesStringToInt()
 	{
-		Assert.AreEqual(BusinessObjectBase.FastIntParse("0"), 0);
-		Assert.AreEqual(BusinessObjectBase.FastIntParse("1"), 1);
-		Assert.AreEqual(BusinessObjectBase.FastIntParse("-1"), -1);
-		Assert.AreEqual(BusinessObjectBase.FastIntParse("999999"), 999999);
-		Assert.AreEqual(BusinessObjectBase.FastIntParse("-999999"), -999999);
-		Assert.AreEqual(BusinessObjectBase.FastIntParse("123456789"), 123456789);
+		Assert.AreEqual(0, BusinessObjectBase.FastIntParse("0"));
+		Assert.AreEqual(1, BusinessObjectBase.FastIntParse("1"));
+		Assert.AreEqual(-1, BusinessObjectBase.FastIntParse("-1"));
+		Assert.AreEqual(999999, BusinessObjectBase.FastIntParse("999999"));
+		Assert.AreEqual(-999999, BusinessObjectBase.FastIntParse("-999999"));
+		Assert.AreEqual(123456789, BusinessObjectBase.FastIntParse("123456789"));
 	}
 }

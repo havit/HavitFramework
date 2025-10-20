@@ -1,6 +1,5 @@
 ﻿using Castle.Windsor;
 using Havit.Extensions.DependencyInjection.CastleWindsor.Tests.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Castle.MicroKernel;
 
 namespace Havit.Extensions.DependencyInjection.CastleWindsor.Tests;
@@ -30,15 +29,14 @@ public class WindsorContainerExtensionsTests
 
 		// Act
 		container.InstallByServiceAttribute(typeof(MyFirstService).Assembly, nameof(MyFirstService));
-		container.Resolve<IService>();
-		container.Resolve<IFirstService>();
 
 		// Assert
+		container.Resolve<IService>();
+		container.Resolve<IFirstService>();
 		// assert: no exception was thrown
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ComponentNotFoundException))]
 	public void WindsorContainerExtensions_AddByServiceAttribute_ServiceWithInterfacesIsNotRegisteredThemselves()
 	{
 		// Arrange
@@ -46,10 +44,12 @@ public class WindsorContainerExtensionsTests
 
 		// Act
 		container.InstallByServiceAttribute(typeof(MyFirstService).Assembly, nameof(MyFirstService));
-		container.Resolve<MyFirstService>();
 
 		// Assert
-		// assert: exception was thrown
+		Assert.ThrowsExactly<ComponentNotFoundException>(() =>
+		{
+			container.Resolve<MyFirstService>();
+		});
 	}
 
 	[TestMethod]
@@ -84,7 +84,6 @@ public class WindsorContainerExtensionsTests
 
 
 	[TestMethod]
-	[ExpectedException(typeof(ComponentNotFoundException))]
 	public void WindsorContainerExtensions_AddByServiceAttribute_ClassWithExplicitServiceTypeDoesNotRegisterBaseInterfaces()
 	{
 		// Arrange
@@ -92,10 +91,12 @@ public class WindsorContainerExtensionsTests
 
 		// Act
 		container.InstallByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
-		container.Resolve<IService>();
 
 		// Assert
-		// assert: exception was thrown
+		Assert.ThrowsExactly<ComponentNotFoundException>(() =>
+		{
+			container.Resolve<IService>();
+		});
 	}
 
 	[TestMethod]

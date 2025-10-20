@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Data.EntityFrameworkCore.Tests;
+﻿namespace Havit.Data.EntityFrameworkCore.Tests;
 
 [TestClass]
 public class QueryTagBuilderTests

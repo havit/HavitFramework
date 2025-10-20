@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions;
 
@@ -34,7 +33,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 				builder.Entity<DummyEntity>().HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(0, operations.Count);
+			Assert.IsEmpty(operations);
 		}
 
 		/// <summary>
@@ -53,7 +52,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 			Assert.IsInstanceOfType(operations[0], typeof(AlterTableOperation));
 		}
 
@@ -112,7 +111,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 
 			var operation = (AlterTableOperation)operations[0];
 			Assert.AreEqual(1, operation.GetAnnotations().Count());
@@ -146,7 +145,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 				builder.Entity<DummyEntity>().Property(x => x.MyProperty).HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(0, operations.Count);
+			Assert.IsEmpty(operations);
 		}
 
 		/// <summary>
@@ -165,7 +164,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 			Assert.IsInstanceOfType(operations[0], typeof(AlterColumnOperation));
 		}
 
@@ -200,10 +199,10 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			Assert.AreEqual("Dummy", operation.Table);
 			Assert.AreEqual(typeof(string), operation.ClrType);
 			Assert.AreEqual("nvarchar(max)", operation.ColumnType); // EF Core 5.x change: Differ does not leave ColumnType null
-			Assert.AreEqual(true, operation.IsNullable);
+			Assert.IsTrue(operation.IsNullable);
 			Assert.AreEqual(typeof(string), operation.OldColumn.ClrType);
 			Assert.AreEqual("nvarchar(max)", operation.OldColumn.ColumnType); // EF Core 5.x change: Differ does not leave ColumnType null
-			Assert.AreEqual(true, operation.OldColumn.IsNullable);
+			Assert.IsTrue(operation.OldColumn.IsNullable);
 			Assert.IsNull(operation.Schema);
 		}
 
@@ -232,7 +231,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 
 			var operation = (AlterColumnOperation)operations[0];
 			Assert.AreEqual(1, operation.GetAnnotations().Count());
@@ -267,7 +266,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 				builder.HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(0, operations.Count);
+			Assert.IsEmpty(operations);
 		}
 
 		[TestMethod]
@@ -283,7 +282,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 			Assert.IsInstanceOfType(operations[0], typeof(AlterDatabaseOperation));
 		}
 
@@ -300,7 +299,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation2", "ValueB_amended"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 
 			var operation = (AlterDatabaseOperation)operations[0];
 			Assert.AreEqual(1, operation.GetAnnotations().Count());
@@ -322,7 +321,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation1", "ValueA"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 
 			var operation = (AlterDatabaseOperation)operations[0];
 			Assert.AreEqual(0, operation.GetAnnotations().Count());
@@ -345,7 +344,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 					.HasAnnotation($"{TestAnnotationPrefix}Annotation3", "Something"));
 			var operations = source.Diff(target);
 
-			Assert.AreEqual(1, operations.Count);
+			Assert.HasCount(1, operations);
 
 			var operation = (AlterDatabaseOperation)operations[0];
 			Assert.AreEqual(1, operation.GetAnnotations().Count());

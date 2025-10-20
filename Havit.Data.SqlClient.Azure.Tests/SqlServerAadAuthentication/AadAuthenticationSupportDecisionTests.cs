@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Data.SqlClient.Azure.SqlServerAadAuthentication;
+﻿using Havit.Data.SqlClient.Azure.SqlServerAadAuthentication;
 
 namespace Havit.Data.SqlClient.Azure.Tests.SqlServerAadAuthentication;
 

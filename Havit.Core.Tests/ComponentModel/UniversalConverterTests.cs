@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Havit.Tests.ComponentModel;
 
@@ -66,11 +65,11 @@ public class UniversalConverterTests
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(null, typeof(int?), out result);
 		Assert.IsTrue(success);
-		Assert.AreEqual(null, (int?)result);
+		Assert.IsNull((int?)result);
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(null, typeof(decimal?), out result);
 		Assert.IsTrue(success);
-		Assert.AreEqual(null, (decimal?)result);
+		Assert.IsNull((decimal?)result);
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("1/2/2013", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-US"));
 		Assert.IsTrue(success);
@@ -88,7 +87,7 @@ public class UniversalConverterTests
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo<int>("A", out int result1);
 		Assert.IsFalse(success);
-		Assert.AreEqual(result1, default(int));
+		Assert.AreEqual(default(int), result1);
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo<int>("5", out int result2);
 		Assert.IsTrue(success);
@@ -140,11 +139,11 @@ public class UniversalConverterTests
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo<int?>(null, out int? result14);
 		Assert.IsTrue(success);
-		Assert.AreEqual(null, result14);
+		Assert.IsNull(result14);
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo<decimal?>(null, out decimal? result15);
 		Assert.IsTrue(success);
-		Assert.AreEqual(null, result15);
+		Assert.IsNull(result15);
 
 		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo<DateTime>("1/2/2013", out DateTime result16, CultureInfo.GetCultureInfo("en-US"));
 		Assert.IsTrue(success);

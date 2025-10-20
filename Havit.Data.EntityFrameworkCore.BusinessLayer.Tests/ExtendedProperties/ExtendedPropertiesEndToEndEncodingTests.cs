@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.TestHelpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 
@@ -36,7 +35,7 @@ World")]
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_addextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'{nameof(TargetEntity.Property)}';
@@ -81,7 +80,7 @@ EXEC sys.sp_addextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expect
 World"));
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_updateextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'{nameof(TargetEntity.Property)}';
@@ -117,7 +116,7 @@ World")]
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_addextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
@@ -154,7 +153,7 @@ World")]
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				$@"DECLARE @{expectedVariableName} NVARCHAR(4000) = CONCAT(CAST(N'Hello' AS nvarchar(max)), nchar(13), nchar(10), N'World');
 EXEC sys.sp_updateextendedproperty @name=N'{ExtendedPropertyName}', @value=@{expectedVariableName}, @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';

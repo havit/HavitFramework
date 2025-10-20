@@ -1,7 +1,6 @@
 ﻿using Havit.Services.FileStorage;
 using Havit.Services.Tests.FileStorage.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Tests.FileStorage;
 

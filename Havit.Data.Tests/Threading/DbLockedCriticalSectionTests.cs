@@ -1,5 +1,4 @@
 ﻿using Havit.Data.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 
 namespace Havit.Data.Tests.Threading;
@@ -70,7 +69,6 @@ public class DbLockedCriticalSectionTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(DbLockedCriticalSectionException))]
 	public void DbLockedCriticalSection_ExecuteAction_CanTimeout()
 	{
 		// Arrange
@@ -94,17 +92,17 @@ public class DbLockedCriticalSectionTests
 			criticalSection2.ExecuteAction("DbLockedCriticalSection_ExecuteAction_CanTimeout", () => { });
 		};
 
-		try
+		Assert.ThrowsExactly<DbLockedCriticalSectionException>(() =>
 		{
-			Parallel.Invoke(parallelAction1, parallelAction2);
-		}
-		catch (AggregateException ex)
-		{
-			throw ex.InnerException; // Parallel.Invoke() aggregates exception -> need to rethrow inner exception for simulation purpose
-		}
-
-		// Assert
-		// throws exception
+			try
+			{
+				Parallel.Invoke(parallelAction1, parallelAction2);
+			}
+			catch (AggregateException ex)
+			{
+				throw ex.InnerException; // Parallel.Invoke() aggregates exception -> need to rethrow inner exception for simulation purpose
+			}
+		});
 	}
 
 	[TestMethod]
@@ -182,7 +180,6 @@ public class DbLockedCriticalSectionTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(DbLockedCriticalSectionException))]
 	public async Task DbLockedCriticalSection_ExecuteActionAsync_CanTimeout()
 	{
 		// Arrange
@@ -192,10 +189,14 @@ public class DbLockedCriticalSectionTests
 		options2.LockTimeoutMs = 1;
 		DbLockedCriticalSection criticalSection2 = new DbLockedCriticalSection(options2);
 
-		// Act
-		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", async () =>
+		// Assert
+		await Assert.ThrowsExactlyAsync<DbLockedCriticalSectionException>(async () =>
 		{
-			await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", () => Task.CompletedTask);
+			// Act
+			await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", async () =>
+			{
+				await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", () => Task.CompletedTask);
+			});
 		});
 
 		// Assert

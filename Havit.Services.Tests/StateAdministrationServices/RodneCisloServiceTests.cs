@@ -1,12 +1,11 @@
 ﻿using Havit.Services.StateAdministration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Tests.StateAdministrationServices;
 
 [TestClass]
 public class RodneCisloServiceTests
 {
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow(true, "7801233540")] // problematické, ale správné, viz http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 	[DataRow(true, "780123/3540")] // problematické, ale správné, viz http://phpfashion.com/jak-overit-platne-ic-a-rodne-cislo
 	[DataRow(false, "780123//3540")] // chybný formát

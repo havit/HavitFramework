@@ -1,6 +1,5 @@
 ﻿using Havit.Data.Entity.Patterns.DataSources.Fakes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data.Entity;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataSources.Fakes;
@@ -19,7 +18,7 @@ public class FakeDataSourceTests
 		List<int> resultData = dataSource.Data.ToList();
 
 		// Assert
-		Assert.AreEqual(0, resultData.Count);
+		Assert.IsEmpty(resultData);
 	}
 
 	[TestMethod]
@@ -74,7 +73,7 @@ public class FakeDataSourceTests
 		List<ItemWithDeleted> resultData = dataSource.Data.ToList();
 
 		// Assert
-		Assert.AreEqual(0, resultData.Count);
+		Assert.IsEmpty(resultData);
 	}
 
 	[TestMethod]
@@ -87,7 +86,7 @@ public class FakeDataSourceTests
 		List<ItemWithDeleted> resultData = await dataSource.Data.ToListAsync();
 
 		// Assert
-		Assert.AreEqual(0, resultData.Count);
+		Assert.IsEmpty(resultData);
 	}
 
 }

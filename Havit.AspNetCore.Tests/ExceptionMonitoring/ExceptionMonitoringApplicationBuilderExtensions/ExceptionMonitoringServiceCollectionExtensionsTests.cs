@@ -3,7 +3,6 @@ using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.AspNetCore.Tests.ExceptionMonitoring.ExceptionMonitoringApplicationBuilderExtensions;

@@ -1,5 +1,4 @@
 ﻿using Havit.Services.DirectoryServices.ActiveDirectory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.DirectoryServices.ActiveDirectory;
 
 namespace Havit.Services.Tests.DirectoryServices;
@@ -30,7 +29,7 @@ public class ActiveDirectoryServicesTests
 		Assert.IsNotNull(userInfo.DistinguishedName, "DistinguishedName is null.");
 		Assert.IsNotNull(userInfo.DisplayName, "DisplayName is null.");
 		Assert.IsNotNull(userInfo.EmailAddresses, "EmailAddresses is null.");
-		Assert.IsTrue(userInfo.EmailAddresses.Length > 0, "EmailAddresses contains no email.");
+		Assert.IsNotEmpty(userInfo.EmailAddresses, "EmailAddresses contains no email.");
 		Assert.IsNotNull(userInfo.FirstName, "FirstName is null.");
 		Assert.IsNotNull(userInfo.LastName, "LastName is null.");
 	}

@@ -1,6 +1,5 @@
 ﻿using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Internal;
 
@@ -13,7 +12,7 @@ public class PropertyLoadSequenceResolverTests
 		PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
 		PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Child child) => child.Parent);
 
-		Assert.AreEqual(1, propertiesToLoad.Length);
+		Assert.HasCount(1, propertiesToLoad);
 
 		Assert.AreEqual(typeof(Child), propertiesToLoad[0].SourceType);
 		Assert.AreEqual(typeof(Master), propertiesToLoad[0].TargetType);
@@ -27,7 +26,7 @@ public class PropertyLoadSequenceResolverTests
 		PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
 		PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Child child) => child.Parent.Children.Select(item => item.Parent));
 
-		Assert.AreEqual(3, propertiesToLoad.Length);
+		Assert.HasCount(3, propertiesToLoad);
 
 		Assert.AreEqual(nameof(Child.Parent), propertiesToLoad[0].PropertyName);
 		Assert.AreEqual(typeof(Child), propertiesToLoad[0].SourceType);
@@ -54,7 +53,7 @@ public class PropertyLoadSequenceResolverTests
 		PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
 		PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((HiearchyItem item) => item.Children.Select(item2 => item2.Children.Select(item3 => item3.Children)));
 
-		Assert.AreEqual(3, propertiesToLoad.Length);
+		Assert.HasCount(3, propertiesToLoad);
 
 		Assert.AreEqual(nameof(HiearchyItem.Children), propertiesToLoad[0].PropertyName);
 		Assert.AreEqual(typeof(HiearchyItem), propertiesToLoad[0].SourceType);

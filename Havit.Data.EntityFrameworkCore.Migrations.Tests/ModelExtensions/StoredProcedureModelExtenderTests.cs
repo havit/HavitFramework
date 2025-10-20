@@ -1,12 +1,11 @@
 ﻿using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions.StoredProcedures;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions;
 
 [TestClass]
 public class StoredProcedureModelExtenderTests
 {
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow("CREATE PROCEDURE [dbo].[InvoiceItem_Calculate]", "InvoiceItem_Calculate")]
 	[DataRow("CREATE PROCEDURE dbo.InvoiceItem_Calculate", "InvoiceItem_Calculate")]
 	[DataRow("CREATE PROCEDURE [dbo].InvoiceItem_Calculate", "InvoiceItem_Calculate")]

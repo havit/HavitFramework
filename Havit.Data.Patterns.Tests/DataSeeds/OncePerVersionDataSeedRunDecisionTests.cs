@@ -1,7 +1,6 @@
 ﻿using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Patterns.Tests.DataSeeds;

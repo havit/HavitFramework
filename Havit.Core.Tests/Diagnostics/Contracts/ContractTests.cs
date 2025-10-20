@@ -1,5 +1,4 @@
 ﻿using Havit.Diagnostics.Contracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Diagnostics.Contracts;
 

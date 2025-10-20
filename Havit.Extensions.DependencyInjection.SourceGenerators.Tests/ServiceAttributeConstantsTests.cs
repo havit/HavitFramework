@@ -1,5 +1,4 @@
 ﻿using Havit.Extensions.DependencyInjection.Abstractions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 
@@ -13,11 +12,15 @@ public class ServiceAttributeConstantsTests
 		// noop
 
 		// Act+Assert
-		Assert.AreEqual(typeof(ServiceAttribute).FullName, ServiceAttributeConstants.ServiceAttributeNonGenericFullname);
-		Assert.AreEqual(typeof(ServiceAttribute<>).FullName, ServiceAttributeConstants.ServiceAttributeGeneric1Fullname);
-		Assert.AreEqual(typeof(ServiceAttribute<,>).FullName, ServiceAttributeConstants.ServiceAttributeGeneric2Fullname);
-		Assert.AreEqual(typeof(ServiceAttribute<,,>).FullName, ServiceAttributeConstants.ServiceAttributeGeneric3Fullname);
-		Assert.AreEqual(typeof(ServiceAttribute<,,,>).FullName, ServiceAttributeConstants.ServiceAttributeGeneric4Fullname);
+		// Chceme ověřit, že hodnoty konstant v kódu jsou rovny názvu jednotlivých typů, takže hodnoty expected a actual jsou správně.
+		// Pravidlo MSTEST0017 však neočekává, že by někdo testoval konstantu a proto doporučuje prohození argumentů, což nechceme.
+#pragma warning disable MSTEST0017 // Assertion arguments should be passed in the correct order
+		Assert.AreEqual(expected: typeof(ServiceAttribute).FullName, actual: ServiceAttributeConstants.ServiceAttributeNonGenericFullname);
+		Assert.AreEqual(expected: typeof(ServiceAttribute<>).FullName, actual: ServiceAttributeConstants.ServiceAttributeGeneric1Fullname);
+		Assert.AreEqual(expected: typeof(ServiceAttribute<,>).FullName, actual: ServiceAttributeConstants.ServiceAttributeGeneric2Fullname);
+		Assert.AreEqual(expected: typeof(ServiceAttribute<,,>).FullName, actual: ServiceAttributeConstants.ServiceAttributeGeneric3Fullname);
+		Assert.AreEqual(expected: typeof(ServiceAttribute<,,,>).FullName, actual: ServiceAttributeConstants.ServiceAttributeGeneric4Fullname);
+#pragma warning restore MSTEST0017 // Assertion arguments should be passed in the correct order
 	}
 
 	[TestMethod]
@@ -27,7 +30,12 @@ public class ServiceAttributeConstantsTests
 		// noop
 
 		// Act+Assert
-		Assert.AreEqual(ServiceAttribute.DefaultProfile, ServiceAttributeConstants.DefaultProfile);
+		// Chceme ověřit, že hodnota konstanty v kódu je rovna hodnotě jiné konstanty (ale mezi třídami není vztah,
+		// tak to nelze zapsat v kódu), takže hodnoty expected a actual jsou správně.
+		// Pravidlo MSTEST0032 však neočekává, že by někdo testoval konstanty.
+#pragma warning disable MSTEST0032 // Assertion arguments should be passed in the correct order
+		Assert.AreEqual(expected: ServiceAttribute.DefaultProfile, actual: ServiceAttributeConstants.DefaultProfile);
+#pragma warning restore MSTEST0032 // Assertion arguments should be passed in the correct order
 	}
 
 	[TestMethod]
@@ -37,10 +45,14 @@ public class ServiceAttributeConstantsTests
 		// noop
 
 		// Act+Assert
-		Assert.AreEqual(nameof(ServiceAttributeBase.Lifetime), ServiceAttributeConstants.LifetimePropertyName);
-		Assert.AreEqual(nameof(ServiceAttributeBase.Profile), ServiceAttributeConstants.ProfilePropertyName);
-		Assert.AreEqual(nameof(ServiceAttribute.ServiceType), ServiceAttributeConstants.ServiceTypePropertyName);
-		Assert.AreEqual(nameof(ServiceAttribute.ServiceTypes), ServiceAttributeConstants.ServiceTypesPropertyName);
+		// Chceme ověřit, že hodnoty konstant v kódu jsou rovny názvu jednotlivých hodnot, takže hodnoty expected a actual jsou správně.
+		// Pravidlo MSTEST0032 však neočekává, že by někdo testoval konstanty.
+#pragma warning disable MSTEST0032 // Assertion arguments should be passed in the correct order
+		Assert.AreEqual(expected: nameof(ServiceAttributeBase.Lifetime), actual: ServiceAttributeConstants.LifetimePropertyName);
+		Assert.AreEqual(expected: nameof(ServiceAttributeBase.Profile), actual: ServiceAttributeConstants.ProfilePropertyName);
+		Assert.AreEqual(expected: nameof(ServiceAttribute.ServiceType), actual: ServiceAttributeConstants.ServiceTypePropertyName);
+		Assert.AreEqual(expected: nameof(ServiceAttribute.ServiceTypes), actual: ServiceAttributeConstants.ServiceTypesPropertyName);
+#pragma warning restore MSTEST0017 // Assertion arguments should be passed in the correct order
 	}
 
 	[TestMethod]

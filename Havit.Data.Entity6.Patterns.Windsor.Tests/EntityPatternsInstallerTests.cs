@@ -17,7 +17,6 @@ using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.UnitOfWorks;
 using Havit.Services;
 using Havit.Services.TimeServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity6.Patterns.Windsor.Tests;
 

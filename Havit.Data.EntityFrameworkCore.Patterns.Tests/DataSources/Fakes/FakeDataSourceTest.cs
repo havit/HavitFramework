@@ -17,7 +17,7 @@ public class FakeDataSourceTest
 		List<Employee> resultData = dataSource.Data.ToList();
 
 		// Assert
-		Assert.AreEqual(0, resultData.Count);
+		Assert.IsEmpty(resultData);
 	}
 
 	[TestMethod]
@@ -79,7 +79,7 @@ public class FakeDataSourceTest
 		List<Employee> resultData = dataSource.Data.ToList();
 
 		// Assert
-		Assert.AreEqual(0, resultData.Count);
+		Assert.IsEmpty(resultData);
 	}
 
 	[TestMethod]
@@ -92,7 +92,7 @@ public class FakeDataSourceTest
 		List<Employee> resultData = await dataSource.Data.ToListAsync();
 
 		// Assert
-		Assert.AreEqual(0, resultData.Count);
+		Assert.IsEmpty(resultData);
 	}
 
 }

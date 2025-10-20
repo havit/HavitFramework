@@ -3,7 +3,6 @@ using Havit.Data.EntityFrameworkCore.BusinessLayer.ExtendedProperties;
 using Havit.Data.EntityFrameworkCore.BusinessLayer.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.Metadata.Conventions;
 
@@ -75,7 +74,7 @@ public class CollectionAttributeAccessorTests
 
 		List<string> properties = new CollectionAttributeAccessor(navigation).ParseSortingProperties();
 
-		Assert.AreEqual(1, properties.Count);
+		Assert.HasCount(1, properties);
 
 		// "Count" is property on Child (which defines sorting of the collection), not List<T>.Count!
 		Assert.AreEqual("Count", properties[0]);

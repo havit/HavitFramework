@@ -1,18 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Tests;
+﻿namespace Havit.Tests;
 
 [TestClass]
 public class DateTimeExtTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DateTimeExt_Min_ThrowExceptionForEmptyParameters()
 	{
-		// Act
-		DateTimeExt.Min();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			DateTimeExt.Min();
+		});
 	}
 
 	[TestMethod]
@@ -25,13 +24,14 @@ public class DateTimeExtTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DateTimeExt_Max_ThrowExceptionForEmptyParameters()
 	{
-		// Act
-		DateTimeExt.Max();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			DateTimeExt.Max();
+		});
 	}
 
 	[TestMethod]

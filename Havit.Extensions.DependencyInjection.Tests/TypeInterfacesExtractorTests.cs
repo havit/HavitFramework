@@ -1,5 +1,4 @@
 ﻿using Havit.Extensions.DependencyInjection.Tests.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Extensions.DependencyInjection.Tests;
 
@@ -15,10 +14,10 @@ public class TypeInterfacesExtractorTests
 		List<Type> interfacesToRegister3 = TypeInterfacesExtractor.GetInterfacesToRegister(typeof(MyStringService<>)).ToList();
 
 		// Assert
-		Assert.IsTrue(interfacesToRegister1.Contains(typeof(IService)), nameof(IService));
-		Assert.IsTrue(interfacesToRegister1.Contains(typeof(IFirstService)), nameof(IFirstService));
-		Assert.IsFalse(interfacesToRegister1.Contains(typeof(ISecondService)), nameof(ISecondService));
-		Assert.IsTrue(interfacesToRegister2.Contains(typeof(IGenericService<,>)), nameof(IGenericService<object, object>));
+		Assert.Contains(typeof(IService), interfacesToRegister1, nameof(IService));
+		Assert.Contains(typeof(IFirstService), interfacesToRegister1, nameof(IFirstService));
+		Assert.DoesNotContain(typeof(ISecondService), interfacesToRegister1, nameof(ISecondService));
+		Assert.Contains(typeof(IGenericService<,>), interfacesToRegister2, nameof(IGenericService<object, object>));
 		Assert.IsFalse(interfacesToRegister3.Any(), nameof(MyStringService<object>));
 	}
 }

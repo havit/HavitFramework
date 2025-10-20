@@ -2,7 +2,6 @@
 using Castle.MicroKernel.Handlers;
 using Castle.Windsor;
 using Castle.Windsor.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
 
 namespace Havit.Data.Entity6.Patterns.Windsor.Tests.TestHelpers;

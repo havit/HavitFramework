@@ -4,7 +4,6 @@ using Havit.Data.Patterns.Localizations.Internal;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.Tests.Localizations.Model;
 using Havit.Model.Localizations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Patterns.Tests.Localizations;

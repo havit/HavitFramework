@@ -2,7 +2,6 @@
 using Havit.Data.Entity.Patterns.Tests.DataEntries.DataSources;
 using Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
 using Havit.Data.Patterns.DataEntries;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataEntries;
 
@@ -29,31 +28,33 @@ public class DataEntrySymbolServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException))]
 	public void DbDataEntrySymbolService_GetEntryId_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
 		FakeSupportedClassDataSource fakeDataSource = new FakeSupportedClassDataSource();
 		DataEntrySymbolService<SupportedClass, int> dbDataEntrySymbolService = new DataEntrySymbolService<SupportedClass, int>(new DataEntrySymbolStorage<SupportedClass, int>(), fakeDataSource);
 
-		// Act
-		dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			dbDataEntrySymbolService.GetEntryId(SupportedClass.Entry.First);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(NotSupportedException))]
 	[SuppressMessage("SonicLint", "S1848", Justification = "Pravidlo říká, nemáme vytvořit instanci, kterou pak nepoužijeme. Zde však testujeme vytvoření instance a k ničemu dalšímu ji nepotřebujeme.")]
 	public void DbDataEntrySymbolService_GetEntryId_ThrowsExceptionWhenNotSupported()
 	{
 		// Arrange
 		FakeNotSupportedClassDataSource fakeDataSource = new FakeNotSupportedClassDataSource();
 
-		// Act
-		new DataEntrySymbolService<NotSupportedClass, int>(new DataEntrySymbolStorage<NotSupportedClass, int>(), fakeDataSource);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<NotSupportedException>(() =>
+		{
+			// Act
+			new DataEntrySymbolService<NotSupportedClass, int>(new DataEntrySymbolStorage<NotSupportedClass, int>(), fakeDataSource);
+		});
 	}
 
 	[TestMethod]

@@ -1,7 +1,6 @@
 ﻿using Havit.Services.Caching;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Net8.Tests.Caching;
 

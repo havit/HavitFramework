@@ -3,7 +3,6 @@ using Havit.Business.Query;
 using Havit.Business.TestExtensions;
 using Havit.BusinessLayerTest;
 using Havit.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.Tests;
 
@@ -14,13 +13,19 @@ public class BusinessObject_DisconnectedObjectsTests
 	/// Testuje, že není možné vytvořit instanci disconnected objektů těch objektů, které již jsou v identity mapě.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void BusinessObject_CreateDisconnectedObject_CannotBeCreatedWhenExistsInIdentityMap()
 	{
+		// Arrange
 		using (new IdentityMapScope())
 		{
 			Subjekt.GetObject(1);
-			Subjekt.CreateDisconnectedObject(1);
+
+			// Assert
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
+			{
+				// Act
+				Subjekt.CreateDisconnectedObject(1);
+			});
 		}
 	}
 
@@ -178,13 +183,19 @@ public class BusinessObject_DisconnectedObjectsTests
 	/// Testuje, že zavolání metody SetProperty není možné na Ghost objektu.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void BusinesObject_SetPropertyExtensionMethod_ThrowsExceptionForGhostObject()
 	{
+		// Arrange
 		using (new IdentityMapScope())
 		{
 			Subjekt subjekt = Subjekt.GetObject(-999);
-			subjekt.SetProperty(item => item.Nazev, "AAA");
+
+			// Assert
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
+			{
+				// Act
+				subjekt.SetProperty(item => item.Nazev, "AAA");
+			});
 		}
 	}
 

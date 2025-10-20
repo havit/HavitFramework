@@ -1,6 +1,5 @@
 ﻿using Havit.Collections;
 using Havit.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq.Expressions;
 
 namespace Havit.Tests.Linq;
@@ -19,8 +18,8 @@ public class QueryableExtTests
 		List<int> result2 = numbers.WhereIf(false, i => i > 0).ToList();
 
 		// Assert
-		Assert.AreEqual(0, result1.Count);
-		Assert.AreEqual(1, result2.Count);
+		Assert.IsEmpty(result1);
+		Assert.HasCount(1, result2);
 	}
 
 	[TestMethod]

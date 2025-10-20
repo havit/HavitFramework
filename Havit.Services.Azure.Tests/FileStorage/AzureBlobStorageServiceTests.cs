@@ -5,7 +5,6 @@ using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Azure.Tests.FileStorage;
 

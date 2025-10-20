@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Tests.Collections.Generic;
+﻿namespace Havit.Tests.Collections.Generic;
 
 [TestClass]
 public class LookupTests

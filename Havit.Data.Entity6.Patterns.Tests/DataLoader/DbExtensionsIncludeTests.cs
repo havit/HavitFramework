@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
 using Havit.Data.Entity.Patterns.Tests.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader;
 

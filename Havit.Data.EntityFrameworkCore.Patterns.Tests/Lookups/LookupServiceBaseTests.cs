@@ -78,7 +78,6 @@ public class LookupServiceBaseTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void LookupServiceBase_GetEntityByLookupKey_ThrowsExceptionWhenDataContainsDuplicity()
 	{
 		// Arrange
@@ -88,24 +87,27 @@ public class LookupServiceBaseTests
 		List<Uzivatel> uzivatele = new List<Uzivatel> { uzivatel1, uzivatel2 };
 		UzivatelLookupService uzivatelLookupService = CreateLookupService(uzivatele);
 
-		// Act
-		uzivatelLookupService.GetUzivatelByEmail(uzivatel2.Email);
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			uzivatelLookupService.GetUzivatelByEmail(uzivatel2.Email);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Data.Patterns.Exceptions.ObjectNotFoundException))]
 	public void LookupServiceBase_GetEntityByLookupKey_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
 		UzivatelLookupService uzivatelLookupService = CreateLookupService(new List<Uzivatel>());
 		uzivatelLookupService.SetThrowExceptionWhenNotFound(true);
 
-		// Act
-		uzivatelLookupService.GetUzivatelByEmail("email@havit.cz"); // tento email neevidujeme
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			uzivatelLookupService.GetUzivatelByEmail("email@havit.cz"); // tento email neevidujeme
+		});
 	}
 
 	[TestMethod]
@@ -238,17 +240,18 @@ public class LookupServiceBaseTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Data.Patterns.Exceptions.ObjectNotFoundException))]
 	public async Task LookupServiceBase_GetEntityByLookupKeyAsync_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
 		UzivatelLookupService uzivatelLookupService = CreateLookupService(new List<Uzivatel>());
 		uzivatelLookupService.SetThrowExceptionWhenNotFound(true);
 
-		// Act
-		await uzivatelLookupService.GetUzivatelByEmailAsync("email@havit.cz"); // tento email neevidujeme
-
-		// Assert by method attribute
+		// Assert
+		await Assert.ThrowsExactlyAsync<Data.Patterns.Exceptions.ObjectNotFoundException>(async () =>
+		{
+			// Act
+			await uzivatelLookupService.GetUzivatelByEmailAsync("email@havit.cz"); // tento email neevidujeme
+		});
 	}
 
 	[TestMethod]
@@ -277,22 +280,23 @@ public class LookupServiceBaseTests
 		List<Uzivatel> result = uzivatelLookupService.GetUzivateleByEmails(new[] { uzivatel2.Email });
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 		Assert.AreSame(uzivatel2, result[0]);
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Data.Patterns.Exceptions.ObjectNotFoundException))]
 	public void LookupServiceBase_GetEntitiesByLookupKeys_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
 		UzivatelLookupService uzivatelLookupService = CreateLookupService(new List<Uzivatel>());
 		uzivatelLookupService.SetThrowExceptionWhenNotFound(true);
 
-		// Act
-		uzivatelLookupService.GetUzivateleByEmails(new[] { "email1@havit.cz" });
-
 		// Assert
+		Assert.ThrowsExactly<Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			uzivatelLookupService.GetUzivateleByEmails(new[] { "email1@havit.cz" });
+		});
 	}
 
 	[TestMethod]
@@ -306,7 +310,7 @@ public class LookupServiceBaseTests
 		var result = uzivatelLookupService.GetUzivateleByEmails(new[] { "email1@havit.cz" });
 
 		// Assert
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -324,22 +328,23 @@ public class LookupServiceBaseTests
 		List<Uzivatel> result = await uzivatelLookupService.GetUzivateleByEmailsAsync(new[] { uzivatel2.Email });
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 		Assert.AreSame(uzivatel2, result[0]);
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Data.Patterns.Exceptions.ObjectNotFoundException))]
 	public async Task LookupServiceBase_GetEntitiesByLookupKeysAsync_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
 		UzivatelLookupService uzivatelLookupService = CreateLookupService(new List<Uzivatel>());
 		uzivatelLookupService.SetThrowExceptionWhenNotFound(true);
 
-		// Act
-		await uzivatelLookupService.GetUzivateleByEmailsAsync(new[] { "email1@havit.cz" });
-
 		// Assert
+		await Assert.ThrowsExactlyAsync<Data.Patterns.Exceptions.ObjectNotFoundException>(async () =>
+		{
+			// Act
+			await uzivatelLookupService.GetUzivateleByEmailsAsync(new[] { "email1@havit.cz" });
+		});
 	}
 
 	[TestMethod]
@@ -353,7 +358,7 @@ public class LookupServiceBaseTests
 		var result = await uzivatelLookupService.GetUzivateleByEmailsAsync(new[] { "email1@havit.cz" });
 
 		// Assert
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	private static UzivatelLookupService CreateLookupService(List<Uzivatel> uzivatele)

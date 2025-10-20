@@ -1,5 +1,4 @@
 ﻿using Havit.Web.Management;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Net;
@@ -78,7 +77,6 @@ public class SmtpWebEventProviderTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ConfigurationErrorsException))]
 	public void SmtpWebEventProvider_Initialize_SmtpUsernameWithoutSmtpServer()
 	{
 		// Arrange
@@ -88,14 +86,15 @@ public class SmtpWebEventProviderTests
 		};
 		SmtpWebEventProvider smtpWebEventProvider = new SmtpWebEventProvider();
 
-		// Act
-		smtpWebEventProvider.Initialize("name", configuration);
-
-		// Assert - exception by method attribute
+		// Assert
+		Assert.ThrowsExactly<ConfigurationErrorsException>(() =>
+		{
+			// Act
+			smtpWebEventProvider.Initialize("name", configuration);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ConfigurationErrorsException))]
 	public void SmtpWebEventProvider_Initialize_SmtpPortWithoutSmtpServer()
 	{
 		// Arrange
@@ -105,14 +104,15 @@ public class SmtpWebEventProviderTests
 		};
 		SmtpWebEventProvider smtpWebEventProvider = new SmtpWebEventProvider();
 
-		// Act
-		smtpWebEventProvider.Initialize("name", configuration);
-
-		// Assert - exception by method attribute
+		// Assert
+		Assert.ThrowsExactly<ConfigurationErrorsException>(() =>
+		{
+			// Act
+			smtpWebEventProvider.Initialize("name", configuration);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ConfigurationErrorsException))]
 	public void SmtpWebEventProvider_Initialize_SmtpEnableSslWithoutSmtpServer()
 	{
 		// Arrange
@@ -122,14 +122,15 @@ public class SmtpWebEventProviderTests
 		};
 		SmtpWebEventProvider smtpWebEventProvider = new SmtpWebEventProvider();
 
-		// Act
-		smtpWebEventProvider.Initialize("name", configuration);
-
-		// Assert - exception by method attribute
+		// Assert
+		Assert.ThrowsExactly<ConfigurationErrorsException>(() =>
+		{
+			// Act
+			smtpWebEventProvider.Initialize("name", configuration);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ConfigurationErrorsException))]
 	public void SmtpWebEventProvider_Initialize_InvalidValue()
 	{
 		// Arrange
@@ -139,10 +140,12 @@ public class SmtpWebEventProviderTests
 		};
 		SmtpWebEventProvider smtpWebEventProvider = new SmtpWebEventProvider();
 
-		// Act
-		smtpWebEventProvider.Initialize("name", configuration);
-
-		// Assert - exception by method attribute
+		// Assert
+		Assert.ThrowsExactly<ConfigurationErrorsException>(() =>
+		{
+			// Act
+			smtpWebEventProvider.Initialize("name", configuration);
+		});
 	}
 
 	[TestMethod]
@@ -168,7 +171,7 @@ public class SmtpWebEventProviderTests
 		Assert.AreEqual("username", ((NetworkCredential)smtpClient.Credentials).UserName);
 		Assert.AreEqual("password", ((NetworkCredential)smtpClient.Credentials).Password);
 		Assert.AreEqual(587, smtpClient.Port);
-		Assert.AreEqual(true, smtpClient.EnableSsl);
+		Assert.IsTrue(smtpClient.EnableSsl);
 		Assert.AreEqual(SmtpDeliveryMethod.Network, smtpClient.DeliveryMethod);
 	}
 

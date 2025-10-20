@@ -13,7 +13,7 @@ public class PropertyLoadSequenceResolverIncludingDeletedFilteringSubstitutionTe
 		PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution resolver = new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution();
 		PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Master item) => item.Children);
 
-		Assert.AreEqual(1, propertiesToLoad.Length);
+		Assert.HasCount(1, propertiesToLoad);
 
 		Assert.AreEqual(typeof(Master), propertiesToLoad[0].SourceType);
 		Assert.AreEqual(nameof(Master.ChildrenIncludingDeleted), propertiesToLoad[0].PropertyName);

@@ -13,7 +13,7 @@ public class PropertyLoadSequenceResolverTests
 		PropertyLoadSequenceResolver resolver = new PropertyLoadSequenceResolver();
 		PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Child child) => child.Parent.Children);
 
-		Assert.AreEqual(2, propertiesToLoad.Length);
+		Assert.HasCount(2, propertiesToLoad);
 
 		Assert.AreEqual(typeof(Child), propertiesToLoad[0].SourceType);
 		Assert.AreEqual(nameof(Child.Parent), propertiesToLoad[0].PropertyName);

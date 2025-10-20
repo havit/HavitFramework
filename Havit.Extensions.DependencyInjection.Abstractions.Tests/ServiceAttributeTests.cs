@@ -1,7 +1,6 @@
 ﻿using Havit.Extensions.DependencyInjection.Abstractions;
 using Havit.Extensions.DependencyInjection.Abstractions.Tests.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Extensions.DependencyInjection.Tests;
 
@@ -9,31 +8,23 @@ namespace Havit.Extensions.DependencyInjection.Tests;
 public class ServiceAttributeTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void ServiceAttribute_CannotHaveBothServiceTypeAndServiceTypes()
 	{
-		// Arrange
-		// noop
-
-		// Act
-		new ServiceAttribute { ServiceType = typeof(ServiceAttributeTests), ServiceTypes = new[] { typeof(ServiceAttributeTests) } };
-
-		// Assert
-		// exception was thrown
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			new ServiceAttribute { ServiceType = typeof(ServiceAttributeTests), ServiceTypes = new[] { typeof(ServiceAttributeTests) } };
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException), AllowDerivedTypes = false)]
 	public void ServiceAttribute_CannotSetEmptyServiceTypes()
 	{
-		// Arrange
-		// noop
-
-		// Act
-		new ServiceAttribute { ServiceTypes = new Type[] { } };
-
-		// Assert
-		// exception was thrown
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			new ServiceAttribute { ServiceTypes = new Type[] { } };
+		});
 	}
 
 

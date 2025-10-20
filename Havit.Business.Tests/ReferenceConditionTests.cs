@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Business.Query;
+﻿using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 namespace Havit.Business.Tests;
 
@@ -16,7 +15,7 @@ public class ReferenceConditionTests
 		qp.Conditions.Add(ReferenceCondition.CreateEquals(operand, id));
 		SubjektCollection subjekty = Subjekt.GetList(qp);
 
-		Assert.AreEqual(subjekty.Count, 0);
+		Assert.IsEmpty(subjekty);
 	}
 
 	/// <summary>

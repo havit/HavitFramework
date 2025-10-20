@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
+﻿namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 
 public partial class ServiceRegistrationsTests
 {

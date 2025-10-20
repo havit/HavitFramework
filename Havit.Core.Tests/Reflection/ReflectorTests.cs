@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Tests.Reflection;
+﻿namespace Havit.Tests.Reflection;
 
 [TestClass]
 public class ReflectorTests

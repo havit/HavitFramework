@@ -1,6 +1,5 @@
 ﻿using Havit.Extensions.DependencyInjection.Tests.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Extensions.DependencyInjection.Tests;
 
@@ -39,17 +38,17 @@ public class ServiceCollectionExtensionsTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void ServiceCollectionExtensions_AddByServiceAttribute_DoesNotAddsServiceWithNoInterface()
 	{
 		// Arrange
 		ServiceCollection services = new ServiceCollection();
 
-		// Act
-		services.AddByServiceAttribute(typeof(NoInterfaceService).Assembly, nameof(NoInterfaceService));
-
 		// Assert
-		// assert: exception was thrown
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			services.AddByServiceAttribute(typeof(NoInterfaceService).Assembly, nameof(NoInterfaceService));
+		});
 	}
 
 	[TestMethod]
@@ -106,7 +105,6 @@ public class ServiceCollectionExtensionsTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void ServiceCollectionExtensions_AddByServiceAttribute_ClassWithExplicitServiceTypeDoesNotRegisterBaseInterfaces()
 	{
 		// Arrange
@@ -114,10 +112,12 @@ public class ServiceCollectionExtensionsTests
 
 		// Act
 		services.AddByServiceAttribute(typeof(MyFirstAndSecondService).Assembly, nameof(MyFirstAndSecondService));
-		services.BuildServiceProvider().GetRequiredService<IService>();
 
 		// Assert
-		// assert: exception was thrown
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			services.BuildServiceProvider().GetRequiredService<IService>();
+		});
 	}
 
 	[TestMethod]
@@ -156,19 +156,19 @@ public class ServiceCollectionExtensionsTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void ServiceCollectionExtensions_AddByServiceAttribute_DoesNotRegisterCloseGenericServices()
 	{
 
 		// Arrange
 		ServiceCollection services = new ServiceCollection();
 
-		// Act
-		// StringService is an interface implementing IGenericService<string>
-		services.AddByServiceAttribute(typeof(MyStringService<object>).Assembly, nameof(MyStringService<object>));
-
 		// Assert
-		// assert: exception was thrown
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			// StringService is an interface implementing IGenericService<string>
+			services.AddByServiceAttribute(typeof(MyStringService<object>).Assembly, nameof(MyStringService<object>));
+		});
 	}
 
 	[TestMethod]

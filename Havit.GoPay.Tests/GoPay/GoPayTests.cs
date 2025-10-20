@@ -4,7 +4,6 @@ using Havit.GoPay;
 using Havit.GoPay.Codebooks;
 using Havit.GoPay.DataObjects;
 using Havit.GoPay.DataObjects.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace Havit.Tests.GoPay;
@@ -12,7 +11,7 @@ namespace Havit.Tests.GoPay;
 [TestClass]
 public class GoPayTests
 {
-	[Ignore]
+	//[Ignore]
 	//[TestMethod]   TestsForLocalDebugging?
 	public void GoPayClient_GetTestToken()
 	{
@@ -65,9 +64,9 @@ public class GoPayTests
 		mockHttp.VerifyNoOutstandingExpectation();
 
 		Assert.IsFalse(response.HasErrors);
-		Assert.IsTrue(!String.IsNullOrEmpty(response.AccessToken));
-		Assert.IsTrue(response.TokenExpiresInSeconds > 0);
-		Assert.IsTrue(!String.IsNullOrEmpty(response.TokenType));
+		Assert.IsFalse(String.IsNullOrEmpty(response.AccessToken));
+		Assert.IsGreaterThan(0, response.TokenExpiresInSeconds);
+		Assert.IsFalse(String.IsNullOrEmpty(response.TokenType));
 	}
 
 	[TestMethod]
@@ -233,7 +232,7 @@ public class GoPayTests
 		mockHttp.VerifyNoOutstandingExpectation();
 
 		Assert.IsFalse(response.HasErrors);
-		Assert.IsTrue(response.Recurrence != null);
+		Assert.IsNotNull(response.Recurrence);
 		Assert.AreEqual(GoPayRecurrenceState.Requested, response.Recurrence.State);
 	}
 

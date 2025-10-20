@@ -104,7 +104,6 @@ public class SoftDeleteManagerTest
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(NotSupportedException))]
 	public void SoftDeleteManager_SetDeleted_ThrowsExceptionOnNotSopportedType()
 	{
 		// Arrange
@@ -112,14 +111,15 @@ public class SoftDeleteManagerTest
 		SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
 		object unsupportedType = new object();
 
-		// Act
-		softDeleteManager.SetDeleted(unsupportedType);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<NotSupportedException>(() =>
+		{
+			// Act
+			softDeleteManager.SetDeleted(unsupportedType);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(NotSupportedException))]
 	public void SoftDeleteManager_SetNotDeleted_ThrowsExceptionOnNotSopportedType()
 	{
 		// Arrange
@@ -127,10 +127,12 @@ public class SoftDeleteManagerTest
 		SoftDeleteManager softDeleteManager = new SoftDeleteManager(mockTimeSevice.Object);
 		object unsupportedType = new object();
 
-		// Act
-		softDeleteManager.SetNotDeleted(unsupportedType);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<NotSupportedException>(() =>
+		{
+			// Act
+			softDeleteManager.SetNotDeleted(unsupportedType);
+		});
 	}
 
 	/// <summary>

@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.TestHelpers.FileStorage;
@@ -633,7 +632,7 @@ public static class FileStorageServiceTestHelpers
 
 		// Assert
 		Assert.IsNotNull(files);
-		Assert.IsTrue(!files.Any());
+		Assert.IsFalse(files.Any());
 	}
 
 	public static async Task FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(IFileStorageService fileStorageService)
@@ -644,7 +643,7 @@ public static class FileStorageServiceTestHelpers
 		List<FileInfo> files = await fileStorageService.EnumerateFilesAsync("NONEXISTING_FOLDER\\*").ToListAsync();
 
 		// Assert
-		Assert.IsTrue(!files.Any());
+		Assert.IsFalse(files.Any());
 	}
 
 	public static void FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)

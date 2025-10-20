@@ -82,7 +82,7 @@ public class DbDataLoader_Chain_Tests : DbDataLoaderTestsBase
 
 		// Assert
 		Assert.IsNotNull(loginAccount.Memberships, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
-		Assert.AreEqual(1, loginAccount.Memberships.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+		Assert.HasCount(1, loginAccount.Memberships, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
 		Assert.IsNotNull(loginAccount.Memberships[0].Role, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.Role.");
 	}
 
@@ -107,7 +107,7 @@ public class DbDataLoader_Chain_Tests : DbDataLoaderTestsBase
 
 		// Assert
 		Assert.IsNotNull(loginAccount.Memberships, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
-		Assert.AreEqual(1, loginAccount.Memberships.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+		Assert.HasCount(1, loginAccount.Memberships, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
 		Assert.IsNotNull(loginAccount.Memberships[0].Role, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.Role.");
 	}
 }

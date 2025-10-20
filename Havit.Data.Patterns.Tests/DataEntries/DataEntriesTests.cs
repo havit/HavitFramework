@@ -2,7 +2,6 @@
 using Havit.Data.Patterns.DataEntries;
 using Havit.Data.Patterns.Repositories;
 using Havit.Data.Patterns.Tests.DataEntries.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Patterns.Tests.DataEntries;

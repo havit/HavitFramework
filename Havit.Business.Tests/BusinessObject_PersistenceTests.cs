@@ -1,7 +1,6 @@
 ﻿using System.Data.Common;
 using Havit.BusinessLayerTest;
 using Havit.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.Tests;
 
@@ -9,12 +8,17 @@ namespace Havit.Business.Tests;
 public class BusinessObject_PersistenceTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void BusinessObject_Load_ThrowsExceptionForNotExistingObject()
 	{
+		// Arrange
 		using (new IdentityMapScope())
 		{
-			Role.GetObject(-999).Load();
+			// Assert
+			Assert.ThrowsExactly<InvalidOperationException>(() =>
+			{
+				// Act
+				Role.GetObject(999).Load();
+			});
 		}
 	}
 

@@ -4,7 +4,6 @@ using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
 using Havit.Data.Entity.Patterns.Tests.Helpers;
 using Havit.Data.Patterns.DataLoaders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader;
@@ -62,8 +61,8 @@ public class DbDataLoaderTests
 		dataLoader.Load(child, item => item.Parent);
 
 		// Assert
-		Assert.AreEqual(1, dbContext.Master.Local.Count, "DbDataLoader načetl zbytečné objekty Master.");
-		Assert.AreEqual(1, dbContext.Child.Local.Count, "DbDataLoader načetl zbytečné objekty Child.");
+		Assert.HasCount(1, dbContext.Master.Local, "DbDataLoader načetl zbytečné objekty Master.");
+		Assert.HasCount(1, dbContext.Child.Local, "DbDataLoader načetl zbytečné objekty Child.");
 	}
 
 	[TestMethod]
@@ -93,14 +92,14 @@ public class DbDataLoaderTests
 		Child child = dbContext.Child.Where(item => item.ParentId == master.Id).First();
 
 		Assert.IsNotNull(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children je (částečně) initializovaná.");
-		Assert.AreEqual(1, master.Children.Count, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children obsahuje jeden prvek.");
+		Assert.HasCount(1, master.Children, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children obsahuje jeden prvek.");
 
 		// Act
 		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 		dataLoader.Load(master, item => item.Children);
 
 		// Assert
-		Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
+		Assert.HasCount(5, master.Children, "DbDataLoader nenačetl objekty do master.Children.");
 	}
 
 	[TestMethod]
@@ -118,7 +117,7 @@ public class DbDataLoaderTests
 
 		// Assert
 		Assert.IsNotNull(master.Children, "DbDataLoader nenačetl hodnotu pro master.Children.");
-		Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
+		Assert.HasCount(5, master.Children, "DbDataLoader nenačetl objekty do master.Children.");
 	}
 
 	[TestMethod]
@@ -136,7 +135,7 @@ public class DbDataLoaderTests
 
 		// Assert
 		Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
-		Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+		Assert.HasCount(1, loginAccount.Roles, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
 	}
 
 	[TestMethod]
@@ -155,7 +154,7 @@ public class DbDataLoaderTests
 
 		// Assert
 		Assert.IsNotNull(master.Children, "DbDataLoader nenačetl hodnotu pro master.Children.");
-		Assert.AreEqual(5, master.Children.Count, "DbDataLoader nenačetl objekty do master.Children.");
+		Assert.HasCount(5, master.Children, "DbDataLoader nenačetl objekty do master.Children.");
 	}
 
 	[TestMethod]
@@ -173,7 +172,7 @@ public class DbDataLoaderTests
 
 		// Assert
 		Assert.IsNotNull(loginAccount.Roles, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");
-		Assert.AreEqual(1, loginAccount.Roles.Count, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
+		Assert.HasCount(1, loginAccount.Roles, "DbDataLoader nenačetl objekty do loginAccount.Roles.");
 	}
 
 	[TestMethod]
@@ -190,8 +189,8 @@ public class DbDataLoaderTests
 		dataLoader.Load(master, item => item.Children);
 
 		// Assert
-		Assert.AreEqual(1, dbContext.Master.Local.Count, "DbDataLoader načetl zbytečné objekty Master.");
-		Assert.AreEqual(5, dbContext.Child.Local.Count, "DbDataLoader načetl zbytečné objekty Child.");
+		Assert.HasCount(1, dbContext.Master.Local, "DbDataLoader načetl zbytečné objekty Master.");
+		Assert.HasCount(5, dbContext.Child.Local, "DbDataLoader načetl zbytečné objekty Child.");
 	}
 
 	[TestMethod]
@@ -208,8 +207,8 @@ public class DbDataLoaderTests
 		dataLoader.Load(loginAccount, item => item.Roles);
 
 		// Assert
-		Assert.AreEqual(1, dbContext.LoginAccount.Local.Count, "DbDataLoader načetl zbytečné objekty LoginAccount.");
-		Assert.AreEqual(1, dbContext.Role.Local.Count, "DbDataLoader načetl zbytečné objekty Role.");
+		Assert.HasCount(1, dbContext.LoginAccount.Local, "DbDataLoader načetl zbytečné objekty LoginAccount.");
+		Assert.HasCount(1, dbContext.Role.Local, "DbDataLoader načetl zbytečné objekty Role.");
 	}
 
 	[TestMethod]
@@ -328,9 +327,9 @@ public class DbDataLoaderTests
 
 		// Assert
 		Assert.IsNotNull(hiearchyItem.Children);
-		Assert.AreEqual(3, hiearchyItem.Children.Count);
-		Assert.AreEqual(3, hiearchyItem.Children.First().Children.Count);
-		Assert.AreEqual(3, hiearchyItem.Children.First().Children.First().Children.Count);
+		Assert.HasCount(3, hiearchyItem.Children);
+		Assert.HasCount(3, hiearchyItem.Children.First().Children);
+		Assert.HasCount(3, hiearchyItem.Children.First().Children.First().Children);
 	}
 
 	[TestMethod]
@@ -547,17 +546,18 @@ public class DbDataLoaderTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DbDataLoader_Load_ThrowsExceptionForNontrackedObjects()
 	{
 		// Arrange
 		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
 		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-		// Act
-		dataLoader.Load(new Child() /* nontracked object */, item => item.Parent);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			dataLoader.Load(new Child() /* nontracked object */, item => item.Parent);
+		});
 	}
 
 	private static void SeedOneToManyTestData()

@@ -3,7 +3,6 @@ using System.Data.Entity.Infrastructure;
 using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Tests;
 
@@ -46,7 +45,7 @@ public class DbContextDatabaseTests
 			Master master = query.Single();
 
 			// Assert
-			Assert.IsTrue(dbContext.Entry(master).State == EntityState.Unchanged); // je trackovaný
+			Assert.AreEqual(EntityState.Unchanged, dbContext.Entry(master).State); // je trackovaný
 		}
 	}
 

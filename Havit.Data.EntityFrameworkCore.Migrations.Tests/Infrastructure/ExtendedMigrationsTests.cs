@@ -2,7 +2,6 @@
 using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure;
 
@@ -40,7 +39,7 @@ public class ExtendedMigrationsTests
 
 			var generatorTypes = dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.ToArray();
 
-			Assert.AreEqual(2, generatorTypes.Length);
+			Assert.HasCount(2, generatorTypes);
 
 			CollectionAssert.Contains(generatorTypes, typeof(FirstMigrationOperationSqlGenerator));
 			CollectionAssert.Contains(generatorTypes, typeof(SecondMigrationOperationSqlGenerator));

@@ -2,7 +2,6 @@
 using Havit.Data.Patterns.Localizations;
 using Havit.Data.Patterns.Tests.Localizations.Model;
 using Havit.Model.Localizations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Patterns.Tests.Localizations;
@@ -43,7 +42,6 @@ public class LocalizationServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void LocalizationService_GetLocalization_ThrowsExceptionWhenLocalizationsNotLoaded()
 	{
 		// Arrange
@@ -59,10 +57,12 @@ public class LocalizationServiceTests
 			Localizations = null
 		};
 
-		// Act
-		localizationService.GetLocalization(localizedEntity, language);
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			localizationService.GetLocalization(localizedEntity, language);
+		});
 	}
 
 	[TestMethod]

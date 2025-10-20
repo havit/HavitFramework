@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions;
 
@@ -31,7 +30,7 @@ public class ViewEndToEndTests
 			var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", procedure));
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				procedure + Eol,
 				migrations[0].CommandText);
@@ -62,7 +61,7 @@ public class ViewEndToEndTests
 			var target = new MigrationsEndToEndTestDbContext<DummyTarget>(builder => builder.HasAnnotation("View:GetTables", newProcedure));
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				newProcedureAlter + Eol,
 				migrations[0].CommandText);
@@ -91,7 +90,7 @@ public class ViewEndToEndTests
 			var target = new MigrationsEndToEndTestDbContext<DummyTarget>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				"DROP VIEW [GetTables]" + Eol,
 				migrations[0].CommandText);

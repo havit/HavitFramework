@@ -1,5 +1,4 @@
 ﻿using Havit.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Threading;
 
@@ -36,14 +35,14 @@ public class CriticalSectionTests
 		CriticalSection<int> criticalSection = new CriticalSection<int>();
 
 		// Precondition
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count);
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys);
 
 		// Act
 		Parallel.For(0, 1000, i =>
 		{
 			criticalSection.ExecuteAction(1, () =>
 			{
-				Assert.AreEqual(1, criticalSection.CriticalSectionLocks.Keys.Count); // Assert
+				Assert.HasCount(1, criticalSection.CriticalSectionLocks.Keys); // Assert
 			});
 		});
 	}
@@ -58,7 +57,7 @@ public class CriticalSectionTests
 		string lockValue2 = "abc".ToUpper();
 
 		// Preconditions
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count);
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys);
 		Assert.AreNotSame(lockValue1, lockValue2);
 		Assert.AreEqual(lockValue1, lockValue2);
 
@@ -72,7 +71,7 @@ public class CriticalSectionTests
 		// Cleanup
 		criticalSection.ReleaseCriticalSectionLock(lockValue1, lock1);
 		criticalSection.ReleaseCriticalSectionLock(lockValue2, lock2);
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count);
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys);
 	}
 
 	[TestMethod]
@@ -82,13 +81,13 @@ public class CriticalSectionTests
 		CriticalSection<int> criticalSection = new CriticalSection<int>();
 
 		// Precondition
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count, "Precondition failed.");
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys, "Precondition failed.");
 
 		// Act
 		criticalSection.ExecuteAction(1, () => { });
 
 		// Assert
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count); // dojde k vyčištění?
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys); // dojde k vyčištění?
 	}
 
 	[TestMethod]
@@ -98,13 +97,13 @@ public class CriticalSectionTests
 		CriticalSection<int> criticalSection = new CriticalSection<int>();
 
 		// Precondition
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count, "Precondition failed.");
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys, "Precondition failed.");
 
 		// Act
 		await criticalSection.ExecuteActionAsync(1, async () => { await Task.CompletedTask; });
 
 		// Assert
-		Assert.AreEqual(0, criticalSection.CriticalSectionLocks.Keys.Count); // dojde k vyčištění?
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys); // dojde k vyčištění?
 	}
 
 }

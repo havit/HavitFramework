@@ -186,7 +186,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		{
 			try
 			{
-				shareFileClient.DeleteIfExists(); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
+				await shareFileClient.DeleteIfExistsAsync(cancellationToken: CancellationToken.None).ConfigureAwait(false); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
 			}
 			catch
 			{

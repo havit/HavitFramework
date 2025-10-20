@@ -24,7 +24,8 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// </summary>
 	/// <remarks>
 	/// BuildMock v sobě obsahuje callback pro případné odstranění položky z podkladové kolekce.
-	/// Pro odstínění od zdrojových dat (a zamezení odebrání položky) izolujeme jednotlivá volání BuildMock na samostatná pole.
+	/// Z kolekce se odebírá při volání ExecuteDelete (https://github.com/romantitov/MockQueryable/blob/1ca6086df72f3e5f01979c0285e2f766212cf198/src/MockQueryable/MockQueryable.EntityFrameworkCore/TestQueryProviderEfCore.cs#L70C1-L77C14)
+	/// Pro odstínění od zdrojových dat (a zamezení odebrání položky) izolujeme jednotlivá volání BuildMock na samostatná pole.	
 	/// </remarks>
 	public virtual IQueryable<TEntity> DataIncludingDeleted => _data.ToList().BuildMock();
 

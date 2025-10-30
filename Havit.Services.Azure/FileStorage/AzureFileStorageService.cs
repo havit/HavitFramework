@@ -94,10 +94,19 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 	{
-		using (System.IO.Stream azureFileStream = OpenRead(fileName))
+		ShareFileClient shareFileClient = GetShareFileClient(fileName);
+		ShareFileDownloadInfo shareFileDownloadInfo;
+
+		try
 		{
-			azureFileStream.CopyTo(stream);
+			shareFileDownloadInfo = shareFileClient.Download().Value;
 		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
+		shareFileDownloadInfo.Content.CopyTo(stream);
 	}
 
 	/// <summary>
@@ -105,10 +114,19 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
 	{
-		using (System.IO.Stream azureFileStream = await OpenReadAsync(fileName).ConfigureAwait(false))
+		ShareFileClient shareFileClient = GetShareFileClient(fileName);
+		ShareFileDownloadInfo shareFileDownloadInfo;
+
+		try
 		{
-			await azureFileStream.CopyToAsync(stream, 81920 /* default*/, cancellationToken).ConfigureAwait(false);
+			shareFileDownloadInfo = (await shareFileClient.DownloadAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value;
 		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
+		await shareFileDownloadInfo.Content.CopyToAsync(stream, 81920 /* default*/, cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>

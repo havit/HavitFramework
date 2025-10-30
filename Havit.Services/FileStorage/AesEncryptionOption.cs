@@ -18,7 +18,7 @@ public class AesEncryptionOption : EncryptionOptions, IDisposable
 		Contract.Requires(key != null);
 		Contract.Requires(iv != null);
 
-		aes = new AesManaged();
+		aes = Aes.Create();
 		aes.Key = key;
 		aes.IV = iv;
 	}
@@ -40,7 +40,7 @@ public class AesEncryptionOption : EncryptionOptions, IDisposable
 		byte[] key = bytes.Take(32).ToArray();
 		byte[] iv = bytes.Skip(32).Take(16).ToArray();
 
-		aes = new AesManaged();
+		aes = Aes.Create();
 		aes.Key = key;
 		aes.IV = iv;
 	}
@@ -75,7 +75,7 @@ public class AesEncryptionOption : EncryptionOptions, IDisposable
 	/// </summary>
 	public static string CreateRandomKeyAndIvAsBase64String()
 	{
-		using (Aes aes = new AesManaged())
+		using (Aes aes = Aes.Create())
 		{
 			aes.GenerateKey();
 			aes.GenerateIV();

@@ -329,15 +329,39 @@ public class FileSystemStorageServiceTests
 	}
 
 	[TestMethod]
+	public void FileSystemStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
 	public void FileSystemStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	[TestMethod]
+	public void FileSystemStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
 	public async Task FileSystemStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
 	}
 
 	[TestMethod]
@@ -374,6 +398,18 @@ public class FileSystemStorageServiceTests
 	public async Task FileSystemStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public void FileSystemStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	[TestMethod]

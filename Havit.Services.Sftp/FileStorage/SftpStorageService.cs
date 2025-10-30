@@ -189,7 +189,14 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// <inheritdoc />
 	public override DateTime? GetLastModifiedTimeUtc(string fileName)
 	{
-		return GetConnectedSftpClient().GetLastWriteTimeUtc(SubstituteFileName(fileName));
+		try
+		{
+			return GetConnectedSftpClient().GetLastWriteTimeUtc(SubstituteFileName(fileName));
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
@@ -214,7 +221,14 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// <inheritdoc />
 	protected override System.IO.Stream PerformOpenRead(string fileName)
 	{
-		return GetConnectedSftpClient().OpenRead(SubstituteFileName(fileName));
+		try
+		{
+			return GetConnectedSftpClient().OpenRead(SubstituteFileName(fileName));
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
@@ -227,7 +241,14 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// <inheritdoc />
 	protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 	{
-		GetConnectedSftpClient().DownloadFile(SubstituteFileName(fileName), stream);
+		try
+		{
+			GetConnectedSftpClient().DownloadFile(SubstituteFileName(fileName), stream);
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
@@ -382,5 +403,10 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	private string SubstituteFileName(string sourceFileName)
 	{
 		return sourceFileName.Replace(@"\", "/");
+	}
+
+	private static Exception CreateFileNotFoundException(string fileName, Exception exception)
+	{
+		throw new FileNotFoundException($"Could not find file '{fileName}' on SFTP server.", fileName, exception);
 	}
 }

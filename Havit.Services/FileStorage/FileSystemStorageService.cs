@@ -14,6 +14,8 @@ namespace Havit.Services.FileStorage;
 /// </remarks>
 public class FileSystemStorageService : FileStorageServiceBase, IFileStorageService
 {
+	private static readonly DateTime s_GetLastWriteTimeUtcFileNotFoundSpecialValue = new DateTime(1601, 1, 1);
+
 	internal string StoragePath { get; init; }
 	private bool useFullyQualifiedPathNames;
 
@@ -329,7 +331,14 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 	{
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-		return File.GetLastWriteTimeUtc(GetFullPath(fileName));
+		DateTime result = File.GetLastWriteTimeUtc(GetFullPath(fileName));
+		// If the file described in the path parameter does not exist, this method returns 12:00 midnight, January 1, 1601 A.D. (C.E.) Coordinated Universal Time (UTC).
+		if (result == s_GetLastWriteTimeUtcFileNotFoundSpecialValue)
+		{
+			throw new FileNotFoundException($"Could not find file '{fileName}'", fileName);
+		}
+
+		return result;
 	}
 
 	/// <summary>

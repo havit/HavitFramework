@@ -271,11 +271,29 @@ public class SftpFileStorageServiceTests
 		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasSize(GetSftpFileStorageService());
 	}
 
+	[TestMethod]
+	public void SftpStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetSftpFileStorageService());
+	}
+
 	//[TestMethod]
 	public void SftpStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		//Šifrování není podporováno.
 		//FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+	}
+
+	[TestMethod]
+	public void SftpStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile(GetSftpFileStorageService());
 	}
 
 	//[TestMethod]
@@ -284,6 +302,12 @@ public class SftpFileStorageServiceTests
 		//Šifrování není podporováno.
 		//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		await Task.CompletedTask;
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetSftpFileStorageService());
 	}
 
 	[TestMethod]
@@ -323,6 +347,18 @@ public class SftpFileStorageServiceTests
 	public async Task SftpStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public void SftpStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetSftpFileStorageService());
 	}
 
 	[TestMethod]

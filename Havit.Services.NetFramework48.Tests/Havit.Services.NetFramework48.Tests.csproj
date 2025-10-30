@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
+
+	<ItemGroup>
+		<PackageReference Include="MSTest" Version="4.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Havit.Services\Havit.Services.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="System.DirectoryServices" />
+	</ItemGroup>
+</Project>

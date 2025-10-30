@@ -1,7 +1,7 @@
 ﻿using Havit.Services.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.ActiveDirectory;
 
-namespace Havit.Services.Tests.DirectoryServices;
+namespace Havit.Services.NetFramework48.Tests.DirectoryServices;
 
 [TestClass]
 public class ActiveDirectoryServicesTests

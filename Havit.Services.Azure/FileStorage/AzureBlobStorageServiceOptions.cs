@@ -41,9 +41,4 @@ public class AzureBlobStorageServiceOptions
 	/// Indikuje, zda má automaticky zakládat BlobContainer, pokud neexistuje.
 	/// </summary>
 	public bool AutoCreateBlobContainer { get; set; } = true;
-
-	/// <summary>
-	/// Velikost stránky pro stránkované operace (načítání seznamu blobů z Blob Containeru).
-	/// </summary>
-	public int? PageSizeHint { get; set; }
 }

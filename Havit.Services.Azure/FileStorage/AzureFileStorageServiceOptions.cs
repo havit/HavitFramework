@@ -29,9 +29,4 @@ public class AzureFileStorageServiceOptions
 	/// Indikuje, zda má automaticky zakládat neexistující složky použité ve filename při zakládání FileShare nebo při ukládání souboru.
 	/// </summary>
 	public bool AutoCreateDirectories { get; set; } = true;
-
-	/// <summary>
-	/// Velikost stránky pro stránkované operace (načítání seznamu souborů z FileShare).
-	/// </summary>
-	public int? PageSizeHint { get; set; }
 }

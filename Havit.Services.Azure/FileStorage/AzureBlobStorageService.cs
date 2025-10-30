@@ -241,14 +241,17 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		EnsureContainer();
 
 		// nacti soubory s danym prefixem - optimalizace na rychlost
-		Pageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobs(prefix: prefix);
+		IEnumerable<Page<BlobItem>> blobItemsPages = GetBlobContainerClient().GetBlobs(prefix: prefix).AsPages(pageSizeHint: 5000);
 
 		// filtruj soubory podle masky
-		foreach (var blobItem in blobItems)
+		foreach (Page<BlobItem> blobItemsPage in blobItemsPages)
 		{
-			if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+			foreach (BlobItem blobItem in blobItemsPage.Values)
 			{
-				yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+				{
+					yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				}
 			}
 		}
 	}
@@ -270,14 +273,17 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
 
 		// nacti soubory s danym prefixem - optimalizace na rychlost
-		AsyncPageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
+		ConfiguredCancelableAsyncEnumerable<Page<BlobItem>> blobItemsPages = GetBlobContainerClient().GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken).AsPages(pageSizeHint: 5000).ConfigureAwait(false);
 
-		await foreach (BlobItem blobItem in blobItems.ConfigureAwait(false))
+		await foreach (Page<BlobItem> blobItemsPage in blobItemsPages.ConfigureAwait(false))
 		{
-			// filtruj soubory podle masky
-			if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+			foreach (BlobItem blobItem in blobItemsPage.Values)
 			{
-				yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				// filtruj soubory podle masky
+				if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+				{
+					yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				}
 			}
 		}
 	}

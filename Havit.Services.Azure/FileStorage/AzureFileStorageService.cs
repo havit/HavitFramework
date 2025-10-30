@@ -333,24 +333,27 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 			yield break;
 		}
 
-		Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps });
+		IEnumerable<Page<ShareFileItem>> directoryItemsPages = shareDirectoryClient.GetFilesAndDirectories(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }).AsPages(pageSizeHint: 5000);
 		List<string> subdirectories = new List<string>();
 
-		foreach (ShareFileItem item in directoryItems)
+		foreach (Page<ShareFileItem> directoryItemsPage in directoryItemsPages)
 		{
-			if (!item.IsDirectory)
+			foreach (ShareFileItem item in directoryItemsPage.Values)
 			{
-				yield return new Havit.Services.FileStorage.FileInfo
+				if (!item.IsDirectory)
 				{
-					Name = directoryPrefix + item.Name,
-					LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
-					Size = item.FileSize ?? -1,
-					ContentType = null
-				};
-			}
-			else
-			{
-				subdirectories.Add(item.Name);
+					yield return new Havit.Services.FileStorage.FileInfo
+					{
+						Name = directoryPrefix + item.Name,
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
+						Size = item.FileSize ?? -1,
+						ContentType = null
+					};
+				}
+				else
+				{
+					subdirectories.Add(item.Name);
+				}
 			}
 		}
 
@@ -373,24 +376,27 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 			yield break;
 		}
 
-		AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }, cancellationToken: cancellationToken);
+		IAsyncEnumerable<Page<ShareFileItem>> directoryItemsPages = shareDirectoryClient.GetFilesAndDirectoriesAsync(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }, cancellationToken: cancellationToken).AsPages(pageSizeHint: 5000);
 		List<string> subdirectories = new List<string>();
 
-		await foreach (ShareFileItem item in directoryItems.ConfigureAwait(false))
+		await foreach (var directoryItemsPage in directoryItemsPages.ConfigureAwait(false))
 		{
-			if (!item.IsDirectory)
+			foreach (ShareFileItem item in directoryItemsPage.Values)
 			{
-				yield return new Havit.Services.FileStorage.FileInfo
+				if (!item.IsDirectory)
 				{
-					Name = directoryPrefix + item.Name,
-					LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
-					Size = item.FileSize ?? -1,
-					ContentType = null
-				};
-			}
-			else
-			{
-				subdirectories.Add(item.Name);
+					yield return new Havit.Services.FileStorage.FileInfo
+					{
+						Name = directoryPrefix + item.Name,
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
+						Size = item.FileSize ?? -1,
+						ContentType = null
+					};
+				}
+				else
+				{
+					subdirectories.Add(item.Name);
+				}
 			}
 		}
 

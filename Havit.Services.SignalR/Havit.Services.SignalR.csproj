@@ -8,13 +8,12 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.1</PackageVersion>
+		<PackageVersion>2.0.2</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - SignalR Services</Description>
 	</PropertyGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.11" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

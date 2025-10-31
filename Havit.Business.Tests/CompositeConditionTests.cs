@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Business.Query;
+﻿using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;
@@ -22,7 +21,7 @@ public class CompositeConditionTests
 	{
 		AndCondition andCondition = new AndCondition();
 		andCondition.Conditions.Add(EmptyCondition.Create());
-		Assert.AreEqual(0, andCondition.Conditions.Count);
+		Assert.IsEmpty(andCondition.Conditions);
 	}
 
 	[TestMethod]

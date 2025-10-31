@@ -20,7 +20,7 @@ public class PlatceDphServiceTests
 		Assert.IsNull(platceDphResult);
 	}
 
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow("CZ27389731", false)]
 	[DataRow("CZ25836595", true)]
 	public async Task PlatceDphService_GetPlatceDphAsync_Nespolehlivy(string dic, bool isNespolehlivy)
@@ -46,11 +46,10 @@ public class PlatceDphServiceTests
 		// Assert
 		Assert.IsNotNull(platceDphResult);
 		Assert.AreEqual(dic, platceDphResult.Dic);
-		Assert.IsTrue(platceDphResult.CislaUctu.Count() > 10);
+		Assert.IsGreaterThan(10, platceDphResult.CislaUctu.Count());
 	}
 
-	[DataTestMethod]
-	[DataRow(null)]
+	[TestMethod]
 	[DataRow("")]
 	[DataRow("123")]
 	[DataRow("1234567")]
@@ -61,12 +60,30 @@ public class PlatceDphServiceTests
 	[DataRow("<<12345678")]
 	[DataRow("123456780912")]
 	[DataRow("123456780>")]
-	[ExpectedException(typeof(ArgumentException), AllowDerivedTypes = true)]
 	public void AresService_GetPlatceDph_BadInput(string dic)
 	{
-		// Act
-		new PlatceDphService().GetPlatceDph(dic);
+		// Arrange
+		PlatceDphService platceDphService = new PlatceDphService();
 
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			new PlatceDphService().GetPlatceDph(dic);
+		});
+	}
+
+	[TestMethod]
+	public void AresService_GetPlatceDph_NullInput()
+	{
+		// Arrange
+		PlatceDphService platceDphService = new PlatceDphService();
+
+		// Assert
+		Assert.ThrowsExactly<ArgumentNullException>(() =>
+		{
+			// Act
+			new PlatceDphService().GetPlatceDph(null);
+		});
 	}
 }

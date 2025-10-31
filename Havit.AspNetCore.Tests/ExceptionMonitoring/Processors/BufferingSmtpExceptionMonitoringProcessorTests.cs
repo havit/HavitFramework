@@ -3,7 +3,6 @@ using Havit.AspNetCore.ExceptionMonitoring.Processors;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Internal;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.AspNetCore.Tests.ExceptionMonitoring.Processors;

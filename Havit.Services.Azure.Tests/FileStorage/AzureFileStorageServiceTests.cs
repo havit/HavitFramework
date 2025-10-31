@@ -1,7 +1,6 @@
 ﻿using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Azure.Tests.FileStorage;
 
@@ -221,6 +220,17 @@ public class AzureFileStorageServiceTests
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_EnumerateFilesAsync_HasSize(GetAzureFileStorageService());
 	}
+	[TestMethod]
+	public void AzureFileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task AzureFileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureFileStorageService());
+	}
 
 	//[TestMethod]
 	public void AzureFileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
@@ -229,12 +239,24 @@ public class AzureFileStorageServiceTests
 		//FileStorageServiceTestHelpers.FileStorageService_Read_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
+	[TestMethod]
+	public void AzureFileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureFileStorageService());
+	}
+
 	//[TestMethod]
 	public async Task AzureFileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		//Šifrování není podporováno.
 		//await FileStorageServiceTestHelpers.FileStorageService_ReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureFileStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 		await Task.CompletedTask;
+	}
+
+	[TestMethod]
+	public async Task AzureFileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureFileStorageService());
 	}
 
 	[TestMethod]
@@ -274,6 +296,18 @@ public class AzureFileStorageServiceTests
 	public async Task AzureFileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetAzureFileStorageService());
+	}
+
+	[TestMethod]
+	public void AzureFileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task AzureFileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureFileStorageService());
 	}
 
 	[TestMethod]

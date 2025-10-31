@@ -6,7 +6,6 @@ using Havit.Data.Entity.Patterns.SoftDeletes;
 using Havit.Data.Entity.Patterns.Tests.Infrastructure;
 using Havit.Data.Entity.Patterns.Tests.Helpers;
 using Havit.Services.TimeServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.Repositories;
 
@@ -31,7 +30,6 @@ public class DbRepositoryTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public void DbRepository_GetObject_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -43,14 +41,15 @@ public class DbRepositoryTests
 		var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
-		// Act
-		repository.GetObject(maxId + 1);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			repository.GetObject(maxId + 1);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public async Task DbRepository_GetObjectAsync_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -62,10 +61,12 @@ public class DbRepositoryTests
 		var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
-		// Act
-		await repository.GetObjectAsync(maxId + 1);
-
-		// Assert by method attribute 
+		// Assert
+		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () =>
+		{
+			// Act
+			await repository.GetObjectAsync(maxId + 1);
+		});
 	}
 	[TestMethod]
 	public void DbRepository_GetObject_ReturnsDeletedObjects()
@@ -121,7 +122,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = repository.GetAll();
 
 		// Assert
-		Assert.IsTrue(result.Count > 0);
+		Assert.IsNotEmpty(result);
 		Assert.IsTrue(result.All(item => item.Deleted == null));
 	}
 
@@ -139,7 +140,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = await repository.GetAllAsync();
 
 		// Assert
-		Assert.IsTrue(result.Count > 0);
+		Assert.IsNotEmpty(result);
 		Assert.IsTrue(result.All(item => item.Deleted == null));
 	}
 
@@ -175,8 +176,8 @@ public class DbRepositoryTests
 		}
 
 		// Assert
-		Assert.AreEqual(result1.Count + 1, result2.Count);
-		Assert.AreEqual(result1.Count + 2, result3.Count);
+		Assert.HasCount(result1.Count + 1, result2);
+		Assert.HasCount(result1.Count + 2, result3);
 	}
 
 	[TestMethod]
@@ -210,8 +211,8 @@ public class DbRepositoryTests
 		}
 
 		// Assert
-		Assert.AreEqual(result1.Count + 1, result2.Count);
-		Assert.AreEqual(result1.Count + 2, result3.Count);
+		Assert.HasCount(result1.Count + 1, result2);
+		Assert.HasCount(result1.Count + 2, result3);
 	}
 
 	[TestMethod]
@@ -231,7 +232,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = repository.GetObjects(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
@@ -251,7 +252,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
@@ -274,7 +275,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = repository.GetObjects(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
@@ -297,11 +298,10 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public void DbRepository_GetObjects_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -313,14 +313,15 @@ public class DbRepositoryTests
 		var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
-		// Act
-		repository.GetObjects(maxId + 1, maxId + 2);
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			repository.GetObjects(maxId + 1, maxId + 2);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public async Task DbRepository_GetObjectsAsync_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -332,10 +333,8 @@ public class DbRepositoryTests
 		var dataSource = new DbItemWithDeletedDataSource(testDbContext, new SoftDeleteManager(new ServerTimeService()));
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
-		// Act
-		await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 });
-
-		// Assert by method attribute
+		// Act + Assert
+		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () => await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 }));
 	}
 
 	[TestMethod]
@@ -355,7 +354,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(1, entities.Count);
+		Assert.HasCount(1, entities);
 	}
 
 	[TestMethod]
@@ -375,7 +374,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(1, entities.Count);
+		Assert.HasCount(1, entities);
 	}
 
 	[TestMethod]
@@ -395,7 +394,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		Assert.AreEqual(EntityState.Unchanged, ((IDbContext)testDbContext).GetEntityState(entity));
 	}
 
 	[TestMethod]
@@ -415,7 +414,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		Assert.AreEqual(EntityState.Unchanged, ((IDbContext)testDbContext).GetEntityState(entity));
 	}
 
 	[TestMethod]
@@ -435,7 +434,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		Assert.AreEqual(EntityState.Unchanged, ((IDbContext)testDbContext).GetEntityState(entity));
 	}
 
 	[TestMethod]
@@ -455,7 +454,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(((IDbContext)testDbContext).GetEntityState(entity), EntityState.Unchanged);
+		Assert.AreEqual(EntityState.Unchanged, ((IDbContext)testDbContext).GetEntityState(entity));
 	}
 
 	/// <summary>
@@ -501,17 +500,17 @@ public class DbRepositoryTests
 		{
 			var items = repository.GetAll(); // načteme objekty do identity mapy (DbSet<>.Locals).
 
-			Assert.IsTrue(items.Count > 0); // Prerequisite
+			Assert.IsNotEmpty(items); // Prerequisite
 
-			Assert.AreEqual(items.Count, repository.DbSetLocalsDictionary.Count); // počet prvků v dictionary odpovídá počtu načtených prvků (viz předchozí GetAll).
+			Assert.HasCount(items.Count, repository.DbSetLocalsDictionary); // počet prvků v dictionary odpovídá počtu načtených prvků (viz předchozí GetAll).
 
 			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
 
-			Assert.AreEqual(items.Count, repository.DbSetLocalsDictionary.Count); // počet prvků v dictionary se přidáním nového prvku nezměnil (před uložením)
+			Assert.HasCount(items.Count, repository.DbSetLocalsDictionary); // počet prvků v dictionary se přidáním nového prvku nezměnil (před uložením)
 
 			testDbContext.SaveChanges();
 
-			Assert.AreEqual(items.Count + 1, repository.DbSetLocalsDictionary.Count); // počet prvků v dictionary se po uložení nového objektu zvýšil o jeden
+			Assert.HasCount(items.Count + 1, repository.DbSetLocalsDictionary); // počet prvků v dictionary se po uložení nového objektu zvýšil o jeden
 
 			transaction.Rollback();
 		}

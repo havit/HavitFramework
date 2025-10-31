@@ -5,26 +5,33 @@
 public class AresVerejnyRegistTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentNullException))]
 	public void AresService_GetVerejnyRejstrikDleIco_BadParamNull()
 	{
-		// Act
-		new AresService().GetVerejnyRejstrikDleIco(null);
+		// Arrange
+		AresService aresService = new AresService();
 
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentNullException>(() =>
+		{
+			// Act
+			aresService.GetVerejnyRejstrikDleIco(null);
+		});
 	}
 
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow("")]
 	[DataRow("123")]
 	[DataRow("1234567890")]
-	[ExpectedException(typeof(ArgumentException), "Ico nemá předepsanou délku 8 znaků")]
 	public void AresService_GetVerejnyRejstrikDleIco_BadParamLength(string ico)
 	{
-		// Act
-		new AresService().GetVerejnyRejstrikDleIco(ico);
+		// Arrange
+		AresService aresService = new AresService();
 
-		// Assert by method attribute
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			aresService.GetVerejnyRejstrikDleIco(ico);
+		}, "Ico nemá předepsanou délku 8 znaků");
 	}
 
 	[TestMethod]

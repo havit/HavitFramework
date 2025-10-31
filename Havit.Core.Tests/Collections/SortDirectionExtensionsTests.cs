@@ -1,5 +1,4 @@
 ﻿using Havit.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Collections;
 

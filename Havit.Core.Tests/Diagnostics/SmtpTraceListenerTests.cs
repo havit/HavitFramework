@@ -1,6 +1,5 @@
 ﻿using System.Net.Mail;
 using Havit.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Diagnostics;
 
@@ -23,22 +22,24 @@ public class SmtpTraceListenerTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void SmtpTraceListener_ConstructorThrowsExceptionForUnknownValue()
 	{
-		// Act
-		new SmtpTraceListener("smtp_fake=fake");
-
-		// Assert by method attribute			
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			new SmtpTraceListener("unknown=fake");
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void SmtpTraceListener_ConstructorThrowsExceptionWhenSmtpPortIsConfiguredButNoSmtpServerSet()
 	{
-		// Act
-		new SmtpTraceListener("smtpport=999");
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			new SmtpTraceListener("smtpport=999");
+		});
 	}
 }

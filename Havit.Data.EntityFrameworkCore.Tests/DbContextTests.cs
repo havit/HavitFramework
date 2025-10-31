@@ -1,6 +1,5 @@
 ﻿using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Tests;

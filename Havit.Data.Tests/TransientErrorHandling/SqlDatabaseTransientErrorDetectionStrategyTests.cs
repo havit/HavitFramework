@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Data.Tests.TransientErrorHandling;
+﻿namespace Havit.Data.Tests.TransientErrorHandling;
 
 [TestClass]
 public class SqlDatabaseTransientErrorDetectionStrategyTests

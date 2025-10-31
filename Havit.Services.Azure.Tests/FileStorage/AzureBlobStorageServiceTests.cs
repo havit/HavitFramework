@@ -5,7 +5,6 @@ using Havit.Services.Azure.FileStorage;
 using Havit.Services.Azure.Tests.FileStorage.Infrastructure;
 using Havit.Services.FileStorage;
 using Havit.Services.TestHelpers.FileStorage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Azure.Tests.FileStorage;
 
@@ -230,15 +229,39 @@ public class AzureBlobStorageServiceTests
 	}
 
 	[TestMethod]
+	public void AzureBlobStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureBlobStorageService());
+	}
+
+	[TestMethod]
+	public async Task AzureBlobStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureBlobStorageService());
+	}
+
+	[TestMethod]
 	public void AzureBlobStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	[TestMethod]
+	public void AzureBlobStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureBlobStorageService());
+	}
+
+	[TestMethod]
 	public async Task AzureBlobStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetAzureBlobStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+	}
+
+	[TestMethod]
+	public async Task AzureBlobStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureBlobStorageService());
 	}
 
 	[TestMethod]
@@ -275,6 +298,18 @@ public class AzureBlobStorageServiceTests
 	public async Task AzureBlobStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetAzureBlobStorageService());
+	}
+
+	[TestMethod]
+	public void AzureBlobStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureBlobStorageService());
+	}
+
+	[TestMethod]
+	public async Task AzureBlobStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetAzureBlobStorageService());
 	}
 
 	[TestMethod]

@@ -54,7 +54,6 @@ public class EntityValidationRunnerTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ValidationFailedException))]
 	public void EntityValidationRunner_Validate_ThrowsExceptionWhenValidationFails()
 	{
 		// Arrange
@@ -80,10 +79,12 @@ public class EntityValidationRunnerTests
 			}
 		});
 
-		// Act
-		runner.Validate(changes);
-
-		// Assert by method attribute
+		// Assert
+		Assert.Throws<ValidationFailedException>(() =>
+		{
+			// Act
+			runner.Validate(changes);
+		});
 	}
 
 	public class Entity

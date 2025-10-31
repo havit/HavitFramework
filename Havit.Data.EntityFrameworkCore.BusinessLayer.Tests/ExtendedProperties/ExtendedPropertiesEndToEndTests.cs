@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ExtendedProperties;
 
@@ -34,7 +33,7 @@ public class ExtendedPropertiesEndToEndTests
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 ",
@@ -64,7 +63,7 @@ public class ExtendedPropertiesEndToEndTests
 			var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
 ",
@@ -97,7 +96,7 @@ public class ExtendedPropertiesEndToEndTests
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 ",
@@ -128,7 +127,7 @@ public class ExtendedPropertiesEndToEndTests
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Table]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
@@ -160,7 +159,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[custom_schema].[Table]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
@@ -193,7 +192,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 ",
@@ -225,7 +224,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>(builder => builder.HasDefaultSchema("custom_schema"));
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'custom_schema', @level1type=N'TABLE', @level1name=N'Table';
 ",
@@ -256,7 +255,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -291,7 +290,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -340,7 +339,7 @@ END
 			var target = new EndToEndTestDbContext<TargetMaster>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
 ",
@@ -371,7 +370,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Val''ue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -402,7 +401,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -451,7 +450,7 @@ END
 			var target = new EndToEndTestDbContext<TargetMaster>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[T_Masters]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Test_Details_FooBar', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
@@ -484,7 +483,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -534,7 +533,7 @@ END
 			var target = new EndToEndTestDbContext<TargetMaster>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
 ",
@@ -566,7 +565,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Column';
 ",
@@ -597,7 +596,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 		}
 	}
 
@@ -633,7 +632,7 @@ END
 			var target = new EndToEndTestDbContext<TargetMaster>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(3, migrations.Count);
+			Assert.HasCount(3, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
 ",
@@ -672,7 +671,7 @@ END
 			var target = new EndToEndTestDbContext<TargetMaster>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 		}
 	}
 
@@ -693,7 +692,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table';
 ",
@@ -717,7 +716,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 		}
 	}
 
@@ -738,7 +737,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -771,7 +770,7 @@ END
 			var target = new EndToEndTestDbContext<TargetMaster>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(4, migrations.Count);
+			Assert.HasCount(4, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Test_Details_FooBar', @value=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'T_Masters';
 ",
@@ -795,7 +794,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 		}
 	}
 
@@ -816,7 +815,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(3, migrations.Count);
+			Assert.HasCount(3, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri1', @value=N'ValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -845,7 +844,7 @@ END
 			var target = new EndToEndTestDbContext();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			StringAssert.DoesNotMatch(migrations[0].CommandText, new Regex("EXEC sys.sp_dropextendedproperty"));
 		}
 	}
@@ -874,7 +873,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(3, migrations.Count);
+			Assert.HasCount(3, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri1', @value=N'NewValueA', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -910,7 +909,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(3, migrations.Count);
+			Assert.HasCount(3, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_dropextendedproperty @name=N'Jiri2', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'Table', @level2type=N'COLUMN', @level2name=N'Id';
 ",
@@ -947,7 +946,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model';
 ",
@@ -984,7 +983,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model';
 ",
@@ -1024,7 +1023,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue';
 ",
@@ -1057,7 +1056,7 @@ END
 			var target = new EndToEndTestDbContext<TargetEntity>();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_dropextendedproperty @name=N'Jiri';
 ",
@@ -1081,7 +1080,7 @@ END
 			operation.AddExtendedProperties(new Dictionary<string, string>() { { "Jiri", "Model" } });
 			var migrations = Migrate(new[] { operation });
 
-			Assert.AreEqual(3, migrations.Count);
+			Assert.HasCount(3, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Model';
 ",
@@ -1125,7 +1124,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
 ",
@@ -1155,7 +1154,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
 ",
@@ -1179,7 +1178,7 @@ END
 			var target = new EndToEndTestDbContext();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'Name';
@@ -1210,7 +1209,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[OldName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TYPE', @level1name=N'OldName';
@@ -1245,7 +1244,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(2, migrations.Count);
+			Assert.HasCount(2, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[Name]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'OLD_TYPE', @level1name=N'Name';
@@ -1274,7 +1273,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
 ",
@@ -1304,7 +1303,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
 ",
@@ -1328,7 +1327,7 @@ END
 			var target = new EndToEndTestDbContext();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ProcedureName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'ProcedureName';
@@ -1353,7 +1352,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
 ",
@@ -1383,7 +1382,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
 ",
@@ -1407,7 +1406,7 @@ END
 			var target = new EndToEndTestDbContext();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[ViewName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'VIEW', @level1name=N'ViewName';
@@ -1432,7 +1431,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_addextendedproperty @name=N'Jiri', @value=N'Value', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';
 ",
@@ -1462,7 +1461,7 @@ END
 			});
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(
 				@"EXEC sys.sp_updateextendedproperty @name=N'Jiri', @value=N'NewValue', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';
 ",
@@ -1486,7 +1485,7 @@ END
 			var target = new EndToEndTestDbContext();
 			var migrations = source.Migrate(target);
 
-			Assert.AreEqual(1, migrations.Count);
+			Assert.HasCount(1, migrations);
 			Assert.AreEqual(@"IF OBJECT_ID(N'[dbo].[FunctionName]') IS NOT NULL
 BEGIN
     EXEC sys.sp_dropextendedproperty @name=N'Jiri', @level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'FUNCTION', @level1name=N'FunctionName';

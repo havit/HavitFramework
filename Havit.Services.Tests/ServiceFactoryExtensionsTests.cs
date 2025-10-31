@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 
 namespace Havit.Services.Tests;
 
@@ -62,27 +61,30 @@ public class ServiceFactoryExtensionsTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Exception), "FAKE EXCEPTION")]
 	public void ServiceFactoryExtensions_ExecuteAction_ActionThrowsException_ReleasesService()
 	{
-		// arrange
+		// Arrange
 		var fakeService = new object();
 		var serviceFactory = new Mock<IServiceFactory<object>>();
 		serviceFactory.Setup(f => f.CreateService()).Returns(fakeService);
 
-		// act
-		try
+		// Assert 1
+		Assert.ThrowsExactly<Exception>(() =>
 		{
-			serviceFactory.Object.ExecuteAction(service =>
+			// Act
+			try
 			{
-				throw new Exception("FAKE EXCEPTION");
-			});
-		}
-		finally
-		{
-			// assert
-			serviceFactory.Verify(f => f.ReleaseService(fakeService), Times.Once);
-		}
+				serviceFactory.Object.ExecuteAction(service =>
+				{
+					throw new Exception("FAKE EXCEPTION");
+				});
+			}
+			finally
+			{
+				// Assert 2
+				serviceFactory.Verify(f => f.ReleaseService(fakeService), Times.Once);
+			}
+		}, "FAKE EXCEPTION");
 	}
 
 	[TestMethod]

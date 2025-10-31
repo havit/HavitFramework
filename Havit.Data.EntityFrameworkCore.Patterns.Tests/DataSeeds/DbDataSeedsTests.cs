@@ -190,7 +190,7 @@ public class DbDataSeedsTests
 			using (IDbContext dbContext = new TestDbContext())
 			{
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name);
-				Assert.AreEqual(true, items.All(item => item.Deleted == null));
+				Assert.IsTrue(items.All(item => item.Deleted == null));
 			}
 		}
 
@@ -282,11 +282,11 @@ public class DbDataSeedsTests
 			{
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name).OrderBy(s => s.Id).ToArray();
 
-				Assert.AreEqual(4, items.Length);
-				Assert.AreEqual(true, items.Single(item => item.Symbol == "A").Deleted != null);
-				Assert.AreEqual(true, items.Single(item => item.Symbol == "B").Deleted != null);
-				Assert.AreEqual(true, items.Single(item => item.Symbol == "C").Deleted == null);
-				Assert.AreEqual(true, items.Single(item => item.Symbol == "D").Deleted != null);
+				Assert.HasCount(4, items);
+				Assert.IsTrue(items.Single(item => item.Symbol == "A").Deleted != null);
+				Assert.IsTrue(items.Single(item => item.Symbol == "B").Deleted != null);
+				Assert.IsTrue(items.Single(item => item.Symbol == "C").Deleted == null);
+				Assert.IsTrue(items.Single(item => item.Symbol == "D").Deleted != null);
 			}
 		}
 

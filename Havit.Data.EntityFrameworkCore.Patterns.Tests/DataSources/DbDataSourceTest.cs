@@ -29,7 +29,7 @@ public class DbDataSourceTest
 		List<ItemWithDeleted> result = dataSource.DataIncludingDeleted.ToList();
 
 		// Assert
-		Assert.AreEqual(2, result.Count);
+		Assert.HasCount(2, result);
 	}
 
 	[TestMethod]
@@ -52,7 +52,7 @@ public class DbDataSourceTest
 		List<ItemWithDeleted> result = dataSource.Data.ToList();
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 	}
 
 	[TestMethod]
@@ -75,7 +75,7 @@ public class DbDataSourceTest
 		List<ItemWithDeleted> result = await dataSource.Data.ToListAsync();
 
 		// Assert
-		Assert.AreEqual(1, result.Count);
+		Assert.HasCount(1, result);
 	}
 
 	[TestMethod]
@@ -178,7 +178,7 @@ public class DbDataSourceTest
 
 		// Assert
 		Assert.AreEqual(1, count);
-		Assert.AreEqual(1, items.Count);
+		Assert.HasCount(1, items);
 		Assert.AreEqual(1, dbContext.Set<ItemWithDeleted>().Local.Count);
 	}
 

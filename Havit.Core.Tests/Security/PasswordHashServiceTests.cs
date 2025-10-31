@@ -1,7 +1,5 @@
 ﻿using Havit.Security;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Havit.Tests.Security;
 
 [TestClass]

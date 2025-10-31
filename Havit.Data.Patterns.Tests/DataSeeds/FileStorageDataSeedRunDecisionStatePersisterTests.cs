@@ -1,7 +1,5 @@
 ﻿using Havit.Data.Patterns.DataSeeds;
-using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Services.FileStorage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Patterns.Tests.DataSeeds;
 

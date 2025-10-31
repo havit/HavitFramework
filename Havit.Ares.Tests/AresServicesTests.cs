@@ -5,26 +5,33 @@
 public class AresServicesTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentNullException))]
 	public void AresService_GetEkonomickeSubjektyDleIco_BadParamNull()
 	{
-		// Act
-		new AresService().GetEkonomickeSubjektyDleIco(null);
+		// Arrange
+		AresService aresService = new AresService();
 
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentNullException>(() =>
+		{
+			// Act
+			aresService.GetEkonomickeSubjektyDleIco(null);
+		});
 	}
 
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow("")]
 	[DataRow("123")]
 	[DataRow("1234567890")]
-	[ExpectedException(typeof(ArgumentException), "Ico nemá předepsanou délku 8 znaků")]
 	public void AresService_GetEkonomickeSubjektyDleIco_BadParamLength(string ico)
 	{
-		// Act
-		new AresService().GetEkonomickeSubjektyDleIco(ico);
+		// Arrange
+		AresService aresService = new AresService();
 
-		// Assert by method attribute
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			aresService.GetEkonomickeSubjektyDleIco(ico);
+		}, "Ico nemá předepsanou délku 8 znaků");
 	}
 
 	[TestMethod]
@@ -93,7 +100,7 @@ public class AresServicesTests
 		var ekonomickeSubjekty = new AresService().GetEkonomickeSubjektyDleObchodnihoJmena(obchodniJmeno);
 
 		// Assert
-		Assert.IsTrue(ekonomickeSubjekty.PocetCelkem > 30);
+		Assert.IsGreaterThan(30, ekonomickeSubjekty.PocetCelkem);
 	}
 
 
@@ -112,26 +119,33 @@ public class AresServicesTests
 
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentNullException))]
 	public void AresService_GetEkonomickeSubjektyDleObchodnihoJmena_PrazdneObchodniJmeno()
 	{
-		// Act
-		new AresService().GetEkonomickeSubjektyDleObchodnihoJmena(null);
+		// Arrange
+		AresService aresService = new AresService();
 
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentNullException>(() =>
+		{
+			// Act
+			aresService.GetEkonomickeSubjektyDleObchodnihoJmena(null);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public async Task AresService_GetEkonomickeSubjektyDleObchodnihoJmenaAsync_PrazdneObchodniJmeno()
 	{
-		// Act
-		_ = await new AresService().GetEkonomickeSubjektyDleObchodnihoJmenaAsync("");
+		// Arrange
+		AresService aresService = new AresService();
 
-		// Assert by method attribute
+		await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
+		{
+			// Act
+			await aresService.GetEkonomickeSubjektyDleObchodnihoJmenaAsync("");
+		});
 	}
 
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow("jedna, dva, tři", "jedna\r\n dva\n tři")]
 	[DataRow("jedna a půl\n", "jednaapůl")]
 	[DataRow(null, null)]

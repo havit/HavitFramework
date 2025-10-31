@@ -1,5 +1,4 @@
 ﻿using Havit.Services.BusinessCalendars;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Tests.BusinessCalendars;
 

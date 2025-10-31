@@ -1,5 +1,4 @@
 ﻿using Havit.Web.UI.WebControls;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Web.Tests;
 

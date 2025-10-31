@@ -1,5 +1,4 @@
 ﻿using Havit.BusinessLayerTest;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.Tests;
 
@@ -21,7 +20,7 @@ public class CollectionPropertyHolderTests
 			collectionPropertyHolder.Initialize("3|4|5|"); // i za poslední položkou musí být oddělovač!
 
 			// Assert
-			Assert.AreEqual(3, collectionPropertyHolder.Value.Count);
+			Assert.HasCount(3, collectionPropertyHolder.Value);
 			Assert.IsTrue(collectionPropertyHolder.Value.Any(item => item.ID == 3));
 			Assert.IsTrue(collectionPropertyHolder.Value.Any(item => item.ID == 4));
 			Assert.IsTrue(collectionPropertyHolder.Value.Any(item => item.ID == 5));

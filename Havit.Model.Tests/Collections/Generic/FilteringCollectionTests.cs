@@ -1,5 +1,4 @@
 ﻿using Havit.Model.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.ObjectModel;
 
 namespace Havit.Model.Tests.Collections.Generic;
@@ -19,8 +18,8 @@ public class FilteringCollectionTests
 		filteringCollection.Add(2);
 
 		// Assert
-		Assert.IsTrue(list.Contains(1));
-		Assert.IsTrue(list.Contains(2));
+		Assert.Contains(1, list);
+		Assert.Contains(2, list);
 	}
 
 	[TestMethod]
@@ -34,8 +33,8 @@ public class FilteringCollectionTests
 		filteringCollection.AddRange(new List<int> { 1, 2 });
 
 		// Assert
-		Assert.IsTrue(list.Contains(1));
-		Assert.IsTrue(list.Contains(2));
+		Assert.Contains(1, list);
+		Assert.Contains(2, list);
 	}
 
 	[TestMethod]
@@ -49,7 +48,7 @@ public class FilteringCollectionTests
 		filteringCollection.Clear();
 
 		// Assert
-		Assert.AreEqual(0, list.Count);
+		Assert.IsEmpty(list);
 	}
 	[TestMethod]
 	public void FilteringCollection_List_Contains()
@@ -99,10 +98,10 @@ public class FilteringCollectionTests
 		filteringCollection.Remove(2);
 
 		// Assert
-		Assert.IsFalse(list.Contains(1));
-		Assert.IsFalse(list.Contains(2));
-		Assert.IsTrue(list.Contains(3));
-		Assert.IsTrue(list.Contains(4));
+		Assert.DoesNotContain(1, list);
+		Assert.DoesNotContain(2, list);
+		Assert.Contains(3, list);
+		Assert.Contains(4, list);
 	}
 
 	[TestMethod]
@@ -117,10 +116,10 @@ public class FilteringCollectionTests
 
 		// Assert
 		Assert.AreEqual(2, result);
-		Assert.IsFalse(list.Contains(1));
-		Assert.IsFalse(list.Contains(2));
-		Assert.IsTrue(list.Contains(3));
-		Assert.IsTrue(list.Contains(4));
+		Assert.DoesNotContain(1, list);
+		Assert.DoesNotContain(2, list);
+		Assert.Contains(3, list);
+		Assert.Contains(4, list);
 	}
 
 	[TestMethod]
@@ -135,8 +134,8 @@ public class FilteringCollectionTests
 		filteringCollection.Add(2);
 
 		// Assert
-		Assert.IsTrue(list.Contains(1));
-		Assert.IsTrue(list.Contains(2));
+		Assert.Contains(1, list);
+		Assert.Contains(2, list);
 	}
 
 	[TestMethod]
@@ -150,8 +149,8 @@ public class FilteringCollectionTests
 		filteringCollection.AddRange(new ObservableCollection<int> { 1, 2 });
 
 		// Assert
-		Assert.IsTrue(list.Contains(1));
-		Assert.IsTrue(list.Contains(2));
+		Assert.Contains(1, list);
+		Assert.Contains(2, list);
 	}
 
 	[TestMethod]
@@ -165,7 +164,7 @@ public class FilteringCollectionTests
 		filteringCollection.Clear();
 
 		// Assert
-		Assert.AreEqual(0, list.Count);
+		Assert.IsEmpty(list);
 	}
 	[TestMethod]
 	public void FilteringCollection_ObservableCollection_Contains()
@@ -215,10 +214,10 @@ public class FilteringCollectionTests
 		filteringCollection.Remove(2);
 
 		// Assert
-		Assert.IsFalse(list.Contains(1));
-		Assert.IsFalse(list.Contains(2));
-		Assert.IsTrue(list.Contains(3));
-		Assert.IsTrue(list.Contains(4));
+		Assert.DoesNotContain(1, list);
+		Assert.DoesNotContain(2, list);
+		Assert.Contains(3, list);
+		Assert.Contains(4, list);
 	}
 
 	[TestMethod]
@@ -233,10 +232,10 @@ public class FilteringCollectionTests
 
 		// Assert
 		Assert.AreEqual(2, result);
-		Assert.IsFalse(list.Contains(1));
-		Assert.IsFalse(list.Contains(2));
-		Assert.IsTrue(list.Contains(3));
-		Assert.IsTrue(list.Contains(4));
+		Assert.DoesNotContain(1, list);
+		Assert.DoesNotContain(2, list);
+		Assert.Contains(3, list);
+		Assert.Contains(4, list);
 	}
 
 }

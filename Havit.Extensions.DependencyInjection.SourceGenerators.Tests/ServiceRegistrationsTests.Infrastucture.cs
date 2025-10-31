@@ -2,7 +2,6 @@
 using Havit.Extensions.DependencyInjection.SourceGenerators.Tests.Infrastructure;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Extensions.DependencyInjection.SourceGenerators.Tests;
 

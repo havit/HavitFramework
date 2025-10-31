@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Tests;
+﻿namespace Havit.Tests;
 
 [TestClass]
 public class DataBinderTests
@@ -8,28 +6,28 @@ public class DataBinderTests
 	[TestMethod]
 	public void DataBinderExt_SetValue_PublicProperty()
 	{
-		// arrange
+		// Arrange
 		var obj = new MyClass();
 
-		// act
+		// Act
 		DataBinderExt.SetValue(obj, "MyPublicProperty", 1);
 
-		// assert
+		// Assert
 		Assert.AreEqual(1, obj.MyPublicProperty);
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DataBinderExt_SetValue_ProtectedSetterProperty()
 	{
-		// arrange
+		// Arrange
 		var obj = new MyClass();
 
-		// act
-		DataBinderExt.SetValue(obj, "MyPropertyWithProtectedSetter", 1);
-
-		// assert
-		Assert.AreEqual(1, obj.MyPropertyWithProtectedSetter);
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			DataBinderExt.SetValue(obj, "MyPropertyWithProtectedSetter", 1);
+		});
 	}
 
 	private class MyClass

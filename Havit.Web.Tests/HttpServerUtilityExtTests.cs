@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Web.Tests;
+﻿namespace Havit.Web.Tests;
 
 [TestClass]
 public class HttpServerUtilityExtTests

@@ -60,7 +60,7 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 
 		// Assert
 		Assert.IsNotNull(loginAccount.Memberships, "DbDataLoader nenačetl hodnotu pro loginAccount.Memberships.");
-		Assert.AreEqual(1, loginAccount.Memberships.Count, "DbDataLoader nenačetl objekty do loginAccount.Memberships.");
+		Assert.HasCount(1, loginAccount.Memberships, "DbDataLoader nenačetl objekty do loginAccount.Memberships.");
 	}
 
 	[TestMethod]

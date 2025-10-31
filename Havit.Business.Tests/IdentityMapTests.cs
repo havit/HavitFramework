@@ -1,21 +1,25 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Business.Tests;
+﻿namespace Havit.Business.Tests;
 
 [TestClass]
 public class IdentityMapTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void IdentityMap_Store()
 	{
+		// Arrange
 		IdentityMap target = new IdentityMap();
 
 		TestingBusinessObject businessObject1 = new TestingBusinessObject(10);
 		TestingBusinessObject businessObject2 = new TestingBusinessObject(10);
 
 		target.Store(businessObject1);
-		target.Store(businessObject2);
+
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			target.Store(businessObject2);
+		});
 	}
 
 	[TestMethod]
@@ -29,7 +33,7 @@ public class IdentityMapTests
 		target.Store(businessObject);
 		actual = target.Get<TestingBusinessObject>(10);
 
-		Assert.AreSame(actual, businessObject);
+		Assert.AreSame(businessObject, actual);
 	}
 
 	[TestMethod]

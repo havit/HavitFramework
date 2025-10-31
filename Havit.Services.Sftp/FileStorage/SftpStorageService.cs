@@ -40,6 +40,22 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		return sftpClient;
 	}
 
+	internal async ValueTask<ISftpClient> GetConnectedSftpClientAsync(CancellationToken cancellationToken)
+	{
+		if (sftpClient == null)
+		{
+			var connectionInfo = options.ConnectionInfoFunc();
+			sftpClient = new SftpClient(connectionInfo);
+		}
+
+		if (!sftpClient.IsConnected)
+		{
+			await sftpClient.ConnectAsync(cancellationToken).ConfigureAwait(false);
+		}
+
+		return sftpClient;
+	}
+
 	/// <summary>
 	/// Odpojí se od sFTP serveru, pokud 
 	/// </summary>
@@ -54,15 +70,15 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// <inheritdoc />
 	public override void Delete(string fileName)
 	{
-		GetConnectedSftpClient().Delete(SubstituteFileName(fileName));
+		ISftpClient sftpClient = GetConnectedSftpClient();
+		sftpClient.Delete(SubstituteFileName(fileName));
 	}
 
 	/// <inheritdoc />
-	public override Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
+	public override async Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		this.Delete(fileName); // No async support
-		return Task.CompletedTask;
+		ISftpClient sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+		await sftpClient.DeleteAsync(SubstituteFileName(fileName), cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <inheritdoc />
@@ -75,6 +91,24 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		string prefix = EnumerableFilesGetPrefix(searchPattern);
 
 		foreach (Havit.Services.FileStorage.FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternal("", prefix))
+		{
+			if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
+			{
+				yield return fileInfo;
+			}
+		}
+	}
+
+	/// <inheritdoc />
+	public override async IAsyncEnumerable<Services.FileStorage.FileInfo> EnumerateFilesAsync(string searchPattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+	{
+		// zamen souborova '\\' za '/', ktere lze pouzit v Azure blobu
+		searchPattern = searchPattern?.Replace("\\", "/");
+
+		// ziskej prefix, uvodni cast cesty, ve kterem nejsou pouzite znaky '*' a '?'
+		string prefix = EnumerableFilesGetPrefix(searchPattern);
+
+		await foreach (Havit.Services.FileStorage.FileInfo fileInfo in EnumerateFiles_ListFilesInHierarchyInternalAsync("", prefix, cancellationToken).ConfigureAwait(false))
 		{
 			if (EnumerateFiles_FilterFileInfo(fileInfo, searchPattern))
 			{
@@ -141,12 +175,64 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		}
 	}
 
-	//private string EnumerateFiles_GetFilename(string fullname)
-	//{
-	//	return fullname.StartsWith(sftpClient.WorkingDirectory) // ie. "/primary"
-	//		? fullname.Substring(sftpClient.WorkingDirectory.Length + 1) // vč. lomítka ZA /primary
-	//		: fullname;
-	//}
+	private async IAsyncEnumerable<Havit.Services.FileStorage.FileInfo> EnumerateFiles_ListFilesInHierarchyInternalAsync(string directoryPrefix, string searchPrefix, [EnumeratorCancellation] CancellationToken cancellationToken)
+	{
+		// speed up
+		if (!String.IsNullOrEmpty(searchPrefix) && !(directoryPrefix.StartsWith(searchPrefix) || searchPrefix.StartsWith(directoryPrefix)))
+		{
+			yield break;
+		}
+
+		IAsyncEnumerable<ISftpFile> sftpFiles;
+
+		try
+		{
+			var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+			sftpFiles = sftpClient.ListDirectoryAsync(directoryPrefix, cancellationToken);
+		}
+		catch (SftpPathNotFoundException)
+		{
+			yield break;
+		}
+
+		List<string> subdirectories = new List<string>();
+
+		await foreach (SftpFile item in sftpFiles.ConfigureAwait(false))
+		{
+			if ((item.Name == ".") || (item.Name == ".."))
+			{
+				// NOOP
+			}
+			else if (item.IsRegularFile)
+			{
+				yield return new Havit.Services.FileStorage.FileInfo
+				{
+					Name = directoryPrefix + item.Name,
+					LastModifiedUtc = item.LastWriteTimeUtc,
+					Size = item.Length,
+					ContentType = null
+				};
+			}
+			else if (item.IsDirectory)
+			{
+				subdirectories.Add(item.Name);
+			}
+			else
+			{
+				throw new InvalidOperationException($"Unknown SftpFile item ({item.ToString()}).");
+			}
+		}
+
+		foreach (string subdirectory in subdirectories)
+		{
+			var subdirectoryItems = EnumerateFiles_ListFilesInHierarchyInternalAsync(directoryPrefix + subdirectory + '/', searchPrefix, cancellationToken);
+
+			await foreach (var subdirectoryItem in subdirectoryItems.ConfigureAwait(false))
+			{
+				yield return subdirectoryItem;
+			}
+		}
+	}
 
 	private bool EnumerateFiles_FilterFileInfo(Havit.Services.FileStorage.FileInfo fileInfo, string searchPattern)
 	{
@@ -158,38 +244,32 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		return true;
 	}
 
-
-	/// <inheritdoc />
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-	public override async IAsyncEnumerable<Services.FileStorage.FileInfo> EnumerateFilesAsync(string pattern = null, [EnumeratorCancellation] CancellationToken cancellationToken = default)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-	{
-		cancellationToken.ThrowIfCancellationRequested();
-
-		foreach (var item in EnumerateFiles(pattern)) // No async support
-		{
-			cancellationToken.ThrowIfCancellationRequested();
-			yield return item;
-		}
-	}
-
 	/// <inheritdoc />
 	public override bool Exists(string fileName)
 	{
-		return GetConnectedSftpClient().Exists(SubstituteFileName(fileName));
+		var sftpClient = GetConnectedSftpClient();
+		return sftpClient.Exists(SubstituteFileName(fileName));
 	}
 
 	/// <inheritdoc />
-	public override Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
+	public override async Task<bool> ExistsAsync(string fileName, CancellationToken cancellationToken = default)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		return Task.FromResult(this.Exists(fileName)); // No async support
+		var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+		return await sftpClient.ExistsAsync(SubstituteFileName(fileName), cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <inheritdoc />
 	public override DateTime? GetLastModifiedTimeUtc(string fileName)
 	{
-		return GetConnectedSftpClient().GetLastWriteTimeUtc(SubstituteFileName(fileName));
+		try
+		{
+			var sftpClient = GetConnectedSftpClient();
+			return sftpClient.GetLastWriteTimeUtc(SubstituteFileName(fileName));
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
@@ -214,28 +294,57 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// <inheritdoc />
 	protected override System.IO.Stream PerformOpenRead(string fileName)
 	{
-		return GetConnectedSftpClient().OpenRead(SubstituteFileName(fileName));
+		try
+		{
+			var sftpClient = GetConnectedSftpClient();
+			return sftpClient.OpenRead(SubstituteFileName(fileName));
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
-	protected override Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
+	protected override async Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		return Task.FromResult(this.PerformOpenRead(fileName)); // No async support
+		try
+		{
+			var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+			return await sftpClient.OpenAsync(SubstituteFileName(fileName), FileMode.Open, FileAccess.Read, cancellationToken).ConfigureAwait(false);
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
 	protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 	{
-		GetConnectedSftpClient().DownloadFile(SubstituteFileName(fileName), stream);
+		try
+		{
+			var sftpClient = GetConnectedSftpClient();
+			sftpClient.DownloadFile(SubstituteFileName(fileName), stream);
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
-	protected override Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
+	protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		this.PerformReadToStream(fileName, stream); // No async support
-		return Task.CompletedTask;
+		try
+		{
+			var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+			await sftpClient.DownloadFileAsync(SubstituteFileName(fileName), stream, cancellationToken).ConfigureAwait(false);
+		}
+		catch (SftpPathNotFoundException sftpPathNotFoundException)
+		{
+			throw CreateFileNotFoundException(fileName, sftpPathNotFoundException);
+		}
 	}
 
 	/// <inheritdoc />
@@ -244,7 +353,20 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		string substitutedFilename = SubstituteFileName(fileName);
 
 		PerformSave_EnsureFolderFor(substitutedFilename);
-		GetConnectedSftpClient().UploadFile(fileContent, substitutedFilename, true);
+
+		var sftpClient = GetConnectedSftpClient();
+		sftpClient.UploadFile(fileContent, substitutedFilename, true);
+	}
+
+	/// <inheritdoc />
+	protected override async Task PerformSaveAsync(string fileName, System.IO.Stream fileContent, string contentType, CancellationToken cancellationToken = default)
+	{
+		string substitutedFilename = SubstituteFileName(fileName);
+
+		await PerformSave_EnsureFolderForAsync(substitutedFilename, cancellationToken).ConfigureAwait(false);
+
+		var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+		await sftpClient.UploadFileAsync(fileContent, substitutedFilename, cancellationToken).ConfigureAwait(false); // TODO: Nemá přetíženou verzi s overwrite?
 	}
 
 	private void PerformSave_EnsureFolderFor(string fileName)
@@ -264,12 +386,21 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		}
 	}
 
-	/// <inheritdoc />
-	protected override Task PerformSaveAsync(string fileName, System.IO.Stream fileContent, string contentType, CancellationToken cancellationToken = default)
+	private async Task PerformSave_EnsureFolderForAsync(string fileName, CancellationToken cancellationToken)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		this.PerformSave(fileName, fileContent, contentType); // No async support
-		return Task.CompletedTask;
+		string[] segments = fileName.Split('/').SkipLast(1).ToArray();  // a/b/c/d.txt -> a, b, c (d.txt odstraněno pomocí SkipLast)
+		if (segments.Length > 0) // máme složky?
+		{
+			var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+			for (int i = 0; i < segments.Length; i++)
+			{
+				string folderToCheck = String.Join("/", segments.Take(i + 1)); // postupně a, a/b, a/b/c
+				if (!await sftpClient.ExistsAsync(folderToCheck, cancellationToken).ConfigureAwait(false))
+				{
+					await sftpClient.CreateDirectoryAsync(folderToCheck, cancellationToken).ConfigureAwait(false);
+				}
+			}
+		}
 	}
 
 	/// <inheritdoc />
@@ -292,10 +423,22 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	}
 
 	/// <inheritdoc />
-	protected override Task<System.IO.Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
+	protected override async Task<System.IO.Stream> PerformOpenCreateAsync(string fileName, string contentType, CancellationToken cancellationToken = default)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		return Task.FromResult(PerformOpenCreate(fileName, contentType)); // no async support
+		string substitutedFilename = SubstituteFileName(fileName);
+
+		await PerformSave_EnsureFolderForAsync(substitutedFilename, cancellationToken).ConfigureAwait(false);
+
+		// ISftpClient má k dispozici metodu Create, která dle dokumentace dělá přesně to, co potřebujeme.
+		// Nicméně při použití (minimálně vůči SFTP serveru nad Blob Storage, dostáváme chybu Renci.SshNet.Common.SshException: FeatureNotSupported: This feature is not supported.)
+		// Ponecháme tedy méně hezké, zato funčkní řešení s Exists+Delete+OpenWrite.
+		ISftpClient sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+		if (await sftpClient.ExistsAsync(substitutedFilename, cancellationToken).ConfigureAwait(false))
+		{
+			await sftpClient.DeleteAsync(substitutedFilename, cancellationToken).ConfigureAwait(false);
+		}
+
+		return await sftpClient.OpenAsync(substitutedFilename, FileMode.Create, FileAccess.Write, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <inheritdoc />
@@ -316,7 +459,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	{
 		if (this == targetFileStorageService)
 		{
-			PerformCopyInternalOnThis(sourceFileName, targetFileName); // No async support
+			await PerformCopyInternalOnThisAsync(sourceFileName, targetFileName, cancellationToken).ConfigureAwait(false);
 		}
 		else
 		{
@@ -336,16 +479,51 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 			GetConnectedSftpClient().DownloadFile(SubstituteFileName(sourceFileName), tempStream);
 		}
 
-		// upload from temp file
-		string substitutedTartetFileName = SubstituteFileName(targetFileName);
-		PerformSave_EnsureFolderFor(substitutedTartetFileName);
-		using (var tempStream = System.IO.File.OpenRead(tempFilename))
+		try
 		{
-			GetConnectedSftpClient().UploadFile(tempStream, substitutedTartetFileName);
+			// upload from temp file
+			string substitutedTartetFileName = SubstituteFileName(targetFileName);
+			PerformSave_EnsureFolderFor(substitutedTartetFileName);
+			using (var tempStream = System.IO.File.OpenRead(tempFilename))
+			{
+				GetConnectedSftpClient().UploadFile(tempStream, substitutedTartetFileName);
+			}
+		}
+		finally
+		{
+			// clear temp file
+			System.IO.File.Delete(tempFilename);
+		}
+	}
+
+	private async Task PerformCopyInternalOnThisAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
+	{
+		// Implementace je ochranou před:
+		// The requested operation cannot be performed because there is a file transfer in progress.
+
+		// download to temp tile
+		string tempFilename = System.IO.Path.GetTempFileName();
+		using (var tempStream = System.IO.File.OpenWrite(tempFilename))
+		{
+			var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+			await sftpClient.DownloadFileAsync(SubstituteFileName(sourceFileName), tempStream, cancellationToken).ConfigureAwait(false);
 		}
 
-		// clear temp file
-		System.IO.File.Delete(tempFilename);
+		try
+		{
+			// upload from temp file
+			string substitutedTartetFileName = SubstituteFileName(targetFileName);
+			await PerformSave_EnsureFolderForAsync(substitutedTartetFileName, cancellationToken).ConfigureAwait(false);
+			using (var tempStream = System.IO.File.OpenRead(tempFilename))
+			{
+				await sftpClient.UploadFileAsync(tempStream, substitutedTartetFileName, cancellationToken).ConfigureAwait(false);
+			}
+		}
+		finally
+		{
+			// clear temp file
+			System.IO.File.Delete(tempFilename);
+		}
 	}
 
 	/// <inheritdoc />
@@ -361,15 +539,23 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 			sftpClient.Delete(substitutedTargetFileName);
 		}
 
-		GetConnectedSftpClient().RenameFile(SubstituteFileName(sourceFileName), substitutedTargetFileName);
+		sftpClient.RenameFile(SubstituteFileName(sourceFileName), substitutedTargetFileName);
 	}
 
 	/// <inheritdoc />
-	protected override Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
+	protected override async Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
 	{
-		cancellationToken.ThrowIfCancellationRequested();
-		PerformMove(sourceFileName, targetFileName);
-		return Task.CompletedTask;
+		string substitutedTargetFileName = SubstituteFileName(targetFileName);
+		await PerformSave_EnsureFolderForAsync(substitutedTargetFileName, cancellationToken).ConfigureAwait(false);
+
+		var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+
+		if (await sftpClient.ExistsAsync(substitutedTargetFileName, cancellationToken).ConfigureAwait(false))
+		{
+			await sftpClient.DeleteAsync(substitutedTargetFileName, cancellationToken).ConfigureAwait(false);
+		}
+
+		await sftpClient.RenameFileAsync(SubstituteFileName(sourceFileName), substitutedTargetFileName, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <inheritdoc />
@@ -382,5 +568,10 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	private string SubstituteFileName(string sourceFileName)
 	{
 		return sourceFileName.Replace(@"\", "/");
+	}
+
+	private static Exception CreateFileNotFoundException(string fileName, Exception exception)
+	{
+		throw new FileNotFoundException($"Could not find file '{fileName}' on SFTP server.", fileName, exception);
 	}
 }

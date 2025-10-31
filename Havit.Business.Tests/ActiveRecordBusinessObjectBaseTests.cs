@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.BusinessLayerTest;
+﻿using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;
 
@@ -10,7 +9,6 @@ public class ActiveRecordBusinessObjectBaseTests
 	/// Defect 329: CheckConstraints je obejito, pokud je objekt uložen přes MinimalInsert.
 	/// </summary>
 	[TestMethod]
-	[ExpectedException(typeof(ConstraintViolationException))]
 	public void ActiveRecordBusinessObjectBase_MinimalInsert_UsesCheckConstraint()
 	{
 		// Arrange
@@ -26,9 +24,12 @@ public class ActiveRecordBusinessObjectBaseTests
 		}
 		uzivatel.Username = username;
 
-		// Act
-		subjekt.Save();
-
+		// Assert
+		Assert.ThrowsExactly<ConstraintViolationException>(() =>
+		{
+			// Act
+			subjekt.Save();
+		});
 		// Assert
 		// uživatel musí být otestován pomocí CheckConstraint, očekáváme výjimku ConstraintViolationException (viz atribut této metody)
 	}

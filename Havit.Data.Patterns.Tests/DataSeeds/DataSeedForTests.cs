@@ -1,6 +1,5 @@
 ﻿using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.Tests.Localizations.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Patterns.Tests.DataSeeds;
 
@@ -20,7 +19,7 @@ public class DataSeedForTests
 		dataSeedForLocalizedEntity.AndForAll(le1 => le1.Localizations, configuration => { /* NOOP */ }); // zkusíme použít konfiguraci pro lokalizace, kterou očekáváme ve výchozích konfiguracích
 
 		// Assert
-		Assert.AreEqual(defaultChildDataForRegistryCount, dataSeedForLocalizedEntity._childDataForsRegistry.Count, "Došlo k přidání další konfigurace."); // nechceme, aby Act změnil počet konfigurací
+		Assert.HasCount(defaultChildDataForRegistryCount, dataSeedForLocalizedEntity._childDataForsRegistry, "Došlo k přidání další konfigurace."); // nechceme, aby Act změnil počet konfigurací
 	}
 
 	[TestMethod]

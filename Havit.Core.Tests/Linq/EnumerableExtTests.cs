@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Linq;
+﻿using Havit.Linq;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Tests.Linq;
@@ -21,8 +20,8 @@ public class EnumerableExtTests
 		List<int> result2 = numbers.WhereIf(false, i => i > 0).ToList();
 
 		// Assert
-		Assert.AreEqual(0, result1.Count);
-		Assert.AreEqual(1, result2.Count);
+		Assert.IsEmpty(result1);
+		Assert.HasCount(1, result2);
 	}
 
 	[TestMethod]
@@ -33,8 +32,8 @@ public class EnumerableExtTests
 
 		var joinedData1 = data1.LeftJoin(data2, left => left, right => right, (left, right) => new { Left = left, Right = right }).ToList();
 		var joinedData2 = data1.LeftJoin(data2, left => left, right => right, (left, right) => 0).ToList();
-		Assert.AreEqual(14, joinedData1.Count);
-		Assert.AreEqual(14, joinedData2.Count);
+		Assert.HasCount(14, joinedData1);
+		Assert.HasCount(14, joinedData2);
 	}
 
 	[TestMethod]
@@ -45,8 +44,8 @@ public class EnumerableExtTests
 
 		var joinedData1 = data1.RightJoin(data2, left => left, right => right, (left, right) => new { Left = left, Right = right }).ToList();
 		var joinedData2 = data1.RightJoin(data2, left => left, right => right, (left, right) => 0).ToList();
-		Assert.AreEqual(16, joinedData1.Count);
-		Assert.AreEqual(16, joinedData2.Count);
+		Assert.HasCount(16, joinedData1);
+		Assert.HasCount(16, joinedData2);
 	}
 
 	[TestMethod]
@@ -57,8 +56,8 @@ public class EnumerableExtTests
 
 		var joinedData1 = data1.FullOuterJoin(data2, left => left, right => right, (left, right) => new { Left = left, Right = right }).ToList();
 		var joinedData2 = data1.FullOuterJoin(data2, left => left, right => right, (left, right) => 0).ToList();
-		Assert.AreEqual(22, joinedData1.Count); // 5ka je v obou kolekcích
-		Assert.AreEqual(22, joinedData2.Count); // 5ka je v obou kolekcích
+		Assert.HasCount(22, joinedData1); // 5ka je v obou kolekcích
+		Assert.HasCount(22, joinedData2); // 5ka je v obou kolekcích
 	}
 
 #if !NET6_0_OR_GREATER

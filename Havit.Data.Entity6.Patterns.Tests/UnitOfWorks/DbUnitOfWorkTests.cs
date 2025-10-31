@@ -8,7 +8,6 @@ using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
 using Havit.Services.TimeServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks;
@@ -119,9 +118,9 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Deletes.Length, "Deletes contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Inserts.Length, "Inserts contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Updates.Length, "Updates contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Deletes, "Deletes contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Inserts, "Inserts contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Updates, "Updates contains a registered change.");
 	}
 
 	[TestMethod]
@@ -143,9 +142,9 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Deletes.Length, "Deletes contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Inserts.Length, "Inserts contains a registered change.");
-		Assert.AreEqual(0, allKnownChanges.Updates.Length, "Updates contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Deletes, "Deletes contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Inserts, "Inserts contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Updates, "Updates contains a registered change.");
 	}
 
 	[TestMethod]
@@ -352,7 +351,7 @@ public class DbUnitOfWorkTests
 		dbUnitOfWork.AddForInsert(new ItemWithDeleted());
 
 		// Assert
-		Assert.AreEqual(0, dbRepositoryDbSetLocalsDictionary.Count);
+		Assert.IsEmpty(dbRepositoryDbSetLocalsDictionary);
 	}
 
 	/// <summary>

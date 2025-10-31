@@ -95,10 +95,18 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override void PerformReadToStream(string fileName, System.IO.Stream stream)
 	{
 		ShareFileClient shareFileClient = GetShareFileClient(fileName);
-		using (System.IO.Stream azureFileStream = shareFileClient.OpenRead())
+		ShareFileDownloadInfo shareFileDownloadInfo;
+
+		try
 		{
-			azureFileStream.CopyTo(stream);
+			shareFileDownloadInfo = shareFileClient.Download().Value;
 		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
+		shareFileDownloadInfo.Content.CopyTo(stream);
 	}
 
 	/// <summary>
@@ -106,11 +114,19 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
 	{
-		ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-		using (System.IO.Stream azureFileStream = await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false))
+		ShareFileClient shareFileClient = GetShareFileClient(fileName);
+		ShareFileDownloadInfo shareFileDownloadInfo;
+
+		try
 		{
-			await azureFileStream.CopyToAsync(stream, 81920 /* default*/, cancellationToken).ConfigureAwait(false);
+			shareFileDownloadInfo = (await shareFileClient.DownloadAsync(cancellationToken: cancellationToken).ConfigureAwait(false)).Value;
 		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
+		await shareFileDownloadInfo.Content.CopyToAsync(stream, 81920 /* default*/, cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -119,7 +135,14 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override System.IO.Stream PerformOpenRead(string fileName)
 	{
 		ShareFileClient shareFileClient = GetShareFileClient(fileName);
-		return shareFileClient.OpenRead();
+		try
+		{
+			return shareFileClient.OpenRead();
+		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
 	}
 
 	/// <summary>
@@ -128,7 +151,14 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override async Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 	{
 		ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-		return await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		try
+		{
+			return await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
 	}
 
 	/// <summary>
@@ -186,7 +216,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		{
 			try
 			{
-				shareFileClient.DeleteIfExists(); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
+				await shareFileClient.DeleteIfExistsAsync(cancellationToken: CancellationToken.None).ConfigureAwait(false); // pokud se upload contentu nezdařil, odstraníme soubor založený přes Create.
 			}
 			catch
 			{
@@ -303,24 +333,27 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 			yield break;
 		}
 
-		Pageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectories(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps });
+		IEnumerable<Page<ShareFileItem>> directoryItemsPages = shareDirectoryClient.GetFilesAndDirectories(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }).AsPages(pageSizeHint: 5000);
 		List<string> subdirectories = new List<string>();
 
-		foreach (ShareFileItem item in directoryItems)
+		foreach (Page<ShareFileItem> directoryItemsPage in directoryItemsPages)
 		{
-			if (!item.IsDirectory)
+			foreach (ShareFileItem item in directoryItemsPage.Values)
 			{
-				yield return new Havit.Services.FileStorage.FileInfo
+				if (!item.IsDirectory)
 				{
-					Name = directoryPrefix + item.Name,
-					LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
-					Size = item.FileSize ?? -1,
-					ContentType = null
-				};
-			}
-			else
-			{
-				subdirectories.Add(item.Name);
+					yield return new Havit.Services.FileStorage.FileInfo
+					{
+						Name = directoryPrefix + item.Name,
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
+						Size = item.FileSize ?? -1,
+						ContentType = null
+					};
+				}
+				else
+				{
+					subdirectories.Add(item.Name);
+				}
 			}
 		}
 
@@ -343,24 +376,27 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 			yield break;
 		}
 
-		AsyncPageable<ShareFileItem> directoryItems = shareDirectoryClient.GetFilesAndDirectoriesAsync(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }, cancellationToken: cancellationToken);
+		IAsyncEnumerable<Page<ShareFileItem>> directoryItemsPages = shareDirectoryClient.GetFilesAndDirectoriesAsync(new ShareDirectoryGetFilesAndDirectoriesOptions { Traits = ShareFileTraits.Timestamps }, cancellationToken: cancellationToken).AsPages(pageSizeHint: 5000);
 		List<string> subdirectories = new List<string>();
 
-		await foreach (ShareFileItem item in directoryItems.ConfigureAwait(false))
+		await foreach (var directoryItemsPage in directoryItemsPages.ConfigureAwait(false))
 		{
-			if (!item.IsDirectory)
+			foreach (ShareFileItem item in directoryItemsPage.Values)
 			{
-				yield return new Havit.Services.FileStorage.FileInfo
+				if (!item.IsDirectory)
 				{
-					Name = directoryPrefix + item.Name,
-					LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
-					Size = item.FileSize ?? -1,
-					ContentType = null
-				};
-			}
-			else
-			{
-				subdirectories.Add(item.Name);
+					yield return new Havit.Services.FileStorage.FileInfo
+					{
+						Name = directoryPrefix + item.Name,
+						LastModifiedUtc = item.Properties?.LastModified?.UtcDateTime ?? default,
+						Size = item.FileSize ?? -1,
+						ContentType = null
+					};
+				}
+				else
+				{
+					subdirectories.Add(item.Name);
+				}
 			}
 		}
 
@@ -393,7 +429,17 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		ShareFileClient shareFileClient = GetShareFileClient(fileName);
-		ShareFileProperties properties = shareFileClient.GetProperties();
+		ShareFileProperties properties;
+
+		try
+		{
+			properties = shareFileClient.GetProperties();
+		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
 		return properties.LastModified.UtcDateTime;
 	}
 
@@ -405,7 +451,17 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-		ShareFileProperties properties = await file.GetPropertiesAsync(cancellationToken).ConfigureAwait(false);
+		ShareFileProperties properties;
+
+		try
+		{
+			properties = await file.GetPropertiesAsync(cancellationToken).ConfigureAwait(false);
+		}
+		catch (RequestFailedException requestFailedException) when (IsFileNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
 		return properties.LastModified.UtcDateTime;
 	}
 
@@ -578,4 +634,15 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		var shareFileClient = await GetShareFileClientAsync(fileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
 		return new AzureFileStorageGrowingFileSizeStream(0, shareFileClient);
 	}
+
+	private static bool IsFileNotFoundException(RequestFailedException requestFailedException)
+	{
+		return (requestFailedException.Status == 404) && (requestFailedException.ErrorCode == "ResourceNotFound");
+	}
+
+	private static FileNotFoundException CreateFileNotFoundException(string fileName, Exception exception)
+	{
+		return new FileNotFoundException($"Could not find file '{fileName}' in Azure file share.", fileName, exception);
+	}
+
 }

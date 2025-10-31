@@ -66,7 +66,7 @@ internal class AzureFileStorageGrowingFileSizeStream : Stream
 			if (NeedsFileToBeResized(bytesWritten + count, currentFileSize, out var newFileSize))
 			{
 				// nastavíme novou velikost souboru (jsme v try/catch, pokud se nepodaří, neumožníme další zápis)
-				shareFileClient.SetHttpHeaders(newSize: newFileSize);
+				shareFileClient.SetHttpHeaders(options: new ShareFileSetHttpHeadersOptions { NewSize = newFileSize });
 				currentFileSize = newFileSize;
 			}
 
@@ -93,7 +93,7 @@ internal class AzureFileStorageGrowingFileSizeStream : Stream
 			if (NeedsFileToBeResized(bytesWritten + count, currentFileSize, out var newFileSize))
 			{
 				// nastavíme novou velikost souboru (jsme v try/catch, pokud se nepodaří, neumožníme další zápis)
-				await shareFileClient.SetHttpHeadersAsync(newSize: newFileSize, cancellationToken: cancellationToken).ConfigureAwait(false);
+				await shareFileClient.SetHttpHeadersAsync(options: new ShareFileSetHttpHeadersOptions { NewSize = newFileSize }, cancellationToken: cancellationToken).ConfigureAwait(false);
 				currentFileSize = newFileSize;
 			}
 
@@ -122,7 +122,7 @@ internal class AzureFileStorageGrowingFileSizeStream : Stream
 		if (currentFileSize != bytesWritten)
 		{
 			// nastavíme správnou velikost souboru podle počtu zapsaných bytes
-			shareFileClient.SetHttpHeaders(newSize: bytesWritten);
+			shareFileClient.SetHttpHeaders(options: new ShareFileSetHttpHeadersOptions { NewSize = bytesWritten });
 		}
 
 		base.Close();

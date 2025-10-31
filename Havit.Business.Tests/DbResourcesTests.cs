@@ -1,6 +1,5 @@
 ﻿using Havit.BusinessLayerTest;
 using Havit.BusinessLayerTest.Resources;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.Tests;
 

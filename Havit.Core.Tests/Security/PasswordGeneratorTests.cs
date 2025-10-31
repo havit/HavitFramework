@@ -1,5 +1,4 @@
 ﻿using Havit.Security;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Security;
 
@@ -19,21 +18,26 @@ public class PasswordGeneratorTests
 
 		actual = Havit.Security.PasswordGenerator.Generate(minimumLength, maximumLength, passwordCharacterSet, allowRepeatingCharacters, allowConsecutiveCharacters);
 
-		Assert.IsTrue(actual.Length >= minimumLength);
-		Assert.IsTrue(actual.Length <= maximumLength);
+		Assert.IsGreaterThanOrEqualTo(minimumLength, actual.Length);
+		Assert.IsLessThanOrEqualTo(maximumLength, actual.Length);
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void PasswordGenerator_Generate_ThrowsExceptionForLonPasswords()
 	{
+		// Arrange
 		int minimumLength = 100;
 		int maximumLength = 100;
 		PasswordCharacterSet passwordCharacterSet = PasswordCharacterSet.LowerCaseLetters;
 		bool allowRepeatingCharacters = false;
 		bool allowConsecutiveCharacters = false;
 
-		_ = Havit.Security.PasswordGenerator.Generate(minimumLength, maximumLength, passwordCharacterSet, allowRepeatingCharacters, allowConsecutiveCharacters);
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			_ = Havit.Security.PasswordGenerator.Generate(minimumLength, maximumLength, passwordCharacterSet, allowRepeatingCharacters, allowConsecutiveCharacters);
+		});
 	}
 
 }

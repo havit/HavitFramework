@@ -14,6 +14,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	
+	<ItemGroup>
 		<ProjectReference Include="..\..\Havit.Data.EntityFrameworkCore.Patterns\Havit.Data.EntityFrameworkCore.Patterns.csproj" />
 		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution.Entity\Havit.Data.EntityFrameworkCore.TestSolution.Entity.csproj" />
 		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.TestSolution.Model\Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj" />

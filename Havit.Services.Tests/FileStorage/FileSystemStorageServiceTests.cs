@@ -3,7 +3,6 @@ using Havit.Services.TestHelpers;
 using Havit.Services.TestHelpers.FileStorage;
 using Havit.Services.Tests.FileStorage.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Tests.FileStorage;
 
@@ -68,21 +67,22 @@ public class FileSystemStorageServiceTests
 		var fileSystemStorageService = new FileSystemStorageService(@"%TEMP%\SomeFolder");
 
 		// Assert
-		Assert.IsFalse(fileSystemStorageService.StoragePath.Contains("%TEMP%"));
-		Assert.IsFalse(fileSystemStorageService.StoragePath.Contains(@"\\")); // neobsahuje dvě zpětná lomítka za sebou
+		Assert.DoesNotContain("%TEMP%", fileSystemStorageService.StoragePath);
+		Assert.DoesNotContain(@"\\", fileSystemStorageService.StoragePath); // neobsahuje dvě zpětná lomítka za sebou
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void FileSystemStorageService_Constructor_NeedsStoragePathWhenNotUsingFullyQualifiedPathNames()
 	{
 		// Arrange
 		// noop
 
-		// Act
-		new FileSystemStorageService(String.Empty);
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			new FileSystemStorageService(String.Empty);
+		});
 	}
 
 	[TestMethod]
@@ -99,16 +99,17 @@ public class FileSystemStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void FileSystemStorageService_Constructor_CannotUseFullyQualifiedPathNamesWithStoragePath()
 	{
 		// Arrange
 		// noop
 
-		// Act
-		new FileSystemStorageService(@"D:\", useFullyQualifiedPathNames: true, encryptionOptions: null);
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			new FileSystemStorageService(@"D:\", useFullyQualifiedPathNames: true, encryptionOptions: null);
+		});
 	}
 
 	[TestMethod]
@@ -328,15 +329,39 @@ public class FileSystemStorageServiceTests
 	}
 
 	[TestMethod]
+	public void FileSystemStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
 	public void FileSystemStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	[TestMethod]
+	public void FileSystemStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
 	public async Task FileSystemStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
 	}
 
 	[TestMethod]
@@ -373,6 +398,18 @@ public class FileSystemStorageServiceTests
 	public async Task FileSystemStorageService_OpenCreateAsync_OverwritesExistingFileAndContent()
 	{
 		await FileStorageServiceTestHelpers.FileStorageService_OpenCreateAsync_OverwritesExistingFileAndContent(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public void FileSystemStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile(GetFileSystemStorageService(encryptionOptions: new AesEncryptionOption(AesEncryptionOption.CreateRandomKeyAndIvAsBase64String())));
 	}
 
 	[TestMethod]
@@ -492,30 +529,33 @@ public class FileSystemStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void FileSystemStorageService_GetFullPath_ThrowsExceptionForDirectoryTraversal()
 	{
 		// Arrange
 
-		// Act
 		FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(@"C:\A");
-		fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
 
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			fileSystemStorageService.GetFullPath(@"..\AB\file.txt"); //--> C:\AB\file.txt
+		});
 	}
 
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void FileSystemStorageService_GetFullPath_ThrowsExceptionForNonQualifiedPathNamesWhenUsingFullyQualifiedPathNames()
 	{
 		// Arrange
 		FileSystemStorageService fileSystemStorageService = new FileSystemStorageService(null, useFullyQualifiedPathNames: true, encryptionOptions: null);
 
-		// Act
-		fileSystemStorageService.GetFullPath(@"\file.txt");
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			fileSystemStorageService.GetFullPath(@"\file.txt");
+		});
 	}
 
 	[TestMethod]

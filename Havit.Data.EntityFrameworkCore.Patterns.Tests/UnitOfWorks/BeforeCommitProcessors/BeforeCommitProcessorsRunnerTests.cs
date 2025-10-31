@@ -192,7 +192,6 @@ public class BeforeCommitProcessorsRunnerTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void BeforeCommitProcessorsRunner_Run_ThrowsExceptionWhenThereIsAsyncBeforeCommitProcessor()
 	{
 		// Arrange
@@ -216,10 +215,12 @@ public class BeforeCommitProcessorsRunnerTests
 			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity }
 		});
 
-		// Act
-		ChangeTrackerImpact result = runner.Run(changes);
-
-		// Assert by method attribute		
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			ChangeTrackerImpact result = runner.Run(changes);
+		});
 	}
 
 	public class Entity

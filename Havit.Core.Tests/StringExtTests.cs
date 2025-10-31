@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Havit.Tests;
+﻿namespace Havit.Tests;
 
 [TestClass]
 public class StringExtTests

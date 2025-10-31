@@ -23,11 +23,11 @@ public class ReferencingNavigationsServiceTests
 		var materReferencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(Master)));
 
 		// Assert
-		Assert.AreEqual(1, childReferencingNavigations.Count);
+		Assert.HasCount(1, childReferencingNavigations);
 		Assert.AreSame(typeof(Master), childReferencingNavigations.Single().EntityType);
 		Assert.AreEqual(nameof(Master.Children), childReferencingNavigations.Single().NavigationPropertyName);
 
-		Assert.AreEqual(0, materReferencingNavigations.Count);
+		Assert.IsEmpty(materReferencingNavigations);
 	}
 
 	[TestMethod]
@@ -43,11 +43,11 @@ public class ReferencingNavigationsServiceTests
 		var classManyToManyAReferencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(ClassManyToManyA)));
 
 		// Assert
-		Assert.AreEqual(1, skipNavigationEntityReferencingNavigations.Count);
+		Assert.HasCount(1, skipNavigationEntityReferencingNavigations);
 		Assert.AreSame(typeof(ClassManyToManyA), skipNavigationEntityReferencingNavigations.Single().EntityType);
 		Assert.AreEqual(nameof(ClassManyToManyA.Items), skipNavigationEntityReferencingNavigations.Single().NavigationPropertyName);
 
-		Assert.AreEqual(0, classManyToManyAReferencingNavigations.Count);
+		Assert.IsEmpty(classManyToManyAReferencingNavigations);
 	}
 
 	[TestMethod]
@@ -63,11 +63,11 @@ public class ReferencingNavigationsServiceTests
 		var classOneToOneBReferencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(ClassOneToOneB)));
 
 		// Assert
-		Assert.AreEqual(1, classOneToOneBReferencingNavigations.Count);
+		Assert.HasCount(1, classOneToOneBReferencingNavigations);
 		Assert.AreSame(typeof(ClassOneToOneA), classOneToOneBReferencingNavigations.Single().EntityType);
 		Assert.AreEqual(nameof(ClassOneToOneA.ClassB), classOneToOneBReferencingNavigations.Single().NavigationPropertyName);
 
-		Assert.AreEqual(0, classOneToOneAReferencingNavigations.Count);
+		Assert.IsEmpty(classOneToOneAReferencingNavigations);
 	}
 
 	[TestMethod]
@@ -82,6 +82,6 @@ public class ReferencingNavigationsServiceTests
 		var referencingNavigations = referencingNavigationsService.GetReferencingNavigations(dbContext.Model.FindEntityType(typeof(LoginAccount)));
 
 		// Assert
-		Assert.AreEqual(0, referencingNavigations.Count); // LoginAccount nikdo nereferencuje kolekcí ani one-to-one referencí.
+		Assert.IsEmpty(referencingNavigations); // LoginAccount nikdo nereferencuje kolekcí ani one-to-one referencí.
 	}
 }

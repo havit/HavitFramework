@@ -22,7 +22,7 @@ public class QueryHelpersTests
 		var result = GetData().Where(new List<int> { 2 }.ContainsEffective<TestClass>(p => p.Id)).ToList();
 
 		// Assert
-		Assert.AreEqual(1, result.Count, "Count");
+		Assert.HasCount(1, result, "Count");
 		Assert.IsTrue(result.Any(item => item.Id == 2), "2");
 	}
 
@@ -33,7 +33,7 @@ public class QueryHelpersTests
 		var result = GetData().Where(new List<int> { 2, 3, 4 }.ContainsEffective<TestClass>(p => p.Id)).ToList();
 
 		// Assert
-		Assert.AreEqual(3, result.Count, "Count");
+		Assert.HasCount(3, result, "Count");
 		Assert.IsTrue(result.Any(item => item.Id == 2), "2");
 		Assert.IsTrue(result.Any(item => item.Id == 3), "3");
 		Assert.IsTrue(result.Any(item => item.Id == 4), "4");
@@ -46,7 +46,7 @@ public class QueryHelpersTests
 		var result = GetData().Where(new List<int> { 1, 2, 3, 5 }.ContainsEffective<TestClass>(p => p.Id)).ToList();
 
 		// Assert
-		Assert.AreEqual(4, result.Count, "Count");
+		Assert.HasCount(4, result, "Count");
 		Assert.IsTrue(result.Any(item => item.Id == 1), "1");
 		Assert.IsTrue(result.Any(item => item.Id == 2), "2");
 		Assert.IsTrue(result.Any(item => item.Id == 3), "3");

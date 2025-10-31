@@ -207,7 +207,6 @@ public class DbUnitOfWorkTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException), AllowDerivedTypes = false)]
 	public void DbUnitOfWork_Commit_ThrowsWhenAsyncAfterCommitActionIsRegistered()
 	{
 		// Arrange
@@ -222,10 +221,12 @@ public class DbUnitOfWorkTests
 		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), CreateEntityCacheDependencyManager(), mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
 		dbUnitOfWork.RegisterAfterCommitAction(async _ => await Task.Yield());
 
-		// Act
-		dbUnitOfWork.Commit();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			dbUnitOfWork.Commit();
+		});
 	}
 
 	[TestMethod]
@@ -551,8 +552,8 @@ public class DbUnitOfWorkTests
 
 		// Prerequisities
 		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Items.Count());
-		Assert.AreEqual(1, dbUnitOfWork._afterCommitActions.Count);
-		Assert.AreEqual(1, dbUnitOfWork._asyncAfterCommitsActions.Count);
+		Assert.HasCount(1, dbUnitOfWork._afterCommitActions);
+		Assert.HasCount(1, dbUnitOfWork._asyncAfterCommitsActions);
 		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
 
 		// Act
@@ -560,7 +561,7 @@ public class DbUnitOfWorkTests
 
 		// Assert
 		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Items.Count());
-		Assert.AreEqual(0, dbUnitOfWork._updateRegistrations.Count);
+		Assert.IsEmpty(dbUnitOfWork._updateRegistrations);
 		Assert.IsNull(dbUnitOfWork._afterCommitActions);
 		Assert.IsNull(dbUnitOfWork._asyncAfterCommitsActions);
 		Assert.AreEqual(0, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());

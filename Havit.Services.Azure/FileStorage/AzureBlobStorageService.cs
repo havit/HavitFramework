@@ -1,12 +1,12 @@
-﻿using Havit.Services.FileStorage;
-using FileInfo = Havit.Services.FileStorage.FileInfo;
-using Havit.Diagnostics.Contracts;
-using Havit.Text.RegularExpressions;
-using Azure.Storage.Blobs;
+﻿using System.Runtime.CompilerServices;
 using Azure;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Havit.Diagnostics.Contracts;
+using Havit.Services.FileStorage;
+using Havit.Text.RegularExpressions;
 using Havit.Threading;
-using System.Runtime.CompilerServices;
+using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.Azure.FileStorage;
 
@@ -111,7 +111,14 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override void PerformReadToStream(string fileName, Stream stream)
 	{
 		BlobClient blobClient = GetBlobClient(fileName);
-		blobClient.DownloadTo(stream);
+		try
+		{
+			blobClient.DownloadTo(stream);
+		}
+		catch (global::Azure.RequestFailedException requestFailedException) when (IsBlobNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
 	}
 
 	/// <summary>
@@ -120,7 +127,14 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 	{
 		BlobClient blobClient = GetBlobClient(fileName);
-		await blobClient.DownloadToAsync(stream, cancellationToken).ConfigureAwait(false);
+		try
+		{
+			await blobClient.DownloadToAsync(stream, cancellationToken).ConfigureAwait(false);
+		}
+		catch (global::Azure.RequestFailedException requestFailedException) when (IsBlobNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
 	}
 
 	/// <summary>
@@ -129,7 +143,14 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override Stream PerformOpenRead(string fileName)
 	{
 		BlobClient blobClient = GetBlobClient(fileName);
-		return blobClient.OpenRead();
+		try
+		{
+			return blobClient.OpenRead();
+		}
+		catch (global::Azure.RequestFailedException requestFailedException) when (IsBlobNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
 	}
 
 	/// <summary>
@@ -138,7 +159,14 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 	protected override async Task<Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 	{
 		BlobClient blobClient = GetBlobClient(fileName);
-		return await blobClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		try
+		{
+			return await blobClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		}
+		catch (global::Azure.RequestFailedException requestFailedException) when (IsBlobNotFoundException(requestFailedException))
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
 	}
 
 	/// <summary>
@@ -213,14 +241,17 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		EnsureContainer();
 
 		// nacti soubory s danym prefixem - optimalizace na rychlost
-		Pageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobs(prefix: prefix);
+		IEnumerable<Page<BlobItem>> blobItemsPages = GetBlobContainerClient().GetBlobs(prefix: prefix).AsPages(pageSizeHint: 5000);
 
 		// filtruj soubory podle masky
-		foreach (var blobItem in blobItems)
+		foreach (Page<BlobItem> blobItemsPage in blobItemsPages)
 		{
-			if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+			foreach (BlobItem blobItem in blobItemsPage.Values)
 			{
-				yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+				{
+					yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				}
 			}
 		}
 	}
@@ -242,14 +273,17 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
 
 		// nacti soubory s danym prefixem - optimalizace na rychlost
-		AsyncPageable<BlobItem> blobItems = GetBlobContainerClient().GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken);
+		ConfiguredCancelableAsyncEnumerable<Page<BlobItem>> blobItemsPages = GetBlobContainerClient().GetBlobsAsync(prefix: prefix, cancellationToken: cancellationToken).AsPages(pageSizeHint: 5000).ConfigureAwait(false);
 
-		await foreach (BlobItem blobItem in blobItems.ConfigureAwait(false))
+		await foreach (Page<BlobItem> blobItemsPage in blobItemsPages.ConfigureAwait(false))
 		{
-			// filtruj soubory podle masky
-			if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+			foreach (BlobItem blobItem in blobItemsPage.Values)
 			{
-				yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				// filtruj soubory podle masky
+				if (EnumerateFiles_FilterCloudBlob(blobItem, searchPattern))
+				{
+					yield return EnumerateFiles_ProjectCloudBlob(blobItem);
+				}
 			}
 		}
 	}
@@ -314,7 +348,17 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		BlobClient blobClient = GetBlobClient(fileName);
-		BlobProperties properties = blobClient.GetProperties();
+		BlobProperties properties;
+
+		try
+		{
+			properties = blobClient.GetProperties();
+		}
+		catch (RequestFailedException requestFailedException)
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
 		return properties.LastModified.UtcDateTime;
 	}
 
@@ -326,7 +370,17 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		BlobClient blobClient = GetBlobClient(fileName);
-		BlobProperties properties = await blobClient.GetPropertiesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		BlobProperties properties;
+
+		try
+		{
+			properties = await blobClient.GetPropertiesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		}
+		catch (RequestFailedException requestFailedException)
+		{
+			throw CreateFileNotFoundException(fileName, requestFailedException);
+		}
+
 		return properties.LastModified.UtcDateTime;
 	}
 
@@ -487,6 +541,16 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		PerformSave_SetProperties(blobHttpHeaders);
 
 		return blobHttpHeaders;
+	}
+
+	private static bool IsBlobNotFoundException(RequestFailedException requestFailedException)
+	{
+		return (requestFailedException.Status == 404) && (requestFailedException.ErrorCode == "BlobNotFound");
+	}
+
+	private static FileNotFoundException CreateFileNotFoundException(string fileName, Exception exception)
+	{
+		return new FileNotFoundException($"Could not find blob '{fileName}' in Azure blob container.", fileName, exception);
 	}
 
 	private enum BlobStorageValueType

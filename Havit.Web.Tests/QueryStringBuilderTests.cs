@@ -1,23 +1,34 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-namespace Havit.Web.Tests;
+﻿namespace Havit.Web.Tests;
 
 [TestClass]
 public class QueryStringBuilderTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void QueryStringBuilder_Add_Null_ThrowsException()
 	{
+		// Arrange
 		QueryStringBuilder target = new QueryStringBuilder();
-		target.Add(null, "cokoliv");
+
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			target.Add(null, "cokoliv");
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void QueryStringBuilder_Set_Null_ThrowsException()
 	{
+		// Arrange
 		QueryStringBuilder target = new QueryStringBuilder();
-		target.Set(null, "cokoliv");
+
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			target.Set(null, "cokoliv");
+		});
 	}
 
 	[TestMethod]
@@ -150,10 +161,10 @@ public class QueryStringBuilderTests
 
 		target.FillFromString(queryString);
 
-		Assert.IsTrue(target["key1"] == "value1");
-		Assert.IsTrue(target["key2"] == "value2");
-		Assert.IsTrue(target.Count == 2);
-		Assert.IsTrue(target.ToString() == queryString);
+		Assert.AreEqual("value1", target["key1"]);
+		Assert.AreEqual("value2", target["key2"]);
+		Assert.HasCount(2, target);
+		Assert.AreEqual(queryString, target.ToString());
 	}
 
 	[TestMethod]
@@ -165,7 +176,7 @@ public class QueryStringBuilderTests
 
 		target.FillFromString(queryString);
 
-		Assert.IsTrue(target["key"] == "ěščřžýáíéúů");
+		Assert.AreEqual("ěščřžýáíéúů", target["key"]);
 	}
 
 	[TestMethod]
@@ -177,10 +188,10 @@ public class QueryStringBuilderTests
 
 		target.FillFromString(queryString);
 
-		Assert.IsTrue(target["key1"] == "value1");
-		Assert.IsTrue(target["key2"] == "value2");
-		Assert.IsTrue(target.Count == 2);
-		Assert.IsTrue(target.ToString() == "key1=value1&key2=value2");
+		Assert.AreEqual("value1", target["key1"]);
+		Assert.AreEqual("value2", target["key2"]);
+		Assert.HasCount(2, target);
+		Assert.AreEqual("key1=value1&key2=value2", target.ToString());
 	}
 
 	[TestMethod]
@@ -192,9 +203,9 @@ public class QueryStringBuilderTests
 
 		target.FillFromString(queryString);
 
-		Assert.IsTrue(target["key1"] == String.Empty);
-		Assert.IsTrue(target.Count == 1);
-		Assert.IsTrue(target.ToString() == "key1=");
+		Assert.AreEqual(String.Empty, target["key1"]);
+		Assert.HasCount(1, target);
+		Assert.AreEqual("key1=", target.ToString());
 	}
 
 	[TestMethod]
@@ -206,8 +217,8 @@ public class QueryStringBuilderTests
 
 		target.FillFromString(queryString);
 
-		Assert.IsTrue(target.Count == 0);
-		Assert.IsTrue(target.ToString() == String.Empty);
+		Assert.IsEmpty(target);
+		Assert.AreEqual(String.Empty, target.ToString());
 	}
 
 	[TestMethod]
@@ -219,8 +230,8 @@ public class QueryStringBuilderTests
 
 		target.FillFromString(queryString);
 
-		Assert.IsTrue(target.Count == 0);
-		Assert.IsTrue(target.ToString() == String.Empty);
+		Assert.IsEmpty(target);
+		Assert.AreEqual(String.Empty, target.ToString());
 	}
 
 	/// <summary>

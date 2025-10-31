@@ -113,7 +113,6 @@ public class DbDataLoader_LoadReference_Tests : DbDataLoaderTestsBase
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DbDataLoader_Load_Reference_ThrowsExceptionForNontrackedObjects()
 	{
 		// Arrange
@@ -125,10 +124,12 @@ public class DbDataLoader_LoadReference_Tests : DbDataLoaderTestsBase
 
 		IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), entityKeyAccessor, new DbLoadedPropertyReaderWithMemory(dbContext), Mock.Of<ILogger<DbDataLoader>>(MockBehavior.Loose /* umožníme použití bez setupu */));
 
-		// Act
-		dataLoader.Load(new Child() /* nontracked object */, item => item.Parent);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			dataLoader.Load(new Child() /* nontracked object */, item => item.Parent);
+		});
 	}
 
 	[TestMethod]

@@ -2,7 +2,6 @@
 using Havit.Data.EntityFrameworkCore.Attributes;
 using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Conventions;
 

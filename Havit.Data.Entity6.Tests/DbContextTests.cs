@@ -5,7 +5,6 @@ using Havit.Data.Entity.Tests.Helpers;
 using Havit.Data.Entity.Tests.Infrastructure;
 using Havit.Data.Entity.Tests.Infrastructure.Model;
 using Havit.Diagnostics.Contracts;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Tests;
 
@@ -118,7 +117,7 @@ public class DbContextTests
 		{
 			Master master = dbContext.Set<Master>().Include("Children").Single(item => item.Id == masterId);
 			Assert.IsNotNull(master.Children);
-			Assert.AreEqual(1, master.Children.Count);
+			Assert.HasCount(1, master.Children);
 		}
 	}
 

@@ -4,8 +4,6 @@ using System.Data.Common;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Havit.Data.Tests;
 
 [TestClass]
@@ -18,7 +16,7 @@ public class DbConnectorTests
 		DbConnector target = new DbConnector(connectionStringSettings);
 
 		Assert.AreEqual(target.ConnectionString, connectionStringSettings.ConnectionString);
-		Assert.AreEqual(target.ProviderFactory.GetType(), typeof(OleDbFactory));
+		Assert.AreEqual(typeof(OleDbFactory), target.ProviderFactory.GetType());
 	}
 
 	[TestMethod]
@@ -42,7 +40,7 @@ public class DbConnectorTests
 		DbConnector target = new DbConnector(connectionString, providerInvariantName);
 
 		Assert.AreEqual(target.ConnectionString, connectionString);
-		Assert.AreEqual(target.ProviderFactory.GetType(), typeof(SqlClientFactory));
+		Assert.AreEqual(typeof(SqlClientFactory), target.ProviderFactory.GetType());
 	}
 
 	[TestMethod]
@@ -64,7 +62,7 @@ public class DbConnectorTests
 	public void DbConnector_Default_get()
 	{
 		Assert.AreEqual(DbConnector.Default.ConnectionString, ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString);
-		Assert.AreEqual(DbConnector.Default.ProviderFactory.GetType(), typeof(SqlClientFactory));
+		Assert.AreEqual(typeof(SqlClientFactory), DbConnector.Default.ProviderFactory.GetType());
 	}
 
 	public void DbConnector_ExecuteScalar()
@@ -87,7 +85,7 @@ public class DbConnectorTests
 		DataSet dataSet = DbConnector.Default.ExecuteDataSet(commandText);
 
 		Assert.IsNotNull(dataSet);
-		Assert.AreEqual(1, dataSet.Tables.Count);
+		Assert.HasCount(1, dataSet.Tables);
 	}
 
 	[TestMethod]
@@ -98,7 +96,7 @@ public class DbConnectorTests
 		DataTable dataTable = DbConnector.Default.ExecuteDataTable(commandText);
 
 		Assert.IsNotNull(dataTable);
-		Assert.AreEqual(1, dataTable.Columns.Count);
+		Assert.HasCount(1, dataTable.Columns);
 	}
 
 	[TestMethod]

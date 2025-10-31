@@ -1,5 +1,4 @@
 ﻿using Havit.Tests.Scopes.Instrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Scopes;
 

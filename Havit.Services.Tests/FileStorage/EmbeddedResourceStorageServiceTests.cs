@@ -1,7 +1,6 @@
 ﻿using Havit.Services.FileStorage;
 using Havit.Services.Tests.FileStorage.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Tests.FileStorage;
 
@@ -48,16 +47,17 @@ public class EmbeddedResourceStorageServiceTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(FileNotFoundException))]
 	public void EmbeddedResourceStorageService_OpenRead_MissingFile()
 	{
 		// Arrange
 		EmbeddedResourceStorageService service = GetEmbeddedResourceStorageService();
 
-		// Act
-		service.OpenRead("some_missing file.txt");
-
-		// Assert - by method attribute
+		// Assert
+		Assert.ThrowsExactly<FileNotFoundException>(() =>
+		{
+			// Act
+			service.OpenRead("some_missing file.txt");
+		});
 	}
 
 

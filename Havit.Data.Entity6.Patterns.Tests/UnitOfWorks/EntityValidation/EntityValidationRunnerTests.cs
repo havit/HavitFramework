@@ -1,6 +1,5 @@
 ﻿using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.EntityValidation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.EntityValidation;
@@ -52,7 +51,6 @@ public class EntityValidationRunnerTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ValidationFailedException))]
 	public void EntityValidationRunner_Validate_ThrowsExceptionWhenValidationFails()
 	{
 		// Arrange
@@ -67,15 +65,17 @@ public class EntityValidationRunnerTests
 
 		EntityValidationRunner runner = new EntityValidationRunner(entityValidatorsFactoryMock.Object);
 
-		// Act
-		runner.Validate(new Changes
+		// Assert
+		Assert.ThrowsExactly<ValidationFailedException>(() =>
 		{
-			Inserts = new object[] { entityInserting },
-			Updates = new object[] { },
-			Deletes = new object[] { }
+			// Act
+			runner.Validate(new Changes
+			{
+				Inserts = new object[] { entityInserting },
+				Updates = new object[] { },
+				Deletes = new object[] { }
+			});
 		});
-
-		// Assert by method attribute
 	}
 
 	public class Entity

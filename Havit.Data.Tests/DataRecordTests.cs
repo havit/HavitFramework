@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data;
+﻿using System.Data;
 using Moq;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -108,9 +107,9 @@ public class DataRecordTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidCastException))]
 	public void DataRecord_TryGetTest_InvalidCast()
 	{
+		// Arrange
 		DataTable table = new DataTable();
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
@@ -121,13 +120,18 @@ public class DataRecordTests
 
 		string fieldName = "ColumnName";
 
-		_ = record.TryGet(fieldName, out Exception _); // nekompatibilní typ
+		// Assert
+		Assert.ThrowsExactly<InvalidCastException>(() =>
+		{
+			// Act
+			_ = record.TryGet(fieldName, out Exception _); // nekompatibilní typ
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
 	public void DataRecord_TryGetTest_NenalezenoFullLoad()
 	{
+		// Arrange
 		DataTable table = new DataTable();
 		table.Columns.Add("ColumnName", typeof(int));
 		table.Rows.Add(10);
@@ -138,7 +142,12 @@ public class DataRecordTests
 
 		string fieldName = "ColumnName_Jiny";
 
-		_ = record.TryGet(fieldName, out int? _);
+		// Assert
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			// Act
+			_ = record.TryGet(fieldName, out int? _);
+		});
 	}
 
 	[TestMethod]

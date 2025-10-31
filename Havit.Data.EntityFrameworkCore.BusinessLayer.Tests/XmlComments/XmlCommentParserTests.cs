@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.BusinessLayer.XmlComments;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.XmlComments;
 
@@ -31,7 +30,7 @@ public class XmlCommentParserTests : XmlCommentTestBase
 		var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
 		var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
-		Assert.AreEqual(1, personType.Tags.Count);
+		Assert.HasCount(1, personType.Tags);
 	}
 
 	[TestMethod]
@@ -42,7 +41,7 @@ public class XmlCommentParserTests : XmlCommentTestBase
 		var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
 		var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
-		Assert.AreEqual(1, personType.Tags.Count);
+		Assert.HasCount(1, personType.Tags);
 		Assert.AreEqual("summary", personType.Tags[0].Name);
 		Assert.AreEqual("Person object", personType.Tags[0].Content.Trim());
 	}
@@ -55,7 +54,7 @@ public class XmlCommentParserTests : XmlCommentTestBase
 		var xmlCommentFile = parser.ParseFile(ParseXmlFile());
 
 		var personType = xmlCommentFile.Types.FirstOrDefault(t => t.Name == typeof(Model.Person).FullName);
-		Assert.AreEqual(4, personType.Properties.Count);
+		Assert.HasCount(4, personType.Properties);
 	}
 
 	[TestMethod]

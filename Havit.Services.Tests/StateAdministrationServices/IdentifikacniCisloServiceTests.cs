@@ -1,5 +1,4 @@
 ﻿using Havit.Services.StateAdministration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Services.Tests.StateAdministrationServices;
 

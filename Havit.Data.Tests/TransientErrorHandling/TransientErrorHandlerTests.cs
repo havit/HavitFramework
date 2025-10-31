@@ -1,6 +1,5 @@
 ﻿using System.Data.SqlClient;
 using Havit.Data.TransientErrorHandling;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Tests.TransientErrorHandling;
 

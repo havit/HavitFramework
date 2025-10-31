@@ -1,5 +1,4 @@
 ﻿using Havit.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Linq;
 
@@ -63,7 +62,7 @@ public class CollectionExtTests
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
-		Assert.AreEqual(2, targetList.Count);
+		Assert.HasCount(2, targetList);
 		var item2 = targetList.Single(i => i.Id == 2);
 		Assert.AreEqual("FAKE_SOURCE_2", item2.StringProperty);
 		Assert.AreSame(item2, result.ItemsAdding.Single());
@@ -100,7 +99,7 @@ public class CollectionExtTests
 
 		// assert
 		// Item 2 added
-		Assert.AreEqual(1, targetList.Count);
+		Assert.HasCount(1, targetList);
 		var item = targetList.Single(i => i.Id == 1);
 		Assert.AreEqual("FAKE_SOURCE_1", item.StringProperty);
 		Assert.AreSame(item, result.ItemsAdding.Single());
@@ -159,7 +158,7 @@ public class CollectionExtTests
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
-		Assert.AreEqual(2, targetList.Count);
+		Assert.HasCount(2, targetList);
 		var item2 = targetList.Single(i => i.StringProperty == "SOURCE_KEY_2");
 		Assert.AreEqual("2", item2.OtherProperty);
 		Assert.AreSame(item2, result.ItemsAdding.Single());
@@ -217,13 +216,13 @@ public class CollectionExtTests
 		CollectionAssert.Contains(targetList, targetItem1);
 		var item1 = targetList.Single(i => i.Id == 1);
 		Assert.AreEqual("FAKE_SOURCE_12", item1.StringProperty);
-		Assert.AreEqual(0, itemsAdded.Count);
-		Assert.AreEqual(0, result.ItemsAdding.Count);
-		Assert.AreEqual(2, itemsUpdated.Count);
-		Assert.AreEqual(2, result.ItemsUpdating.Count);
+		Assert.IsEmpty(itemsAdded);
+		Assert.IsEmpty(result.ItemsAdding);
+		Assert.HasCount(2, itemsUpdated);
+		Assert.HasCount(2, result.ItemsUpdating);
 		Assert.AreSame(result.ItemsUpdating[0], result.ItemsUpdating[1]);
-		Assert.AreEqual(0, itemsRemoved.Count);
-		Assert.AreEqual(0, result.ItemsRemoving.Count);
+		Assert.IsEmpty(itemsRemoved);
+		Assert.IsEmpty(result.ItemsRemoving);
 	}
 
 	[TestMethod]
@@ -278,17 +277,17 @@ public class CollectionExtTests
 		// Item 1 updated
 		CollectionAssert.Contains(targetList, targetItem1);
 		CollectionAssert.Contains(targetList, targetItem2);
-		Assert.AreEqual(2, targetList.Count);
+		Assert.HasCount(2, targetList);
 		Assert.AreEqual("FAKE_SOURCE_1", targetList[0].StringProperty);
 		Assert.AreEqual("FAKE_SOURCE_1", targetList[1].StringProperty);
-		Assert.AreEqual(0, itemsAdded.Count);
-		Assert.AreEqual(0, result.ItemsAdding.Count);
-		Assert.AreEqual(2, itemsUpdated.Count);
-		Assert.AreEqual(2, result.ItemsUpdating.Count);
+		Assert.IsEmpty(itemsAdded);
+		Assert.IsEmpty(result.ItemsAdding);
+		Assert.HasCount(2, itemsUpdated);
+		Assert.HasCount(2, result.ItemsUpdating);
 		CollectionAssert.Contains(result.ItemsUpdating, targetItem1);
 		CollectionAssert.Contains(result.ItemsUpdating, targetItem2);
-		Assert.AreEqual(0, itemsRemoved.Count);
-		Assert.AreEqual(0, result.ItemsRemoving.Count);
+		Assert.IsEmpty(itemsRemoved);
+		Assert.IsEmpty(result.ItemsRemoving);
 	}
 
 	[TestMethod]
@@ -323,9 +322,9 @@ public class CollectionExtTests
 		);
 
 		// assert
-		Assert.AreEqual(1, targetList.Count);
+		Assert.HasCount(1, targetList);
 		Assert.AreEqual("FAKE_SOURCE_1", targetList.Single().StringProperty);
-		Assert.AreEqual(0, result.ItemsAdding.Count);
+		Assert.IsEmpty(result.ItemsAdding);
 	}
 
 	[TestMethod]
@@ -365,10 +364,10 @@ public class CollectionExtTests
 		);
 
 		// assert
-		Assert.AreEqual(2, targetList.Count);
+		Assert.HasCount(2, targetList);
 		Assert.AreEqual("ITEM_TO_UPDATE", targetList.Single(i => i.Id == 1).StringProperty);
 		Assert.AreEqual(1, targetList.Count(i => i.Id == 2));
-		Assert.AreEqual(0, result.ItemsUpdating.Count);
+		Assert.IsEmpty(result.ItemsUpdating);
 	}
 
 	[TestMethod]
@@ -409,11 +408,11 @@ public class CollectionExtTests
 		);
 
 		// assert
-		Assert.AreEqual(3, targetList.Count);
+		Assert.HasCount(3, targetList);
 		Assert.AreEqual(1, targetList.Count(i => i.Id == 1));
 		Assert.AreEqual(1, targetList.Count(i => i.Id == 2));
 		Assert.AreEqual(1, targetList.Count(i => i.Id == 3));
-		Assert.AreEqual(0, result.ItemsRemoving.Count);
+		Assert.IsEmpty(result.ItemsRemoving);
 	}
 
 	[TestMethod]
@@ -468,7 +467,7 @@ public class CollectionExtTests
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
-		Assert.AreEqual(2, targetList.Count);
+		Assert.HasCount(2, targetList);
 		var item2 = targetList.Single(i => i.Id == 2);
 		Assert.AreEqual("FAKE_SOURCE_2", item2.StringProperty);
 		Assert.AreSame(item2, result.ItemsAdding.Single());
@@ -529,7 +528,7 @@ public class CollectionExtTests
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
-		Assert.AreEqual(2, targetList.Count);
+		Assert.HasCount(2, targetList);
 		var item2 = targetList.Single(i => i.Id == 2);
 		Assert.AreEqual("2", item2.OtherProperty);
 		Assert.AreSame(item2, result.ItemsAdding.Single());
@@ -557,8 +556,8 @@ public class CollectionExtTests
 		);
 
 		// assert
-		Assert.AreEqual(2, targetList.Count);
-		Assert.AreEqual(2, result.ItemsRemoving.Count);
+		Assert.HasCount(2, targetList);
+		Assert.HasCount(2, result.ItemsRemoving);
 	}
 
 	private class SourceClass

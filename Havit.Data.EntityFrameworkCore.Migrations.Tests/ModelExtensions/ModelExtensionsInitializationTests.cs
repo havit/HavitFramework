@@ -7,7 +7,6 @@ using Havit.Data.EntityFrameworkCore.Migrations.TestHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.ModelExtensions;
 
@@ -29,7 +28,7 @@ public class ModelExtensionsInitializationTests
 		{
 			var modelExtensions = annotationProvider.GetModelExtensions(dbContext.Model.GetAnnotations().ToList());
 
-			Assert.AreEqual(1, modelExtensions.Count);
+			Assert.HasCount(1, modelExtensions);
 			Assert.IsInstanceOfType(modelExtensions[0], typeof(StoredProcedureModelExtension));
 			Assert.AreEqual(nameof(DummyStoredProcedures.GetTables), ((StoredProcedureModelExtension)modelExtensions[0]).ProcedureName);
 		}

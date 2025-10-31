@@ -14,7 +14,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.Repositories;
 public class DbRepositoryTests
 {
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public void DbRepository_GetObject_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -29,14 +28,15 @@ public class DbRepositoryTests
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
-		// Act
-		repository.GetObject(maxId + 1);
-
-		// Assert by method attribute 
+		// Assert
+		Assert.ThrowsExactly<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			repository.GetObject(maxId + 1);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public async Task DbRepository_GetObjectAsync_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -51,10 +51,12 @@ public class DbRepositoryTests
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
-		// Act
-		await repository.GetObjectAsync(maxId + 1);
-
-		// Assert by method attribute 
+		// Assert
+		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () =>
+		{
+			// Act
+			await repository.GetObjectAsync(maxId + 1);
+		});
 	}
 
 	[TestMethod]
@@ -120,7 +122,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = repository.GetAll();
 
 		// Assert
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -136,7 +138,7 @@ public class DbRepositoryTests
 
 		// Act
 		List<ItemWithDeleted> result1 = repository.GetAll();
-		Assert.AreEqual(0, result1.Count);
+		Assert.IsEmpty(result1);
 
 		testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
 		testDbContext.SaveChanges();
@@ -149,8 +151,8 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result3 = repository.GetAll();
 
 		// Assert
-		Assert.AreEqual(1, result2.Count);
-		Assert.AreEqual(2, result3.Count);
+		Assert.HasCount(1, result2);
+		Assert.HasCount(2, result3);
 	}
 
 	[TestMethod]
@@ -166,7 +168,7 @@ public class DbRepositoryTests
 
 		// Act
 		List<ItemWithDeleted> result1 = await repository.GetAllAsync();
-		Assert.AreEqual(0, result1.Count);
+		Assert.IsEmpty(result1);
 
 		testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
 		await testDbContext.SaveChangesAsync();
@@ -179,8 +181,8 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result3 = await repository.GetAllAsync();
 
 		// Assert
-		Assert.AreEqual(1, result2.Count);
-		Assert.AreEqual(2, result3.Count);
+		Assert.HasCount(1, result2);
+		Assert.HasCount(2, result3);
 	}
 
 	[TestMethod]
@@ -200,7 +202,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = await repository.GetAllAsync();
 
 		// Assert
-		Assert.AreEqual(0, result.Count);
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -223,7 +225,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = repository.GetObjects(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
@@ -246,7 +248,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
@@ -272,7 +274,7 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = repository.GetObjects(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
@@ -298,11 +300,10 @@ public class DbRepositoryTests
 		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
 
 		// Assert
-		Assert.AreEqual(ids.Length, result.Count);
+		Assert.HasCount(ids.Length, result);
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public void DbRepository_GetObjects_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -317,14 +318,15 @@ public class DbRepositoryTests
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
-		// Act
-		repository.GetObjects(maxId + 1, maxId + 2);
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(() =>
+		{
+			// Act
+			repository.GetObjects(maxId + 1, maxId + 2);
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(Havit.Data.Patterns.Exceptions.ObjectNotFoundException), AllowDerivedTypes = false)]
 	public async Task DbRepository_GetObjectsAsync_ThrowsExceptionWhenNotFound()
 	{
 		// Arrange
@@ -339,10 +341,12 @@ public class DbRepositoryTests
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, entityKeyAccessor, dataLoader, new SoftDeleteManager(new ServerTimeService()), new NoCachingEntityCacheManager(), new FakeRepositoryQueryProvider());
 
-		// Act
-		await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 });
-
-		// Assert by method attribute
+		// Assert
+		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () =>
+		{
+			// Act
+			await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 });
+		});
 	}
 
 	[TestMethod]
@@ -365,7 +369,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(1, entities.Count);
+		Assert.HasCount(1, entities);
 	}
 
 	[TestMethod]
@@ -388,7 +392,7 @@ public class DbRepositoryTests
 
 		// Assert
 		// no exception was thrown
-		Assert.AreEqual(1, entities.Count);
+		Assert.HasCount(1, entities);
 	}
 
 	[TestMethod]

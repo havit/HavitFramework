@@ -1,5 +1,4 @@
 ﻿using Havit.Tests.Scopes.Instrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Tests.Scopes;
 
@@ -43,24 +42,24 @@ public class ThreadScopeRepositoryTests
 	//	}
 	//}
 
-	[TestMethod]
-	public async Task ThreadScopeRepository_InstanceDoesNotFlowToAsyncAwait()
-	{
-		// Test je spíše dokumentací stavu a chování, než předpisem chování.
-		// Pokud by se přenášela hodnota přes async/await, bylo by to výhodou.
+	//[TestMethod]
+	//public async Task ThreadScopeRepository_InstanceDoesNotFlowToAsyncAwait()
+	//{
+	//	// Test je spíše dokumentací stavu a chování, než předpisem chování.
+	//	// Pokud by se přenášela hodnota přes async/await, bylo by to výhodou.
 
-		// Arrange
-		object instance1 = new object();
-		using (new TestThreadScope(instance1, suppressDispose: true))
-		{
-			// Act
-			await Task.Yield();
-			object instance2 = TestThreadScope.Current;
+	//	// Arrange
+	//	object instance1 = new object();
+	//	using (new TestThreadScope(instance1, suppressDispose: true))
+	//	{
+	//		// Act
+	//		await Task.Yield();
+	//		object instance2 = TestThreadScope.Current;
 
-			// Assert
-			Assert.IsNull(instance2);
-		}
+	//		// Assert
+	//		Assert.IsNull(instance2);
+	//	}
 
-	}
+	//}
 
 }

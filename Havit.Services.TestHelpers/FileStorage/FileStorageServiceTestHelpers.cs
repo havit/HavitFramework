@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Havit.Diagnostics.Contracts;
 using Havit.Services.FileStorage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FileInfo = Havit.Services.FileStorage.FileInfo;
 
 namespace Havit.Services.TestHelpers.FileStorage;
@@ -102,6 +101,26 @@ public static class FileStorageServiceTestHelpers
 
 		// Assert
 		Assert.IsFalse(exists);
+	}
+
+	public static void FileStorageService_GetLastModifiedTimeUtc_ThrowsFileNotFoundExceptionForNonExistingFile(IFileStorageService fileStorageService)
+	{
+		// Assert
+		Assert.ThrowsExactly<FileNotFoundException>(() =>
+		{
+			// Act
+			fileStorageService.GetLastModifiedTimeUtc("non-existing-file");
+		});
+	}
+
+	public static async Task FileStorageService_GetLastModifiedTimeUtcAsync_ThrowsFileNotFoundExceptionForNonExistingFile(IFileStorageService fileStorageService)
+	{
+		// Assert
+		await Assert.ThrowsExactlyAsync<FileNotFoundException>(async () =>
+		{
+			// Act
+			await fileStorageService.GetLastModifiedTimeUtcAsync("non-existing-file");
+		});
 	}
 
 	public static void FileStorageService_Save_AcceptsPathWithNewSubfolders(IFileStorageService fileStorageService)
@@ -633,7 +652,7 @@ public static class FileStorageServiceTestHelpers
 
 		// Assert
 		Assert.IsNotNull(files);
-		Assert.IsTrue(!files.Any());
+		Assert.IsFalse(files.Any());
 	}
 
 	public static async Task FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(IFileStorageService fileStorageService)
@@ -644,7 +663,7 @@ public static class FileStorageServiceTestHelpers
 		List<FileInfo> files = await fileStorageService.EnumerateFilesAsync("NONEXISTING_FOLDER\\*").ToListAsync();
 
 		// Assert
-		Assert.IsTrue(!files.Any());
+		Assert.IsFalse(files.Any());
 	}
 
 	public static void FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
@@ -686,6 +705,16 @@ public static class FileStorageServiceTestHelpers
 		fileStorageService.Delete(testFilename);
 	}
 
+	public static void FileStorageService_OpenRead_ThrowsFileNotFoundExceptionForNonExistingFile(FileStorageServiceBase fileStorageService)
+	{
+		// Assert
+		Assert.ThrowsExactly<FileNotFoundException>(() =>
+		{
+			// Act
+			using var stream = fileStorageService.OpenRead("non-existing-file");
+		});
+	}
+
 	public static async Task FileStorageService_OpenReadAsync_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
 	{
 		Contract.Requires(fileStorageService.SupportsBasicEncryption);
@@ -723,6 +752,16 @@ public static class FileStorageServiceTestHelpers
 
 		// Clean-up
 		await fileStorageService.DeleteAsync(testFilename);
+	}
+
+	public static async Task FileStorageService_OpenReadAsync_ThrowsFileNotFoundExceptionForNonExistingFile(FileStorageServiceBase fileStorageService)
+	{
+		// Assert
+		await Assert.ThrowsExactlyAsync<FileNotFoundException>(async () =>
+		{
+			// Act
+			using var stream = await fileStorageService.OpenReadAsync("non-existing-file");
+		});
 	}
 
 	public static void FileStorageService_OpenCreate_OverwritesExistingFileAndContent(FileStorageServiceBase fileStorageService)
@@ -842,6 +881,31 @@ public static class FileStorageServiceTestHelpers
 
 		// Clean-up
 		await fileStorageService.DeleteAsync(filename);
+	}
+
+
+	public static void FileStorageService_ReadToStream_ThrowsFileNotFoundExceptionForNonExistingFile(FileStorageServiceBase fileStorageService)
+	{
+		// Arrange
+		using var ms = new MemoryStream();
+
+		// Assert
+		Assert.ThrowsExactly<FileNotFoundException>(() =>
+		{
+			fileStorageService.ReadToStream("non-existing-file", ms);
+		});
+	}
+
+	public static async Task FileStorageService_ReadToStreamAsync_ThrowsFileNotFoundExceptionForNonExistingFile(FileStorageServiceBase fileStorageService)
+	{
+		// Arrange
+		using var ms = new MemoryStream();
+
+		// Assert
+		await Assert.ThrowsExactlyAsync<FileNotFoundException>(async () =>
+		{
+			await fileStorageService.ReadToStreamAsync("non-existing-file", ms);
+		});
 	}
 
 	private static bool FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(IFileStorageService fileStorageService, string searchPattern, string testFilename)

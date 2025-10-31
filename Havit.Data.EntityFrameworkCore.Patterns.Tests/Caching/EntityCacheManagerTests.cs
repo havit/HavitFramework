@@ -207,7 +207,7 @@ public class EntityCacheManagerTests
 
 		// Assert
 		Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
-		Assert.AreEqual(master.Children.Count, masterResult.Children.Count);
+		Assert.HasCount(master.Children.Count, masterResult.Children);
 		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child1.Id));
 		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child2.Id));
 		Assert.AreEqual(4, master.Children.Union(masterResult.Children).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
@@ -240,13 +240,13 @@ public class EntityCacheManagerTests
 
 		// Assert
 		Assert.IsTrue(success);
-		Assert.AreEqual(1, loginAccountResult.Memberships.Count);
+		Assert.HasCount(1, loginAccountResult.Memberships);
 		Assert.AreEqual(membership.RoleId, loginAccountResult.Memberships[0].RoleId);
 		Assert.AreNotSame(loginAccount.Memberships[0], loginAccountResult.Memberships[0]);
 		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 
-	[DataTestMethod]
+	[TestMethod]
 	[DataRow(true, DisplayName = nameof(EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation) + " with initialized collection property")]
 	[DataRow(false, DisplayName = nameof(EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation) + " with not initialized (null) collection property")]
 	public void EntityCacheManager_Scenario_ManyToMany_StoreNavigation_And_TryGetNavigation(bool shouldInitializeTargetCollection)

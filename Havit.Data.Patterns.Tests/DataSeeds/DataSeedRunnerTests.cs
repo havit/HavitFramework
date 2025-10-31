@@ -1,7 +1,6 @@
 ﻿using Havit.Data.Patterns.DataSeeds;
 using Havit.Data.Patterns.DataSeeds.Profiles;
 using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Patterns.Tests.DataSeeds;
@@ -9,6 +8,20 @@ namespace Havit.Data.Patterns.Tests.DataSeeds;
 [TestClass]
 public class DataSeedRunnerTests
 {
+	[TestMethod]
+	public void DataSeedPersister_Constructor_ThrowsExceptionWhenOneTypeUsedMoreTimes()
+	{
+		// Arrange
+		Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
+
+		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
+
+		Assert.ThrowsExactly<ArgumentException>(() =>
+		{
+			new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		});
+	}
+
 	[TestMethod]
 	public void DataSeedPersister_SeedData_CallsSeedDataOnAllDataSeeds()
 	{
@@ -118,7 +131,6 @@ public class DataSeedRunnerTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DataSeedPersister_SeedData_ThrowsExceptionWhenCycleInPrerequisities()
 	{
 		// Arrange
@@ -129,14 +141,15 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		runner.SeedData<DefaultProfile>();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			runner.SeedData<DefaultProfile>();
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task DataSeedPersister_SeedDataAsync_ThrowsExceptionWhenCycleInPrerequisities()
 	{
 		// Arrange
@@ -147,14 +160,15 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		await runner.SeedDataAsync<DefaultProfile>();
-
-		// Assert by method attribute
+		// Assert
+		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
+		{
+			// Act
+			await runner.SeedDataAsync<DefaultProfile>();
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DataSeedPersister_SeedData_ThrowsExceptionWhenPrerequisiteIsItself()
 	{
 		// Arrange
@@ -164,14 +178,15 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		runner.SeedData<DefaultProfile>();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			runner.SeedData<DefaultProfile>();
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task DataSeedPersister_SeedDataAsync_ThrowsExceptionWhenPrerequisiteIsItself()
 	{
 		// Arrange
@@ -181,48 +196,15 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedDependentOnItself }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		await runner.SeedDataAsync<DefaultProfile>();
-
-		// Assert by method attribute
+		// Assert
+		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
+		{
+			// Act
+			await runner.SeedDataAsync<DefaultProfile>();
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
-	public void DataSeedPersister_SeedData_ThrowsExceptionWhenOneTypeUsedMoreTimes()
-	{
-		// Arrange
-		Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
-
-		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
-
-		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
-
-		// Act
-		runner.SeedData<DefaultProfile>();
-
-		// Assert by method attribute
-	}
-
-	[TestMethod]
-	[ExpectedException(typeof(ArgumentException))]
-	public async Task DataSeedPersister_SeedDataAsync_ThrowsExceptionWhenOneTypeUsedMoreTimes()
-	{
-		// Arrange
-		Mock<IDataSeed> dataSeedMock = new Mock<IDataSeed>();
-
-		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
-
-		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object, dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
-
-		// Act
-		await runner.SeedDataAsync<DefaultProfile>();
-
-		// Assert by method attribute
-	}
-
-	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void DataSeedPersister_SeedData_ThrowsExceptionWhenPrerequisiteNotFound()
 	{
 		// Arrange
@@ -232,14 +214,15 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		runner.SeedData<DefaultProfile>();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
+		{
+			// Act
+			runner.SeedData<DefaultProfile>();
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public async Task DataSeedPersister_SeedDataAsync_ThrowsExceptionWhenPrerequisiteNotFound()
 	{
 		// Arrange
@@ -249,14 +232,15 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		await runner.SeedDataAsync<DefaultProfile>();
-
-		// Assert by method attribute
+		// Assert
+		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
+		{
+			// Act
+			await runner.SeedDataAsync<DefaultProfile>();
+		});
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(SeedAsyncFromSyncSeedDataException))]
 	public void DataSeedPersister_SeedData_ThrowsExceptionWhenSeedDataAsyncReturnsNotCompletedTask()
 	{
 		// Arrange
@@ -275,10 +259,12 @@ public class DataSeedRunnerTests
 
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
-		// Act
-		runner.SeedData<ProfileWithPrerequisite>();
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<SeedAsyncFromSyncSeedDataException>(() =>
+		{
+			// Act
+			runner.SeedData<ProfileWithPrerequisite>();
+		});
 	}
 
 	[TestMethod]

@@ -1,6 +1,5 @@
 ﻿using Havit.Data.Entity.Patterns.DataLoaders.Internal;
 using Havit.Data.Entity.Patterns.Tests.DataLoader.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.Entity.Patterns.Tests.DataLoader.Internal;
 
@@ -13,7 +12,7 @@ public class PropertyLoadSequenceResolverIncludingDeletedFilteringSubstitutionTe
 		PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution resolver = new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution();
 		PropertyToLoad[] propertiesToLoad = resolver.GetPropertiesToLoad((Master item) => item.Children.Select(child => child.Parent.Children));
 
-		Assert.AreEqual(3, propertiesToLoad.Length);
+		Assert.HasCount(3, propertiesToLoad);
 
 		Assert.AreEqual(nameof(Master.ChildrenIncludingDeleted), propertiesToLoad[0].PropertyName);
 		Assert.AreEqual(typeof(Master), propertiesToLoad[0].SourceType);

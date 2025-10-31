@@ -4,7 +4,6 @@ using Havit.Services.SignalR.Caching.BackgroundServices;
 using Havit.Services.SignalR.Caching.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Services.SignalR.Tests.Caching;
@@ -135,37 +134,39 @@ public class ServiceCollectionExtensionsTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void ServiceCollectionExtensions_AddDistributedCacheInvalidation_ThrowsExceptionWhenHubUrlIsMissingButRequired()
 	{
 		// Arrange
 		ServiceCollection services = new ServiceCollection();
 
-		// Act
-		services.AddDistributedCacheInvalidation(o =>
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
 		{
-			o.IsSingleInstanceHubHost = false;
-			o.HubUrl = "";
+			// Act
+			services.AddDistributedCacheInvalidation(o =>
+			{
+				o.IsSingleInstanceHubHost = false;
+				o.HubUrl = "";
+			});
 		});
-
-		// Assert by method attribute
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(InvalidOperationException))]
 	public void ServiceCollectionExtensions_AddDistributedCacheInvalidation_ThrowsExceptionWhenHubUrlIsSetButNotRequired()
 	{
 		// Arrange
 		ServiceCollection services = new ServiceCollection();
 
-		// Act
-		services.AddDistributedCacheInvalidation(o =>
+		// Assert
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
 		{
-			o.IsSingleInstanceHubHost = true;
-			o.HubUrl = "https://fake/address";
+			// Act
+			services.AddDistributedCacheInvalidation(o =>
+			{
+				o.IsSingleInstanceHubHost = true;
+				o.HubUrl = "https://fake/address";
+			});
 		});
-
-		// Assert by method attribute
 	}
 
 	private IServiceProvider CreateServiceProvider(Action<IServiceCollection> action)

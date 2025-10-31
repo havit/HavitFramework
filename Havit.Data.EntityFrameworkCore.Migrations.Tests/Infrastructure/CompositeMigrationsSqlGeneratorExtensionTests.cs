@@ -3,7 +3,6 @@ using Havit.Data.EntityFrameworkCore.Migrations.ModelExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations.Tests.Infrastructure;
 
@@ -91,9 +90,9 @@ public class CompositeMigrationsSqlGeneratorExtensionTests
 		{
 			_ = dbContext.Model;
 
-			Assert.AreEqual(1, dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.Count);
+			Assert.HasCount(1, dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes);
 
-			Assert.AreSame(dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.First(), typeof(FakeMigrationOperationSqlGenerator));
+			Assert.AreSame(typeof(FakeMigrationOperationSqlGenerator), dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.First());
 		}
 	}
 
@@ -120,10 +119,10 @@ public class CompositeMigrationsSqlGeneratorExtensionTests
 		{
 			_ = dbContext.Model;
 
-			Assert.AreEqual(2, dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes.Count);
+			Assert.HasCount(2, dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes);
 
-			Assert.AreSame(dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes[0], typeof(FakeMigrationOperationSqlGenerator));
-			Assert.AreSame(dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes[1], typeof(SecondFakeMigrationOperationSqlGenerator));
+			Assert.AreSame(typeof(FakeMigrationOperationSqlGenerator), dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes[0]);
+			Assert.AreSame(typeof(SecondFakeMigrationOperationSqlGenerator), dbContext.CompositeMigrationsSqlGeneratorExtension.GeneratorTypes[1]);
 		}
 	}
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
@@ -13,7 +13,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.46</PackageVersion>
+		<PackageVersion>2.0.50</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Services</Description>
 		<NoWarn>$(NoWarn);1701;1702;1591</NoWarn>
 	</PropertyGroup>
@@ -28,19 +28,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- netstandard2.0 dependencies -->
+		<!-- net8.0 dependencies -->
 	</ItemGroup>
 	<!-- End of conditional dependencies -->
 
 	<ItemGroup>
-		<!-- shared net48 & netstandard2.0 dependencies -->
-		<!-- Microsoft.Bcl.AsyncInterfaces musíme uvést jako závislost (obou frameworků), přestože build jde i bez nich.
-			 Důvod, proč jde kompilace i bez nich je takový, že Microsoft.Extensions.DependencyInjection.Abstractions mají uvedenu Microsoft.Bcl.AsyncInterfaces jako svoji závislost pro
-			 netstandard2.0. Ovšem tuto knihovnu nemají jako závislost pro net6, takže při zavedení do projektu (bez explicitního uvedení Microsoft.Bcl.AsyncInterfaces zde)
-			 dojde k pádu na nenalezení Microsoft.Bcl.AsyncInterfaces. -->
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,6 +1,5 @@
 ﻿using Havit.Data.Entity.Patterns.UnitOfWorks;
 using Havit.Data.Entity.Patterns.UnitOfWorks.BeforeCommitProcessors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks.BeforeCommitProcessors;

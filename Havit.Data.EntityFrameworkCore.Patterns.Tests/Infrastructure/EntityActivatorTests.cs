@@ -13,13 +13,14 @@ public class EntityActivatorTests
 	}
 
 	[TestMethod]
-	[ExpectedException(typeof(MissingMemberException))]
 	public void EntityActivator_CreateInstance_ParametirezedPublicConstructor()
 	{
-		// Act
-		Assert.IsNotNull(EntityActivator.CreateInstance<ClassWithParametirezedPublicConstuctor>());
-
-		// Assert by method attribute
+		// Assert
+		Assert.ThrowsExactly<MissingMemberException>(() =>
+		{
+			// Act
+			Assert.IsNotNull(EntityActivator.CreateInstance<ClassWithParametirezedPublicConstuctor>());
+		});
 	}
 
 	[TestMethod]

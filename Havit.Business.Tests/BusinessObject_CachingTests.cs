@@ -4,7 +4,6 @@ using Havit.Business.Caching;
 using Havit.BusinessLayerTest;
 using Havit.BusinessLayerTest.Resources;
 using Havit.Services.Caching;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Business.Tests;
 

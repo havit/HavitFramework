@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Havit.Text.RegularExpressions;
 
 namespace Havit.Tests.Text;

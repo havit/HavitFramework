@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using Havit.Data.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Internal;
 

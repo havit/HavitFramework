@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using Havit.Data.EntityFrameworkCore.Threading;
 using Microsoft.Data.SqlClient;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Havit.Data.EntityFrameworkCore.Tests.Threading;
 

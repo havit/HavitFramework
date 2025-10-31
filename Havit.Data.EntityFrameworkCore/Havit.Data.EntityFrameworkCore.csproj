@@ -20,7 +20,7 @@
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0-rc.2.25502.107" />
-		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.61">
+		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

@@ -22,7 +22,7 @@ public class BeforeCommitProcessorsFactoryTests
 		var beforeCommitProcessors = factory.Create(typeof(Entity)).ToList();
 
 		// Assert
-		Assert.AreEqual(beforeCommitProcessors.Count, 2);
+		Assert.HasCount(2, beforeCommitProcessors);
 		Assert.IsTrue(beforeCommitProcessors.All(beforeCommitProcessor => beforeCommitProcessor.GetType().ImplementsInterface(typeof(IBeforeCommitProcessor<Entity>))));
 	}
 
@@ -40,7 +40,7 @@ public class BeforeCommitProcessorsFactoryTests
 		var beforeCommitProcessors = factory.Create(typeof(Entity)).ToList();
 
 		// Assert
-		Assert.AreEqual(beforeCommitProcessors.Count, 1);
+		Assert.HasCount(1, beforeCommitProcessors);
 		Assert.IsTrue(beforeCommitProcessors.Single().GetType().ImplementsInterface(typeof(IBeforeCommitProcessor<object>)));
 	}
 
@@ -59,7 +59,7 @@ public class BeforeCommitProcessorsFactoryTests
 		var beforeCommitProcessors = factory.Create(typeof(Entity)).ToList();
 
 		// Assert
-		Assert.AreEqual(beforeCommitProcessors.Count, 2);
+		Assert.HasCount(2, beforeCommitProcessors);
 		Assert.IsTrue(beforeCommitProcessors[0].GetType().ImplementsInterface(typeof(IBeforeCommitProcessor<object>)));
 		Assert.IsTrue(beforeCommitProcessors[1].GetType().ImplementsInterface(typeof(IBeforeCommitProcessor<Entity>)));
 	}

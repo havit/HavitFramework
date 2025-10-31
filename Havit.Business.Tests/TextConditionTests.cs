@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Havit.Business.Query;
+﻿using Havit.Business.Query;
 using Havit.BusinessLayerTest;
 
 namespace Havit.Business.Tests;
@@ -19,15 +18,15 @@ public class TextConditionTests
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateIsNullOrEmpty(ValueOperand.Create("")));
-			Assert.IsTrue(Role.GetList(qp).Count > 0);
+			Assert.IsNotEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateIsNullOrEmpty(ValueOperand.Create(null)));
-			Assert.IsTrue(Role.GetList(qp).Count > 0);
+			Assert.IsNotEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateIsNullOrEmpty(ValueOperand.Create("aaa")));
-			Assert.IsTrue(Role.GetList(qp).Count == 0);
+			Assert.IsEmpty(Role.GetList(qp));
 		}
 	}
 
@@ -40,15 +39,15 @@ public class TextConditionTests
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create("")));
-			Assert.IsTrue(Role.GetList(qp).Count == 0);
+			Assert.IsEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create(null)));
-			Assert.IsTrue(Role.GetList(qp).Count == 0);
+			Assert.IsEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateIsNotNullOrEmpty(ValueOperand.Create("aaa")));
-			Assert.IsTrue(Role.GetList(qp).Count > 0);
+			Assert.IsNotEmpty(Role.GetList(qp));
 		}
 	}
 
@@ -61,19 +60,19 @@ public class TextConditionTests
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("["), "["));
-			Assert.IsTrue(Role.GetList(qp).Count > 0);
+			Assert.IsNotEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("]"), "]"));
-			Assert.IsTrue(Role.GetList(qp).Count > 0);
+			Assert.IsNotEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("["), "]"));
-			Assert.IsTrue(Role.GetList(qp).Count == 0);
+			Assert.IsEmpty(Role.GetList(qp));
 
 			qp = new QueryParams();
 			qp.Conditions.Add(TextCondition.CreateWildcards(ValueOperand.Create("]"), "["));
-			Assert.IsTrue(Role.GetList(qp).Count == 0);
+			Assert.IsEmpty(Role.GetList(qp));
 		}
 	}
 }

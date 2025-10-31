@@ -24,9 +24,4 @@ public sealed class ContractException : Exception
 	private ContractException()
 	{
 	}
-
-	private ContractException(SerializationInfo info, StreamingContext context)
-		: base(info, context)
-	{
-	}
 }

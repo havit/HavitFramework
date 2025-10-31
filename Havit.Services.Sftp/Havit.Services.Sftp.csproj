@@ -12,7 +12,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.50-pre01</PackageVersion>
+		<PackageVersion>2.0.50</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - SFTP Services</Description>
 	</PropertyGroup>
 

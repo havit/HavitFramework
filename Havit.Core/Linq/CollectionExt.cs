@@ -12,7 +12,7 @@ public static class CollectionExt
 	/// CZ: Sloučení kolekcí. Do existující kolekce aplikuje změny z kolekce druhé. Použitelné pro aplikaci změn z ViewModelu do DataLayer-entities (a naopak), pro importy, atp.<br/>
 	/// </summary>
 	/// <remarks>
-	/// EN: <br /> 
+	/// EN: <br />
 	/// PERF: Internally uses FullOuterJoin for performance optimization, however, due to leaking EF-fixups, the performance is slightly degraded by the <c>target.Contains</c> check before adding a new item to the collection. If this proves to be a problem, it could be improved by overloading the method that can disable this check.
 	/// Boundary situations (logic follows from the use of FullOuterJoin):
 	/// <list type="bullet">
@@ -133,6 +133,78 @@ public static class CollectionExt
 				if (removeItemAction != null)
 				{
 					removeItemAction(joinedItem.Target);
+					result.ItemsRemoving.Add(joinedItem.Target);
+					if (removeItemFromCollection)
+					{
+						target.Remove(joinedItem.Target);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/// <inheritdoc cref="UpdateFrom" />
+	public static async Task<UpdateFromResult<TTarget>> UpdateFromAsync<TSource, TTarget, TKey>(
+		this ICollection<TTarget> target,
+		IEnumerable<TSource> source,
+		Func<TTarget, TKey> targetKeySelector,
+		Func<TSource, TKey> sourceKeySelector,
+		Func<TSource, Task<TTarget>> newItemCreateFunc,
+		Func<TSource, TTarget, Task> updateItemAction,
+		Func<TTarget, Task> removeItemAction,
+		bool removeItemFromCollection = true)
+		where TTarget : class
+	{
+		Contract.Requires<ArgumentNullException>(target != null, nameof(target));
+		Contract.Requires<ArgumentNullException>(source != null, nameof(source));
+		Contract.Requires<ArgumentNullException>(sourceKeySelector != null, nameof(sourceKeySelector));
+		Contract.Requires<ArgumentNullException>(targetKeySelector != null, nameof(targetKeySelector));
+
+		var joinedCollections = target.FullOuterJoin(
+			rightSource: source,
+			leftKeySelector: targetKeySelector,
+			rightKeySelector: sourceKeySelector,
+			resultSelector: (targetItem, sourceItem) => new { Target = targetItem, Source = sourceItem });
+
+		var result = new UpdateFromResult<TTarget>();
+
+		foreach (var joinedItem in joinedCollections)
+		{
+			if (object.Equals(joinedItem.Target, default(TTarget))) // && (Source != null)
+			{
+				// new item
+				if (newItemCreateFunc != null)
+				{
+					var originalCount = target.Count;
+					var newTargetItem = await newItemCreateFunc(joinedItem.Source).ConfigureAwait(false);
+					// leaking EF fixup hell workaround :-((
+					// PERF: If the number of items did not change, we interpret it as no one else added a new item to the collection.
+					// We rely on the fact that the vast majority of ICollection.Count implementations are O(1).
+					// (Unfortunately, with the knowledge that this is not a 100% reliable shortcut - another item could have been added and/or removed)
+					if ((target.Count == originalCount)
+						|| !target.Contains(newTargetItem))
+					{
+						target.Add(newTargetItem);
+					}
+					result.ItemsAdding.Add(newTargetItem);
+				}
+			}
+			else if (!object.Equals(joinedItem.Source, default(TSource))) // && (Target != null)
+			{
+				// existing item
+				if (updateItemAction != null)
+				{
+					await updateItemAction(joinedItem.Source, joinedItem.Target).ConfigureAwait(false);
+					result.ItemsUpdating.Add(joinedItem.Target);
+				}
+			}
+			else // (Source == null) && (Target != null)
+			{
+				if (removeItemAction != null)
+				{
+					await removeItemAction(joinedItem.Target).ConfigureAwait(false);
 					result.ItemsRemoving.Add(joinedItem.Target);
 					if (removeItemFromCollection)
 					{

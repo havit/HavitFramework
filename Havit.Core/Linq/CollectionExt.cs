@@ -145,15 +145,16 @@ public static class CollectionExt
 		return result;
 	}
 
+#if NET6_0_OR_GREATER
 	/// <inheritdoc cref="UpdateFrom" />
-	public static async Task<UpdateFromResult<TTarget>> UpdateFromAsync<TSource, TTarget, TKey>(
+	public static async ValueTask<UpdateFromResult<TTarget>> UpdateFromAsync<TSource, TTarget, TKey>(
 		this ICollection<TTarget> target,
 		IEnumerable<TSource> source,
 		Func<TTarget, TKey> targetKeySelector,
 		Func<TSource, TKey> sourceKeySelector,
-		Func<TSource, Task<TTarget>> newItemCreateFunc,
-		Func<TSource, TTarget, Task> updateItemAction,
-		Func<TTarget, Task> removeItemAction,
+		Func<TSource, ValueTask<TTarget>> newItemCreateFunc,
+		Func<TSource, TTarget, ValueTask> updateItemAction,
+		Func<TTarget, ValueTask> removeItemAction,
 		bool removeItemFromCollection = true)
 		where TTarget : class
 	{
@@ -216,4 +217,5 @@ public static class CollectionExt
 
 		return result;
 	}
+#endif
 }

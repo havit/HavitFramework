@@ -47,12 +47,12 @@ public static class ServiceAttributeServiceCollectionExtensions
 
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
-		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+		if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
-			services.AddTransient<Havit.TestProject.Services.Lifetimes.IMyDefaultService, Havit.TestProject.Services.Lifetimes.MyDefaultService>();
-			services.AddScoped<Havit.TestProject.Services.Lifetimes.IMyScopedService, Havit.TestProject.Services.Lifetimes.MyScopedService>();
-			services.AddSingleton<Havit.TestProject.Services.Lifetimes.IMySingletonService, Havit.TestProject.Services.Lifetimes.MySingletonService>();
-			services.AddTransient<Havit.TestProject.Services.Lifetimes.IMyTransientService, Havit.TestProject.Services.Lifetimes.MyTransientService>();
+			services.AddTransient<global::Havit.TestProject.Services.Lifetimes.IMyDefaultService, global::Havit.TestProject.Services.Lifetimes.MyDefaultService>();
+			services.AddScoped<global::Havit.TestProject.Services.Lifetimes.IMyScopedService, global::Havit.TestProject.Services.Lifetimes.MyScopedService>();
+			services.AddSingleton<global::Havit.TestProject.Services.Lifetimes.IMySingletonService, global::Havit.TestProject.Services.Lifetimes.MySingletonService>();
+			services.AddTransient<global::Havit.TestProject.Services.Lifetimes.IMyTransientService, global::Havit.TestProject.Services.Lifetimes.MyTransientService>();
 		}
 
 		return services;

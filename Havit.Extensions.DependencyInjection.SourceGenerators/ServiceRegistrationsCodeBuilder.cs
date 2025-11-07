@@ -72,7 +72,7 @@ internal static class ServiceRegistrationsCodeBuilder
 		string elseIf = isFirst ? null : "else ";
 		if (profileName == ServiceAttributeConstants.DefaultProfile)
 		{
-			sourceCodeWriter.WriteLine($"{elseIf}if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)");
+			sourceCodeWriter.WriteLine($"{elseIf}if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)");
 		}
 		else
 		{
@@ -120,11 +120,11 @@ internal static class ServiceRegistrationsCodeBuilder
 
 			if (useTypeOfArguments)
 			{
-				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}(typeof({serviceTypeDisplayString}), typeof({implementationTypeDisplayString}));");
+				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}(typeof(global::{serviceTypeDisplayString}), typeof(global::{implementationTypeDisplayString}));");
 			}
 			else
 			{
-				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{serviceTypeDisplayString}, {implementationTypeDisplayString}>();");
+				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<global::{serviceTypeDisplayString}, global::{implementationTypeDisplayString}>();");
 			}
 
 
@@ -144,7 +144,7 @@ internal static class ServiceRegistrationsCodeBuilder
 			foreach (INamedTypeSymbol serviceType in serviceRegistration.ServiceTypes.Skip(1))
 			{
 				// varianty s generickými parametry nejsou pro další parametry aktuálně řešeny.
-				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<{serviceType.ToDisplayString()}>(sp => ({serviceType.ToDisplayString()})sp.GetService<{firstServiceType.ToDisplayString()}>());");
+				sourceCodeWriter.WriteLine($"services.Add{serviceRegistration.Lifetime}<global::{serviceType.ToDisplayString()}>(sp => (global::{serviceType.ToDisplayString()})sp.GetService<global::{firstServiceType.ToDisplayString()}>());");
 			}
 		}
 	}

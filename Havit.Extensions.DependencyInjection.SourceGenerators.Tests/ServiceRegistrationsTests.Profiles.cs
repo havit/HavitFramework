@@ -48,17 +48,17 @@ public static class ServiceAttributeServiceCollectionExtensions
 
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
-		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+		if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
-			services.AddTransient<Havit.TestProject.Services.Profiles.IMyDefaultService, Havit.TestProject.Services.Profiles.MyDefaultService>();
+			services.AddTransient<global::Havit.TestProject.Services.Profiles.IMyDefaultService, global::Havit.TestProject.Services.Profiles.MyDefaultService>();
 		}
 		else if (profileName == ""Profile1"")
 		{
-			services.AddTransient<Havit.TestProject.Services.Profiles.IMyProfile1Service, Havit.TestProject.Services.Profiles.MyProfile1Service>();
+			services.AddTransient<global::Havit.TestProject.Services.Profiles.IMyProfile1Service, global::Havit.TestProject.Services.Profiles.MyProfile1Service>();
 		}
 		else if (profileName == ""Profile2"")
 		{
-			services.AddTransient<Havit.TestProject.Services.Profiles.IMyProfile2Service, Havit.TestProject.Services.Profiles.MyProfile2Service>();
+			services.AddTransient<global::Havit.TestProject.Services.Profiles.IMyProfile2Service, global::Havit.TestProject.Services.Profiles.MyProfile2Service>();
 		}
 
 		return services;

@@ -12,18 +12,18 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
 /// </summary>
 public class BufferingSmtpExceptionMonitoringProcessor : SmtpExceptionMonitoringProcessor
 {
-	private readonly ILogger<BufferingSmtpExceptionMonitoringProcessor> logger;
-	private readonly BufferingSmtpExceptionMonitoringOptions options;
-	private readonly IMemoryCache memoryCache;
+	private readonly ILogger<BufferingSmtpExceptionMonitoringProcessor> _logger;
+	private readonly BufferingSmtpExceptionMonitoringOptions _options;
+	private readonly IMemoryCache _memoryCache;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public BufferingSmtpExceptionMonitoringProcessor(IExceptionFormatter exceptionFormatter, IOptions<BufferingSmtpExceptionMonitoringOptions> options, ILogger<BufferingSmtpExceptionMonitoringProcessor> logger, IMemoryCache memoryCache) : base(exceptionFormatter, options, logger)
 	{
-		this.logger = logger;
-		this.memoryCache = memoryCache;
-		this.options = options.Value;
+		this._logger = logger;
+		this._memoryCache = memoryCache;
+		this._options = options.Value;
 	}
 
 	/// <summary>
@@ -45,17 +45,17 @@ public class BufferingSmtpExceptionMonitoringProcessor : SmtpExceptionMonitoring
 	/// </summary>
 	protected internal virtual bool ShouldProcessException(Exception exception)
 	{
-		if (!options.BufferingEnabled)
+		if (!_options.BufferingEnabled)
 		{
-			logger.LogTrace("Buffering disabled.");
+			_logger.LogTrace("Buffering disabled.");
 			return true;
 		}
 
 		object exceptionKey = GetExceptionKey(exception);
-		BufferCounter bufferCounter = memoryCache.GetOrCreate(exceptionKey, (cacheEntry) =>
+		BufferCounter bufferCounter = _memoryCache.GetOrCreate(exceptionKey, (cacheEntry) =>
 		{
-			logger.LogTrace("Adding item to buffer.");
-			cacheEntry.SetPriority(CacheItemPriority.NeverRemove).SetAbsoluteExpiration(TimeSpan.FromSeconds(options.BufferingInterval));
+			_logger.LogTrace("Adding item to buffer.");
+			cacheEntry.SetPriority(CacheItemPriority.NeverRemove).SetAbsoluteExpiration(TimeSpan.FromSeconds(_options.BufferingInterval));
 			return new BufferCounter();
 		});
 
@@ -68,7 +68,7 @@ public class BufferingSmtpExceptionMonitoringProcessor : SmtpExceptionMonitoring
 
 		if (!shouldProcessException)
 		{
-			logger.LogTrace("Exception should not be processed (it is currently in the buffer).");
+			_logger.LogTrace("Exception should not be processed (it is currently in the buffer).");
 		}
 
 		return shouldProcessException;

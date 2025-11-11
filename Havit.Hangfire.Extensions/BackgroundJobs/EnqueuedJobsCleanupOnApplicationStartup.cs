@@ -8,23 +8,23 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs;
 /// </summary>
 internal class EnqueuedJobsCleanupOnApplicationStartup : IHostedService
 {
-	private readonly EnqueuedJobsCleanupOnApplicationStartupOptions options;
-	private readonly IBackgroundJobManager backgroundJobManager;
+	private readonly EnqueuedJobsCleanupOnApplicationStartupOptions _options;
+	private readonly IBackgroundJobManager _backgroundJobManager;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
 	public EnqueuedJobsCleanupOnApplicationStartup(IBackgroundJobManager backgroundJobManager, IOptions<EnqueuedJobsCleanupOnApplicationStartupOptions> options)
 	{
-		this.backgroundJobManager = backgroundJobManager;
-		this.options = options.Value;
+		this._backgroundJobManager = backgroundJobManager;
+		this._options = options.Value;
 	}
 
 	public Task StartAsync(CancellationToken cancellationToken)
 	{
-		foreach (var queue in options.Queues)
+		foreach (var queue in _options.Queues)
 		{
-			backgroundJobManager.DeleteEnqueuedJobs(queue);
+			_backgroundJobManager.DeleteEnqueuedJobs(queue);
 		}
 		return Task.CompletedTask;
 	}

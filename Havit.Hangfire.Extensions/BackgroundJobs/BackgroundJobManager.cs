@@ -7,16 +7,16 @@ namespace Havit.Hangfire.Extensions.BackgroundJobs;
 /// <inheritdoc />
 public class BackgroundJobManager : IBackgroundJobManager
 {
-	private readonly IBackgroundJobClient backgroundJobClient;
-	private readonly JobStorage jobStorage;
+	private readonly IBackgroundJobClient _backgroundJobClient;
+	private readonly JobStorage _jobStorage;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
 	public BackgroundJobManager(IBackgroundJobClient backgroundJobClient, JobStorage jobStorage)
 	{
-		this.backgroundJobClient = backgroundJobClient;
-		this.jobStorage = jobStorage;
+		this._backgroundJobClient = backgroundJobClient;
+		this._jobStorage = jobStorage;
 	}
 
 	/// <inheritdoc />
@@ -24,7 +24,7 @@ public class BackgroundJobManager : IBackgroundJobManager
 	{
 		// remove enqueued jobs
 		List<string> toDelete = new List<string>();
-		IMonitoringApi monitor = jobStorage.GetMonitoringApi();
+		IMonitoringApi monitor = _jobStorage.GetMonitoringApi();
 		QueueWithTopEnqueuedJobsDto queueWithTopEnqueuedJobs = monitor.Queues().SingleOrDefault(q => q.Name == queue); // get the single queue by name
 
 		if ((queueWithTopEnqueuedJobs != null) && queueWithTopEnqueuedJobs.FirstJobs.Any())
@@ -33,7 +33,7 @@ public class BackgroundJobManager : IBackgroundJobManager
 				.SelectMany(batchIndex => monitor.EnqueuedJobs(queueWithTopEnqueuedJobs.Name, 1000 * batchIndex, 1000)) // select jobs in a batch by batchIndex
 				.Select(jobEntry => jobEntry.Key) // select JobId (key is a JobId)
 				.ToList() // process all pages to memory
-				.ForEach(jobId => backgroundJobClient.Delete(jobId)); // remove the job
+				.ForEach(jobId => _backgroundJobClient.Delete(jobId)); // remove the job
 		}
 	}
 }

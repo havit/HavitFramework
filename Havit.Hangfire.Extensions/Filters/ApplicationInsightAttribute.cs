@@ -12,7 +12,7 @@ namespace Havit.Hangfire.Extensions.Filters;
 /// </summary>
 public class ApplicationInsightAttribute : JobFilterAttribute, IServerFilter
 {
-	private readonly TelemetryClient telemetryClient;
+	private readonly TelemetryClient _telemetryClient;
 
 	/// <summary>
 	/// Gets the custom name of the job.
@@ -24,7 +24,7 @@ public class ApplicationInsightAttribute : JobFilterAttribute, IServerFilter
 	/// </summary>
 	public ApplicationInsightAttribute(TelemetryClient telemetryClient)
 	{
-		this.telemetryClient = telemetryClient;
+		this._telemetryClient = telemetryClient;
 	}
 
 	/// <inheritdoc />
@@ -36,7 +36,7 @@ public class ApplicationInsightAttribute : JobFilterAttribute, IServerFilter
 		};
 
 		// Track Hangfire Job as a Request (operation) in AI
-		IOperationHolder<RequestTelemetry> operation = telemetryClient.StartOperation(requestTelemetry);
+		IOperationHolder<RequestTelemetry> operation = _telemetryClient.StartOperation(requestTelemetry);
 		requestTelemetry.Properties.Add("JobId", context.BackgroundJob.Id);
 
 		context.Items["ApplicationInsightsOperation"] = operation;
@@ -66,10 +66,10 @@ public class ApplicationInsightAttribute : JobFilterAttribute, IServerFilter
 				exceptionTelemetry.Context.Operation.Id = operationId;
 				exceptionTelemetry.Context.Operation.ParentId = operationId;
 
-				telemetryClient.TrackException(exceptionTelemetry);
+				_telemetryClient.TrackException(exceptionTelemetry);
 			}
 
-			telemetryClient.StopOperation(operation);
+			_telemetryClient.StopOperation(operation);
 		}
 	}
 

@@ -9,9 +9,9 @@ namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
 /// </summary>
 public class SequenceRecurringJobScheduler
 {
-	private readonly RecurringJobManager recurringJobManager; // IRecurringJobManager nemá TriggerExection, jenž vrací jobId
-	private readonly ILogger<SequenceRecurringJobScheduler> logger;
-	private readonly IBackgroundJobClient backgroundJobClient;
+	private readonly RecurringJobManager _recurringJobManager; // IRecurringJobManager nemá TriggerExection, jenž vrací jobId
+	private readonly ILogger<SequenceRecurringJobScheduler> _logger;
+	private readonly IBackgroundJobClient _backgroundJobClient;
 
 	/// <summary>
 	/// Constructor.
@@ -20,9 +20,9 @@ public class SequenceRecurringJobScheduler
 	{
 		Contract.Requires(recurringJobManager is RecurringJobManager);
 
-		this.logger = logger;
-		this.recurringJobManager = (RecurringJobManager)recurringJobManager;
-		this.backgroundJobClient = backgroundJobClient;
+		this._logger = logger;
+		this._recurringJobManager = (RecurringJobManager)recurringJobManager;
+		this._backgroundJobClient = backgroundJobClient;
 	}
 
 	/// <summary>
@@ -51,17 +51,17 @@ public class SequenceRecurringJobScheduler
 
 		if (previousSequenceRecurringJobId == null)
 		{
-			logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a first job in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, sequenceRecurringJobId);
+			_logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a first job in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, sequenceRecurringJobId);
 		}
 		else
 		{
-			logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a continuation of job '{PreviousRecurringJobId}' in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, previousSequenceRecurringJobId, sequenceRecurringJobId);
+			_logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a continuation of job '{PreviousRecurringJobId}' in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, previousSequenceRecurringJobId, sequenceRecurringJobId);
 		}
 
-		string jobId = recurringJobManager.TriggerJob(recurringJobIdToEnqueue);
+		string jobId = _recurringJobManager.TriggerJob(recurringJobIdToEnqueue);
 		if (jobId == null)
 		{
-			logger.LogWarning("Triggering recurring job '{RecurringJobId}' failed.", recurringJobIdToEnqueue);
+			_logger.LogWarning("Triggering recurring job '{RecurringJobId}' failed.", recurringJobIdToEnqueue);
 			if (jobContinuationOptions == JobContinuationOptions.OnlyOnSucceededState)
 			{
 				// job cheme označit za selhaný
@@ -74,17 +74,17 @@ public class SequenceRecurringJobScheduler
 		{
 			if (jobId == null)
 			{
-				logger.LogDebug("Continuing with next jobs...");
+				_logger.LogDebug("Continuing with next jobs...");
 				// pokud naplánování spuštění dané naplánované úlohy selhalo, a můžeme pokračovat i v případě neúspěchu,
 				// pokračujeme v naplánování dalšího kroku
 				EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions);
 			}
 			else
 			{
-				logger.LogDebug("Enqueueing continuation to run next {Count} jobs in the sequence '{SequnceRecurringJobId}'.", nextRecurringJobIdsToRunInSequence.Length, sequenceRecurringJobId);
+				_logger.LogDebug("Enqueueing continuation to run next {Count} jobs in the sequence '{SequnceRecurringJobId}'.", nextRecurringJobIdsToRunInSequence.Length, sequenceRecurringJobId);
 
 				// parameters are serialized!
-				backgroundJobClient.ContinueJobWith(jobId, () => EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions), jobContinuationOptions);
+				_backgroundJobClient.ContinueJobWith(jobId, () => EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions), jobContinuationOptions);
 			}
 		}
 	}

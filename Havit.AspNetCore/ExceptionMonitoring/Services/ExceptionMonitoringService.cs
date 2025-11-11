@@ -60,5 +60,4 @@ public class ExceptionMonitoringService : IExceptionMonitoringService
 	{
 		return true;
 	}
-
 }

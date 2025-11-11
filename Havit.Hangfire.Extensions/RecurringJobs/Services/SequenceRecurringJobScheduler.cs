@@ -9,19 +9,17 @@ namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
 /// </summary>
 public class SequenceRecurringJobScheduler
 {
-	private readonly RecurringJobManager _recurringJobManager; // IRecurringJobManager nemá TriggerExection, jenž vrací jobId
+	private readonly IRecurringJobManagerV2 _recurringJobManager;
 	private readonly ILogger<SequenceRecurringJobScheduler> _logger;
 	private readonly IBackgroundJobClient _backgroundJobClient;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public SequenceRecurringJobScheduler(ILogger<SequenceRecurringJobScheduler> logger, IRecurringJobManager recurringJobManager, IBackgroundJobClient backgroundJobClient)
+	public SequenceRecurringJobScheduler(ILogger<SequenceRecurringJobScheduler> logger, IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient backgroundJobClient)
 	{
-		Contract.Requires(recurringJobManager is RecurringJobManager);
-
 		this._logger = logger;
-		this._recurringJobManager = (RecurringJobManager)recurringJobManager;
+		this._recurringJobManager = recurringJobManager;
 		this._backgroundJobClient = backgroundJobClient;
 	}
 

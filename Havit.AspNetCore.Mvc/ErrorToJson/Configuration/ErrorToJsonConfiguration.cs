@@ -5,14 +5,14 @@
 /// </summary>
 public class ErrorToJsonConfiguration
 {
-	private readonly IList<ErrorToJsonMappingItem> mappings;
+	private readonly IList<ErrorToJsonMappingItem> _mappings;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public ErrorToJsonConfiguration(IList<ErrorToJsonMappingItem> mappings)
 	{
-		this.mappings = mappings;
+		this._mappings = mappings;
 	}
 
 	/// <summary>
@@ -21,6 +21,6 @@ public class ErrorToJsonConfiguration
 	/// </summary>
 	public ErrorToJsonMappingItem FindMapping(Exception exception)
 	{
-		return mappings.FirstOrDefault(item => item.ExceptionPredicate(exception));
+		return _mappings.FirstOrDefault(item => item.ExceptionPredicate(exception));
 	}
 }

@@ -38,7 +38,6 @@ public class ExceptionFormatter : IExceptionFormatter
 	private void AppendActivityInformation(StringBuilder sb)
 	{
 		// ApplicationInsights
-#if NET6_0_OR_GREATER
 		if (Activity.Current is not null)
 		{
 			sb.AppendLine("Activity information:");
@@ -49,7 +48,6 @@ public class ExceptionFormatter : IExceptionFormatter
 			sb.AppendLine("    Kind: " + Activity.Current.Kind);
 			sb.AppendLine();
 		}
-#endif
 	}
 
 	private void AppendExceptionInformation(StringBuilder sb, Exception exception)

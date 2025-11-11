@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FaceIT.Hangfire.Tags.SqlServer" Version="1.9.15" />
+		<PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Hangfire.Extensions\Havit.Hangfire.Extensions.csproj" />

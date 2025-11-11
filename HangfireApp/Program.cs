@@ -111,10 +111,12 @@ public static class Program
 		var job1 = new RecurringJob<IJobOne>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
 		var job2 = new RecurringJob<IJobTwo>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
 		var job3 = new RecurringJob<IJobThree>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
+		var job4 = new SequenceRecurringJob(EnqueuedState.DefaultQueue, Cron.Never(), [job1, job2, job3]);
 
 		yield return job1;
 		yield return job2;
 		yield return job3;
+		yield return job4;
 
 		yield return new SequenceRecurringJob("All three jobs", EnqueuedState.DefaultQueue, Cron.Never(), recurringJobOptions, new IRecurringJob[] { job1, job2, job3 });
 	}

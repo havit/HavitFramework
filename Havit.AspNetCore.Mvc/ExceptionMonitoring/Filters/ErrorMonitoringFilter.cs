@@ -12,16 +12,16 @@ namespace Havit.AspNetCore.Mvc.ExceptionMonitoring.Filters;
 [SuppressMessage("SonarLint", "S3376", Justification = "V ASP.NET Core MVC je toto zamýšleno jako globální filtr, pak se slovo Attribute na konci názvu nevyžaduje.")]
 public class ErrorMonitoringFilter : ExceptionFilterAttribute
 {
-	private readonly IExceptionMonitoringService exceptionMonitoringService;
-	private readonly ILogger<ErrorMonitoringFilter> logger;
+	private readonly IExceptionMonitoringService _exceptionMonitoringService;
+	private readonly ILogger<ErrorMonitoringFilter> _logger;
 
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public ErrorMonitoringFilter(IExceptionMonitoringService exceptionMonitoringService, ILogger<ErrorMonitoringFilter> logger)
 	{
-		this.exceptionMonitoringService = exceptionMonitoringService;
-		this.logger = logger;
+		this._exceptionMonitoringService = exceptionMonitoringService;
+		this._logger = logger;
 	}
 
 	/// <summary>
@@ -29,17 +29,17 @@ public class ErrorMonitoringFilter : ExceptionFilterAttribute
 	/// </summary>
 	public override void OnException(ExceptionContext context)
 	{
-		logger.LogDebug(context.Exception, "Monitoring exception.");
+		_logger.LogDebug(context.Exception, "Monitoring exception.");
 
 		Exception exception = context.Exception;
 		try
 		{
 			exception.Data[nameof(HttpContext)] = context.HttpContext;
-			exceptionMonitoringService.HandleException(exception);
+			_exceptionMonitoringService.HandleException(exception);
 		}
 		catch (Exception handleExceptionException)
 		{
-			logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
+			_logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
 		}
 		finally
 		{

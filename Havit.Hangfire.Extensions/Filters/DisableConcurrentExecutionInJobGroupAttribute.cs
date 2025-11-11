@@ -12,8 +12,6 @@ namespace Havit.Hangfire.Extensions.Filters;
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = true)]
 public class DisableConcurrentExecutionInJobGroupAttribute : JobFilterAttribute, IServerFilter
 {
-	private const string RunningServerIdHashName = "RunningServerId";
-
 	private const string ProcessingJobIdKeyName = "ProcessingJobId";
 
 	/// <summary>

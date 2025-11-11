@@ -14,20 +14,20 @@ namespace Havit.AspNetCore.Mvc.ErrorToJson.Middlewares;
 /// </summary>
 public class ErrorToJsonMiddleware
 {
-	private readonly RequestDelegate next;
-	private ILogger<ErrorToJsonMiddleware> logger;
-	private readonly IErrorToJsonService errorToJsonService;
-	private readonly IActionResultExecutor<ObjectResult> executor;
+	private readonly RequestDelegate _next;
+	private ILogger<ErrorToJsonMiddleware> _logger;
+	private readonly IErrorToJsonService _errorToJsonService;
+	private readonly IActionResultExecutor<ObjectResult> _executor;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
 	public ErrorToJsonMiddleware(RequestDelegate next, ILogger<ErrorToJsonMiddleware> logger, IErrorToJsonService errorToJsonService, IActionResultExecutor<ObjectResult> executor)
 	{
-		this.next = next;
-		this.logger = logger;
-		this.errorToJsonService = errorToJsonService;
-		this.executor = executor;
+		this._next = next;
+		this._logger = logger;
+		this._errorToJsonService = errorToJsonService;
+		this._executor = executor;
 	}
 
 	/// <summary>
@@ -38,43 +38,43 @@ public class ErrorToJsonMiddleware
 		try
 		{
 			// call the next middleware
-			await next(context);
+			await _next(context);
 		}
 		catch (Exception exception)
 		{
-			logger.LogDebug(exception, "Handling exception.");
+			_logger.LogDebug(exception, "Handling exception.");
 
 			if (context.Response.HasStarted)
 			{
-				logger.LogWarning("The response has already started, the ErrorToJsonMiddleware will not be executed.");
+				_logger.LogWarning("The response has already started, the ErrorToJsonMiddleware will not be executed.");
 				throw;
 			}
 
 			try
 			{
-				var resultData = errorToJsonService.GetResultData(exception);
+				var resultData = _errorToJsonService.GetResultData(exception);
 				if (resultData != null)
 				{
 					await WriteResultDataToResponse(context, resultData);
 
 					if (resultData.ExceptionHandled)
 					{
-						logger.LogTrace("Exception marked as handled.");
+						_logger.LogTrace("Exception marked as handled.");
 						return; // does not throw (nor re-throw) any exception
 					}
 					else
 					{
-						logger.LogTrace("Exception not marked as handled.");
+						_logger.LogTrace("Exception not marked as handled.");
 					}
 				}
 				else
 				{
-					logger.LogTrace("Na data for json result.");
+					_logger.LogTrace("Na data for json result.");
 				}
 			}
 			catch (Exception handleExceptionException)
 			{
-				logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
+				_logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
 			}
 
 			// re-throw the original exception
@@ -110,6 +110,6 @@ public class ErrorToJsonMiddleware
 		result.ContentTypes.Add("application/json");
 		result.ContentTypes.Add("application/xml");
 
-		return executor.ExecuteAsync(actionContext, result);
+		return _executor.ExecuteAsync(actionContext, result);
 	}
 }

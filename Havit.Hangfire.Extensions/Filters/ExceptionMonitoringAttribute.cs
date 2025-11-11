@@ -9,14 +9,14 @@ namespace Havit.Hangfire.Extensions.Filters;
 /// </summary>
 public class ExceptionMonitoringAttribute : JobFilterAttribute, IServerFilter
 {
-	private readonly IExceptionMonitoringService exceptionMonitoringService;
+	private readonly IExceptionMonitoringService _exceptionMonitoringService;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
 	public ExceptionMonitoringAttribute(IExceptionMonitoringService exceptionMonitoringService)
 	{
-		this.exceptionMonitoringService = exceptionMonitoringService;
+		this._exceptionMonitoringService = exceptionMonitoringService;
 	}
 
 	/// <inheritdoc />
@@ -30,7 +30,7 @@ public class ExceptionMonitoringAttribute : JobFilterAttribute, IServerFilter
 	{
 		if ((filterContext.Exception != null) && !filterContext.ExceptionHandled)
 		{
-			exceptionMonitoringService.HandleException(filterContext.Exception.InnerException ?? filterContext.Exception);
+			_exceptionMonitoringService.HandleException(filterContext.Exception.InnerException ?? filterContext.Exception);
 		}
 	}
 }

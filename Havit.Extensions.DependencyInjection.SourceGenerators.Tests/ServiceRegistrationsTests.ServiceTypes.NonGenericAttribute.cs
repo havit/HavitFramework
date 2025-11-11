@@ -53,14 +53,14 @@ public static class ServiceAttributeServiceCollectionExtensions
 
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
-		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+		if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService2, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService2>();
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService3, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService4, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
-			services.AddSingleton<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService5>();
-			services.AddSingleton<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6>(sp => (Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6)sp.GetService<Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5>());
+			services.AddTransient<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService1, global::Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
+			services.AddTransient<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService2, global::Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService2>();
+			services.AddTransient<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService3, global::Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
+			services.AddTransient<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService4, global::Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService3>();
+			services.AddSingleton<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5, global::Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService5>();
+			services.AddSingleton<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6>(sp => (global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService6)sp.GetService<global::Havit.TestProject.Services.ServiceTypes.NonGenerics.IMyService5>());
 		}
 
 		return services;
@@ -105,7 +105,7 @@ public static class ServiceAttributeServiceCollectionExtensions
 
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
-		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+		if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
 			throw new System.InvalidOperationException(""Type(s) Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1 implement(s) no interface to register."");
 		}
@@ -160,9 +160,9 @@ public static class ServiceAttributeServiceCollectionExtensions
 
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
-		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+		if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
-			services.AddTransient<Havit.TestProject.Contracts.IMyService1, Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
+			services.AddTransient<global::Havit.TestProject.Contracts.IMyService1, global::Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1>();
 		}
 
 		return services;

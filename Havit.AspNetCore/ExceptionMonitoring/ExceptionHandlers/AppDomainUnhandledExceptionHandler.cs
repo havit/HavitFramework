@@ -5,26 +5,26 @@ namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
 
 internal class AppDomainUnhandledExceptionHandler
 {
-	private readonly IExceptionMonitoringService exceptionMonitoringService;
+	private readonly IExceptionMonitoringService _exceptionMonitoringService;
 
-	private static AppDomainUnhandledExceptionHandler ExceptionHandler { get; set; }
+	private static AppDomainUnhandledExceptionHandler s_ExceptionHandler { get; set; }
 
 	public AppDomainUnhandledExceptionHandler(IExceptionMonitoringService exceptionMonitoringService)
 	{
-		this.exceptionMonitoringService = exceptionMonitoringService;
+		this._exceptionMonitoringService = exceptionMonitoringService;
 	}
 
 	public static void RegisterHandler(IExceptionMonitoringService exceptionMonitoringService)
 	{
 		Contract.Requires<ArgumentNullException>(exceptionMonitoringService != null);
 
-		if (ExceptionHandler != null)
+		if (s_ExceptionHandler != null)
 		{
 			throw new InvalidOperationException("Handler for unobserved task exception is already registered.");
 		}
 
 		var handler = new AppDomainUnhandledExceptionHandler(exceptionMonitoringService);
-		ExceptionHandler = handler;
+		s_ExceptionHandler = handler;
 
 		AppDomain.CurrentDomain.UnhandledException += handler.CurrentDomain_UnhandledException;
 	}
@@ -33,7 +33,7 @@ internal class AppDomainUnhandledExceptionHandler
 	{
 		if (e.ExceptionObject is Exception exception)
 		{
-			exceptionMonitoringService.HandleException(exception);
+			_exceptionMonitoringService.HandleException(exception);
 		}
 	}
 }

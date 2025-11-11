@@ -44,11 +44,11 @@ public static class ServiceAttributeServiceCollectionExtensions
 
 	public static IServiceCollection AddServicesByServiceAttribute(this IServiceCollection services, string profileName = Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 	{
-		if (profileName == Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
+		if (profileName == global::Havit.Extensions.DependencyInjection.Abstractions.ServiceAttribute.DefaultProfile)
 		{
-			services.AddTransient(typeof(Havit.TestProject.Services.ServiceTypes.Generics.IMyService1<>), typeof(Havit.TestProject.Services.ServiceTypes.Generics.MyService1<>));
-			services.AddTransient(typeof(Havit.TestProject.Services.ServiceTypes.Generics.IMyService2<>), typeof(Havit.TestProject.Services.ServiceTypes.Generics.MyService2<>));
-			services.AddTransient<Havit.TestProject.Services.ServiceTypes.Generics.IMyService3<int>, Havit.TestProject.Services.ServiceTypes.Generics.MyService3>();
+			services.AddTransient(typeof(global::Havit.TestProject.Services.ServiceTypes.Generics.IMyService1<>), typeof(global::Havit.TestProject.Services.ServiceTypes.Generics.MyService1<>));
+			services.AddTransient(typeof(global::Havit.TestProject.Services.ServiceTypes.Generics.IMyService2<>), typeof(global::Havit.TestProject.Services.ServiceTypes.Generics.MyService2<>));
+			services.AddTransient<global::Havit.TestProject.Services.ServiceTypes.Generics.IMyService3<int>, global::Havit.TestProject.Services.ServiceTypes.Generics.MyService3>();
 		}
 
 		return services;

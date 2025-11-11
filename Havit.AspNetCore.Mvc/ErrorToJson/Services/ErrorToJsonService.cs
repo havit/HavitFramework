@@ -7,20 +7,20 @@ namespace Havit.AspNetCore.Mvc.ErrorToJson.Services;
 /// </summary>
 public class ErrorToJsonService : IErrorToJsonService
 {
-	private ErrorToJsonConfiguration configuration;
+	private ErrorToJsonConfiguration _configuration;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
 	public ErrorToJsonService(ErrorToJsonConfiguration configuration)
 	{
-		this.configuration = configuration;
+		this._configuration = configuration;
 	}
 
 	/// <inheritdoc />
 	public ResultData GetResultData(Exception exception)
 	{
-		var mappingItem = this.configuration.FindMapping(exception);
+		var mappingItem = this._configuration.FindMapping(exception);
 		if (mappingItem != null)
 		{
 			object result = mappingItem.ResultSelector(exception);

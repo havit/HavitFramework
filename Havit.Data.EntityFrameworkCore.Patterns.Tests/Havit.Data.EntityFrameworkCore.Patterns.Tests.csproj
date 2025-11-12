@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<!-- EF1001 je hlášen při použití třídy z namespace obsahující EntityFrameworkCore a končící na Internal, to jsou bohužel i třídy v Havit.Data.EntityFrameworkCore.Patterns.*.Internal, které způsobují false positives. -->
 		<NoWarn>($NoWarn);EF1001</NoWarn>
 	</PropertyGroup>
@@ -10,9 +10,9 @@
 	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="MSTest" Version="4.0.1" />
 	</ItemGroup>

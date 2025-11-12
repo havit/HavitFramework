@@ -1,0 +1,155 @@
+<Solution>
+  <Folder Name="/ASP.NET Core/">
+    <Project Path="Havit.AspNetCore.Mvc/Havit.AspNetCore.Mvc.csproj" />
+    <Project Path="Havit.AspNetCore/Havit.AspNetCore.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.Abstractions/Havit.Extensions.DependencyInjection.Abstractions.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.CastleWindsor/Havit.Extensions.DependencyInjection.CastleWindsor.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.SourceGenerators/Havit.Extensions.DependencyInjection.SourceGenerators.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection/Havit.Extensions.DependencyInjection.csproj" />
+  </Folder>
+  <Folder Name="/ASP.NET Core/Tests/">
+    <Project Path="Havit.AspNetCore.Tests/Havit.AspNetCore.Tests.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.Abstractions.Tests/Havit.Extensions.DependencyInjection.Abstractions.Tests.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.CastleWindsor.Tests/Havit.Extensions.DependencyInjection.CastleWindsor.Tests.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.SourceGenerators.Tests/Havit.Extensions.DependencyInjection.SourceGenerators.Tests.csproj" />
+    <Project Path="Havit.Extensions.DependencyInjection.Tests/Havit.Extensions.DependencyInjection.Tests.csproj" />
+  </Folder>
+  <Folder Name="/ASP.NET/">
+    <Project Path="Havit.Web.Bootstrap/Havit.Web.Bootstrap.csproj" />
+    <Project Path="Havit.Web.ClientContent/Havit.Web.ClientContent.csproj" />
+    <Project Path="Havit.Web/Havit.Web.csproj" />
+  </Folder>
+  <Folder Name="/ASP.NET/Tests/">
+    <Project Path="WebApplicationTest/WebApplicationTest.csproj" Id="28bb8e7f-089e-494e-9f11-6088c36dd4d0" />
+  </Folder>
+  <Folder Name="/Business Layer/">
+    <Project Path="Havit.Business.BusinessLayerGenerator.NuGetPackage/Havit.Business.BusinessLayerGenerator.NuGetPackage.csproj">
+      <BuildDependency Project="Havit.Business.BusinessLayerGenerator/Havit.Business.BusinessLayerGenerator.csproj" />
+    </Project>
+    <Project Path="Havit.Business.BusinessLayerGenerator/Havit.Business.BusinessLayerGenerator.csproj" />
+    <Project Path="Havit.Business/Havit.Business.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions/Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.BusinessLayer/Havit.Data.EntityFrameworkCore.BusinessLayer.csproj" />
+    <Project Path="Havit.Enterprise.Web/Havit.Enterprise.Web.csproj" />
+  </Folder>
+  <Folder Name="/Business Layer/Tests/">
+    <Project Path="BusinessLayerTest/BusinessLayerTest.csproj" />
+    <Project Path="Havit.Business.Tests/Havit.Business.Tests.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.BusinessLayer.Tests/Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Core Libraries/">
+    <Project Path="Havit.Ares/Havit.Ares.csproj" />
+    <Project Path="Havit.Core/Havit.Core.csproj" />
+    <Project Path="Havit.Data.SqlClient.Azure/Havit.Data.SqlClient.Azure.csproj" />
+    <Project Path="Havit.Data/Havit.Data.csproj" />
+    <Project Path="Havit.Drawing/Havit.Drawing.csproj" />
+    <Project Path="Havit.GoPay/Havit.GoPay.csproj" />
+    <Project Path="Havit.PayMuzo/Havit.PayMuzo.csproj" />
+    <Project Path="Havit.PayPal/Havit.PayPal.csproj" />
+    <Project Path="Havit.PersonalDataInterchange/Havit.PersonalDataInterchange.csproj" />
+    <Project Path="Havit.Services.Azure/Havit.Services.Azure.csproj" />
+    <Project Path="Havit.Services.Sftp/Havit.Services.Sftp.csproj" />
+    <Project Path="Havit.Services.SignalR/Havit.Services.SignalR.csproj" />
+    <Project Path="Havit.Services/Havit.Services.csproj" />
+  </Folder>
+  <Folder Name="/Core Libraries/Tests/">
+    <Project Path="Havit.Ares.Tests/Havit.Ares.Tests.csproj" />
+    <Project Path="Havit.Core.Tests/Havit.Core.Tests.csproj" />
+    <Project Path="Havit.Data.SqlClient.Azure.Tests/Havit.Data.SqlClient.Azure.Tests.csproj" />
+    <Project Path="Havit.Data.Tests/Havit.Data.Tests.csproj" />
+    <Project Path="Havit.ExceptionTracer.TestApplication/Havit.ExceptionTracer.TestApplication.csproj" />
+    <Project Path="Havit.GoPay.Tests/Havit.GoPay.Tests.csproj" />
+    <Project Path="Havit.PersonalDataInterchange.Tests/Havit.PersonalDataInterchange.Tests.csproj" />
+    <Project Path="Havit.Services.Azure.Tests/Havit.Services.Azure.Tests.csproj" />
+    <Project Path="Havit.Services.NetFramework48.Tests/Havit.Services.NetFramework48.Tests.csproj" />
+    <Project Path="Havit.Services.Sftp.Tests/Havit.Services.Sftp.Tests.csproj" />
+    <Project Path="Havit.Services.SignalR.Tests/Havit.Services.SignalR.Tests.csproj" />
+    <Project Path="Havit.Services.TestHelpers/Havit.Services.TestHelpers.csproj" />
+    <Project Path="Havit.Services.Tests/Havit.Services.Tests.csproj" />
+    <Project Path="Havit.Web.Tests/Havit.Web.Tests.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/">
+    <Project Path="Havit.Data.Patterns/Havit.Data.Patterns.csproj" />
+    <Project Path="Havit.Model/Havit.Model.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/EF6/">
+    <Project Path="Havit.Data.Entity6.Azure/Havit.Data.Entity6.Azure.csproj" />
+    <Project Path="Havit.Data.Entity6.CodeGenerator.NuGetPackage/Havit.Data.Entity6.CodeGenerator.NuGetPackage.csproj">
+      <BuildDependency Project="Havit.Data.Entity6.CodeGenerator/Havit.Data.Entity6.CodeGenerator.csproj" />
+    </Project>
+    <Project Path="Havit.Data.Entity6.CodeGenerator/Havit.Data.Entity6.CodeGenerator.csproj" />
+    <Project Path="Havit.Data.Entity6.Patterns.Windsor/Havit.Data.Entity6.Patterns.Windsor.csproj" />
+    <Project Path="Havit.Data.Entity6.Patterns/Havit.Data.Entity6.Patterns.csproj" />
+    <Project Path="Havit.Data.Entity6/Havit.Data.Entity6.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/EF6/Tests/">
+    <Project Path="Havit.Data.Entity6.Patterns.Tests/Havit.Data.Entity6.Patterns.Tests.csproj" />
+    <Project Path="Havit.Data.Entity6.Patterns.Windsor.Tests/Havit.Data.Entity6.Patterns.Windsor.Tests.csproj" />
+    <Project Path="Havit.Data.Entity6.Tests/Havit.Data.Entity6.Tests.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/EFCore/">
+    <Project Path="Havit.Data.EntityFrameworkCore.Abstractions/Havit.Data.EntityFrameworkCore.Abstractions.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.CodeGenerator.Tool/Havit.Data.EntityFrameworkCore.CodeGenerator.Tool.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.CodeGenerator/Havit.Data.EntityFrameworkCore.CodeGenerator.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Migrations/Havit.Data.EntityFrameworkCore.Migrations.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Patterns/Havit.Data.EntityFrameworkCore.Patterns.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore/Havit.Data.EntityFrameworkCore.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/EFCore/Tests/">
+    <Project Path="Havit.Data.EntityFrameworkCore.Migrations.TestHelpers/Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Migrations.Tests/Havit.Data.EntityFrameworkCore.Migrations.Tests.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Patterns.Tests/Havit.Data.EntityFrameworkCore.Patterns.Tests.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Tests/Havit.Data.EntityFrameworkCore.Tests.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/EFCore/TestSolution/">
+    <Project Path="Havit.Data.EntityFrameworkCore.TestSolution/Havit.Data.EntityFrameworkCore.TestSolution.DataLayer/Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.TestSolution/Havit.Data.EntityFrameworkCore.TestSolution.Entity/Havit.Data.EntityFrameworkCore.TestSolution.Entity.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.TestSolution/Havit.Data.EntityFrameworkCore.TestSolution.Model/Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj" />
+  </Folder>
+  <Folder Name="/EF Libraries/Tests/">
+    <Project Path="Havit.Data.Patterns.Tests/Havit.Data.Patterns.Tests.csproj" />
+    <Project Path="Havit.Model.Tests/Havit.Model.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Extension Libraries/">
+    <Project Path="Havit.ApplicationInsights.DependencyCollector/Havit.ApplicationInsights.DependencyCollector.csproj" />
+    <Project Path="Havit.Data.Configuration.Git.Core/Havit.Data.Configuration.Git.Core.csproj" />
+    <Project Path="Havit.Data.Configuration.Git/Havit.Data.Configuration.Git.csproj" />
+    <Project Path="Havit.Extensions.Configuration.ConnectionStrings.Git/Havit.Extensions.Configuration.ConnectionStrings.Git.csproj" />
+    <Project Path="Havit.Hangfire.Extensions.Tags/Havit.Hangfire.Extensions.Tags.csproj" />
+    <Project Path="Havit.Hangfire.Extensions/Havit.Hangfire.Extensions.csproj" />
+  </Folder>
+  <Folder Name="/Extension Libraries/Tests/">
+    <Project Path="Havit.Data.Configuration.Git.Tests/Havit.Data.Configuration.Git.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="BenchmarkApp/BenchmarkApp.csproj" />
+    <Project Path="Havit.Services.SignalR.ConsoleApp/Havit.Services.SignalR.ConsoleApp.csproj" />
+    <Project Path="TestConsoleApp/TestConsoleApp.csproj" />
+  </Folder>
+  <Folder Name="/Tests/EFCoreTests/">
+    <Project Path="EFCoreTests/ConsoleApp/ConsoleApp.csproj" />
+    <Project Path="EFCoreTests/DataLayer/DataLayer.csproj" />
+    <Project Path="EFCoreTests/Entity/Entity.csproj" />
+    <Project Path="EFCoreTests/Model/Model.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Hangfire/">
+    <Project Path="HangfireApp/HangfireApp.csproj" />
+    <Project Path="HangfireJobs/HangfireJobs.csproj" />
+    <Project Path="HangfireWeb/HangfireWeb.csproj" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="Havit.Tools.AzureDevopsPermissionChecker/Havit.Tools.AzureDevOpsPermissionChecker.csproj" />
+    <Project Path="Havit.Tools.Win1250ToUtf8/Havit.Tools.Win1250ToUtf8.csproj" />
+  </Folder>
+  <Folder Name="/_Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="BuildPipeline-002.HFW-HavitFramework.yml" />
+    <File Path="CommonAssemblyInfo.cs" />
+    <File Path="DiagnosticsIdentifiers.cs" />
+    <File Path="Directory.Build.props" />
+    <File Path="NuGet.config" />
+    <File Path="NuGet.targets" />
+    <File Path="PackagesDependencyChart.dgml" />
+    <File Path="UnitTests.targets" />
+  </Folder>
+</Solution>

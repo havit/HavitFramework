@@ -164,7 +164,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 		// zkontrolujeme, zda databázová data neobsahují duplicity
 		databaseDataWithPairByValues.ThrowIfContainsDuplicates($"Seed for {typeof(TEntity).Name} cannot be done. Data in the DATABASE already contains duplicates. Duplicate records:", pairByExpressions);
 
-		// ke zdrojovám datům připojíme databázová, porovnání proběhne podle PairBy
+		// ke zdrojovám datům připojíme databázová, porovnání proběhne podle PairBy		
 		return seedDataWithPairByValues.LeftJoin(
 			databaseDataWithPairByValues,
 			seedDataItem => seedDataItem.PairByValues, // overrides Equals

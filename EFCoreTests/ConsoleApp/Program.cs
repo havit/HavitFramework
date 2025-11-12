@@ -126,6 +126,8 @@ public static class Program
 		//	// scénář 3: XyRepository.GetObjects()
 		//	personRepository.GetObjects(3, 4);
 		//	await personRepository.GetObjectsAsync([5, 6], cancellationToken);
+
+		await Task.Delay(1, cancellationToken); // pro použití cancellationTokenu, pokud je vše zakomentované
 	}
 
 }

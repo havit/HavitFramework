@@ -514,24 +514,25 @@ public class DbRepositoryTests
 
 	internal class FakeRepositoryQueryProvider : IRepositoryQueryProvider<ItemWithDeleted, int>
 	{
-		Func<DbContext, int, CancellationToken, Task<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectAsyncQuery()
-		{
-			return (DbContext dbContext, int id, CancellationToken cancellationToken) => dbContext.Set<ItemWithDeleted>().Where(item => item.Id == id).SingleOrDefaultAsync(cancellationToken);
-		}
-
 		Func<DbContext, int, ItemWithDeleted> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectQuery()
 		{
-			return (DbContext dbContext, int id) => dbContext.Set<ItemWithDeleted>().Where(item => item.Id == id).SingleOrDefault();
+			return EF.CompileQuery((DbContext dbContext, int id) => dbContext.Set<ItemWithDeleted>().Where(item => item.Id == id).FirstOrDefault());
 		}
 
-		Func<DbContext, int[], IAsyncEnumerable<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectsAsyncQuery()
+		Func<DbContext, int, CancellationToken, Task<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectAsyncQuery()
 		{
-			return (DbContext dbContext, int[] ids) => dbContext.Set<ItemWithDeleted>().Where(item => ids.Contains(item.Id)).AsAsyncEnumerable();
+			return EF.CompileAsyncQuery((DbContext dbContext, int id, CancellationToken cancellationToken) => dbContext.Set<ItemWithDeleted>().Where(item => item.Id == id).FirstOrDefault());
 		}
 
 		Func<DbContext, int[], IEnumerable<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectsQuery()
 		{
-			return (DbContext dbContext, int[] ids) => dbContext.Set<ItemWithDeleted>().Where(item => ids.Contains(item.Id)).AsEnumerable();
+			return EF.CompileQuery((DbContext dbContext, System.Int32[] ids) => dbContext.Set<ItemWithDeleted>().Where(entity => ids.Contains(entity.Id)));
 		}
+
+		Func<DbContext, int[], IAsyncEnumerable<ItemWithDeleted>> IRepositoryQueryProvider<ItemWithDeleted, int>.GetGetObjectsAsyncQuery()
+		{
+			return EF.CompileAsyncQuery((DbContext dbContext, System.Int32[] ids) => dbContext.Set<ItemWithDeleted>().Where(entity => ids.Contains(entity.Id)));
+		}
+
 	}
 }

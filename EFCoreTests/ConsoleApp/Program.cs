@@ -32,8 +32,8 @@ public static class Program
 
 		var host = hostBuilder.Build();
 
-		// await UpdateDatabaseAsync(host.Services, CancellationToken.None);
-		// await SeedDatabaseAsync(host.Services, CancellationToken.None);
+		//await UpdateDatabaseAsync(host.Services, CancellationToken.None);
+		//await SeedDatabaseAsync(host.Services, CancellationToken.None);
 		await DebugAsync(host.Services);
 	}
 
@@ -41,7 +41,8 @@ public static class Program
 	{
 		services.AddDbContext<IDbContext, Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 				optionsBuilder
-					.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0")
+					.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0",
+						o => o.UseParameterizedCollectionMode(ParameterTranslationMode.Parameter))
 					.UseDefaultHavitConventions()
 					.EnableSensitiveDataLogging(true));
 
@@ -99,9 +100,6 @@ public static class Program
 		var personDataSource = scope.ServiceProvider.GetRequiredService<IPersonDataSource>();
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 		var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-
-		personRepository.GetAll();
-		await personRepository.GetAllAsync(cancellationToken);
 
 		//Person person2 = personRepository.GetObject(2);
 		//await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);

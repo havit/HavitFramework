@@ -32,11 +32,11 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 			{
 				// pokud nemáme SolutionDirectory v konfiguraci, procházíme složkami nahoru, než najdeme *.sln
 				solutionDirectory = new DirectoryInfo(Environment.CurrentDirectory);// @"D:\Dev\002.HFW-NewProjectTemplate";
-				while (Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0)
+				while ((Directory.GetFiles(solutionDirectory.FullName, "*.sln", SearchOption.TopDirectoryOnly).Length == 0) && (Directory.GetFiles(solutionDirectory.FullName, "*.slnx", SearchOption.TopDirectoryOnly).Length == 0))
 				{
 					if (solutionDirectory.Root.FullName == solutionDirectory.FullName)
 					{
-						Console.WriteLine("Solution file (*.sln) was not found.");
+						Console.WriteLine("Solution file (*.sln[x]) was not found.");
 						result = null;
 						return false;
 					}

@@ -6,12 +6,19 @@
 
 	<!-- Unit tests -->
 	<Import Project="../UnitTests.targets" />
+	
+	<ItemGroup>
+	  <Content Include="Infrastructure\sftp.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<TargetPath>sftp.json</TargetPath>
+	  </Content>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="MSTest" Version="4.0.1" />
-		<PackageReference Include="Testcontainers.Sftp" Version="4.8.1" />
+		<PackageReference Include="Testcontainers" Version="4.8.1" />
 	</ItemGroup>
 
 

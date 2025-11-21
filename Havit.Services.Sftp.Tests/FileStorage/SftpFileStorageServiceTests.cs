@@ -1,11 +1,10 @@
-﻿using DotNet.Testcontainers.Builders;
-using Havit.Services.FileStorage;
+﻿using Havit.Services.FileStorage;
 using Havit.Services.Sftp.FileStorage;
-using Havit.Services.Sftp.Tests.FileStorage.Infrastructure;
+using Havit.Services.Sftp.Tests.FileStorage.Internal;
+using Havit.Services.Sftp.Tests.Infrastructure;
 using Havit.Services.TestHelpers.FileStorage;
 using Microsoft.Extensions.DependencyInjection;
 using Renci.SshNet;
-using Testcontainers.Sftp;
 
 namespace Havit.Services.Sftp.Tests.FileStorage;
 
@@ -25,48 +24,25 @@ namespace Havit.Services.Sftp.Tests.FileStorage;
 [TestClass]
 public class SftpFileStorageServiceTests
 {
-	private static SftpContainer s_SftpContainer;
+	// credentials jsou nakonfigurovány pro sftp server v souboru Infrastructure/sftp.json.
+	private static SftpUserInfo PrimaryUserInfo = new SftpUserInfo("primary");
+	private static SftpUserInfo SecondaryUserInfo = new SftpUserInfo("secondary");
+	private static SftpUserInfo EnumerateFilesSupportsSearchPatternUserInfo = new SftpUserInfo("enumerate1");
+	private static SftpUserInfo EnumerateFilesAsyncSupportsSearchPatternUserInfo = new SftpUserInfo("enumerate2");
+	private static SftpUserInfo EnumerateFilesSearchPatternIsCaseSensitiveUserInfo = new SftpUserInfo("enumerate3");
+	private static SftpUserInfo EnumerateFilesAsyncSearchPatternIsCaseSensitiveUserInfo = new("enumerate4");
+	private static SftpUserInfo EnumerateFilesSupportsSearchPatternInSubfolder = new SftpUserInfo("enumerate5");
+	private static SftpUserInfo EnumerateFilesAsyncSupportsSearchPatternInSubfolder = new SftpUserInfo("enumerate6");
 
-	private static SftpUserInfo PrimaryUserInfo = new SftpUserInfo("primary", 1001);
-	private static SftpUserInfo SecondaryUserInfo = new SftpUserInfo("secondary", 1002);
-	private static SftpUserInfo EnumerateFilesSupportsSearchPatternUserInfo = new SftpUserInfo("enumerate1", 1003);
-	private static SftpUserInfo EnumerateFilesAsyncSupportsSearchPatternUserInfo = new SftpUserInfo("enumerate2", 1004);
-	private static SftpUserInfo EnumerateFilesSearchPatternIsCaseSensitiveUserInfo = new SftpUserInfo("enumerate3", 1005);
-	private static SftpUserInfo EnumerateFilesAsyncSearchPatternIsCaseSensitiveUserInfo = new("enumerate4", 1006);
-	private static SftpUserInfo EnumerateFilesSupportsSearchPatternInSubfolder = new SftpUserInfo("enumerate5", 1007);
-	private static SftpUserInfo EnumerateFilesAsyncSupportsSearchPatternInSubfolder = new SftpUserInfo("enumerate6", 1008);
-
-	private static SftpUserInfo[] AllUserInfo = new[]
-	{
-		PrimaryUserInfo,
-		SecondaryUserInfo,
-		EnumerateFilesSupportsSearchPatternUserInfo,
-		EnumerateFilesAsyncSupportsSearchPatternUserInfo,
-		EnumerateFilesSearchPatternIsCaseSensitiveUserInfo,
-		EnumerateFilesAsyncSearchPatternIsCaseSensitiveUserInfo,
-		EnumerateFilesSupportsSearchPatternInSubfolder,
-		EnumerateFilesAsyncSupportsSearchPatternInSubfolder
-	};
-
-	[ClassInitialize]
-	public static async void Initialize()
-	{
-		string sftpUsers = string.Join(",", AllUserInfo.Select(credentials => $"{credentials.Username}:{credentials.Password}:{credentials.UID}:{credentials.Gid}:{credentials.HomeDirectory}"));
-
-		s_SftpContainer = new SftpBuilder()
-			.WithImage("atmoz/sftp:alpine")
-			.WithEnvironment("SFTP_USERS", sftpUsers)
-			.WithPortBinding(22, true)
-			.WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(22))
-			.Build();
-
-		await s_SftpContainer.StartAsync();
-	}
 
 	[ClassCleanup]
-	public static void CleanUp(TestContext _)
+	public static void ClassCleanup()
 	{
-	//	await s_SftpContainer.DisposeAsync();
+		foreach (var sftpStorageService in _sftpStorageServices.Values)
+		{
+			sftpStorageService.Dispose();
+		}
+		_sftpStorageServices.Clear();
 	}
 
 	[TestMethod]
@@ -448,21 +424,30 @@ public class SftpFileStorageServiceTests
 		Assert.IsInstanceOfType(service, typeof(SftpStorageService<TestFileStorage>));
 	}
 
+	private static Dictionary<SftpUserInfo, SftpStorageService> _sftpStorageServices = new Dictionary<SftpUserInfo, SftpStorageService>();
+
 	private static SftpStorageService GetSftpFileStorageService(SftpUserInfo sftpUserInfo = null)
 	{
-		// we do not want to leak our Azure Storage connection string + we need to have it accessible for build + all HAVIT developers as easy as possible
-
 		sftpUserInfo ??= PrimaryUserInfo; // default credentials
 
-		return new SftpStorageService(new SftpStorageServiceOptions
+		// reuse instancí předpokládá, že testy neběží paralelně
+
+		if (_sftpStorageServices.TryGetValue(sftpUserInfo, out SftpStorageService existingService))
+		{
+			return existingService;
+		}
+
+		var sftpStorageService = new SftpStorageService(new SftpStorageServiceOptions
 		{
 			ConnectionInfoFunc = () => new Renci.SshNet.ConnectionInfo(
-				host: s_SftpContainer.Hostname,
-				port: s_SftpContainer.GetMappedPublicPort(22),
+				host: SftpContainerService.Hostname,
+				port: SftpContainerService.Port,
 				username: sftpUserInfo.Username,
 				authenticationMethods: new Renci.SshNet.PasswordAuthenticationMethod(sftpUserInfo.Username, sftpUserInfo.Password))
 			{ MaxSessions = 1 }
 		});
+		_sftpStorageServices.Add(sftpUserInfo, sftpStorageService);
+		return sftpStorageService;
 	}
 }
 

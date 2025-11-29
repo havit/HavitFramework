@@ -9,5 +9,10 @@
 		/// ServiceType not found.
 		/// </summary>
 		public const string ServiceAttributeCannotDetermineServiceTypeId = "HFW1001"; // Category: Usage
+
+		/// <summary>
+		/// IEnumerable of IEnumerable passed to AddRangeFor* methods.
+		/// </summary>
+		public const string UnitOfWorkAddRangeNestedCollectionId = "HFW1002"; // Category: Usage
 	}
 }

@@ -92,12 +92,14 @@
     <Project Path="Havit.Data.EntityFrameworkCore.CodeGenerator.Tool/Havit.Data.EntityFrameworkCore.CodeGenerator.Tool.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore.CodeGenerator/Havit.Data.EntityFrameworkCore.CodeGenerator.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore.Migrations/Havit.Data.EntityFrameworkCore.Migrations.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Patterns.Analyzers/Havit.Data.EntityFrameworkCore.Patterns.Analyzers.csproj" Id="2ebee930-a340-4f5b-b7d7-0a087e48882d" />
     <Project Path="Havit.Data.EntityFrameworkCore.Patterns/Havit.Data.EntityFrameworkCore.Patterns.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore/Havit.Data.EntityFrameworkCore.csproj" />
   </Folder>
   <Folder Name="/EF Libraries/EFCore/Tests/">
     <Project Path="Havit.Data.EntityFrameworkCore.Migrations.TestHelpers/Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore.Migrations.Tests/Havit.Data.EntityFrameworkCore.Migrations.Tests.csproj" />
+    <Project Path="Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests/Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests.csproj" Id="e09a5aef-9f65-45e2-81da-8f9bf682dccb" />
     <Project Path="Havit.Data.EntityFrameworkCore.Patterns.Tests/Havit.Data.EntityFrameworkCore.Patterns.Tests.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore.Tests/Havit.Data.EntityFrameworkCore.Tests.csproj" />
   </Folder>

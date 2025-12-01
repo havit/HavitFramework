@@ -1,4 +1,4 @@
-using Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis;
+using Havit.Data.EntityFrameworkCore.Patterns.Analyzers.UnitOfWorks;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 
@@ -29,7 +29,7 @@ namespace TestNamespace
 	}
 }";
 
-		var expected = new DiagnosticResult(Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis.Diagnostics.UnitOfWorkAddRangeNestedCollection)
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
 			.WithLocation(15, 33)
 			.WithArguments("MyEntity", "AddRangeForInsert");
 
@@ -57,7 +57,7 @@ namespace TestNamespace
 	}
 }";
 
-		var expected = new DiagnosticResult(Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis.Diagnostics.UnitOfWorkAddRangeNestedCollection)
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
 			.WithLocation(14, 33)
 			.WithArguments("MyEntity", "AddRangeForUpdate");
 
@@ -85,7 +85,7 @@ namespace TestNamespace
 	}
 }";
 
-		var expected = new DiagnosticResult(Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis.Diagnostics.UnitOfWorkAddRangeNestedCollection)
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
 			.WithLocation(14, 33)
 			.WithArguments("MyEntity", "AddRangeForDelete");
 
@@ -162,7 +162,7 @@ namespace TestNamespace
 	}
 }";
 
-		var expected = new DiagnosticResult(Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis.Diagnostics.UnitOfWorkAddRangeNestedCollection)
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
 			.WithLocation(15, 44)
 			.WithArguments("MyEntity", "AddRangeForInsertAsync");
 
@@ -191,7 +191,7 @@ namespace TestNamespace
 	}
 }";
 
-		var expected = new DiagnosticResult(Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis.Diagnostics.UnitOfWorkAddRangeNestedCollection)
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
 			.WithLocation(15, 33)
 			.WithArguments("MyEntity", "AddRangeForInsert");
 

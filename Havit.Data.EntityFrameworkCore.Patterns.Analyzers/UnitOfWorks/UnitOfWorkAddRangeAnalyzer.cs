@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis;
+namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.UnitOfWorks;
 
 /// <summary>
 /// Analyzer that detects when a nested collection (IEnumerable&lt;IEnumerable&lt;T&gt;&gt;) is passed

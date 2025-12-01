@@ -1,7 +1,7 @@
 using Havit.Diagnostics.Common;
 using Microsoft.CodeAnalysis;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.CodeAnalysis;
+namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers;
 
 /// <summary>
 /// Provides diagnostics for detecting improper usage of AddRangeForInsert, AddRangeForUpdate,

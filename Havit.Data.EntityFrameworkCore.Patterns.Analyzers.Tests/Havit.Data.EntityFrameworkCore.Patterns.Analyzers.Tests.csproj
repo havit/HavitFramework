@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+	</PropertyGroup>
+
+	<!-- Unit tests -->
+	<Import Project="../UnitTests.targets" />
+
+	<ItemGroup>
+		<PackageReference Include="MSTest" Version="4.0.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns.Analyzers\Havit.Data.EntityFrameworkCore.Patterns.Analyzers.csproj" />
+	  <ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
+	</ItemGroup>
+
+</Project>

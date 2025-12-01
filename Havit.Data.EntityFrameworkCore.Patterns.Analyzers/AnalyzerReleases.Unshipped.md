@@ -6,3 +6,4 @@
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
 HFW1002 | Usage | Warning | Diagnostics
+HFW1003 | Usage | Warning | Diagnostics

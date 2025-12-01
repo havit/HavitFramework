@@ -6,14 +6,13 @@ using Microsoft.CodeAnalysis.Testing;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests.UnitOfWorks;
 
 [TestClass]
-public class UnitOfWorkAddRangeAnalyzerTests
+public class AddRangeMethodsWithNestedEnumerableArgumentAnalyzerTests
 {
 	[TestMethod]
-	public async Task AddRangeForInsert_WithNestedCollection_ReportsDiagnostic()
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForInsert_ReportsDiagnosticForNestedEnumerable()
 	{
 		const string source = @"
 using System.Collections.Generic;
-using System.Linq;
 using Havit.Data.Patterns.UnitOfWorks;
 
 namespace TestNamespace
@@ -31,14 +30,43 @@ namespace TestNamespace
 }";
 
 		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
-			.WithLocation(15, 33)
-			.WithArguments("MyEntity", "AddRangeForInsert");
+			.WithLocation(14, 33)
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddRangeForInsertMethodName);
 
 		await VerifyAnalyzerAsync(source, expected);
 	}
 
 	[TestMethod]
-	public async Task AddRangeForUpdate_WithNestedCollection_ReportsDiagnostic()
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForInsertAsync_ReportsDiagnosticForNestedEnumerable()
+	{
+		const string source = @"
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class TestClass
+	{
+		public async Task TestMethod(IUnitOfWork unitOfWork)
+		{
+			List<List<MyEntity>> nestedList = new List<List<MyEntity>>();
+			await unitOfWork.AddRangeForInsertAsync(nestedList);
+		}
+	}
+}";
+
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
+			.WithLocation(15, 44)
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddRangeForInsertAsyncMethodName);
+
+		await VerifyAnalyzerAsync(source, expected);
+	}
+
+	[TestMethod]
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForUpdate_ReportsDiagnosticForNestedEnumerable()
 	{
 		const string source = @"
 using System.Collections.Generic;
@@ -60,16 +88,15 @@ namespace TestNamespace
 
 		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
 			.WithLocation(14, 33)
-			.WithArguments("MyEntity", "AddRangeForUpdate");
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddRangeForUpdateMethodName);
 
 		await VerifyAnalyzerAsync(source, expected);
 	}
 
 	[TestMethod]
-	public async Task AddRangeForDelete_WithNestedCollection_ReportsDiagnostic()
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForDelete_ReportsDiagnosticForNestedEnumerable()
 	{
 		const string source = @"
-using System.Collections.Generic;
 using Havit.Data.Patterns.UnitOfWorks;
 
 namespace TestNamespace
@@ -87,14 +114,14 @@ namespace TestNamespace
 }";
 
 		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
-			.WithLocation(14, 33)
-			.WithArguments("MyEntity", "AddRangeForDelete");
+			.WithLocation(13, 33)
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddRangeForDeleteMethodName);
 
 		await VerifyAnalyzerAsync(source, expected);
 	}
 
 	[TestMethod]
-	public async Task AddRangeForInsert_WithCorrectCollection_NoDiagnostic()
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForInsert_NoDiagnosticForEnumerable()
 	{
 		const string source = @"
 using System.Collections.Generic;
@@ -118,7 +145,32 @@ namespace TestNamespace
 	}
 
 	[TestMethod]
-	public async Task AddRangeForUpdate_WithCorrectIEnumerable_NoDiagnostic()
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForInsertAsync_NoDiagnosticForEnumerable()
+	{
+		const string source = @"
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class TestClass
+	{
+		public async Task TestMethod(IUnitOfWork unitOfWork)
+		{
+			List<MyEntity> entities = new List<MyEntity>();
+			await unitOfWork.AddRangeForInsertAsync(entities);
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
+	[TestMethod]
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForUpdate_NoDiagnosticForEnumerable()
 	{
 		const string source = @"
 using System.Collections.Generic;
@@ -137,45 +189,14 @@ namespace TestNamespace
 		}
 	}
 }";
-
 		await VerifyAnalyzerAsync(source);
 	}
 
 	[TestMethod]
-	public async Task AddRangeForInsertAsync_WithNestedCollection_ReportsDiagnostic()
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForDelete_NoDiagnosticForEnumerable()
 	{
 		const string source = @"
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Havit.Data.Patterns.UnitOfWorks;
-
-namespace TestNamespace
-{
-	public class MyEntity { }
-
-	public class TestClass
-	{
-		public async Task TestMethod(IUnitOfWork unitOfWork)
-		{
-			List<List<MyEntity>> nestedList = new List<List<MyEntity>>();
-			await unitOfWork.AddRangeForInsertAsync(nestedList);
-		}
-	}
-}";
-
-		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
-			.WithLocation(15, 44)
-			.WithArguments("MyEntity", "AddRangeForInsertAsync");
-
-		await VerifyAnalyzerAsync(source, expected);
-	}
-
-	[TestMethod]
-	public async Task AddRangeForInsert_WithSelectResultingInNestedCollection_ReportsDiagnostic()
-	{
-		const string source = @"
-using System.Collections.Generic;
-using System.Linq;
 using Havit.Data.Patterns.UnitOfWorks;
 
 namespace TestNamespace
@@ -186,23 +207,18 @@ namespace TestNamespace
 	{
 		public void TestMethod(IUnitOfWork unitOfWork)
 		{
-			List<List<MyEntity>> source = new List<List<MyEntity>>();
-			unitOfWork.AddRangeForInsert(source.Select(x => x));
+			IEnumerable<MyEntity> entities = null;
+			unitOfWork.AddRangeForDelete(entities);
 		}
 	}
 }";
-
-		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddRangeNestedCollection)
-			.WithLocation(15, 33)
-			.WithArguments("MyEntity", "AddRangeForInsert");
-
-		await VerifyAnalyzerAsync(source, expected);
+		await VerifyAnalyzerAsync(source);
 	}
 
 	private static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
 	{
 
-		var test = new CSharpAnalyzerTest<UnitOfWorkAddRangeAnalyzer, DefaultVerifier>
+		var test = new CSharpAnalyzerTest<AddRangeMethodsWithNestedEnumerableArgumentAnalyzer, DefaultVerifier>
 		{
 			TestState =
 			{

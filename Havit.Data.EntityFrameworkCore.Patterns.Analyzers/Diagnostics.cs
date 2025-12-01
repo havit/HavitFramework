@@ -4,10 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers;
 
 /// <summary>
-/// Provides diagnostics for detecting improper usage of AddRangeForInsert, AddRangeForUpdate,
-/// and AddRangeForDelete methods in the UnitOfWork pattern. Specifically, it identifies instances
-/// where nested collections (IEnumerable) are mistakenly passed to these methods
-/// instead of a flat IEnumerable of T.
+/// Provides diagnostics for detecting improper usage methods in the UnitOfWork pattern.
 /// </summary>
 public static class Diagnostics
 {
@@ -21,10 +18,6 @@ public static class Diagnostics
 	/// a single-level collection of entities by warning against passing multi-level (nested) collections,
 	/// which could lead to unintended behavior or runtime errors.
 	/// </remarks>
-	/// <example>
-	/// When the diagnostic detects a nested collection being passed, it produces a warning with a detailed
-	/// message format that specifies the type of the entity and the method involved.
-	/// </example>
 	public static readonly DiagnosticDescriptor UnitOfWorkAddRangeNestedCollection = new DiagnosticDescriptor(
 		id: DiagnosticIdentifiers.UnitOfWorkAddRangeNestedCollectionId,
 		title: "Nested collection passed to AddRangeFor* method",
@@ -32,6 +25,26 @@ public static class Diagnostics
 		category: "Usage",
 		defaultSeverity: DiagnosticSeverity.Warning,
 		isEnabledByDefault: true,
-		description: "Detects when IEnumerable<IEnumerable<T>> is passed to AddRangeForInsert, AddRangeForUpdate, or AddRangeForDelete methods instead of IEnumerable<T>."
+		description: "Detects when IEnumerable<IEnumerable<T>> is passed to AddRangeForInsert, AddRangeForInsertAsync, AddRangeForUpdate, or AddRangeForDelete methods instead of IEnumerable<T>."
+	);
+
+	/// <summary>
+	/// Represents a diagnostic descriptor that identifies and reports cases where IEnumerable&lt;T&gt; 
+	/// is passed to methods such as AddForInsert, AddForInsertAsync, AddForUpdate, or AddForUpdateAsync,
+	/// which expect a single entity instance of type T.
+	/// </summary>
+	/// <remarks>
+	/// This diagnostic helps prevent incorrect usage where a collection is passed to methods designed 
+	/// to handle individual entities. Use AddRangeForInsert/AddRangeForUpdate/AddRangeForDelete methods 
+	/// for collection operations instead.
+	/// </remarks>
+	public static readonly DiagnosticDescriptor UnitOfWorkAddIEnumerableArgument = new DiagnosticDescriptor(
+		id: DiagnosticIdentifiers.UnitOfWorkAddIEnumerableArgumentId,
+		title: "IEnumerable passed to AddFor* method",
+		messageFormat: "Method '{1}' expects a single entity instance ({0}), not IEnumerable<{0}>. Use {2} method for collections.",
+		category: "Usage",
+		defaultSeverity: DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: "Detects when IEnumerable<T> is passed to AddForInsert, AddForInsertAsync, AddForUpdate, or AddForUpdateAsync methods instead of a single entity."
 	);
 }

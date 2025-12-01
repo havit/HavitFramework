@@ -13,10 +13,15 @@ public class UnitOfWorkConstantsTests
 		Assert.AreEqual(UnitOfWorkConstants.UnitOfWorkInterfaceName, nameof(IUnitOfWork));
 		Assert.AreEqual(UnitOfWorkConstants.UnitOfWorkInterfaceNamespace, typeof(IUnitOfWork).Namespace);
 
+		Assert.AreEqual(UnitOfWorkConstants.AddForInsertMethodName, nameof(IUnitOfWork.AddForInsert));
+		Assert.AreEqual(UnitOfWorkConstants.AddForInsertAsyncMethodName, nameof(IUnitOfWork.AddForInsertAsync));
+		Assert.AreEqual(UnitOfWorkConstants.AddForUpdateMethodName, nameof(IUnitOfWork.AddForUpdate));
+		Assert.AreEqual(UnitOfWorkConstants.AddForDeleteMethodName, nameof(IUnitOfWork.AddForDelete));
+
 		Assert.AreEqual(UnitOfWorkConstants.AddRangeForInsertMethodName, nameof(IUnitOfWork.AddRangeForInsert));
+		Assert.AreEqual(UnitOfWorkConstants.AddRangeForInsertAsyncMethodName, nameof(IUnitOfWork.AddRangeForInsertAsync));
 		Assert.AreEqual(UnitOfWorkConstants.AddRangeForUpdateMethodName, nameof(IUnitOfWork.AddRangeForUpdate));
 		Assert.AreEqual(UnitOfWorkConstants.AddRangeForDeleteMethodName, nameof(IUnitOfWork.AddRangeForDelete));
-		Assert.AreEqual(UnitOfWorkConstants.AddRangeForInsertAsyncMethodName, nameof(IUnitOfWork.AddRangeForInsertAsync));
 #pragma warning restore MSTEST0032 // Assertion condition is always true
 	}
 }

@@ -8,10 +8,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.UnitOfWorks;
 
 /// <summary>
 /// Analyzer that detects when a nested collection (IEnumerable&lt;IEnumerable&lt;T&gt;&gt;) is passed
-/// to UnitOfWork.AddRangeForInsert, AddRangeForUpdate, or AddRangeForDelete methods.
+/// to UnitOfWork.AddRangeForInsert, UnitOfWork.AddRangeForInsertRange, AddRangeForUpdate, or AddRangeForDelete methods.
 /// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public class UnitOfWorkAddRangeAnalyzer : DiagnosticAnalyzer
+public class AddRangeMethodsWithNestedEnumerableArgumentAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly string[] s_targetMethodNames =
 	[

@@ -47,6 +47,8 @@
 			"Havit.Data.EntityFrameworkCore.Migrations\\Havit.Data.EntityFrameworkCore.Migrations.csproj",
 			"Havit.Data.EntityFrameworkCore.Patterns.Tests\\Havit.Data.EntityFrameworkCore.Patterns.Tests.csproj",
 			"Havit.Data.EntityFrameworkCore.Patterns\\Havit.Data.EntityFrameworkCore.Patterns.csproj",
+			"Havit.Data.EntityFrameworkCore.Patterns.Analyzers/Havit.Data.EntityFrameworkCore.Patterns.Analyzers.csproj",
+			"Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests/Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests.csproj",
 			"Havit.Data.EntityFrameworkCore.TestSolution\\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer\\Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.csproj",
 			"Havit.Data.EntityFrameworkCore.TestSolution\\Havit.Data.EntityFrameworkCore.TestSolution.Entity\\Havit.Data.EntityFrameworkCore.TestSolution.Entity.csproj",
 			"Havit.Data.EntityFrameworkCore.TestSolution\\Havit.Data.EntityFrameworkCore.TestSolution.Model\\Havit.Data.EntityFrameworkCore.TestSolution.Model.csproj",

@@ -41,7 +41,7 @@ public static class Diagnostics
 	public static readonly DiagnosticDescriptor UnitOfWorkAddIEnumerableArgument = new DiagnosticDescriptor(
 		id: DiagnosticIdentifiers.UnitOfWorkAddIEnumerableArgumentId,
 		title: "IEnumerable passed to AddFor* method",
-		messageFormat: "Method '{1}' expects a single entity instance ({0}), not IEnumerable<{0}>. Use {2} method for collections.",
+		messageFormat: "Passing a collection (IEnumerable<{0}>) to '{1}' is likely incorrect. The method expects a single entity instance of {0}, not a collection. Use {2} method for collections.",
 		category: "Usage",
 		defaultSeverity: DiagnosticSeverity.Warning,
 		isEnabledByDefault: true,

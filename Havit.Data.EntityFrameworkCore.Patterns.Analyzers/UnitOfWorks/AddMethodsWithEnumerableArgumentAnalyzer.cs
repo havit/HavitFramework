@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.UnitOfWorks;
 
 /// <summary>
-/// Analyzer that detects when IEnumerable&lt;T&gt; is passed to UnitOfWork.AddForInsert, AddForInsertAsync, AddForUpdate, or AddForUpdateAsync methods.
+/// Analyzer that detects when IEnumerable&lt;T&gt; is passed to UnitOfWork.AddForInsert, AddForInsertAsync, AddForUpdate, or AddForDelete methods.
 /// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class AddMethodsWithEnumerableArgumentAnalyzer : DiagnosticAnalyzer

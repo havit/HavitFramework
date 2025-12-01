@@ -1,8 +1,9 @@
+using System.Collections.Immutable;
 using Havit.Data.EntityFrameworkCore.Patterns.Analyzers.UnitOfWorks;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 
-namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.CodeAnalysis;
+namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests.UnitOfWorks;
 
 [TestClass]
 public class UnitOfWorkAddRangeAnalyzerTests
@@ -200,6 +201,7 @@ namespace TestNamespace
 
 	private static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
 	{
+
 		var test = new CSharpAnalyzerTest<UnitOfWorkAddRangeAnalyzer, DefaultVerifier>
 		{
 			TestState =

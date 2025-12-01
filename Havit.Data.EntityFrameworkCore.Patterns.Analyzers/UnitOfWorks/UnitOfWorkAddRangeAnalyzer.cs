@@ -15,12 +15,10 @@ public class UnitOfWorkAddRangeAnalyzer : DiagnosticAnalyzer
 {
 	private static readonly string[] s_targetMethodNames =
 	[
-		"AddRangeForInsert",
-		"AddRangeForUpdate",
-		"AddRangeForDelete",
-		"AddRangeForInsertAsync",
-		"AddRangeForUpdateAsync",
-		"AddRangeForDeleteAsync"
+		UnitOfWorkConstants.AddRangeForInsertMethodName,
+		UnitOfWorkConstants.AddRangeForInsertAsyncMethodName,
+		UnitOfWorkConstants.AddRangeForUpdateMethodName,
+		UnitOfWorkConstants.AddRangeForDeleteMethodName
 	];
 
 	/// <inheritdoc/>
@@ -102,16 +100,16 @@ public class UnitOfWorkAddRangeAnalyzer : DiagnosticAnalyzer
 		}
 
 		// Check if it's IUnitOfWork itself
-		if (containingType.Name == "IUnitOfWork" &&
-			containingType.ContainingNamespace?.ToDisplayString() == "Havit.Data.Patterns.UnitOfWorks")
+		if ((containingType.Name == UnitOfWorkConstants.UnitOfWorkInterfaceName)
+			&& (containingType.ContainingNamespace?.ToDisplayString() == UnitOfWorkConstants.UnitOfWorkInterfaceNamespace))
 		{
 			return true;
 		}
 
 		// Check if the containing type implements IUnitOfWork
 		return containingType.AllInterfaces.Any(i =>
-			i.Name == "IUnitOfWork" &&
-			i.ContainingNamespace?.ToDisplayString() == "Havit.Data.Patterns.UnitOfWorks");
+			(i.Name == UnitOfWorkConstants.UnitOfWorkInterfaceName)
+			&& (i.ContainingNamespace?.ToDisplayString() == UnitOfWorkConstants.UnitOfWorkInterfaceNamespace));
 	}
 
 	private bool IsNestedEnumerable(ITypeSymbol type, Compilation compilation, out ITypeSymbol innerType)

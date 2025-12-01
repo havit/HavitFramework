@@ -19,7 +19,7 @@
 		<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.10.0</PackageVersion>
+		<PackageVersion>2.10.1</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	</PropertyGroup>
 
@@ -29,12 +29,14 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="MockQueryable.EntityFrameworkCore" Version="9.0.0" />
+		<PackageReference Include="MockQueryable.EntityFrameworkCore" Version="10.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore\Havit.Data.EntityFrameworkCore.csproj" />
+		<!-- Vzor referencování balíčku s analyzery je z EF Core, viz https://github.com/dotnet/efcore/blob/75bc462a06692bc72badecb0d686204aa76c60bd/src/EFCore/EFCore.csproj#L56 -->
+		<ProjectReference Include="..\Havit.Data.EntityFrameworkCore.Patterns.Analyzers\Havit.Data.EntityFrameworkCore.Patterns.Analyzers.csproj" PrivateAssets="contentfiles;build" />
 		<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
 	</ItemGroup>
 

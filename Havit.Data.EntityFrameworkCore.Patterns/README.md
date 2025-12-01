@@ -1,5 +1,9 @@
 ﻿HAVIT .NET Framework Extensions - Entity Framework Core Extensions
 
+## EF Core 9 to EF Core 10 Migration Guide
+
+* Žádné zvláštní kroky (mimo oficiální guidelines migrace na .NET 10 a EF Core 10) nejsou potřeba.
+
 ## EF Core 8 to EF Core 9 Migration Guide
 
 * Aktualizovat nuget HFW balíčky a Microsoft balíčky na EF Core 9.

@@ -14,6 +14,17 @@
 		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Patterns.Analyzers.Tests" />
 	</ItemGroup>
 
+	<!-- NuGet -->
+	<Import Project="../NuGet.targets" />
+	<PropertyGroup>
+		<PackageVersion>2.10.1</PackageVersion>
+		<!-- https://roslyn-analyzers.readthedocs.io/en/latest/create-nuget-package.html -->
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<DevelopmentDependency>true</DevelopmentDependency>
+		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns Analyzers</Description>
+	</PropertyGroup>
+		
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
@@ -22,5 +33,9 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 	</ItemGroup>
-	
+
+	<ItemGroup>
+		<!-- Include analyzers in the package -->
+		<None Include="$(TargetPath)" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
 </Project>

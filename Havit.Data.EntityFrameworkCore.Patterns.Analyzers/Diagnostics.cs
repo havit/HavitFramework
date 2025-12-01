@@ -30,21 +30,21 @@ public static class Diagnostics
 
 	/// <summary>
 	/// Represents a diagnostic descriptor that identifies and reports cases where IEnumerable&lt;T&gt; 
-	/// is passed to methods such as AddForInsert, AddForInsertAsync, AddForUpdate, or AddForUpdateAsync,
+	/// is passed to methods such as AddForInsert, AddForInsertAsync, AddForUpdate, or AddForDelete
 	/// which expect a single entity instance of type T.
 	/// </summary>
 	/// <remarks>
 	/// This diagnostic helps prevent incorrect usage where a collection is passed to methods designed 
-	/// to handle individual entities. Use AddRangeForInsert/AddRangeForUpdate/AddRangeForDelete methods 
+	/// to handle individual entities. Use AddRangeForInsert/AddRangeForInsertAsync/AddRangeForUpdate/AddRangeForDelete methods 
 	/// for collection operations instead.
 	/// </remarks>
 	public static readonly DiagnosticDescriptor UnitOfWorkAddIEnumerableArgument = new DiagnosticDescriptor(
 		id: DiagnosticIdentifiers.UnitOfWorkAddIEnumerableArgumentId,
 		title: "IEnumerable passed to AddFor* method",
-		messageFormat: "Method '{1}' expects a single entity instance ({0}), not IEnumerable<{0}>. Use {2} method for collections.",
+		messageFormat: "Passing a collection (IEnumerable<{0}>) to '{1}' is likely incorrect. The method expects a single entity instance of {0}, not a collection. Use {2} method for collections.",
 		category: "Usage",
 		defaultSeverity: DiagnosticSeverity.Warning,
 		isEnabledByDefault: true,
-		description: "Detects when IEnumerable<T> is passed to AddForInsert, AddForInsertAsync, AddForUpdate, or AddForUpdateAsync methods instead of a single entity."
+		description: "Detects when IEnumerable<T> is passed to AddForInsert, AddForInsertAsync, AddForUpdate, or AddForDelete methods instead of a single entity."
 	);
 }

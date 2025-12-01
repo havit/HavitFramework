@@ -1,4 +1,7 @@
-﻿v2.9.32 (13.5.2025)
+﻿v2.10.0 (27.11.2025)
+• Aktualizace na EF Core 10
+
+v2.9.32 (13.5.2025)
 • Opravy pádů při použití navigace Many-To-Many.
 
 v2.9.2 (25.2.2025)

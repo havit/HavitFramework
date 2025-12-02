@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿#if NET8_0_OR_GREATER
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
@@ -37,3 +38,4 @@ internal class RecurringJobsSchedulerOnApplicationStartup : IHostedService
 		return Task.CompletedTask;
 	}
 }
+#endif

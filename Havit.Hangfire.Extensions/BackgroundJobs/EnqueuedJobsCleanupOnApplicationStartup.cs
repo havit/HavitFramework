@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿#if NET8_0_OR_GREATER
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace Havit.Hangfire.Extensions.BackgroundJobs;
@@ -40,3 +41,4 @@ internal class EnqueuedJobsCleanupOnApplicationStartup : IHostedService
 		return Task.CompletedTask;
 	}
 }
+#endif

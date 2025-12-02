@@ -1,4 +1,5 @@
-﻿namespace Havit.Hangfire.Extensions.BackgroundJobs;
+﻿#if NET8_0_OR_GREATER
+namespace Havit.Hangfire.Extensions.BackgroundJobs;
 
 /// <summary>
 /// Options for EnqueuedJobsCleanupOnApplicationStartup.
@@ -10,3 +11,4 @@ internal class EnqueuedJobsCleanupOnApplicationStartupOptions
 	/// </summary>
 	public List<string> Queues { get; } = new List<string>();
 }
+#endif

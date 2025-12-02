@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿#if NET8_0_OR_GREATER
+using Hangfire.States;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Havit.Hangfire.Extensions.BackgroundJobs;
@@ -11,7 +13,7 @@ public static class ServiceCollectionExtensions
 	/// <summary>
 	/// Deletes all enqueued jobs in a queue.
 	/// </summary>
-	public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string queue = "default")
+	public static void AddHangfireEnqueuedJobsCleanupOnApplicationStartup(this IServiceCollection services, string queue = EnqueuedState.DefaultQueue)
 	{
 		AddHangfireEnqueuedJobsCleanupOnApplicationStartup(services, new string[] { queue });
 	}
@@ -26,3 +28,4 @@ public static class ServiceCollectionExtensions
 		services.PostConfigure<EnqueuedJobsCleanupOnApplicationStartupOptions>(options => options.Queues.AddRange(queues));
 	}
 }
+#endif

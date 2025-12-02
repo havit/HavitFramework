@@ -1,4 +1,5 @@
-﻿using Havit.Hangfire.Extensions.RecurringJobs.Services;
+﻿#if NET8_0_OR_GREATER
+using Havit.Hangfire.Extensions.RecurringJobs.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -27,3 +28,4 @@ public static class ServiceCollectionExtensions
 		services.TryAddSingleton<SequenceRecurringJobScheduler>();
 	}
 }
+#endif

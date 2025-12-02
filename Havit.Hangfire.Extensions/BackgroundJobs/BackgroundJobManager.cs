@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Hangfire.States;
 using Hangfire.Storage;
 using Hangfire.Storage.Monitoring;
 
@@ -20,7 +21,7 @@ public class BackgroundJobManager : IBackgroundJobManager
 	}
 
 	/// <inheritdoc />
-	public void DeleteEnqueuedJobs(string queue = "default")
+	public void DeleteEnqueuedJobs(string queue = EnqueuedState.DefaultQueue)
 	{
 		// remove enqueued jobs
 		List<string> toDelete = new List<string>();

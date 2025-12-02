@@ -22,4 +22,10 @@
 	  <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Hangfire.Extensions.Tests" />
+		<!-- For dynamic proxy generation in Moq -->
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+
 </Project>

@@ -122,6 +122,7 @@
   </Folder>
   <Folder Name="/Extension Libraries/Tests/">
     <Project Path="Havit.Data.Configuration.Git.Tests/Havit.Data.Configuration.Git.Tests.csproj" />
+    <Project Path="Havit.Hangfire.Extensions.Tests/Havit.Hangfire.Extensions.Tests.csproj" Id="39d8619a-d2a0-4e73-9fc7-3d561ab8b984" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="BenchmarkApp/BenchmarkApp.csproj" />

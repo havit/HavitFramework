@@ -75,6 +75,7 @@
 			"Havit.GoPay.Tests\\Havit.GoPay.Tests.csproj",
 			"Havit.GoPay\\Havit.GoPay.csproj",
 			"Havit.Hangfire.Extensions.Tags\\Havit.Hangfire.Extensions.Tags.csproj",
+			"Havit.Hangfire.Extensions.Tests\\Havit.Hangfire.Extensions.Tests.csproj",
 			"Havit.Hangfire.Extensions\\Havit.Hangfire.Extensions.csproj",
 			"Havit.Model.Tests\\Havit.Model.Tests.csproj",
 			"Havit.Model\\Havit.Model.csproj",

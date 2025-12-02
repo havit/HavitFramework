@@ -60,7 +60,7 @@ public class HangfireServerHealthCheck : IHealthCheck
 			.Where(server => server.Heartbeat >= heartbeatTreshold)
 			.Count();
 
-		string message = $"Running {liveServersCount} instance(s), required {_options.RequiredInstances} instances.";
+		string message = $"Running {liveServersCount} instance(s), required {_options.RequiredInstances} instance(s).";
 		return (liveServersCount >= _options.RequiredInstances)
 			? Task.FromResult(HealthCheckResult.Healthy(message))
 			: Task.FromResult(HealthCheckResult.Unhealthy(message));

@@ -1,3 +1,7 @@
 <Project>
-	<!-- NOOP: No specific settings for Unit Tests -->
+	<PropertyGroup>
+		<IsTestProject>true</IsTestProject>
+		<EnableMSTestRunner>true</EnableMSTestRunner>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
 </Project>

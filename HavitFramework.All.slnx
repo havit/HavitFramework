@@ -20,6 +20,7 @@
     <Project Path="Havit.Web/Havit.Web.csproj" />
   </Folder>
   <Folder Name="/ASP.NET/Tests/">
+    <Project Path="Havit.Web.Tests/Havit.Web.Tests.csproj" />
     <Project Path="WebApplicationTest/WebApplicationTest.csproj" Id="28bb8e7f-089e-494e-9f11-6088c36dd4d0" />
   </Folder>
   <Folder Name="/Business Layer/">
@@ -66,7 +67,6 @@
     <Project Path="Havit.Services.SignalR.Tests/Havit.Services.SignalR.Tests.csproj" />
     <Project Path="Havit.Services.TestHelpers/Havit.Services.TestHelpers.csproj" />
     <Project Path="Havit.Services.Tests/Havit.Services.Tests.csproj" />
-    <Project Path="Havit.Web.Tests/Havit.Web.Tests.csproj" />
   </Folder>
   <Folder Name="/EF Libraries/">
     <Project Path="Havit.Data.Patterns/Havit.Data.Patterns.csproj" />

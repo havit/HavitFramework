@@ -1,15 +1,3 @@
 <Project>
-	<PropertyGroup>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
-		<!--<PublishDir>obj\$(Configuration)\publish</PublishDir>-->
-
-		<!--
-		Pokud použiji jen EnableMSTestRunner, Test Explorer nespustí testy všech projektů.
-		Pokud použiji i OutputType, spustějí se v Test Exploreru všechny testy, ale nespustí se na build serveru.
-		To be solved later.
-		-->
-		<!--<EnableMSTestRunner>true</EnableMSTestRunner>-->
-		<!--<OutputType>Exe</OutputType>-->
-	</PropertyGroup>
+	<!-- NOOP: No specific settings for Unit Tests -->
 </Project>

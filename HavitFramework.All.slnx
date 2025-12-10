@@ -150,6 +150,7 @@
     <File Path="CommonAssemblyInfo.cs" />
     <File Path="DiagnosticsIdentifiers.cs" />
     <File Path="Directory.Build.props" />
+    <File Path="global.json" />
     <File Path="HavitFramework.Build.slnf" />
     <File Path="NuGet.config" />
     <File Path="NuGet.targets" />

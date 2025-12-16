@@ -32,18 +32,15 @@ public class ErrorMonitoringFilter : ExceptionFilterAttribute
 		_logger.LogDebug(context.Exception, "Monitoring exception.");
 
 		Exception exception = context.Exception;
+		HttpContext httpContext = context.HttpContext;
+
 		try
 		{
-			exception.Data[nameof(HttpContext)] = context.HttpContext;
-			_exceptionMonitoringService.HandleException(exception);
+			_exceptionMonitoringService.HandleException(exception, httpContext);
 		}
 		catch (Exception handleExceptionException)
 		{
 			_logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
-		}
-		finally
-		{
-			exception.Data.Remove(nameof(HttpContext));
 		}
 	}
 

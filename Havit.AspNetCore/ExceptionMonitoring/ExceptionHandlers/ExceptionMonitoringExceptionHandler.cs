@@ -18,16 +18,11 @@ public class ExceptionMonitoringExceptionHandler(
 	{
 		try
 		{
-			exception.Data[nameof(HttpContext)] = httpContext;
-			_exceptionMonitoringService.HandleException(exception);
+			_exceptionMonitoringService.HandleException(exception, httpContext);
 		}
 		catch (Exception handleExceptionException)
 		{
 			_logger.LogWarning(handleExceptionException, "An exception occured during exception handling.");
-		}
-		finally
-		{
-			exception.Data.Remove(nameof(HttpContext));
 		}
 		return ValueTask.FromResult(false);
 	}

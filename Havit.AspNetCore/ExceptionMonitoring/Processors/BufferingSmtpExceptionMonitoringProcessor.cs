@@ -1,5 +1,4 @@
 ﻿using Havit.AspNetCore.ExceptionMonitoring.Formatters;
-using Havit.Diagnostics.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -80,7 +79,7 @@ public class BufferingSmtpExceptionMonitoringProcessor : SmtpExceptionMonitoring
 	/// </summary>
 	protected virtual object GetExceptionKey(Exception exception)
 	{
-		Contract.Requires(exception != null);
+		ArgumentNullException.ThrowIfNull(exception);
 		return new ExceptionInfo
 		{
 			ExceptionType = exception.GetType(),

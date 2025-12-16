@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.26</PackageVersion>
+		<PackageVersion>2.0.30</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
 	</PropertyGroup>
 
@@ -17,20 +17,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" Condition="'$(TargetFramework)' != 'net48'" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.3-packages-->
-		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" Condition="'$(TargetFramework)' == 'net48'" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.10" Condition="'$(TargetFramework)' == 'net48'" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" Condition="'$(TargetFramework)' == 'net48'" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.10" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />		
-	</ItemGroup>
-	
 </Project>

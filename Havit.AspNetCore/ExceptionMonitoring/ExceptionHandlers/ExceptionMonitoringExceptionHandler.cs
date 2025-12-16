@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using Havit.AspNetCore.ExceptionMonitoring.Services;
+﻿using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -27,4 +26,3 @@ public class ExceptionMonitoringExceptionHandler(
 		return ValueTask.FromResult(false);
 	}
 }
-#endif

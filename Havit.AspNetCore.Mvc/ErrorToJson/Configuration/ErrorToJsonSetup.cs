@@ -1,6 +1,4 @@
-﻿using Havit.Diagnostics.Contracts;
-
-namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
+﻿namespace Havit.AspNetCore.Mvc.ErrorToJson.Configuration;
 
 /// <summary>
 /// Zajišťuje konfiguraci mapování z uživatelského kódu.
@@ -17,7 +15,10 @@ public class ErrorToJsonSetup
 	/// <param name="markExceptionAsHandled">Indikace, zda má být výjimka označena za zpracovanou.</param>
 	public void Map(Type exceptionType, int statusCode, bool markExceptionAsHandled = false)
 	{
-		Contract.Requires<ArgumentException>(typeof(Exception).IsAssignableFrom(exceptionType), $"{nameof(exceptionType)}: Only exception types can be used.");
+		if (!typeof(Exception).IsAssignableFrom(exceptionType))
+		{
+			throw new ArgumentException($"{nameof(exceptionType)}: Only exception types can be used.");
+		}
 
 		this.Map(e => exceptionType.IsAssignableFrom(e.GetType()), e => statusCode, e => new { StatusCode = statusCode, Message = e.Message }, e => markExceptionAsHandled);
 	}

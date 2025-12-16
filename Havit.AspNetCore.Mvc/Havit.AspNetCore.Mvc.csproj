@@ -1,28 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.26</PackageVersion>
+		<PackageVersion>2.0.30</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core MVC/Web API Extensions</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" Condition="'$(TargetFramework)' != 'net48'" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<!--https://dotnet.microsoft.com/en-us/platform/support/policy/aspnet/2.3-packages-->
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" Condition="'$(TargetFramework)' == 'net48'" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 		<ProjectReference Include="..\Havit.AspNetCore\Havit.AspNetCore.csproj" />
 	</ItemGroup>
 

@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using Hangfire;
 using Hangfire.States;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Havit.Hangfire.Extensions.RecurringJobs;
 
@@ -79,7 +78,12 @@ public class RecurringJob<TJob> : IRecurringJob
 	/// <inheritdoc />
 	public async Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
 	{
-		var job = serviceProvider.GetRequiredService<TJob>();
+		TJob job = (TJob)serviceProvider.GetService(typeof(TJob));
+		if (job == null)
+		{
+			throw new InvalidOperationException($"Service provider does not provide {typeof(TJob)} service.");
+		}
+
 		SetCancellationTokenVisitor setCancellationTokenVisitor = new SetCancellationTokenVisitor(cancellationToken);
 		var methodCall = (Expression<Func<TJob, Task>>)setCancellationTokenVisitor.Visit(MethodCall);
 		await methodCall.Compile().Invoke(job);

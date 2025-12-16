@@ -14,11 +14,7 @@ public class FieldValidationError
 	/// <remarks>
 	/// Vracené fields jsou PascalCase - vychází z pojmenování v .NETu, nikoliv z pojmenování použitého JSON formatterem.
 	/// </remarks>
-#if NET7_0_OR_GREATER
 	[System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
-#else
-	[Newtonsoft.Json.JsonProperty(NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-#endif
 	public string Field { get; }
 
 	/// <summary>

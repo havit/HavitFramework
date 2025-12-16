@@ -1,4 +1,5 @@
-﻿using Hangfire.Common;
+﻿#if NET8_0_OR_GREATER
+using Hangfire.Common;
 using Hangfire.Server;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 
@@ -34,3 +35,4 @@ public class ExceptionMonitoringAttribute : JobFilterAttribute, IServerFilter
 		}
 	}
 }
+#endif

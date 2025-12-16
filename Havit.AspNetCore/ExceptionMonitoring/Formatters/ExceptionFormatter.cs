@@ -60,14 +60,10 @@ public class ExceptionFormatter : IExceptionFormatter
 
 	private void AppendRequestInformation(StringBuilder sb, HttpContext context)
 	{
-#if NET8_0_OR_GREATER
 		// Při spuštění v rámci exception handlingu (od .NET 8) je v případě přesměrování na error page změněna cesta requestu na error page
 		// původní adresa je dostupná přes feature IExceptionHandlerPathFeature.
 		var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
 		string requestPath = exceptionHandlerPathFeature?.Path ?? context.Request.Path;
-#else
-		string requestPath = context.Request.Path;
-#endif
 
 		sb.AppendLine("Request information");
 		if (context == null)

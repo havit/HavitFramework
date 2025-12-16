@@ -1,6 +1,7 @@
 ﻿using Hangfire;
-using Havit.Diagnostics.Contracts;
+#if NET8_0_OR_GREATER
 using Microsoft.Extensions.Logging;
+#endif
 
 namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
 
@@ -9,16 +10,26 @@ namespace Havit.Hangfire.Extensions.RecurringJobs.Services;
 /// </summary>
 public class SequenceRecurringJobScheduler
 {
-	private readonly IRecurringJobManagerV2 _recurringJobManager;
+#if NET8_0_OR_GREATER
 	private readonly ILogger<SequenceRecurringJobScheduler> _logger;
+#endif
+	private readonly IRecurringJobManagerV2 _recurringJobManager;
 	private readonly IBackgroundJobClient _backgroundJobClient;
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public SequenceRecurringJobScheduler(ILogger<SequenceRecurringJobScheduler> logger, IRecurringJobManagerV2 recurringJobManager, IBackgroundJobClient backgroundJobClient)
+	public SequenceRecurringJobScheduler(
+#if NET8_0_OR_GREATER
+		ILogger<SequenceRecurringJobScheduler> logger,
+#endif
+		IRecurringJobManagerV2 recurringJobManager,
+		IBackgroundJobClient backgroundJobClient
+		)
 	{
+#if NET8_0_OR_GREATER
 		this._logger = logger;
+#endif
 		this._recurringJobManager = recurringJobManager;
 		this._backgroundJobClient = backgroundJobClient;
 	}
@@ -47,6 +58,7 @@ public class SequenceRecurringJobScheduler
 	{
 		string recurringJobIdToEnqueue = remainingRecurringJobIdsToRunInSequence.First();
 
+#if NET8_0_OR_GREATER
 		if (previousSequenceRecurringJobId == null)
 		{
 			_logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a first job in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, sequenceRecurringJobId);
@@ -55,11 +67,14 @@ public class SequenceRecurringJobScheduler
 		{
 			_logger.LogDebug("Triggering recurring job '{RecurringJobId}' as a continuation of job '{PreviousRecurringJobId}' in the sequence '{SequnceRecurringJobId}'.", recurringJobIdToEnqueue, previousSequenceRecurringJobId, sequenceRecurringJobId);
 		}
+#endif
 
 		string jobId = _recurringJobManager.TriggerJob(recurringJobIdToEnqueue);
 		if (jobId == null)
 		{
+#if NET8_0_OR_GREATER
 			_logger.LogWarning("Triggering recurring job '{RecurringJobId}' failed.", recurringJobIdToEnqueue);
+#endif
 			if (jobContinuationOptions == JobContinuationOptions.OnlyOnSucceededState)
 			{
 				// job cheme označit za selhaný
@@ -72,15 +87,18 @@ public class SequenceRecurringJobScheduler
 		{
 			if (jobId == null)
 			{
+#if NET8_0_OR_GREATER
 				_logger.LogDebug("Continuing with next jobs...");
+#endif
 				// pokud naplánování spuštění dané naplánované úlohy selhalo, a můžeme pokračovat i v případě neúspěchu,
 				// pokračujeme v naplánování dalšího kroku
 				EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions);
 			}
 			else
 			{
+#if NET8_0_OR_GREATER
 				_logger.LogDebug("Enqueueing continuation to run next {Count} jobs in the sequence '{SequnceRecurringJobId}'.", nextRecurringJobIdsToRunInSequence.Length, sequenceRecurringJobId);
-
+#endif
 				// parameters are serialized!
 				_backgroundJobClient.ContinueJobWith(jobId, () => EnqueueNextRecurringJob(sequenceRecurringJobId, recurringJobIdToEnqueue, nextRecurringJobIdsToRunInSequence, jobContinuationOptions), jobContinuationOptions);
 			}

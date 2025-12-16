@@ -1,5 +1,4 @@
 ﻿using Havit.AspNetCore.Mvc.ErrorToJson.Middlewares;
-using Havit.Diagnostics.Contracts;
 
 // Správný namespace je Microsoft.AspNetCore.Builder!
 
@@ -15,7 +14,7 @@ public static class ErrorToJsonApplicationBuilderExtensions
 	/// </summary>
 	public static IApplicationBuilder UseErrorToJson(this IApplicationBuilder app)
 	{
-		Contract.Requires<ArgumentNullException>(app != null, nameof(app));
+		ArgumentNullException.ThrowIfNull(app);
 
 		return app.UseMiddleware<ErrorToJsonMiddleware>();
 	}

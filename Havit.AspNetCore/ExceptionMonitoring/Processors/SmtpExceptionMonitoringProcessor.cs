@@ -125,11 +125,11 @@ public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
 		// předmět mailu nesmí obsahovat znaky \r a \n
 		if (message.Contains("\r"))
 		{
-			message = message.Left(message.IndexOf('\r'));
+			message = message.Substring(0, message.IndexOf('\r'));
 		}
 		if (message.Contains("\n"))
 		{
-			message = message.Left(message.IndexOf('\n'));
+			message = message.Substring(0, message.IndexOf('\n'));
 		}
 
 		int counter = Interlocked.Increment(ref _mailCounter);

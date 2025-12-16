@@ -1,5 +1,4 @@
 ﻿using Havit.AspNetCore.ExceptionMonitoring.Services;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.ExceptionHandlers;
 
@@ -16,7 +15,7 @@ internal class UnobservedTaskExceptionHandler
 
 	public static void RegisterHandler(IExceptionMonitoringService exceptionMonitoringService)
 	{
-		Contract.Requires<ArgumentNullException>(exceptionMonitoringService != null);
+		ArgumentNullException.ThrowIfNull(exceptionMonitoringService);
 
 		if (s_ExceptionHandler != null)
 		{

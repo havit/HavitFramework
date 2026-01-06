@@ -109,6 +109,10 @@ public class CodeWriter : ICodeWriter
 	public static bool FileExistsCaseInsensitive(string fullPath)
 	{
 		string filename = Path.GetFileName(fullPath);
+		if (!Directory.Exists(Path.GetDirectoryName(fullPath)))
+		{
+			return false;
+		}
 		return new DirectoryInfo(Path.GetDirectoryName(fullPath)).EnumerateFiles(filename).Any(file => String.Equals(file.Name, filename, StringComparison.CurrentCultureIgnoreCase));
 	}
 
@@ -118,6 +122,10 @@ public class CodeWriter : ICodeWriter
 	public static bool FileExistsCaseSensitive(string fullPath)
 	{
 		string filename = Path.GetFileName(fullPath);
+		if (!Directory.Exists(Path.GetDirectoryName(fullPath)))
+		{
+			return false;
+		}
 		return new DirectoryInfo(Path.GetDirectoryName(fullPath)).EnumerateFiles(filename).Any(file => String.Equals(file.Name, filename, StringComparison.CurrentCulture));
 	}
 }

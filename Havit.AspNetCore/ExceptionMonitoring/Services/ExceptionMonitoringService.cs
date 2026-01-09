@@ -1,4 +1,5 @@
 ﻿using Havit.AspNetCore.ExceptionMonitoring.Processors;
+using Havit.Core;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.AspNetCore.ExceptionMonitoring.Services;
@@ -54,10 +55,10 @@ public class ExceptionMonitoringService : IExceptionMonitoringService
 
 	/// <summary>
 	/// Vrací true, pokud se má výjimka zpracovávat (předávat procesorům).
-	/// Vždy vrací true, ale umožňuje potomkům chování předefinovat.
+	/// Pro výjimky související se zrušením operace (TaskCancelledException, OperationCancelledException a pro SqlException související se zrušením operace) vrací false.
 	/// </summary>
 	protected virtual bool ShouldHandleException(Exception exception)
 	{
-		return true;
+		return !CancellationExceptionChecker.IsCancellationException(exception);
 	}
 }

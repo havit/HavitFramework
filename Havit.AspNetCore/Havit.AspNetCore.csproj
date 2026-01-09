@@ -8,7 +8,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.30</PackageVersion>
+		<PackageVersion>2.0.31</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - ASP.NET Core Extensions</Description>
 	</PropertyGroup>
 
@@ -22,6 +22,10 @@
 	
 	<ItemGroup>
 		<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,12 +1,12 @@
-﻿# Entity Framework Core – Model
+﻿# Model
 
-## Úvod
+### Úvod
 Konvence datového modelu a výchozí chování jsou velmi dobře popsány v oficiální dokumentaci EF Core, proto zde není smysluplné dokumentaci opakovat.
 Viz https://docs.microsoft.com/en-us/ef/core/modeling/
 
 Pojmenování tříd a modelu je v angličtině ev. v primárním jazyce projektu.
 
-## Primární klíč
+### Primární klíč
 
 Používáme primární klíč typu int pojmenovaný Id.
 Primátní klíč může být i jiného typu (celočíselný `SByte`, `Int16`, `Int64`, `Byte`, `UInt16`, `UInt32`, `UInt64`, dále `string` nebo `Guid`),
@@ -22,7 +22,7 @@ Přítomnost a pojmenování primárního klíče je kontrolována unit testem.
 public int Id { get; set; }
 ```
 
-## Délky stringů
+### Délky stringů
 
 U všech vlastností typu `string` je nutno uvést jejich maximální délku pomocí attributu `[MaxLength]`.
 Pokud nemá být délka omezená, atributu nezadáváme hodnotu nebo použijeme hodnotu `Int32.MaxValue`.
@@ -42,7 +42,7 @@ public string PasswordSalt { get; set; }
 public string Note { get; set; }
 ```
 
-## Výchozí hodnoty vlastností
+### Výchozí hodnoty vlastností
 
 Výchozí hodnoty vlastností definujeme přímo v kódu:
 
@@ -50,7 +50,7 @@ Výchozí hodnoty vlastností definujeme přímo v kódu:
 public bool IsActive { get; set; } = true;
 ```
 
-## Reference / cizí klíče
+### Reference / cizí klíče
 
 Není-li jiná potřeba, definujeme v páru cizí klíč (vlastnost typu `int` nesoucí hodnotu cizího klíče) a navigation property (obvykle reference na cílový objekt).
 Pro pojmenování konvenci `EntityId` a `Entity`.
@@ -68,7 +68,7 @@ public int LanguageId { get; set; }
 Unit test kontroluje, že jsou vlastnosti v páru, tedy že každá navigation property má i foreign key property.
 Dále kontroluje pojmenování vlastností končících na `Id` a nikoliv `ID`.
 
-## Kolekce One-To-Many (1:N)
+### Kolekce One-To-Many (1:N)
 
 - Obvykle používáme `List<T>`, ale stristriktně předepsáno to není.
 - Kolekce mají smysl např. pro:
@@ -82,13 +82,13 @@ Dále kontroluje pojmenování vlastností končících na `Id` a nikoliv `ID`.
 public List<CountryLocalization> Localizations { get; } = new List<CountryLocalization>();
 ```
 
-## Kolekce Many-To-Many (M:N)
+### Kolekce Many-To-Many (M:N)
 Entity Framework Core 5.x přináší podporu pro vazby typu M:N (viz dokumentace), avšak HFW pro práci s kolekcemi nemá podporu.
 
 Vazby M:N doporučujeme **dekomponovat na dvě vazby 1:N** (postup známý z EF Core 2.x a 3.x).
 EF Core Ve výchozím chování EF Core je třeba této entitě nakonfigurovat složený primární klíč (pomocí data anotations nelze definovat složený primární klíč), nám se klíč nastaví sám (pokud není ručně nastaven) konvencí. Pokud je to třeba, nastavíme pouze název databázové tabulky, do které je entita mapována.
 
-### Příklad
+#### Příklad
 Pokud má mít `User` kolekci `Roles`, musíme zavést entity `Membership` se dvěma vlastnostmi. `User` pak bude mít kolekci nikoliv rolí, ale těchto `Membershipů`.
 
 ```csharp
@@ -115,11 +115,11 @@ public class Membership
 }
 ```
 
-## Kolekce s filtrováním smazaných záznamů
+### Kolekce s filtrováním smazaných záznamů
 
 Viz Entity Framework Core – Kolekce s filtrováním smazaných záznamů
 
-## Mazání příznakem (Soft Delete)
+### Mazání příznakem (Soft Delete)
 
 Podpora mazání příznakem je na objektech, které obsahují vlastnost `Deleted` typu `Nullable<DateTime>`. Podpora není implementovatelná na dočítání kolekcí modelových objektů, tj. **při načítání kolekcí objektů jsou načítány i smazané objekty**.
 
@@ -127,7 +127,7 @@ Podpora mazání příznakem je na objektech, které obsahují vlastnost `Delete
 public DateTime? Deleted { get; set; }
 ```
 
-## Lokalizace
+### Lokalizace
 
 V aplikaci je třeba definovat:
 
@@ -162,14 +162,14 @@ public class CountryLocalization : ILocalization<Country>
 }
 ```
 
-## Entries / systémové záznamy (EnumClass)
+### Entries / systémové záznamy (EnumClass)
 Pokud má třída sloužit jako systémový číselník se známými hodnotami, použijeme vnořený veřejný enum `Entry` s hodnotami.
 Pokud mají mít záznamy v databázi stejné Id, což je obvyklé, je třeba uvést položkám hodnotu.
 
 Na základě tohoto enumu pak generátor zakládá DataEntries.
 
 
-### Příklad
+#### Příklad
 
 ```csharp
 public class Role

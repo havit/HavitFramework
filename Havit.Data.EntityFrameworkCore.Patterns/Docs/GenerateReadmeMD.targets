@@ -1,0 +1,27 @@
+<Project>
+	<PropertyGroup>
+		<!-- Kam se má README vygenerovat -->
+		<GeneratedReadme>$(BaseIntermediateOutputPath)README.md</GeneratedReadme>
+	</PropertyGroup>
+
+	<Target Name="GenerateReadme" BeforeTargets="Build">
+		<Message Text="Generating README from Docs folder..." />
+
+		<!-- Vyčištění cílového souboru -->
+		<Delete Files="$(GeneratedReadme)" Condition="Exists('$(GeneratedReadme)')" />
+
+		<!-- Sloučení souborů pomocí PowerShell -->
+		<Exec Command="powershell -Command &quot;Get-ChildItem '$(MSBuildProjectDirectory)\Docs\*.md' | Sort-Object Name | ForEach-Object { Get-Content $_.FullName -Raw } | Out-File -FilePath '$(GeneratedReadme)' -Encoding UTF8&quot;" />
+
+		<Message Text="README generated at: $(GeneratedReadme)" />
+	</Target>
+
+	<!-- Řekneme NuGetu, že tohle je README -->
+	<PropertyGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(GeneratedReadme)" Pack="true" PackagePath="\" />
+	</ItemGroup>
+</Project>

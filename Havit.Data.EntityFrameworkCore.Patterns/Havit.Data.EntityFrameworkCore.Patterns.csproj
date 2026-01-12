@@ -18,6 +18,7 @@
 
 		<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
+	<Import Project="Docs/GenerateReadmeMD.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.10.1</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>

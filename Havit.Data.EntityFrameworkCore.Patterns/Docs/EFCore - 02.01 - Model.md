@@ -83,10 +83,11 @@ public List<CountryLocalization> Localizations { get; } = new List<CountryLocali
 ```
 
 ### Kolekce Many-To-Many (M:N)
-Entity Framework Core 5.x přináší podporu pro vazby typu M:N (viz dokumentace), avšak HFW pro práci s kolekcemi nemá podporu.
+
+> ⚠️ Entity Framework Core 5.x přináší podporu pro vazby typu M:N (viz dokumentace), avšak HFW pro práci s kolekcemi nemá podporu.
 
 Vazby M:N doporučujeme **dekomponovat na dvě vazby 1:N** (postup známý z EF Core 2.x a 3.x).
-EF Core Ve výchozím chování EF Core je třeba této entitě nakonfigurovat složený primární klíč (pomocí data anotations nelze definovat složený primární klíč), nám se klíč nastaví sám (pokud není ručně nastaven) konvencí. Pokud je to třeba, nastavíme pouze název databázové tabulky, do které je entita mapována.
+Ve výchozím chování EF Core je třeba této entitě nakonfigurovat složený primární klíč (pomocí data anotations nelze definovat složený primární klíč), nám se klíč nastaví sám (pokud není ručně nastaven) konvencí. Pokud je to třeba, nastavíme pouze název databázové tabulky, do které je entita mapována.
 
 #### Příklad
 Pokud má mít `User` kolekci `Roles`, musíme zavést entity `Membership` se dvěma vlastnostmi. `User` pak bude mít kolekci nikoliv rolí, ale těchto `Membershipů`.

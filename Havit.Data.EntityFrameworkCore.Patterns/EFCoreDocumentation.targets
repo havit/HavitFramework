@@ -1,0 +1,26 @@
+<Project>
+	<PropertyGroup>
+		<!-- Kam se má dokumentace vygenerovat -->
+		<GeneratedEFCodeDocumentation>Docs/EFCore.complete.md</GeneratedEFCodeDocumentation>
+	</PropertyGroup>
+
+	<Target Name="GenerateEFCoreDocumentation" BeforeTargets="BeforeBuild">
+		<!-- Odstranění cílového souboru -->
+		<Delete Files="$(GeneratedEFCodeDocumentation)" Condition="Exists('$(GeneratedEFCodeDocumentation)')" />
+
+		<!-- Sloučení souborů pomocí PowerShell, pozor na to, ať maska souborů ke sloučení nezahrnuje cílový soubor -->
+		<Exec Command="powershell -Command &quot;Get-ChildItem '$(MSBuildProjectDirectory)\Docs\EFCore - ??.?? - *.md' | Sort-Object Name | ForEach-Object { Get-Content $_.FullName -Raw } | Out-File -FilePath '$(GeneratedEFCodeDocumentation)' -Encoding UTF8&quot;" />
+
+	</Target>
+
+	<!-- Řekneme NuGetu, že tohle je README -->
+	<PropertyGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Update="Docs/EFCore.complete.md" Pack="true" PackagePath="\README.md" />
+	</ItemGroup>
+
+</Project>
+

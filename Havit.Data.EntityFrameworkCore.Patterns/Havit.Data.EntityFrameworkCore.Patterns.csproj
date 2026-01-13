@@ -16,13 +16,15 @@
 		<Using Include="System.Collections.Frozen" />
 	</ItemGroup>
 
-		<!-- NuGet -->
+	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
-	<Import Project="Docs/GenerateReadmeMD.targets" />
 	<PropertyGroup>
 		<PackageVersion>2.10.1</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Data Patterns</Description>
 	</PropertyGroup>
+
+	<!-- Generování (sloučení) dokumentace EF Core -->
+	<Import Project="EFCoreDocumentation.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />

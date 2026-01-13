@@ -1,6 +1,6 @@
 ﻿## Kolekce s filtrováním smazaných záznamů
 
-Bohužel není možné NAČÍST jen nesmazané záznamy. Můžeme však načíst do paměti všechny záznamy a používat jen ty nesmazané,
+Bohužel není možné **načíst** jen nesmazané záznamy. Můžeme však načíst do paměti všechny záznamy a používat jen ty nesmazané,
 například vytvořením dvou kolekcí - persistentní (se všemi objekty) a nepersistentní (počítaná, filtruje jen nesmazané záznamy s persistentní kolekce.
 
 V následujících ukázkách budeme pracovat s třídou `Child`, kterou lze příznakem označit za smazanou a s třídou `Master` mající kolekci `Children` objektů `Child`.
@@ -51,6 +51,7 @@ public class MasterConfiguration : IEntityTypeConfiguration<Master>
 ```
 
 ### Kolekce filtrující smazané záznamy
+
 Viz `Havit.Model.Collections.Generic.FilteringCollection<T>` - [zdrojáky](https://havit.visualstudio.com/DEV/_git/002.HFW-HavitFramework?path=%2FHavit.Model%2FCollections%2FGeneric%2FFilteringCollection.cs&version=GBmaster). Kolekce je v nuget balíčku `Havit.Model`.
 
 ```csharp

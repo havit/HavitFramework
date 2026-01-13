@@ -1,4 +1,4 @@
-﻿## Metadata (maximální délky stringů)
+﻿## Generovaná metadata
 
 Na základě modelu jsou pro všechny stringové vlastnosti generována metadata s definicí jejich maximálních délek dle attributu `[MaxLength]` (viz Entity Framework Core - 02 - Model). Pro vlastnosti označované jako "maximální možná délka" se použije hodnota Int32.MaxValue, byť to není správně (nejde uložit tolik znaků, ale tolik byte). Jiná metadata negenerujeme.
 

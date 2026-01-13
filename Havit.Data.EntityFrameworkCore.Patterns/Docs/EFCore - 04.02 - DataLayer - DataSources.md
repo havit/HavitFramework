@@ -1,4 +1,4 @@
-﻿## Data Sources
+﻿## DataSources
 
 Zprostředkovává přístup k datům jako `IQueryable`. Umožňuje snadné podstrčení dat v testech.
 

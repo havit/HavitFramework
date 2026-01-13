@@ -1,6 +1,6 @@
-﻿## UnitOfWork (UoW)
+﻿## UnitOfWork
 
-IUnitOfWork poskytuje metody:
+`IUnitOfWork` poskytuje metody:
 
 * `Add[Range]ForInsert`
 * `Add[Range]ForInsertAsync` - určeno pro použití [HiLo strategie](https://davecallan.com/how-to-use-hilo-with-entity-framework/) generování Id

@@ -1,0 +1,17 @@
+﻿# Obsah
+
+* [Model](#model)
+* [Entity](#entity)
+* [Data Layer](#datalayer)
+    * [DataSources](#datasources)
+    * [Repositories](#repositories)
+    * [DataEntries](#dataentries)
+	* [LookupServices](#lookupservices)
+	* [Lokalizace](#lokalizace)
+	* [DataLoader](#dataloader)
+	* [Cachování](#cachovani)
+	* [Generovaná metadata](#generovana-metadata)
+	* [SoftDeleteManager](#softdeletemanager)
+	* [UnitOfWork](#unitofwork)
+* [Seedování dat](#seedovani-dat)
+* [Dependency Injection](#dependency-injection)

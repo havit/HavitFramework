@@ -42,7 +42,7 @@ public class NewProjectTemplateDbContext : Havit.Data.EntityFrameworkCore.DbCont
 
 ### ConnectionString
 
-Není žádné výchozí nastavení, jaký connection string bude použit. Vše je řešeno až při použití DbContextu, např. v konfiguraci AddDbContext(...).
+Není žádné výchozí nastavení, jaký connection string bude použit. Vše je řešeno až při použití DbContextu, např. v konfiguraci AddDbContext(...), viz příklad v [Dependency Injection](#dependency-injection).
 Není doporučeno použít OnConfiguring, neboť brání použití DbContext poolingu.
 
 ### Exception handling metod Save\[Async\]
@@ -71,7 +71,7 @@ Pro registraci konfigurací je k dispozici extension metoda `ApplyConfigurations
   Konvence nastaví tabulkám, které reprezentují vazbu Many-To-Many složený primární klíč, pokud jej nemají nastaven.
   Index primárního klíče má sloupce v pořadí, v jakém byly definovány v kódu.
 - `DataTypeAttributeConvention`
-  Pokud je vlastnost třídy modelu označena atributem DataTypeAttribute s hodnotou DataType.Date pak se použije v databázi datový typ Date.
+  Pokud je vlastnost třídy modelu označena atributem `[DataType]` s hodnotou `DataType.Date` pak se použije v databázi datový typ `Date`.
 - `CascadeDeleteToRestictConvention`
   Všem cizím klíčům s nastaví DeleteBehavior na Restrict, čímž zamezí kaskádnímu delete.
 - `CacheAttributeToAnnotationConvention`
@@ -81,7 +81,7 @@ Pro registraci konfigurací je k dispozici extension metoda `ApplyConfigurations
 
 - `StringPropertiesDefaultValueConvention`
   Pro všechny stringové vlastnosti, pokud nemají výchozí hodnotu, se použije výchozí hodnota `String.Empty`.
-  Nastavuje vlastnosti výchozí hodnotu a `ValueGenerated` na `Never` dle [Entity Framework Core - 10 - Know-How - Výchozí hodnoty v databázi vs. uložené hodnoty](https://havit.atlassian.net/wiki/spaces/DEV/pages/556138497/Entity+Framework+Core+-+10+-+Know-How+-+V+choz+hodnoty+v+datab+zi+vs.+ulo+en+hodnoty).
+  Nastavuje vlastnosti výchozí hodnotu a `ValueGenerated` na `Never`.
 
 ### Selektivní potlačení konvence
 
@@ -113,17 +113,17 @@ public class OtherClass
 
 ## Konfigurace
 
-Viz dobře napsaná [dokumentace EF Core](https://docs.microsoft.com/cs-cz/ef/core/modeling/).
+Viz dobře napsaná [dokumentace EF Core](https://docs.microsoft.com/en-us/ef/core/modeling/).
 
 ### Vztah M:N
 
-Entity Framework Core 5.x přináší podporu pro vazby typu M:N (viz [dokumentace](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#many-to-many)), avšak HFW pro práci s kolekcemi nemá plnou podporu. Kolekce typu M:N je možné omezeně použít, nebude je umět dočíst DbDataLoader a nemají (a nejspíš mít později ani nebudou) řešenou podporu v entity validátorech a before commit processorech.
+Entity Framework Core 5.x přináší podporu pro vazby typu M:N (viz [dokumentace](https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many)), avšak HFW pro práci s kolekcemi nemá plnou podporu. Kolekce typu M:N je možné omezeně použít, nebude je umět dočíst `DbDataLoader` a nemají (a nejspíš mít později ani nebudou) řešenou podporu v entity validátorech a before commit processorech.
 
-Příklad řešení v modelu a konfigurace je uveden v sekci [Entity Framework Core - 02 - Model](https://havit.atlassian.net/wiki/spaces/DEV/pages/507281437/Entity+Framework+Core+-+02+-+Model).
+Příklad řešení v modelu a konfigurace je uveden v sekci [Model](#model).
 
 ## Migrations
 
-Viz dokumentace [migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/).
+Viz dokumentace [EF Core Migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/).
 
 ### Spouštění Migrations
 

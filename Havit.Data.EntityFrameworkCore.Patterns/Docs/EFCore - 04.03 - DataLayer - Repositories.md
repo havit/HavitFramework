@@ -25,23 +25,23 @@ Poskytuje veřejné metody (implementace `IRepository<Entity>`)
 
 a protected vlastnosti
 
-* `Data` a `DataIncludingDeleted` - viz [Data Sources](http://havit-wiki.atlassian.net/#datasources "http://havit-wiki.atlassian.net#datasources"), implementačně používají hodnoty ze závislosti IDataSource<TEntity>, čímž je lze snadno napsat test s mockem dat pro tyto vlatnosti.
+* `Data` a `DataIncludingDeleted` - viz [Data Sources](http://havit-wiki.atlassian.net/#datasources "http://havit-wiki.atlassian.net#datasources"), implementačně používají hodnoty ze závislosti `IDataSource<TEntity>`, čímž je lze snadno napsat test s mockem dat pro tyto vlatnosti.
 
 ### Implementační instrukce
 
 Není zvykem, aby se repository navzájem používaly jako závislosti v implementacích, protože by to mohlo vést až k nepřehlednému a neřešitelnému zauzlování repositories navzájem.
 
-Pokud potřebuje jedna repository to samé, co jiná, což je samo o sobě nezvyklé, je doporučeno vyextrahovat kód do samostatné služby, např. jako Query.
+Pokud potřebuje jedna repository to samé, co jiná, což je samo o sobě nezvyklé, je doporučeno extrahovat kód do samostatné služby, např. jako Query.
 
 ### Načítání závislých objektů
 
-Pokud chceme načíst referované objekty či kolekce, disponuje EF [třemi možnostmi načtení referovaných objektů](https://docs.microsoft.com/en-us/ef/core/querying/related-data "https://docs.microsoft.com/en-us/ef/core/querying/related-data"). My máme navíc implementovaný [DbDataLoader](https://havit.atlassian.net/wiki/spaces/DEV/pages/507248851 "https://havit.atlassian.net/wiki/spaces/DEV/pages/507248851").
+Pokud chceme načíst referované objekty či kolekce, disponuje EF [třemi možnostmi načtení referovaných objektů](https://docs.microsoft.com/en-us/ef/core/querying/related-data "https://docs.microsoft.com/en-us/ef/core/querying/related-data"). My máme navíc implementovaný [DataLoader](#dataloader)
 
 Repository disponuje možnostmi načíst závislé objekty.
 
 #### GetLoadReferences
 
-Metoda je určena k override a definuje, jaké závislosti mají být s objektem načteny. Syntaxe viz [DbDataLoader](https://havit.atlassian.net/wiki/spaces/DEV/pages/507248851 "https://havit.atlassian.net/wiki/spaces/DEV/pages/507248851").
+Metoda je určena k override a definuje, jaké závislosti mají být s objektem načteny. Syntaxe viz [DataLoader](#dataloader).
 
 Příklad:
 
@@ -63,10 +63,11 @@ Návratového typu `IEnumerable<Expression<Func<Entity*, object>>>` se není t�
 
 #### LoadReferences[Async]
 
-* Načte závislosti definované v GetLoadReferences.
-* Automaticky použito v metodách GetAll, GetObject(Async) a GetObjects(Async).
+* Načte závislosti definované v `GetLoadReferences`.
+* Automaticky použito v metodách `GetAll`, `GetObject[Async]` a `GetObjects[Async]`.
 * Pokud repository obsahuje vlastní metody vracející entity, je potřeba před navrácením dat provést dočtení závislostí touto metodou!
-* Načítání závislostí je provedeno pomocí [DbDataLoaderu](https://havit.atlassian.net/wiki/spaces/DEV/pages/507248851 "https://havit.atlassian.net/wiki/spaces/DEV/pages/507248851"), nikoliv pomocí Include (byť by to mohlo být někdy výhodnější). Možno overridovat (rozšířit) o další dočítání věcí, co nejsou přímo podporované skrze GetLoadReferences (např. prvky kolekcí).
+* Načítání závislostí je provedeno pomocí [DataLoaderu](#dataloader), nikoliv pomocí `Include` (byť by to mohlo být někdy výhodnější). Možno overridovat (rozšířit) o další dočítání věcí, co nejsou přímo podporované skrze `GetLoadReferences` (např. prvky kolekcí).
+* Používejte s rozvahou, každé navrácení objektu z repository s dočtením závislostí může znamenat další dotazy do databáze, zvětšení množství trackovaných entit i kdyby následně tyto závislosti nebyly použity, atp.
 
 Příklad:
 

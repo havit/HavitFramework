@@ -27,8 +27,10 @@ public class Child
 public class Master
 {
 	public int Id { get; set; }
+
 	public ICollection<Child> Children { get; } // nepersistentní
 	public IList<Child> ChildrenIncludingDeleted { get; } = new List<Child>(); // persistentní
+
 	public Master()
 	{
 		// kolekce children je počítanou kolekcí
@@ -59,11 +61,13 @@ public class FilteringCollection<T> : ICollection<T>
 {
 	private readonly ICollection<T> source;
 	private readonly Func<T, bool> filter;
+
 	public FilteringCollection(ICollection<T> source, Func<T, bool> filter)
 	{
 		this.source = source;
 		this.filter = filter;
 	}
+
 	public IEnumerator<T> GetEnumerator()
 	{
 		return source.Where(filter).GetEnumerator();

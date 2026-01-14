@@ -12,7 +12,7 @@ Pro každou entitu vzniká jeden interface pojmenovaný `IEntityDataSource` (nap
 
 * Generované třídy implementující `IEntityDataSource`.
 * Pro každou entitu vzniká jedna třída, třídy jsou pojmenované `EntityDbDataSource` (např. `LanguageDbDataSource`).
-* K dotazům automaticky přidává [query tag](https://learn.microsoft.com/en-us/ef/core/querying/tags) `IEntityDataSource.Data[IncludingDeleted]`.
+* K dotazům automaticky přidává [query tag](https://learn.microsoft.com/en-us/ef/core/querying/tags) `IEntityDataSource.Data[IncludingDeleted]` a je možno (doporučeno) při každém použití `DataSource` doplnit vlastní [query tag](https://learn.microsoft.com/en-us/ef/core/querying/tags).
 
 Data jsou získávána z databáze (resp. z `IDbContextu` a jeho `DbSet`u).
 

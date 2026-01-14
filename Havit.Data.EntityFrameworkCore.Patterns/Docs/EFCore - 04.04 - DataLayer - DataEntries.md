@@ -16,6 +16,7 @@ public interface IRoleEntries : IDataEntries
 ```
 
 Implementace vyzvedává objekty z příslušné repository (`IRepository<Entity>`) pomocí metody `GetObject`.
+V aplikaci to tak může být jedno z mála (jediné) synchronních načítání dat z databáze.
 
 #### Příklady použití
 

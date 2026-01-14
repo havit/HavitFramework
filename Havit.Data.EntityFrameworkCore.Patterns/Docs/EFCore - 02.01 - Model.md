@@ -10,7 +10,7 @@ Pojmenování tříd a modelu je v angličtině ev. v primárním jazyce projekt
 
 Používáme primární klíč typu int pojmenovaný Id.
 Primátní klíč může být i jiného typu (celočíselný `SByte`, `Int16`, `Int64`, `Byte`, `UInt16`, `UInt32`, `UInt64`, dále `string` nebo `Guid`),
-podpora těchto typů zatím není kompletní (chybí minimálně podpora `IDataLoader`).
+podpora těchto typů zatím není kompletní (chybí minimálně podpora [DataLoaderu](#DataLoader)).
 
 ```csharp
 public int Id { get; set; }
@@ -27,7 +27,7 @@ public int Id { get; set; }
 U všech vlastností typu `string` je nutno uvést jejich maximální délku pomocí attributu `[MaxLength]`.
 Pokud nemá být délka omezená, atributu nezadáváme hodnotu nebo použijeme hodnotu `Int32.MaxValue`.
 
-Ze zadaných hodnot jsou vygenerována metadata, např. pro snadné omezení maximální délky textu v UI.
+Ze zadaných hodnot jsou [vygenerována metadata](#generovana-metadata), např. pro snadné omezení maximální délky textu v UI.
 
 ```csharp
 [MaxLength(128)]
@@ -90,7 +90,7 @@ Vazby M:N doporučujeme **dekomponovat na dvě vazby 1:N** (postup známý z EF 
 Ve výchozím chování EF Core je třeba této entitě nakonfigurovat složený primární klíč (pomocí data anotations nelze definovat složený primární klíč), nám se klíč nastaví sám (pokud není ručně nastaven) konvencí. Pokud je to třeba, nastavíme pouze název databázové tabulky, do které je entita mapována.
 
 #### Příklad
-Pokud má mít `User` kolekci `Roles`, musíme zavést entity `Membership` se dvěma vlastnostmi. `User` pak bude mít kolekci nikoliv rolí, ale těchto `Membershipů`.
+Pokud má mít `User` kolekci `Roles`, musíme zavést entity `Membership` se dvěma vlastnostmi. `User` pak bude mít kolekci nikoliv rolí, ale těchto `Membership`ů.
 
 ```csharp
 public class User
@@ -118,11 +118,11 @@ public class Membership
 
 ### Kolekce s filtrováním smazaných záznamů
 
-Viz Entity Framework Core – Kolekce s filtrováním smazaných záznamů
+Viz [Kolekce s filtrováním smazaných záznamů](#kolekce-s-filtrovánim-smazanych-zaznamu).
 
 ### Mazání příznakem (Soft Delete)
 
-Podpora mazání příznakem je na objektech, které obsahují vlastnost `Deleted` typu `Nullable<DateTime>`. Podpora není implementovatelná na dočítání kolekcí modelových objektů, tj. **při načítání kolekcí objektů jsou načítány i smazané objekty**.
+[Podpora mazání příznakem](#softdeletemanager) je na objektech, které obsahují vlastnost `Deleted` typu `Nullable<DateTime>`. Podpora není implementovatelná na dočítání kolekcí modelových objektů, tj. **při načítání kolekcí objektů jsou načítány i smazané objekty**.
 
 ```csharp
 public DateTime? Deleted { get; set; }

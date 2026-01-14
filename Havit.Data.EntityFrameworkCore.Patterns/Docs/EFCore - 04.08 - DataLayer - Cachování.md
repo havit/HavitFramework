@@ -8,7 +8,7 @@ Implementace cachování je realizována na úrovni `Repositories`, `DbDataLoade
 * `XyDbRepository.GetAll[Async]()` - hledá v cache identifikátory objektů
 * `DbDataLooader.Load[Async]`, `DbDataLooader.LoadAll[Async]` - při načítání referencí i kolekcí se pokusí najít objekty v cache, objekty, které nejsou v cache, načítá z databáze a uloží je do cache
 * `DbUnitOfWork.Commit[Async]` - invaliduje položky v cache
-* `XyEntries.Item` - pod pokličkou volá `XyDbRepository.GetObject()`
+* `XyEntries.Item` - pod pokličkou volá `XyDbRepository.GetObject`
 
 Implementaci cachování zajišťuje zejména `IEntityCacheManager` a jeho implementace.
 
@@ -23,18 +23,19 @@ Ve výchozí konfiguraci (viz dále) je použit `EntityCacheManager`, který rea
 >
 > Cachování kolekcí funguje spolehlivě pro objekty, které nepřecházejí mezi různými parenty. Tj. cachování funguje v obvyklých typických scénářích - objekt s lokalizacemi, faktura s řádky faktur, atp.
 >
-> *Cachování kolekcí však nefunguje tam, kde mohou prvky kolekce přecházet mezi různými parenty*, např. pokud budu přepínat zaměstnanci jeho nadřízeného zaměstnance a tento nadřízený zaměstnanec má kolekci svých podřízených, pak cachování této kolekce bude vykazovat chyby. Pokud má být v tomto scénáři nadřízený zaměstnanec cachován, nesmíme mu zapnout cachování kolekcí. Nesmíme ani použít "cachování všech entit se sliding expirací", jak je uvedeno níže.
+> **Cachování kolekcí však nefunguje tam, kde mohou prvky kolekce přecházet mezi různými parenty**, např. pokud budu přepínat zaměstnanci jeho nadřízeného zaměstnance a tento nadřízený zaměstnanec má kolekci svých podřízených, pak cachování této kolekce bude vykazovat chyby. Pokud má být v tomto scénáři nadřízený zaměstnanec cachován, nesmíme mu zapnout cachování kolekcí. Nesmíme ani použít "cachování všech entit se sliding expirací", jak je uvedeno níže.
 >
 > (Důvod: Invalidace cache se provádí po uložení změn. Po uložení změn vidíme jen nový, aktuální stav objektů. Nejsme schopni tedy invalidovat cache pro původního nadřízeného zaměstnance, neboť nevíme, kdo to byl.)
 
 ### Konfigurace
+
 #### Výchozí konfigurace
 
 Ve výchozí konfiguraci jsou:
 
-* cachovány entity, které označeny atributem Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheAttribute (zjednodušeně),
+* cachovány entity, které označeny atributem `Havit.Data.EntityFrameworkCore.Abstractions.Attributes.CacheAttribute` (zjednodušeně),
 * v atributu lze nastavit prioritu položek v cache, sliding a absolute expiraci,
-* v atributu lze zakázat cachování klíčů GetAll.
+* v atributu lze zakázat cachování klíčů `GetAll`.
 * kolekce jsou cachovány, pokud je cílový typ cachován (umožňuje cachovat entities)
 
 > ℹ️ Je vyžadována registrace závislosti `ICacheService`, kterou knihovny k EFCore neřeší, je třeba ji zaregistrovat do DI containeru samostatně.
@@ -57,7 +58,7 @@ public class Barva
 }
 ```
 
-Barva je cachovaná, Auto nikoliv.
+`Barva` je cachovaná, `Auto` nikoliv.
 
 Z cache se proto mohou odbavovat např.:
 * `BarvaRepository.GetObject(...)`
@@ -127,7 +128,7 @@ public class Role
 }
 ```
 
-LoginAccount není cachován, třídy Membership a Role jsou cachovány.
+`LoginAccount` není cachován, třídy `Membership` a `Role` jsou cachovány.
 
 Z cache se proto mohou odbavovat např.:
 * `RoleRepository.GetObject(...)`
@@ -135,9 +136,9 @@ Z cache se proto mohou odbavovat např.:
 * `RoleEntries.Administrator`
 * `DataLoader.Load(loginAccount, la => la.Membership).ThenLoad(m => m.Role)`
 
-Cachování Membership je pro daný scénář nutné, ale nemá jiného významu, neboť nemáme pro třídy reprezentující M:N vazbu nepoužíváme repository.
+Cachování `Membership` je pro daný scénář nutné, ale nemá jiného významu, neboť nemáme pro třídy reprezentující M:N vazbu nepoužíváme repository.
 
-Pokud nebude Membership označen jako cachovaný, nebude se LoginAccountu cachovat kolekce Memberships.
+Pokud nebude `Membership` označen jako cachovaný, nebude se `LoginAccountu` cachovat kolekce `Memberships`.
 
 ### Cachování vypnuto
 Pokud je nutné cachování vypnout (např. jednorázově běžící konzolovky, které jen sežerou paměť, ale data v cache nevyužijí), je možné toto řešit extension metodou:
@@ -194,8 +195,8 @@ Uložení/vyzvednutí z cache:
 * Owned Types (cachování entity s owned types není a nebude, při použití Owned Entity Types je třeba úplně vypnout cachování - viz níže.)
 * Vazba 1:1 (v případě potřeby prověříme možnost doimplementování)
 
-Veškeré obejití UnitOfWork:
-* např. Cascade Deletes
+Veškeré obejití `UnitOfWork`:
+* např. Cascade Deletes (na úrovni databáze)
 
 ### Modely s Owned Entity Types
 Problémy, které způsobuje použití Owned Entity Types:

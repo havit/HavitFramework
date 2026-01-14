@@ -17,19 +17,19 @@ Entity, které podporují soft delete jsou metodou `Add[Range]ForDelete` označe
 Fyzické smazání entity podporující soft delete není aktuálně možné (kdo bude potřebovat, nechť se ozve, doplníme metodu `Add[Range]ForDestroy`).
 
 ### RegisterAfterCommitAction
-Umožňuje přidat zvenku nějakou akci k provedení po commitu (odeslání emailu, smazání cache, atp.
+Umožňuje přidat zvenku nějakou akci k provedení po commitu (odeslání emailu, smazání cache, atp.)
 Umožnuje přidat jak synchronní akci tak asynchronní akci.
-Asynchronní akce funguje pouze v asynchronním commitu, v případě registrace asynchronní akce a spuštění synchronního commitu dojde k vyhození výjimky).
+Asynchronní akce funguje pouze v asynchronním commitu, v případě registrace asynchronní akce a spuštění synchronního commitu dojde k vyhození výjimky.
 
 #### Příklad
 
 ```csharp
 private void ProcessPayment(Payment payment)
 {
-    ...
-    // vůbec nevíme, kde je unitOfWork.Commit(), ale víme, že po jeho spuštění dojde k odeslání notifikace
+	...
+	// vůbec nevíme, kde je unitOfWork.Commit(), ale víme, že po jeho spuštění dojde k odeslání notifikace
 	unitOfWork.RegisterAfterCommitAction(() => SendNotification(payment));
-    ...	
+	...	
 }
 ```
 
@@ -69,7 +69,7 @@ Je použit automaticky (díky registraci do DI containeru).
 
 Před uložením objektů (a po spuštění `BeforeCommitProcessorů`) se spustí validátory entit, které umožňují kontrolovat jejich stav. Pokud je zjištěna nějaká validační chyba, je vyhozena výjimka typu `ValidationFailedException`.
 
-Pro implementaci nějakého vlastního `EntityValidatoru` je třeba implementovat interface `IEntityValidator<TEntity>`. K implementaci je jediná metoda `Validate`, jež má na výstupu kolekci `IEnumerable` `string`ů - zjištěných chyb při validaci.
+Pro implementaci nějakého vlastního `EntityValidatoru` je třeba implementovat interface `IEntityValidator<TEntity>`. K implementaci je jediná metoda `Validate`, jež má na výstupu kolekci `IEnumerable<string>` - zjištěných chyb při validaci.
 
 Dále je třeba službu zaregistrovat do DI containeru.
 
@@ -105,7 +105,7 @@ public IEnumerable<ValidationResult> Validate(ValidationContext validationContex
 	}
 }
 ```
-Tyto validace lze pak do commit-sekvence zapojit zaregistrováním služby `ValidatableObjectEntityValidator` do dependency-injection containeru:
+Tyto validace lze pak do commit-sekvence zapojit zaregistrováním služby `ValidatableObjectEntityValidator` do DI containeru:
 
 ```csharp
 services.AddSingleton<IEntityValidator<object>, ValidatableObjectEntityValidator>();

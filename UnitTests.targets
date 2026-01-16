@@ -3,6 +3,9 @@
 		<!-- Bez následující konfigurace dostáváme chybu: global.json defines test runner to be Microsoft.Testing.Platform. All projects must use that test runner. -->
 		<IsTestProject>true</IsTestProject>
 		<EnableMSTestRunner>true</EnableMSTestRunner>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+		<MSTestAnalysisMode>Recommended</MSTestAnalysisMode>
 		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 </Project>

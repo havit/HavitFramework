@@ -7,6 +7,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests.Threading;
 [TestClass]
 public class DbLockedCriticalSectionTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void DbLockedCriticalSection_EnterScope_WorksWithNotOpenedConnection()
 	{
@@ -35,7 +37,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		await using (await criticalSection.EnterScopeAsync("LOCK"))
+		await using (await criticalSection.EnterScopeAsync("LOCK", TestContext.CancellationToken))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 		}
@@ -68,12 +70,12 @@ public class DbLockedCriticalSectionTests
 	{
 		// Arrange
 		using SqlConnection sqlConnection = CreateSqlConnection();
-		await sqlConnection.OpenAsync();
+		await sqlConnection.OpenAsync(TestContext.CancellationToken);
 
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWithOpenedConnection"))
+		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWithOpenedConnection", TestContext.CancellationToken))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 		}
@@ -110,7 +112,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWhenConnectionIsClosedInAction"))
+		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWhenConnectionIsClosedInAction", TestContext.CancellationToken))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 			await sqlConnection.CloseAsync();
@@ -154,7 +156,7 @@ public class DbLockedCriticalSectionTests
 		try
 		{
 			// Act
-			await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWhenExceptionIsThrown"))
+			await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWhenExceptionIsThrown", TestContext.CancellationToken))
 			{
 				throw new TestException();
 			}

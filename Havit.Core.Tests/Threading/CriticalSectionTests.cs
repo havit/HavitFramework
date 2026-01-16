@@ -5,6 +5,8 @@ namespace Havit.Tests.Threading;
 [TestClass]
 public class CriticalSectionTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void CriticalSection_ExecuteAction_ShouldNotRunInParallel()
 	{
@@ -100,7 +102,7 @@ public class CriticalSectionTests
 		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys, "Precondition failed.");
 
 		// Act
-		await criticalSection.ExecuteActionAsync(1, async () => { await Task.CompletedTask; });
+		await criticalSection.ExecuteActionAsync(1, async () => { await Task.CompletedTask; }, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys); // dojde k vyčištění?

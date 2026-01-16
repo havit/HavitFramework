@@ -7,6 +7,8 @@ namespace Havit.Services.Tests.FileStorage;
 [TestClass]
 public class EmbeddedResourceStorageServiceTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void EmbeddedResourceStorageService_Exists()
 	{
@@ -25,8 +27,8 @@ public class EmbeddedResourceStorageServiceTests
 		EmbeddedResourceStorageService service = GetEmbeddedResourceStorageService();
 
 		// Act + Assert
-		Assert.IsTrue(await service.ExistsAsync("file.txt"));
-		Assert.IsFalse(await service.ExistsAsync("some_missing_file"));
+		Assert.IsTrue(await service.ExistsAsync("file.txt", TestContext.CancellationToken));
+		Assert.IsFalse(await service.ExistsAsync("some_missing_file", TestContext.CancellationToken));
 	}
 
 	[TestMethod]
@@ -69,9 +71,9 @@ public class EmbeddedResourceStorageServiceTests
 		string text;
 
 		// Act
-		using (StreamReader sr = new StreamReader(await service.OpenReadAsync("file.txt")))
+		using (StreamReader sr = new StreamReader(await service.OpenReadAsync("file.txt", TestContext.CancellationToken)))
 		{
-			text = await sr.ReadToEndAsync();
+			text = await sr.ReadToEndAsync(TestContext.CancellationToken);
 		}
 
 		// Assert

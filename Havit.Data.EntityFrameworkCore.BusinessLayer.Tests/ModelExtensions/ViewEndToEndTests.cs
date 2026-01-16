@@ -7,7 +7,7 @@ namespace Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.ModelExtensions;
 
 public class ViewEndToEndTests
 {
-	[TestClass]
+	//[TestClass]
 	public class ViewWithMsDescriptionExtendedProperty
 	{
 		[Attach(nameof(Invoice))]

@@ -8,6 +8,8 @@ namespace Havit.Data.Patterns.Tests.DataSeeds;
 [TestClass]
 public class DataSeedRunnerTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void DataSeedPersister_Constructor_ThrowsExceptionWhenOneTypeUsedMoreTimes()
 	{
@@ -69,7 +71,7 @@ public class DataSeedRunnerTests
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
 		// Act
-		await runner.SeedDataAsync<DefaultProfile>();
+		await runner.SeedDataAsync<DefaultProfile>(cancellationToken: TestContext.CancellationToken);
 
 		// Assert
 		dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
@@ -123,7 +125,7 @@ public class DataSeedRunnerTests
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
 		// Act
-		await runner.SeedDataAsync<ProfileWithPrerequisite>();
+		await runner.SeedDataAsync<ProfileWithPrerequisite>(cancellationToken: TestContext.CancellationToken);
 
 		// Assert
 		dataSeedMock.Verify(m => m.SeedData(dataSeedPersisterMock.Object), Times.Once);
@@ -164,7 +166,7 @@ public class DataSeedRunnerTests
 		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
 		{
 			// Act
-			await runner.SeedDataAsync<DefaultProfile>();
+			await runner.SeedDataAsync<DefaultProfile>(cancellationToken: TestContext.CancellationToken);
 		});
 	}
 
@@ -200,7 +202,7 @@ public class DataSeedRunnerTests
 		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
 		{
 			// Act
-			await runner.SeedDataAsync<DefaultProfile>();
+			await runner.SeedDataAsync<DefaultProfile>(cancellationToken: TestContext.CancellationToken);
 		});
 	}
 
@@ -236,7 +238,7 @@ public class DataSeedRunnerTests
 		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
 		{
 			// Act
-			await runner.SeedDataAsync<DefaultProfile>();
+			await runner.SeedDataAsync<DefaultProfile>(cancellationToken: TestContext.CancellationToken);
 		});
 	}
 
@@ -275,7 +277,7 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
 		dataSeedMock.Setup(m => m.GetPrerequisiteDataSeeds()).Returns(Enumerable.Empty<Type>());
 		dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
-		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(() => Task.Delay(1));
+		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(() => Task.Delay(1, TestContext.CancellationToken));
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
 		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));
@@ -287,7 +289,7 @@ public class DataSeedRunnerTests
 		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedMock.Object }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
 		// Act
-		await runner.SeedDataAsync<ProfileWithPrerequisite>();
+		await runner.SeedDataAsync<ProfileWithPrerequisite>(cancellationToken: TestContext.CancellationToken);
 
 		// Assert - no exception is throw
 	}

@@ -66,6 +66,6 @@ public static class ServiceAttributeServiceCollectionExtensions
 }
 ";
 
-		await VerifyGeneratorAsync(input, expectedOutput);
+		await VerifyGeneratorAsync(input, expectedOutput, cancellationToken: TestContext.CancellationToken);
 	}
 }

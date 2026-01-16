@@ -15,6 +15,8 @@ namespace Havit.Data.Entity.Patterns.Tests.UnitOfWorks;
 [TestClass]
 public class DbUnitOfWorkTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void DbUnitOfWork_Commit_CallsSaveChanges()
 	{
@@ -46,11 +48,11 @@ public class DbUnitOfWorkTests
 		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object);
 
 		// Act
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		mockDbContext.Verify(m => m.SaveChanges(), Times.Never);
-		mockDbContext.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
+		mockDbContext.Verify(m => m.SaveChangesAsync(TestContext.CancellationToken), Times.Once);
 	}
 
 	[TestMethod]
@@ -91,9 +93,9 @@ public class DbUnitOfWorkTests
 
 		// Act
 		dbUnitOfWork.AddForInsert(language);
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		// No exception was thrown.
@@ -137,7 +139,7 @@ public class DbUnitOfWorkTests
 		language.Culture = "";
 		language.UiCulture = "";
 		dbUnitOfWork.AddForInsert(language);
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
@@ -195,11 +197,11 @@ public class DbUnitOfWorkTests
 			.Returns(Task.CompletedTask);
 
 		// Act
-		await mockDbUnitOfWork.Object.CommitAsync();
+		await mockDbUnitOfWork.Object.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
-		mockDbContext.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
+		mockDbContext.Verify(m => m.SaveChangesAsync(TestContext.CancellationToken), Times.Once);
 		mockDbUnitOfWork.Verify(m => m.AfterCommit(), Times.Once);
 	}
 

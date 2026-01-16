@@ -37,6 +37,8 @@ public class AzureBlobStorageServiceTests
 		EnumerateFilesAsyncSupportsSearchPatternInSubfolderContainerName
 	];
 
+	public TestContext TestContext { get; set; }
+
 	[ClassInitialize]
 	public static void InitializeTestClass(TestContext _)
 	{
@@ -57,7 +59,7 @@ public class AzureBlobStorageServiceTests
 	[ClassCleanup]
 	public static void CleanUpTestClass()
 	{
-		Parallel.ForEach(AllContainerNames, containerName => GetAzureBlobStorageService(containerName).GetBlobContainerClient().Delete());
+		Parallel.ForEach(AllContainerNames, containerName => GetAzureBlobStorageService(containerName).GetBlobContainerClient().Delete(cancellationToken: CancellationToken.None));
 	}
 
 	[TestMethod]
@@ -489,7 +491,7 @@ public class AzureBlobStorageServiceTests
 
 		// Assert
 		BlobClient blobClient = service.GetBlobClient("test.txt");
-		BlobProperties properties = blobClient.GetProperties();
+		BlobProperties properties = blobClient.GetProperties(cancellationToken: TestContext.CancellationToken);
 		Assert.AreEqual(cacheControlValue, properties.CacheControl);
 	}
 
@@ -517,7 +519,7 @@ public class AzureBlobStorageServiceTests
 
 		// Assert
 		using var httpClient = new HttpClient();
-		string readContent = await httpClient.GetStringAsync(uri);
+		string readContent = await httpClient.GetStringAsync(uri, TestContext.CancellationToken);
 		Assert.AreEqual(content, readContent);
 
 		// Clean up
@@ -535,7 +537,7 @@ public class AzureBlobStorageServiceTests
 		try
 		{
 			using var httpClient = new HttpClient();
-			string readContent = await httpClient.GetStringAsync(uri);
+			string readContent = await httpClient.GetStringAsync(uri, TestContext.CancellationToken);
 		}
 		catch (HttpRequestException webExpcetion) when ((webExpcetion.StatusCode == System.Net.HttpStatusCode.Forbidden))
 		{

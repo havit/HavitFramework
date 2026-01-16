@@ -50,6 +50,7 @@ public class BusinessObjectCollectionTests
 		Subjekt subjekt = Subjekt.CreateObject();
 
 		// Assert
+#pragma warning disable MSTEST0051 // Assert.Throws should contain only a single statement/expression
 		Assert.ThrowsExactly<ArgumentException>(() =>
 		{
 			// Act
@@ -58,6 +59,7 @@ public class BusinessObjectCollectionTests
 			subjekty.Add(subjekt);
 			subjekty.Add(subjekt);
 		});
+#pragma warning restore MSTEST0051 // Assert.Throws should contain only a single statement/expression
 	}
 
 	/// <summary>
@@ -76,6 +78,7 @@ public class BusinessObjectCollectionTests
 			Subjekt subjekt2 = Subjekt.GetObject(1);
 
 			// Assert
+#pragma warning disable MSTEST0051 // Assert.Throws should contain only a single statement/expression
 			Assert.ThrowsExactly<ArgumentException>(() =>
 			{
 				// Act
@@ -83,6 +86,7 @@ public class BusinessObjectCollectionTests
 				subjekty.Add(subjekt1);
 				subjekty.Add(subjekt2);
 			});
+#pragma warning restore MSTEST0051 // Assert.Throws should contain only a single statement/expression
 		}
 	}
 

@@ -14,6 +14,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
 [TestClass]
 public class DbDataLoader_Chain_Tests : DbDataLoaderTestsBase
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void DbDataLoader_Load_LoadsChains()
 	{
@@ -103,7 +105,7 @@ public class DbDataLoader_Chain_Tests : DbDataLoaderTestsBase
 
 		// Act
 		DbDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()), new NoCachingEntityCacheManager(), entityKeyAccessor, new DbLoadedPropertyReaderWithMemory(dbContext), Mock.Of<ILogger<DbDataLoader>>(MockBehavior.Loose /* umožníme použití bez setupu */));
-		await dataLoader.LoadAsync(loginAccount, item => item.Memberships).ThenLoadAsync(membership => membership.Role);
+		await dataLoader.LoadAsync(loginAccount, item => item.Memberships, TestContext.CancellationToken).ThenLoadAsync(membership => membership.Role, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(loginAccount.Memberships, "DbDataLoader nenačetl hodnotu pro loginAccount.Roles.");

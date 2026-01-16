@@ -845,7 +845,7 @@ END
 			var migrations = source.Migrate(target);
 
 			Assert.HasCount(1, migrations);
-			StringAssert.DoesNotMatch(migrations[0].CommandText, new Regex("EXEC sys.sp_dropextendedproperty"));
+			Assert.DoesNotMatchRegex(new Regex("EXEC sys.sp_dropextendedproperty"), migrations[0].CommandText);
 		}
 	}
 

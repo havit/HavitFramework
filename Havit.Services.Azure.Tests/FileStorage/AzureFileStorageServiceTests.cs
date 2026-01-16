@@ -28,6 +28,8 @@ public class AzureFileStorageServiceTests
 		EnumerateFilesAsyncSupportsSearchPatternInSubfolderDirectoryName
 	];
 
+	public TestContext TestContext { get; set; }
+
 	[ClassInitialize]
 	public static void InitializeTestClass(TestContext _)
 	{
@@ -47,7 +49,7 @@ public class AzureFileStorageServiceTests
 	[ClassCleanup]
 	public static void CleanUpTestClass()
 	{
-		GetAzureFileStorageService().GetShareClient().DeleteIfExists();
+		GetAzureFileStorageService().GetShareClient().DeleteIfExists(cancellationToken: CancellationToken.None);
 	}
 
 	[TestMethod]

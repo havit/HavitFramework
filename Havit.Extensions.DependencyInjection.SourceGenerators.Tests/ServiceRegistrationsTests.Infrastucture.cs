@@ -15,6 +15,8 @@ public partial class ServiceRegistrationsTests
 			new PackageIdentity("Microsoft.Extensions.DependencyInjection", "8.0.0"),
 			new PackageIdentity("Microsoft.Extensions.Hosting.Abstractions", "8.0.0")));
 
+	public TestContext TestContext { get; set; }
+
 	private static async Task VerifyGeneratorAsync(string sourceInput, string expectedSourceOutput, List<DiagnosticResult> expectedDiagnostics = null, CancellationToken cancellationToken = default)
 	{
 		var test = new Microsoft.CodeAnalysis.CSharp.Testing.CSharpSourceGeneratorTest<SourceGeneratorAdapter<ServiceRegistrationsGenerator>, Microsoft.CodeAnalysis.Testing.DefaultVerifier>

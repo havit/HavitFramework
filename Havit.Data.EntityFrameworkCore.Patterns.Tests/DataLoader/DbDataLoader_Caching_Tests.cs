@@ -11,6 +11,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader;
 [TestClass]
 public class DbDataLoader_Caching_Tests
 {
+	public TestContext TestContext { get; set; }
+
 	/// <summary>
 	/// Cílem je ověřit, že dojde k fixupu při použití objektu z cache.
 	/// </summary>
@@ -125,7 +127,7 @@ public class DbDataLoader_Caching_Tests
 		// Act
 		// Pokusíme se načíst objekt Role.
 		// Není v databázi, takže jediná šance, jak jej odbavit je získat jej z cache.
-		await dataLoader.LoadAsync(membership, m => m.Role);
+		await dataLoader.LoadAsync(membership, m => m.Role, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(membership.Role);

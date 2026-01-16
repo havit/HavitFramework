@@ -15,6 +15,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks;
 [TestClass]
 public class DbUnitOfWorkTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void DbUnitOfWork_Commit_CallsSaveChanges()
 	{
@@ -50,7 +52,7 @@ public class DbUnitOfWorkTests
 		DbUnitOfWork dbUnitOfWork = new DbUnitOfWork(mockDbContext.Object, mockSoftDeleteManager.Object, new NoCachingEntityCacheManager(), entityCacheDependencyManager, mockBeforeCommitProcessorsRunner.Object, mockEntityValidationRunner.Object, new LookupDataInvalidationRunner(Enumerable.Empty<ILookupDataInvalidationService>()));
 
 		// Act
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		mockDbContext.Verify(m => m.SaveChanges(true), Times.Never);
@@ -99,9 +101,9 @@ public class DbUnitOfWorkTests
 
 		// Act
 		dbUnitOfWork.AddForInsert(language);
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		// No exception was thrown.
@@ -145,7 +147,7 @@ public class DbUnitOfWorkTests
 		language.Culture = "";
 		language.UiCulture = "";
 		dbUnitOfWork.AddForInsert(language);
-		await dbUnitOfWork.CommitAsync();
+		await dbUnitOfWork.CommitAsync(TestContext.CancellationToken);
 
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
@@ -245,7 +247,7 @@ public class DbUnitOfWorkTests
 		mockDbUnitOfWork.CallBase = true;
 
 		// Act
-		await mockDbUnitOfWork.Object.CommitAsync();
+		await mockDbUnitOfWork.Object.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		mockBeforeCommitProcessorsRunner.Verify(m => m.Run(It.IsAny<Changes>()), Times.Never);
@@ -274,7 +276,7 @@ public class DbUnitOfWorkTests
 			.Returns(Task.CompletedTask);
 
 		// Act
-		await mockDbUnitOfWork.Object.CommitAsync();
+		await mockDbUnitOfWork.Object.CommitAsync(TestContext.CancellationToken);
 
 		// Assert
 		mockDbUnitOfWork.Verify(m => m.BeforeCommit(), Times.Once);
@@ -319,7 +321,7 @@ public class DbUnitOfWorkTests
 		Language language = new Language();
 
 		// Act
-		await dbUnitOfWork.AddForInsertAsync(language);
+		await dbUnitOfWork.AddForInsertAsync(language, TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));
@@ -361,7 +363,7 @@ public class DbUnitOfWorkTests
 		Language language = new Language();
 
 		// Act
-		await dbUnitOfWork.AddRangeForInsertAsync([language]);
+		await dbUnitOfWork.AddRangeForInsertAsync([language], TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreEqual(EntityState.Added, ((IDbContext)testDbContext).GetEntityState(language));

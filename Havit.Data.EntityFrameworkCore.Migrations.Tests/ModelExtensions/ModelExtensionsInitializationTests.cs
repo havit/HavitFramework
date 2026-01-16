@@ -48,7 +48,7 @@ public class ModelExtensionsInitializationTests
 		{
 			var actualCreateScript = dbContext.GetService<IHistoryRepository>().GetCreateScript();
 
-			StringAssert.DoesNotMatch(actualCreateScript, new Regex(createStatement),
+			Assert.DoesNotMatchRegex(new Regex(createStatement), actualCreateScript,
 				"Create script for __EFMigrationsHistory should not contain statements for Model Extensions");
 		}
 	}

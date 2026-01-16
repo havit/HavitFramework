@@ -10,6 +10,8 @@ namespace Havit.Services.Tests.FileStorage;
 [TestClass]
 public class FileStorageServiceCachingProxyTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void FileStorageServiceCachingProxy_Exists_UsesCache()
 	{
@@ -167,7 +169,7 @@ public class FileStorageServiceCachingProxyTests
 		var cachingServiceProxy = new FileStorageServiceCachingProxy(fileStorageServiceMock.Object, new DictionaryCacheService());
 
 		// Act
-		await foreach (var file in cachingServiceProxy.EnumerateFilesAsync(null))
+		await foreach (var file in cachingServiceProxy.EnumerateFilesAsync(null, TestContext.CancellationToken))
 		{
 			// NOOP
 		}

@@ -6,6 +6,8 @@ namespace Havit.Data.Tests.Threading;
 [TestClass]
 public class DbLockedCriticalSectionTests
 {
+	public TestContext TestContext { get; set; }
+
 	private DbLockedCriticalSectionOptions GetDbLockedCriticalSectionOptions() => new DbLockedCriticalSectionOptions
 	{
 		ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString
@@ -141,7 +143,7 @@ public class DbLockedCriticalSectionTests
 			// Assert
 			Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
 			return Task.CompletedTask;
-		});
+		}, TestContext.CancellationToken);
 	}
 
 	[TestMethod]
@@ -152,7 +154,7 @@ public class DbLockedCriticalSectionTests
 		DbLockedCriticalSection criticalSection = new DbLockedCriticalSection(options);
 
 		// Act
-		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanReleaseLock", () => { return Task.CompletedTask; });
+		await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanReleaseLock", () => { return Task.CompletedTask; }, TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreEqual(DbLockedCriticalSection.SpReleaseAppLockResultCode.Released, criticalSection.ReleaseAppLockResultCode);
@@ -170,10 +172,10 @@ public class DbLockedCriticalSectionTests
 		_ = criticalSection1.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter", async () =>
 		{
 			// simulation of doing something
-			await Task.Delay(1000);
-		});
-		await Task.Delay(500);
-		await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter", () => Task.CompletedTask);
+			await Task.Delay(1000, TestContext.CancellationToken);
+		}, TestContext.CancellationToken);
+		await Task.Delay(500, TestContext.CancellationToken);
+		await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanWaitOnLockedResourceAndLockAfter", () => Task.CompletedTask, TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.LockedAfterWaiting, criticalSection2.GetAppLockResultCode);
@@ -195,8 +197,8 @@ public class DbLockedCriticalSectionTests
 			// Act
 			await criticalSection.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", async () =>
 			{
-				await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", () => Task.CompletedTask);
-			});
+				await criticalSection2.ExecuteActionAsync("DbLockedCriticalSection_ExecuteActionAsync_CanTimeout", () => Task.CompletedTask, TestContext.CancellationToken);
+			}, TestContext.CancellationToken);
 		});
 
 		// Assert
@@ -219,10 +221,9 @@ public class DbLockedCriticalSectionTests
 			{
 				Assert.AreEqual(DbLockedCriticalSection.SpGetAppLockResultCode.Locked, criticalSection.GetAppLockResultCode);
 				return Task.CompletedTask;
-			});
-
+			}, TestContext.CancellationToken);
 			Assert.AreEqual(DbLockedCriticalSection.SpReleaseAppLockResultCode.Released, criticalSection.ReleaseAppLockResultCode);
-		});
+		}, TestContext.CancellationToken);
 
 		Assert.AreEqual(DbLockedCriticalSection.SpReleaseAppLockResultCode.Released, criticalSection.ReleaseAppLockResultCode);
 	}

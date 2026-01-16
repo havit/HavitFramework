@@ -68,7 +68,7 @@ public static class ServiceAttributeServiceCollectionExtensions
 }
 ";
 
-		await VerifyGeneratorAsync(input, expectedOutput);
+		await VerifyGeneratorAsync(input, expectedOutput, cancellationToken: TestContext.CancellationToken);
 	}
 
 	[TestMethod]
@@ -118,7 +118,7 @@ public static class ServiceAttributeServiceCollectionExtensions
 			.WithArguments("Havit.TestProject.Services.ServiceTypes.NonGenerics.MyService1")
 			.WithLocation(8, 22);
 
-		await VerifyGeneratorAsync(input, expectedOutput, new List<DiagnosticResult> { expectedDiagnostics });
+		await VerifyGeneratorAsync(input, expectedOutput, new List<DiagnosticResult> { expectedDiagnostics }, cancellationToken: TestContext.CancellationToken);
 	}
 
 	[TestMethod]
@@ -170,6 +170,6 @@ public static class ServiceAttributeServiceCollectionExtensions
 }
 ";
 
-		await VerifyGeneratorAsync(input, expectedOutput);
+		await VerifyGeneratorAsync(input, expectedOutput, cancellationToken: TestContext.CancellationToken);
 	}
 }

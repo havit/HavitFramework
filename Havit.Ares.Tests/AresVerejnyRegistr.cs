@@ -4,6 +4,8 @@
 [TestCategory("Ares")]
 public class AresVerejnyRegistTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void AresService_GetVerejnyRejstrikDleIco_BadParamNull()
 	{
@@ -53,7 +55,7 @@ public class AresVerejnyRegistTests
 		string ic = "25612697";
 
 		// Act
-		var VRSubjekt = await new AresService().GetVerejnyRejstrikDleIcoAsync(ic);
+		var VRSubjekt = await new AresService().GetVerejnyRejstrikDleIcoAsync(ic, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(VRSubjekt);

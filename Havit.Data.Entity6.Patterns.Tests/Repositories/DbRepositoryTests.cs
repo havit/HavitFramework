@@ -12,6 +12,8 @@ namespace Havit.Data.Entity.Patterns.Tests.Repositories;
 [TestClass]
 public class DbRepositoryTests
 {
+	public TestContext TestContext { get; set; }
+
 	[ClassInitialize]
 	public static void Initialize(TestContext _)
 	{
@@ -65,7 +67,7 @@ public class DbRepositoryTests
 		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () =>
 		{
 			// Act
-			await repository.GetObjectAsync(maxId + 1);
+			await repository.GetObjectAsync(maxId + 1, TestContext.CancellationToken);
 		});
 	}
 	[TestMethod]
@@ -102,7 +104,7 @@ public class DbRepositoryTests
 		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		ItemWithDeleted repositoryResult = await repository.GetObjectAsync(ids[0]);
+		ItemWithDeleted repositoryResult = await repository.GetObjectAsync(ids[0], TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(repositoryResult);
@@ -137,7 +139,7 @@ public class DbRepositoryTests
 		DbRepository<ItemWithDeleted> repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		List<ItemWithDeleted> result = await repository.GetAllAsync();
+		List<ItemWithDeleted> result = await repository.GetAllAsync(TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotEmpty(result);
@@ -197,17 +199,17 @@ public class DbRepositoryTests
 		// Act
 		using (DbContextTransaction transaction = testDbContext.Database.BeginTransaction())
 		{
-			result1 = await repository.GetAllAsync();
+			result1 = await repository.GetAllAsync(TestContext.CancellationToken);
 
 			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
 			await testDbContext.SaveChangesAsync();
 
-			result2 = await repository.GetAllAsync();
+			result2 = await repository.GetAllAsync(TestContext.CancellationToken);
 
 			testDbContext.Set<ItemWithDeleted>().Add(new ItemWithDeleted());
 			await testDbContext.SaveChangesAsync();
 
-			result3 = await repository.GetAllAsync();
+			result3 = await repository.GetAllAsync(TestContext.CancellationToken);
 		}
 
 		// Assert
@@ -249,7 +251,7 @@ public class DbRepositoryTests
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
+		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids, TestContext.CancellationToken);
 
 		// Assert
 		Assert.HasCount(ids.Length, result);
@@ -295,7 +297,7 @@ public class DbRepositoryTests
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids);
+		List<ItemWithDeleted> result = await repository.GetObjectsAsync(ids, TestContext.CancellationToken);
 
 		// Assert
 		Assert.HasCount(ids.Length, result);
@@ -334,7 +336,7 @@ public class DbRepositoryTests
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act + Assert
-		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () => await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 }));
+		await Assert.ThrowsExactlyAsync<Havit.Data.Patterns.Exceptions.ObjectNotFoundException>(async () => await repository.GetObjectsAsync(new int[] { maxId + 1, maxId + 2 }, TestContext.CancellationToken));
 	}
 
 	[TestMethod]
@@ -370,7 +372,7 @@ public class DbRepositoryTests
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		List<ItemWithDeleted> entities = await repository.GetObjectsAsync(new int[] { id, id, id }); // duplicitní id (triplicitní)
+		List<ItemWithDeleted> entities = await repository.GetObjectsAsync(new int[] { id, id, id }, TestContext.CancellationToken); // duplicitní id (triplicitní)
 
 		// Assert
 		// no exception was thrown
@@ -410,7 +412,7 @@ public class DbRepositoryTests
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		ItemWithDeleted entity = await repository.GetObjectAsync(id);
+		ItemWithDeleted entity = await repository.GetObjectAsync(id, TestContext.CancellationToken);
 
 		// Assert
 		// no exception was thrown
@@ -450,7 +452,7 @@ public class DbRepositoryTests
 		DbItemWithDeletedRepository repository = new DbItemWithDeletedRepository(testDbContext, dataSource, dataLoader, new SoftDeleteManager(new ServerTimeService()));
 
 		// Act
-		ItemWithDeleted entity = (await repository.GetObjectsAsync(new int[] { id })).Single();
+		ItemWithDeleted entity = (await repository.GetObjectsAsync(new int[] { id }, TestContext.CancellationToken)).Single();
 
 		// Assert
 		// no exception was thrown

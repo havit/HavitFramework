@@ -11,6 +11,8 @@ namespace Havit.Data.Entity.Patterns.Tests.DataLoader;
 [TestClass]
 public class DbDataLoaderTests
 {
+	public TestContext TestContext { get; set; }
+
 	[ClassInitialize]
 	public static void Initialize(TestContext _)
 	{
@@ -342,7 +344,7 @@ public class DbDataLoaderTests
 		Child child = await dbContext.Child.FirstAsync(child => child.ParentId != null);
 
 		// Act
-		await dbDataLoader.LoadAsync(child, c => c.Parent.Children.Select(item => item.Parent));
+		await dbDataLoader.LoadAsync(child, c => c.Parent.Children.Select(item => item.Parent), TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(child.Parent);
@@ -436,7 +438,7 @@ public class DbDataLoaderTests
 			// Act
 			IDataLoader dataLoader = new DbDataLoader(dbContext, new PropertyLoadSequenceResolver(), new PropertyLambdaExpressionManager(new PropertyLambdaExpressionStore(), new PropertyLambdaExpressionBuilder()));
 
-			await dataLoader.LoadAsync(child, item => item.Parent);
+			await dataLoader.LoadAsync(child, item => item.Parent, TestContext.CancellationToken);
 		});
 
 		// Assert
@@ -485,7 +487,7 @@ public class DbDataLoaderTests
 		// Act
 		await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
 		{
-			await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+			await dataLoader.LoadAsync(loginAccount, item => item.Roles, TestContext.CancellationToken);
 		});
 
 		// Assert
@@ -538,7 +540,7 @@ public class DbDataLoaderTests
 		// Act
 		await ExecuteWithDisabledDatabaseOperationsAsync(dbContext, async () =>
 		{
-			await dataLoader.LoadAsync(loginAccount, item => item.Roles);
+			await dataLoader.LoadAsync(loginAccount, item => item.Roles, TestContext.CancellationToken);
 		});
 
 		// Assert

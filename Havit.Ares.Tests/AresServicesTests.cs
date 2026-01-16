@@ -4,6 +4,8 @@
 [TestCategory("Ares")]
 public class AresServicesTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void AresService_GetEkonomickeSubjektyDleIco_BadParamNull()
 	{
@@ -54,7 +56,7 @@ public class AresServicesTests
 		string ic = "25612697";
 
 		// Act
-		var ekonomickySubjekt = await new AresService().GetEkonomickeSubjektyDleIcoAsync(ic);
+		var ekonomickySubjekt = await new AresService().GetEkonomickeSubjektyDleIcoAsync(ic, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(ekonomickySubjekt);
@@ -70,7 +72,7 @@ public class AresServicesTests
 		string ic = "25601458";
 
 		// Act
-		var ekonomickySubjekt = await new AresService().GetEkonomickeSubjektyDleIcoAsync(ic);
+		var ekonomickySubjekt = await new AresService().GetEkonomickeSubjektyDleIcoAsync(ic, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(ekonomickySubjekt);
@@ -111,7 +113,7 @@ public class AresServicesTests
 		string ObchodniJmeno = "HAVIT";
 
 		// Act
-		var ekonomickeSubjekty = await new AresService().GetEkonomickeSubjektyDleObchodnihoJmenaAsync(ObchodniJmeno);
+		var ekonomickeSubjekty = await new AresService().GetEkonomickeSubjektyDleObchodnihoJmenaAsync(ObchodniJmeno, cancellationToken: TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsTrue(ekonomickeSubjekty.Items.Any(x => x.EkonomickySubjektAres.ObchodniJmeno == "HAVIT, s.r.o." && x.EkonomickySubjektAres.Ico == "25612697"));
@@ -141,7 +143,7 @@ public class AresServicesTests
 		await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
 		{
 			// Act
-			await aresService.GetEkonomickeSubjektyDleObchodnihoJmenaAsync("");
+			await aresService.GetEkonomickeSubjektyDleObchodnihoJmenaAsync("", cancellationToken: TestContext.CancellationToken);
 		});
 	}
 

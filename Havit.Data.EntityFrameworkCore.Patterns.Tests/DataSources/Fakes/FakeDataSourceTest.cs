@@ -6,6 +6,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources.Fakes;
 [TestClass]
 public class FakeDataSourceTest
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void FakeDataSource_SupportsEmptyData()
 	{
@@ -42,7 +44,7 @@ public class FakeDataSourceTest
 		var dataSource = new FakeEmployeeDataSource(sourceData);
 
 		//Act
-		List<Employee> resultData = await dataSource.Data.ToListAsync();
+		List<Employee> resultData = await dataSource.Data.ToListAsync(TestContext.CancellationToken);
 
 		// Assert
 		CollectionAssert.AreEqual(sourceData, resultData);
@@ -63,7 +65,7 @@ public class FakeDataSourceTest
 			.Where(item => item.Id > 3)
 			.Skip(1)
 			.Take(3)
-			.FirstOrDefaultAsync();
+			.FirstOrDefaultAsync(TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreEqual(7, result.Id);
@@ -89,7 +91,7 @@ public class FakeDataSourceTest
 		var dataSource = new FakeEmployeeDataSource(new Employee { Deleted = DateTime.Now });
 
 		//Act
-		List<Employee> resultData = await dataSource.Data.ToListAsync();
+		List<Employee> resultData = await dataSource.Data.ToListAsync(TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsEmpty(resultData);

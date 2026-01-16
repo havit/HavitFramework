@@ -9,6 +9,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataSources;
 [TestClass]
 public class DbDataSourceTest
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void DbDataSource_DataWithDeleted_IncludesDeleted()
 	{
@@ -72,7 +74,7 @@ public class DbDataSourceTest
 
 		// Act
 		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-		List<ItemWithDeleted> result = await dataSource.Data.ToListAsync();
+		List<ItemWithDeleted> result = await dataSource.Data.ToListAsync(TestContext.CancellationToken);
 
 		// Assert
 		Assert.HasCount(1, result);
@@ -118,7 +120,7 @@ public class DbDataSourceTest
 
 		// Act
 		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-		int result = await dataSource.Data.CountAsync();
+		int result = await dataSource.Data.CountAsync(TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreEqual(1, result);
@@ -191,7 +193,7 @@ public class DbDataSourceTest
 
 		// Act
 		DbDataSource<ItemWithDeleted> dataSource = new DbItemWithDeletedDataSource(dbContext, new SoftDeleteManager(new ServerTimeService()));
-		await dataSource.Data.ToListAsync();
+		await dataSource.Data.ToListAsync(TestContext.CancellationToken);
 
 		// Assert
 		// not throwing exception is enough

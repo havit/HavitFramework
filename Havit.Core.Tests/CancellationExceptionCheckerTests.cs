@@ -31,7 +31,6 @@ public class CancellationExceptionCheckerTests
 			await sqlCommand.ExecuteNonQueryAsync(TestContext.CancellationToken);
 
 			sqlCommand.CommandText = "WAITFOR DELAY '01:00:00';"; // simulate a long-running query
-			// keep CommandTimeout 1 hour
 			CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.CancellationToken);
 			cts.CancelAfter(10); // 10 milliseconds
 

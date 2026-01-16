@@ -32,6 +32,8 @@ public class FileSystemStorageServiceTests
 		EnumerateFilesAsyncDoesNotContainStoragePath
 	];
 
+	public TestContext TestContext { get; set; }
+
 	[ClassInitialize]
 	public static void Initialize(TestContext _)
 	{
@@ -241,17 +243,17 @@ public class FileSystemStorageServiceTests
 		string testFilename = "test.txt";
 		using (MemoryStream ms = new MemoryStream())
 		{
-			await fileSystemStorageService.SaveAsync(testFilename, ms, "text/plain");
+			await fileSystemStorageService.SaveAsync(testFilename, ms, "text/plain", TestContext.CancellationToken);
 		}
 
 		// Act
-		List<Havit.Services.FileStorage.FileInfo> fileInfos = await fileSystemStorageService.EnumerateFilesAsync().ToListAsync();
+		List<Havit.Services.FileStorage.FileInfo> fileInfos = await fileSystemStorageService.EnumerateFilesAsync(cancellationToken: TestContext.CancellationToken).ToListAsync();
 
 		// Assert 
 		Assert.IsFalse(fileInfos.Any(fileInfo => fileInfo.Name.Contains(storagePath)));
 
 		// Clean-up
-		await fileSystemStorageService.DeleteAsync(testFilename);
+		await fileSystemStorageService.DeleteAsync(testFilename, TestContext.CancellationToken);
 	}
 
 	[TestMethod]

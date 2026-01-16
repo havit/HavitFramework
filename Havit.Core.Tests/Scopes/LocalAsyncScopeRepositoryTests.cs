@@ -36,7 +36,7 @@ public class LocalAsyncScopeRepositoryTests
 			Task.Factory.StartNew(() =>
 			{
 				instance2 = TestAsyncLocalScope.Current;
-			}).Wait();
+			}, TestContext.CancellationToken).Wait(TestContext.CancellationToken);
 
 			// Assert
 			Assert.AreSame(instance1, instance2);
@@ -83,41 +83,41 @@ public class LocalAsyncScopeRepositoryTests
 			using (new TestAsyncLocalScope(task1InstanceToScope))
 			{
 				task1_NotifyReadyToReadFromScope_ManualResetEvent.Set(); // řekneme, že jsme před čtením instance ze scopu
-				orchestrator_NotifyStartReadingFromScope_ManualResetEvent.Wait(); // počkáme, až budeme všichni před čtením instance ze scope (všichni budeme mít založen scope)
+				orchestrator_NotifyStartReadingFromScope_ManualResetEvent.Wait(TestContext.CancellationToken); // počkáme, až budeme všichni před čtením instance ze scope (všichni budeme mít založen scope)
 
 				// Act 1
 				task1InstanceFromScope = TestAsyncLocalScope.Current;
 
 				task1_NotifyFinishedReadingFromScope_ManualResetEvent.Set(); // řekneme, že jsme za čtením instance
-				orchestrator_NotifyReadyForDisposeScpe_ManualResetEvent.Wait(); // počkáme, až budeme všichni za čtením instance (aby scope neskončil předčasně)
+				orchestrator_NotifyReadyForDisposeScpe_ManualResetEvent.Wait(TestContext.CancellationToken); // počkáme, až budeme všichni za čtením instance (aby scope neskončil předčasně)
 			}
-		});
+		}, TestContext.CancellationToken);
 
 		Task task2 = Task.Factory.StartNew(() =>
 		{
 			using (new TestAsyncLocalScope(task2InstanceToScope))
 			{
 				task2_NotifyReadyToReadFromScope_ManualResetEvent.Set();
-				orchestrator_NotifyStartReadingFromScope_ManualResetEvent.Wait();
+				orchestrator_NotifyStartReadingFromScope_ManualResetEvent.Wait(TestContext.CancellationToken);
 
 				// Act 2
 				task2InstanceFromScope = TestAsyncLocalScope.Current;
 
 				task2_NotifyFinishedReadingFromScope_ManualResetEvent.Set();
-				orchestrator_NotifyReadyForDisposeScpe_ManualResetEvent.Wait();
+				orchestrator_NotifyReadyForDisposeScpe_ManualResetEvent.Wait(TestContext.CancellationToken);
 			}
-		});
+		}, TestContext.CancellationToken);
 
 		// počkáme, až budou všichni připraveni číst z TestAsyncLocalScope.Current (až budou mít všichni scope založen)
-		task1_NotifyReadyToReadFromScope_ManualResetEvent.Wait();
-		task2_NotifyReadyToReadFromScope_ManualResetEvent.Wait();
+		task1_NotifyReadyToReadFromScope_ManualResetEvent.Wait(TestContext.CancellationToken);
+		task2_NotifyReadyToReadFromScope_ManualResetEvent.Wait(TestContext.CancellationToken);
 
 		// pustíme všechny ke čtení TestAsyncLocalScope.Current
 		orchestrator_NotifyStartReadingFromScope_ManualResetEvent.Set();
 
 		// počkáme, až budou mít všichni přečteno
-		task1_NotifyFinishedReadingFromScope_ManualResetEvent.Wait();
-		task2_NotifyFinishedReadingFromScope_ManualResetEvent.Wait();
+		task1_NotifyFinishedReadingFromScope_ManualResetEvent.Wait(TestContext.CancellationToken);
+		task2_NotifyFinishedReadingFromScope_ManualResetEvent.Wait(TestContext.CancellationToken);
 
 		// pustíme všechny dál k dispose scopu
 		orchestrator_NotifyReadyForDisposeScpe_ManualResetEvent.Set();
@@ -129,4 +129,5 @@ public class LocalAsyncScopeRepositoryTests
 		Assert.AreSame(task2InstanceToScope, task2InstanceFromScope);
 	}
 
+	public TestContext TestContext { get; set; }
 }

@@ -6,6 +6,8 @@ namespace Havit.Ares.Tests.FinancniSprava;
 [TestCategory("Ares_DPH")]
 public class PlatceDphServiceTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void PlatceDphService_GetPlatceDph_DoesNotExist()
 	{
@@ -26,7 +28,7 @@ public class PlatceDphServiceTests
 	public async Task PlatceDphService_GetPlatceDphAsync_Nespolehlivy(string dic, bool isNespolehlivy)
 	{
 		// Arrange
-		PlatceDphResult platceDphResult = await new PlatceDphService().GetPlatceDphAsync(dic);
+		PlatceDphResult platceDphResult = await new PlatceDphService().GetPlatceDphAsync(dic, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(platceDphResult);
@@ -41,7 +43,7 @@ public class PlatceDphServiceTests
 		string dic = "CZ60193336";
 
 		// Act
-		PlatceDphResult platceDphResult = await new PlatceDphService().GetPlatceDphAsync(dic);
+		PlatceDphResult platceDphResult = await new PlatceDphService().GetPlatceDphAsync(dic, TestContext.CancellationToken);
 
 		// Assert
 		Assert.IsNotNull(platceDphResult);

@@ -7,6 +7,8 @@ namespace Havit.Data.EntityFrameworkCore.Tests;
 [TestClass]
 public class DbContextTests
 {
+	public TestContext TestContext { get; set; }
+
 	/// <summary>
 	/// Ověřuje počet volání metody AfterSaveChanges po SaveChanges.
 	/// Cílem je ověřit, zda je správně ošetřeno volání SaveChanges(bool acceptAllChangesOnSuccess) z SaveChanges().
@@ -45,8 +47,8 @@ public class DbContextTests
 		dbContextMock2.CallBase = true;
 
 		// Act
-		await dbContextMock1.Object.SaveChangesAsync();
-		await dbContextMock2.Object.SaveChangesAsync(true);
+		await dbContextMock1.Object.SaveChangesAsync(TestContext.CancellationToken);
+		await dbContextMock2.Object.SaveChangesAsync(true, TestContext.CancellationToken);
 
 		// Assert
 		dbContextMock1.Verify(m => m.AfterSaveChanges(), Times.Once, "dbContextMock1");

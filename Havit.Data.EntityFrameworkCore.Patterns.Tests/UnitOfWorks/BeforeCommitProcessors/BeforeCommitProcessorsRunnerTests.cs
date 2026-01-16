@@ -9,6 +9,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.UnitOfWorks.BeforeCommit
 [TestClass]
 public class BeforeCommitProcessorsRunnerTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	public void BeforeCommitProcessorsRunner_Run_RunsProcessors()
 	{
@@ -70,7 +72,7 @@ public class BeforeCommitProcessorsRunnerTests
 		});
 
 		// Act
-		await runner.RunAsync(changes);
+		await runner.RunAsync(changes, TestContext.CancellationToken);
 
 		// Assert
 		beforeCommitProcessorFactoryMock.Verify(m => m.Create(typeof(Entity)), Times.AtLeastOnce);
@@ -130,7 +132,7 @@ public class BeforeCommitProcessorsRunnerTests
 		});
 
 		// Act
-		ChangeTrackerImpact result = await runner.RunAsync(changes);
+		ChangeTrackerImpact result = await runner.RunAsync(changes, TestContext.CancellationToken);
 
 		// Assert
 		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entity), Times.Once);
@@ -184,7 +186,7 @@ public class BeforeCommitProcessorsRunnerTests
 			new FakeChange { ChangeType = ChangeType.Update, ClrType = typeof(Entity), EntityType = null /* pro účely testu není třeba */, Entity = entity } });
 
 		// Act
-		ChangeTrackerImpact result = await runner.RunAsync(changes);
+		ChangeTrackerImpact result = await runner.RunAsync(changes, TestContext.CancellationToken);
 
 		// Assert
 		beforeCommitProcessorMock.Verify(m => m.Run(ChangeType.Update, entity), Times.Once);

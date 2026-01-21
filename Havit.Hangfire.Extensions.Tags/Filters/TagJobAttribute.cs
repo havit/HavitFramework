@@ -3,6 +3,7 @@ using Hangfire.Common;
 using Hangfire.Server;
 using Hangfire.Tags;
 using Havit.Hangfire.Extensions.Helpers;
+using Havit.Hangfire.Extensions.RecurringJobs.Services;
 
 namespace Havit.Hangfire.Extensions.Tags.Filters;
 
@@ -34,6 +35,11 @@ internal class TagJobAttribute : JobFilterAttribute, IServerFilter
 		else if (TagFunc != null)
 		{
 			tag = TagFunc(performingContext.BackgroundJob);
+		}
+		// if it is SequenceRecurringJobScheduler (but nonrecurring job), skip it as infrastructural job
+		else if (performingContext.BackgroundJob.Job.Type == typeof(SequenceRecurringJobScheduler))
+		{
+			tag = null;
 		}
 		// otherwise, try to get the job name from RecurringJobId
 		else

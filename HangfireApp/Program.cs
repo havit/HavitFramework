@@ -3,12 +3,15 @@ using Hangfire.Console;
 using Hangfire.Console.Extensions;
 using Hangfire.SqlServer;
 using Hangfire.States;
+using Hangfire.Tags;
+using Hangfire.Tags.SqlServer;
 using Havit.ApplicationInsights.DependencyCollector;
 using Havit.AspNetCore.ExceptionMonitoring.Services;
 using Havit.Diagnostics.Contracts;
 using Havit.Hangfire.Extensions.BackgroundJobs;
 using Havit.Hangfire.Extensions.Filters;
 using Havit.Hangfire.Extensions.RecurringJobs;
+using Havit.Hangfire.Extensions.Tags;
 using Havit.HangfireJobs.Jobs;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
@@ -60,6 +63,8 @@ public static class Program
 							DisableGlobalLocks = true,
 						})
 						.WithJobExpirationTimeout(TimeSpan.FromDays(30)) // historie hangfire
+						.UseTagsWithSql(new TagsOptions { Clean = Clean.None })
+						.UseJobsTagging()
 						.UseFilter(new AutomaticRetryAttribute { Attempts = 0 }) // do not retry failed jobs
 						.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně
 						.UseFilter(new DeleteSequenceRecurringJobSchedulerFilter()) // zajistí odstranění systémových stavů jobů zajišťujících běh recurring jobů v sekvenci
@@ -111,12 +116,10 @@ public static class Program
 		var job1 = new RecurringJob<IJobOne>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
 		var job2 = new RecurringJob<IJobTwo>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
 		var job3 = new RecurringJob<IJobThree>(EnqueuedState.DefaultQueue, job => job.ExecuteAsync(CancellationToken.None), Cron.Never(), recurringJobOptions);
-		var job4 = new SequenceRecurringJob(EnqueuedState.DefaultQueue, Cron.Never(), [job1, job2, job3]);
 
 		yield return job1;
 		yield return job2;
 		yield return job3;
-		yield return job4;
 
 		yield return new SequenceRecurringJob("All three jobs", EnqueuedState.DefaultQueue, Cron.Never(), recurringJobOptions, new IRecurringJob[] { job1, job2, job3 });
 	}

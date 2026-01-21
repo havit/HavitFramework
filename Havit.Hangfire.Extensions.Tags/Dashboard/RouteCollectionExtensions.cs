@@ -1,8 +1,7 @@
 using System.Reflection;
 using Hangfire.Dashboard;
 
-namespace Havit.Hangfire.Extensions.Tags;
-
+namespace Havit.Hangfire.Extensions.Tags.Dashboard;
 
 /// <summary>
 /// Provides extension methods for <see cref="RouteCollection"/>.
@@ -63,15 +62,15 @@ internal static class RouteCollectionExtensions
 		routes.Add(pathTemplate, dispatcher);
 	}
 
-	public static void AddRecurringJobsTags(this RouteCollection routes)
+	internal static void AddRecurringJobsTags(this RouteCollection routes)
 	{
 		var assembly = typeof(RouteCollectionExtensions).Assembly;
 		const string jsContentType = "text/javascript";
-		var jsDispatcher = new EmbeddedResourceDispatcher(jsContentType, assembly, "Havit.Hangfire.Extensions.Tags.CustomizeReccuringJobsList.js");
+		var jsDispatcher = new EmbeddedResourceDispatcher(jsContentType, assembly, "Havit.Hangfire.Extensions.Tags.Dashboard.CustomizeReccuringJobsList.js");
 		routes.Append("/js[0-9]+", jsDispatcher);
 
 		const string cssContentType = "text/css";
-		var cssDispatcher = new EmbeddedResourceDispatcher(cssContentType, assembly, "Havit.Hangfire.Extensions.Tags.CustomizeTagList.css");
+		var cssDispatcher = new EmbeddedResourceDispatcher(cssContentType, assembly, "Havit.Hangfire.Extensions.Tags.Dashboard.CustomizeTagList.css");
 		routes.Append("/css[0-9]+", cssDispatcher);
 	}
 }

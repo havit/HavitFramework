@@ -1,6 +1,6 @@
 using Hangfire.Dashboard;
 
-namespace Havit.Hangfire.Extensions.Tags;
+namespace Havit.Hangfire.Extensions.Tags.Dashboard;
 
 /// <summary>
 /// Dispatcher that combines output from several other dispatchers.

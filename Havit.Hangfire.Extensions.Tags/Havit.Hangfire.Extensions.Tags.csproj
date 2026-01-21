@@ -8,18 +8,18 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.1-pre01</PackageVersion>
+		<PackageVersion>2.0.1-pre02</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire tags</Description>
 	</PropertyGroup>
 
 
 	<ItemGroup>
-		<EmbeddedResource Include="CustomizeReccuringJobsList.js" />
-		<EmbeddedResource Include="CustomizeTagList.css" />
+		<EmbeddedResource Include="Dashboard\CustomizeReccuringJobsList.js" />
+		<EmbeddedResource Include="Dashboard\CustomizeTagList.css" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FaceIT.Hangfire.Tags.SqlServer" Version="1.9.15" />
+		<PackageReference Include="FaceIT.Hangfire.Tags" Version="1.9.0" />
 		<PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
 	</ItemGroup>
 	<ItemGroup>

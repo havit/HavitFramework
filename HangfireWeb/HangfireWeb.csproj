@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AssemblyName>Havit.HangfireApp</AssemblyName>
 		<RootNamespace>Havit.HangfireApp</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="FaceIT.Hangfire.Tags.SqlServer" Version="1.9.15" />
 	  <PackageReference Include="Hangfire.AspNetCore" Version="1.8.22" />
 	  <PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
 	  <PackageReference Include="IdentityStream.Hangfire.Console" Version="2.0.0" />
@@ -15,6 +16,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\HangfireJobs\HangfireJobs.csproj" />
+	  <ProjectReference Include="..\Havit.Hangfire.Extensions.Tags\Havit.Hangfire.Extensions.Tags.csproj" />
 	  <ProjectReference Include="..\Havit.Hangfire.Extensions\Havit.Hangfire.Extensions.csproj" />
 	</ItemGroup>
 

@@ -1,7 +1,10 @@
 ﻿using Hangfire;
 using Hangfire.Console;
 using Hangfire.SqlServer;
+using Hangfire.Tags;
+using Hangfire.Tags.SqlServer;
 using Havit.Hangfire.Extensions.Filters;
+using Havit.Hangfire.Extensions.Tags;
 
 namespace Havit.HangfireWeb.Infrastructure.ConfigurationExtensions;
 
@@ -24,7 +27,9 @@ public static class HangfireConfig
 				QueuePollInterval = TimeSpan.FromSeconds(5),
 				UseRecommendedIsolationLevel = true,
 				DisableGlobalLocks = true // Migration to Schema 7 is required
-			});
+			})
+			.UseTagsWithSql(new TagsOptions { Clean = Clean.None })
+			.UseTagsDashboardExtension();
 			configuration.UseConsole(); // shows "processing log" in hangfire dashboard
 			configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
 		});

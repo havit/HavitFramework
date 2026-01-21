@@ -1,7 +1,7 @@
 using System.Reflection;
 using Hangfire.Dashboard;
 
-namespace Havit.Hangfire.Extensions.Tags;
+namespace Havit.Hangfire.Extensions.Tags.Dashboard;
 
 internal sealed class EmbeddedResourceDispatcher : IDashboardDispatcher
 {
@@ -11,9 +11,9 @@ internal sealed class EmbeddedResourceDispatcher : IDashboardDispatcher
 
 	public EmbeddedResourceDispatcher(string contentType, Assembly assembly, string resourceName)
 	{
-		ArgumentNullException.ThrowIfNullOrEmpty(contentType);
+		ArgumentException.ThrowIfNullOrEmpty(contentType);
 		ArgumentNullException.ThrowIfNull(assembly);
-		ArgumentNullException.ThrowIfNullOrEmpty(resourceName);
+		ArgumentException.ThrowIfNullOrEmpty(resourceName);
 
 		_contentType = contentType;
 		_assembly = assembly;
@@ -23,8 +23,6 @@ internal sealed class EmbeddedResourceDispatcher : IDashboardDispatcher
 	public async Task Dispatch(DashboardContext context)
 	{
 		context.Response.ContentType = _contentType;
-		// TODO Hangfire: Vyøešit expiraci lépe (co když se resource zmìní? budeme mìnit route?)		
-		//context.Response.SetExpire(DateTimeOffset.Now.AddYears(1));
 		await WriteResponseAsync(context.Response).ConfigureAwait(continueOnCapturedContext: false);
 	}
 

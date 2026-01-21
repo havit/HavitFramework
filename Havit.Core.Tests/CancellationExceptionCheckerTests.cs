@@ -26,23 +26,29 @@ public class CancellationExceptionCheckerTests
 
 			try
 			{
-				var sqlCommand = sqlConnection.CreateCommand();
-
-				sqlCommand.CommandText = "PRINT 1;"; // warm-up
-				sqlCommand.CommandTimeout = 3600 /* 1 hour */;
-				await sqlCommand.ExecuteNonQueryAsync(TestContext.CancellationToken);
-
-				sqlCommand.CommandText = "WAITFOR DELAY '01:00:00';"; // simulate a long-running query
-				CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.CancellationToken);
-				cts.CancelAfter(10); // 10 milliseconds
-
-				try
+				using (var sqlCommand = sqlConnection.CreateCommand())
 				{
-					await sqlCommand.ExecuteNonQueryAsync(cts.Token); // execute the sql command but cancel it after 10 ms
+					sqlCommand.CommandText = "PRINT 1;"; // warm-up
+					sqlCommand.CommandTimeout = 3600 /* 1 hour */;
+					await sqlCommand.ExecuteNonQueryAsync(TestContext.CancellationToken);
 				}
-				catch (SqlException catchedSqlException)
+
+				using (SqlCommand sqlCommand = sqlConnection.CreateCommand())
 				{
-					sqlException = catchedSqlException;
+					sqlCommand.CommandText = "WAITFOR DELAY '01:00:00';"; // simulate a long-running query
+					sqlCommand.CommandTimeout = 3600 /* 1 hour */;
+
+					CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.CancellationToken);
+					cts.CancelAfter(10); // 10 milliseconds
+
+					try
+					{
+						await sqlCommand.ExecuteNonQueryAsync(cts.Token); // execute the sql command but cancel it after 10 ms
+					}
+					catch (SqlException catchedSqlException)
+					{
+						sqlException = catchedSqlException;
+					}
 				}
 			}
 			finally

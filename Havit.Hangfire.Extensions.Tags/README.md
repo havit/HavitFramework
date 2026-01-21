@@ -23,7 +23,7 @@ service.AddHangfire(configuration => configuration
 	...
 ```
 
-#### Registrace v Hangfire serveru
+#### Registrace v Hangfire dashboardu
 
 ```csharp
 service.AddHangfire(configuration => configuration

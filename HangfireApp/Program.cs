@@ -51,7 +51,7 @@ public static class Program
 				if (useHangfire)
 				{
 					services.AddHangfire((serviceProvider, configuration) => configuration
-						.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+						.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
 						.UseSimpleAssemblyNameTypeSerializer()
 						.UseRecommendedSerializerSettings()
 						.UseSqlServerStorage(() => new Microsoft.Data.SqlClient.SqlConnection(hostContext.Configuration.GetConnectionString("Database")), new SqlServerStorageOptions
@@ -61,11 +61,15 @@ public static class Program
 							QueuePollInterval = TimeSpan.FromSeconds(5),
 							UseRecommendedIsolationLevel = true,
 							DisableGlobalLocks = true,
+							EnableHeavyMigrations = true
 						})
 						.WithJobExpirationTimeout(TimeSpan.FromDays(30)) // historie hangfire
 						.UseTagsWithSql(new TagsOptions { Clean = Clean.None })
 						.UseJobsTagging()
-						.UseFilter(new AutomaticRetryAttribute { Attempts = 0 }) // do not retry failed jobs
+						.UseTagsDashboardExtension()
+						.UseFilter(new AutomaticRetryAttribute { Attempts = 0, LogEvents = false }) // do not retry failed jobs						
+						.UseFilter(new FinalFailedStateFilter()) // zapojíme FinalFailedState, který zajistí expiraci i failovaných jobů
+						.UseFilter(new ContinuationsSupportAttribute(new HashSet<string> { FailedState.StateName, DeletedState.StateName, SucceededState.StateName })) // only working with AutomaticRetryAttribute with Attempts = 0
 						.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně
 						.UseFilter(new DeleteSequenceRecurringJobSchedulerFilter()) // zajistí odstranění systémových stavů jobů zajišťujících běh recurring jobů v sekvenci
 						.UseFilter(new ExceptionMonitoringAttribute(serviceProvider.GetRequiredService<IExceptionMonitoringService>())) // zajistíme hlášení chyby v případě selhání jobu

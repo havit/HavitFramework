@@ -53,6 +53,41 @@ public class QueryHelpersTests
 		Assert.IsTrue(result.Any(item => item.Id == 5), "5");
 	}
 
+	[TestMethod]
+	public void QueryHelpers_ContainsConsecutiveSequence_SortedSequence()
+	{
+		// Act
+		var result = QueryHelpers.ContainsConsecutiveSequence(new List<int> { 1, 2, 3, 4, 4, 5 }, out int minValue, out int maxValue);
+
+		// Assert
+		Assert.IsTrue(result);
+		Assert.AreEqual(1, minValue);
+		Assert.AreEqual(5, maxValue);
+	}
+
+	[TestMethod]
+	public void QueryHelpers_ContainsConsecutiveSequence_UnsortedSequence()
+	{
+		// Act
+		var result = QueryHelpers.ContainsConsecutiveSequence(new List<int> { 4, 5, 4, 2, 3, 1 }, out int minValue, out int maxValue);
+
+		// Assert
+		Assert.IsTrue(result);
+		Assert.AreEqual(1, minValue);
+		Assert.AreEqual(5, maxValue);
+	}
+
+	[TestMethod]
+	public void QueryHelpers_ContainsConsecutiveSequence_NotSequence()
+	{
+		// Act
+		var result = QueryHelpers.ContainsConsecutiveSequence(new List<int> { 4, 5, 4, 3, 1 }, out int _, out int _);
+
+		// Assert
+		Assert.IsFalse(result);
+	}
+
+
 	private IQueryable<TestClass> GetData()
 	{
 		return new List<TestClass>

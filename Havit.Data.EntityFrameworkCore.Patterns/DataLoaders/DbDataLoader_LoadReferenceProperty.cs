@@ -1,5 +1,4 @@
 ﻿using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
-using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.Patterns.DataLoaders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -32,7 +31,7 @@ public partial class DbDataLoader
 			_logger.LogDebug("Reading data for {Count} entities from the database...", foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
-			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
+			if (!ShouldUseChunking(foreignKeysToLoad.Count, out int chunkSize))
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoad, propertyPathString);
 				loadedProperties = query.ToList();
@@ -41,8 +40,8 @@ public partial class DbDataLoader
 			{
 				// viz komentář v LoadCollectionPropertyInternal
 				int chunkIndex = 0;
-				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
+				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)chunkSize);
+				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(chunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
 
 				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
 				foreach (var chunkQuery in chunkQueries)
@@ -86,7 +85,7 @@ public partial class DbDataLoader
 			_logger.LogDebug("Reading data for {Count} entities from the database...", foreignKeysToLoad.Count);
 
 			List<TProperty> loadedProperties;
-			if ((foreignKeysToLoad.Count < ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
+			if (!ShouldUseChunking(foreignKeysToLoad.Count, out int chunkSize))
 			{
 				IQueryable<TProperty> query = LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoad, propertyPathString);
 				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -95,8 +94,8 @@ public partial class DbDataLoader
 			{
 				// viz komentář v LoadCollectionPropertyInternal
 				int chunkIndex = 0;
-				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(ChunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
+				int chunksCount = (int)Math.Ceiling((decimal)foreignKeysToLoad.Count / (decimal)chunkSize);
+				IEnumerable<IQueryable<TProperty>> chunkQueries = foreignKeysToLoad.Chunk(chunkSize).Select(foreignKeysToLoadChunk => LoadReferencePropertyInternal_GetQuery<TEntity, TProperty>(foreignKeysToLoadChunk.ToList(), propertyPathString));
 
 				loadedProperties = new List<TProperty>(foreignKeysToLoad.Count);
 				foreach (var chunkQuery in chunkQueries)

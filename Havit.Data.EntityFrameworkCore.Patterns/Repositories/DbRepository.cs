@@ -15,11 +15,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	 where TEntity : class
 {
-	internal const int GetObjectsChunkSize = 5_000;
 
-	private readonly IDbContext dbContext;
-	private readonly IEntityKeyAccessor<TEntity, TKey> entityKeyAccessor;
-	private readonly IRepositoryQueryProvider<TEntity, TKey> repositoryQueryProvider;
+	private readonly IDbContext _dbContext;
+	private readonly IEntityKeyAccessor<TEntity, TKey> _entityKeyAccessor;
+	private readonly IRepositoryQueryProvider<TEntity, TKey> _repositoryQueryProvider;
 
 	private List<TEntity> _all;
 	private bool? _isEntityCachable;
@@ -70,12 +69,12 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	/// </summary>
 	protected DbRepository(IDbContext dbContext, IEntityKeyAccessor<TEntity, TKey> entityKeyAccessor, IDataLoader dataLoader, ISoftDeleteManager softDeleteManager, IEntityCacheManager entityCacheManager, IRepositoryQueryProvider<TEntity, TKey> repositoryQueryProvider)
 	{
-		this.dbContext = dbContext;
-		this.entityKeyAccessor = entityKeyAccessor;
+		this._dbContext = dbContext;
+		this._entityKeyAccessor = entityKeyAccessor;
 		this.dataLoader = dataLoader;
 		this.SoftDeleteManager = softDeleteManager;
 		this.EntityCacheManager = entityCacheManager;
-		this.repositoryQueryProvider = repositoryQueryProvider;
+		this._repositoryQueryProvider = repositoryQueryProvider;
 		this.dbSetLazy = new Lazy<IDbSet<TEntity>>(() => dbContext.Set<TEntity>(), LazyThreadSafetyMode.None);
 	}
 
@@ -103,8 +102,8 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			Func<DbContext, TKey, TEntity> query = repositoryQueryProvider.GetGetObjectQuery();
-			result = query((DbContext)dbContext, id);
+			Func<DbContext, TKey, TEntity> query = _repositoryQueryProvider.GetGetObjectQuery();
+			result = query((DbContext)_dbContext, id);
 
 			if (result != null)
 			{
@@ -145,8 +144,8 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 		// není ani v identity mapě, ani v cache, hledáme v databázi
 		if (result == null)
 		{
-			Func<DbContext, TKey, CancellationToken, Task<TEntity>> query = repositoryQueryProvider.GetGetObjectAsyncQuery();
-			result = await query((DbContext)dbContext, id, cancellationToken).ConfigureAwait(false);
+			Func<DbContext, TKey, CancellationToken, Task<TEntity>> query = _repositoryQueryProvider.GetGetObjectAsyncQuery();
+			result = await query((DbContext)_dbContext, id, cancellationToken).ConfigureAwait(false);
 
 			if (result != null)
 			{
@@ -206,25 +205,25 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 
 		if (idsToLoad.Count > 0)
 		{
-			Func<DbContext, TKey[], IEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsQuery();
+			Func<DbContext, TKey[], IEnumerable<TEntity>> query = _repositoryQueryProvider.GetGetObjectsQuery();
 
 			List<TEntity> loadedObjects;
-			if ((idsToLoad.Count <= GetObjectsChunkSize) || dbContext.SupportsSqlServerOpenJson())
+			if (!ShouldUseChunking(idsToLoad.Count, out int chunkSize))
 			{
-				loadedObjects = query((DbContext)dbContext, idsToLoad.ToArray()).ToList();
+				loadedObjects = query((DbContext)_dbContext, idsToLoad.ToArray()).ToList();
 			}
 			else
 			{
 				loadedObjects = new List<TEntity>();
-				foreach (TKey[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
+				foreach (TKey[] idsToLoadChunk in idsToLoad.Chunk(chunkSize))
 				{
-					loadedObjects.AddRange(query((DbContext)dbContext, idsToLoadChunk).ToList());
+					loadedObjects.AddRange(query((DbContext)_dbContext, idsToLoadChunk).ToList());
 				}
 			}
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
-				TKey[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
+				TKey[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(_entityKeyAccessor.GetEntityKeyValue)).ToArray();
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
@@ -285,24 +284,24 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 
 		if (idsToLoad.Count > 0)
 		{
-			Func<DbContext, TKey[], IAsyncEnumerable<TEntity>> query = repositoryQueryProvider.GetGetObjectsAsyncQuery();
+			Func<DbContext, TKey[], IAsyncEnumerable<TEntity>> query = _repositoryQueryProvider.GetGetObjectsAsyncQuery();
 			List<TEntity> loadedObjects;
-			if ((idsToLoad.Count <= GetObjectsChunkSize) || dbContext.SupportsSqlServerOpenJson())
+			if (!ShouldUseChunking(idsToLoad.Count, out int chunkSize))
 			{
-				loadedObjects = await query((DbContext)dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
+				loadedObjects = await query((DbContext)_dbContext, idsToLoad.ToArray()).ToListAsync(cancellationToken).ConfigureAwait(false);
 			}
 			else
 			{
 				loadedObjects = new List<TEntity>(idsToLoad.Count);
-				foreach (TKey[] idsToLoadChunk in idsToLoad.Chunk(GetObjectsChunkSize))
+				foreach (TKey[] idsToLoadChunk in idsToLoad.Chunk(chunkSize))
 				{
-					loadedObjects.AddRange(await query((DbContext)dbContext, idsToLoadChunk).ToListAsync(cancellationToken).ConfigureAwait(false));
+					loadedObjects.AddRange(await query((DbContext)_dbContext, idsToLoadChunk).ToListAsync(cancellationToken).ConfigureAwait(false));
 				}
 			}
 
 			if (idsToLoad.Count != loadedObjects.Count)
 			{
-				TKey[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(entityKeyAccessor.GetEntityKeyValue)).ToArray();
+				TKey[] missingObjectIds = idsToLoad.Except(loadedObjects.Select(_entityKeyAccessor.GetEntityKeyValue)).ToArray();
 				ThrowObjectNotFoundException(missingObjectIds);
 			}
 
@@ -348,7 +347,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 					.WhereNotDeleted(SoftDeleteManager)
 					.ToList();
 
-				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => _entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 				if (IsEntityCachable())
 				{
 					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
@@ -361,7 +360,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 			LoadReferences(allData);
 
 			_all = allData;
-			dbContext.RegisterAfterSaveChangesAction(() =>
+			_dbContext.RegisterAfterSaveChangesAction(() =>
 			{
 				_all = null;
 			});
@@ -394,12 +393,12 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 				allData = await DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAllAsync)))
 					.WhereNotDeleted(SoftDeleteManager)
 					.ToListAsync(cancellationToken).ConfigureAwait(false);
-				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => _entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 
 			_all = allData;
-			dbContext.RegisterAfterSaveChangesAction(() =>
+			_dbContext.RegisterAfterSaveChangesAction(() =>
 			{
 				_all = null;
 			});
@@ -467,4 +466,9 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	}
 
 	private bool IsEntityCachable() => _isEntityCachable ??= EntityCacheManager.ShouldCacheEntityType<TEntity>();
+
+	private bool ShouldUseChunking(int valuesToLoadCount, out int chunkSize)
+	{
+		return _dbContext.ShouldUseChunkingForContainsCondition(valuesToLoadCount, out chunkSize);
+	}
 }

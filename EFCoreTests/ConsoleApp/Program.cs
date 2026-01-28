@@ -42,7 +42,7 @@ public static class Program
 		services.AddDbContext<IDbContext, Havit.EFCoreTests.Entity.ApplicationDbContext>(optionsBuilder =>
 				optionsBuilder
 					.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=EFCoreTests;Application Name=EFCoreTests-Entity;ConnectRetryCount=0",
-						o => o.UseParameterizedCollectionMode(ParameterTranslationMode.Parameter))
+						o => o.UseCompatibilityLevel(120).UseParameterizedCollectionMode(ParameterTranslationMode.Constant))
 					.UseDefaultHavitConventions()
 					.EnableSensitiveDataLogging(true));
 
@@ -101,6 +101,9 @@ public static class Program
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 		var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
+		int[] ids = Enumerable.Range(1, 5003).ToArray();
+		var persons = await personRepository.GetObjectsAsync(ids);
+
 		//Person person2 = personRepository.GetObject(2);
 		//await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
@@ -108,20 +111,20 @@ public static class Program
 		//	Expression<Func<Person, IComparable>> expression = item => (IComparable)item.Name;
 		//	var expression2 = Expression.Lambda<Func<Person, IComparable>>(expression.Body.RemoveConvert(), expression.Parameters[0]);
 
-		//	// scénář 1: načítání kolekcí
+		//	//scénář 1: načítání kolekcí
 		//	Person person1 = personRepository.GetObject(1);
 		//	Person person2 = await personRepository.GetObjectAsync(4, cancellationToken);
 		//	Contract.Assert(person1.BossId == null);
 		//	Contract.Assert(person2.BossId == null);
+		//List<Person> persons1 = personRepository.GetObjects(Enumerable.Range(1, 5000).Where(int.IsEvenInteger).ToArray());
+		//await dataLoader.LoadAllAsync(persons1, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 
-		//	dataLoader.Load(person1, p => p.Subordinates).ThenLoad(p => p.Subordinates);
-		//	await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
+		// scénář 2: načítání referencí
 
-		//	// scénář 2: načítání referencí
-		//	List<Person> persons1 = personRepository.GetObjects(Enumerable.Range(1, 50000).ToArray());
-		//	List<Person> persons2 = await personRepository.GetObjectsAsync(Enumerable.Range(50000, 100000).Where(int.IsEvenInteger).ToArray(), cancellationToken);
-		//	dataLoader.LoadAll(persons1, p => p.Boss);
-		//	await dataLoader.LoadAllAsync(persons2, p => p.Boss, cancellationToken);
+		//List< Person > persons1 = personRepository.GetObjects(Enumerable.Range(1, 200).ToArray());
+		//List<Person> persons2 = await personRepository.GetObjectsAsync(Enumerable.Range(50000, 100000).Where(i => i < 60000 || i > 70000).ToArray(), cancellationToken);
+		// dataLoader.LoadAll(persons1, p => p.Boss);
+		//await dataLoader.LoadAllAsync(persons2, p => p.Boss, cancellationToken);
 
 		//	// scénář 3: XyRepository.GetObjects()
 		//	personRepository.GetObjects(3, 4);

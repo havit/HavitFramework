@@ -33,7 +33,7 @@ public partial class DbDataLoader
 		{
 			_logger.LogDebug("Retrieving data for {Count} entities from the database...", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
-			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
+			if (!ShouldUseChunking(entitiesToLoadQuery.Count, out int chunkSize))
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName, propertyPathString);
 				loadedProperties = query.ToList();
@@ -54,8 +54,8 @@ public partial class DbDataLoader
 				// Zároveň se snažíme ani trochu nesnížit výkon pro běžný scénář s běžným počtem záznamů (nechceme přidat volání AddRange v dalších variantách této metody, atp.).
 
 				int chunkIndex = 0;
-				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
+				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)chunkSize);
+				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(chunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
 				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
 				foreach (var chunkQuery in chunkQueries)
 				{
@@ -97,7 +97,7 @@ public partial class DbDataLoader
 		{
 			_logger.LogDebug("Reading data for {Count} entities from the database...", args: entitiesToLoadQuery.Count);
 			List<TPropertyItem> loadedProperties;
-			if ((entitiesToLoadQuery.Count <= ChunkSize) || _dbContext.SupportsSqlServerOpenJson())
+			if (!ShouldUseChunking(entitiesToLoadQuery.Count, out int chunkSize))
 			{
 				IQueryable<TPropertyItem> query = LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQuery, propertyName, propertyPathString);
 				loadedProperties = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -106,8 +106,8 @@ public partial class DbDataLoader
 			{
 				// viz komentář v LoadCollectionPropertyInternal
 				int chunkIndex = 0;
-				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)ChunkSize);
-				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(ChunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
+				int chunksCount = (int)Math.Ceiling((decimal)entitiesToLoadQuery.Count / (decimal)chunkSize);
+				IEnumerable<IQueryable<TPropertyItem>> chunkQueries = entitiesToLoadQuery.Chunk(chunkSize).Select(entitiesToLoadQueryChunk => LoadCollectionPropertyInternal_GetQuery<TEntity, TPropertyItem>(entitiesToLoadQueryChunk.ToList(), propertyName, propertyPathString));
 				loadedProperties = new List<TPropertyItem>(entitiesToLoadQuery.Count);
 				foreach (var chunkQuery in chunkQueries)
 				{

@@ -8,13 +8,13 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.10.1</PackageVersion>
+		<PackageVersion>2.10.2-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.14.28" /><!-- pinned version, security patch -->
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0"><!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2"><!-- Microsoft.EntityFrameworkCore.Design je nyní DevelopmentTool, avšak my ji chceme používat v kódu a publikovat s buildem. Musíme proto odstranit vygenerované řádky. -->
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
 		  <PrivateAssets>all</PrivateAssets>

@@ -3,10 +3,12 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
 using Havit.Data.EntityFrameworkCore.Patterns.DataLoaders.Internal;
+using Havit.Data.EntityFrameworkCore.Patterns.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.PropertyLambdaExpressions.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Repositories;
 using Havit.Data.Patterns.DataLoaders;
 using Havit.Data.Patterns.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
@@ -18,13 +20,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 /// </summary>
 public partial class DbDataLoader : IDataLoader
 {
-	/// <summary>
-	/// Počet entit, ke kterým jsou načítána data jedním dotazem.
-	/// Ovlivňuje maximální počet hodnot v WHERE Id IN (...) s SQL statementu.
-	/// Viz komentář v <see cref="LoadCollectionPropertyInternal" />.
-	/// </summary>
-	internal const int ChunkSize = DbRepository<object, object>.GetObjectsChunkSize;
-
 	private readonly IDbContext _dbContext;
 	private readonly IPropertyLoadSequenceResolver _propertyLoadSequenceResolver;
 	private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
@@ -377,5 +372,13 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 	{
 		return _loadedPropertyReader.IsEntityPropertyLoaded(entity, propertyName);
+	}
+
+	/// <summary>
+	/// Vrací true, pokud má DataLoader použít chunking při načítání dat.
+	/// </summary>
+	private bool ShouldUseChunking(int valuesToLoadCount, out int chunkSize)
+	{
+		return _dbContext.ShouldUseChunkingForContainsCondition(valuesToLoadCount, out chunkSize);
 	}
 }

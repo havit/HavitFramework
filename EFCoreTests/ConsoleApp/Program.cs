@@ -101,9 +101,6 @@ public static class Program
 		var dataLoader = scope.ServiceProvider.GetRequiredService<IDataLoader>();
 		var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-		int[] ids = Enumerable.Range(1, 5003).ToArray();
-		var persons = await personRepository.GetObjectsAsync(ids);
-
 		//Person person2 = personRepository.GetObject(2);
 		//await dataLoader.LoadAsync(person2, p => p.Subordinates, cancellationToken).ThenLoadAsync(p => p.Subordinates, cancellationToken);
 

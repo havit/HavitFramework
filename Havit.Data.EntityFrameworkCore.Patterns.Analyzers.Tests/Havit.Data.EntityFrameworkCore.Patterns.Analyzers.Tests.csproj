@@ -8,7 +8,7 @@
 	<Import Project="../UnitTests.targets" />
 
 	<ItemGroup>
-		<PackageReference Include="MSTest" Version="4.0.1" />
+		<PackageReference Include="MSTest" Version="4.0.2" />
 		<!-- Roslyn Analyzer Testing -->
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />

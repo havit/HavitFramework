@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="MSTest" Version="4.0.1" />
+		<PackageReference Include="MSTest" Version="4.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

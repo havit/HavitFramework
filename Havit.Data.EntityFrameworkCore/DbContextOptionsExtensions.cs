@@ -12,7 +12,7 @@ public static class DbContextOptionsExtensions
 	/// </summary>
 	public static DbContextOptionsBuilder UseDefaultHavitConventions(this DbContextOptionsBuilder optionsBuilder)
 	{
-		optionsBuilder.UseDbLockedMigrator();
+		// No code right now
 
 		return optionsBuilder;
 	}

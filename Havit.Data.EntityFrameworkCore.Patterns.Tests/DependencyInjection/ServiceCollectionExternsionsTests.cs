@@ -30,38 +30,6 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DependencyInjection;
 public class ServiceCollectionExtensionsTests
 {
 	[TestMethod]
-	public void ServiceCollectionExtensions_DbContext_ConventionsUsesDbLockedMigrator()
-	{
-		// Arrange
-		// noop
-
-		// Act
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: false);
-
-		// Assert
-		using var scope = serviceProvider.CreateScope();
-		var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-		var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
-		Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
-	}
-
-	[TestMethod]
-	public void ServiceCollectionExtensions_PooledDbContext_ConventionsUsesDbLockedMigrator()
-	{
-		// Arrange
-		// noop
-
-		// Act
-		IServiceProvider serviceProvider = CreateAndSetupServiceProvider(pooling: true);
-
-		// Assert
-		using var scope = serviceProvider.CreateScope();
-		var dbContext = scope.ServiceProvider.GetRequiredService<IDbContext>();
-		var migrator = ((IInfrastructure<IServiceProvider>)dbContext).GetService<IMigrator>();
-		Assert.IsInstanceOfType(migrator, typeof(Havit.Data.EntityFrameworkCore.Migrations.Internal.DbLockedMigrator));
-	}
-
-	[TestMethod]
 	public void ServiceCollectionExtensions_LanguageAndLocalizationServicesAreScoped()
 	{
 		// Arrange

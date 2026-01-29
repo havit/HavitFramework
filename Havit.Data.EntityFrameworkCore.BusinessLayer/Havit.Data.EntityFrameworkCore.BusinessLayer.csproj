@@ -13,7 +13,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.10.2-pre01</PackageVersion>
+		<PackageVersion>2.10.2</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Database schema and data seeding for application with HAVIT Business Layer</Description>
 	</PropertyGroup>
 

@@ -27,8 +27,8 @@
 		<PackageReference Include="Hangfire.Console.Extensions" Version="2.1.0" />
 		<PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
-		<PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.42" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
+		<PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.44" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
 	</ItemGroup>
 
 	<ItemGroup>

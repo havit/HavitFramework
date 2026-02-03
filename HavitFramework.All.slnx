@@ -117,12 +117,19 @@
     <Project Path="Havit.Data.Configuration.Git.Core/Havit.Data.Configuration.Git.Core.csproj" />
     <Project Path="Havit.Data.Configuration.Git/Havit.Data.Configuration.Git.csproj" />
     <Project Path="Havit.Extensions.Configuration.ConnectionStrings.Git/Havit.Extensions.Configuration.ConnectionStrings.Git.csproj" />
-    <Project Path="Havit.Hangfire.Extensions.Tags/Havit.Hangfire.Extensions.Tags.csproj" />
-    <Project Path="Havit.Hangfire.Extensions/Havit.Hangfire.Extensions.csproj" />
   </Folder>
   <Folder Name="/Extension Libraries/Tests/">
     <Project Path="Havit.Data.Configuration.Git.Tests/Havit.Data.Configuration.Git.Tests.csproj" />
     <Project Path="Havit.Hangfire.Extensions.Tests/Havit.Hangfire.Extensions.Tests.csproj" Id="39d8619a-d2a0-4e73-9fc7-3d561ab8b984" />
+  </Folder>
+  <Folder Name="/Hangfire Libraries/">
+    <Project Path="Havit.Hangfire.Extensions.Tags/Havit.Hangfire.Extensions.Tags.csproj" />
+    <Project Path="Havit.Hangfire.Extensions/Havit.Hangfire.Extensions.csproj" />
+  </Folder>
+  <Folder Name="/Hangfire Libraries/Test app/">
+    <Project Path="HangfireApp/HangfireApp.csproj" />
+    <Project Path="HangfireJobs/HangfireJobs.csproj" />
+    <Project Path="HangfireWeb/HangfireWeb.csproj" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="BenchmarkApp/BenchmarkApp.csproj" />
@@ -134,11 +141,6 @@
     <Project Path="EFCoreTests/DataLayer/DataLayer.csproj" />
     <Project Path="EFCoreTests/Entity/Entity.csproj" />
     <Project Path="EFCoreTests/Model/Model.csproj" />
-  </Folder>
-  <Folder Name="/Tests/Hangfire/">
-    <Project Path="HangfireApp/HangfireApp.csproj" />
-    <Project Path="HangfireJobs/HangfireJobs.csproj" />
-    <Project Path="HangfireWeb/HangfireWeb.csproj" />
   </Folder>
   <Folder Name="/Tools/">
     <Project Path="Havit.Tools.AzureDevopsPermissionChecker/Havit.Tools.AzureDevOpsPermissionChecker.csproj" />

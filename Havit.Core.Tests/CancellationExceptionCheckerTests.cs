@@ -1,5 +1,4 @@
 ﻿using Havit.Core;
-using Havit.Diagnostics.Contracts;
 using Microsoft.Data.SqlClient;
 
 namespace Havit.Tests;
@@ -8,6 +7,20 @@ namespace Havit.Tests;
 public class CancellationExceptionCheckerTests
 {
 	public TestContext TestContext { get; set; }
+
+	[TestMethod]
+	public void CancellationExceptionChecker_IsCancellationException_ReturnsTrueForTaskCanceledException()
+	{
+		// Act + Assert
+		Assert.IsTrue(CancellationExceptionChecker.IsCancellationException(new TaskCanceledException()));
+	}
+
+	[TestMethod]
+	public void CancellationExceptionChecker_IsCancellationException_ReturnsTrueForOperationCanceledException()
+	{
+		// Act + Assert
+		Assert.IsTrue(CancellationExceptionChecker.IsCancellationException(new OperationCanceledException()));
+	}
 
 	[TestMethod]
 	[DataRow("en-US")]
@@ -21,11 +34,10 @@ public class CancellationExceptionCheckerTests
 			SqlException sqlException = null;
 
 			// we need to simulate SqlException caused by command cancellation		
-			var sqlConnection = new SqlConnection("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=master;Application Name=Havit.Core.Tests;ConnectRetryCount=0");
-			await sqlConnection.OpenAsync(TestContext.CancellationToken);
-
-			try
+			using (var sqlConnection = new SqlConnection("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=master;Application Name=Havit.Core.Tests;ConnectRetryCount=0"))
 			{
+				await sqlConnection.OpenAsync(TestContext.CancellationToken);
+
 				using (var sqlCommand = sqlConnection.CreateCommand())
 				{
 					sqlCommand.CommandText = "PRINT 1;"; // warm-up
@@ -41,30 +53,15 @@ public class CancellationExceptionCheckerTests
 					CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.CancellationToken);
 					cts.CancelAfter(10); // 10 milliseconds
 
-					try
-					{
-						await sqlCommand.ExecuteNonQueryAsync(cts.Token); // execute the sql command but cancel it after 10 ms
-					}
-					catch (SqlException catchedSqlException)
-					{
-						sqlException = catchedSqlException;
-					}
+					// Act
+					// Execute the sql command but cancel it after 10 ms.
+					sqlException = await Assert.ThrowsAsync<SqlException>(async () => await sqlCommand.ExecuteNonQueryAsync(cts.Token));
 				}
 			}
-			finally
-			{
-#if NETFRAMEWORK
-				sqlConnection.Close();
-#else
-				await sqlConnection.CloseAsync();
-#endif
-			}
 
-			Contract.Assert(sqlException != null);
-
-			// Act + Assert
+			// Assert
 			Assert.IsTrue(CancellationExceptionChecker.IsCancellationException(sqlException),
-				message: $"SqlException was expected to be recognized as cancellation exception, but it was not. Exception: {sqlException}");
+				message: $"SqlException was expected to be recognized as cancellation exception, but it was not. Exception details: {sqlException}");
 		}
 	}
 }

@@ -20,8 +20,9 @@ public static class CancellationExceptionChecker
 		}
 
 		// Cancellation from SQL client
-		return (exception.GetType().FullName == "Microsoft.Data.SqlClient.SqlException")
-			&& ((exception.Message.Contains("A severe error occurred on the current command.  The results, if any, should be discarded.") || exception.Message.Contains("Operation cancelled by user."))
-				|| (exception.Message.Contains("U současného příkazu se stala závažná chyba. Pokud existují nějaké výsledky, měly by se zahodit.") && exception.Message.Contains("Operace byla zrušena uživatelem.")));
+		return (exception.GetType().FullName == "Microsoft.Data.SqlClient.SqlException") // do not reference nuget package Microsoft.Data.SqlClient here
+			&& (exception.Message.Contains("A severe error occurred on the current command.  The results, if any, should be discarded.") // two spaces are correct
+				|| exception.Message.Contains("U současného příkazu se stala závažná chyba. Pokud existují nějaké výsledky, měly by se zahodit.")
+				|| exception.Message.Contains("The request failed to run because the batch is aborted, this can be caused by abort signal sent from client, or another request is running in the same session, which makes the session busy."));
 	}
 }

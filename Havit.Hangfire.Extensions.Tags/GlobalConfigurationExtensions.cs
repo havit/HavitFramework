@@ -17,14 +17,14 @@ public static class GlobalConfigurationExtensions
 	{
 		ArgumentNullException.ThrowIfNull(configuration);
 
-		var hangfireTagJobsAttribute = new TagJobAttribute();
+		var tagJobsFilter = new TagJobFilter();
 
 		if (jobsTaggingOptions?.TagFunc != null)
 		{
-			hangfireTagJobsAttribute.TagFunc = jobsTaggingOptions.TagFunc;
+			tagJobsFilter.TagFunc = jobsTaggingOptions.TagFunc;
 		}
 
-		configuration.UseFilter(hangfireTagJobsAttribute);
+		configuration.UseFilter(tagJobsFilter);
 
 		return configuration;
 	}

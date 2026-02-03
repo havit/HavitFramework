@@ -67,7 +67,7 @@ public static class Program
 						.UseTagsWithSql(new TagsOptions { Clean = Clean.None })
 						.UseJobsTagging()
 						.UseTagsDashboardExtension()
-						.UseFilter(new AutomaticRetryAttribute { Attempts = 0, LogEvents = false }) // do not retry failed jobs						
+						.UseFilter(new AutomaticRetryAttribute { Order = 21, Attempts = 0, LogEvents = false }) // do not retry failed jobs						
 						.UseFilter(new FinalFailedStateFilter()) // zapojíme FinalFailedState, který zajistí expiraci i failovaných jobů
 						.UseFilter(new ContinuationsSupportAttribute(new HashSet<string> { FailedState.StateName, DeletedState.StateName, SucceededState.StateName })) // only working with AutomaticRetryAttribute with Attempts = 0
 						.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně

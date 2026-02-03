@@ -12,13 +12,19 @@ namespace Havit.Hangfire.Extensions.Tags.Filters;
 /// For recurring jobs, it uses the "RecurringJobId" parameter if available;
 /// otherwise, it derives the job name from the method name by configured function or JobNameHelper.TryGetSimpleName.
 /// </summary>
-internal class TagJobAttribute : JobFilterAttribute, IServerFilter
+internal class TagJobFilter : IJobFilter, IServerFilter
 {
 	/// <summary>
 	/// Customizes tag for job.
 	/// Only non-recurring jobs are affected by this function.
 	/// </summary>
 	public Func<BackgroundJob, string> TagFunc { get; set; }
+
+	public bool AllowMultiple => false;
+
+	// Must be larger then AutomaticRetryAttribute.Order otherwise jobs are auto-retried even when AutomaticRetryAttribute with Attempts = 0.
+	// JK: To be honest, i don't know why.
+	public int Order => 25;
 
 	/// <inheritdoc />
 	public void OnPerforming(PerformingContext performingContext)

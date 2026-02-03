@@ -22,10 +22,23 @@ public static class JobNameHelper
 			try
 			{
 				string sequenceName = (string)job.Args[0];
-				string[] remainingRecurringJobIdsToEnqueue = (string[])job.Args[2];
+				string[] remainingRecurringJobIdsToEnqueue = job.Method.Name switch
+				{
+					nameof(SequenceRecurringJobScheduler.ProcessRecurryingJobsInQueue) => (string[])job.Args[1],
+					nameof(SequenceRecurringJobScheduler.EnqueueNextRecurringJob) => (string[])job.Args[2],
+					_ => null
+				};
 
-				result = $"{sequenceName} (enqueueing {remainingRecurringJobIdsToEnqueue.First()})";
-				return true;
+				if (remainingRecurringJobIdsToEnqueue != null)
+				{
+					result = $"{sequenceName} (enqueueing {remainingRecurringJobIdsToEnqueue.First()})";
+					return true;
+				}
+				else
+				{
+					result = null;
+					return false;
+				}
 			}
 			catch
 			{

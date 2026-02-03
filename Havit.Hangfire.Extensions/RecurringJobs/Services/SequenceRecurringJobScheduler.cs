@@ -37,7 +37,11 @@ public class SequenceRecurringJobScheduler
 	/// <summary>
 	/// Ensures running recurrying jobs sequence. 
 	/// </summary>
-	public void ProcessRecurryingJobsInQueue(string sequenceRecurringJobId, string[] recurringJobIdsToRunInSequence, JobContinuationOptions jobContinuationOptions)
+	public void ProcessRecurryingJobsInQueue(
+		/* Be careful: The arguments are used also in JobNameHelper to format job name! */
+		string sequenceRecurringJobId,
+		string[] recurringJobIdsToRunInSequence,
+		JobContinuationOptions jobContinuationOptions)
 	{
 		EnqueueNextRecurringJob(sequenceRecurringJobId, null, recurringJobIdsToRunInSequence, jobContinuationOptions);
 	}

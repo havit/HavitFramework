@@ -69,8 +69,8 @@ internal static class RouteCollectionExtensions
 		var jsDispatcher = new EmbeddedResourceDispatcher(jsContentType, assembly, "Havit.Hangfire.Extensions.Tags.Dashboard.CustomizeReccuringJobsList.js");
 		routes.Append("/js[0-9]+", jsDispatcher);
 
-		const string cssContentType = "text/css";
-		var cssDispatcher = new EmbeddedResourceDispatcher(cssContentType, assembly, "Havit.Hangfire.Extensions.Tags.Dashboard.CustomizeTagList.css");
-		routes.Append("/css[0-9]+", cssDispatcher);
+		//const string cssContentType = "text/css";
+		//var cssDispatcher = new EmbeddedResourceDispatcher(cssContentType, assembly, "Havit.Hangfire.Extensions.Tags.Dashboard.CustomizeTagList.css");
+		//routes.Append("/css[0-9]+", cssDispatcher);
 	}
 }

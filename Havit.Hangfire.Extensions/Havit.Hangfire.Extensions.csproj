@@ -8,13 +8,13 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.24</PackageVersion>
+		<PackageVersion>2.0.30-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire extensions</Description>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PackageReference Include="Hangfire.Core" Version="1.8.22" />
-	  <PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
-	  <!-- update vulnerable dependencies to fixed versions -->
+	  <PackageReference Include="OpenTelemetry.Api" Version="1.15.0" />
+		<!-- update vulnerable dependencies to fixed versions -->
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
 	<ItemGroup>

@@ -75,7 +75,7 @@ public static class Program
 						.UseFilter(new CancelRecurringJobWhenAlreadyInQueueOrCurrentlyRunningFilter()) // joby se (v případě "nestihnutí" zpracování) nezařazují opakovaně
 						.UseFilter(new DeleteSequenceRecurringJobSchedulerFilter()) // zajistí odstranění systémových stavů jobů zajišťujících běh recurring jobů v sekvenci
 						.UseFilter(new ExceptionMonitoringAttribute(serviceProvider.GetRequiredService<IExceptionMonitoringService>())) // zajistíme hlášení chyby v případě selhání jobu
-						.UseFilter(new ApplicationInsightAttribute(serviceProvider.GetRequiredService<TelemetryClient>()) { JobNameFunc = backgroundJob => Hangfire.Extensions.Helpers.JobNameHelper.TryGetSimpleName(backgroundJob.Job, out string simpleName) ? simpleName : backgroundJob.Job.ToString() })
+						.UseFilter(new OpenTelemetryAttribute { JobNameFunc = backgroundJob => Hangfire.Extensions.Helpers.JobNameHelper.TryGetSimpleName(backgroundJob.Job, out string simpleName) ? simpleName : backgroundJob.Job.ToString() })
 						.UseConsole()
 					);
 

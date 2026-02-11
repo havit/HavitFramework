@@ -1,85 +1,30 @@
 ﻿using Hangfire;
 using Hangfire.Common;
 using Hangfire.Server;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Havit.Hangfire.Extensions.Filters;
 
 /// <summary>
-/// Logs Hangfire jobs as requests to Application Insights.
+/// Legacy.
 /// </summary>
+[Obsolete("Use OpenTelemetryAttribute instead.", error: true)]
 public class ApplicationInsightAttribute : JobFilterAttribute, IServerFilter
 {
-	private readonly TelemetryClient _telemetryClient;
-
 	/// <summary>
 	/// Gets the custom name of the job.
 	/// </summary>
 	public Func<BackgroundJob, string> JobNameFunc { get; set; }
 
-	/// <summary>
-	/// Constructor.
-	/// </summary>
-	public ApplicationInsightAttribute(TelemetryClient telemetryClient)
-	{
-		this._telemetryClient = telemetryClient;
-	}
-
 	/// <inheritdoc />
 	public void OnPerforming(PerformingContext context)
 	{
-		RequestTelemetry requestTelemetry = new RequestTelemetry()
-		{
-			Name = "JOB " + GetJobName(context.BackgroundJob)
-		};
-
-		// Track Hangfire Job as a Request (operation) in AI
-		IOperationHolder<RequestTelemetry> operation = _telemetryClient.StartOperation(requestTelemetry);
-		requestTelemetry.Properties.Add("JobId", context.BackgroundJob.Id);
-
-		context.Items["ApplicationInsightsOperation"] = operation;
+		throw new NotSupportedException();
 	}
 
 	/// <inheritdoc />
 	public void OnPerformed(PerformedContext context)
 	{
-		IOperationHolder<RequestTelemetry> operation = context.Items["ApplicationInsightsOperation"] as IOperationHolder<RequestTelemetry>;
-
-		if (operation != null)
-		{
-			if (((context.Exception == null) || context.ExceptionHandled))
-			{
-				operation.Telemetry.Success = true;
-				operation.Telemetry.ResponseCode = "Success";
-			}
-			else
-			{
-				operation.Telemetry.Success = false;
-				operation.Telemetry.ResponseCode = "Failed";
-
-				string operationId = operation.Telemetry.Context.Operation.Id;
-
-				var exceptionTelemetry = new ExceptionTelemetry(context.Exception);
-				// See https://docs.microsoft.com/en-us/azure/azure-monitor/app/correlation
-				exceptionTelemetry.Context.Operation.Id = operationId;
-				exceptionTelemetry.Context.Operation.ParentId = operationId;
-
-				_telemetryClient.TrackException(exceptionTelemetry);
-			}
-
-			_telemetryClient.StopOperation(operation);
-		}
+		throw new NotSupportedException();
 	}
 
-	private string GetJobName(BackgroundJob backgroundJob)
-	{
-		if (JobNameFunc != null)
-		{
-			return JobNameFunc.Invoke(backgroundJob);
-		}
-
-		return backgroundJob.Job.ToString();
-	}
 }

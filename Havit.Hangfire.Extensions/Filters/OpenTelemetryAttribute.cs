@@ -1,7 +1,8 @@
-﻿using Hangfire;
+﻿using System.Diagnostics;
+using Hangfire;
 using Hangfire.Common;
 using Hangfire.Server;
-using System.Diagnostics;
+using Havit.Hangfire.Extensions.RecurringJobs.Services;
 
 namespace Havit.Hangfire.Extensions.Filters;
 
@@ -20,10 +21,16 @@ public class OpenTelemetryAttribute : JobFilterAttribute, IServerFilter
 	/// <inheritdoc />
 	public void OnPerforming(PerformingContext context)
 	{
+		if (context.BackgroundJob.Job.Type == typeof(SequenceRecurringJobScheduler))
+		{
+			return;
+		}
+
 		string jobName = GetJobName(context.BackgroundJob);
 		string activityName = "JOB " + jobName;
 
 		Activity activity = ActivitySource.StartActivity(activityName, ActivityKind.Server); // ActivityKind.Server: Mapuje se do ApplicationInsights jako Request
+		activity?.SetTag("hangfire.job.id", context.BackgroundJob.Id);
 
 		context.Items["OpenTelemetryActivity"] = activity;
 	}
@@ -31,7 +38,13 @@ public class OpenTelemetryAttribute : JobFilterAttribute, IServerFilter
 	/// <inheritdoc />
 	public void OnPerformed(PerformedContext context)
 	{
-		Activity activity = context.Items["OpenTelemetryActivity"] as Activity;
+		Activity activity = null;
+
+		if (context.Items.TryGetValue("OpenTelemetryActivity", out object activityObject))
+		{
+			activity = (Activity)activityObject;
+		}
+
 		if (activity == null)
 		{
 			return;

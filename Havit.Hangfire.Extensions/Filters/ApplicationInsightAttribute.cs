@@ -7,7 +7,7 @@ namespace Havit.Hangfire.Extensions.Filters;
 /// <summary>
 /// Legacy.
 /// </summary>
-[Obsolete("Use OpenTelemetryAttribute instead.", error: true)]
+[Obsolete("Use OpenTelemetryAttribute instead and upgrade your application to OpenTelemetry and Microsoft.ApplicationInsights 3.0+.", error: true)]
 public class ApplicationInsightAttribute : JobFilterAttribute, IServerFilter
 {
 	/// <summary>

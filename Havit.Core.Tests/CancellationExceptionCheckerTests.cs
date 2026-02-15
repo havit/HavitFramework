@@ -31,7 +31,7 @@ public class CancellationExceptionCheckerTests
 		// Arrange
 		using (var cultureInfoScope = CultureInfoExt.EnterScope(new System.Globalization.CultureInfo(culture))) // set localization
 		{
-			SqlException sqlException = null;
+			Exception exception = null;
 
 			// we need to simulate SqlException caused by command cancellation		
 			using (var sqlConnection = new SqlConnection("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=master;Application Name=Havit.Core.Tests;ConnectRetryCount=0"))
@@ -55,13 +55,15 @@ public class CancellationExceptionCheckerTests
 
 					// Act
 					// Execute the sql command but cancel it after 10 ms.
-					sqlException = await Assert.ThrowsAsync<SqlException>(async () => await sqlCommand.ExecuteNonQueryAsync(cts.Token));
+					// It should be SqlException but sometimes 10 ms is not enough to trigger network communication so TaskCancelledException is thrown insted.
+					// Both exceptions should be recognized as cancellation exceptions.
+					exception = await Assert.ThrowsAsync<Exception>(async () => await sqlCommand.ExecuteNonQueryAsync(cts.Token));
 				}
 			}
 
 			// Assert
-			Assert.IsTrue(CancellationExceptionChecker.IsCancellationException(sqlException),
-				message: $"SqlException was expected to be recognized as cancellation exception, but it was not. Exception details: {sqlException}");
+			Assert.IsTrue(CancellationExceptionChecker.IsCancellationException(exception),
+				message: $"Exception was expected to be recognized as cancellation exception, but it was not. Exception details: {exception}");
 		}
 	}
 }

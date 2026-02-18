@@ -8,7 +8,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.2-pre01</PackageVersion>
+		<PackageVersion>2.0.2-pre02</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire tags</Description>
 	</PropertyGroup>
 
@@ -19,7 +19,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="FaceIT.Hangfire.Tags" Version="1.9.0" />
-		<PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
 	</ItemGroup>
 	
 	<ItemGroup>

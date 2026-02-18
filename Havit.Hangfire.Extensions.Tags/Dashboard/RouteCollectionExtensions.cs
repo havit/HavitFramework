@@ -1,5 +1,6 @@
 using System.Reflection;
 using Hangfire.Dashboard;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Hangfire.Extensions.Tags.Dashboard;
 
@@ -17,7 +18,7 @@ internal static class RouteCollectionExtensions
 	/// <param name="routes">Route collection</param>
 	private static List<Tuple<string, IDashboardDispatcher>> GetDispatchers(this RouteCollection routes)
 	{
-		ArgumentNullException.ThrowIfNull(routes);
+		Contract.Assert<ArgumentNullException>(routes != null);
 
 		if (s_dispatchers?.GetValue(routes) is null)
 		{
@@ -36,9 +37,9 @@ internal static class RouteCollectionExtensions
 	/// <param name="dispatcher">Dispatcher to add or append for specified path</param>
 	internal static void Append(this RouteCollection routes, string pathTemplate, IDashboardDispatcher dispatcher)
 	{
-		ArgumentNullException.ThrowIfNull(routes);
-		ArgumentNullException.ThrowIfNull(pathTemplate);
-		ArgumentNullException.ThrowIfNull(dispatcher);
+		Contract.Assert<ArgumentNullException>(routes != null);
+		Contract.Assert<ArgumentNullException>(pathTemplate != null);
+		Contract.Assert<ArgumentNullException>(dispatcher != null);
 
 		var list = routes.GetDispatchers();
 

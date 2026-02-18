@@ -1,4 +1,5 @@
 using Hangfire.Dashboard;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Hangfire.Extensions.Tags.Dashboard;
 
@@ -12,14 +13,14 @@ internal class CompositeDispatcher(params IDashboardDispatcher[] dispatchers) : 
 
 	public void AddDispatcher(IDashboardDispatcher dispatcher)
 	{
-		ArgumentNullException.ThrowIfNull(dispatcher);
+		Contract.Assert<ArgumentNullException>(dispatcher != null);
 
 		_dispatchers.Add(dispatcher);
 	}
 
 	public async Task Dispatch(DashboardContext context)
 	{
-		ArgumentNullException.ThrowIfNull(context);
+		Contract.Assert<ArgumentNullException>(context != null);
 
 		if (_dispatchers.Count == 0)
 		{

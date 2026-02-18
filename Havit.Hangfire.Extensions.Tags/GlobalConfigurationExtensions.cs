@@ -1,5 +1,6 @@
 using Hangfire;
 using Hangfire.Dashboard;
+using Havit.Diagnostics.Contracts;
 using Havit.Hangfire.Extensions.Tags.Dashboard;
 using Havit.Hangfire.Extensions.Tags.Filters;
 
@@ -15,7 +16,7 @@ public static class GlobalConfigurationExtensions
 	/// </summary>
 	public static IGlobalConfiguration UseJobsTagging(this IGlobalConfiguration configuration, JobsTaggingOptions jobsTaggingOptions = null)
 	{
-		ArgumentNullException.ThrowIfNull(configuration);
+		Contract.Assert<ArgumentNullException>(configuration != null);
 
 		var tagJobsFilter = new TagJobFilter();
 
@@ -35,7 +36,7 @@ public static class GlobalConfigurationExtensions
 	/// <exception cref="ArgumentNullException">Thrown when the <paramref name="configuration"/> is null.</exception>
 	public static IGlobalConfiguration UseTagsDashboardExtension(this IGlobalConfiguration configuration)
 	{
-		ArgumentNullException.ThrowIfNull(configuration);
+		Contract.Assert<ArgumentNullException>(configuration != null);
 
 		DashboardRoutes.Routes.AddRecurringJobsTags();
 

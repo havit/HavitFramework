@@ -1,5 +1,6 @@
 using System.Reflection;
 using Hangfire.Dashboard;
+using Havit.Diagnostics.Contracts;
 
 namespace Havit.Hangfire.Extensions.Tags.Dashboard;
 
@@ -11,9 +12,9 @@ internal sealed class EmbeddedResourceDispatcher : IDashboardDispatcher
 
 	public EmbeddedResourceDispatcher(string contentType, Assembly assembly, string resourceName)
 	{
-		ArgumentException.ThrowIfNullOrEmpty(contentType);
-		ArgumentNullException.ThrowIfNull(assembly);
-		ArgumentException.ThrowIfNullOrEmpty(resourceName);
+		Contract.Assert<ArgumentException>(!String.IsNullOrEmpty(contentType));
+		Contract.Assert<ArgumentNullException>(assembly != null);
+		Contract.Assert<ArgumentException>(!String.IsNullOrEmpty(resourceName));
 
 		_contentType = contentType;
 		_assembly = assembly;

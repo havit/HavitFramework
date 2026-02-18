@@ -2,10 +2,12 @@
 
 public class JobOne : IJobOne
 {
-	public Task ExecuteAsync(CancellationToken cancellationToken)
+	public async Task ExecuteAsync(CancellationToken cancellationToken)
 	{
 		Console.WriteLine("Job one");
-		return Task.CompletedTask;
+
+		// To check correlations (OpenTelemetry, Application Insights)
+		_ = await new HttpClient().GetAsync("https://www.havit.cz", cancellationToken);
 
 	}
 }

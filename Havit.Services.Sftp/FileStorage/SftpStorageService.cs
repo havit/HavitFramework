@@ -71,14 +71,29 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	public override void Delete(string fileName)
 	{
 		ISftpClient sftpClient = GetConnectedSftpClient();
-		sftpClient.Delete(SubstituteFileName(fileName));
+		try
+		{
+			sftpClient.Delete(SubstituteFileName(fileName));
+		}
+		catch (SftpPathNotFoundException)
+		{
+			// NOOP
+		}
 	}
 
 	/// <inheritdoc />
 	public override async Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 	{
 		ISftpClient sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
-		await sftpClient.DeleteAsync(SubstituteFileName(fileName), cancellationToken).ConfigureAwait(false);
+
+		try
+		{
+			await sftpClient.DeleteAsync(SubstituteFileName(fileName), cancellationToken).ConfigureAwait(false);
+		}
+		catch (SftpPathNotFoundException)
+		{
+			// NOOP
+		}
 	}
 
 	/// <inheritdoc />

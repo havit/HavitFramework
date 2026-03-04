@@ -210,7 +210,7 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		BlobClient blobClient = GetBlobClient(fileName);
-		blobClient.Delete();
+		blobClient.DeleteIfExists();
 	}
 
 	/// <summary>
@@ -221,7 +221,7 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		BlobClient blobClient = GetBlobClient(fileName);
-		await blobClient.DeleteAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+		await blobClient.DeleteIfExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>

@@ -53,6 +53,18 @@ public class AzureFileStorageServiceTests
 	}
 
 	[TestMethod]
+	public void AzureFileStorageService_Delete_DoesNotThrowWhenNotFound()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_Delete_DoesNotThrowWhenNotFound(GetAzureFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task AzureFileStorageService_DeleteAsync_DoesNotThrowWhenNotFound()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_DeleteAsync_DoesNotThrowWhenNotFound(GetAzureFileStorageService());
+	}
+
+	[TestMethod]
 	public void AzureFileStorageService_Exists_ReturnsFalseWhenNotFound()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetAzureFileStorageService());

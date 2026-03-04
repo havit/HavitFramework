@@ -253,7 +253,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		ShareFileClient shareFileClient = GetShareFileClient(fileName);
-		shareFileClient.Delete();
+		shareFileClient.DeleteIfExists();
 	}
 
 	/// <summary>
@@ -264,7 +264,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
 		ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
-		await shareFileClient.DeleteAsync(cancellationToken).ConfigureAwait(false);
+		await shareFileClient.DeleteIfExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>

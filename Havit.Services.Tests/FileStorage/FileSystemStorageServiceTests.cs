@@ -115,6 +115,18 @@ public class FileSystemStorageServiceTests
 	}
 
 	[TestMethod]
+	public void FileSystemStorageService_Delete_DoesNotThrowWhenNotFound()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_Delete_DoesNotThrowWhenNotFound(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
+	public async Task FileSystemStorageService_DeleteAsync_DoesNotThrowWhenNotFound()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_DeleteAsync_DoesNotThrowWhenNotFound(GetFileSystemStorageService());
+	}
+
+	[TestMethod]
 	public void FileSystemStorageService_Exists_ReturnsFalseWhenNotFound()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetFileSystemStorageService());

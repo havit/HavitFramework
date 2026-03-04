@@ -46,6 +46,17 @@ public class SftpFileStorageServiceTests
 	}
 
 	[TestMethod]
+	public void SftpStorageService_Delete_DoesNotThrowWhenNotFound()
+	{
+		FileStorageServiceTestHelpers.FileStorageService_Delete_DoesNotThrowWhenNotFound(GetSftpFileStorageService());
+	}
+
+	[TestMethod]
+	public async Task SftpStorageService_DeleteAsync_DoesNotThrowWhenNotFound()
+	{
+		await FileStorageServiceTestHelpers.FileStorageService_DeleteAsync_DoesNotThrowWhenNotFound(GetSftpFileStorageService());
+	}
+	[TestMethod]
 	public void SftpStorageService_Exists_ReturnsFalseWhenNotFound()
 	{
 		FileStorageServiceTestHelpers.FileStorageService_Exists_ReturnsFalseWhenNotFound(GetSftpFileStorageService());

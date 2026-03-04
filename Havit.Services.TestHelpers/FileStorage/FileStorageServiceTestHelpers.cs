@@ -7,6 +7,26 @@ namespace Havit.Services.TestHelpers.FileStorage;
 
 public static class FileStorageServiceTestHelpers
 {
+	public static void FileStorageService_Delete_DoesNotThrowWhenNotFound(IFileStorageService fileStorageService)
+	{
+		// Act
+		fileStorageService.Delete(@"non-existing-file");
+		fileStorageService.Delete(@"subfolder\non-existing-file");
+
+		// Assert
+		// no exception is thrown
+	}
+
+	public static async Task FileStorageService_DeleteAsync_DoesNotThrowWhenNotFound(IFileStorageService fileStorageService)
+	{
+		// Act
+		await fileStorageService.DeleteAsync("non-existing-file");
+		await fileStorageService.DeleteAsync(@"subfolder\non-existing-file");
+
+		// Assert
+		// no exception is thrown
+	}
+
 	public static void FileStorageService_Exists_ReturnsFalseWhenNotFound(IFileStorageService fileStorageService)
 	{
 		// Act

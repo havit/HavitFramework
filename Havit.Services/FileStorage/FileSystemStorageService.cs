@@ -231,7 +231,14 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 	public override void Delete(string fileName)
 	{
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
-		System.IO.File.Delete(GetFullPath(fileName));
+		try
+		{
+			System.IO.File.Delete(GetFullPath(fileName));
+		}
+		catch (DirectoryNotFoundException)
+		{
+			// NOOP
+		}
 	}
 
 	/// <summary>
@@ -240,7 +247,15 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 	/// </summary>
 	public override Task DeleteAsync(string fileName, CancellationToken cancellationToken = default)
 	{
-		Delete(fileName);
+		try
+		{
+			Delete(fileName);
+		}
+		catch (DirectoryNotFoundException)
+		{
+			// NOOP
+		}
+
 		return Task.CompletedTask;
 	}
 

@@ -72,6 +72,7 @@
 			"Havit.Extensions.DependencyInjection.SourceGenerators\\Havit.Extensions.DependencyInjection.SourceGenerators.csproj",
 			"Havit.Extensions.DependencyInjection.Tests\\Havit.Extensions.DependencyInjection.Tests.csproj",
 			"Havit.Extensions.DependencyInjection\\Havit.Extensions.DependencyInjection.csproj",
+			"Havit.Extensions.OpenTelemetry.Azure\\Havit.Extensions.OpenTelemetry.Azure.csproj",
 			"Havit.GoPay.Tests\\Havit.GoPay.Tests.csproj",
 			"Havit.GoPay\\Havit.GoPay.csproj",
 			"Havit.Hangfire.Extensions.Tags\\Havit.Hangfire.Extensions.Tags.csproj",

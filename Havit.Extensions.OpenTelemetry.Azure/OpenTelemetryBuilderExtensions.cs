@@ -12,11 +12,11 @@ public static class OpenTelemetryBuilderExtensions
 	/// <summary>
 	/// Vrátí výchozí connection string pro Azure Application Insights /Azure Monitor exporter z konfigurace.
 	/// Primárně, pokud je v konfiguraci přítomen klíč <c>APPLICATIONINSIGHTS_CONNECTION_STRING</c> (typicky environment variable), použije se jeho hodnota.
-	/// Sekundárně se použije hodnota connection stringu <c>ApplicationInsights</c>.
+	/// Sekundárně se použije hodnota pro <c>AzureMonitor:ConnectionString</c>.
 	/// </summary>
 	public static string GetDefaultApplicationInsightsConnectionString(IConfiguration configuration) =>
 		configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING")
-		?? configuration.GetConnectionString("ApplicationInsights");
+		?? configuration.GetConnectionString("AzureMonitor:ConnectionString");
 
 	/// <summary>
 	/// Zaregistruje Azure Monitor exporter s výchozím connection stringem, pokud existuje.

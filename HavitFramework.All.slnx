@@ -6,6 +6,7 @@
     <Project Path="Havit.Extensions.DependencyInjection.CastleWindsor/Havit.Extensions.DependencyInjection.CastleWindsor.csproj" />
     <Project Path="Havit.Extensions.DependencyInjection.SourceGenerators/Havit.Extensions.DependencyInjection.SourceGenerators.csproj" />
     <Project Path="Havit.Extensions.DependencyInjection/Havit.Extensions.DependencyInjection.csproj" />
+    <Project Path="Havit.Extensions.OpenTelemetry.Azure/Havit.Extensions.OpenTelemetry.Azure.csproj" Id="39c7b3fa-7370-473e-9526-dbc3af3b5290" />
   </Folder>
   <Folder Name="/ASP.NET Core/Tests/">
     <Project Path="Havit.AspNetCore.Tests/Havit.AspNetCore.Tests.csproj" />

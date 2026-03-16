@@ -16,7 +16,7 @@ public static class OpenTelemetryBuilderExtensions
 	/// </summary>
 	public static string GetDefaultApplicationInsightsConnectionString(IConfiguration configuration) =>
 		configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING")
-		?? configuration.GetConnectionString("AzureMonitor:ConnectionString");
+		?? configuration.GetValue<string>("AzureMonitor:ConnectionString");
 
 	/// <summary>
 	/// Zaregistruje Azure Monitor exporter s výchozím connection stringem, pokud existuje.

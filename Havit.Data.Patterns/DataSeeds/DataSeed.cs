@@ -63,7 +63,7 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	}
 
 	/// <summary>
-	/// Provede persistenci seedovaných dat. Učeno pro volání z implementace metody SeedData.
+	/// Provede persistenci seedovaných dat. Určeno pro volání z implementace metody SeedData.
 	/// </summary>
 	protected void Seed<TEntity>(IDataSeedFor<TEntity> dataSeedFor)
 		where TEntity : class
@@ -107,8 +107,14 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	void IDataSeed.SeedData(IDataSeedPersister dataSeedPersister)
 	{
 		this._currentDataSeedPersister = dataSeedPersister;
-		SeedData();
-		this._currentDataSeedPersister = null;
+		try
+		{
+			SeedData();
+		}
+		finally
+		{
+			this._currentDataSeedPersister = null;
+		}
 	}
 
 	/// <summary>
@@ -117,7 +123,13 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	async Task IDataSeed.SeedDataAsync(IDataSeedPersister dataSeedPersister, CancellationToken cancellationToken)
 	{
 		this._currentDataSeedPersister = dataSeedPersister;
-		await SeedDataAsync(cancellationToken).ConfigureAwait(false);
-		this._currentDataSeedPersister = null;
+		try
+		{
+			await SeedDataAsync(cancellationToken).ConfigureAwait(false);
+		}
+		finally
+		{
+			this._currentDataSeedPersister = null;
+		}
 	}
 }

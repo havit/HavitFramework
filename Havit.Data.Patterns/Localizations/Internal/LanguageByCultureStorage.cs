@@ -5,8 +5,14 @@
 /// </summary>
 public class LanguageByCultureStorage<TLanguageKey> : ILanguageByCultureStorage<TLanguageKey>
 {
+	private volatile Dictionary<string, TLanguageKey> _value;
+
 	/// <summary>
-	/// Úložiště párování cultura jazyka.
+	/// Úložiště párování culture na jazyk.
 	/// </summary>
-	public Dictionary<string, TLanguageKey> Value { get; set; }
+	public Dictionary<string, TLanguageKey> Value
+	{
+		get => _value;
+		set => _value = value;
+	}
 }

@@ -9,7 +9,7 @@ namespace Havit.Data.Patterns.DataSeeds;
 public interface IDataSeedRunDecision
 {
 	/// <summary>
-	/// Indikuje, zda má dojík se spuštění seedování dat.
+	/// Indikuje, zda má dojít se spuštění seedování dat.
 	/// </summary>
 	bool ShouldSeedData(IDataSeedProfile profile, List<Type> dataSeedTypes);
 

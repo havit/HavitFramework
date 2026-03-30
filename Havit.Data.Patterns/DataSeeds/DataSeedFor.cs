@@ -16,7 +16,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	internal Dictionary<string, object> _childDataForsRegistry { get; private set; } = new Dictionary<string, object>();
 
 	/// <summary>
-	/// Konstuktor.
+	/// Konstruktor.
 	/// </summary>
 	/// <param name="data">Objekty, které mají být seedovány.</param>
 	public DataSeedFor(TEntity[] data)
@@ -33,7 +33,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	///			<description>Symbol - pokud existuje vlastnost pojmenovaná Symbol, je automaticky použita pro párování.</description>
 	///		</item>
 	///		<item>
-	///			<description>ILocalization - pokud třída implementuje ILocalization&lt;,&gt;, je použito pro párování vlastností ParentId a LanguageId. Dále je zajišťěno seedování kolekce Localizations.</description>
+	///			<description>ILocalization - pokud třída implementuje ILocalization&lt;,&gt;, je použito pro párování vlastností ParentId a LanguageId. Dále je zajištěno seedování kolekce Localizations.</description>
 	///		</item>
 	/// </list>
 	/// </summary>
@@ -79,11 +79,11 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 
 			AfterSave(data =>
 			{
-				dynamic seedEntity = data.SeedEntity;
-				if (seedEntity.Localizations != null)
+				object localizations = DataBinderExt.GetValue(data.SeedEntity, nameof(ILocalized<,>.Localizations));
+				if (localizations != null)
 				{
 					object dbEntityId = DataBinderExt.GetValue(data.PersistedEntity, "Id");
-					foreach (object seedLocalization in seedEntity.Localizations)
+					foreach (object seedLocalization in (System.Collections.IEnumerable)localizations)
 					{
 						DataBinderExt.SetValue(seedLocalization, "ParentId", dbEntityId);
 					}
@@ -95,9 +95,9 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	/// <summary>
 	/// Nastaví způsob párování dat.
 	/// </summary>
-	public IDataSeedForPaired<TEntity> PairBy(params Expression<Func<TEntity, object>>[] pairByExpresssions)
+	public IDataSeedForPaired<TEntity> PairBy(params Expression<Func<TEntity, object>>[] pairByExpressions)
 	{
-		Configuration.PairByExpressions = new List<Expression<Func<TEntity, object>>>(pairByExpresssions);
+		Configuration.PairByExpressions = new List<Expression<Func<TEntity, object>>>(pairByExpressions);
 		return this;
 	}
 

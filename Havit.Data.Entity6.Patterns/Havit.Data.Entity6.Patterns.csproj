@@ -19,12 +19,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net48'" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\Havit.Data.Entity6\Havit.Data.Entity6.csproj" />
 		<ProjectReference Include="..\Havit.Data.Patterns\Havit.Data.Patterns.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-		<Reference Include="System.Transactions" Condition="'$(TargetFramework)' == 'net48'" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" Condition="'$(TargetFramework)' == 'net48'" />
 	</ItemGroup>
+	
 </Project>

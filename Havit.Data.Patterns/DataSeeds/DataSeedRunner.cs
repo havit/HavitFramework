@@ -63,7 +63,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	public virtual void SeedData(Type dataSeedProfileType, bool forceRun = false)
 	{
-		SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>());
+		SeedProfileWithPrequisites(dataSeedProfileType, forceRun, new Stack<Type>(), new HashSet<Type>());
 	}
 
 	/// <summary>
@@ -71,13 +71,13 @@ public class DataSeedRunner : IDataSeedRunner
 	/// </summary>
 	public virtual async Task SeedDataAsync(Type dataSeedProfileType, bool forceRun = false, CancellationToken cancellationToken = default)
 	{
-		await SeedProfileWithPrequisitesAsync(dataSeedProfileType, forceRun, new Stack<Type>(), new List<Type>(), cancellationToken).ConfigureAwait(false);
+		await SeedProfileWithPrequisitesAsync(dataSeedProfileType, forceRun, new Stack<Type>(), new HashSet<Type>(), cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
 	/// Provede seedování profilu s prerequisitami. Řeší detekci cyklů závislostí, atp.
 	/// </summary>
-	private void SeedProfileWithPrequisites(Type profileType, bool forceRun, Stack<Type> profileTypesStack, List<Type> completedProfileTypes)
+	private void SeedProfileWithPrequisites(Type profileType, bool forceRun, Stack<Type> profileTypesStack, HashSet<Type> completedProfileTypes)
 	{
 		// Already completed
 		if (completedProfileTypes.Contains(profileType))
@@ -110,7 +110,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <summary>
 	/// Provede seedování profilu s prerequisitami. Řeší detekci cyklů závislostí, atp.
 	/// </summary>
-	private async Task SeedProfileWithPrequisitesAsync(Type profileType, bool forceRun, Stack<Type> profileTypesStack, List<Type> completedProfileTypes, CancellationToken cancellationToken)
+	private async Task SeedProfileWithPrequisitesAsync(Type profileType, bool forceRun, Stack<Type> profileTypesStack, HashSet<Type> completedProfileTypes, CancellationToken cancellationToken)
 	{
 		// Already completed
 		if (completedProfileTypes.Contains(profileType))
@@ -192,7 +192,7 @@ public class DataSeedRunner : IDataSeedRunner
 		if (forceRun || _dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
 		{
 			// seed profile
-			List<IDataSeed> completedDataSeeds = new List<IDataSeed>();
+			HashSet<IDataSeed> completedDataSeeds = new HashSet<IDataSeed>();
 
 			Stack<IDataSeed> dataSeedsStack = new Stack<IDataSeed>();
 			foreach (IDataSeed dataSeed in dataSeedsInProfileByType.Values)
@@ -253,7 +253,7 @@ public class DataSeedRunner : IDataSeedRunner
 	/// <param name="dataSeedsInProfileByType">Index dataseedů dle typu pro dohledávání závislostí. Obsahuje instance dataseedů v aktuálně seedovaném profilu.</param>
 	/// <param name="completedDataSeedsInProfile">Seznam již proběhlých dataseedů v daném profilu. Pro neopakování dataseedů, které jsou jako závislosti</param>
 	/// <param name="cancellationToken">Cancellation token.</param>
-	private async Task SeedServiceAsync(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, List<IDataSeed> completedDataSeedsInProfile, CancellationToken cancellationToken)
+	private async Task SeedServiceAsync(IDataSeed dataSeed, Stack<IDataSeed> stack, IDataSeedProfile profile, Dictionary<Type, IDataSeed> dataSeedsInProfileByType, HashSet<IDataSeed> completedDataSeedsInProfile, CancellationToken cancellationToken)
 	{
 		// Already completed?
 		if (completedDataSeedsInProfile.Contains(dataSeed))
@@ -292,7 +292,7 @@ public class DataSeedRunner : IDataSeedRunner
 	{
 		if (stack.Contains(dataSeed))
 		{
-			List<IDataSeed> cycle = stack.ToList().SkipWhile(type => type != dataSeed).ToList();
+			List<IDataSeed> cycle = stack.SkipWhile(type => type != dataSeed).ToList();
 			cycle.Add(dataSeed);
 			string cycleMessage = String.Join(" -> ", cycle.Select(type => type.GetType().Name));
 
@@ -327,6 +327,9 @@ public class DataSeedRunner : IDataSeedRunner
 		dataSeedPersister.AttachDataSeed(dataSeed);
 		try
 		{
+			// Voláme obě metody (sync i async), protože potomek DataSeed<TProfile> může overridnout libovolnou z nich.
+			// Výchozí implementace SeedDataAsync vrací Task.CompletedTask, takže pokud potomek overridnul jen SeedData, async volání je NOOP.
+			// Pokud potomek overridnul SeedDataAsync (a ta vrací nekompletní Task), vyhodíme výjimku - async seedy vyžadují SeedDataAsync runner.
 			dataSeed.SeedData(dataSeedPersister);
 			var task = dataSeed.SeedDataAsync(dataSeedPersister, CancellationToken.None);
 			if (!task.IsCompleted)

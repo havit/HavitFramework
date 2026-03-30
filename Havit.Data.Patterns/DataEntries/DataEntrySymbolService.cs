@@ -21,7 +21,7 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity, TKey> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
 	{
 		PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");
-		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DbDataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
+		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
 		Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolService is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
 
 		this._dataEntrySymbolStorage = dataEntrySymbolStorage;

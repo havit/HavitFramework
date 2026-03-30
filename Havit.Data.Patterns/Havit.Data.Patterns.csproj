@@ -12,6 +12,10 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
+		<!--
+			S publikací nové verze je nutno vypublikovat též Havit.Data.Entity6.Patterns, protože zde jsme odebrali závislost na Microsoft.CSharp,
+			která se v Havit.Data.Entity6.Patterns používá. Verze Havit.Data.Entity6.Patterns připravena k publikování si závislosti přidá jako svou vlastní.
+		-->
 		<PackageVersion>2.1.33</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
 	</PropertyGroup>
@@ -23,7 +27,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" Condition="'$(TargetFramework)' == 'net48'" />
 		<PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

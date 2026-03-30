@@ -13,7 +13,7 @@ public class DataSeedConfiguration<TEntity>
 	public IEnumerable<TEntity> SeedData { get; private set; }
 
 	/// <summary>
-	/// Indikuje, zda je povolen update seedovaných vlastností. Pokud jení povolen, provádí se jen insert neexistujících objektů.
+	/// Indikuje, zda je povolen update seedovaných vlastností. Pokud není povolen, provádí se jen insert neexistujících objektů.
 	/// Výchozí hodnota je true.
 	/// </summary>
 	public bool UpdateEnabled { get; set; }
@@ -50,7 +50,7 @@ public class DataSeedConfiguration<TEntity>
 	/// <summary>
 	/// Podmínka, která se má použít při načtení dat z databáze.
 	/// Musí zajistit načtení všech potřebných záznamů.
-	/// Avak může způsobit načtení i nepotřených záznamů, s tím se seedování vypořádá a ignoruje je.
+	/// Avšak může způsobit načtení i nepotřených záznamů, s tím se seedování vypořádá a ignoruje je.
 	/// </summary>
 	public Expression<Func<TEntity, bool>> CustomQueryCondition { get; set; }
 

@@ -23,7 +23,7 @@ public interface IDataLoader
 	/// </summary>
 	/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 	/// <param name="propertyPath">Vlastnost, která má být načtena.</param>
-	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+	/// <param name="cancellationToken">Cancellation token pro případné zrušení operace.</param>
 	Task<IFluentDataLoader<TProperty>> LoadAsync<TEntity, TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class;
@@ -41,7 +41,7 @@ public interface IDataLoader
 	/// </summary>
 	/// <param name="entity">Objekt, jehož vlastnosti budou načteny.</param>
 	/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
-	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+	/// <param name="cancellationToken">Cancellation token pro případné zrušení operace.</param>
 	Task LoadAsync<TEntity>(TEntity entity, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class;
 
@@ -59,7 +59,7 @@ public interface IDataLoader
 	/// </summary>
 	/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 	/// <param name="propertyPath">Vlastnost, který má být načtena.</param>
-	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+	/// <param name="cancellationToken">Cancellation token pro případné zrušení operace.</param>
 	Task<IFluentDataLoader<TProperty>> LoadAllAsync<TEntity, TProperty>(IEnumerable<TEntity> entities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken = default)
 		where TEntity : class
 		where TProperty : class;
@@ -77,7 +77,7 @@ public interface IDataLoader
 	/// </summary>
 	/// <param name="entities">Objekty, jejíž vlastnosti budou načteny.</param>
 	/// <param name="propertyPaths">Vlastnosti, které mají být načteny.</param>
-	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+	/// <param name="cancellationToken">Cancellation token pro případné zrušení operace.</param>
 	Task LoadAllAsync<TEntity>(IEnumerable<TEntity> entities, Expression<Func<TEntity, object>>[] propertyPaths, CancellationToken cancellationToken = default)
 		where TEntity : class;
 }

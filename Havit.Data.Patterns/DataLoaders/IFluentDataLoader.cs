@@ -31,7 +31,7 @@ public interface IFluentDataLoader<out TEntity>
 	/// <param name="propertyPath">
 	/// Vlastnost, která má být načtena.
 	/// </param>
-	/// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+	/// <param name="cancellationToken">Cancellation token pro případné zrušení operace.</param>
 	Task<IFluentDataLoader<TProperty>> LoadAsync<TProperty>(Expression propertyPath, CancellationToken cancellationToken = default)
 		where TProperty : class;
 

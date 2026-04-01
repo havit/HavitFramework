@@ -19,5 +19,4 @@ public static class ConventionIdentifiers
 	/// Identifikátor konvence LocalizationTableIndexConvention.
 	/// </summary>
 	public const string LocalizationTableIndexConvention = nameof(LocalizationTableIndexConvention);
-
 }

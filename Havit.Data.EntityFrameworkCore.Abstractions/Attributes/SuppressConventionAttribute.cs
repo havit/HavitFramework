@@ -1,10 +1,10 @@
 ﻿namespace Havit.Data.EntityFrameworkCore.Attributes;
 
 /// <summary>
-/// Slouží k označení konvenve jako potlačené.
+/// Slouží k označení konvence jako potlačené.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = true)]
-public class SuppressConventionAttribute : Attribute
+public sealed class SuppressConventionAttribute : Attribute
 {
 	/// <summary>
 	/// Potlačená konvence (resp. její typ).
@@ -16,6 +16,7 @@ public class SuppressConventionAttribute : Attribute
 	/// </summary>
 	public SuppressConventionAttribute(string conventionIdentifierToSuppress)
 	{
+		ArgumentNullException.ThrowIfNull(conventionIdentifierToSuppress);
 		ConventionIdentifierToSuppress = conventionIdentifierToSuppress;
 	}
 }

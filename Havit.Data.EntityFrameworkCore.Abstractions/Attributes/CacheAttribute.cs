@@ -13,7 +13,7 @@ public sealed class CacheAttribute : Attribute
 	public bool CacheEntities { get; set; } = true;
 
 	/// <summary>
-	/// Indikuje, zda je cachováno cachování klíčů pro GetAll.
+	/// Indikuje, zda jsou cachovány klíče pro GetAll.
 	/// Výchozí hodnota je true.
 	/// </summary>
 	public bool CacheAllKeys { get; set; } = true;

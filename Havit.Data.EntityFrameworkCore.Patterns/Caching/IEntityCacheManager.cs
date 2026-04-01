@@ -28,6 +28,9 @@ public interface IEntityCacheManager
 	/// <summary>
 	/// Uloží do cache předanou entitu.
 	/// </summary>
+	/// <remarks>
+	/// Entita musí být připojena k <see cref="Havit.Data.EntityFrameworkCore.IDbContext"/> (musí být trackována), aby bylo možné získat smysluplné originální hodnoty.
+	/// </remarks>
 	void StoreEntity<TEntity>(TEntity entity)
 		where TEntity : class;
 
@@ -39,6 +42,10 @@ public interface IEntityCacheManager
 	/// <summary>
 	/// Pokusí se z cache načíst kolekci nebo one-to-one "back-referenci" dané entity. Pokud je kolekce nebo one-to-one vlastnost entity v cache nalezena a vrácena, vrací true. Jinak false. 
 	/// </summary>
+	/// <remarks>
+	/// Podporovány jsou navigace typu OneToMany, ManyToMany, ManyToManyDecomposedToOneToMany a OneToOne (back-reference).
+	/// Navigace typu Reference nejsou podporovány a nemají být předávány k načítání z cache.
+	/// </remarks>
 	bool TryGetNavigation<TEntity, TPropertyItem>(TEntity entityToLoad, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class;
@@ -46,6 +53,10 @@ public interface IEntityCacheManager
 	/// <summary>
 	/// Uloží do cache kolekci předané entity.
 	/// </summary>
+	/// <remarks>
+	/// Podporovány jsou navigace typu OneToMany, ManyToMany, ManyToManyDecomposedToOneToMany a OneToOne (back-reference).
+	/// Navigace typu Reference nejsou podporovány a nemají být předávány k ukládání do cache.
+	/// </remarks>
 	void StoreNavigation<TEntity, TPropertyItem>(TEntity entity, string propertyName)
 		where TEntity : class
 		where TPropertyItem : class;

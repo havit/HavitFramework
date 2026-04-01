@@ -329,6 +329,26 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
+	public void EntityCacheManager_Scenario_OneToOne_StoreNavigation_DoesNothingWhenNavigationIsNull()
+	{
+		// Arrange
+		CachingTestDbContext dbContext = new CachingTestDbContext();
+		ClassOneToOneA classOneToOneA = new ClassOneToOneA { Id = 1, ClassB = null };
+		dbContext.Attach(classOneToOneA);
+
+		Mock<ICacheService> cacheServiceMock = new Mock<ICacheService>(MockBehavior.Strict);
+		cacheServiceMock.Setup(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()));
+
+		var entityCacheManager = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext, cacheService: cacheServiceMock.Object);
+
+		// Act
+		entityCacheManager.StoreNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneA, nameof(ClassOneToOneA.ClassB));
+
+		// Assert
+		cacheServiceMock.Verify(m => m.Add(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CacheOptions>()), Times.Never);
+	}
+
+	[TestMethod]
 	public void EntityCacheManager_CacheInvalidation_RemovesEntityAndAllKeysOnUpdate()
 	{
 		// Arrange

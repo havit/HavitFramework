@@ -229,7 +229,7 @@ public class EntityCacheManager : IEntityCacheManager
 			cachedEntities.Add(entity);
 		}
 
-		bool hasCachedEntities = cachedEntities.Any();
+		bool hasCachedEntities = cachedEntities.Count > 0;
 
 		if (hasCachedEntities)
 		{
@@ -263,9 +263,16 @@ public class EntityCacheManager : IEntityCacheManager
 				throw new InvalidOperationException($"Collections properties must be a List<>. {navigationTarget.PropertyInfo.DeclaringType.Name}.{navigationTarget.PropertyInfo.Name} property.");
 			}
 
-			if (propertyList.Any())
+			if (propertyList.Count > 0)
 			{
-				propertyList.AddRange(cachedEntities.Except(propertyList));
+				var existingEntities = new HashSet<TPropertyItem>(propertyList);
+				foreach (TPropertyItem cachedEntity in cachedEntities)
+				{
+					if (existingEntities.Add(cachedEntity))
+					{
+						propertyList.Add(cachedEntity);
+					}
+				}
 			}
 			else
 			{
@@ -276,8 +283,14 @@ public class EntityCacheManager : IEntityCacheManager
 		if (hasCachedEntities)
 		{
 			_dbContext.ChangeTracker.Tracked += TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
-			_dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
-			_dbContext.ChangeTracker.Tracked -= TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
+			try
+			{
+				_dbContext.GetEntry(parentEntity, suppressDetectChanges: true).DetectChanges();
+			}
+			finally
+			{
+				_dbContext.ChangeTracker.Tracked -= TryGetNavigation_ManyToMany_ChangeTracker_Tracked;
+			}
 		}
 
 		return true;
@@ -330,6 +343,12 @@ public class EntityCacheManager : IEntityCacheManager
 						var propertyLambda = _propertyLambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TPropertyItem>(propertyName).LambdaCompiled;
 						var entityPropertyValue = propertyLambda(entity);
 
+						if (entityPropertyValue == null)
+						{
+							// Null back-reference cannot be represented by keys, so we skip caching for this value.
+							break;
+						}
+
 						object[] entityPropertyValueKeys = _entityKeyAccessor.GetEntityKeyValues(entityPropertyValue).ToArray();
 						_cacheService.Add(cacheKey, entityPropertyValueKeys, _entityCacheOptionsGenerator.GetNavigationCacheOptions(entity, propertyName));
 					}
@@ -369,6 +388,8 @@ public class EntityCacheManager : IEntityCacheManager
 			Dictionary<Type, MethodInfo> methodInfosDictionary = new Dictionary<Type, MethodInfo>();
 			object[] invokeArguments = new object[1];
 
+			MethodInfo storeEntityGenericMethodDefinition = this.GetType().GetMethod(nameof(StoreEntity));
+
 			foreach (object entityToUpdateInCache in entitiesToUpdateInCache)
 			{
 				// protože je metoda StoreEntity generická, musíme přes reflexi
@@ -380,7 +401,7 @@ public class EntityCacheManager : IEntityCacheManager
 					// Pro ostatní si uložíme hodnotu null.
 					if (_entityCacheSupportDecision.ShouldCacheEntityType(entityToUpdateInCacheType))
 					{
-						methodInfo = this.GetType().GetMethod(nameof(StoreEntity)).MakeGenericMethod(entityToUpdateInCacheType);
+						methodInfo = storeEntityGenericMethodDefinition.MakeGenericMethod(entityToUpdateInCacheType);
 						methodInfosDictionary.Add(entityToUpdateInCacheType, methodInfo);
 					}
 					else
@@ -438,7 +459,7 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		// Pro omezení zasílání informace o Remove při distribuované cache bychom se měli omezit jen na ty objekty, které mohou být cachované.
 
-		// TODO: Co se situací, kdy sami necachujeme, ale chceme invalidovat cache jiné části systému?
+		// Invalidujeme pouze položky, které může obsluhovat tato cache vrstva.
 		if (_entityCacheSupportDecision.ShouldCacheEntity(change.Entity))
 		{
 			if (change.ChangeType != ChangeType.Insert)

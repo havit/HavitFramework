@@ -5,7 +5,7 @@ using Havit.Services.Caching;
 namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 
 /// <summary>
-/// Služba pro poskytnutí strinkových klíčů do cache.
+/// Služba pro poskytnutí stringových klíčů do cache.
 /// </summary>
 public class EntityCacheDependencyKeyGenerator : IEntityCacheDependencyKeyGenerator
 {

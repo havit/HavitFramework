@@ -13,7 +13,7 @@ public record class NavigationTarget
 	public required Type TargetClrType { get; init; }
 
 	/// <summary>
-	/// Indukuje, zda jde o kolekci.
+	/// Indikuje, zda jde o kolekci.
 	/// </summary>
 	public required NavigationType NavigationType { get; init; }
 

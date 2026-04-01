@@ -91,17 +91,22 @@ public class ReferencingNavigationsStorageBuilder : IReferencingNavigationsStora
 		// ovšem bez vztahové "tabulky" mezi EntityA a EntityB. Entitu této vztahové "tabulky" nemá ani Navigations, ani SkipNavigations (což dává rozum).
 		// Proto volíme řešení, kdy se orientujeme podle cizích klíčů z vztahové "tabulky" (= entityType).		
 		return entityType.GetForeignKeys()
+			.Select(foreignKey => new
+			{
+				ForeignKey = foreignKey,
+				SkipNavigation = foreignKey.GetReferencingSkipNavigations().SingleOrDefault()
+			})
 			// Chceme jen takové cizí klíče, které k sobě mají na druhé straně (jedinou) skip navigaci. Tak poznáme, že náš cizí klíč je reprezentací skip navigace.
-			.Where(foreignKey => foreignKey.GetReferencingSkipNavigations().SingleOrDefault() != null)
+			.Where(item => item.SkipNavigation != null)
 			// JK: Jenže EF nám vrací i skip navigace tříd, které se účastní vztahu, ale které nemají kolekci (a IsCollection je true).
 			// Nevím, jestli nerozumím dobře modelu, nebo je to bug EF Core. Předpokládám však, že kolekce musí být nějak definovaná v kódu jakožto property
 			// (neuvažujeme jiný způsob), tak si existenci property ověříme pomocí PropertyInfo.
 			// Další výskyt téhož: viz NavigationTargetTypeService.
-			.Where(foreignKey => foreignKey.GetReferencingSkipNavigations().Single().PropertyInfo != null)
-			.Select(foreignKey =>
+			.Where(item => item.SkipNavigation.PropertyInfo != null)
+			.Select(item =>
 			{
-				var property = foreignKey.Properties.Single();
-				var skipNavigation = foreignKey.GetReferencingSkipNavigations().Single();
+				var property = item.ForeignKey.Properties.Single();
+				var skipNavigation = item.SkipNavigation;
 				return new ReferencingNavigation
 				{
 					EntityType = skipNavigation.DeclaringEntityType.ClrType,

@@ -23,11 +23,11 @@ public class AnnotationsEntityCacheSupportDecisionStorageBuilder : IAnnotationsE
 		{
 			ShouldCacheEntities = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
-						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheAllKeysAnnotationName)?.Value)).GetValueOrDefault(false)),
+						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false)),
 
 			ShouldCacheAllKeys = _dbContext.Model.GetApplicationEntityTypes().ToFrozenDictionary(
 						entityType => entityType.ClrType,
-						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheEntitiesAnnotationName)?.Value)).GetValueOrDefault(false))
+						entityType => ((bool?)(entityType.FindAnnotation(CacheAttributeToAnnotationConvention.CacheAllKeysAnnotationName)?.Value)).GetValueOrDefault(false))
 		};
 	}
 }

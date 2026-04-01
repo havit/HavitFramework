@@ -18,10 +18,11 @@ public static class ReadOnlyEntityTypeExtensions
 
 	internal static bool HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(this IReadOnlyEntityType entityType)
 	{
-		return (entityType.GetProperties().Count() == 2) // třída má právě dvě (skalární) vlastnosti
-			&& (entityType.GetProperties().All(item => !item.IsNullable))
-			&& (entityType.GetProperties().All(item => !item.IsShadowProperty())) // jen pro jistotu
-			&& (entityType.GetProperties().All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
+		var properties = entityType.GetProperties().ToList();
+		return (properties.Count == 2) // třída má právě dvě (skalární) vlastnosti
+			&& (properties.All(item => !item.IsNullable))
+			&& (properties.All(item => !item.IsShadowProperty())) // jen pro jistotu
+			&& (properties.All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem	}
 	}
 
 	/// <summary>

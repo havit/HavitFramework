@@ -66,7 +66,7 @@ public class ModelValidator
 	{
 		if (entityType.FindPrimaryKey().Properties.Count > 1)
 		{
-			yield return $"Class {entityType.ClrType.Name} has {entityType.GetProperties().Count()} key members but only one is expected.";
+			yield return $"Class {entityType.ClrType.Name} has {entityType.FindPrimaryKey().Properties.Count} key members but only one is expected.";
 		}
 	}
 

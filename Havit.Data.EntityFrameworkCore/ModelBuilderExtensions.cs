@@ -51,7 +51,10 @@ public static class ModelBuilderExtensions
 	{
 		MethodInfo applyConfigurationGenericMethod = typeof(ModelBuilder)
 			.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-			.FirstOrDefault(m => m.Name == nameof(ModelBuilder.ApplyConfiguration) && m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>));
+			.FirstOrDefault(m =>
+				(m.Name == nameof(ModelBuilder.ApplyConfiguration))
+				&& m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))
+				?? throw new InvalidOperationException($"Method {nameof(ModelBuilder.ApplyConfiguration)} not found in {nameof(ModelBuilder)}.");
 
 		var applicableTypesWithConfigurations = assembly
 			.GetTypes()

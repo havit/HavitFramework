@@ -177,14 +177,14 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 
 	private void GetLock(string lockValue, DbConnection sqlConnection)
 	{
-		DbCommand sqlCommand = GetLock_PrepareCommand(lockValue, sqlConnection, out DbParameter resultCodeSqlParameter);
+		using DbCommand sqlCommand = GetLock_PrepareCommand(lockValue, sqlConnection, out DbParameter resultCodeSqlParameter);
 		sqlCommand.ExecuteNonQuery();
 		GetLock_VerifyResultCode((SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value, lockValue);
 	}
 
 	private async Task GetLockAsync(string lockValue, DbConnection sqlConnection, CancellationToken cancellationToken)
 	{
-		DbCommand sqlCommand = GetLock_PrepareCommand(lockValue, sqlConnection, out DbParameter resultCodeSqlParameter);
+		using DbCommand sqlCommand = GetLock_PrepareCommand(lockValue, sqlConnection, out DbParameter resultCodeSqlParameter);
 		await sqlCommand.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
 		GetLock_VerifyResultCode((SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value, lockValue);
 	}
@@ -208,7 +208,7 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 		sqlCommand.Parameters.Add(resourceParameter);
 		sqlCommand.Parameters.Add(resultCodeSqlParameter);
 
-		sqlCommand.CommandTimeout = 10 * 60 * 1000; // 10 minut
+		sqlCommand.CommandTimeout = 10 * 60; // 10 minut
 		return sqlCommand;
 	}
 
@@ -273,7 +273,7 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 
 		sqlCommand.Parameters.Add(resourceParameter);
 
-		sqlCommand.CommandTimeout = 10 * 60 * 1000; // 10 minut
+		sqlCommand.CommandTimeout = 10 * 60; // 10 minut
 		return sqlCommand;
 	}
 

@@ -9,7 +9,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.2.40</PackageVersion>
+		<PackageVersion>2.2.41</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework 6 Extensions - Installers for Castle Windsor</Description>
 	</PropertyGroup>
 
@@ -17,6 +17,7 @@
 		<PackageReference Include="Castle.Windsor" Version="5.1.2" />
 		<!-- update vulnerable dependencies to fixed versions -->
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>

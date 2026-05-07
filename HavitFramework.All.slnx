@@ -160,4 +160,7 @@
     <File Path="PackagesDependencyChart.dgml" />
     <File Path="UnitTests.targets" />
   </Folder>
+  <Folder Name="/_Solution Items/.github/">
+    <File Path=".github/CODEOWNERS" />
+  </Folder>
 </Solution>

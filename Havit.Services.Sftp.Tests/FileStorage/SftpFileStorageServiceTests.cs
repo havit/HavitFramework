@@ -11,16 +11,6 @@ namespace Havit.Services.Sftp.Tests.FileStorage;
 /// <summary>
 /// Test SftpStorageService.
 /// </summary>
-/// <remarks>
-/// Třída předpokládá:
-/// * Azure Storage with hiearchical namespaces.
-/// * Container sftp-primary, v něm složku home (lze díky hiearchical namespaces).
-/// * Container sftp-secondary, v něm složku home (lze díky hiearchical namespaces).
-/// * Zapnuté SFTP.
-/// * SFTP local user hfw-primary, s home nastaveným na sftp-primary/home.
-/// * SFTP local user hfw-secondary, s home nastaveným na sftp-secondary/home.
-/// * Hesla lokálních uživatelů v KeyVaultu/DevOps variables.
-/// </remarks>
 [TestClass]
 public class SftpFileStorageServiceTests
 {

@@ -14,9 +14,8 @@ internal class SftpContainerService
 	internal static async Task StartContainerAsync(CancellationToken cancellationToken)
 	{
 		// Není použit atmoz/sftp:alpine z Testcontainers.Sftp, protože neumí nastavit oprávnění pro zápis do rootové složky.
-		s_SftpContainer = new ContainerBuilder()
-			.WithImage("emberstack/sftp:latest")
-			.WithBindMount(Path.Combine(System.Environment.CurrentDirectory, "sftp.json"), "/app/config/sftp.json", AccessMode.ReadOnly)
+		s_SftpContainer = new ContainerBuilder("emberstack/sftp:latest")
+			.WithResourceMapping(new FileInfo("sftp.json"), new FileInfo("/app/config/sftp.json")) 
 			.WithPortBinding(22, true) // SFTP
 			.WithWaitStrategy(Wait.ForUnixContainer().UntilInternalTcpPortIsAvailable(22))
 			.Build();

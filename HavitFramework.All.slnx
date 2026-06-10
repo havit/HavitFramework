@@ -97,6 +97,9 @@
     <Project Path="Havit.Data.EntityFrameworkCore.Patterns/Havit.Data.EntityFrameworkCore.Patterns.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore/Havit.Data.EntityFrameworkCore.csproj" />
   </Folder>
+  <Folder Name="/EF Libraries/EFCore/Benchmarks/">
+    <Project Path="Havit.Data.EntityFrameworkCore.Benchmarks/Havit.Data.EntityFrameworkCore.Benchmarks.csproj" />
+  </Folder>
   <Folder Name="/EF Libraries/EFCore/Tests/">
     <Project Path="Havit.Data.EntityFrameworkCore.Migrations.TestHelpers/Havit.Data.EntityFrameworkCore.Migrations.TestHelpers.csproj" />
     <Project Path="Havit.Data.EntityFrameworkCore.Migrations.Tests/Havit.Data.EntityFrameworkCore.Migrations.Tests.csproj" />

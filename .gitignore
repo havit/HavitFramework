@@ -267,3 +267,4 @@ Web/.vscode/launch.json
 /WebApplicationTest/Content/Havit.Web.ClientContent/*.png
 /WebApplicationTest/Scripts/Havit.Web.ClientContent/*.js
 /BenchmarkApp/BenchmarkDotNet.Artifacts/results
+Havit.Data.EntityFrameworkCore.Benchmarks/BenchmarkDotNet.Artifacts/results/*

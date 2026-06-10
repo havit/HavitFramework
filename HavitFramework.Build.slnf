@@ -37,6 +37,7 @@
 			"Havit.Data.Entity6.Tests\\Havit.Data.Entity6.Tests.csproj",
 			"Havit.Data.Entity6\\Havit.Data.Entity6.csproj",
 			"Havit.Data.EntityFrameworkCore.Abstractions\\Havit.Data.EntityFrameworkCore.Abstractions.csproj",
+			"Havit.Data.EntityFrameworkCore.Benchmarks\\Havit.Data.EntityFrameworkCore.Benchmarks.csproj",
 			"Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions\\Havit.Data.EntityFrameworkCore.BusinessLayer.Abstractions.csproj",
 			"Havit.Data.EntityFrameworkCore.BusinessLayer.Tests\\Havit.Data.EntityFrameworkCore.BusinessLayer.Tests.csproj",
 			"Havit.Data.EntityFrameworkCore.BusinessLayer\\Havit.Data.EntityFrameworkCore.BusinessLayer.csproj",

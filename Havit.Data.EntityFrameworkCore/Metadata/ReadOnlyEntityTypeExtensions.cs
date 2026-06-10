@@ -22,7 +22,7 @@ public static class ReadOnlyEntityTypeExtensions
 		return (properties.Count == 2) // třída má právě dvě (skalární) vlastnosti
 			&& (properties.All(item => !item.IsNullable))
 			&& (properties.All(item => !item.IsShadowProperty())) // jen pro jistotu
-			&& (properties.All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem	}
+			&& (properties.All(item => item.IsForeignKey())); // všechny vlastnosti třídy jsou cizím klíčem
 	}
 
 	/// <summary>
@@ -34,7 +34,7 @@ public static class ReadOnlyEntityTypeExtensions
 		// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
 		return !entityType.IsOwned()
 			&& !entityType.IsKeyless()
-			&& (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze svou vlastností
+			&& (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze dvou vlastností
 			&& HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(entityType); // třída má právě dvě (skalární) vlastnosti a ty jsou i cizím klíčem
 	}
 

@@ -45,7 +45,7 @@ public class ValidationRules
 	public bool CheckNavigationPropertiesHaveForeignKeys { get; set; } = true;
 
 	/// <summary>
-	/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbo, musí mít generovaný klíč.
+	/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost Symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbol, musí mít generovaný klíč.
 	/// </summary>
 	public bool CheckSymbolVsPrimaryKeyForEntries { get; set; } = true;
 

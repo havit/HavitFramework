@@ -156,13 +156,13 @@ public class ModelValidator
 				{
 					if (maxLengthAttribute.Length == 0)
 					{
-						yield return $"Class {entityType.ClrType.Name} has a string property {property.Name} with zero value, it is expected to be greater then 0 (or -1 as 'max allowable').";
+						yield return $"Class {entityType.ClrType.Name} has a string property {property.Name} with zero value, it is expected to be greater than 0 (or -1 as 'max allowable').";
 					}
 
 					// -1 == MaxAllowableLength --> NOOP
 					if (maxLengthAttribute.Length < -1)
 					{
-						yield return $"Class {entityType.ClrType.Name} has a string property {property.Name} with negative value, it is expected to be greater then 0 (or -1 as 'max allowable').";
+						yield return $"Class {entityType.ClrType.Name} has a string property {property.Name} with negative value, it is expected to be greater than 0 (or -1 as 'max allowable').";
 					}
 				}
 			}
@@ -180,7 +180,7 @@ public class ModelValidator
 		{
 			if (!(nestedType.IsEnum && nestedType.Name == "Entry"))
 			{
-				yield return $"Class {entityMap.ClrType.Name} has a unsupported nested type {nestedType.Name}. Only enum type Entry is supported.";
+				yield return $"Class {entityMap.ClrType.Name} has an unsupported nested type {nestedType.Name}. Only enum type Entry is supported.";
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public class ModelValidator
 	}
 
 	/// <summary>
-	/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbol, musí mít generovaný klíč.
+	/// Kontroluje třídy, které mají Entry. Třídy, které mají vlastnost Symbol, nesmí mít generovaný klíč a zároveň naopak třídy, které nemají vlastnost Symbol, musí mít generovaný klíč.
 	/// </summary>
 	internal IEnumerable<string> CheckSymbolVsPrimaryKeyForEntries(IReadOnlyEntityType entityType)
 	{

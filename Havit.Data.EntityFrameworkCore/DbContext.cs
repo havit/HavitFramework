@@ -255,7 +255,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	}
 
 	/// <summary>
-	/// Vrací true, pokud je EF považuje vlastnosti za načtenou.
+	/// Vrací true, pokud EF považuje vlastnost za načtenou.
 	/// </summary>
 	bool IDbContext.IsNavigationLoaded<TEntity>(TEntity entity, string propertyName)
 	{
@@ -269,7 +269,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 
 	/// <summary>
 	/// Vrací DbSet pro danou entitu.
-	/// Pro snažší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
+	/// Pro snazší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
 	/// </summary>
 	IDbSet<TEntity> IDbContext.Set<TEntity>()
 	{

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Havit.Data.EntityFrameworkCore.Migrations;
 
 /// <summary>
-/// Extension metody pre použití v migracích.
+/// Extension metody pro použití v migracích.
 /// </summary>
 public static class MigrationExtensions
 {

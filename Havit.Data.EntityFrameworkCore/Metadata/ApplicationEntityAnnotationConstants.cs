@@ -6,7 +6,7 @@
 public static class ApplicationEntityAnnotationConstants
 {
 	/// <summary>
-	/// Název anotace pro explicitní označení, zda je entity aplikační entitou. Určeno pro vyjmutí některých entit z "firemního standardnu". Např. pro entity IdentityServeru, atp.
+	/// Název anotace pro explicitní označení, zda je entita aplikační entitou. Určeno pro vyjmutí některých entit z "firemního standardu". Např. pro entity IdentityServeru, atp.
 	/// </summary>
 	public const string IsApplicationEntityAnnotationName = "IsApplicationEntity";
 }

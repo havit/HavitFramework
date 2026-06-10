@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 
 /// <summary>
-/// Všem cizím klíčům s nastaví DeleteBehavior na Restrict, čímž se zamezí kaskádnímu delete.
+/// Všem cizím klíčům nastaví DeleteBehavior na Restrict, čímž se zamezí kaskádnímu delete.
 /// </summary>
 public class CascadeDeleteToRestrictConvention : CascadeDeleteConvention, ISkipNavigationForeignKeyChangedConvention, IEntityTypeAnnotationChangedConvention
 {
 	/// <summary>
-	/// Konstructor.
+	/// Konstruktor.
 	/// </summary>
 	public CascadeDeleteToRestrictConvention(ProviderConventionSetBuilderDependencies dependencies) : base(dependencies)
 	{
@@ -85,7 +85,7 @@ public class CascadeDeleteToRestrictConvention : CascadeDeleteConvention, ISkipN
 
 		// Pro naše účely je správnější použít DeleteBehavior.NoAction. SQL Server nemá podporu ON DELETE RESTRICT, ale jen ON DELETE NO ACTION,
 		// takže při DeleteBehavior.Restrict i DeleteBehavior.NoAction se ON DELETE NO ACTION.
-		// Nicméně změna výsledku této metody na DeleteBehavior.NoAction na efektivně neudělá nic,
+		// Nicméně změna výsledku této metody na DeleteBehavior.NoAction efektivně neudělá nic,
 		// "jen" se při tvorbě migrace v cílové aplikaci vytvoří skript, který smaže a znovuzaloží všechny cizí klíče.
 		// Z toho důvodu nechávám hodnotu Restrict do okamžiku, než začne být NoAction potřeba.
 		return DeleteBehavior.Restrict;

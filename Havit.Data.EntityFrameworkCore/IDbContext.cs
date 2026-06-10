@@ -16,7 +16,7 @@ public interface IDbContext : IDisposable
 	/// Creates a DbSet&lt;TEntity&gt; that can be used to query and save instances of TEntity.
 	/// </summary>
 	/// <remarks>
-	/// Pro snažší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
+	/// Pro snazší možnost mockování konzumentů DbSetu je vytvořena abstrakce do interface IDbSet&lt;TEntity&gt;.
 	/// </remarks>
 	IDbSet<TEntity> Set<TEntity>()
 		where TEntity : class;
@@ -87,7 +87,7 @@ public interface IDbContext : IDisposable
 	IEnumerable<EntityEntry> GetEntries(bool suppressDetectChanges);
 
 	/// <summary>
-	/// Vrací true, pokud je EF považuje vlastnost za načtenou.
+	/// Vrací true, pokud EF považuje vlastnost za načtenou.
 	/// </summary>
 	bool IsNavigationLoaded<TEntity>(TEntity entity, string propertyName)
 		where TEntity : class;

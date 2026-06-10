@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Metadata;
@@ -211,7 +211,8 @@ public class ModelValidator
 
 		if (hasEntryEnum && !primaryKeySequence)
 		{
-			bool primaryKeyGenerated = (entityType.FindPrimaryKey().Properties.Single().ValueGenerated == ValueGenerated.OnAdd);
+			// Properties.Any: Sice čekáme jediný sloupec, nicméně primární klíč může být složený (viz výše). Pokud je generovaná byť jen část klíče, nelze podle klíče párovat.
+			bool primaryKeyGenerated = entityType.FindPrimaryKey().Properties.Any(property => property.ValueGenerated == ValueGenerated.OnAdd);
 			bool symbolExists = entityType.GetProperties().Any(item => item.Name == "Symbol");
 
 			if (primaryKeyGenerated && !symbolExists && !primaryKeySequence)

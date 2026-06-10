@@ -74,27 +74,4 @@ public class DbContextTests
 		dbContext.AfterSaveChanges();
 		Assert.AreEqual(1, counter); // nedošlo k zaregistrované akci, registrace zrušena
 	}
-
-	[TestMethod]
-	public void DbContext_ExecuteWithDbUpdateExceptionHandling_WrapsDbUpdateException()
-	{
-		// Arrange
-		EmptyDbContext dbContext = new EmptyDbContext();
-		DbUpdateException exception = new DbUpdateException("", (Exception)null);
-
-		// Act 
-		DbUpdateException thrownException = null;
-		try
-		{
-			dbContext.ExecuteWithDbUpdateExceptionHandling<object>(() => throw exception);
-		}
-		catch (DbUpdateException dbUpdateException)
-		{
-			thrownException = dbUpdateException;
-		}
-
-		// Assert
-		Assert.IsNotNull(thrownException);
-		Assert.AreSame(exception, thrownException.InnerException);
-	}
 }

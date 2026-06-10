@@ -124,44 +124,22 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 
 	/// <summary>
 	/// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges(bool)"/>.
-	/// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
-	/// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
 	/// </summary>
 	public override int SaveChanges(bool acceptAllChangesOnSuccess)
 	{
-		int result = ExecuteWithDbUpdateExceptionHandling(() => base.SaveChanges(acceptAllChangesOnSuccess));
+		int result = base.SaveChanges(acceptAllChangesOnSuccess);
 		AfterSaveChanges();
 		return result;
 	}
 
 	/// <summary>
 	/// Uloží registrované změny. Viz <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(bool, System.Threading.CancellationToken)"/>.
-	/// Při případném vyhození DbUpdateException dojde k jejímu přebalení s upřesněním Message.
-	/// <seealso cref="DbContext.ExecuteWithDbUpdateExceptionHandling" />
 	/// </summary>
 	public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
 	{
-		int result = await ExecuteWithDbUpdateExceptionHandling<Task<int>>(() => base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken)).ConfigureAwait(false);
+		int result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken).ConfigureAwait(false);
 		AfterSaveChanges();
 		return result;
-	}
-
-	/// <summary>
-	/// Zavolá výkonný kód (action). Pokud je během volání vyhozena výjimka <see cref="DbUpdateException"/>, přebalí ji do nové instance <see cref="DbUpdateException"/>, která obsahuje detailnější Message.
-	/// </summary>
-	protected internal virtual T ExecuteWithDbUpdateExceptionHandling<T>(Func<T> action)
-	{
-		try
-		{
-			return action.Invoke();
-		}
-		catch (DbUpdateException dbUpdateException)
-		{
-			// DbUpdateException je ošlivě formátovaná, tak vytvoříme novou instanci
-			// (tím neměníme typ vyhazované výjimky), nastavíme jí hezčí Message.
-			// K dispozici však nejsou dbUpdateException.Entries (konstruktor přijímá jiný typ, než který je publikován, tj. jsou třídou zpracovány a nebudeme je předělávat zpět, abychom je mohli hodit konstruktoru)
-			throw new DbUpdateException(dbUpdateException.FormatErrorMessage(), dbUpdateException);
-		}
 	}
 
 	/// <summary>
@@ -259,7 +237,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	bool IDbContext.IsNavigationLoaded<TEntity>(TEntity entity, string propertyName)
 	{
-		return GetEntry(entity, suppressDetectChanged: true).Navigation(propertyName).IsLoaded;
+		return GetEntry(entity, suppressDetectChanges: true).Navigation(propertyName).IsLoaded;
 	}
 
 	void IDbContext.MarkNavigationAsLoaded<TEntity>(TEntity entity, string propertyName)
@@ -287,9 +265,9 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// <summary>
 	/// Vrací EntityEntry pro danou entitu.
 	/// </summary>
-	public EntityEntry GetEntry(object entity, bool suppressDetectChanged = true)
+	public EntityEntry GetEntry(object entity, bool suppressDetectChanges = true)
 	{
-		return suppressDetectChanged
+		return suppressDetectChanges
 			? ExecuteWithoutAutoDetectChanges(() => this.Entry(entity))
 			: this.Entry(entity);
 	}
@@ -299,7 +277,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	/// </summary>
 	EntityState IDbContext.GetEntityState<TEntity>(TEntity entity)
 	{
-		return GetEntry(entity, suppressDetectChanged: true).State;
+		return GetEntry(entity, suppressDetectChanges: true).State;
 	}
 
 	/// <summary>
@@ -340,7 +318,7 @@ public abstract class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbCo
 	{
 		if (suppressDetectChanges)
 		{
-			await ExecuteWithoutAutoDetectChanges(async () => await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+			await ExecuteWithoutAutoDetectChangesAsync(async () => await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
 		}
 		else
 		{

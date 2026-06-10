@@ -20,7 +20,7 @@ public static class ModelBuilderExtensions
 
 		Type[] assemblyTypes = assembly.GetTypes()
 			.Where(type => type.IsPublic && type.IsClass && !(type.IsAbstract && type.IsSealed) /* pokrývá statické třídy, viz např. https://stackoverflow.com/questions/4145072/how-to-tell-if-a-type-is-a-static-class */)
-			.Where(type => String.IsNullOrEmpty(namespaceName) || type.Namespace.StartsWith(namespaceName))
+			.Where(type => String.IsNullOrEmpty(namespaceName) || (type.Namespace?.StartsWith(namespaceName) ?? false)) // typy bez namespace mají Namespace nullový
 			.ToArray();
 
 		foreach (Type assemblyType in assemblyTypes)

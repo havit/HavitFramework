@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 
 namespace Havit.Data.EntityFrameworkCore.Threading;
@@ -6,6 +6,9 @@ namespace Havit.Data.EntityFrameworkCore.Threading;
 /// <inheritdoc />
 public class DbLockedCriticalSection : IDbLockedCriticalSection
 {
+	private const int LockTimeoutMilliseconds = 10 * 60 * 1000 /* ms*/; // 10 minut - maximální doba čekání na získání zámku
+	private const int GetLockCommandTimeoutSeconds = 15 /* seconds */; // s rezervou nad LockTimeoutMilliseconds, aby vypršení čekání na zámek skončilo result codem Timeout (a tedy DbLockedCriticalSectionException), nikoliv SqlException z timeoutu commandu
+
 	private readonly Func<SqlConnection> _sqlConnectionFactory;
 	private readonly bool _ownsConnection;
 
@@ -179,26 +182,31 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 	{
 		using DbCommand sqlCommand = GetLock_PrepareCommand(lockValue, sqlConnection, out DbParameter resultCodeSqlParameter);
 		sqlCommand.ExecuteNonQuery();
-		GetLock_VerifyResultCode((SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value, lockValue);
+		GetLock_VerifyResultCode(GetLock_GetResultCode(resultCodeSqlParameter), lockValue);
 	}
 
 	private async Task GetLockAsync(string lockValue, DbConnection sqlConnection, CancellationToken cancellationToken)
 	{
 		using DbCommand sqlCommand = GetLock_PrepareCommand(lockValue, sqlConnection, out DbParameter resultCodeSqlParameter);
 		await sqlCommand.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
-		GetLock_VerifyResultCode((SpGetAppLockResultCode)(int)resultCodeSqlParameter.Value, lockValue);
+		GetLock_VerifyResultCode(GetLock_GetResultCode(resultCodeSqlParameter), lockValue);
 	}
 
 	private DbCommand GetLock_PrepareCommand(string lockValue, DbConnection sqlConnection, out DbParameter resultCodeSqlParameter)
 	{
 		DbCommand sqlCommand = sqlConnection.CreateCommand();
 		sqlCommand.CommandType = System.Data.CommandType.Text;
-		sqlCommand.CommandText = "EXEC @ResultCode = sp_getapplock @Resource, 'Exclusive', 'Session', -1";
+		sqlCommand.CommandText = "EXEC @ResultCode = sp_getapplock @Resource, 'Exclusive', 'Session', @LockTimeout";
 
 		DbParameter resourceParameter = sqlCommand.CreateParameter();
 		resourceParameter.ParameterName = "@Resource";
 		resourceParameter.DbType = System.Data.DbType.String;
 		resourceParameter.Value = lockValue;
+
+		DbParameter lockTimeoutParameter = sqlCommand.CreateParameter();
+		lockTimeoutParameter.ParameterName = "@LockTimeout";
+		lockTimeoutParameter.DbType = System.Data.DbType.Int32;
+		lockTimeoutParameter.Value = LockTimeoutMilliseconds;
 
 		resultCodeSqlParameter = sqlCommand.CreateParameter();
 		resultCodeSqlParameter.ParameterName = "@ResultCode";
@@ -206,10 +214,22 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 		resultCodeSqlParameter.Direction = System.Data.ParameterDirection.Output;
 
 		sqlCommand.Parameters.Add(resourceParameter);
+		sqlCommand.Parameters.Add(lockTimeoutParameter);
 		sqlCommand.Parameters.Add(resultCodeSqlParameter);
 
-		sqlCommand.CommandTimeout = 10 * 60; // 10 minut
+		sqlCommand.CommandTimeout = GetLockCommandTimeoutSeconds;
 		return sqlCommand;
+	}
+
+	private static SpGetAppLockResultCode GetLock_GetResultCode(DbParameter resultCodeSqlParameter)
+	{
+		// při selhání commandu nemusí být output parametr nastaven (DBNull)
+		if (resultCodeSqlParameter.Value is int resultCode)
+		{
+			return (SpGetAppLockResultCode)resultCode;
+		}
+
+		throw new InvalidOperationException("sp_getapplock did not return a result code.");
 	}
 
 	private void GetLock_VerifyResultCode(SpGetAppLockResultCode getAppLockResultCode, string lockValue)
@@ -225,7 +245,7 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 			case SpGetAppLockResultCode.Error:
 				throw new DbLockedCriticalSectionException($"Unable to get lock for resource '{lockValue}'. Result code: '{Enum.GetName(typeof(SpGetAppLockResultCode), getAppLockResultCode)}'");
 			default:
-				throw new ApplicationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), getAppLockResultCode)}");
+				throw new InvalidOperationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), getAppLockResultCode)}");
 		}
 	}
 

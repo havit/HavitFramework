@@ -1,4 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Havit.Data.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Havit.Model.Localizations;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,57 +9,44 @@ namespace Havit.Data.EntityFrameworkCore.Metadata.Conventions;
 /// <summary>
 /// V lokalizačních tabulkách vytváří unikátní index s cizími klíči vedoucími do lokalizované tabulky a do tabulky jazyků.
 /// </summary>
-public class LocalizationTableIndexConvention : IForeignKeyAddedConvention, IForeignKeyPropertiesChangedConvention
+/// <remarks>
+/// Konvence je implementována jako <see cref="IModelFinalizingConvention"/> (a nikoliv jako reakce na změny cizích klíčů),
+/// aby nemusela držet stav (dříve vytvořené indexy) - instance konvence může být sdílena mezi více sestaveními modelu.
+/// </remarks>
+public class LocalizationTableIndexConvention : IModelFinalizingConvention
 {
-	private readonly Dictionary<IConventionEntityType, IConventionIndex> _createdIndexes = new Dictionary<IConventionEntityType, IConventionIndex>();
-
 	/// <inheritdoc />
-	public void ProcessForeignKeyAdded(IConventionForeignKeyBuilder foreignKeyBuilder, IConventionContext<IConventionForeignKeyBuilder> context)
+	public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder, IConventionContext<IConventionModelBuilder> context)
 	{
-		EnsureIndex(foreignKeyBuilder);
-	}
-
-	/// <inheritdoc />
-	public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder foreignKeyBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
-	{
-		EnsureIndex(foreignKeyBuilder);
-	}
-
-	private void EnsureIndex(IConventionForeignKeyBuilder foreignKeyBuilder)
-	{
-		// Systémové tabulky nechceme změnit (byť se tato konvence nemůže na systémových tabulkách uplatnit).
-		if (foreignKeyBuilder.Metadata.DeclaringEntityType.IsSystemType())
+		foreach (IConventionEntityType entityType in modelBuilder.Metadata.GetEntityTypes())
 		{
-			return;
-		}
-
-		if (foreignKeyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.LocalizationTableIndexConvention))
-		{
-			return;
-		}
-
-		var entityType = foreignKeyBuilder.Metadata.DeclaringEntityType;
-
-		if (entityType.ClrType.GetInterfaces().Any(item => item.IsGenericType && (item.GetGenericTypeDefinition() == typeof(ILocalization<,>)))) // jsme v lokalizační tabulce?
-		{
-			// pokud jsme již index udělali, zrušíme jej
-			if (_createdIndexes.TryGetValue(entityType, out var index))
+			// Systémové tabulky nechceme změnit (byť se tato konvence nemůže na systémových tabulkách uplatnit).
+			if (entityType.IsSystemType())
 			{
-				entityType.Builder.HasNoIndex(index);
-				_createdIndexes.Remove(entityType);
+				continue;
 			}
 
-			// najdeme sloupec s odkazem na parent tabulku
+			if (entityType.IsConventionSuppressed(ConventionIdentifiers.LocalizationTableIndexConvention))
+			{
+				continue;
+			}
+
+			if (!entityType.ClrType.GetInterfaces().Any(item => item.IsGenericType && (item.GetGenericTypeDefinition() == typeof(ILocalization<,>)))) // jsme v lokalizační tabulce?
+			{
+				continue;
+			}
+
+			// najdeme sloupec s odkazem na parent tabulku a sloupec s odkazem na tabulku jazyků
 			IConventionProperty parentForeignKeyProperty = entityType.GetNavigations().FirstOrDefault(p => p.Name == "Parent")?.ForeignKey?.Properties.SingleOrDefault();
 			IConventionProperty languageForeignKeyProperty = entityType.GetNavigations().FirstOrDefault(p => p.Name == "Language")?.ForeignKey?.Properties.SingleOrDefault();
 
-			// pokud máme sloupec s odkazem na jazyk i na parent tabulku a alespoň jeden z těchto sloupců je v aktuálním relationshipbuilderu
+			// pokud máme sloupec s odkazem na jazyk i na parent tabulku
 			if ((parentForeignKeyProperty != null) && (languageForeignKeyProperty != null) && !parentForeignKeyProperty.IsShadowProperty() && !languageForeignKeyProperty.IsShadowProperty())
 			{
 				// vytvoříme unikátní index
-				IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentForeignKeyProperty, languageForeignKeyProperty }.AsReadOnly(), fromDataAnnotation: false);
-				indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
-				_createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
+				entityType.Builder
+					.HasIndex(new List<IConventionProperty> { parentForeignKeyProperty, languageForeignKeyProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */)
+					?.IsUnique(true, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

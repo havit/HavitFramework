@@ -71,7 +71,6 @@ public static class ServiceCollectionExtensions
 		services.TryAddSingleton<IEntityKeyAccessor, DbEntityKeyAccessor>();
 		services.TryAddTransient<IDbEntityKeyAccessorStorageBuilder, DbEntityKeyAccessorStorageBuilder>();
 		services.TryAddSingletonFromScopedServiceProvider<IDbEntityKeyAccessorStorage>(sp => sp.GetRequiredService<IDbEntityKeyAccessorStorageBuilder>().Build());
-		services.TryAddSingleton<IDbEntityKeyAccessorStorage, DbEntityKeyAccessorStorage>();
 
 		return services;
 	}

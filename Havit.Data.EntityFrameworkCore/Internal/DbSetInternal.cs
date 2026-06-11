@@ -49,6 +49,16 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 	}
 #pragma warning restore EF1001 // Internal EF Core API usage.
 
+#pragma warning disable EF1001 // Internal EF Core API usage.
+	public TEntity FindTrackedTyped<TKey>(TKey keyValue)
+	{
+		_primaryKey ??= _dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey();
+		_stateManager ??= _dbContext.GetService<IStateManager>();
+
+		return (TEntity)_stateManager.TryGetEntryTyped<TKey>(_primaryKey, keyValue)?.Entity;
+	}
+#pragma warning restore EF1001 // Internal EF Core API usage.
+
 	/// <inheritdoc />
 	public void Add(TEntity entity)
 	{

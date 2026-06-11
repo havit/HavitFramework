@@ -24,6 +24,11 @@ public interface IDbSet<TEntity>
 	TEntity FindTracked(params object[] keyValues);
 
 	/// <summary>
+	/// Vyhledá entitu v načtených (trackovaných objektech). Pokud objekt není nalezen, vrací null.
+	/// </summary>
+	TEntity FindTrackedTyped<TKey>(TKey keyValue);
+
+	/// <summary>
 	///     Begins tracking the given entity, and any other reachable entities that are
 	///     not already being tracked, in the <see cref="EntityState.Added" /> state such that they will
 	///     be inserted into the database when <see cref="Microsoft.EntityFrameworkCore.DbContext.SaveChanges()" /> is called.

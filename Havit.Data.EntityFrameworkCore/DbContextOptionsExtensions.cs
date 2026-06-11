@@ -9,6 +9,7 @@ public static class DbContextOptionsExtensions
 {
 	/// <summary>
 	/// Zaregistruje k DbContextu výchozí konvence.
+	/// Metoda aktuálně nemá implementaci, ale slouží jako placeholder pro případné doplnění.
 	/// </summary>
 	public static DbContextOptionsBuilder UseDefaultHavitConventions(this DbContextOptionsBuilder optionsBuilder)
 	{

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit.Data.EntityFrameworkCore.ModelValidation;
 
@@ -20,7 +20,7 @@ public class ValidationRules
 	public bool CheckPrimaryKeyName { get; set; } = true;
 
 	/// <summary>
-	/// Kontroluje, zda je primární klíč typu System.Int32.
+	/// Kontroluje, zda je primární klíč podporovaného typu (celočíselné typy, String, Guid).
 	/// </summary>
 	public bool CheckPrimaryKeyType { get; set; } = true;
 

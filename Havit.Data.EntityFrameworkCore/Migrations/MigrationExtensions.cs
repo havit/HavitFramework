@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Havit.Data.EntityFrameworkCore.Migrations;
@@ -17,6 +17,7 @@ public static class MigrationExtensions
 	public static void SqlResource(this MigrationBuilder migrationBuilder, string resourceName, Assembly sqlResourceAssembly)
 	{
 		ArgumentNullException.ThrowIfNull(resourceName);
+		ArgumentNullException.ThrowIfNull(sqlResourceAssembly);
 
 		using var stream = sqlResourceAssembly.GetManifestResourceStream(resourceName);
 		if (stream == null)

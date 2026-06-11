@@ -15,17 +15,36 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	private readonly IDataEntrySymbolStorage<TEntity, TKey> _dataEntrySymbolStorage;
 	private readonly IDataSource<TEntity> _dataSource; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbDataSource.
 
+	// PERF: Příznak úspěšně provedené validace typu TEntity (per uzavřený generický typ).
+	private static bool s_entityTypeValidated;
+
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
 	public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity, TKey> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
 	{
-		PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");
-		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
-		Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolService is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
+		// PERF: Služba bývá registrována jako transientní, validace (reflexe + String.Format hlášek i v úspěšné větvi) by tak probíhala při každé konstrukci.
+		// Výsledek validace závisí jen na typu TEntity, proto ji provádíme jen jednou per uzavřený generický typ.
+		// (Případný souběh vláken při prvních konstrukcích není problém, validace je idempotentní.)
+		if (!s_entityTypeValidated)
+		{
+			ValidateEntityType();
+			s_entityTypeValidated = true;
+		}
 
 		this._dataEntrySymbolStorage = dataEntrySymbolStorage;
 		this._dataSource = dataSource;
+	}
+
+	/// <summary>
+	/// Ověří, že typ TEntity je podporován (má vlastnost Symbol typu string).
+	/// </summary>
+	/// <exception cref="NotSupportedException">Typ TEntity není podporován.</exception>
+	private static void ValidateEntityType()
+	{
+		PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");
+		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
+		Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolService is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
 	}
 
 	/// <summary>

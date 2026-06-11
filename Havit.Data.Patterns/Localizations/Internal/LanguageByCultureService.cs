@@ -45,10 +45,12 @@ public class LanguageByCultureService<TLanguage, TLanguageKey> : ILanguageByCult
 			return tmp;
 		}
 
-		// pokud není nalezeno, hledáme podle samotného jazyka
-		if (cultureName.Length > 2)
+		// pokud není nalezeno a jde o specifickou culture ("cs-CZ"), hledáme podle neutrální culture ("cs")
+		// (neutrální culture je část před první pomlčkou - NE první dva znaky, jinak by tříznakové jazykové kódy jako "fil-PH" padly na "fi")
+		int separatorIndex = cultureName.IndexOf('-');
+		if (separatorIndex > 0)
 		{
-			if (languagesByCulture.TryGetValue(cultureName.Substring(0, 2), out tmp))
+			if (languagesByCulture.TryGetValue(cultureName.Substring(0, separatorIndex), out tmp))
 			{
 				return tmp;
 			}

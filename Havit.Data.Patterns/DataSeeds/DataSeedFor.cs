@@ -13,7 +13,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	/// </summary>
 	public DataSeedConfiguration<TEntity> Configuration { get; private set; }
 
-	internal Dictionary<string, object> _childDataForsRegistry { get; private set; } = new Dictionary<string, object>();
+	internal Dictionary<string, object> ChildDataForsRegistry { get; private set; } = new Dictionary<string, object>();
 
 	/// <summary>
 	/// Konstruktor.
@@ -70,7 +70,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 			// metoda AndForAll je generická, avšak v kódu nejsme schopni generický typ získat (a obecnější typ pro přetypování jednak nelze použít a jednak by byl k ničemu)
 			// proto metodu AndForAll zavoláme reflexí!
 			// AndForInternal(item => item.Localizations, null)
-			MethodInfo andForInternalMethod = this.GetType().GetMethod("AndForAll", BindingFlags.Public | BindingFlags.Instance);
+			MethodInfo andForInternalMethod = this.GetType().GetMethod(nameof(AndForAll), BindingFlags.Public | BindingFlags.Instance);
 			andForInternalMethod.MakeGenericMethod(localizedByType).Invoke(this, new object[]
 			{
 				localizationsExpression,
@@ -145,7 +145,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 		string key = ExpressionExt.ReplaceParameter(selector.Body, selector.Parameters[0], Expression.Parameter(typeof(TEntity), "item")).RemoveConvert().ToString();
 
 		object tmp;
-		if (_childDataForsRegistry.TryGetValue(key, out tmp))
+		if (ChildDataForsRegistry.TryGetValue(key, out tmp))
 		{
 			dataSeedFor = (DataSeedFor<TReferencedEntity>)tmp;
 		}
@@ -153,7 +153,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 		{
 			TReferencedEntity[] newData = dataSelector().Where(item => item != null).Distinct().ToArray();
 			dataSeedFor = new DataSeedFor<TReferencedEntity>(newData);
-			_childDataForsRegistry.Add(key, dataSeedFor);
+			ChildDataForsRegistry.Add(key, dataSeedFor);
 
 			ChildDataSeedConfigurationEntry childEntry = new ChildDataSeedConfigurationEntry((IDataSeedPersister persister) => persister.Save(dataSeedFor.Configuration));
 			if (Configuration.ChildrenSeeds == null)

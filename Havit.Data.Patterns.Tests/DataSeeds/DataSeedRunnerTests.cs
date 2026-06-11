@@ -157,10 +157,11 @@ public class DataSeedRunnerTests
 		// Arrange
 		DataSeedCycleA dataSeedCycleA = new DataSeedCycleA();
 		DataSeedCycleB dataSeedCycleB = new DataSeedCycleB();
+		DataSeedCycleC dataSeedCycleC = new DataSeedCycleC();
 
 		Mock<IDataSeedPersisterFactory> dataSeedPersisterFactoryMock = new Mock<IDataSeedPersisterFactory>(MockBehavior.Strict);
 
-		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
+		DataSeedRunner runner = new DataSeedRunner(new IDataSeed[] { dataSeedCycleA, dataSeedCycleB, dataSeedCycleC }, new AlwaysRunDecision(), dataSeedPersisterFactoryMock.Object);
 
 		// Assert
 		await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () =>
@@ -250,7 +251,7 @@ public class DataSeedRunnerTests
 		dataSeedMock.Setup(m => m.ProfileType).Returns(typeof(DefaultProfile));
 		dataSeedMock.Setup(m => m.GetPrerequisiteDataSeeds()).Returns(Enumerable.Empty<Type>());
 		dataSeedMock.Setup(m => m.SeedData(It.IsAny<IDataSeedPersister>()));
-		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(() => new Task(() => { }));
+		dataSeedMock.Setup(m => m.SeedDataAsync(It.IsAny<IDataSeedPersister>(), It.IsAny<CancellationToken>())).Returns(() => Task.Delay(1, TestContext.CancellationToken));
 
 		Mock<IDataSeedPersister> dataSeedPersisterMock = new Mock<IDataSeedPersister>(MockBehavior.Strict);
 		dataSeedPersisterMock.Setup(m => m.AttachDataSeed(dataSeedMock.Object));

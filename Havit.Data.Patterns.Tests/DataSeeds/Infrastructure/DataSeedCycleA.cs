@@ -12,6 +12,6 @@ internal class DataSeedCycleA : DataSeed<DefaultProfile>
 
 	public override IEnumerable<Type> GetPrerequisiteDataSeeds()
 	{
-		yield return typeof(DataSeedCycleA);
+		yield return typeof(DataSeedCycleB);
 	}
 }

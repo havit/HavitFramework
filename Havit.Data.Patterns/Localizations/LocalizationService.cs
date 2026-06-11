@@ -48,10 +48,12 @@ public class LocalizationService : ILocalizationService
 
 		TLocalizationEntity result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language)); // pokusíme se nalézt lokalizaci pro daný jazyk
 
-		// pokud jsme nic nenašli a použili jsme jazyk s culture ve formátu "cs-CZ", zkusíme hledat "cs".
-		if ((result == null) && (language.UiCulture.Length > 2))
+		// pokud jsme nic nenašli a použili jsme specifickou culture ("cs-CZ"), zkusíme neutrální culture ("cs").
+		// (neutrální culture je část před první pomlčkou - NE první dva znaky, jinak by tříznakové jazykové kódy jako "fil-PH" padly na "fi")
+		int separatorIndex = language.UiCulture.IndexOf('-');
+		if ((result == null) && (separatorIndex > 0))
 		{
-			language = _languageService.GetLanguage(language.UiCulture.Substring(0, 2));
+			language = _languageService.GetLanguage(language.UiCulture.Substring(0, separatorIndex));
 			result = entity.Localizations.SingleOrDefault(item => language.Equals(item.Language));
 		}
 

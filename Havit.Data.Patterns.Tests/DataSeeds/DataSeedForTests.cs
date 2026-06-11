@@ -13,13 +13,13 @@ public class DataSeedForTests
 		var dataSeedForLocalizedEntity = new DataSeedFor<LocalizedEntity>(new LocalizedEntity[] { });
 
 		// počet výchozích konfigurací (očekává se jedna)
-		int defaultChildDataForRegistryCount = dataSeedForLocalizedEntity._childDataForsRegistry.Count;
+		int defaultChildDataForRegistryCount = dataSeedForLocalizedEntity.ChildDataForsRegistry.Count;
 
 		// Act			
 		dataSeedForLocalizedEntity.AndForAll(le1 => le1.Localizations, configuration => { /* NOOP */ }); // zkusíme použít konfiguraci pro lokalizace, kterou očekáváme ve výchozích konfiguracích
 
 		// Assert
-		Assert.HasCount(defaultChildDataForRegistryCount, dataSeedForLocalizedEntity._childDataForsRegistry, "Došlo k přidání další konfigurace."); // nechceme, aby Act změnil počet konfigurací
+		Assert.HasCount(defaultChildDataForRegistryCount, dataSeedForLocalizedEntity.ChildDataForsRegistry, "Došlo k přidání další konfigurace."); // nechceme, aby Act změnil počet konfigurací
 	}
 
 	[TestMethod]

@@ -417,8 +417,14 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 			TLookupKey lookupKey = entityLookupData.LookupKeyCompiledLambda(entity);
 			lock (entityLookupData)
 			{
-				entityLookupData.EntityKeyByLookupKeyDictionary.Add(lookupKey, entityKey);
-				entityLookupData.LookupKeyByEntityKeyDictionary.Add(entityKey, lookupKey);
+				// Po commitu nesmí invalidace spadnout na duplicitním lookup klíči; novější záznam nahradí původní a uklidíme i reverzní mapování.
+				if (entityLookupData.EntityKeyByLookupKeyDictionary.TryGetValue(lookupKey, out TKey previousEntityKey))
+				{
+					entityLookupData.LookupKeyByEntityKeyDictionary.Remove(previousEntityKey);
+				}
+
+				entityLookupData.EntityKeyByLookupKeyDictionary[lookupKey] = entityKey;
+				entityLookupData.LookupKeyByEntityKeyDictionary[entityKey] = lookupKey;
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public interface IDataSeedFor<TEntity>
 	IDataSeedFor<TEntity> ExcludeUpdate(params Expression<Func<TEntity, object>>[] excludeUpdate);
 
 	/// <summary>
-	/// Konfiguruje seedování tak, aby nedošlo k aktualizi existujících objektů, jsou pouze zakládány nové objekty.
+	/// Konfiguruje seedování tak, aby nedošlo k aktualizaci existujících objektů, jsou pouze zakládány nové objekty.
 	/// </summary>
 	IDataSeedFor<TEntity> WithoutUpdate();
 

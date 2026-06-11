@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 namespace Havit.Data.Patterns.DataLoaders.Fakes;
 
 /// <summary>
-/// Explicity data loader, který nic nedělá.
+/// Explicitní data loader, který nic nedělá.
 /// Určeno pro použití v unit testech pro mock IDataLoaderu.
 /// </summary>
 [Fake]

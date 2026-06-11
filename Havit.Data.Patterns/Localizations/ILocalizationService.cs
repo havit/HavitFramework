@@ -12,14 +12,14 @@ public interface ILocalizationService
 	/// <summary>
 	/// Vrátí položku z lokalizovaných hodnot entity na základě aktuálního jazyka.
 	/// </summary>
-	/// <param name="entity">Entita, jejíž lokalizaný záznam bude vrácen.</param>
+	/// <param name="entity">Entita, jejíž lokalizovaný záznam bude vrácen.</param>
 	TLocalizationEntity GetCurrentLocalization<TLocalizationEntity>(ILocalized<TLocalizationEntity, ILanguage> entity)
 		where TLocalizationEntity : class, ILocalization<object, ILanguage>;
 
 	/// <summary>
 	/// Vrátí položku z lokalizovaných hodnot entity na základě předaného jazyka.
 	/// </summary>
-	/// <param name="entity">Entita, jejíž lokalizaný záznam bude vrácen.</param>
+	/// <param name="entity">Entita, jejíž lokalizovaný záznam bude vrácen.</param>
 	/// <param name="language">Jazyk, pro který se hledá lokalizace.</param>
 	TLocalizationEntity GetLocalization<TLocalizationEntity>(ILocalized<TLocalizationEntity, ILanguage> entity, ILanguage language)
 		where TLocalizationEntity : class, ILocalization<object, ILanguage>;

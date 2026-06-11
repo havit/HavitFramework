@@ -181,7 +181,7 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	}
 
 	/// <summary>
-	/// Konfiguruje seedování tak, aby nedošlo k aktualizi existujících objektů, jsou pouze zakládány nové objekty.
+	/// Konfiguruje seedování tak, aby nedošlo k aktualizaci existujících objektů, jsou pouze zakládány nové objekty.
 	/// </summary>
 	public IDataSeedFor<TEntity> WithoutUpdate()
 	{

@@ -8,7 +8,7 @@ namespace Havit.Data.Patterns.DataSeeds;
 public class AlwaysRunDecision : IDataSeedRunDecision
 {
 	/// <summary>
-	/// Indikuje, zda má dojít se spuštění seedování dat.
+	/// Indikuje, zda má dojít ke spuštění seedování dat.
 	/// Vždy vrací true.
 	/// </summary>
 	/// <returns>True.</returns>

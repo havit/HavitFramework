@@ -5,6 +5,11 @@ namespace Havit.Data.Patterns.DataSeeds;
 /// <summary>
 /// Bázová třída pro předpis seedovaných dat.
 /// </summary>
+/// <remarks>
+/// Instance není reentrantní ani thread-safe: po dobu seedování si drží odkaz na aktuální <see cref="IDataSeedPersister"/> v instančním poli.
+/// Jedna instance proto nesmí být spuštěna souběžně ani rekurzivně (více seedování nad toutéž instancí současně by si tento stav navzájem přepsalo).
+/// Při běžném použití (sekvenční, jednovláknové spuštění přes <see cref="DataSeedRunner"/>) toto omezení nevadí.
+/// </remarks>
 /// <example><code>
 /// public override void SeedData()
 /// {
@@ -72,7 +77,7 @@ public abstract class DataSeed<TDataSeedProfile> : IDataSeed
 	}
 
 	/// <summary>
-	/// Provede persistenci seedovaných dat. Učeno pro volání z implementace metody SeedData.
+	/// Provede persistenci seedovaných dat. Určeno pro volání z implementace metody SeedData.
 	/// </summary>
 	protected async Task SeedAsync<TEntity>(IDataSeedFor<TEntity> dataSeedFor, CancellationToken cancellationToken = default)
 		where TEntity : class

@@ -5,11 +5,18 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.BeforeCommitProces
 /// <summary>
 /// Procesor, který se spustí před provedením Commitu na UoW.
 /// </summary>
+/// <remarks>
+/// Implementace mají realizovat právě jednu z metod <see cref="Run(ChangeType, TEntity)" /> nebo <see cref="RunAsync(ChangeType, TEntity, CancellationToken)" />.
+/// Runner volá obě metody nad stejnou instancí procesoru; druhá metoda má zůstat bez aplikační logiky a vracet <see cref="ChangeTrackerImpact.NoImpact" />.
+/// </remarks>
 public interface IBeforeCommitProcessor<in TEntity> : IBeforeCommitProcessorInternal
 {
 	/// <summary>
 	/// Template metoda pro provedení akce před Commitem na UoW.
 	/// </summary>
+	/// <remarks>
+	/// Synchronní vstupní bod. Nepoužívejte současně s <see cref="RunAsync(ChangeType, TEntity, CancellationToken)" /> pro tutéž aplikační logiku.
+	/// </remarks>
 	/// <param name="changeType">Prováděná operace s entitou (Insert/Update/Delete).</param>
 	/// <param name="changingEntity">Entita, nad níž bude operace provedena.</param>
 	ChangeTrackerImpact Run(ChangeType changeType, TEntity changingEntity);
@@ -17,6 +24,9 @@ public interface IBeforeCommitProcessor<in TEntity> : IBeforeCommitProcessorInte
 	/// <summary>
 	/// Template metoda pro provedení akce před Commitem na UoW.
 	/// </summary>
+	/// <remarks>
+	/// Asynchronní vstupní bod. Nepoužívejte současně s <see cref="Run(ChangeType, TEntity)" /> pro tutéž aplikační logiku.
+	/// </remarks>
 	/// <param name="changeType">Prováděná operace s entitou (Insert/Update/Delete).</param>
 	/// <param name="changingEntity">Entita, nad níž bude operace provedena.</param>
 	/// <param name="cancellationToken">Cancellation token.</param>

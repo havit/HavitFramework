@@ -24,6 +24,9 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 	/// <summary>
 	/// Spustí IBeforeCommitProcessory pro zadané změny. Bez podpory pro asynchronní before commit procesory.
 	/// </summary>
+	/// <remarks>
+	/// Runner volá na každém procesoru synchronní i asynchronní vstupní bod; implementace procesoru má aplikační logiku umístit jen do jednoho z nich.
+	/// </remarks>
 	public ChangeTrackerImpact Run(Changes changes)
 	{
 		ChangeTrackerImpact result = ChangeTrackerImpact.NoImpact;
@@ -68,6 +71,9 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 	/// <summary>
 	/// Spustí IBeforeCommitProcessory pro zadané změny.
 	/// </summary>
+	/// <remarks>
+	/// Runner volá na každém procesoru synchronní i asynchronní vstupní bod; implementace procesoru má aplikační logiku umístit jen do jednoho z nich.
+	/// </remarks>
 	public async ValueTask<ChangeTrackerImpact> RunAsync(Changes changes, CancellationToken cancellationToken = default)
 	{
 		ChangeTrackerImpact result = ChangeTrackerImpact.NoImpact;

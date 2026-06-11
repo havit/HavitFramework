@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Benchmarks" />
 		<InternalsVisibleTo Include="Havit.Data.EntityFrameworkCore.Tests" />
 		<InternalsVisibleTo Include="BenchmarkApp" />
 	</ItemGroup>

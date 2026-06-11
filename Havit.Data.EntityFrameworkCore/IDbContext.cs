@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -66,7 +66,9 @@ public interface IDbContext : IDisposable
 	Task SaveChangesAsync(bool suppressDetectChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Registruje akci k provedení po save changes. Akce je provedena metodou AfterSaveChanges.
+	/// Registruje akci k jednorázovému provedení po save changes. Akce je provedena metodou AfterSaveChanges.
+	/// Akce je provedena po nejbližším úspěšném SaveChanges - pokud uložení změn selže, registrace zůstává (změny zůstávají v change trackeru rozpracované
+	/// a akce se provede až po jejich úspěšném uložení). Při dispose DbContextu jsou neprovedené akce zahozeny.
 	/// </summary>
 	void RegisterAfterSaveChangesAction(Action action);
 

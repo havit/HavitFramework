@@ -20,7 +20,7 @@ public class PrefixedTablePrimaryKeysConvention : IKeyAddedConvention
 			return;
 		}
 
-		if (keyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.NamespaceExtendedPropertyConvention))
+		if (keyBuilder.Metadata.DeclaringEntityType.IsConventionSuppressed(ConventionIdentifiers.PrefixedTablePrimaryKeysConvention))
 		{
 			return;
 		}

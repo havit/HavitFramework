@@ -29,7 +29,8 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupDataInvalidationService
 	where TEntity : class
 {
-	private static readonly CriticalSection<Type> s_criticalSection = new CriticalSection<Type>();
+	// Klíčujeme na storage klíč (ne na typ) - GetStorageKey je virtuální a může se lišit od typu; section tak chrání právě tu storage položku, která se staví.
+	private static readonly CriticalSection<string> s_criticalSection = new CriticalSection<string>();
 
 	private readonly IEntityLookupDataStorage lookupStorage;
 	private readonly IRepository<TEntity, TKey> repository; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbRepository.
@@ -163,11 +164,16 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 		EntityLookupData<TEntity, TKey, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, TKey, TLookupKey>(storageKey);
 		if (entityLookupData == null)
 		{
-			s_criticalSection.ExecuteAction(this.GetType(), () =>
+			s_criticalSection.ExecuteAction(storageKey, () =>
 			{
-				entityLookupData = CreateEntityLookupData();
+				// Uvnitř sekce znovu ověříme, zda data mezitím nesestavilo jiné vlákno - zabráníme dvojímu buildu i uložení.
+				entityLookupData = lookupStorage.GetEntityLookupData<TEntity, TKey, TLookupKey>(storageKey);
+				if (entityLookupData == null)
+				{
+					entityLookupData = CreateEntityLookupData();
+					lookupStorage.StoreEntityLookupData(storageKey, entityLookupData);
+				}
 			});
-			lookupStorage.StoreEntityLookupData(storageKey, entityLookupData);
 		}
 
 		lock (entityLookupData)
@@ -198,11 +204,16 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 		EntityLookupData<TEntity, TKey, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, TKey, TLookupKey>(storageKey);
 		if (entityLookupData == null)
 		{
-			await s_criticalSection.ExecuteActionAsync(this.GetType(), async () =>
+			await s_criticalSection.ExecuteActionAsync(storageKey, async () =>
 			{
-				entityLookupData = await CreateEntityLookupDataAsync().ConfigureAwait(false);
+				// Uvnitř sekce znovu ověříme, zda data mezitím nesestavilo jiné vlákno - zabráníme dvojímu buildu i uložení.
+				entityLookupData = lookupStorage.GetEntityLookupData<TEntity, TKey, TLookupKey>(storageKey);
+				if (entityLookupData == null)
+				{
+					entityLookupData = await CreateEntityLookupDataAsync(cancellationToken).ConfigureAwait(false);
+					lookupStorage.StoreEntityLookupData(storageKey, entityLookupData);
+				}
 			}, cancellationToken).ConfigureAwait(false);
-			lookupStorage.StoreEntityLookupData(storageKey, entityLookupData);
 		}
 
 		lock (entityLookupData)
@@ -269,6 +280,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 
 		string tag = QueryTagBuilder.CreateTag(this.GetType(), nameof(CreateEntityLookupDataAsync));
 		List<EntityLookupPair<TKey, TLookupKey>> pairs = await entityLookupDataQuery
+			.TagWith(tag)
 			.ToListAsync(cancellationToken)
 			.ConfigureAwait(false);
 

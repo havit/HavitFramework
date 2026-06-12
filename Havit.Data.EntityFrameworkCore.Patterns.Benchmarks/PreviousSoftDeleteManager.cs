@@ -1,0 +1,112 @@
+using System.Collections.Concurrent;
+using System.Linq.Expressions;
+using System.Reflection;
+using Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
+using Havit.Diagnostics.Contracts;
+using Havit.Services.TimeServices;
+
+namespace Havit.Data.EntityFrameworkCore.Patterns.Benchmarks;
+
+/// <summary>
+/// Podoba SoftDeleteManageru před reimplementací bez dynamic (commit e1d07bc3), tj. verze z commitu 4ef7064d.
+/// Slouží jen pro porovnání v benchmarcích.
+/// </summary>
+internal class PreviousSoftDeleteManager : ISoftDeleteManager
+{
+	private readonly ITimeService _timeService;
+	private readonly ConcurrentDictionary<Type, bool> _supportedTypesDictionary = new ConcurrentDictionary<Type, bool>();
+	private readonly ConcurrentDictionary<Type, object> _notDeletedExpressionLambdaDictionary = new ConcurrentDictionary<Type, object>();
+	private readonly ConcurrentDictionary<Type, object> _notDeletedCompiledLambdaDictionary = new ConcurrentDictionary<Type, object>();
+
+	/// <summary>
+	/// Konstruktor.
+	/// </summary>
+	/// <param name="timeService">Služba pro práci s časem. Používá se pro získání času smazání objektu, který má být objektu nastaven.</param>
+	public PreviousSoftDeleteManager(ITimeService timeService)
+	{
+		_timeService = timeService;
+	}
+
+	/// <summary>
+	/// Určuje, zda je na typu entityType podporováno mazání příznakem.
+	/// </summary>
+	public bool IsSoftDeleteSupported(Type entityType)
+	{
+		return _supportedTypesDictionary.GetOrAdd(entityType, _ =>
+		{
+			ArgumentNullException.ThrowIfNull(entityType); // kontrolu na null hodnotu parametru odložíme až do doby, kdy hodnotu nenajdeme v dictionary a chceme pro ni zjistit podporu
+
+			PropertyInfo deletedProperty = entityType.GetProperty("Deleted");
+			return (deletedProperty != null) && deletedProperty.PropertyType == typeof(DateTime?);
+		});
+	}
+
+	/// <summary>
+	/// Určuje, zda je na typu TEntity podporováno mazání příznakem.
+	/// </summary>
+	public bool IsSoftDeleteSupported<TEntity>()
+	{
+		return IsSoftDeleteSupported(typeof(TEntity));
+	}
+
+	/// <summary>
+	/// Nastaví na dané instanci příznak smazání, není-li dosud nastaven.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
+	public void SetDeleted<TEntity>(TEntity entity)
+	{
+#pragma warning disable CA1857 // A constant is expected for the parameter - věrná kopie původní implementace
+		Contract.Requires<NotSupportedException>(IsSoftDeleteSupported(typeof(TEntity)), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
+#pragma warning restore CA1857
+
+		dynamic d = entity;
+		if ((DateTime?)d.Deleted == null)
+		{
+			d.Deleted = _timeService.GetCurrentTime();
+		}
+	}
+
+	/// <summary>
+	/// Zruší příznak smazání, je-li nastaven.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
+	public void SetNotDeleted<TEntity>(TEntity entity)
+	{
+#pragma warning disable CA1857 // A constant is expected for the parameter - věrná kopie původní implementace
+		Contract.Requires<NotSupportedException>(IsSoftDeleteSupported(typeof(TEntity)), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
+#pragma warning restore CA1857
+
+		dynamic d = entity;
+		d.Deleted = null;
+	}
+
+	/// <summary>
+	/// Vrací výraz (expression tree) pro filtrování objektů, které nemají nastaven příznak smazání.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
+	public Expression<Func<TEntity, bool>> GetNotDeletedExpressionLambda<TEntity>()
+	{
+		return (Expression<Func<TEntity, bool>>)_notDeletedExpressionLambdaDictionary.GetOrAdd(typeof(TEntity), _ =>
+		{
+			// odložení kontroly na podporovaný typ až do doby, kdy se hodnota nenajde v dictionary
+#pragma warning disable CA1857 // A constant is expected for the parameter - věrná kopie původní implementace
+			Contract.Assert<NotSupportedException>(IsSoftDeleteSupported(typeof(TEntity)), String.Format("Soft Delete is not supported on type {0}.", typeof(TEntity).FullName));
+#pragma warning restore CA1857
+
+			ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "o");
+			BinaryExpression equal = Expression.Equal(Expression.Property(parameter, "Deleted"), Expression.Constant(null, typeof(DateTime?)));
+			return Expression.Lambda(equal, parameter);
+		});
+	}
+
+	/// <summary>
+	/// Vrací zkompilovaný lambda výraz pro filtrování objektů, které nemají nastaven příznak smazání.
+	/// </summary>
+	/// <exception cref="NotSupportedException">Na typu TEntity není podporováno mazání příznakem.</exception>
+	public Func<TEntity, bool> GetNotDeletedCompiledLambda<TEntity>()
+	{
+		// kontrola typu je až v metodě GetNotDeletedExpressionLambda
+		return (Func<TEntity, bool>)_notDeletedCompiledLambdaDictionary.GetOrAdd(typeof(TEntity), _ => GetNotDeletedExpressionLambda<TEntity>().Compile());
+	}
+
+}

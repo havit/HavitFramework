@@ -66,6 +66,68 @@ public class DbSetInternalTests
 		Assert.AreSame(entity, trackedEntity);
 	}
 
+	[TestMethod]
+	public void DbSetInternal_FindTrackedTyped_EntityIsNotTracked()
+	{
+		// Arrange
+		DbSetInternal<SinglePrimaryKeyEntity> dbSetInternal = new DbSetInternal<SinglePrimaryKeyEntity>(new TestDbContext());
+
+		// Act
+		SinglePrimaryKeyEntity trackedEntity = dbSetInternal.FindTrackedTyped(1);
+
+		// Assert
+		Assert.IsNull(trackedEntity);
+	}
+
+	[TestMethod]
+	public void DbSetInternal_FindTrackedTyped_EntityIsTracked()
+	{
+		// Arrange
+		SinglePrimaryKeyEntity entity = new SinglePrimaryKeyEntity { Id = 1 };
+
+		DbSetInternal<SinglePrimaryKeyEntity> dbSetInternal = new DbSetInternal<SinglePrimaryKeyEntity>(new TestDbContext());
+		dbSetInternal.Attach(entity);
+
+		// Act
+		SinglePrimaryKeyEntity trackedEntity = dbSetInternal.FindTrackedTyped(entity.Id);
+
+		// Assert
+		Assert.AreSame(entity, trackedEntity);
+	}
+
+	[TestMethod]
+	public void DbSetInternal_AsQueryable_WithoutQueryTag_ReturnsDbSet()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		DbSetInternal<SinglePrimaryKeyEntity> dbSetInternal = new DbSetInternal<SinglePrimaryKeyEntity>(dbContext);
+
+		// Act
+		IQueryable<SinglePrimaryKeyEntity> queryableForNull = dbSetInternal.AsQueryable(null);
+		IQueryable<SinglePrimaryKeyEntity> queryableForEmpty = dbSetInternal.AsQueryable(String.Empty);
+
+		// Assert
+		// Bez query tagu vrací přímo DbSet (EF cachuje DbSet per typ, jde tedy o tutéž instanci).
+		Assert.AreSame(dbContext.Set<SinglePrimaryKeyEntity>(), queryableForNull);
+		Assert.AreSame(dbContext.Set<SinglePrimaryKeyEntity>(), queryableForEmpty);
+	}
+
+	[TestMethod]
+	public void DbSetInternal_AsQueryable_WithQueryTag_ReturnsTaggedQuery()
+	{
+		// Arrange
+		TestDbContext dbContext = new TestDbContext();
+		DbSetInternal<SinglePrimaryKeyEntity> dbSetInternal = new DbSetInternal<SinglePrimaryKeyEntity>(dbContext);
+
+		// Act
+		IQueryable<SinglePrimaryKeyEntity> queryable = dbSetInternal.AsQueryable("MyQueryTag");
+
+		// Assert
+		// S query tagem nevrací přímo DbSet, ale otagovaný dotaz, jehož tag je součástí expression tree.
+		Assert.AreNotSame(dbContext.Set<SinglePrimaryKeyEntity>(), queryable);
+		Assert.Contains("MyQueryTag", queryable.Expression.ToString());
+	}
+
 	public class TestDbContext : DbContext
 	{
 		private readonly string _databaseName;

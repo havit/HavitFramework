@@ -20,6 +20,17 @@ public class EntityTypeExtensionsTests
 	}
 
 	[TestMethod]
+	public void EntityTypeExtensions_IsSystemEntity_ReturnsTrueForDataSeedVersion()
+	{
+		// Arrange
+		// DataSeedVersion je systémová entita, kterou Havit DbContext registruje automaticky (RegisterDataSeedVersion).
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+
+		// Act + Assert
+		Assert.IsTrue(modelValidatingDbContext.Model.FindEntityType(typeof(Havit.Data.EntityFrameworkCore.Model.DataSeedVersion)).IsSystemType());
+	}
+
+	[TestMethod]
 	public void EntityTypeExtensions_IsManyToManyEntity()
 	{
 		// Arrange

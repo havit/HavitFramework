@@ -352,6 +352,35 @@ public class ModelValidatorTests
 	}
 
 	[TestMethod]
+	public void ModelValidator_CheckSymbolVsPrimaryKeyForEntries_ReportsNonIntegerPrimaryKeyWithoutSymbol()
+	{
+		// Arrange
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+		ModelValidator modelValidator = new ModelValidator();
+
+		// Act
+		string[] errors = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithGuidPrimaryKeyAndNoSymbol))).ToArray();
+
+		// Assert
+		Assert.HasCount(1, errors); // obsahuje chybu (párování entries podle primárního klíče vyžaduje celočíselný primární klíč)
+		Assert.Contains("an integer type is expected", errors[0]);
+	}
+
+	[TestMethod]
+	public void ModelValidator_CheckSymbolVsPrimaryKeyForEntries_DoesNotReportNonIntegerPrimaryKeyWithSymbol()
+	{
+		// Arrange
+		ModelValidatingDbContext modelValidatingDbContext = new ModelValidatingDbContext();
+		ModelValidator modelValidator = new ModelValidator();
+
+		// Act
+		string[] errors = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.Model.FindEntityType(typeof(EntryWithGuidPrimaryKeyAndWithSymbol))).ToArray();
+
+		// Assert
+		Assert.IsEmpty(errors); // entries se párují podle vlastnosti Symbol, primární klíč nemusí být celočíselný
+	}
+
+	[TestMethod]
 	public void ModelValidator_CheckSymbolVsPrimaryKeyForEntries_DoesNotReportSequencePrimaryKeyWithoutSymbol()
 	{
 		// Arrange

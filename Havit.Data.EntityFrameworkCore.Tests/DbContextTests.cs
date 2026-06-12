@@ -164,4 +164,24 @@ public class DbContextTests
 		// Assert
 		Assert.AreEqual(0, counter); // akce byla dispose zahozena, neproběhla
 	}
+
+	/// <summary>
+	/// Ověřuje, že DisposeAsync DbContextu zahodí neprovedené registrované akce (stejně jako synchronní Dispose).
+	/// Chrání použití poolovaného DbContextu - neprovedené akce nesmí přežít vrácení instance do poolu (EF custom stav odvozeného DbContextu neresetuje).
+	/// </summary>
+	[TestMethod]
+	public async Task DbContext_DisposeAsync_DiscardsRegisteredAfterSaveChangesActions()
+	{
+		// Arrange
+		EmptyDbContext dbContext = new EmptyDbContext();
+		int counter = 0;
+		dbContext.RegisterAfterSaveChangesAction(() => counter += 1);
+
+		// Act
+		await dbContext.DisposeAsync();
+		dbContext.AfterSaveChanges();
+
+		// Assert
+		Assert.AreEqual(0, counter); // akce byla dispose zahozena, neproběhla
+	}
 }

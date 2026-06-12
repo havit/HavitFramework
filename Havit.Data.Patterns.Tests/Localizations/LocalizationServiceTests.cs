@@ -10,35 +10,32 @@ namespace Havit.Data.Patterns.Tests.Localizations;
 public class LocalizationServiceTests
 {
 	[TestMethod]
-	public void LocalizationService_GetCurrentLocalization_CallsGetLocalizationWithCurrentLanguage()
+	public void LocalizationService_GetCurrentLocalization_ReturnsLocalizationForCurrentUICulture()
 	{
 		// Arrange
-		Language language = new Language()
-		{
-			UiCulture = ""
-		};
+		Language language = new Language { Id = 1, Culture = "cs-CZ", UiCulture = "cs-CZ" };
 
 		Mock<ICurrentCultureService> currentCultureServiceMock = new Mock<ICurrentCultureService>();
-		currentCultureServiceMock.Setup(m => m.GetCurrentCulture()).Returns(CultureInfo.GetCultureInfo("cs-CZ"));
 		currentCultureServiceMock.Setup(m => m.GetCurrentUICulture()).Returns(CultureInfo.GetCultureInfo("cs-CZ"));
 
 		Mock<ILanguageService> languageServiceMock = new Mock<ILanguageService>();
 		languageServiceMock.Setup(m => m.GetLanguage("cs-CZ")).Returns(language);
 
-		Mock<LocalizationService> localizationServiceMock = new Mock<LocalizationService>(currentCultureServiceMock.Object, languageServiceMock.Object);
-		localizationServiceMock.CallBase = true;
+		LocalizationService localizationService = new LocalizationService(currentCultureServiceMock.Object, languageServiceMock.Object);
 
+		LocalizedEntityLocalization currentLocalization = new LocalizedEntityLocalization { Language = language };
 		LocalizedEntity localizedEntity = new LocalizedEntity
 		{
-			Localizations = new List<LocalizedEntityLocalization>()
+			Localizations = new List<LocalizedEntityLocalization> { currentLocalization }
 		};
 
 		// Act
-		localizationServiceMock.Object.GetCurrentLocalization(localizedEntity);
+		LocalizedEntityLocalization result = localizationService.GetCurrentLocalization(localizedEntity);
 
 		// Assert
-		localizationServiceMock.Verify(m => m.GetLocalization(localizedEntity, language), Times.Once);
-		localizationServiceMock.Verify(m => m.GetLocalization(It.IsAny<LocalizedEntity>(), It.IsAny<ILanguage>()), Times.Once);
+		// Ověřujeme výsledek (stavově), nikoliv interní volání GetLocalization - GetCurrentLocalization musí vrátit lokalizaci pro aktuální UI culture.
+		Assert.AreSame(currentLocalization, result);
+		languageServiceMock.Verify(m => m.GetLanguage("cs-CZ"), Times.Once);
 	}
 
 	[TestMethod]
@@ -66,7 +63,32 @@ public class LocalizationServiceTests
 	}
 
 	[TestMethod]
-	public void LocalizationService_GetLocalization_ReturnsInvariantWhenSpecificDoesNotExists()
+	public void LocalizationService_GetLocalization_ReturnsNullWhenNoLocalizationMatches()
+	{
+		// Arrange
+		Language requestedLanguage = new Language { Id = 1, UiCulture = "cs-CZ" };
+
+		Mock<ICurrentCultureService> currentCultureServiceMock = new Mock<ICurrentCultureService>();
+		Mock<ILanguageService> languageServiceMock = new Mock<ILanguageService>();
+		// Fallbacky (neutrální "cs", invariantní "") vrací jazyk, žádný se však v kolekci lokalizací nevyskytuje.
+		languageServiceMock.Setup(m => m.GetLanguage(It.IsAny<string>())).Returns((string culture) => new Language { Id = 2, UiCulture = culture });
+
+		LocalizationService localizationService = new LocalizationService(currentCultureServiceMock.Object, languageServiceMock.Object);
+
+		LocalizedEntity localizedEntity = new LocalizedEntity
+		{
+			Localizations = new List<LocalizedEntityLocalization>() // načtená, ale prázdná kolekce - žádná shoda
+		};
+
+		// Act
+		LocalizedEntityLocalization result = localizationService.GetLocalization(localizedEntity, requestedLanguage);
+
+		// Assert
+		Assert.IsNull(result);
+	}
+
+	[TestMethod]
+	public void LocalizationService_GetLocalization_ReturnsInvariantWhenSpecificDoesNotExist()
 	{
 		// Arrange
 		Language languageCsCz = new Language()

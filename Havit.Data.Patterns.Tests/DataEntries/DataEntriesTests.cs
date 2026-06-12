@@ -9,10 +9,12 @@ namespace Havit.Data.Patterns.Tests.DataEntries;
 [TestClass]
 public class DataEntriesTests
 {
+	public TestContext TestContext { get; set; }
+
 	[TestMethod]
 	[SuppressMessage("SonicLint", "S1481", Justification = "Výsledek získání hodnoty vlastnosti je potřeba nějak zpracovat, zde jej ukládáme do proměné, která úmyslně není použita.")]
 	[SuppressMessage("SonicLint", "S1854", Justification = "Uložení do proměné je zvolený způsob zpracování výsledku získání hodnoty vlastnosti.")]
-	public void DbDataEntries_GetEntry_UsesDataEntrySymbolServiceAndRepository()
+	public void DataEntries_GetEntry_UsesDataEntrySymbolServiceAndRepository()
 	{
 		// Arrange
 		Mock<IDataEntrySymbolService<SystemCodebookEntry, int>> mockDataEntrySymbolService = new Mock<IDataEntrySymbolService<SystemCodebookEntry, int>>(MockBehavior.Strict);
@@ -32,7 +34,7 @@ public class DataEntriesTests
 	}
 
 	[TestMethod]
-	public void DbDataEntries_GetEntry_GetsObjectByEnumWhenDataEntrySymbolServiceNotUsed()
+	public void DataEntries_GetEntry_GetsObjectByEnumWhenDataEntrySymbolServiceNotUsed()
 	{
 		// Arrange
 		var first = new SystemCodebookEntry();
@@ -42,6 +44,44 @@ public class DataEntriesTests
 
 		// Act
 		var resultGetEntry = supportClassDataEntries.GetEntry(SystemCodebookEntry.Entry.First);
+
+		// Assert
+		Assert.AreSame(first, resultGetEntry);
+	}
+
+	[TestMethod]
+	public async Task DataEntries_GetEntryAsync_UsesDataEntrySymbolServiceAndRepository()
+	{
+		// Arrange
+		SystemCodebookEntry first = new SystemCodebookEntry();
+		Mock<IDataEntrySymbolService<SystemCodebookEntry, int>> mockDataEntrySymbolService = new Mock<IDataEntrySymbolService<SystemCodebookEntry, int>>(MockBehavior.Strict);
+		mockDataEntrySymbolService.Setup(mock => mock.GetEntryIdAsync(SystemCodebookEntry.Entry.First, It.IsAny<CancellationToken>())).Returns(new ValueTask<int>(1));
+		Mock<IRepository<SystemCodebookEntry, int>> mockRepository = new Mock<IRepository<SystemCodebookEntry, int>>(MockBehavior.Strict);
+		mockRepository.Setup(m => m.GetObjectAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(first);
+		SystemCodebookEntryDataEntries supportClassDataEntries = new SystemCodebookEntryDataEntries(mockDataEntrySymbolService.Object, mockRepository.Object);
+
+		// Act
+		SystemCodebookEntry resultGetEntry = await supportClassDataEntries.GetEntryAsync(SystemCodebookEntry.Entry.First, TestContext.CancellationToken);
+
+		// Assert
+		Assert.AreSame(first, resultGetEntry);
+		mockDataEntrySymbolService.Verify(mock => mock.GetEntryIdAsync(SystemCodebookEntry.Entry.First, It.IsAny<CancellationToken>()), Times.Once);
+		mockDataEntrySymbolService.Verify(mock => mock.GetEntryIdAsync(It.IsAny<SystemCodebookEntry.Entry>(), It.IsAny<CancellationToken>()), Times.Once);
+		mockRepository.Verify(mock => mock.GetObjectAsync(1, It.IsAny<CancellationToken>()), Times.Once);
+		mockRepository.Verify(mock => mock.GetObjectAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
+	}
+
+	[TestMethod]
+	public async Task DataEntries_GetEntryAsync_GetsObjectByEnumWhenDataEntrySymbolServiceNotUsed()
+	{
+		// Arrange
+		var first = new SystemCodebookEntry();
+		Mock<IRepository<SystemCodebookEntry, int>> mockRepository = new Mock<IRepository<SystemCodebookEntry, int>>(MockBehavior.Strict);
+		mockRepository.Setup(m => m.GetObjectAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(first);
+		SystemCodebookEntryDataEntries supportClassDataEntries = new SystemCodebookEntryDataEntries(mockRepository.Object);
+
+		// Act
+		var resultGetEntry = await supportClassDataEntries.GetEntryAsync(SystemCodebookEntry.Entry.First, TestContext.CancellationToken);
 
 		// Assert
 		Assert.AreSame(first, resultGetEntry);

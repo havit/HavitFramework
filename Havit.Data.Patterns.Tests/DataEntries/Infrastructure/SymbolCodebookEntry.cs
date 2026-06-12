@@ -1,13 +1,16 @@
-﻿namespace Havit.Data.Entity.Patterns.Tests.DataEntries.Model;
+namespace Havit.Data.Patterns.Tests.DataEntries.Infrastructure;
 
-public class SupportedClass
+public class SymbolCodebookEntry
 {
 	public int Id { get; set; }
+
 	public string Symbol { get; set; }
+
 	public DateTime? Deleted { get; set; }
 
 	public enum Entry
 	{
-		First, Second, Third
+		First = 1,
+		Second = 2
 	}
 }

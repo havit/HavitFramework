@@ -68,12 +68,16 @@ public class DataSeedForTests
 		// Arrange
 		var dataSeedForLocalizedEntityLocalization = new DataSeedFor<LocalizedEntityLocalization>(new LocalizedEntityLocalization[] { });
 
+		// LocalizedEntityLocalization nemá ani vlastnost Symbol ani neimplementuje ILocalized, takže výchozí konfigurace neregistruje žádný child seed.
+		Assert.IsEmpty(dataSeedForLocalizedEntityLocalization.ChildDataForsRegistry);
+
 		// Act
 		dataSeedForLocalizedEntityLocalization.AndFor(l => l.Language, cf => { /* NOOP */ });
 		dataSeedForLocalizedEntityLocalization.AndFor(l => l.Parent, cf => { /* NOOP */ });
 
 		// Assert
-		// no exception was throws
+		// Každé AndFor pro odlišnou vlastnost přidá vlastní child konfiguraci.
+		Assert.HasCount(2, dataSeedForLocalizedEntityLocalization.ChildDataForsRegistry);
 	}
 
 }

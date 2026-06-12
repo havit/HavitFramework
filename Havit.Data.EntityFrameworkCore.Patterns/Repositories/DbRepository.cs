@@ -394,6 +394,13 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 					.WhereNotDeleted(SoftDeleteManager)
 					.ToListAsync(cancellationToken).ConfigureAwait(false);
 				EntityCacheManager.StoreAllKeys<TEntity>(() => allData.Select(entity => _entityKeyAccessor.GetEntityKeyValue(entity)).ToArray());
+				if (IsEntityCachable())
+				{
+					foreach (var entity in allData) // performance: Pokud již objekty jsou v cache je jejich ukládání do cache zbytečné. Pro většinový scénář však nemáme ani klíče ani entity v cache, proto je jejich uložení do cache na místě).
+					{
+						EntityCacheManager.StoreEntity<TEntity>(entity);
+					}
+				}
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 

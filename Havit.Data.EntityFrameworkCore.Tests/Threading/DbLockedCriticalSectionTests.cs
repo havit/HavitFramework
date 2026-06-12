@@ -18,7 +18,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		using (criticalSection.EnterScope("LOCK"))
+		using (criticalSection.EnterScope("DbLockedCriticalSection_EnterScope_WorksWithNotOpenedConnection"))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 		}
@@ -37,7 +37,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		await using (await criticalSection.EnterScopeAsync("LOCK", TestContext.CancellationToken))
+		await using (await criticalSection.EnterScopeAsync("DbLockedCriticalSection_EnterScopeAsync_WorksWithNotOpenedConnection", TestContext.CancellationToken))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 		}
@@ -56,7 +56,7 @@ public class DbLockedCriticalSectionTests
 		var criticalSection = new DbLockedCriticalSection(sqlConnection);
 
 		// Act
-		using (criticalSection.EnterScope("LOCK"))
+		using (criticalSection.EnterScope("DbLockedCriticalSection_EnterScope_WorksWithOpenedConnection"))
 		{
 			Contract.Assert(sqlConnection.State == System.Data.ConnectionState.Open);
 		}

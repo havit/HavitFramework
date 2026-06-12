@@ -20,7 +20,7 @@ public class ConventionSuppressionsExtensionsTests
 
 		// Assert
 		Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).IsConventionSuppressed(TestCustomConventionIdentifier));
-		Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).FindProperty(nameof(EntityWithoutSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
+		Assert.IsTrue(dbContext.Model.FindEntityType(typeof(EntityWithSuppression)).FindProperty(nameof(EntityWithSuppression.Value)).IsConventionSuppressed(TestCustomConventionIdentifier));
 	}
 
 	[TestMethod]

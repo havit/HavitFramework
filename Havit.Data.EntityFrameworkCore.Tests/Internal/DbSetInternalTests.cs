@@ -51,7 +51,7 @@ public class DbSetInternalTests
 	}
 
 	[TestMethod]
-	public void DbSetInternal_FindTrackedd_CompositePrimaryKey_EntityIsTracked()
+	public void DbSetInternal_FindTracked_CompositePrimaryKey_EntityIsTracked()
 	{
 		// Arrange
 		CompositePrimaryKeyEntity entity = new CompositePrimaryKeyEntity { Id1 = 1, Id2 = 2 };
@@ -61,6 +61,8 @@ public class DbSetInternalTests
 
 		// Act
 		CompositePrimaryKeyEntity trackedEntity = dbSetInternal.FindTracked((object)entity.Id1, (object)entity.Id2);
+
+		// Assert
 		Assert.AreSame(entity, trackedEntity);
 	}
 

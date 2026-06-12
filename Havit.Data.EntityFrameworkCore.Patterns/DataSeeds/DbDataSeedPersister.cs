@@ -48,7 +48,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	{
 		ClearChangeTracker();
 		Task task = PerformSaveOptionalyAsync<TEntity>(configuration, SynchronizationMode.Synchronous, CancellationToken.None);
-		Contract.Assert(task.IsCompleted, $"Task must be completed. There is a bug in the {nameof(DbDataSeedPersister)}.");
+		Contract.Assert(task.IsCompleted, "Task must be completed. There is a bug in the DbDataSeedPersister.");
 #pragma warning disable VSTHRD002 // Avoid problematic synchronous waits
 		task.GetAwaiter().GetResult(); // pro propagaci případných výjimek
 #pragma warning restore VSTHRD002 // Avoid problematic synchronous waits

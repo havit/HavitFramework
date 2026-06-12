@@ -2,7 +2,6 @@
 using System.Reflection;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Exceptions;
-using Havit.Diagnostics.Contracts;
 
 namespace Havit.Data.Patterns.DataEntries;
 
@@ -23,7 +22,7 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	/// </summary>
 	public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity, TKey> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
 	{
-		// PERF: Služba bývá registrována jako transientní, validace (reflexe + String.Format hlášek i v úspěšné větvi) by tak probíhala při každé konstrukci.
+		// PERF: Služba bývá registrována jako transientní, validace (reflexe) by tak probíhala při každé konstrukci.
 		// Výsledek validace závisí jen na typu TEntity, proto ji provádíme jen jednou per uzavřený generický typ.
 		// (Případný souběh vláken při prvních konstrukcích není problém, validace je idempotentní.)
 		if (!s_entityTypeValidated)
@@ -43,8 +42,14 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	private static void ValidateEntityType()
 	{
 		PropertyInfo symbolProperty = typeof(TEntity).GetProperty("Symbol");
-		Contract.Assert<NotSupportedException>(symbolProperty != null, String.Format("DataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
-		Contract.Assert<NotSupportedException>(symbolProperty.PropertyType == typeof(string), String.Format("DbDataEntrySymbolService is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
+		if (symbolProperty == null)
+		{
+			throw new NotSupportedException(String.Format("DataEntrySymbolService is not supported on type {0} - missing property 'Symbol'.", typeof(TEntity).Name));
+		}
+		if (symbolProperty.PropertyType != typeof(string))
+		{
+			throw new NotSupportedException(String.Format("DbDataEntrySymbolService is not supported on type {0} - property 'Symbol' must be of type string.", typeof(TEntity).Name));
+		}
 	}
 
 	/// <summary>

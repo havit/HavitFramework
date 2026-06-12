@@ -62,6 +62,9 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	public void Commit()
 	{
+		// Async after commit akce nelze v synchronním Commitu zpracovat. Ověříme to ještě před jakoukoliv persistencí, aby commit neselhal až po uložení dat (kdy už by data byla v DB).
+		ThrowIfAsyncAfterCommitRegistered();
+
 		BeforeCommit();
 
 		Changes allKnownChanges = GetAllKnownChanges(); // volá detekci změn na change trackeru
@@ -148,10 +151,7 @@ public class DbUnitOfWork : IUnitOfWork
 	/// </summary>
 	protected internal virtual void AfterCommit()
 	{
-		if (_asyncAfterCommitsActions != null)
-		{
-			throw new InvalidOperationException($"Cannot use asynchronous after commit actions for {nameof(Commit)} method method. Call {nameof(CommitAsync)} method or use only synchronous after commit actions.");
-		}
+		ThrowIfAsyncAfterCommitRegistered();
 
 		List<Action> registeredAfterCommitActions = _afterCommitActions;
 		// Neprve vyčistíme afterCommits, pak je teprve spustíme.
@@ -224,6 +224,14 @@ public class DbUnitOfWork : IUnitOfWork
 			_asyncAfterCommitsActions = new List<Func<CancellationToken, Task>>(1);
 		}
 		_asyncAfterCommitsActions.Add(asyncAction);
+	}
+
+	private void ThrowIfAsyncAfterCommitRegistered()
+	{
+		if (_asyncAfterCommitsActions != null)
+		{
+			throw new InvalidOperationException($"Cannot use asynchronous after commit actions for {nameof(Commit)} method method. Call {nameof(CommitAsync)} method or use only synchronous after commit actions.");
+		}
 	}
 
 	/// <summary>

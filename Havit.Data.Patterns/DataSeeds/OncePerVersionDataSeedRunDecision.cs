@@ -60,10 +60,26 @@ public class OncePerVersionDataSeedRunDecision : IDataSeedRunDecision
 	}
 
 	/// <summary>
+	/// Vrací true, pokud persister obsahuje jinou hodnotu než aktuální stav.
+	/// </summary>
+	public async Task<bool> ShouldSeedDataAsync(IDataSeedProfile profile, List<Type> dataSeedTypes, CancellationToken cancellationToken = default)
+	{
+		return GetState(dataSeedTypes) != await _dataSeedRunDecisionStatePersister.ReadCurrentStateAsync(profile.ProfileName, cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Nastaví do persisteru aktuální stav.
 	/// </summary>
 	public void SeedDataCompleted(IDataSeedProfile profile, List<Type> dataSeedTypes)
 	{
 		_dataSeedRunDecisionStatePersister.WriteCurrentState(profile.ProfileName, GetState(dataSeedTypes));
+	}
+
+	/// <summary>
+	/// Nastaví do persisteru aktuální stav.
+	/// </summary>
+	public async Task SeedDataCompletedAsync(IDataSeedProfile profile, List<Type> dataSeedTypes, CancellationToken cancellationToken = default)
+	{
+		await _dataSeedRunDecisionStatePersister.WriteCurrentStateAsync(profile.ProfileName, GetState(dataSeedTypes), cancellationToken).ConfigureAwait(false);
 	}
 }

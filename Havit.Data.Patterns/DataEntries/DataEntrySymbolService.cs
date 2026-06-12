@@ -54,7 +54,22 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	public TKey GetEntryId(Enum entry)
 	{
 		Dictionary<string, TKey> identifiersByEntry = GetIdentifiersByEntry();
+		return GetEntryIdFromDictionary(identifiersByEntry, entry);
+	}
 
+	/// <summary>
+	/// Vrací hodnotu identifikátoru (primárního klíče) na základě symbolu.
+	/// </summary>
+	/// <param name="entry">"Symbol".</param>
+	/// <param name="cancellationToken">Cancellation token.</param>
+	public async ValueTask<TKey> GetEntryIdAsync(Enum entry, CancellationToken cancellationToken = default)
+	{
+		Dictionary<string, TKey> identifiersByEntry = await GetIdentifiersByEntryAsync(cancellationToken).ConfigureAwait(false);
+		return GetEntryIdFromDictionary(identifiersByEntry, entry);
+	}
+
+	private static TKey GetEntryIdFromDictionary(Dictionary<string, TKey> identifiersByEntry, Enum entry)
+	{
 		TKey id;
 		if (identifiersByEntry.TryGetValue(entry.ToString(), out id))
 		{
@@ -68,20 +83,68 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 
 	private Dictionary<string, TKey> GetIdentifiersByEntry()
 	{
-		if (_dataEntrySymbolStorage.Value == null)
+		Dictionary<string, TKey> identifiersByEntry = _dataEntrySymbolStorage.Value;
+		if (identifiersByEntry == null)
 		{
 			lock (_dataEntrySymbolStorage)
 			{
-				if (_dataEntrySymbolStorage.Value == null)
+				identifiersByEntry = _dataEntrySymbolStorage.Value;
+				if (identifiersByEntry == null)
 				{
-					_dataEntrySymbolStorage.Value = GetStorageData();
+					identifiersByEntry = GetStorageData();
+					_dataEntrySymbolStorage.Value = identifiersByEntry;
 				}
 			}
 		}
-		return _dataEntrySymbolStorage.Value;
+		return identifiersByEntry;
+	}
+
+	private async ValueTask<Dictionary<string, TKey>> GetIdentifiersByEntryAsync(CancellationToken cancellationToken)
+	{
+		Dictionary<string, TKey> identifiersByEntry = _dataEntrySymbolStorage.Value;
+		if (identifiersByEntry == null)
+		{
+			// Zámek nelze držet přes await, data proto načítáme mimo zámek.
+			// Při souběhu prvních volání tak může dojít k opakovanému (idempotentnímu) načtení dat, použije se první zapsaný výsledek.
+			Dictionary<string, TKey> storageData = await GetStorageDataAsync(cancellationToken).ConfigureAwait(false);
+			lock (_dataEntrySymbolStorage)
+			{
+				identifiersByEntry = _dataEntrySymbolStorage.Value;
+				if (identifiersByEntry == null)
+				{
+					_dataEntrySymbolStorage.Value = storageData;
+					identifiersByEntry = storageData;
+				}
+			}
+		}
+		return identifiersByEntry;
 	}
 
 	private Dictionary<string, TKey> GetStorageData()
+	{
+		return GetStorageDataQuery().ToDictionary(item => item.Symbol, item => item.Id);
+	}
+
+	private async ValueTask<Dictionary<string, TKey>> GetStorageDataAsync(CancellationToken cancellationToken)
+	{
+		IQueryable<EntryIdentification<TKey>> query = GetStorageDataQuery();
+		if (query is IAsyncEnumerable<EntryIdentification<TKey>> asyncQuery)
+		{
+			Dictionary<string, TKey> result = new Dictionary<string, TKey>();
+			await foreach (EntryIdentification<TKey> item in asyncQuery.WithCancellation(cancellationToken).ConfigureAwait(false))
+			{
+				result.Add(item.Symbol, item.Id);
+			}
+			return result;
+		}
+		else
+		{
+			// Datový zdroj nepodporuje asynchronní enumeraci (typicky EF6 či fake pro testy), data načteme synchronně.
+			return query.ToDictionary(item => item.Symbol, item => item.Id);
+		}
+	}
+
+	private IQueryable<EntryIdentification<TKey>> GetStorageDataQuery()
 	{
 		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 
@@ -97,9 +160,6 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 			),
 			parameter);
 
-		Dictionary<string, TKey> result;
-		result = _dataSource.DataIncludingDeleted.Where(whereExpression).Select(projectionExpression).ToDictionary(item => item.Symbol, item => item.Id);
-
-		return result;
+		return _dataSource.DataIncludingDeleted.Where(whereExpression).Select(projectionExpression);
 	}
 }

@@ -19,7 +19,7 @@ public abstract class DataEntries<TEntity, TKey>
 	/// <param name="repository">Repository pro získání objektu dle identifikátoru.</param>
 	protected DataEntries(IRepository<TEntity, TKey> repository)
 	{
-		Contract.Requires(repository != null);
+		Contract.Requires<ArgumentNullException>(repository != null, nameof(repository));
 
 		this._dataEntrySymbolService = null;
 		this._repository = repository;
@@ -33,7 +33,7 @@ public abstract class DataEntries<TEntity, TKey>
 	/// <param name="repository">Repository pro získání objektu dle identifikátoru.</param>
 	protected DataEntries(IDataEntrySymbolService<TEntity, TKey> dataEntrySymbolService, IRepository<TEntity, TKey> repository)
 	{
-		Contract.Requires(repository != null);
+		Contract.Requires<ArgumentNullException>(repository != null, nameof(repository));
 
 		this._dataEntrySymbolService = dataEntrySymbolService;
 		this._repository = repository;
@@ -53,5 +53,21 @@ public abstract class DataEntries<TEntity, TKey>
 
 		// vrátíme objekt z repository
 		return _repository.GetObject(id);
+	}
+
+	/// <summary>
+	/// Vrátí objekt pro daný enum.
+	/// Pokud byla v konstruktoru předá dataEntrySymbolService, je mapování provedeno přes ni (mapování přes "symbol"),
+	/// pokud nebyla předána, pak dojde k přímému mapování enumu na int.
+	/// </summary>
+	protected internal async ValueTask<TEntity> GetEntryAsync(Enum entry, CancellationToken cancellationToken = default)
+	{
+		// najdeme identifikátor objektu
+		TKey id = (_dataEntrySymbolService == null)
+			? (TKey)Convert.ChangeType(entry, typeof(TKey)) // pokud hodnota enumu odpovídá identifikátoru, vezmeme ji přímo
+			: await _dataEntrySymbolService.GetEntryIdAsync(entry, cancellationToken).ConfigureAwait(false); // pokud hodnota enum nemusí odpovídat identifikátoru, pak jej hledáme ve slovníku
+
+		// vrátíme objekt z repository
+		return await _repository.GetObjectAsync(id, cancellationToken).ConfigureAwait(false);
 	}
 }

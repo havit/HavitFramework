@@ -36,7 +36,23 @@ public class LanguageByCultureService<TLanguage, TLanguageKey> : ILanguageByCult
 	public TLanguageKey GetLanguageId(string cultureName)
 	{
 		Dictionary<string, TLanguageKey> languagesByCulture = GetLanguagesByCulture();
+		return GetLanguageIdFromDictionary(languagesByCulture, cultureName);
+	}
 
+	/// <summary>
+	/// Vrací identifikátor jazyka podle culture.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	/// Není-li jazyk podle culture nalezen.
+	/// </exception>
+	public async ValueTask<TLanguageKey> GetLanguageIdAsync(string cultureName, CancellationToken cancellationToken = default)
+	{
+		Dictionary<string, TLanguageKey> languagesByCulture = await GetLanguagesByCultureAsync(cancellationToken).ConfigureAwait(false);
+		return GetLanguageIdFromDictionary(languagesByCulture, cultureName);
+	}
+
+	private static TLanguageKey GetLanguageIdFromDictionary(Dictionary<string, TLanguageKey> languagesByCulture, string cultureName)
+	{
 		TLanguageKey tmp;
 
 		// nejprve zkusíme hledat podle plného názvu
@@ -70,17 +86,46 @@ public class LanguageByCultureService<TLanguage, TLanguageKey> : ILanguageByCult
 	/// </summary>
 	private Dictionary<string, TLanguageKey> GetLanguagesByCulture()
 	{
-		if (languageByCultureStorage.Value == null)
+		Dictionary<string, TLanguageKey> languagesByCulture = languageByCultureStorage.Value;
+		if (languagesByCulture == null)
 		{
 			lock (languageByCultureStorage)
 			{
-				if (languageByCultureStorage.Value == null)
+				languagesByCulture = languageByCultureStorage.Value;
+				if (languagesByCulture == null)
 				{
-					languageByCultureStorage.Value = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKeyValue(item));
+					languagesByCulture = languageRepository.GetAll().ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKeyValue(item));
+					languageByCultureStorage.Value = languagesByCulture;
 				}
 			}
 		}
 
-		return languageByCultureStorage.Value;
+		return languagesByCulture;
+	}
+
+	/// <summary>
+	/// Zajistí načtení jazyků do paměti pro opakované použití.
+	/// </summary>
+	private async ValueTask<Dictionary<string, TLanguageKey>> GetLanguagesByCultureAsync(CancellationToken cancellationToken)
+	{
+		Dictionary<string, TLanguageKey> languagesByCulture = languageByCultureStorage.Value;
+		if (languagesByCulture == null)
+		{
+			// Zámek nelze držet přes await, data proto načítáme mimo zámek.
+			// Při souběhu prvních volání tak může dojít k opakovanému (idempotentnímu) načtení dat, použije se první zapsaný výsledek.
+			List<TLanguage> languages = await languageRepository.GetAllAsync(cancellationToken).ConfigureAwait(false);
+			Dictionary<string, TLanguageKey> loadedLanguagesByCulture = languages.ToDictionary(item => item.UiCulture, item => entityKeyAccessor.GetEntityKeyValue(item));
+			lock (languageByCultureStorage)
+			{
+				languagesByCulture = languageByCultureStorage.Value;
+				if (languagesByCulture == null)
+				{
+					languageByCultureStorage.Value = loadedLanguagesByCulture;
+					languagesByCulture = loadedLanguagesByCulture;
+				}
+			}
+		}
+
+		return languagesByCulture;
 	}
 }

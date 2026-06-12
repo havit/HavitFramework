@@ -32,11 +32,28 @@ public class LanguageService<TLanguage, TLanguageKey> : ILanguageService
 	}
 
 	/// <summary>
+	/// Vrací výchozí jazyk (vyhledáním pro prázdnou cultureName).
+	/// </summary>
+	public virtual async ValueTask<ILanguage> GetDefaultLanguageAsync(CancellationToken cancellationToken = default)
+	{
+		return await GetLanguageAsync("", cancellationToken).ConfigureAwait(false);
+	}
+
+	/// <summary>
 	/// Vrací jazyk pro danou culture.
 	/// </summary>
 	public ILanguage GetLanguage(string cultureName)
 	{
 		TLanguageKey languageId = _languageByCultureService.GetLanguageId(cultureName);
 		return _languageRepository.GetObject(languageId);
+	}
+
+	/// <summary>
+	/// Vrací jazyk pro danou culture.
+	/// </summary>
+	public async ValueTask<ILanguage> GetLanguageAsync(string cultureName, CancellationToken cancellationToken = default)
+	{
+		TLanguageKey languageId = await _languageByCultureService.GetLanguageIdAsync(cultureName, cancellationToken).ConfigureAwait(false);
+		return await _languageRepository.GetObjectAsync(languageId, cancellationToken).ConfigureAwait(false);
 	}
 }

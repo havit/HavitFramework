@@ -41,6 +41,31 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	}
 
 	/// <summary>
+	/// Přečte aktuální stav.
+	/// V případě nemožnosti přečíst stav (neexistence souboru, atp.) vrací null.
+	/// </summary>
+	/// <returns>Aktuální stav.</returns>
+	public async Task<string> ReadCurrentStateAsync(string profileName, CancellationToken cancellationToken = default)
+	{
+		try
+		{
+			using (Stream stream = await _fileStorageService.OpenReadAsync(GetFileName(profileName), cancellationToken).ConfigureAwait(false))
+			using (StreamReader reader = new StreamReader(stream))
+			{
+#if NET8_0_OR_GREATER
+				return await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
+#else
+				return await reader.ReadToEndAsync().ConfigureAwait(false);
+#endif
+			}
+		}
+		catch
+		{
+			return null;
+		}
+	}
+
+	/// <summary>
 	/// Zapíše aktuální stav.
 	/// </summary>
 	public void WriteCurrentState(string profileName, string currentState)
@@ -54,6 +79,23 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 			memoryStream.Seek(0, SeekOrigin.Begin);
 
 			_fileStorageService.Save(GetFileName(profileName), memoryStream, "text/plain");
+		}
+	}
+
+	/// <summary>
+	/// Zapíše aktuální stav.
+	/// </summary>
+	public async Task WriteCurrentStateAsync(string profileName, string currentState, CancellationToken cancellationToken = default)
+	{
+		using (MemoryStream memoryStream = new MemoryStream())
+		{
+			using (StreamWriter writer = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true))
+			{
+				await writer.WriteAsync(currentState).ConfigureAwait(false);
+			}
+			memoryStream.Seek(0, SeekOrigin.Begin);
+
+			await _fileStorageService.SaveAsync(GetFileName(profileName), memoryStream, "text/plain", cancellationToken).ConfigureAwait(false);
 		}
 	}
 

@@ -194,7 +194,7 @@ public class DataSeedRunner : IDataSeedRunner
 		Dictionary<Type, IDataSeed> dataSeedsInProfileByType = _dataSeeds.Where(item => item.ProfileType == profileType).ToDictionary(item => item.GetType(), item => item);
 		List<Type> dataSeedsInProfileTypes = dataSeedsInProfileByType.Keys.ToList();
 
-		if (forceRun || _dataSeedRunDecision.ShouldSeedData(profile, dataSeedsInProfileTypes))
+		if (forceRun || await _dataSeedRunDecision.ShouldSeedDataAsync(profile, dataSeedsInProfileTypes, cancellationToken).ConfigureAwait(false))
 		{
 			// seed profile
 			HashSet<IDataSeed> completedDataSeeds = new HashSet<IDataSeed>();
@@ -207,7 +207,7 @@ public class DataSeedRunner : IDataSeedRunner
 				await SeedServiceAsync(dataSeed, dataSeedsStack, profile, dataSeedsInProfileByType, completedDataSeeds, cancellationToken).ConfigureAwait(false);
 			}
 
-			_dataSeedRunDecision.SeedDataCompleted(profile, dataSeedsInProfileTypes);
+			await _dataSeedRunDecision.SeedDataCompletedAsync(profile, dataSeedsInProfileTypes, cancellationToken).ConfigureAwait(false);
 		}
 	}
 

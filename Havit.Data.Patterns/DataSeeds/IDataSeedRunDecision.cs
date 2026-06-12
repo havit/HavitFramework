@@ -14,7 +14,17 @@ public interface IDataSeedRunDecision
 	bool ShouldSeedData(IDataSeedProfile profile, List<Type> dataSeedTypes);
 
 	/// <summary>
+	/// Indikuje, zda má dojít ke spuštění seedování dat.
+	/// </summary>
+	Task<bool> ShouldSeedDataAsync(IDataSeedProfile profile, List<Type> dataSeedTypes, CancellationToken cancellationToken = default);
+
+	/// <summary>
 	/// Metoda je zavolána po dokončení seedování dat.
 	/// </summary>
 	void SeedDataCompleted(IDataSeedProfile profile, List<Type> dataSeedTypes);
+
+	/// <summary>
+	/// Metoda je zavolána po dokončení seedování dat.
+	/// </summary>
+	Task SeedDataCompletedAsync(IDataSeedProfile profile, List<Type> dataSeedTypes, CancellationToken cancellationToken = default);
 }

@@ -9,10 +9,18 @@ namespace Havit.Data.Patterns.Localizations.Internal;
 public interface ILanguageByCultureService<TLanguageKey>
 {
 	/// <summary>
-	/// Vrací identifikátor jazyka podle culture.		
+	/// Vrací identifikátor jazyka podle culture.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
 	/// Není-li jazyk podle culture nalezen.
 	/// </exception>
 	TLanguageKey GetLanguageId(string cultureName);
+
+	/// <summary>
+	/// Vrací identifikátor jazyka podle culture.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	/// Není-li jazyk podle culture nalezen.
+	/// </exception>
+	ValueTask<TLanguageKey> GetLanguageIdAsync(string cultureName, CancellationToken cancellationToken = default);
 }

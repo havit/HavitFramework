@@ -238,4 +238,90 @@ public class FilteringCollectionTests
 		Assert.Contains(4, list);
 	}
 
+	[TestMethod]
+	public void FilteringCollection_CopyTo_CopiesOnlyFilteredItems()
+	{
+		// Arrange
+		var filteringCollection = new FilteringCollection<int>(new List<int> { 1, 2, 3, 4 }, i => i % 2 == 0);
+		var target = new int[2];
+
+		// Act
+		filteringCollection.CopyTo(target, 0);
+
+		// Assert
+		CollectionAssert.AreEqual(new[] { 2, 4 }, target);
+	}
+
+	[TestMethod]
+	public void FilteringCollection_CopyTo_RespectsArrayIndex()
+	{
+		// Arrange
+		var filteringCollection = new FilteringCollection<int>(new List<int> { 1, 2, 3, 4 }, i => i % 2 == 0);
+		var target = new int[3];
+
+		// Act
+		filteringCollection.CopyTo(target, 1);
+
+		// Assert
+		CollectionAssert.AreEqual(new[] { 0, 2, 4 }, target);
+	}
+
+	[TestMethod]
+	public void FilteringCollection_IsReadOnly_ReturnsFalse()
+	{
+		// Arrange
+		var filteringCollection = new FilteringCollection<int>(new List<int>(), i => i % 2 == 0);
+
+		// Act + Assert
+		Assert.IsFalse(filteringCollection.IsReadOnly);
+	}
+
+	[TestMethod]
+	public void FilteringCollection_Add_ItemNotMatchingFilter_StaysInSourceButIsHidden()
+	{
+		// Arrange
+		var list = new List<int>();
+		var filteringCollection = new FilteringCollection<int>(list, i => i % 2 == 0);
+
+		// Act
+		filteringCollection.Add(1); // liché číslo - filtrem neprojde
+
+		// Assert
+		Assert.Contains(1, list); // do podkladové kolekce se přidá bez ohledu na filtr
+		Assert.IsFalse(filteringCollection.Contains(1)); // ...ale přes filtr není vidět
+		Assert.AreEqual(0, filteringCollection.Count);
+		Assert.IsEmpty(filteringCollection.ToList()); // enumerace filtr aplikuje
+	}
+
+	[TestMethod]
+	public void FilteringCollection_GetEnumerator_NonGeneric_ReturnsOnlyFilteredItems()
+	{
+		// Arrange
+		var filteringCollection = new FilteringCollection<int>(new List<int> { 1, 2, 3, 4 }, i => i % 2 == 0);
+
+		// Act
+		var result = new List<int>();
+		foreach (int item in (System.Collections.IEnumerable)filteringCollection)
+		{
+			result.Add(item);
+		}
+
+		// Assert
+		CollectionAssert.AreEqual(new[] { 2, 4 }, result);
+	}
+
+	[TestMethod]
+	public void FilteringCollection_Constructor_NullSource_Throws()
+	{
+		// Act + Assert
+		Assert.ThrowsExactly<ArgumentNullException>(() => new FilteringCollection<int>(null, i => i % 2 == 0));
+	}
+
+	[TestMethod]
+	public void FilteringCollection_Constructor_NullFilter_Throws()
+	{
+		// Act + Assert
+		Assert.ThrowsExactly<ArgumentNullException>(() => new FilteringCollection<int>(new List<int>(), null));
+	}
+
 }

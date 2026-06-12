@@ -5,6 +5,14 @@ namespace Havit.Model.Collections.Generic;
 /// <summary>
 /// Kolekce filtrující data z jiné kolekce (resp. Listu).
 /// </summary>
+/// <remarks>
+/// Pozor na nesymetrickou sémantiku filtru, která záměrně porušuje obvyklý kontrakt <see cref="ICollection{T}"/>:
+/// <list type="bullet">
+/// <item><description>Mutace (<see cref="Add"/>, <see cref="AddRange"/>, <see cref="Remove"/>, <see cref="RemoveAll"/>, <see cref="Clear"/>) pracují přímo nad podkladovou kolekcí <b>bez ohledu na filtr</b>.</description></item>
+/// <item><description>Dotazy (<see cref="Count"/>, <see cref="Contains"/>, <see cref="CopyTo"/>, <see cref="GetEnumerator"/>, <see cref="ForEach"/>) <b>filtr aplikují</b>.</description></item>
+/// </list>
+/// Důsledkem je, že <see cref="Add"/> může přidat objekt, který <see cref="Contains"/> následně nevidí, a <see cref="Remove"/> může odebrat objekt, který <see cref="Contains"/> hlásí jako neobsažený.
+/// </remarks>
 public class FilteringCollection<T> : ICollection<T>
 {
 	private readonly IList<T> _source;
@@ -15,8 +23,18 @@ public class FilteringCollection<T> : ICollection<T>
 	/// </summary>
 	/// <param name="source">Podkladová kolekce, ve které jsou držena data.</param>
 	/// <param name="filter">Filtr, kterým se podkladová kolekce filtruje.</param>
+	/// <exception cref="ArgumentNullException">Vyhozena, pokud je <paramref name="source"/> nebo <paramref name="filter"/> <c>null</c>.</exception>
 	public FilteringCollection(IList<T> source, Func<T, bool> filter)
 	{
+		if (source == null)
+		{
+			throw new ArgumentNullException(nameof(source));
+		}
+		if (filter == null)
+		{
+			throw new ArgumentNullException(nameof(filter));
+		}
+
 		this._source = source;
 		this._filter = filter;
 	}

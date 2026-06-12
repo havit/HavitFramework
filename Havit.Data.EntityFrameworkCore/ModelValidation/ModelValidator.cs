@@ -145,6 +145,7 @@ public class ModelValidator
 		{
 			if (property.ClrType == typeof(string)
 				&& !property.IsShadowProperty() // nejde o Discriminator
+				&& (property.PropertyInfo != null) // nejde o field-mapped property (nemáme kde hledat MaxLengthAttribute)
 				&& String.IsNullOrEmpty(property.GetComputedColumnSql())) // nejde o computed column
 			{
 				MaxLengthAttribute maxLengthAttribute = property.PropertyInfo.GetCustomAttribute<MaxLengthAttribute>();

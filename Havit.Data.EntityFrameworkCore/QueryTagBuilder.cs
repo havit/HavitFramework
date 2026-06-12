@@ -12,6 +12,8 @@ public static class QueryTagBuilder
 	/// </summary>
 	public static string CreateTag(Type type, [CallerMemberName] string memberName = null)
 	{
+		ArgumentNullException.ThrowIfNull(type);
+
 		return !String.IsNullOrEmpty(memberName)
 			? type.Name + "." + memberName
 			: type.Name;

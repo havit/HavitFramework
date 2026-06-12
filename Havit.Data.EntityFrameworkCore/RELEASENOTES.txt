@@ -1,4 +1,11 @@
-﻿v2.10.0 (27.11.2025)
+﻿v2.10.3 (15.6.2026)
+• Drobné výkonové a pamětové optimalizace.
+• LocalizationTableIndexConvention - přepis.
+
+v2.10.2 (29.1.2026)
+• Odstraněn DbLockedMigrator — EF Core si od verze 9 spravuje zámek migrací nativně (sp_getapplock na connection level)
+
+v2.10.0 (27.11.2025)
 • Aktualizace na EF Core 10
 
 v2.9.32 (13.5.2025)

@@ -109,7 +109,7 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>, IModelSour
 	{
 		var fi = type.GetField(value);
 		var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
-		return (attributes != null) && (attributes.Length > 0);
+		return attributes.Length > 0;
 	}
 
 	private static string GetValueObsoleteMessage(Type type, string value)

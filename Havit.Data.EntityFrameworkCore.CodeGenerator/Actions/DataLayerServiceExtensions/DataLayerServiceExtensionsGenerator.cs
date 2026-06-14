@@ -1,4 +1,4 @@
-﻿using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions.Template;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model;
@@ -28,6 +28,6 @@ public class DataLayerServiceExtensionsGenerator(
 		};
 
 		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(dataLayerServiceExtensionsModel);
-		await _codeWriter.SaveAsync(targetFilename, template.TransformText(), OverwriteBahavior.OverwriteWhenFileAlreadyExists, cancellationToken);
+		await _codeWriter.SaveAsync(targetFilename, template.TransformText(), OverwriteBehavior.OverwriteWhenFileAlreadyExists, cancellationToken);
 	}
 }

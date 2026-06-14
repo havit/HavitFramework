@@ -1,4 +1,4 @@
-﻿namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
+namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 
 public class GenericGenerator : IGenericGenerator
 {
@@ -9,7 +9,7 @@ public class GenericGenerator : IGenericGenerator
 		_codeWriter = codeWriter;
 	}
 
-	public async Task GenerateAsync<TModel>(IModelSource<TModel> modelSource, Func<TModel, ITemplate> templateFactory, IFileNamingService<TModel> fileNamingService, OverwriteBahavior overwriteBahavior = OverwriteBahavior.OverwriteWhenFileAlreadyExists, CancellationToken cancellationToken = default)
+	public async Task GenerateAsync<TModel>(IModelSource<TModel> modelSource, Func<TModel, ITemplate> templateFactory, IFileNamingService<TModel> fileNamingService, OverwriteBehavior overwriteBehavior = OverwriteBehavior.OverwriteWhenFileAlreadyExists, CancellationToken cancellationToken = default)
 	{
 		List<TModel> models = modelSource.GetModels();
 
@@ -19,7 +19,7 @@ public class GenericGenerator : IGenericGenerator
 
 			string content = template.TransformText();
 			string filename = fileNamingService.GetFilename(model);
-			await _codeWriter.SaveAsync(filename, content, overwriteBahavior, cancellationToken);
+			await _codeWriter.SaveAsync(filename, content, overwriteBehavior, cancellationToken);
 		}));
 	}
 }

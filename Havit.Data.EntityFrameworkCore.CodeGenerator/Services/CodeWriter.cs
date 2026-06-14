@@ -20,7 +20,7 @@ public class CodeWriter : ICodeWriter
 	/// <summary>
 	/// Zapíšeme obsah do souboru (jen tehdy, pokud se neliší od současného obsahu souboru).
 	/// </summary>
-	public async Task SaveAsync(string filename, string content, OverwriteBahavior overwriteBahavior, CancellationToken cancellationToken = default)
+	public async Task SaveAsync(string filename, string content, OverwriteBehavior overwriteBehavior, CancellationToken cancellationToken = default)
 	{
 		_codeWriteReporter.ReportWriteFile(filename);
 
@@ -53,7 +53,7 @@ public class CodeWriter : ICodeWriter
 			needsWrite = !sameContent || !hasByteOrderMask;
 		}
 
-		if (needsWrite && ((overwriteBahavior == OverwriteBahavior.OverwriteWhenFileAlreadyExists) || !existsCaseInsensitive))
+		if (needsWrite && ((overwriteBehavior == OverwriteBehavior.OverwriteWhenFileAlreadyExists) || !existsCaseInsensitive))
 		{
 			if (!String.IsNullOrEmpty(directory))
 			{

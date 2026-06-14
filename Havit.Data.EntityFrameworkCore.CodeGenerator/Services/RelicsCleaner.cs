@@ -23,21 +23,21 @@ public class RelicsCleaner : IRelicsCleaner
 	/// Budeme mazat vše, co je ve složkách _generated, ale nebylo aktuálně vygenerováno (pozůstatky metadat, datasources, repositories vč. query provideru, atp.)
 	/// Dále budeme mazat soubory ve složce Repositories v projektu DataLayer, které odpovídají vzoru IXyRepository.cs a XyDbRepository.cs, které nebyly aktuálně vygenerovány.
 	/// </summary>
-	public async Task CleanRelicsAsync(CancellationToken cancellationToken)
+	public Task CleanRelicsAsync(CancellationToken cancellationToken)
 	{
 		// všechny soubory, které byly aplikací právě vygenerovány
 		List<string> allWrittenFiles = _codeWriteReporter.GetWrittenFiles();
 
 		// všechny soubory, které byly (i dříve) vygenerovány ve složkách _generated projektů DataLayer a ModelMetadata
-		List<string> allFilesInGeneratedFolders = (await GetFilesInGeneratedFolderAsync(_dataLayerProject, cancellationToken))
-			.Concat(await GetFilesInGeneratedFolderAsync(_metadataProject, cancellationToken))
+		List<string> allFilesInGeneratedFolders = GetFilesInGeneratedFolder(_dataLayerProject)
+			.Concat(GetFilesInGeneratedFolder(_metadataProject))
 			.ToList();
 
 		// Všechny soubory, které byly (i dříve) vygenerovány v projektu DataLayer ve složce Repositories,
 		// které odpovídají vzoru Repositories v projektu DataLayer, které odpovídají vzoru IXyRepository.cs a XyDbRepository.cs.
 		List<string> allRepositories = _configuration.SuppressRemovingRelicRepositories
 			? new List<string>() // pokud máme potlačit mazání relic souborů repository, nebudeme je ani hledat
-			: await GetRepositoryFilesAsync(cancellationToken);
+			: GetRepositoryFiles();
 
 		// StringComparer.CurrentCultureIgnoreCase: Teoreticky může být na disku (historický, avšak stále aktivní) soubor repository s jinak
 		// case-sensitive názvem, než je současný název. Názvy souborů se snažíme korigovat, mohou však zůstat jinak pojmenované složky.
@@ -51,16 +51,25 @@ public class RelicsCleaner : IRelicsCleaner
 				File.Delete(relicFile);
 			}
 		}
+
+		// Po smazání pozůstalých souborů odstraníme i adresáře, které tím zůstaly prázdné.
+		RemoveEmptySubdirectories(Path.Combine(_dataLayerProject.GetProjectRootPath(), "_generated"));
+		RemoveEmptySubdirectories(Path.Combine(_metadataProject.GetProjectRootPath(), "_generated"));
+		if (!_configuration.SuppressRemovingRelicRepositories)
+		{
+			RemoveEmptySubdirectories(Path.Combine(_dataLayerProject.GetProjectRootPath(), "Repositories"));
+		}
+
+		return Task.CompletedTask;
 	}
 
-	private Task<List<string>> GetFilesInGeneratedFolderAsync(IProject project, CancellationToken _)
+	private static List<string> GetFilesInGeneratedFolder(IProject project)
 	{
 		var generatedProjectSubfolder = Path.Combine(project.GetProjectRootPath(), "_generated");
-		var generatedFiles = Directory.EnumerateFiles(generatedProjectSubfolder, "*.*", SearchOption.AllDirectories).ToList();
-		return Task.FromResult(generatedFiles);
+		return Directory.EnumerateFiles(generatedProjectSubfolder, "*.*", SearchOption.AllDirectories).ToList();
 	}
 
-	private Task<List<string>> GetRepositoryFilesAsync(CancellationToken _)
+	private List<string> GetRepositoryFiles()
 	{
 		var repositoriesFolder = Path.Combine(_dataLayerProject.GetProjectRootPath(), "Repositories");
 		List<string> generatedRepositoryInterfacesFiles = null;
@@ -69,7 +78,27 @@ public class RelicsCleaner : IRelicsCleaner
 			() => generatedRepositoryInterfacesFiles = Directory.EnumerateFiles(repositoriesFolder, "I*Repository.cs", SearchOption.AllDirectories).ToList(),
 			() => generatedRepositoryImplementationFiles = Directory.EnumerateFiles(repositoriesFolder, "*DbRepository.cs", SearchOption.AllDirectories).ToList());
 
-		return Task.FromResult(generatedRepositoryInterfacesFiles.Concat(generatedRepositoryImplementationFiles).ToList());
+		return generatedRepositoryInterfacesFiles.Concat(generatedRepositoryImplementationFiles).ToList();
+	}
+
+	/// <summary>
+	/// Rekurzivně (zdola nahoru) odstraní prázdné podadresáře ve složce <paramref name="rootFolder"/>. Samotnou <paramref name="rootFolder"/> ponechá.
+	/// </summary>
+	private static void RemoveEmptySubdirectories(string rootFolder)
+	{
+		if (!Directory.Exists(rootFolder))
+		{
+			return;
+		}
+
+		foreach (string subdirectory in Directory.GetDirectories(rootFolder))
+		{
+			RemoveEmptySubdirectories(subdirectory);
+			if (!Directory.EnumerateFileSystemEntries(subdirectory).Any())
+			{
+				Directory.Delete(subdirectory);
+			}
+		}
 	}
 
 }

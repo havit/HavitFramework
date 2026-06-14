@@ -20,7 +20,7 @@ public class <#= Model.DbClassName #> : Havit.Data.Patterns.DataEntries.DataEntr
 <# if (String.IsNullOrEmpty(entry.ObsoleteMessage)) { #>
     [Obsolete]
 <# } else { #>
-    [Obsolete("<#= entry.ObsoleteMessage.Replace("\"", "\\\"") #>")]
+    [Obsolete("<#= entry.ObsoleteMessage.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\r", "\\r").Replace("\n", "\\n") #>")]
 <# } #>
 <# } #>
 	public <#= Model.ModelClassFullName #> <#= entry.PropertyName #> => <#= entry.FieldName #> ??= GetEntry(<#= Model.ModelEntriesEnumerationFullName #>.<#= entry.PropertyName #>);

@@ -36,6 +36,8 @@ public class ManyToManyEntityKeyDiscoveryConvention : IForeignKeyAddedConvention
 		}
 
 		var entityType = relationshipBuilder.Metadata.DeclaringEntityType;
+		// Vůči dědičnosti je konvence bezpečná: odvozený typ dědí primární klíč kořene (FindPrimaryKey() != null), takže podmínka níže
+		// pro něj nikdy neplatí; vztahová M:N entita navíc do dědičnosti nevstupuje (nemá ani předka, ani potomky).
 		if ((entityType.FindPrimaryKey() == null)
 			&& entityType.HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys())
 		{

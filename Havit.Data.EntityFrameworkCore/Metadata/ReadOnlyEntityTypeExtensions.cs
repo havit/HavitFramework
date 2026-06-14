@@ -31,9 +31,13 @@ public static class ReadOnlyEntityTypeExtensions
 	/// </summary>
 	public static bool IsManyToManyEntity(this IReadOnlyEntityType entityType)
 	{
-		// GetProperties neobsahuje vlastnosti z nadřazených tříd, v tomto scénáři to nevadí, dědičnost pro tabulky se dvěma sloupci primárního klíče neuvažujeme
+		// Vztahová entita M:N nevstupuje do dědičnosti (není potomkem ani předkem v hierarchii) - proto ji u namapované dědičnosti vyloučíme.
+		// Tím je zároveň zajištěno, že HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys (které přes GetProperties vidí i zděděné
+		// vlastnosti) zde pracuje právě jen s vlastnostmi vztahové entity.
 		return !entityType.IsOwned()
 			&& !entityType.IsKeyless()
+			&& (entityType.BaseType == null) // entita není potomkem v hierarchii dědičnosti
+			&& !entityType.GetDirectlyDerivedTypes().Any() // entita není předkem v hierarchii dědičnosti
 			&& (entityType.FindPrimaryKey()?.Properties.Count == 2) // třída má složený primární klíč ze dvou vlastností
 			&& HasExactlyTwoNotNullablePropertiesWhichAreAlsoForeignKeys(entityType); // třída má právě dvě (skalární) vlastnosti a ty jsou i cizím klíčem
 	}

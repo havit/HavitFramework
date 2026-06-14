@@ -64,6 +64,13 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckPrimaryKeyIsNotComposite(IReadOnlyEntityType entityType)
 	{
+		// Primární klíč je definován na kořeni hierarchie, odvozené typy jej pouze dědí (FindPrimaryKey vrací klíč kořene).
+		// Kontrolujeme jej proto jen jednou - na kořeni - abychom jej u dědičnosti nehlásili opakovaně za každého potomka.
+		if (entityType.BaseType != null)
+		{
+			yield break;
+		}
+
 		if (entityType.FindPrimaryKey().Properties.Count > 1)
 		{
 			yield return $"Class {entityType.ClrType.Name} has {entityType.FindPrimaryKey().Properties.Count} key members but only one is expected.";
@@ -75,6 +82,13 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckPrimaryKeyName(IReadOnlyEntityType entityType)
 	{
+		// Primární klíč je definován na kořeni hierarchie, odvozené typy jej pouze dědí (FindPrimaryKey vrací klíč kořene).
+		// Kontrolujeme jej proto jen jednou - na kořeni - abychom jej u dědičnosti nehlásili opakovaně za každého potomka.
+		if (entityType.BaseType != null)
+		{
+			yield break;
+		}
+
 		foreach (IReadOnlyProperty keyProperty in entityType.FindPrimaryKey().Properties)
 		{
 			if (keyProperty.Name != "Id")
@@ -107,11 +121,35 @@ public class ModelValidator
 		typeof(Guid)
 	};
 
+	// Celočíselné typy použitelné pro párování entries podle primárního klíče (hodnota enumu = hodnota PK).
+	// Podmnožina supportedKeyTypes bez string a Guid.
+	private readonly HashSet<Type> integerKeyTypes = new HashSet<Type>
+	{
+		// signed integer types
+		typeof(SByte),
+		typeof(Int16),
+		typeof(Int32),
+		typeof(Int64),
+
+		// unsigned integer types
+		typeof(Byte),
+		typeof(UInt16),
+		typeof(UInt32),
+		typeof(UInt64),
+	};
+
 	/// <summary>
 	/// Kontroluje typ primárního klíče.
 	/// </summary>
 	internal IEnumerable<string> CheckPrimaryKeyType(IReadOnlyEntityType entityType)
 	{
+		// Primární klíč je definován na kořeni hierarchie, odvozené typy jej pouze dědí (FindPrimaryKey vrací klíč kořene).
+		// Kontrolujeme jej proto jen jednou - na kořeni - abychom jej u dědičnosti nehlásili opakovaně za každého potomka.
+		if (entityType.BaseType != null)
+		{
+			yield break;
+		}
+
 		foreach (IReadOnlyProperty keyProperty in entityType.FindPrimaryKey().Properties)
 		{
 			if (!supportedKeyTypes.Contains(keyProperty.ClrType))
@@ -127,7 +165,8 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckIdPascalCaseNamingConvention(IReadOnlyEntityType entityType)
 	{
-		foreach (IReadOnlyProperty property in entityType.GetProperties())
+		// GetDeclaredProperties (nikoliv GetProperties) - zděděné vlastnosti zkontrolujeme na předkovi, kde jsou deklarovány (jinak bychom je u dědičnosti hlásili opakovaně).
+		foreach (IReadOnlyProperty property in entityType.GetDeclaredProperties())
 		{
 			if (property.Name.EndsWith("ID", false, CultureInfo.InvariantCulture))
 			{
@@ -141,7 +180,8 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckStringsHaveMaxLengths(IReadOnlyEntityType entityType)
 	{
-		foreach (IReadOnlyProperty property in entityType.GetProperties())
+		// GetDeclaredProperties (nikoliv GetProperties) - zděděné vlastnosti zkontrolujeme na předkovi, kde jsou deklarovány (jinak bychom je u dědičnosti hlásili opakovaně).
+		foreach (IReadOnlyProperty property in entityType.GetDeclaredProperties())
 		{
 			if (property.ClrType == typeof(string)
 				&& !property.IsShadowProperty() // nejde o Discriminator
@@ -191,7 +231,8 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckNavigationPropertiesHaveForeignKeys(IReadOnlyEntityType entityType)
 	{
-		foreach (IReadOnlyNavigation navigationProperty in entityType.GetNavigations())
+		// GetDeclaredNavigations (nikoliv GetNavigations) - zděděné navigace zkontrolujeme na předkovi, kde jsou deklarovány (jinak bychom je u dědičnosti hlásili opakovaně).
+		foreach (IReadOnlyNavigation navigationProperty in entityType.GetDeclaredNavigations())
 		{
 			// Pro Owned types nemůžeme mít cizí klíč (Bug 41479).
 			if ((!navigationProperty.ForeignKey.IsOwnership) && navigationProperty.ForeignKey.Properties.Any(item => item.IsShadowProperty()))
@@ -221,6 +262,13 @@ public class ModelValidator
 				yield return $"Class {entityType.ClrType.Name} has Enum mapped to a table with primary key with identity and without column Symbol (unable to pair items).";
 			}
 
+			// Bez vlastnosti Symbol se entries párují podle primárního klíče (hodnota enumu = hodnota PK), což vyžaduje celočíselný primární klíč.
+			if (!primaryKeyGenerated && !symbolExists && !primaryKeySequence
+				&& !entityType.FindPrimaryKey().Properties.All(property => integerKeyTypes.Contains(property.ClrType)))
+			{
+				yield return $"Class {entityType.ClrType.Name} has Enum mapped to a table paired by primary key without column Symbol, but an integer type is expected for the primary key.";
+			}
+
 			if (!primaryKeyGenerated && symbolExists)
 			{
 				yield return $"Class {entityType.ClrType.Name} has Enum mapped to a table with primary key without identity and with column Symbol (ambiguous pairing fields).";
@@ -235,7 +283,8 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckOnlyForeignKeysEndsWithId(IReadOnlyEntityType entityType)
 	{
-		foreach (IReadOnlyProperty property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
+		// GetDeclaredProperties (nikoliv GetProperties) - zděděné vlastnosti zkontrolujeme na předkovi, kde jsou deklarovány (jinak bychom je u dědičnosti hlásili opakovaně).
+		foreach (IReadOnlyProperty property in entityType.GetDeclaredProperties().Where(property => !property.IsShadowProperty()))
 		{
 			if (property.Name.EndsWith("Id") && !property.Name.EndsWith("ExternalId") && !property.IsModelValidatorRuleSupressed(ModelValidatorRule.OnlyForeignKeyPropertiesCanEndWithId) && !property.IsForeignKey() && !property.IsKey())
 			{
@@ -249,7 +298,8 @@ public class ModelValidator
 	/// </summary>
 	internal IEnumerable<string> CheckAllForeignKeysEndsWithId(IReadOnlyEntityType entityType)
 	{
-		foreach (IReadOnlyProperty property in entityType.GetProperties().Where(property => !property.IsShadowProperty()))
+		// GetDeclaredProperties (nikoliv GetProperties) - zděděné vlastnosti zkontrolujeme na předkovi, kde jsou deklarovány (jinak bychom je u dědičnosti hlásili opakovaně).
+		foreach (IReadOnlyProperty property in entityType.GetDeclaredProperties().Where(property => !property.IsShadowProperty()))
 		{
 			if (!property.Name.EndsWith("Id") && property.IsForeignKey())
 			{

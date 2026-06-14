@@ -37,8 +37,11 @@ public class LocalizationTableIndexConvention : IModelFinalizingConvention
 			}
 
 			// najdeme sloupec s odkazem na parent tabulku a sloupec s odkazem na tabulku jazyků
-			IConventionProperty parentForeignKeyProperty = entityType.GetNavigations().FirstOrDefault(p => p.Name == "Parent")?.ForeignKey?.Properties.SingleOrDefault();
-			IConventionProperty languageForeignKeyProperty = entityType.GetNavigations().FirstOrDefault(p => p.Name == "Language")?.ForeignKey?.Properties.SingleOrDefault();
+			// GetDeclaredNavigations (nikoliv GetNavigations) - index vytvoříme na typu, který Parent/Language deklaruje. U dědičnosti tak
+			// zděděné navigace na potomkovi index neopakují (založí se u předka, kde jsou deklarovány) a zároveň se neztratí u lokalizace
+			// dědící z ne-lokalizační báze (navigace si deklaruje sama).
+			IConventionProperty parentForeignKeyProperty = entityType.GetDeclaredNavigations().FirstOrDefault(p => p.Name == "Parent")?.ForeignKey?.Properties.SingleOrDefault();
+			IConventionProperty languageForeignKeyProperty = entityType.GetDeclaredNavigations().FirstOrDefault(p => p.Name == "Language")?.ForeignKey?.Properties.SingleOrDefault();
 
 			// pokud máme sloupec s odkazem na jazyk i na parent tabulku
 			if ((parentForeignKeyProperty != null) && (languageForeignKeyProperty != null) && !parentForeignKeyProperty.IsShadowProperty() && !languageForeignKeyProperty.IsShadowProperty())

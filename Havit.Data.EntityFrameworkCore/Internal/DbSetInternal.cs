@@ -45,7 +45,12 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 		_primaryKey ??= _dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey();
 		_stateManager ??= _dbContext.GetService<IStateManager>();
 
-		return (TEntity)_stateManager.TryGetEntry(_primaryKey, keyValues)?.Entity;
+		// "as TEntity" (nikoliv tvrdý přetyp): primární klíč je u dědičnosti sdílen celou hierarchií, takže StateManager může podle hodnoty
+		// klíče vrátit i entitu sourozeneckého typu (např. dotaz přes Set<Pes>() na Id, které patří Kočce). Takovou entitu z pohledu daného
+		// typu DbSetu nepovažujeme za nalezenou a vracíme null - shodně s kontraktem EF Core DbSet<TEntity>.Find, jehož EntityFinder rovněž
+		// používá "?.Entity as TEntity". Tvrdý přetyp by zde naopak vyhodil InvalidCastException. Bez namapované dědičnosti jsou oba zápisy
+		// identické (pro klíč typu TEntity nemůže nikdy vzniknout entita jiného typu).
+		return _stateManager.TryGetEntry(_primaryKey, keyValues)?.Entity as TEntity;
 	}
 #pragma warning restore EF1001 // Internal EF Core API usage.
 
@@ -55,7 +60,12 @@ internal class DbSetInternal<TEntity> : IDbSet<TEntity>
 		_primaryKey ??= _dbContext.Model.FindEntityType(typeof(TEntity)).FindPrimaryKey();
 		_stateManager ??= _dbContext.GetService<IStateManager>();
 
-		return (TEntity)_stateManager.TryGetEntryTyped<TKey>(_primaryKey, keyValue)?.Entity;
+		// "as TEntity" (nikoliv tvrdý přetyp): primární klíč je u dědičnosti sdílen celou hierarchií, takže StateManager může podle hodnoty
+		// klíče vrátit i entitu sourozeneckého typu (např. dotaz přes Set<Pes>() na Id, které patří Kočce). Takovou entitu z pohledu daného
+		// typu DbSetu nepovažujeme za nalezenou a vracíme null - shodně s kontraktem EF Core DbSet<TEntity>.Find, jehož EntityFinder rovněž
+		// používá "?.Entity as TEntity". Tvrdý přetyp by zde naopak vyhodil InvalidCastException. Bez namapované dědičnosti jsou oba zápisy
+		// identické (pro klíč typu TEntity nemůže nikdy vzniknout entita jiného typu).
+		return _stateManager.TryGetEntryTyped<TKey>(_primaryKey, keyValue)?.Entity as TEntity;
 	}
 #pragma warning restore EF1001 // Internal EF Core API usage.
 

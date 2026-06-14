@@ -202,10 +202,19 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act
-		string[] errors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
+		// Kontrola pracuje jen s vlastnostmi deklarovanými na daném typu (GetDeclaredProperties); zděděné vlastnosti se kontrolují
+		// na předkovi, kde jsou deklarovány, takže se napříč hierarchií nehlásí opakovaně.
+		string[] ancestorErrors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(Ancestor))).ToArray();
+		string[] descendantErrors = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.Model.FindEntityType(typeof(Descendant))).ToArray();
 
 		// Assert
-		Assert.AreEqual(2, errors.Count(item => item.Contains("MaxLengthAttribute on property is expected")));
+		// Předek: nahlášena právě jeho vlastnost AncessorValue.
+		Assert.HasCount(1, ancestorErrors);
+		Assert.Contains(nameof(Ancestor.AncessorValue), ancestorErrors[0]);
+
+		// Potomek: nahlášena pouze jeho deklarovaná vlastnost DescendantValue; zděděná AncessorValue se zde neopakuje (kontroluje se u předka).
+		Assert.HasCount(1, descendantErrors);
+		Assert.Contains(nameof(Descendant.DescendantValue), descendantErrors[0]);
 	}
 
 	[TestMethod]

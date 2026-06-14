@@ -44,36 +44,4 @@ public static class ModelBuilderExtensions
 		}
 	}
 
-	/// <summary>
-	/// Z dané assembly (a daného namespace) zaregistruje všechny konfigurace entit (třídy implementující <see cref="IEntityTypeConfiguration{T}" />).
-	/// </summary>
-	public static void ApplyConfigurationsFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, string namespaceName = null)
-	{
-		MethodInfo applyConfigurationGenericMethod = typeof(ModelBuilder)
-			.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-			.FirstOrDefault(m =>
-				(m.Name == nameof(ModelBuilder.ApplyConfiguration))
-				&& m.GetParameters()[0].ParameterType.IsGenericType
-				&& m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))
-				?? throw new InvalidOperationException($"Method {nameof(ModelBuilder.ApplyConfiguration)} not found in {nameof(ModelBuilder)}.");
-
-		var applicableTypesWithConfigurations = assembly
-			.GetTypes()
-			.Where(type => String.IsNullOrEmpty(namespaceName) || (type.Namespace?.StartsWith(namespaceName) ?? false)) // anonymní typy v unit testech mají namespace nullový
-			.Where(type => type.IsClass && !type.IsAbstract && !type.ContainsGenericParameters)
-			// ke každému typu přidáme všechny interfaces, pokud interfaces nemá, nebude ve výstupu
-			.SelectMany(type => type.GetInterfaces(), (type, iface) => new { Type = type, Interface = iface })
-			// if type implements interface IEntityTypeConfiguration<SomeEntity>
-			.Where(item => item.Interface.IsConstructedGenericType && (item.Interface.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>)))
-			// přejmenování Interface -> EntityTypeConfigurationInterface
-			.Select(item => new { Type = item.Type, EntityTypeConfigurationInterface = item.Interface })
-			.ToArray();
-
-		foreach (var typeWithInterface in applicableTypesWithConfigurations)
-		{
-			// z generické ApplyConfiguration<> methody vyrobíme konkrétní ApplyConfiguration<SomeEntity>
-			MethodInfo applyConfigurationMethod = applyConfigurationGenericMethod.MakeGenericMethod(typeWithInterface.EntityTypeConfigurationInterface.GenericTypeArguments[0]);
-			applyConfigurationMethod.Invoke(modelBuilder, new object[] { Activator.CreateInstance(typeWithInterface.Type) });
-		}
-	}
 }

@@ -1,12 +1,10 @@
-﻿using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Configurations;
-using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
+﻿using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Entity;
 using Havit.Data.EntityFrameworkCore.Tests.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 
 namespace Havit.Data.EntityFrameworkCore.Tests;
 
@@ -36,17 +34,4 @@ public class ModelBuilderExtensionsTests
 		Assert.IsTrue(model.FindEntityType(typeof(OwnedClass)).IsOwned(), "OwnedClass is not an owned entity.");
 	}
 
-	[TestMethod]
-	public void ModelBuilderExtensions_ApplyConfigurationsFromAssembly()
-	{
-		// Arrange
-		Mock<ModelBuilder> modelBuilderMock = new Mock<ModelBuilder>(MockBehavior.Strict, new ConventionSet());
-		modelBuilderMock.Setup(m => m.ApplyConfiguration<ModelClass>(It.IsAny<IEntityTypeConfiguration<ModelClass>>())).Returns(modelBuilderMock.Object);
-
-		// Act
-		ModelBuilderExtensions.ApplyConfigurationsFromAssembly(modelBuilderMock.Object, typeof(ModelBuilderExtensionsTests).Assembly, typeof(ModelClassConfiguration).Namespace);
-
-		// Assert
-		modelBuilderMock.Verify(m => m.ApplyConfiguration<ModelClass>(It.IsAny<IEntityTypeConfiguration<ModelClass>>()), Times.Once);
-	}
 }

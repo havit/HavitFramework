@@ -72,7 +72,8 @@ public class SmtpTraceListener : TraceListener
 
 		foreach (string arg in initializeData.Split(';'))
 		{
-			string[] paramValue = arg.Split('=');
+			// split only on the first '=' - the value itself may contain '=' (e.g. a Base64-encoded password)
+			string[] paramValue = arg.Split(new char[] { '=' }, 2);
 			if (paramValue.Length >= 2)
 			{
 				string parameterName = paramValue[0].Trim().ToLower();
@@ -141,9 +142,11 @@ public class SmtpTraceListener : TraceListener
 
 		try
 		{
-			MailMessage mailMessage = GetMailMessage(message);
-			SmtpClient smtpClient = GetSmtpClient();
-			smtpClient.Send(mailMessage);
+			using (MailMessage mailMessage = GetMailMessage(message))
+			using (SmtpClient smtpClient = GetSmtpClient())
+			{
+				smtpClient.Send(mailMessage);
+			}
 		}
 		catch
 		{
@@ -256,11 +259,6 @@ public class SmtpTraceListener : TraceListener
 		}
 #endif
 
-		message.AppendLine("Event information:");
-		message.AppendLine("    Event time: " + now.ToLocalTime().ToString(CultureInfo.InstalledUICulture));
-		message.AppendLine("    Event UTC time: " + now.ToUniversalTime().ToString(CultureInfo.InstalledUICulture));
-		message.AppendLine();
-
 		// pro konzolovky, ve webových aplikacích vrací null
 		// příklad: "TracingTest, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		Assembly assembly = Assembly.GetEntryAssembly();
@@ -303,7 +301,11 @@ public class SmtpTraceListener : TraceListener
 			message.AppendLine("Application info:");
 			message.AppendLine("    Assembly: " + assembly.GetName().Name);
 			message.AppendLine("    Assembly Version: " + assembly.GetName().Version);
-			message.AppendLine("    Assembly File Version: " + FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion);
+			// Assembly.Location is empty for assemblies published as a single file; FileVersionInfo.GetVersionInfo would then throw.
+			if (!String.IsNullOrEmpty(assembly.Location))
+			{
+				message.AppendLine("    Assembly File Version: " + FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion);
+			}
 			message.AppendLine();
 		}
 

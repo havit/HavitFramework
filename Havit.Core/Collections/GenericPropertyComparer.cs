@@ -5,6 +5,15 @@
 /// Property names can be composite: for example, "Book.Author.LastName".
 /// The property must implement IComparable.
 /// </summary>
+/// <remarks>
+/// The comparer caches the looked-up property values per compared object instance to speed up repeated comparisons during a single sort.
+/// Consequences:
+/// <list type="bullet">
+/// <item><description>The instance is <b>not thread-safe</b>; do not use a single instance from multiple threads concurrently.</description></item>
+/// <item><description>The instance keeps references to all compared objects (and their resolved values) for its whole lifetime. Use a short-lived instance (typically one per sort) so the objects can be garbage collected.</description></item>
+/// <item><description>The cache assumes the property values of the compared objects do not change while the comparer is in use.</description></item>
+/// </list>
+/// </remarks>
 /// <typeparam name="T">The type of the object whose values are being compared.</typeparam>
 public class GenericPropertyComparer<T> : IComparer<T>
 {
@@ -41,61 +50,53 @@ public class GenericPropertyComparer<T> : IComparer<T>
 	/// <returns>-1, 0, 1 - as Compare(T, T)</returns>
 	public int Compare(T x, T y)
 	{
-		return Compare(x, y, 0);
-	}
+		// iterate the sort items (instead of recursing per item) - falls through to the next item only on equality
+		for (int index = 0; index < sortItems.Count; index++)
+		{
+			/* written a bit more complicated - for clarity */
+			IComparable value1;
+			IComparable value2;
+			if (sortItems[index].Direction == SortDirection.Ascending)
+			{
+				value1 = GetValue(x, index);
+				value2 = GetValue(y, index);
+			}
+			else
+			{
+				value2 = GetValue(x, index);
+				value1 = GetValue(y, index);
+			}
 
-	/// <summary>
-	/// Compares the properties of two objects. Compares the index-th property specified in the sortItemCollection field.
-	/// </summary>
-	/// <param name="x">The first object to compare.</param>
-	/// <param name="y">The second object to compare.</param>
-	/// <param name="index">The index of the property to compare.</param>
-	/// <returns>-1, 0, 1 - as Compare(T, T)</returns>
-	private int Compare(object x, object y, int index)
-	{
-		if (index >= sortItems.Count)
-		{
-			return 0;
-		}
+			int result;
 
-		/* written a bit more complicated - for clarity */
-		IComparable value1;
-		IComparable value2;
-		if (sortItems[index].Direction == SortDirection.Ascending)
-		{
-			value1 = GetValue(x, index);
-			value2 = GetValue(y, index);
-		}
-		else
-		{
-			value2 = GetValue(x, index);
-			value1 = GetValue(y, index);
-		}
+			if (value1 == null && value2 == null)
+			{
+				// both null -> equal
+				result = 0;
+			}
+			else if (value1 == null)
+			{
+				// value1 is null (value2 is not null), then value1 < value2
+				result = -1;
+			}
+			else if (value2 == null)
+			{
+				// value2 is null (value1 is not null), then value2 < value1
+				result = 1;
+			}
+			else /*if (value1 != null || value2 != null)*/
+			{
+				// neither is null -> compare
+				result = value1.CompareTo(value2);
+			}
 
-		int result;
-
-		if (value1 == null && value2 == null)
-		{
-			// both null -> equal
-			result = 0;
-		}
-		else if (value1 == null)
-		{
-			// value1 is null (value2 is not null), then value1 < value2
-			result = -1;
-		}
-		else if (value2 == null)
-		{
-			// value2 is null (value1 is not null), then value2 < value1
-			result = 1;
-		}
-		else /*if (value1 != null || value2 != null)*/
-		{
-			// neither is null -> compare
-			result = value1.CompareTo(value2);
+			if (result != 0)
+			{
+				return result;
+			}
 		}
 
-		return (result == 0) ? Compare(x, y, index + 1) : result;
+		return 0;
 	}
 
 	/// <summary>

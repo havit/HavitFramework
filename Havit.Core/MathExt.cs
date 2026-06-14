@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Havit.Text.RegularExpressions;
-
-namespace Havit;
+﻿namespace Havit;
 
 /// <summary>
 /// Mathematical functions, constants, and various other utilities.
@@ -33,44 +30,74 @@ public static class MathExt
 	/// Verifies whether the specified string is an integer.
 	/// </summary>
 	/// <remarks>
-	/// It is verified against the regular expression <see cref="Havit.Text.RegularExpressions.RegexPatterns.Integer"/>.<br/>
-	/// If the text is null, it returns false.
+	/// Accepts an optional leading sign (+/-) followed by one or more ASCII digits (equivalent to the pattern <c>^[-+]?\d+$</c> restricted to ASCII digits, which is what integers actually parse as).<br/>
+	/// If the text is null or empty, it returns false.
 	/// </remarks>
 	/// <param name="text">verified string</param>
 	/// <returns>true if the text is an integer; otherwise, false</returns>
 	public static bool IsInteger(string text)
 	{
-		return ((text != null) && Regex.IsMatch(text, RegexPatterns.Integer));
+		// Manual scan instead of a regex - this is often called in tight loops and avoids the Regex machinery (cache lookup, Match state allocation).
+		if (String.IsNullOrEmpty(text))
+		{
+			return false;
+		}
+
+		int i = 0;
+		if ((text[0] == '+') || (text[0] == '-'))
+		{
+			i = 1;
+		}
+
+		if (i == text.Length)
+		{
+			// sign only, no digits
+			return false;
+		}
+
+		for (; i < text.Length; i++)
+		{
+			char c = text[i];
+			if ((c < '0') || (c > '9'))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/// <summary>
-	/// Rounds (arithmetically) a number to the nearest multiple of another number.
+	/// Rounds a number to the nearest multiple of another number.
+	/// When the number is exactly halfway between two multiples, it is rounded to the even multiple (banker's rounding, <see cref="MidpointRounding.ToEven" />).
 	/// </summary>
 	/// <param name="d">number to round</param>
 	/// <param name="multiple">number to round to its multiple</param>
-	/// <returns>number rounded (arithmetically) to the nearest multiple</returns>
+	/// <returns>number rounded to the nearest multiple</returns>
 	public static double RoundToMultiple(double d, double multiple)
 	{
 		return Math.Round(d / multiple) * multiple;
 	}
 
 	/// <summary>
-	/// Rounds (arithmetically) a number to the nearest multiple of another number.
+	/// Rounds a number to the nearest multiple of another number.
+	/// When the number is exactly halfway between two multiples, it is rounded to the even multiple (banker's rounding, <see cref="MidpointRounding.ToEven" />).
 	/// </summary>
 	/// <param name="d">number to round</param>
 	/// <param name="multiple">number to round to its multiple</param>
-	/// <returns>number rounded (arithmetically) to the nearest multiple</returns>
+	/// <returns>number rounded to the nearest multiple</returns>
 	public static int RoundToMultiple(double d, int multiple)
 	{
 		return (int)Math.Round(d / multiple) * multiple;
 	}
 
 	/// <summary>
-	/// Rounds (arithmetically) a number to the nearest multiple of another number.
+	/// Rounds a number to the nearest multiple of another number.
+	/// When the number is exactly halfway between two multiples, it is rounded to the even multiple (banker's rounding, <see cref="MidpointRounding.ToEven" />).
 	/// </summary>
 	/// <param name="d">number to round</param>
 	/// <param name="multiple">number to round to its multiple</param>
-	/// <returns>number rounded (arithmetically) to the nearest multiple</returns>
+	/// <returns>number rounded to the nearest multiple</returns>
 	public static decimal RoundToMultiple(decimal d, decimal multiple)
 	{
 		return Math.Round(d / multiple) * multiple;

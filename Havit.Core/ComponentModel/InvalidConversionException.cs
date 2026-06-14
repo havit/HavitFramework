@@ -3,7 +3,7 @@
 /// <summary>
 /// The exception that is thrown when a conversion is invalid.
 /// </summary>
-internal class InvalidConversionException : InvalidOperationException
+public class InvalidConversionException : InvalidOperationException
 {
 	/// <summary>
 	/// Initializes a new instance of the <see cref="InvalidConversionException">InvalidConversionException</see> class.

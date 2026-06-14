@@ -16,12 +16,13 @@ public class FileSizeToTextService : IFileSizeToTextService
 	/// - kilobytes, megabytes, etc. uses radix 2, not 10 (kilobyte is 1024 bytes)
 	/// - kilobytes, megabytes, etc. is shown for maximum 999 units, otherwise higher unit is used (1000 kilobytes is 0.97 MB)
 	/// - value is never rounded, always trimmed (meaning Math.Floor).
-	/// - the highest unit is gigabyte.
+	/// - the highest unit is terabyte.
 	/// </remarks>
 	public string GetFileSizeToText(long size)
 	{
 		long kilobytes = size / 1024;
 		long megabytes = kilobytes / 1024;
+		long gigabytes = megabytes / 1024;
 
 		if (size < 1024)
 		{
@@ -41,23 +42,29 @@ public class FileSizeToTextService : IFileSizeToTextService
 			valueToDisplay = kilobytes / 1024M;
 			unitToDisplay = "MB";
 		}
-		else
+		else if (gigabytes <= 999)
 		{
 			valueToDisplay = megabytes / 1024M;
 			unitToDisplay = "GB";
 		}
+		else
+		{
+			valueToDisplay = gigabytes / 1024M;
+			unitToDisplay = "TB";
+		}
 
+		// formats "#,0.##"/"#,0.#" do not show trailing zeros (unlike "N2"/"N1")
 		if (valueToDisplay < 10)
 		{
-			return MathExt.FloorToMultiple(valueToDisplay, 0.01M).ToString("N2") + " " + unitToDisplay;
+			return MathExt.FloorToMultiple(valueToDisplay, 0.01M).ToString("#,0.##") + " " + unitToDisplay;
 		}
 		else if (valueToDisplay < 100)
 		{
-			return MathExt.FloorToMultiple(valueToDisplay, 0.1M).ToString("N1") + " " + unitToDisplay;
+			return MathExt.FloorToMultiple(valueToDisplay, 0.1M).ToString("#,0.#") + " " + unitToDisplay;
 		}
 		else
 		{
-			return MathExt.FloorToMultiple(valueToDisplay, 1M).ToString("N0") + " " + unitToDisplay;
+			return MathExt.FloorToMultiple(valueToDisplay, 1M).ToString("#,0") + " " + unitToDisplay;
 		}
 	}
 }

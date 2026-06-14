@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System.Net;
+using System.Net.Mail;
 using Havit.Diagnostics;
 
 namespace Havit.Tests.Diagnostics;
@@ -19,6 +20,20 @@ public class SmtpTraceListenerTests
 		Assert.AreEqual("fake", smtpClient.Host);
 		Assert.AreEqual(999, smtpClient.Port);
 		Assert.IsTrue(smtpClient.EnableSsl);
+	}
+
+	[TestMethod]
+	public void SmtpTraceListener_ConstructorParsesValueContainingEqualsSign()
+	{
+		// Arrange - Base64-encoded password contains '=', which must not be truncated during parsing
+		SmtpTraceListener smtpTraceListener = new SmtpTraceListener("smtpserver=fake;smtpusername=user;smtppassword=abc==");
+
+		// Act
+		SmtpClient smtpClient = smtpTraceListener.GetSmtpClient();
+		NetworkCredential credential = (NetworkCredential)smtpClient.Credentials;
+
+		// Assert
+		Assert.AreEqual("abc==", credential.Password);
 	}
 
 	[TestMethod]

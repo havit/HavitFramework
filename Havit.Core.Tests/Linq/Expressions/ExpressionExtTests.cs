@@ -19,6 +19,30 @@ public class ExpressionExtTests
 	}
 
 	[TestMethod]
+	public void ExpressionExt_SubstituteParameter_NestedLambda()
+	{
+		// Act
+		Expression<Func<A, bool>> expression = ExpressionExt.SubstituteParameter<B, A, bool>(b => b.Items.Any(i => i.X % 2 == 0), a => a.B);
+
+		// Assert
+		Func<A, bool> lambda = expression.Compile();
+		Assert.IsTrue(lambda.Invoke(new A { B = new B { Items = new List<Item> { new Item { X = 1 }, new Item { X = 2 } } } }));
+		Assert.IsFalse(lambda.Invoke(new A { B = new B { Items = new List<Item> { new Item { X = 1 }, new Item { X = 3 } } } }));
+	}
+
+	[TestMethod]
+	public void ExpressionExt_SubstituteParameter_NestedLambdaUsingOuterParameter()
+	{
+		// Act
+		Expression<Func<A, bool>> expression = ExpressionExt.SubstituteParameter<B, A, bool>(b => b.Items.Any(i => i.X == b.Y), a => a.B);
+
+		// Assert
+		Func<A, bool> lambda = expression.Compile();
+		Assert.IsTrue(lambda.Invoke(new A { B = new B { Y = 2, Items = new List<Item> { new Item { X = 1 }, new Item { X = 2 } } } }));
+		Assert.IsFalse(lambda.Invoke(new A { B = new B { Y = 5, Items = new List<Item> { new Item { X = 1 }, new Item { X = 2 } } } }));
+	}
+
+	[TestMethod]
 	public void ExpressionExt_AndAlso()
 	{
 		// Arrange
@@ -88,6 +112,13 @@ public class ExpressionExtTests
 	internal class B
 	{
 		public bool C { get; set; }
+		public int Y { get; set; }
+		public List<Item> Items { get; set; }
+	}
+
+	internal class Item
+	{
+		public int X { get; set; }
 	}
 
 }

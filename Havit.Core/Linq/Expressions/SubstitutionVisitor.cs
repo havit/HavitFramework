@@ -18,8 +18,13 @@ internal class SubstitutionVisitor<TSource, TTarget, TResult> : ExpressionVisito
 
 	protected override Expression VisitLambda<T>(Expression<T> node)
 	{
-		// We need to prevent node.Parameters from being visited!
-		return Expression.Lambda(Visit(node.Body), substitution.Parameters);
+		// Only the top-level lambda gets its parameters replaced (we need to prevent node.Parameters from being visited).
+		// Nested lambdas (e.g. inside Any(...)) must keep their own parameters, only their bodies are visited.
+		if (node == (Expression)expression)
+		{
+			return Expression.Lambda(Visit(node.Body), substitution.Parameters);
+		}
+		return base.VisitLambda(node);
 	}
 
 	/// <summary>

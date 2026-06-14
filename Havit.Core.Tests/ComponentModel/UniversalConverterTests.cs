@@ -153,4 +153,72 @@ public class UniversalConverterTests
 		Assert.IsTrue(success);
 		Assert.AreEqual(new DateTime(2013, 2, 1), result17);
 	}
+
+	[TestMethod]
+	public void UniversalConverter_TryConvertTo_Enums()
+	{
+		object result;
+		bool success;
+
+		// číslo → enum
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(1, typeof(DayOfWeek), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(DayOfWeek.Monday, result);
+
+		// číslo → nullable enum
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(1, typeof(DayOfWeek?), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(DayOfWeek.Monday, result);
+
+		// byte/long → enum (jiný integrální typ než underlying type)
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo((byte)1, typeof(DayOfWeek), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(DayOfWeek.Monday, result);
+
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(1L, typeof(DayOfWeek), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(DayOfWeek.Monday, result);
+
+		// string → enum (zůstává funkční přes EnumConverter)
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("Monday", typeof(DayOfWeek), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(DayOfWeek.Monday, result);
+
+		// enum → int (zůstává funkční přes IConvertible)
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(DayOfWeek.Monday, typeof(int), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(1, result);
+
+		// nekonvertovatelná hodnota → enum
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(new object(), typeof(DayOfWeek), out result);
+		Assert.IsFalse(success);
+		Assert.IsNull(result);
+	}
+
+	[TestMethod]
+	public void UniversalConverter_TryConvertTo_DBNull()
+	{
+		object result;
+		bool success;
+
+		// DBNull → nullable: úspěch s hodnotou null (stejně jako null)
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(DBNull.Value, typeof(int?), out result);
+		Assert.IsTrue(success);
+		Assert.IsNull(result);
+
+		// DBNull → referenční typ: úspěch s hodnotou null
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(DBNull.Value, typeof(string), out result);
+		Assert.IsTrue(success);
+		Assert.IsNull(result);
+
+		// DBNull → non-nullable hodnotový typ: neúspěch (stejně jako null)
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(DBNull.Value, typeof(int), out result);
+		Assert.IsFalse(success);
+		Assert.IsNull(result);
+
+		// DBNull → object: hodnota se vrací beze změny (IsInstanceOfType)
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(DBNull.Value, typeof(object), out result);
+		Assert.IsTrue(success);
+		Assert.AreEqual(DBNull.Value, result);
+	}
 }

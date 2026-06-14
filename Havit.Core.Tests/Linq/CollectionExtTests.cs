@@ -474,6 +474,84 @@ public class CollectionExtTests
 	}
 
 	[TestMethod]
+	public void CollectionExt_UpdateFrom_DefaultValueSource_UpdatesPairedItem()
+	{
+		// arrange
+		// zdrojový prvek hodnotového typu rovný default(TSource) - nesmí být interpretován jako "nespárováno" (a cílový prvek odebrán)
+		TargetClass targetItem = new TargetClass() { Id = 0, StringProperty = "FAKE_TARGET" };
+		var targetList = new List<TargetClass>() { targetItem };
+		var sourceList = new List<int>() { 0 };
+
+		// act
+		var result = targetList.UpdateFrom(sourceList,
+			targetKeySelector: target => target.Id,
+			sourceKeySelector: source => source,
+			newItemCreateFunc: source => new TargetClass() { Id = source },
+			updateItemAction: (source, target) => { target.StringProperty = "UPDATED"; },
+			removeItemAction: (target) => { }
+		);
+
+		// assert
+		Assert.HasCount(1, targetList);
+		Assert.AreSame(targetItem, result.ItemsUpdating.Single());
+		Assert.AreEqual("UPDATED", targetItem.StringProperty);
+		Assert.IsEmpty(result.ItemsAdding);
+		Assert.IsEmpty(result.ItemsRemoving);
+	}
+
+	[TestMethod]
+	public void CollectionExt_UpdateFrom_DefaultValueStructSource_UpdatesPairedItem()
+	{
+		// arrange
+		TargetClass targetItem = new TargetClass() { Id = 0, StringProperty = "FAKE_TARGET" };
+		var targetList = new List<TargetClass>() { targetItem };
+		var sourceList = new List<SourceStruct>() { default }; // Id = 0, StringProperty = null
+
+		// act
+		var result = targetList.UpdateFrom(sourceList,
+			targetKeySelector: target => target.Id,
+			sourceKeySelector: source => source.Id,
+			newItemCreateFunc: source => new TargetClass() { Id = source.Id },
+			updateItemAction: (source, target) => { target.StringProperty = "UPDATED"; },
+			removeItemAction: (target) => { }
+		);
+
+		// assert
+		Assert.HasCount(1, targetList);
+		Assert.AreSame(targetItem, result.ItemsUpdating.Single());
+		Assert.AreEqual("UPDATED", targetItem.StringProperty);
+		Assert.IsEmpty(result.ItemsAdding);
+		Assert.IsEmpty(result.ItemsRemoving);
+	}
+
+#if NET6_0_OR_GREATER
+	[TestMethod]
+	public async Task CollectionExt_UpdateFromAsync_DefaultValueSource_UpdatesPairedItem()
+	{
+		// arrange
+		TargetClass targetItem = new TargetClass() { Id = 0, StringProperty = "FAKE_TARGET" };
+		var targetList = new List<TargetClass>() { targetItem };
+		var sourceList = new List<int>() { 0 };
+
+		// act
+		var result = await targetList.UpdateFromAsync(sourceList,
+			targetKeySelector: target => target.Id,
+			sourceKeySelector: source => source,
+			newItemCreateFunc: source => new ValueTask<TargetClass>(new TargetClass() { Id = source }),
+			updateItemAction: (source, target) => { target.StringProperty = "UPDATED"; return default; },
+			removeItemAction: (target) => default
+		);
+
+		// assert
+		Assert.HasCount(1, targetList);
+		Assert.AreSame(targetItem, result.ItemsUpdating.Single());
+		Assert.AreEqual("UPDATED", targetItem.StringProperty);
+		Assert.IsEmpty(result.ItemsAdding);
+		Assert.IsEmpty(result.ItemsRemoving);
+	}
+#endif
+
+	[TestMethod]
 	public void CollectionExt_UpdateFrom_CompositeKey()
 	{
 		// arrange

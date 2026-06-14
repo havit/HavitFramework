@@ -28,46 +28,62 @@ public static class DataBinderExt
 	/// <returns>Value if it was successfully obtained; otherwise <c>null</c> or <c>DBNull.Value</c>.</returns>
 	public static object GetValue(object dataItem, string dataField)
 	{
+		Contract.Requires<ArgumentNullException>(dataField != null, nameof(dataField));
+
+		// Fast path for the common single-property case (no "dot" notation) - avoids allocating the string[] from Split.
+		if (dataField.IndexOf('.') < 0)
+		{
+			return GetValueSingleExpression(dataItem, dataField, dataField);
+		}
+
 		string[] expressionParts = dataField.Split('.');
 
 		object currentDataItem = dataItem;
-
-		int lastExpressionIndex = expressionParts.Length - 1;
-		for (int i = 0; i <= lastExpressionIndex; i++)
+		for (int i = 0; i < expressionParts.Length; i++)
 		{
-			if (currentDataItem == null)
+			if ((currentDataItem == null) || (currentDataItem == DBNull.Value))
 			{
-				return null;
+				return currentDataItem;
 			}
 
-			if (currentDataItem == DBNull.Value)
-			{
-				return DBNull.Value;
-			}
-
-			string expression = expressionParts[i];
-
-			if (expression.IndexOfAny(indexExprStartChars) < 0)
-			{
-				PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
-
-				// This almost costs nothing
-				System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true);
-
-				if (descriptor == null)
-				{
-					// The standard DataBinder throws an HttpException, I don't want to change the types of exceptions for possible try/catch.
-					throw new InvalidOperationException(String.Format("Failed to evaluate the expression '{0}', type '{1}' does not contain the property '{2}'.", dataField, currentDataItem.GetType().FullName, expression));
-				}
-				currentDataItem = descriptor.GetValue(currentDataItem);
-			}
-			else
-			{
-				throw new InvalidOperationException(String.Format("Failed to evaluate the expression '{0}', the part {1} contains an unsupported character.", dataField, expression));
-			}
+			currentDataItem = GetValueSingleExpression(currentDataItem, expressionParts[i], dataField);
 		}
 
 		return currentDataItem;
+	}
+
+	/// <summary>
+	/// Evaluates a single (dot-less) expression part against the given data item.
+	/// </summary>
+	private static object GetValueSingleExpression(object currentDataItem, string expression, string dataField)
+	{
+		if (currentDataItem == null)
+		{
+			return null;
+		}
+
+		if (currentDataItem == DBNull.Value)
+		{
+			return DBNull.Value;
+		}
+
+		if (expression.IndexOfAny(indexExprStartChars) >= 0)
+		{
+			throw new InvalidOperationException(String.Format("Failed to evaluate the expression '{0}', the part {1} contains an unsupported character.", dataField, expression));
+		}
+
+		PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
+
+		// This almost costs nothing
+		System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true);
+
+		if (descriptor == null)
+		{
+			// The standard DataBinder throws an HttpException, I don't want to change the types of exceptions for possible try/catch.
+			throw new InvalidOperationException(String.Format("Failed to evaluate the expression '{0}', type '{1}' does not contain the property '{2}'.", dataField, currentDataItem.GetType().FullName, expression));
+		}
+
+		return descriptor.GetValue(currentDataItem);
 	}
 
 	/// <summary>
@@ -107,12 +123,15 @@ public static class DataBinderExt
 		Contract.Requires(dataItem != null);
 		Contract.Requires(!String.IsNullOrEmpty(dataField));
 
-		string[] expressionParts = dataField.Split('.');
-
 		object currentDataItem = dataItem;
-		if (expressionParts.Length > 1)
+
+		// Split off the last segment without allocating a string[] (and without re-join/re-split inside GetValue).
+		string expressionSet;
+		int lastDotIndex = dataField.LastIndexOf('.');
+		if (lastDotIndex >= 0)
 		{
-			string expressionGetPart = String.Join(".", expressionParts.Take(expressionParts.Length - 1).ToArray());
+			string expressionGetPart = dataField.Substring(0, lastDotIndex);
+			expressionSet = dataField.Substring(lastDotIndex + 1);
 
 			currentDataItem = GetValue(currentDataItem, expressionGetPart);
 			if (currentDataItem == null)
@@ -125,8 +144,11 @@ public static class DataBinderExt
 				throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the part {1} contains DBNull.Value.", dataField, expressionGetPart));
 			}
 		}
+		else
+		{
+			expressionSet = dataField;
+		}
 
-		string expressionSet = expressionParts[expressionParts.Length - 1];
 		if (expressionSet.IndexOfAny(indexExprStartChars) >= 0)
 		{
 			throw new InvalidOperationException(String.Format("Failed to set the value for the expression '{0}', the part {1} contains an unsupported character.", dataField, expressionSet));
@@ -197,32 +219,14 @@ public static class DataBinderExt
 
 	private static PropertyDescriptorCollection GetValueTypeProperties(object value)
 	{
-		System.ComponentModel.PropertyDescriptorCollection properties;
-
 		if (value is ICustomTypeDescriptor)
 		{
 			// We cannot cache properties for types implementing ICustomTypeDescriptor (DataViewRow, etc.)
-			properties = System.ComponentModel.TypeDescriptor.GetProperties(value);
+			return System.ComponentModel.TypeDescriptor.GetProperties(value);
 		}
-		else
-		{
-			// We can cache properties for other (normal) types
-			Type currentType = value.GetType();
-			lock (getValuePropertiesCache)
-			{
-				getValuePropertiesCache.TryGetValue(currentType, out properties);
-			}
 
-			if (properties == null)
-			{
-				properties = System.ComponentModel.TypeDescriptor.GetProperties(currentType);
-				lock (getValuePropertiesCache)
-				{
-					getValuePropertiesCache[currentType] = properties;
-				}
-			}
-		}
-		return properties;
+		// We can cache properties for other (normal) types - ConcurrentDictionary avoids locking on the (common) read path.
+		return getValuePropertiesCache.GetOrAdd(value.GetType(), static currentType => System.ComponentModel.TypeDescriptor.GetProperties(currentType));
 	}
-	private static readonly Dictionary<Type, System.ComponentModel.PropertyDescriptorCollection> getValuePropertiesCache = new Dictionary<Type, System.ComponentModel.PropertyDescriptorCollection>();
+	private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, System.ComponentModel.PropertyDescriptorCollection> getValuePropertiesCache = new System.Collections.Concurrent.ConcurrentDictionary<Type, System.ComponentModel.PropertyDescriptorCollection>();
 }

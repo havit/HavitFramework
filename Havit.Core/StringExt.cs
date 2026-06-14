@@ -9,7 +9,7 @@ namespace Havit;
 /// Extension methods for working with <see cref="System.String"/>.
 /// Provides static methods and constants, it is non-instantiable.
 /// </summary>
-public static class StringExt
+public static partial class StringExt
 {
 	/// <summary>
 	/// Returns a string containing a specified number of characters from the left side of a string.
@@ -62,9 +62,9 @@ public static class StringExt
 	/// <returns>text without diacritics</returns>
 	public static string RemoveDiacritics(this string text)
 	{
-		StringBuilder sb = new StringBuilder();
-
 		text = text.Normalize(NormalizationForm.FormD);
+
+		StringBuilder sb = new StringBuilder(text.Length);
 
 		for (int i = 0; i < text.Length; i++)
 		{
@@ -74,7 +74,8 @@ public static class StringExt
 			}
 		}
 
-		return sb.ToString();
+		// Recompose back to FormC - characters which were decomposed but are not NonSpacingMark (e.g. Korean Hangul) would otherwise stay decomposed.
+		return sb.ToString().Normalize(NormalizationForm.FormC);
 	}
 
 	/// <summary>
@@ -87,11 +88,11 @@ public static class StringExt
 	public static string OdeberDiakritiku(string text) => RemoveDiacritics(text);
 
 	/// <summary>
-	/// Returns the char representation (0..9, A..F) of a hexadecimal digit (0-15).
+	/// Returns the char representation (0..9, a..f) of a hexadecimal digit (0-15).
 	/// </summary>
-	/// <remarks>Due to speed, it does not perform range checking and converts, for example, the digit 16 as G.</remarks>
+	/// <remarks>Due to speed, it does not perform range checking and converts, for example, the digit 16 as g.</remarks>
 	/// <param name="digit">Digit (0..15)</param>
-	/// <returns>char representation (0..9, A..F) of a hexadecimal digit (0-15).</returns>
+	/// <returns>char representation (0..9, a..f) of a hexadecimal digit (0-15).</returns>
 	public static char IntToHex(int digit)
 	{
 		if (digit <= 9)
@@ -113,12 +114,22 @@ public static class StringExt
 	/// <returns>normalized text for URL (SEO)</returns>
 	public static string NormalizeForUrl(this string text)
 	{
-		text = text.ToLower();
+		text = text.ToLowerInvariant(); // culture-insensitive, e.g. Turkish culture would convert 'I' to dotless 'ı' (which is not in A-Za-z)
 		text = StringExt.RemoveDiacritics(text);
-		text = Regex.Replace(text, "[^A-Za-z0-9]", "-");
-		text = Regex.Replace(text, @"-{2,}", "-");
+		// A single pass replacing one-or-more non-alphanumeric characters with a single hyphen (instead of two Regex.Replace calls compiling the pattern on every call).
+		text = NormalizeForUrlNonAlphanumericRegex().Replace(text, "-");
 		text = text.Trim('-');
 
 		return text;
 	}
+
+#if NET7_0_OR_GREATER
+	// source-generated regex - the matching code is generated at build time (no runtime compilation, no cache lookup)
+	[GeneratedRegex("[^A-Za-z0-9]+")]
+	private static partial Regex NormalizeForUrlNonAlphanumericRegex();
+#else
+	// netstandard2.0 / net48: a single cached compiled Regex instance ([GeneratedRegex] is available only on .NET 7+)
+	private static readonly Regex normalizeForUrlNonAlphanumericRegex = new Regex("[^A-Za-z0-9]+", RegexOptions.Compiled);
+	private static Regex NormalizeForUrlNonAlphanumericRegex() => normalizeForUrlNonAlphanumericRegex;
+#endif
 }

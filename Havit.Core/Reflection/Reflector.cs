@@ -1,12 +1,35 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Havit.Reflection;
 
 /// <summary>
 /// Class with static methods for simple reflection operations.
 /// </summary>
+/// <remarks>
+/// <para>
+/// Memory behavior: resolved <see cref="PropertyInfo"/> lookups are cached in process-wide static dictionaries
+/// keyed by <c>(type, propertyName, bindingFlags)</c>. The cache is never evicted - entries live for the lifetime
+/// of the process (AppDomain). Negative results (a property not found on a type) are cached as well, so a name that
+/// is genuinely missing on a type is not looked up repeatedly.
+/// </para>
+/// <para>
+/// This is safe and intentional because <c>propertyName</c> is expected to come from a closed, bounded set
+/// (property names known at compile time, column/binding definitions, ...), not from arbitrary or user-supplied
+/// input. Under that assumption the number of distinct cache keys is finite (bounded by the set of types and the
+/// fixed set of property names used), so the cache reaches a steady size and does not grow without limit.
+/// Passing an unbounded stream of distinct <c>propertyName</c> values (e.g. raw user input) would make the cache
+/// grow indefinitely and must be avoided.
+/// </para>
+/// </remarks>
 public static class Reflector
 {
+	// PropertyInfo lookups are cached per (type, name, bindingFlags) - GetProperty (especially with IgnoreCase) is expensive and these helpers are often called in loops.
+	// Misses (null) are cached too: a property genuinely missing on a type stays missing.
+	// The cache is never evicted; this is fine because propertyName comes from a closed set (see the class <remarks>), so the number of distinct keys is bounded.
+	private static readonly ConcurrentDictionary<(Type Type, string PropertyName, BindingFlags BindingFlags), PropertyInfo> propertyCache = new ConcurrentDictionary<(Type, string, BindingFlags), PropertyInfo>();
+	private static readonly ConcurrentDictionary<(Type Type, string PropertyName, BindingFlags BindingFlags), PropertyInfo> propertyIncludingBaseTypesCache = new ConcurrentDictionary<(Type, string, BindingFlags), PropertyInfo>();
+
 	/// <summary>
 	/// Gets the value of a property, even if it is marked as protected, internal, or private.
 	/// The property is searched only on the specified type (targetType).
@@ -26,22 +49,27 @@ public static class Reflector
 
 	/// <summary>
 	/// Gets the value of a property, even if it is marked as protected, internal, or private.
+	/// The property is searched through the whole type hierarchy of the target object (including private properties declared on base types).
 	/// </summary>
 	/// <param name="target">The object from which the property should be obtained.</param>
 	/// <param name="propertyName">The name of the property.</param>
 	/// <returns>The value of the property, or null if it is not found.</returns>
 	public static object GetPropertyValue(Object target, String propertyName)
 	{
-		return GetPropertyValue(
-			target,
+		// We walk the hierarchy ourselves - GetProperty does not return private members declared on base types
+		// and BindingFlags.FlattenHierarchy has no effect for instance members.
+		PropertyInfo property = GetPropertyIncludingBaseTypes(
 			target.GetType(),
 			propertyName,
-			BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+			BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+		return (property != null)
+			? property.GetValue(target, null)
+			: null;
 	}
 
 	private static object GetPropertyValue(Object target, Type targetType, String propertyName, BindingFlags bindingFlags)
 	{
-		PropertyInfo property = targetType.GetProperty(propertyName, bindingFlags);
+		PropertyInfo property = GetCachedProperty(targetType, propertyName, bindingFlags);
 		if (property != null)
 		{
 			return property.GetValue(target, null);
@@ -54,47 +82,79 @@ public static class Reflector
 
 	/// <summary>
 	/// Sets the value of a property, even if it is marked as protected, internal, or private.
+	/// The property is searched only on the specified type (targetType).
 	/// If the property cannot be found, it throws an InvalidOperationException.
 	/// </summary>
-	/// <param name="target">The object from which the property should be obtained.</param>
-	/// <param name="targetType">The type from which the property should be obtained (can also be the parent type of the target).</param>
+	/// <param name="target">The object on which the property should be set.</param>
+	/// <param name="targetType">The type on which the property should be searched (can also be the parent type of the target).</param>
 	/// <param name="propertyName">The name of the property.</param>
 	/// <param name="value">The value to be set.</param>
 	public static void SetPropertyValue(Object target, Type targetType, String propertyName, object value)
 	{
-		SetPropertyValue(
-			target,
-			targetType,
-			propertyName,
-			BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
-			value);
-	}
-
-	/// <summary>
-	/// Sets the value of a property, even if it is marked as protected, internal, or private.
-	/// The property is searched only on the specified type (targetType).
-	/// If the property cannot be found, it throws an InvalidOperationException.
-	/// </summary>
-	/// <param name="target">The object from which the property should be obtained.</param>
-	/// <param name="propertyName">The name of the property.</param>
-	/// <param name="value">The value to be set.</param>
-	public static void SetPropertyValue(Object target, String propertyName, object value)
-	{
-		SetPropertyValue(
-			target,
-			target.GetType(),
-			propertyName,
-			BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy,
-			value);
-	}
-
-	private static void SetPropertyValue(Object target, Type targetType, String propertyName, BindingFlags bindingFlags, object value)
-	{
-		PropertyInfo property = targetType.GetProperty(propertyName, bindingFlags);
+		PropertyInfo property = GetCachedProperty(targetType, propertyName, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 		if (property == null)
 		{
 			throw new InvalidOperationException(String.Format("The property {0} was not found in the class {1}.", propertyName, targetType.FullName));
 		}
 		property.SetValue(target, value, null);
+	}
+
+	/// <summary>
+	/// Sets the value of a property, even if it is marked as protected, internal, or private.
+	/// The property is searched through the whole type hierarchy of the target object (including private properties declared on base types).
+	/// If the property cannot be found, it throws an InvalidOperationException.
+	/// </summary>
+	/// <param name="target">The object on which the property should be set.</param>
+	/// <param name="propertyName">The name of the property.</param>
+	/// <param name="value">The value to be set.</param>
+	public static void SetPropertyValue(Object target, String propertyName, object value)
+	{
+		// We walk the hierarchy ourselves - GetProperty does not return private members declared on base types
+		// and BindingFlags.FlattenHierarchy has no effect for instance members.
+		PropertyInfo property = GetPropertyIncludingBaseTypes(
+			target.GetType(),
+			propertyName,
+			BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+		if (property == null)
+		{
+			throw new InvalidOperationException(String.Format("The property {0} was not found in the class {1}.", propertyName, target.GetType().FullName));
+		}
+		property.SetValue(target, value, null);
+	}
+
+	/// <summary>
+	/// Finds a property by walking up the type hierarchy.
+	/// Unlike a single <see cref="Type.GetProperty(string, BindingFlags)" /> call, this also finds private properties declared on base types.
+	/// The most derived declaration wins (so a property hiding a base one via <c>new</c> does not cause an ambiguous match).
+	/// </summary>
+	private static PropertyInfo GetPropertyIncludingBaseTypes(Type type, String propertyName, BindingFlags bindingFlags)
+	{
+		if (propertyIncludingBaseTypesCache.TryGetValue((type, propertyName, bindingFlags), out PropertyInfo cached))
+		{
+			return cached;
+		}
+
+		PropertyInfo result = null;
+		Type currentType = type;
+		while (currentType != null)
+		{
+			PropertyInfo property = currentType.GetProperty(propertyName, bindingFlags | BindingFlags.DeclaredOnly);
+			if (property != null)
+			{
+				result = property;
+				break;
+			}
+			currentType = currentType.BaseType;
+		}
+
+		propertyIncludingBaseTypesCache[(type, propertyName, bindingFlags)] = result;
+		return result;
+	}
+
+	private static PropertyInfo GetCachedProperty(Type type, String propertyName, BindingFlags bindingFlags)
+	{
+		return propertyCache.GetOrAdd(
+			(type, propertyName, bindingFlags),
+			static key => key.Type.GetProperty(key.PropertyName, key.BindingFlags));
 	}
 }

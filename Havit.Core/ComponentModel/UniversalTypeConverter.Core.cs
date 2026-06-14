@@ -18,12 +18,13 @@ public static partial class UniversalTypeConverter
 	{
 		Contract.Requires<ArgumentNullException>(targetType != null, nameof(targetType));
 
-		bool nullableType = false;
-		// Nullable - extract the encapsulated type and continue to use this type as targetType
-		if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition())
+		// Nullable - extract the encapsulated type and continue to use this type as targetType.
+		// Nullable.GetUnderlyingType returns non-null only for Nullable<T> (avoids IsGenericType + GetGenericTypeDefinition allocations on the hot path).
+		Type underlyingType = Nullable.GetUnderlyingType(targetType);
+		bool nullableType = underlyingType != null;
+		if (nullableType)
 		{
-			nullableType = true;
-			targetType = Nullable.GetUnderlyingType(targetType);
+			targetType = underlyingType;
 		}
 
 		if (value == null)
@@ -40,6 +41,33 @@ public static partial class UniversalTypeConverter
 		{
 			result = value;
 			return true;
+		}
+
+		// DBNull.Value (a database null) is treated the same way as null (unless the target type can hold the DBNull.Value itself, which is handled by IsInstanceOfType above).
+		if (value == DBNull.Value)
+		{
+			result = null;
+			if (!targetType.IsValueType || nullableType)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		// Numeric (or other IConvertible) value to enum conversion is not covered by IConvertible nor TypeConverters below.
+		// String to enum conversion is intentionally left to the EnumConverter (TryConvertByDefaultTypeConverters).
+		if (targetType.IsEnum && (value is IConvertible) && (value is not string))
+		{
+			try
+			{
+				result = Enum.ToObject(targetType, Convert.ChangeType(value, Enum.GetUnderlyingType(targetType), culture));
+				return true;
+			}
+			catch
+			{
+				result = null;
+				return false;
+			}
 		}
 
 		object tmpResult = null;

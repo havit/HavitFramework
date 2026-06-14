@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Havit.Text.RegularExpressions;
 
@@ -23,27 +24,28 @@ public static class RegexPatterns
 	/// http://www.regexlib.com/REDetails.aspx?regexp_id=295
 	/// </remarks>
 	public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
-									+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,20}$";
+									+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,20}\z";
 
 	/// <summary>
 	/// Pattern for checking identifiers.
 	/// The identifier must start with a letter or underscore, followed by letters, digits, or underscores.
 	/// </summary>
-	public const string Identifier = @"^[a-zA-Z_]{1}[a-zA-Z0-9_]+$";
+	public const string Identifier = @"^[a-zA-Z_][a-zA-Z0-9_]*\z";
 
 	/// <summary>
 	/// Pattern for checking time. 24-hour format, colon separator, optional seconds. For example, 23:59:00.
 	/// Does not accept 24:00.
 	/// </summary>
-	public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})$";
+	public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})\z";
 
 	/// <summary>
 	/// Pattern for checking IPv4 addresses.
+	/// The first octet must be 1-255, the remaining octets 0-255. Octets with leading zeros (e.g. 001) are not accepted.
 	/// </summary>
-	public const string IPAddress = @"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\."
-									+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
-									+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\."
-									+ @"(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$";
+	public const string IPAddress = @"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\."
+									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\."
+									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\."
+									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\z";
 
 	/// <summary>
 	/// Pattern for checking integers.
@@ -52,7 +54,7 @@ public static class RegexPatterns
 	/// Accepts: [1], [+15], [0], [-10], [+0]<br/>
 	/// Rejects: [1.0], [abc], [+], [1,15]
 	/// </remarks>
-	public const string Integer = @"^[-+]?\d+$";
+	public const string Integer = @"^[-+]?\d+\z";
 
 	/// <summary>
 	/// Returns a regular expression for searching in text.
@@ -82,33 +84,51 @@ public static class RegexPatterns
 	/// <param name="wildcardExpression">The expression (text) for which the regular expression is created.</param>
 	private static string GetWildcardRegexPattern(string wildcardExpression)
 	{
-		string regexPattern = wildcardExpression;
-		regexPattern = regexPattern.Replace("\\", "\\\\"); // double backslashes
-		regexPattern = regexPattern.Replace("^", "\\^");
-		regexPattern = regexPattern.Replace("$", "\\$");
-		regexPattern = regexPattern.Replace("+", "\\+");
-		regexPattern = regexPattern.Replace(".", "\\.");
-		regexPattern = regexPattern.Replace("(", "\\(");
-		regexPattern = regexPattern.Replace(")", "\\)");
-		regexPattern = regexPattern.Replace("|", "\\|");
-		regexPattern = regexPattern.Replace("{", "\\{");
-		regexPattern = regexPattern.Replace("}", "\\}");
-		regexPattern = regexPattern.Replace("[", "\\[");
-		regexPattern = regexPattern.Replace("]", "\\]");
-		regexPattern = regexPattern.Replace("?", "\\?");
+		// Single pass over the input (instead of ~14 chained string.Replace calls, each allocating an intermediate string).
+		StringBuilder regexPattern = new StringBuilder(wildcardExpression.Length + 2);
+		regexPattern.Append('^'); // searching from the beginning
 
-		// asterisk is a special symbol for us
-		regexPattern = regexPattern.Replace("*", "((.|\n)*)");
-		// searching from the beginning
-		regexPattern = "^" + regexPattern;
-		// if there is an asterisk, we want an "exact" match
-		// if there is no asterisk, we want the search to behave as if there was an asterisk at the end, in the words of regular expressions, no need for $ at the end.
-		if (wildcardExpression.Contains("*"))
+		bool containsAsterisk = false;
+		foreach (char c in wildcardExpression)
 		{
-			regexPattern += "$";
+			switch (c)
+			{
+				case '\\':
+				case '^':
+				case '$':
+				case '+':
+				case '.':
+				case '(':
+				case ')':
+				case '|':
+				case '{':
+				case '}':
+				case '[':
+				case ']':
+				case '?':
+					regexPattern.Append('\\').Append(c);
+					break;
+
+				case '*':
+					// asterisk is a special symbol for us
+					regexPattern.Append("((.|\n)*)");
+					containsAsterisk = true;
+					break;
+
+				default:
+					regexPattern.Append(c);
+					break;
+			}
 		}
 
-		return regexPattern;
+		// if there is an asterisk, we want an "exact" match
+		// if there is no asterisk, we want the search to behave as if there was an asterisk at the end, in the words of regular expressions, no need for $ at the end.
+		if (containsAsterisk)
+		{
+			regexPattern.Append('$');
+		}
+
+		return regexPattern.ToString();
 	}
 
 	/// <summary>

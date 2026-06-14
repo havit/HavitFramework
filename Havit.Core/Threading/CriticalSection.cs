@@ -39,14 +39,19 @@ public class CriticalSection<TKey>
 	{
 		// enter the critical section
 		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
-		criticalSectionLock.Semaphore.Wait();
+		try
+		{
+			criticalSectionLock.Semaphore.Wait();
+		}
+		catch
+		{
+			// the lock was not acquired, we must not leave the usage counter incremented (and the lock record leaked)
+			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
+			throw;
+		}
 
 		// when disposed, exit the critical section
-		return new Scope(() =>
-		{
-			criticalSectionLock.Semaphore.Release();
-			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
-		});
+		return new Scope(this, lockValue, criticalSectionLock);
 	}
 
 	/// <summary>
@@ -59,14 +64,19 @@ public class CriticalSection<TKey>
 	{
 		// enter the critical section
 		CriticalSectionLock criticalSectionLock = GetCriticalSectionLock(lockValue);
-		await criticalSectionLock.Semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+		try
+		{
+			await criticalSectionLock.Semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+		}
+		catch
+		{
+			// the lock was not acquired (e.g. the wait was canceled), we must not leave the usage counter incremented (and the lock record leaked)
+			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
+			throw;
+		}
 
 		// when disposed, exit the critical section
-		return new Scope(() =>
-		{
-			criticalSectionLock.Semaphore.Release();
-			ReleaseCriticalSectionLock(lockValue, criticalSectionLock);
-		});
+		return new Scope(this, lockValue, criticalSectionLock);
 	}
 
 	/// <summary>
@@ -159,16 +169,27 @@ public class CriticalSection<TKey>
 
 	internal class Scope : IDisposable
 	{
-		private readonly Action _disposeAction;
+		// Holds the references in fields instead of capturing them in a closure - saves the display-class + Action delegate allocation on every EnterScope.
+		private CriticalSection<TKey> _owner;
+		private readonly TKey _lockValue;
+		private readonly CriticalSectionLock _criticalSectionLock;
 
-		public Scope(Action disposeAction)
+		public Scope(CriticalSection<TKey> owner, TKey lockValue, CriticalSectionLock criticalSectionLock)
 		{
-			_disposeAction = disposeAction;
+			_owner = owner;
+			_lockValue = lockValue;
+			_criticalSectionLock = criticalSectionLock;
 		}
 
 		void IDisposable.Dispose()
 		{
-			_disposeAction();
+			// repeated Dispose must not release the semaphore (and decrement the usage counter) again
+			CriticalSection<TKey> owner = Interlocked.Exchange(ref _owner, null);
+			if (owner != null)
+			{
+				_criticalSectionLock.Semaphore.Release();
+				owner.ReleaseCriticalSectionLock(_lockValue, _criticalSectionLock);
+			}
 		}
 	}
 }

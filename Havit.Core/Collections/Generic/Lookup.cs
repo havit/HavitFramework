@@ -153,10 +153,11 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 
 	private IEnumerable<IGrouping<TKey, TElement>> GetGroupings()
 	{
-		return _dictionary.Keys.Select(key => new LookupDictionaryGrouping
+		// iterate key-value pairs directly to avoid a second hash lookup per key (_dictionary[key])
+		return _dictionary.Select(pair => new LookupDictionaryGrouping
 		{
-			Key = key,
-			Elements = _dictionary[key]
+			Key = pair.Key,
+			Elements = pair.Value
 		});
 	}
 

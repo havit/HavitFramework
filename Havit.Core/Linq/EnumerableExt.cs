@@ -134,7 +134,7 @@ public static class EnumerableExt
 	{
 		if (count <= 0)
 		{
-			return source.Select(item => item);
+			return source;
 		}
 
 		return SkipLastInternal(source, count);
@@ -154,25 +154,27 @@ public static class EnumerableExt
 		}
 		else
 		{
-			var sourceEnumerator = source.GetEnumerator();
-			var buffer = new TSource[count];
-			int idx;
-
-			for (idx = 0; (idx < count) && sourceEnumerator.MoveNext(); idx++)
+			using (var sourceEnumerator = source.GetEnumerator())
 			{
-				buffer[idx] = sourceEnumerator.Current;
-			}
+				var buffer = new TSource[count];
+				int idx;
 
-			idx = 0;
-			while (sourceEnumerator.MoveNext())
-			{
-				var item = buffer[idx];
+				for (idx = 0; (idx < count) && sourceEnumerator.MoveNext(); idx++)
+				{
+					buffer[idx] = sourceEnumerator.Current;
+				}
 
-				buffer[idx] = sourceEnumerator.Current;
+				idx = 0;
+				while (sourceEnumerator.MoveNext())
+				{
+					var item = buffer[idx];
 
-				idx = (idx + 1) % count;
+					buffer[idx] = sourceEnumerator.Current;
 
-				yield return item;
+					idx = (idx + 1) % count;
+
+					yield return item;
+				}
 			}
 		}
 	}

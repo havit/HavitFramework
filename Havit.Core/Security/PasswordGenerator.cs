@@ -146,22 +146,33 @@ public class PasswordGenerator
 	{
 		// Assumes lBound >= 0 && lBound < uBound
 		// returns an int >= lBound and < uBound
-		uint urndnum;
-		byte[] rndnum = new Byte[4];
 		if (lBound == uBound - 1)
 		{
-			// test for degenerate case where only lBound can be returned   
+			// test for degenerate case where only lBound can be returned
 			return lBound;
 		}
 
 		uint xcludeRndBase = (uint.MaxValue - (uint.MaxValue % (uint)(uBound - lBound)));
+		uint urndnum;
 
+#if NET6_0_OR_GREATER
+		// stack-allocated buffer - no per-call byte[] allocation
+		Span<byte> rndnum = stackalloc byte[4];
+		do
+		{
+			randomNumberGenerator.GetBytes(rndnum);
+			urndnum = BitConverter.ToUInt32(rndnum);
+		}
+		while (urndnum >= xcludeRndBase);
+#else
+		byte[] rndnum = new Byte[4];
 		do
 		{
 			randomNumberGenerator.GetBytes(rndnum);
 			urndnum = System.BitConverter.ToUInt32(rndnum, 0);
 		}
 		while (urndnum >= xcludeRndBase);
+#endif
 
 		return (int)(urndnum % (uBound - lBound)) + lBound;
 	}
@@ -171,9 +182,9 @@ public class PasswordGenerator
 	/// </summary>
 	protected char GetRandomCharacter()
 	{
-		int upperBound = GetCharacterArrayUpperBound();
-
-		int randomCharPosition = GetCryptographicRandomNumber(pwdCharArray.GetLowerBound(0), upperBound);
+		// use the cached upper bound (set in the PasswordCharacterSet setter) instead of recomputing it for every character
+		// GetCryptographicRandomNumber has an exclusive upper bound, passwordCharArrayUpperBound is an inclusive index -> +1, otherwise the last character of the set would never be generated
+		int randomCharPosition = GetCryptographicRandomNumber(pwdCharArray.GetLowerBound(0), passwordCharArrayUpperBound + 1);
 
 		char randomChar = pwdCharArray[randomCharPosition];
 
@@ -195,8 +206,9 @@ public class PasswordGenerator
 		}
 		else
 		{
-			// Pick random length between minimum and maximum   
-			passwordLength = GetCryptographicRandomNumber(this.MinimumLength, this.MaximumLength);
+			// Pick random length between minimum and maximum (inclusive)
+			// GetCryptographicRandomNumber has an exclusive upper bound -> +1, otherwise MaximumLength would never be reached
+			passwordLength = GetCryptographicRandomNumber(this.MinimumLength, this.MaximumLength + 1);
 		}
 
 		if ((!AllowRepeatingCharacters) && (passwordLength > passwordCharArrayUpperBound + 1))
@@ -208,6 +220,9 @@ public class PasswordGenerator
 
 		StringBuilder paswordBuffer = new StringBuilder();
 		paswordBuffer.Capacity = this.MaximumLength;
+
+		// Set of already used characters - O(1) duplicate lookup instead of buffer.ToString() + IndexOf (O(n) + an allocation) on every character.
+		HashSet<char> usedCharacters = this.AllowRepeatingCharacters ? null : new HashSet<char>();
 
 		// Generate random characters
 		char lastCharacter;
@@ -231,12 +246,9 @@ public class PasswordGenerator
 
 			if (!this.AllowRepeatingCharacters)
 			{
-				string temp = paswordBuffer.ToString();
-				int duplicateIndex = temp.IndexOf(nextCharacter);
-				while (-1 != duplicateIndex)
+				while (usedCharacters.Contains(nextCharacter))
 				{
 					nextCharacter = GetRandomCharacter();
-					duplicateIndex = temp.IndexOf(nextCharacter);
 				}
 			}
 
@@ -250,6 +262,7 @@ public class PasswordGenerator
 
 			paswordBuffer.Append(nextCharacter);
 			lastCharacter = nextCharacter;
+			usedCharacters?.Add(nextCharacter);
 		}
 
 		if (null != paswordBuffer)

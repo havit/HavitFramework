@@ -108,4 +108,41 @@ public class CriticalSectionTests
 		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys); // dojde k vyčištění?
 	}
 
+	[TestMethod]
+	public async Task CriticalSection_EnterScopeAsync_CanceledWaitingCleansUnusedLocks()
+	{
+		// Arrange
+		CriticalSection<int> criticalSection = new CriticalSection<int>();
+		using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+		// Act
+		using (await criticalSection.EnterScopeAsync(1, TestContext.CancellationToken)) // drží zámek
+		{
+			Task<IDisposable> waitingTask = criticalSection.EnterScopeAsync(1, cancellationTokenSource.Token); // čeká na zámek
+			cancellationTokenSource.Cancel();
+
+			await Assert.ThrowsAsync<OperationCanceledException>(async () => await waitingTask);
+		}
+
+		// Assert
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys); // dojde k vyčištění i po zrušeném čekání?
+	}
+
+	[TestMethod]
+	public void CriticalSection_EnterScope_RepeatedDisposeDoesNotReleaseLockAgain()
+	{
+		// Arrange
+		CriticalSection<int> criticalSection = new CriticalSection<int>();
+
+		// Act
+		IDisposable scope = criticalSection.EnterScope(1);
+		scope.Dispose();
+		scope.Dispose(); // druhý Dispose nesmí podruhé uvolnit semafor ani rozbít účetnictví zámků
+
+		// Assert
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys);
+		criticalSection.ExecuteAction(1, () => { }); // kritická sekce je dále použitelná
+		Assert.IsEmpty(criticalSection.CriticalSectionLocks.Keys);
+	}
+
 }

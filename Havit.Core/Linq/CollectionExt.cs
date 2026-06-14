@@ -90,17 +90,13 @@ public static class CollectionExt
 		Contract.Requires<ArgumentNullException>(sourceKeySelector != null, nameof(sourceKeySelector));
 		Contract.Requires<ArgumentNullException>(targetKeySelector != null, nameof(targetKeySelector));
 
-		var joinedCollections = target.FullOuterJoin(
-			rightSource: source,
-			leftKeySelector: targetKeySelector,
-			rightKeySelector: sourceKeySelector,
-			resultSelector: (targetItem, sourceItem) => new { Target = targetItem, Source = sourceItem });
+		var joinedCollections = FullOuterJoinWithMatchFlags(target, source, targetKeySelector, sourceKeySelector);
 
 		var result = new UpdateFromResult<TTarget>();
 
 		foreach (var joinedItem in joinedCollections)
 		{
-			if (object.Equals(joinedItem.Target, default(TTarget))) // && (Source != null)
+			if (!joinedItem.TargetMatched) // && SourceMatched
 			{
 				// new item
 				if (newItemCreateFunc != null)
@@ -119,7 +115,7 @@ public static class CollectionExt
 					result.ItemsAdding.Add(newTargetItem);
 				}
 			}
-			else if (!object.Equals(joinedItem.Source, default(TSource))) // && (Target != null)
+			else if (joinedItem.SourceMatched) // && TargetMatched
 			{
 				// existing item
 				if (updateItemAction != null)
@@ -128,7 +124,7 @@ public static class CollectionExt
 					result.ItemsUpdating.Add(joinedItem.Target);
 				}
 			}
-			else // (Source == null) && (Target != null)
+			else // TargetMatched && !SourceMatched
 			{
 				if (removeItemAction != null)
 				{
@@ -163,17 +159,13 @@ public static class CollectionExt
 		Contract.Requires<ArgumentNullException>(sourceKeySelector != null, nameof(sourceKeySelector));
 		Contract.Requires<ArgumentNullException>(targetKeySelector != null, nameof(targetKeySelector));
 
-		var joinedCollections = target.FullOuterJoin(
-			rightSource: source,
-			leftKeySelector: targetKeySelector,
-			rightKeySelector: sourceKeySelector,
-			resultSelector: (targetItem, sourceItem) => new { Target = targetItem, Source = sourceItem });
+		var joinedCollections = FullOuterJoinWithMatchFlags(target, source, targetKeySelector, sourceKeySelector);
 
 		var result = new UpdateFromResult<TTarget>();
 
 		foreach (var joinedItem in joinedCollections)
 		{
-			if (object.Equals(joinedItem.Target, default(TTarget))) // && (Source != null)
+			if (!joinedItem.TargetMatched) // && SourceMatched
 			{
 				// new item
 				if (newItemCreateFunc != null)
@@ -192,7 +184,7 @@ public static class CollectionExt
 					result.ItemsAdding.Add(newTargetItem);
 				}
 			}
-			else if (!object.Equals(joinedItem.Source, default(TSource))) // && (Target != null)
+			else if (joinedItem.SourceMatched) // && TargetMatched
 			{
 				// existing item
 				if (updateItemAction != null)
@@ -201,7 +193,7 @@ public static class CollectionExt
 					result.ItemsUpdating.Add(joinedItem.Target);
 				}
 			}
-			else // (Source == null) && (Target != null)
+			else // TargetMatched && !SourceMatched
 			{
 				if (removeItemAction != null)
 				{
@@ -218,4 +210,54 @@ public static class CollectionExt
 		return result;
 	}
 #endif
+
+	/// <summary>
+	/// Full outer join with explicit match flags.
+	/// Unlike <see cref="EnumerableExt.FullOuterJoin{TLeft, TRight, TKey, TResult}(IEnumerable{TLeft}, IEnumerable{TRight}, Func{TLeft, TKey}, Func{TRight, TKey}, Func{TLeft, TRight, TResult})" />,
+	/// unmatched items are indicated by the flags, not by default values - a value-type <typeparamref name="TSource" /> item equal to default(TSource) is therefore paired correctly.
+	/// </summary>
+	private static IEnumerable<(TTarget Target, TSource Source, bool TargetMatched, bool SourceMatched)> FullOuterJoinWithMatchFlags<TSource, TTarget, TKey>(
+		IEnumerable<TTarget> target,
+		IEnumerable<TSource> source,
+		Func<TTarget, TKey> targetKeySelector,
+		Func<TSource, TKey> sourceKeySelector)
+	{
+		var targetLookup = target.ToLookup(targetKeySelector);
+		var sourceLookup = source.ToLookup(sourceKeySelector);
+
+		// Iterate the lookup groups directly (no extra HashSet of keys, no repeated key re-hashing via Contains+indexer).
+		// Target loop covers matched + target-only keys; source loop then adds only the source-only keys.
+		foreach (var targetGroup in targetLookup)
+		{
+			if (sourceLookup.Contains(targetGroup.Key))
+			{
+				var sourceGroup = sourceLookup[targetGroup.Key];
+				foreach (TTarget targetItem in targetGroup)
+				{
+					foreach (TSource sourceItem in sourceGroup)
+					{
+						yield return (targetItem, sourceItem, true, true);
+					}
+				}
+			}
+			else
+			{
+				foreach (TTarget targetItem in targetGroup)
+				{
+					yield return (targetItem, default, true, false);
+				}
+			}
+		}
+
+		foreach (var sourceGroup in sourceLookup)
+		{
+			if (!targetLookup.Contains(sourceGroup.Key))
+			{
+				foreach (TSource sourceItem in sourceGroup)
+				{
+					yield return (default, sourceItem, false, true);
+				}
+			}
+		}
+	}
 }

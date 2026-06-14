@@ -30,6 +30,18 @@ public class DataBinderTests
 		});
 	}
 
+	[TestMethod]
+	public void DataBinderExt_GetValue_NullDataItemReturnsNull()
+	{
+		Assert.IsNull(DataBinderExt.GetValue(null, "MyPublicProperty"));
+	}
+
+	[TestMethod]
+	public void DataBinderExt_GetValue_NullDataFieldThrowsArgumentNullException()
+	{
+		Assert.ThrowsExactly<ArgumentNullException>(() => DataBinderExt.GetValue(new MyClass(), null));
+	}
+
 	private class MyClass
 	{
 		public int MyPublicProperty { get; set; }

@@ -162,10 +162,9 @@ public class ExceptionTracer
 	{
 		Contract.Requires<ArgumentNullException>(exception != null, nameof(exception));
 
-		RunUsingTraceSource(delegate (TraceSource ts)
-		{
-			ts.TraceEvent(eventType, eventId, FormatException(exception));
-		});
+		TraceSource traceSource = GetTraceSource();
+		traceSource.TraceEvent(eventType, eventId, FormatException(exception));
+		traceSource.Flush();
 	}
 
 	/// <summary>
@@ -199,18 +198,20 @@ public class ExceptionTracer
 	}
 
 	/// <summary>
-	/// Executes an action using the TraceSource used by the ExceptionListener.
+	/// Returns the (lazily created and cached) TraceSource used to emit exceptions.
+	/// A new TraceSource per call would re-read configuration and recreate listeners (e.g. reopen the log file) every time.
 	/// </summary>
-	/// <param name="action">action to be executed (delegate)</param>
-	private void RunUsingTraceSource(Action<TraceSource> action)
+	private TraceSource GetTraceSource()
 	{
-		Debug.Assert(action != null);
-
-		TraceSource ts = new TraceSource(this.TraceSourceName);
-
-		action(ts);
-
-		ts.Flush();
-		ts.Close();
+		if (_traceSource == null)
+		{
+			lock (_traceSourceLock)
+			{
+				_traceSource ??= new TraceSource(this.TraceSourceName);
+			}
+		}
+		return _traceSource;
 	}
+	private TraceSource _traceSource;
+	private readonly object _traceSourceLock = new object();
 }

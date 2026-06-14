@@ -103,6 +103,11 @@ public static class Contract
 			{
 				resultException = new ArgumentNullException(null, message);
 			}
+			else if (typeof(TException) == typeof(ArgumentOutOfRangeException))
+			{
+				// the single-string constructor is (string paramName), the message would end up as ParamName
+				resultException = new ArgumentOutOfRangeException(null, message);
+			}
 			else
 			{
 				resultException = (Exception)Activator.CreateInstance(typeof(TException), message);

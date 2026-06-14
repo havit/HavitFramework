@@ -41,7 +41,21 @@ public static class PasswordHashService
 
 		using SHA512 sha = SHA512.Create();
 		var hash = sha.ComputeHash(Encoding.Unicode.GetBytes(value));
-		return String.Join("", hash.Select(x => x.ToString("X2")));
+
+#if NET6_0_OR_GREATER
+		// uppercase hex in a single pass, no LINQ and no per-byte string allocations
+		return Convert.ToHexString(hash);
+#else
+		const string hexChars = "0123456789ABCDEF";
+		StringBuilder sb = new StringBuilder(hash.Length * 2);
+		for (int i = 0; i < hash.Length; i++)
+		{
+			byte b = hash[i];
+			sb.Append(hexChars[b >> 4]);
+			sb.Append(hexChars[b & 0xF]);
+		}
+		return sb.ToString();
+#endif
 	}
 
 	/// <summary>

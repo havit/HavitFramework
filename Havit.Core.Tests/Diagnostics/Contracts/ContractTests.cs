@@ -81,4 +81,24 @@ public class ContractTests
 		Assert.IsNotNull(argumentException);
 		Assert.AreEqual("Custom message.", argumentException.Message);
 	}
+
+	[TestMethod]
+	public void Contract_GenericRequires_ArgumentOutOfRangeException_WithMessage()
+	{
+		// Act
+		ArgumentOutOfRangeException argumentException = null;
+		try
+		{
+			Contract.Requires<ArgumentOutOfRangeException>(false, "Custom message.");
+		}
+		catch (ArgumentOutOfRangeException e)
+		{
+			argumentException = e;
+		}
+
+		// Assert
+		Assert.IsNotNull(argumentException);
+		Assert.IsNull(argumentException.ParamName); // zpráva nesmí skončit v ParamName
+		Assert.AreEqual("Custom message.", argumentException.Message);
+	}
 }

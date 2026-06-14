@@ -12,18 +12,23 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>, IModelSour
 	private readonly IModelProject _modelProject;
 	private readonly IDataLayerProject _dataLayerProject;
 
-	private List<DataEntriesModel> _models;
+	// Tento model source je DI singleton sdílený mezi generátory, které běží paralelně (viz DataLayerGeneratorRunner.Parallel.ForEachAsync).
+	// Lazy (výchozí ExecutionAndPublication) zajistí, že se modely vyhodnotí právě jednou i při souběžném přístupu z více generátorů.
+	private readonly Lazy<List<DataEntriesModel>> _models;
 
 	public DataEntriesModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject)
 	{
 		_dbContext = dbContext;
 		_modelProject = modelProject;
 		_dataLayerProject = dataLayerProject;
+		_models = new Lazy<List<DataEntriesModel>>(GetModelsCore);
 	}
 
-	public List<DataEntriesModel> GetModels()
+	public List<DataEntriesModel> GetModels() => _models.Value;
+
+	private List<DataEntriesModel> GetModelsCore()
 	{
-		return _models ??= (
+		return (
 			from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 			let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
 			where (entriesEnumType != null)

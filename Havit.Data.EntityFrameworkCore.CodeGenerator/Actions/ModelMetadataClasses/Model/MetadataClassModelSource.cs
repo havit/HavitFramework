@@ -12,15 +12,22 @@ public class MetadataClassModelSource : IModelSource<MetadataClass>
 	private readonly IModelProject _modelProject;
 	private readonly CodeGeneratorConfiguration _configuration;
 
+	// Tento model source je DI singleton sdílený mezi generátory, které běží paralelně (viz DataLayerGeneratorRunner.Parallel.ForEachAsync).
+	// Lazy (výchozí ExecutionAndPublication) zajistí, že se modely vyhodnotí právě jednou i při souběžném přístupu z více generátorů.
+	private readonly Lazy<List<MetadataClass>> _models;
+
 	public MetadataClassModelSource(DbContext dbContext, IMetadataProject metadataProject, IModelProject modelProject, CodeGeneratorConfiguration configuration)
 	{
 		_dbContext = dbContext;
 		_metadataProject = metadataProject;
 		_modelProject = modelProject;
 		_configuration = configuration;
+		_models = new Lazy<List<MetadataClass>>(GetModelsCore);
 	}
 
-	public List<MetadataClass> GetModels()
+	public List<MetadataClass> GetModels() => _models.Value;
+
+	private List<MetadataClass> GetModelsCore()
 	{
 		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new MetadataClass

@@ -8,16 +8,13 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClas
 
 public class MetadataGenerator(
 	IMetadataProject _metadataProject,
-	IModelProject _modelProject,
-	DbContext _dbContext,
-	CodeGeneratorConfiguration _configuration,
+	MetadataClassModelSource _metadataClassModelSource,
 	IGenericGenerator _genericGenerator) : IDataLayerGenerator
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		MetadataClassFileNamingService fileNamingService = new MetadataClassFileNamingService(_metadataProject);
-		MetadataClassModelSource modelSource = new MetadataClassModelSource(_dbContext, _metadataProject, _modelProject, _configuration);
 
-		await _genericGenerator.GenerateAsync(modelSource, metadataClass => new MetadataClassTemplate(metadataClass), fileNamingService, cancellationToken: cancellationToken);
+		await _genericGenerator.GenerateAsync(_metadataClassModelSource, metadataClass => new MetadataClassTemplate(metadataClass), fileNamingService, cancellationToken: cancellationToken);
 	}
 }

@@ -1,4 +1,3 @@
-﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -9,6 +8,8 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 /// </summary>
 public class CodeWriter : ICodeWriter
 {
+	private static readonly byte[] Utf8ByteOrderMask = Encoding.UTF8.GetPreamble();
+
 	private readonly ICodeWriteReporter _codeWriteReporter;
 
 	public CodeWriter(ICodeWriteReporter codeWriteReporter)
@@ -28,33 +29,38 @@ public class CodeWriter : ICodeWriter
 		// Pro MacOS a Linux převedeme Windows-style konce řádků (CRLF) na Unix-style (LF).
 		content = NormalizePlatformSpecificLineEndings(content);
 
-		// Na windows může existovat soubor s názvem, který se liší jen velikostí písmen (např. "file.csv" a "FILE.csv").
-		// Abychom předešli problémům níže s tím, zda AlreadyExistsTheSameAsync má vrátit true nebo false, provedeme zde kontrolu, zda soubor existuje
-		// s a bez ohledu na case-sensitivitu a případně soubor přejmenujeme na správný název (case sensitivity).
-		// Názvy složek však nejsou řešeny.
-		bool existsCaseInsensitive = FileExistsCaseInsensitive(filename);
+		string directory = Path.GetDirectoryName(filename);
+		string requestedFilename = Path.GetFileName(filename);
 
-		bool existsCaseSensitive = existsCaseInsensitive && FileExistsCaseSensitive(filename); // exists: nemuže existovat case sensitive, pokud vůbec neexistuje
-		if (existsCaseInsensitive && !existsCaseSensitive)
+		// Na Windows může existovat soubor s názvem, který se liší jen velikostí písmen (např. "file.cs" a "FILE.cs").
+		// Jediným průchodem adresářem zjistíme, zda soubor existuje (bez ohledu na velikost písmen) a jaký je jeho skutečný název na disku.
+		// Pokud se skutečný název liší jen velikostí písmen, přejmenujeme soubor na požadovaný název (case sensitivity). Názvy složek se neřeší.
+		string actualFilenameOnDisk = GetFilenameOnDisk(directory, requestedFilename);
+		bool existsCaseInsensitive = (actualFilenameOnDisk != null);
+		if (existsCaseInsensitive && !String.Equals(actualFilenameOnDisk, requestedFilename, StringComparison.CurrentCulture))
 		{
 			// přejmenuje soubor na správný název (bez ohledu na název složky)
-			System.IO.File.Move(filename, filename);
-			existsCaseSensitive = true;
+			File.Move(filename, filename);
 		}
-		Debug.Assert(existsCaseInsensitive == existsCaseSensitive);
 
-		if (!(await AlreadyExistsTheSameAsync(filename, content, cancellationToken)) || !HasByteOrderMask(filename))
+		// Soubor přepíšeme, pokud se jeho obsah liší, nebo pokud nemá UTF-8 BOM (chceme jej doplnit).
+		// Pokud soubor neexistuje, čtení neprovádíme (zápis je stejně potřeba).
+		bool needsWrite = true;
+		if (existsCaseInsensitive)
 		{
-			string directory = Path.GetDirectoryName(filename);
+			// Jediným čtením souboru zjistíme současně shodu obsahu i přítomnost UTF-8 BOM.
+			(bool sameContent, bool hasByteOrderMask) = await GetFileStateAsync(filename, content, cancellationToken);
+			needsWrite = !sameContent || !hasByteOrderMask;
+		}
+
+		if (needsWrite && ((overwriteBahavior == OverwriteBahavior.OverwriteWhenFileAlreadyExists) || !existsCaseInsensitive))
+		{
 			if (!String.IsNullOrEmpty(directory))
 			{
 				Directory.CreateDirectory(directory);
 			}
 
-			if ((overwriteBahavior == OverwriteBahavior.OverwriteWhenFileAlreadyExists) || !existsCaseInsensitive)
-			{
-				await File.WriteAllTextAsync(filename, content, Encoding.UTF8, cancellationToken);
-			}
+			await File.WriteAllTextAsync(filename, content, Encoding.UTF8, cancellationToken);
 		}
 	}
 
@@ -74,58 +80,37 @@ public class CodeWriter : ICodeWriter
 	}
 
 	/// <summary>
-	/// Vrací true, pokud již existuje soubor se stejným jménem a obsahem.
+	/// Vrací skutečný název souboru na disku (jak je fyzicky uložen, s ohledem na velikost písmen) ve složce <paramref name="directory"/>,
+	/// který odpovídá <paramref name="filename"/> bez ohledu na velikost písmen. Pokud takový soubor neexistuje, vrací <c>null</c>.
+	/// Case sensitivita názvu složky se neřeší.
 	/// </summary>
-	private async Task<bool> AlreadyExistsTheSameAsync(string filename, string content, CancellationToken cancellationToken = default)
+	private static string GetFilenameOnDisk(string directory, string filename)
 	{
-		return (File.Exists(filename) && (await File.ReadAllTextAsync(filename, cancellationToken) == content));
+		if (String.IsNullOrEmpty(directory) || !Directory.Exists(directory))
+		{
+			return null;
+		}
+
+		return new DirectoryInfo(directory)
+			.EnumerateFiles(filename)
+			.Select(file => file.Name)
+			.FirstOrDefault(name => String.Equals(name, filename, StringComparison.CurrentCultureIgnoreCase));
 	}
 
 	/// <summary>
-	/// Vrací true, pokud soubor již existuje a má UTF-8 byte order mask.
+	/// Jedním čtením souboru zjistí, zda se jeho obsah shoduje s <paramref name="content"/> (případný úvodní UTF-8 BOM se ignoruje, stejně jako to dělá File.ReadAllText)
+	/// a zda soubor obsahuje UTF-8 byte order mask.
 	/// </summary>
-	private bool HasByteOrderMask(string filename)
+	private static async Task<(bool SameContent, bool HasByteOrderMask)> GetFileStateAsync(string filename, string content, CancellationToken cancellationToken)
 	{
-		byte[] utf8BOM = Encoding.UTF8.GetPreamble();
-		if (!File.Exists(filename) || (new FileInfo(filename).Length < utf8BOM.Length))
-		{
-			return false;
-		}
+		byte[] fileBytes = await File.ReadAllBytesAsync(filename, cancellationToken);
 
-		byte[] fileBOM;
-		using (FileStream fileStream = new FileStream(filename, FileMode.Open))
-		{
-			using (BinaryReader reader = new BinaryReader(fileStream))
-			{
-				fileBOM = reader.ReadBytes(utf8BOM.Length);
-			}
-		}
-		return utf8BOM.SequenceEqual(fileBOM);
-	}
+		bool hasByteOrderMask = (fileBytes.Length >= Utf8ByteOrderMask.Length)
+			&& fileBytes.AsSpan(0, Utf8ByteOrderMask.Length).SequenceEqual(Utf8ByteOrderMask);
 
-	/// <summary>
-	/// Vrací true, pokud existuje soubor se stejným názvem case-sensitive. Case sensitivita složky se neřeší.
-	/// </summary>
-	public static bool FileExistsCaseInsensitive(string fullPath)
-	{
-		string filename = Path.GetFileName(fullPath);
-		if (!Directory.Exists(Path.GetDirectoryName(fullPath)))
-		{
-			return false;
-		}
-		return new DirectoryInfo(Path.GetDirectoryName(fullPath)).EnumerateFiles(filename).Any(file => String.Equals(file.Name, filename, StringComparison.CurrentCultureIgnoreCase));
-	}
+		int contentOffset = hasByteOrderMask ? Utf8ByteOrderMask.Length : 0;
+		string fileContent = Encoding.UTF8.GetString(fileBytes, contentOffset, fileBytes.Length - contentOffset);
 
-	/// <summary>
-	/// Vrací true, pokud existuje soubor se stejným názvem case-sensitive. Case sensitivita složky se neřeší.
-	/// </summary>
-	public static bool FileExistsCaseSensitive(string fullPath)
-	{
-		string filename = Path.GetFileName(fullPath);
-		if (!Directory.Exists(Path.GetDirectoryName(fullPath)))
-		{
-			return false;
-		}
-		return new DirectoryInfo(Path.GetDirectoryName(fullPath)).EnumerateFiles(filename).Any(file => String.Equals(file.Name, filename, StringComparison.CurrentCulture));
+		return (String.Equals(fileContent, content, StringComparison.Ordinal), hasByteOrderMask);
 	}
 }

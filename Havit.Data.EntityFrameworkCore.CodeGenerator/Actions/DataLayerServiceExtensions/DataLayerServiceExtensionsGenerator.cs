@@ -9,25 +9,22 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Services;
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions;
 
 public class DataLayerServiceExtensionsGenerator(
-	IModelProject _modelProject,
 	IDataLayerProject _dataLayerProject,
-	DbContext _dbContext,
+	DataEntriesModelSource _dataEntriesModelSource,
+	DbDataSourceModelSource _dbDataSourceModelSource,
+	RepositoryModelSource _repositoryModelSource,
 	ICodeWriter _codeWriter) : IDataLayerGenerator
 {
 	public async Task GenerateAsync(CancellationToken cancellationToken)
 	{
 		string targetFilename = Path.Combine(_dataLayerProject.GetProjectRootPath(), "_generated", "DataLayerServiceExtensions.cs");
 
-		DataEntriesModelSource dataEntriesModelSource = new DataEntriesModelSource(_dbContext, _modelProject, _dataLayerProject);
-		DbDataSourceModelSource dbDataSourceModelSource = new DbDataSourceModelSource(_dbContext, _modelProject, _dataLayerProject);
-		RepositoryModelSource repositoryModelSource = new RepositoryModelSource(_dbContext, _modelProject, _dataLayerProject);
-
 		var dataLayerServiceExtensionsModel = new DataLayerServiceExtensionsModel
 		{
 			NamespaceName = _dataLayerProject.GetProjectRootNamespace(),
-			DataEntries = dataEntriesModelSource.GetModels(),
-			DataSources = dbDataSourceModelSource.GetModels(),
-			Repositories = repositoryModelSource.GetModels()
+			DataEntries = _dataEntriesModelSource.GetModels(),
+			DataSources = _dbDataSourceModelSource.GetModels(),
+			Repositories = _repositoryModelSource.GetModels()
 		};
 
 		DataLayerServiceExtensionsTemplate template = new DataLayerServiceExtensionsTemplate(dataLayerServiceExtensionsModel);

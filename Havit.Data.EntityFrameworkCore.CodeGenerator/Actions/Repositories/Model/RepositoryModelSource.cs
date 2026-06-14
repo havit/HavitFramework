@@ -10,18 +10,23 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>, IModelSource
 	private readonly IModelProject _modelProject;
 	private readonly IDataLayerProject _dataLayerProject;
 
-	private List<RepositoryModel> _models;
+	// Tento model source je DI singleton sdílený mezi generátory, které běží paralelně (viz DataLayerGeneratorRunner.Parallel.ForEachAsync).
+	// Lazy (výchozí ExecutionAndPublication) zajistí, že se modely vyhodnotí právě jednou i při souběžném přístupu z více generátorů.
+	private readonly Lazy<List<RepositoryModel>> _models;
 
 	public RepositoryModelSource(DbContext dbContext, IModelProject modelProject, IDataLayerProject dataLayerProject)
 	{
 		_dbContext = dbContext;
 		_modelProject = modelProject;
 		_dataLayerProject = dataLayerProject;
+		_models = new Lazy<List<RepositoryModel>>(GetModelsCore);
 	}
 
-	public List<RepositoryModel> GetModels()
+	public List<RepositoryModel> GetModels() => _models.Value;
+
+	private List<RepositoryModel> GetModelsCore()
 	{
-		return _models ??= (
+		return (
 			from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 			where registeredEntity.FindPrimaryKey()?.Properties.Count == 1
 			select new RepositoryModel

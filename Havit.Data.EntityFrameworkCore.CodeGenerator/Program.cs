@@ -12,6 +12,8 @@ using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExten
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataSources.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.ModelMetadataClasses.Model;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
@@ -43,6 +45,15 @@ public static class Program
 		services.AddSingleton<ICodeWriteReporter, CodeWriteReporter>();
 		services.AddSingleton<IGenericGenerator, GenericGenerator>();
 
+		// Model sources jsou registrovány jako singletony (a sdíleny mezi generátory), aby se model EF Core
+		// neprocházel a nevyhodnocoval opakovaně. Vlastní vyhodnocení je v každém model source cachované (Lazy).
+		services.AddSingleton<RepositoryModelSource>();
+		services.AddSingleton<DataEntriesModelSource>();
+		services.AddSingleton<InterfaceDataSourceModelSource>();
+		services.AddSingleton<DbDataSourceModelSource>();
+		services.AddSingleton<FakeDataSourceModelSource>();
+		services.AddSingleton<MetadataClassModelSource>();
+
 		services.AddSingleton<IDataLayerGeneratorRunner, DataLayerGeneratorRunner>();
 		services.AddSingleton<IDataLayerGenerator, MetadataGenerator>();
 		services.AddSingleton<IDataLayerGenerator, DataEntriesGenerator>();
@@ -51,8 +62,9 @@ public static class Program
 		services.AddSingleton<IDataLayerGenerator, DataLayerServiceExtensionsGenerator>();
 
 		services.AddSingleton<IModelErrorsProvider, ModelErrorsProvider>();
-		services.AddSingleton<IModelSourceErrorsProvider, RepositoryModelSource>();
-		services.AddSingleton<IModelSourceErrorsProvider, DataEntriesModelSource>();
+		// Error providery sdílí tytéž singleton instance model sources (viz výše).
+		services.AddSingleton<IModelSourceErrorsProvider>(sp => sp.GetRequiredService<RepositoryModelSource>());
+		services.AddSingleton<IModelSourceErrorsProvider>(sp => sp.GetRequiredService<DataEntriesModelSource>());
 
 		services.AddSingleton<IRelicsCleaner, RelicsCleaner>();
 

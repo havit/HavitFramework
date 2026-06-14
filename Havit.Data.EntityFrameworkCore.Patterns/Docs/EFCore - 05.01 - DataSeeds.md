@@ -2,7 +2,7 @@
 Seedování dat je automatické založení dat v databázi.
 
 ### Definice dat k seedování
-Seedování dat provádí třídy implementujíící interface `IDataSeed`. S jednoduchostí lze vytvořit třídu dědící ze třídy `DataSeed<>`, která tento interface poskytuje, je třeba jen implementovat template metody `SeedData` a `SeedDataAsync`.
+Seedování dat provádí třídy implementující interface `IDataSeed`. S jednoduchostí lze vytvořit třídu dědící ze třídy `DataSeed<>`, která tento interface poskytuje, je třeba jen implementovat template metody `SeedData` a `SeedDataAsync`.
 
 Vytvořením instancí dat, metodou `For` a provedené konfigurace nad jejím výsledkem, se připraví data, která mají být v databázi. Připravená data se předhodí metodě `Seed` nebo `SeedAsync`.
 (Poznámka: Metoda `For` vychází z otevřenosti pro další rozšíření, kdy se mohou data získávat z jiných zdrojů, např. `ForCsv`, `ForExcel`, `ForResource`. To však není implementováno a budeme řešit, až bude potřeba.)
@@ -233,7 +233,7 @@ await dataSeedRunner.SeedDataAsync<CoreProfile>(false, cancellationToken);
 
 ### Izolace jednotlivých seedů
 Počet objektů sledovaných ChangeTrackerem postupně při volání jednotlivých seedů nenarůstá, což při seedování většího objemu dat znamená dopad na výkon.
-Pro izolaci jednotlich seedů se na začátku a konci metody `Seed[Async]` zajistí vyčištění changetrackeru.
+Pro izolaci jednotlivých seedů se na začátku a konci metody `Seed[Async]` zajistí vyčištění changetrackeru.
 (Při ladění jednoho z projektů se dostáváme na pětinásobné zrychlení).
 Přes tuto izolaci jednotlivé seedy sdílejí databázovou transakci.
 

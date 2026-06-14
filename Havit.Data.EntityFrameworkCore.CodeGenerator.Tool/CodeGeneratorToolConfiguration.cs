@@ -52,7 +52,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 				FileInfo entityProjectPath = new System.IO.FileInfo(Path.Combine(solutionDirectory.FullName, codeGeneratorLimitedConfiguration.EntityProjectPath));
 				if (!entityProjectPath.Exists)
 				{
-					Console.WriteLine($"Entity project file {entityProjectPath.FullName} does not exists.");
+					Console.WriteLine($"Entity project file {entityProjectPath.FullName} does not exist.");
 					result = null;
 					return false;
 				}
@@ -60,7 +60,7 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool
 				entityBinDirectory = new DirectoryInfo(Path.Combine(entityProjectPath.Directory.FullName, "bin"));
 				if (!entityBinDirectory.Exists)
 				{
-					Console.WriteLine($"Bin directory for project Entity {entityBinDirectory} does not exists.");
+					Console.WriteLine($"Bin directory for project Entity {entityBinDirectory} does not exist.");
 					Console.WriteLine("Make sure the Entity project is properly built.");
 
 					result = null;

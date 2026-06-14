@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 /// Použití:
 /// 1) Podědit od této třídy a implementovat abstrakční vlastností
 /// 2) Eventuelně nakonfigurovat chování overridováním virtuálních vlastností.
-/// 3) Implementovat nějaký vlastní interface, imlementace bude volat GetEntityByLookupKey (ev. GetEntityKeyByLookupKey).
+/// 3) Implementovat nějaký vlastní interface, implementace bude volat GetEntityByLookupKey (ev. GetEntityKeyByLookupKey).
 /// </summary>
 /// <typeparam name="TLookupKey">Typ klíče.</typeparam>
 /// <typeparam name="TEntity">Entita, kterou hledáme.</typeparam>

@@ -38,7 +38,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	protected IDbSet<TEntity> DbSet => dbSetLazy.Value;
 
 	/// <summary>
-	/// Implementačně jako Lazy, aby kontruktor nevyzvedával DbSet. To umožňuje psát unit testy s mockem dbContextu bez setupu metody Set (dbContext nemusí nic umět).
+	/// Implementačně jako Lazy, aby konstruktor nevyzvedával DbSet. To umožňuje psát unit testy s mockem dbContextu bez setupu metody Set (dbContext nemusí nic umět).
 	/// </summary>
 	private readonly Lazy<IDbSet<TEntity>> dbSetLazy;
 
@@ -340,7 +340,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 			}
 			else
 			{
-				// pokud ne, načtene data a uložíme data a klíče do cache
+				// pokud ne, načteme data a uložíme data a klíče do cache
 				// dotazy nepoužívají IRepositoryQueryProvider (a kompilované dotazy), protože SoftDeleteManager může být scoped a vracet podmínku dle kontextu
 				// je zodpovědností implementátora nevracet různé záznamy pro GetAll, pokud je výsledek metody cachovaný
 				allData = DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAll)))
@@ -387,7 +387,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 			}
 			else
 			{
-				// pokud ne, načtene data a uložíme klíče do cache
+				// pokud ne, načteme data a uložíme klíče do cache
 				// dotazy nepoužívají IRepositoryQueryProvider (a kompilované dotazy), protože SoftDeleteManager může být scoped a vracet podmínku dle kontextu
 				// je zodpovědností implementátora nevracet různé záznamy pro GetAll, pokud je výsledek metody cachovaný
 				allData = await DbSet.AsQueryable(QueryTagBuilder.CreateTag(this.GetType(), nameof(GetAllAsync)))
@@ -414,7 +414,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	}
 
 	/// <summary>
-	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
+	/// Zajistí načtení vlastností definovaných v metodě GetLoadReferences.
 	/// </summary>
 	/// <remarks>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.
@@ -433,7 +433,7 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 	}
 
 	/// <summary>
-	/// Zajistí načtení vlastností definovaných v meodě GetLoadReferences.
+	/// Zajistí načtení vlastností definovaných v metodě GetLoadReferences.
 	/// </summary>
 	/// <remarks>
 	/// Metodu lze overridovat, pokud chceme doplnit podrobnější implementaci dočítání (přes IDataLoader), např. nepodporované dočítání prvků v kolekcích.

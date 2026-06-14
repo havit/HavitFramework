@@ -18,7 +18,7 @@ Při načítání referenci spoléhá na hodnoty cizích klíčů, potažmo jako
 
 Mějme tedy příklad:
 
-```sharp
+```csharp
 Auto auto = autoRepository.GetObject(1); // načte auto s Id 1, Barva bude null, BarvaId řekněme např. 2.
 auto.BarvaId = 5; // změníme BarvaId na jinou hodnotu
 dataLoader.Load(auto, a => a.Barva); // pokusíme se dočíst vlastnost Barva

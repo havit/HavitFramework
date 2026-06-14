@@ -17,7 +17,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Lookups;
 /// Použití:
 /// 1) Podědit od této třídy a implementovat abstrakční vlastností
 /// 2) Eventuelně nakonfigurovat chování overridováním virtuálních vlastností.
-/// 3) Implementovat nějaký vlastní interface, imlementace bude volat GetEntityByLookupKey (ev. GetEntityKeyByLookupKey).
+/// 3) Implementovat nějaký vlastní interface, implementace bude volat GetEntityByLookupKey (ev. GetEntityKeyByLookupKey).
 /// </summary>
 /// <typeparam name="TLookupKey">Typ klíče.</typeparam>
 /// <typeparam name="TEntity">Entita, kterou hledáme.</typeparam>
@@ -234,7 +234,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 	}
 
 	/// <summary>
-	/// Vyčistá data používaná pro vyhledávání.
+	/// Vyčistí data používaná pro vyhledávání.
 	/// Použití pro
 	/// a) možnost invalidovat data v případě změny mimo UnitOfWork
 	/// b) možnost invalidovat data pro uvolnění paměti, pokud již párování nemá smysl udržovat v paměti.
@@ -377,7 +377,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 		EntityLookupData<TEntity, TKey, TLookupKey> entityLookupData = lookupStorage.GetEntityLookupData<TEntity, TKey, TLookupKey>(GetStorageKey());
 		if (entityLookupData == null)
 		{
-			// nemáme sestaven lookupTable, není co invalidovat (avšak distrubuovanou invalidaci nutno řešit, proto předchází tomuto bloku kódu).
+			// nemáme sestaven lookupTable, není co invalidovat (avšak distribuovanou invalidaci nutno řešit, proto předchází tomuto bloku kódu).
 			return;
 		}
 

@@ -518,7 +518,7 @@ Zprostředkovává přístup k datům jako `IQueryable`. Umožňuje snadné pods
 
 ### I*Entity*DataSource, IDataSource<*Entity*>
 
-Poskytuje dvě vlastnosti: `Data` a `DataIncludingDeleted`. Pokud obsahuje třída příznak smazání (soft delete), pak vlastnost `Data` automaticky odfiltruje přínakem smazané záznamy.
+Poskytuje dvě vlastnosti: `Data` a `DataIncludingDeleted`. Pokud obsahuje třída příznak smazání (soft delete), pak vlastnost `Data` automaticky odfiltruje příznakem smazané záznamy.
 
 Pro každou entitu vzniká jeden interface pojmenovaný `IEntityDataSource` (např. `ILanguageDataSource`).
 
@@ -532,7 +532,7 @@ Data jsou získávána z databáze (resp. z `IDbContextu` a jeho `DbSet`u).
 
 ### Fake*Entity*DataSource
 
-* Jedná se rovněž o generované třídy implementující `IEntityDataSource` (rovněž je pro každou entity jedna třída `FakeEntityDataSource`, např. `FakeLaguageDataSource`), avšak nejsou napojeny na databázi.
+* Jedná se rovněž o generované třídy implementující `IEntityDataSource` (rovněž je pro každou entity jedna třída `FakeEntityDataSource`, např. `FakeLanguageDataSource`), avšak nejsou napojeny na databázi.
 * Třídy jsou dekorovány atributem `[Fake]` a jsou vnořeny do namespace `Fakes`.
 * Data jsou čerpána z kolekce předané v konstruktoru. Určeno pro podstrčení dat v unit testech tam, kde je použita závislost `IEntityDataSource` (ev. službám ve frameworku se závislostí `IDataSource<Entity>`).
 * Implementace využívá [MockQueryable.EntityFrameworkCore](https://www.nuget.org/packages/MockQueryable.EntityFrameworkCore), čímž zajistíme fungování i asynchronních operací (což nad prostým `IQueryable<Entity>` nefunguje).
@@ -581,7 +581,7 @@ Poskytuje veřejné metody (implementace `IRepository<Entity>`)
 
 a protected vlastnosti
 
-* `Data` a `DataIncludingDeleted` - viz [Data Sources](http://havit-wiki.atlassian.net/#datasources "http://havit-wiki.atlassian.net#datasources"), implementačně používají hodnoty ze závislosti `IDataSource<TEntity>`, čímž je lze snadno napsat test s mockem dat pro tyto vlatnosti.
+* `Data` a `DataIncludingDeleted` - viz [Data Sources](http://havit-wiki.atlassian.net/#datasources "http://havit-wiki.atlassian.net#datasources"), implementačně používají hodnoty ze závislosti `IDataSource<TEntity>`, čímž je lze snadno napsat test s mockem dat pro tyto vlastnosti.
 
 ### Implementační instrukce
 
@@ -818,7 +818,7 @@ Při načítání referenci spoléhá na hodnoty cizích klíčů, potažmo jako
 
 Mějme tedy příklad:
 
-```sharp
+```csharp
 Auto auto = autoRepository.GetObject(1); // načte auto s Id 1, Barva bude null, BarvaId řekněme např. 2.
 auto.BarvaId = 5; // změníme BarvaId na jinou hodnotu
 dataLoader.Load(auto, a => a.Barva); // pokusíme se dočíst vlastnost Barva
@@ -903,10 +903,10 @@ ITestedService service = new TestedService(..., fakeUserDataSource, fakeDataLoad
 ### Jak to funguje
 Implementace cachování je realizována na úrovni `Repositories`, `DbDataLoader` a `UnitOfWork`:
 
-* `XyDbRespository.GetObject[Async]` - pokud nemá objekt v identity mapě, pokusí se ho najít v cache, pokud není ani v cache, načítá jej z databáze, poté jej uloží do cache
-* `XyDbRespository.GetObjects[Async]`- objekty, které nemá v identity mapě se pokusí najít v cache, objekty, které nejsou ani v cache, načítá z databáze a uloží je do cache
+* `XyDbRepository.GetObject[Async]` - pokud nemá objekt v identity mapě, pokusí se ho najít v cache, pokud není ani v cache, načítá jej z databáze, poté jej uloží do cache
+* `XyDbRepository.GetObjects[Async]`- objekty, které nemá v identity mapě se pokusí najít v cache, objekty, které nejsou ani v cache, načítá z databáze a uloží je do cache
 * `XyDbRepository.GetAll[Async]()` - hledá v cache identifikátory objektů
-* `DbDataLooader.Load[Async]`, `DbDataLooader.LoadAll[Async]` - při načítání referencí i kolekcí se pokusí najít objekty v cache, objekty, které nejsou v cache, načítá z databáze a uloží je do cache
+* `DbDataLoader.Load[Async]`, `DbDataLoader.LoadAll[Async]` - při načítání referencí i kolekcí se pokusí najít objekty v cache, objekty, které nejsou v cache, načítá z databáze a uloží je do cache
 * `DbUnitOfWork.Commit[Async]` - invaliduje položky v cache
 * `XyEntries.Item` - pod pokličkou volá `XyDbRepository.GetObject`
 
@@ -990,7 +990,7 @@ public class StavLocalization : ILocalization<Stav>
 
 Číselník stavů je cachovaný vč. svých lokalizací.
 
-Attribut `[Cache]` je třeba uvést na obou třídách, žádný předpoklad, "když X je cachované, tak XLocalization také" není uplatňován.
+Atribut `[Cache]` je třeba uvést na obou třídách, žádný předpoklad, "když X je cachované, tak XLocalization také" není uplatňován.
 
 Z cache se proto mohou odbavovat např.:
 
@@ -1002,7 +1002,7 @@ Z cache se proto mohou odbavovat např.:
 
 #### Ukázková situace: Dekomponovaný vztah M:N do asociační třídy s kolekcí 1:N
 
-```sharp
+```csharp
 public class LoginAccount
 {
 	public int Id { get; set; }
@@ -1124,7 +1124,7 @@ public static class LanguageMetadata
 ```
 ## SoftDeleteManager
 
-Implementeace `ISoftDeleteManager` rozhodují o tom, zda daná entita podporuje soft delete a pokud ano, poskytuje metody pro nastavení příznaku smazání (a odebrání příznaku smazání).
+Implementace `ISoftDeleteManager` rozhodují o tom, zda daná entita podporuje soft delete a pokud ano, poskytuje metody pro nastavení příznaku smazání (a odebrání příznaku smazání).
 
 Výchozí implementace `SoftDeleteManager` říká, že soft-delete jsou ty entity, které mají vlastnost `Deleted` typu `Nullable<DateTime>`.
 
@@ -1148,7 +1148,7 @@ Fyzické smazání entity podporující soft delete není aktuálně možné (kd
 
 ### RegisterAfterCommitAction
 Umožňuje přidat zvenku nějakou akci k provedení po commitu (odeslání emailu, smazání cache, atp.)
-Umožnuje přidat jak synchronní akci tak asynchronní akci.
+Umožňuje přidat jak synchronní akci tak asynchronní akci.
 Asynchronní akce funguje pouze v asynchronním commitu, v případě registrace asynchronní akce a spuštění synchronního commitu dojde k vyhození výjimky.
 
 #### Příklad
@@ -1256,7 +1256,7 @@ Během commitu dochází postupně k těmto akcím:
 Seedování dat je automatické založení dat v databázi.
 
 ### Definice dat k seedování
-Seedování dat provádí třídy implementujíící interface `IDataSeed`. S jednoduchostí lze vytvořit třídu dědící ze třídy `DataSeed<>`, která tento interface poskytuje, je třeba jen implementovat template metody `SeedData` a `SeedDataAsync`.
+Seedování dat provádí třídy implementující interface `IDataSeed`. S jednoduchostí lze vytvořit třídu dědící ze třídy `DataSeed<>`, která tento interface poskytuje, je třeba jen implementovat template metody `SeedData` a `SeedDataAsync`.
 
 Vytvořením instancí dat, metodou `For` a provedené konfigurace nad jejím výsledkem, se připraví data, která mají být v databázi. Připravená data se předhodí metodě `Seed` nebo `SeedAsync`.
 (Poznámka: Metoda `For` vychází z otevřenosti pro další rozšíření, kdy se mohou data získávat z jiných zdrojů, např. `ForCsv`, `ForExcel`, `ForResource`. To však není implementováno a budeme řešit, až bude potřeba.)
@@ -1487,7 +1487,7 @@ await dataSeedRunner.SeedDataAsync<CoreProfile>(false, cancellationToken);
 
 ### Izolace jednotlivých seedů
 Počet objektů sledovaných ChangeTrackerem postupně při volání jednotlivých seedů nenarůstá, což při seedování většího objemu dat znamená dopad na výkon.
-Pro izolaci jednotlich seedů se na začátku a konci metody `Seed[Async]` zajistí vyčištění changetrackeru.
+Pro izolaci jednotlivých seedů se na začátku a konci metody `Seed[Async]` zajistí vyčištění changetrackeru.
 (Při ladění jednoho z projektů se dostáváme na pětinásobné zrychlení).
 Přes tuto izolaci jednotlivé seedy sdílejí databázovou transakci.
 

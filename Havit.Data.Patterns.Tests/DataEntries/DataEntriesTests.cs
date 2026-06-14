@@ -12,8 +12,8 @@ public class DataEntriesTests
 	public TestContext TestContext { get; set; }
 
 	[TestMethod]
-	[SuppressMessage("SonicLint", "S1481", Justification = "Výsledek získání hodnoty vlastnosti je potřeba nějak zpracovat, zde jej ukládáme do proměné, která úmyslně není použita.")]
-	[SuppressMessage("SonicLint", "S1854", Justification = "Uložení do proměné je zvolený způsob zpracování výsledku získání hodnoty vlastnosti.")]
+	[SuppressMessage("SonicLint", "S1481", Justification = "Výsledek získání hodnoty vlastnosti je potřeba nějak zpracovat, zde jej ukládáme do proměnné, která úmyslně není použita.")]
+	[SuppressMessage("SonicLint", "S1854", Justification = "Uložení do proměnné je zvolený způsob zpracování výsledku získání hodnoty vlastnosti.")]
 	public void DataEntries_GetEntry_UsesDataEntrySymbolServiceAndRepository()
 	{
 		// Arrange

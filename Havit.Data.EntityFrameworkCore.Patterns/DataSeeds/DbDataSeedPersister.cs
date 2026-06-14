@@ -402,7 +402,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	}
 
 	/// <summary>
-	/// Vrátí seznam vlasností, které můžeme aktualizovat.
+	/// Vrátí seznam vlastností, které můžeme aktualizovat.
 	/// Nelze aktualizovat vlastnosti/sloupce, které jsou primárním klíčem.
 	/// </summary>		
 	internal List<IProperty> GetPropertiesForUpdating<TEntity>(IEntityType entityType, List<Expression<Func<TEntity, object>>> excludedProperties)

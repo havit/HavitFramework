@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 
 /// <summary>
-/// Explicity data loader.
+/// Explicit data loader.
 /// Načte hodnoty vlastnosti třídy, pokud ještě nejsou načteny.
 /// Podporováno je zřetězení (subjekt => subjekt.Adresa.Zeme.Svetadil) vč. varianty s kolekcemi, kdy je třeba použít AllItems (subjekt => subjekt.Adresy.AllItems().Zeme).
 /// </summary>
@@ -29,7 +29,7 @@ public partial class DbDataLoader : IDataLoader
 	private readonly ILogger<DbDataLoader> _logger;
 
 	/// <summary>
-	/// Konstructor.
+	/// Konstruktor.
 	/// </summary>
 	/// <param name="dbContext">DbContext, pomocí něhož budou objekty načítány.</param>
 	/// <param name="propertyLoadSequenceResolver">Služba, která poskytne vlastnosti, které mají být načteny, a jejich pořadí.</param>

@@ -25,7 +25,7 @@ Poskytuje veřejné metody (implementace `IRepository<Entity>`)
 
 a protected vlastnosti
 
-* `Data` a `DataIncludingDeleted` - viz [Data Sources](http://havit-wiki.atlassian.net/#datasources "http://havit-wiki.atlassian.net#datasources"), implementačně používají hodnoty ze závislosti `IDataSource<TEntity>`, čímž je lze snadno napsat test s mockem dat pro tyto vlatnosti.
+* `Data` a `DataIncludingDeleted` - viz [Data Sources](http://havit-wiki.atlassian.net/#datasources "http://havit-wiki.atlassian.net#datasources"), implementačně používají hodnoty ze závislosti `IDataSource<TEntity>`, čímž je lze snadno napsat test s mockem dat pro tyto vlastnosti.
 
 ### Implementační instrukce
 

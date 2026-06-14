@@ -20,7 +20,7 @@ public class RelicsCleaner : IRelicsCleaner
 	}
 
 	/// <summary>
-	/// Budeme mazat vše, co je ve složkách _generated, ale nebylo aktuálně vygenerováno (pozůstatky metadat, datasources, reporitories vč. query provideru, atp.)
+	/// Budeme mazat vše, co je ve složkách _generated, ale nebylo aktuálně vygenerováno (pozůstatky metadat, datasources, repositories vč. query provideru, atp.)
 	/// Dále budeme mazat soubory ve složce Repositories v projektu DataLayer, které odpovídají vzoru IXyRepository.cs a XyDbRepository.cs, které nebyly aktuálně vygenerovány.
 	/// </summary>
 	public async Task CleanRelicsAsync(CancellationToken cancellationToken)

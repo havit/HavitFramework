@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.SoftDeletes;
 
 /// <summary>
 /// Zajišťuje podporu mazání příznakem.
-/// Mazání příznakem je podporováno na typech mající vlastost Deleted typu DateTime?.
+/// Mazání příznakem je podporováno na typech mající vlastnost Deleted typu DateTime?.
 /// </summary>
 public class SoftDeleteManager : ISoftDeleteManager
 {

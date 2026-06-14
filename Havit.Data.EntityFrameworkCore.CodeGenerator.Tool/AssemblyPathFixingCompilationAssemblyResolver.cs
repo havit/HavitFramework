@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyModel.Resolution;
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Tool;
 
 /// <summary>
-/// Custom <see cref="ICompilationAssemblyResolver"/>, which determins real assemblies of <see cref="CompilationLibrary"/>, when resolving assembly paths.
+/// Custom <see cref="ICompilationAssemblyResolver"/>, which determines real assemblies of <see cref="CompilationLibrary"/>, when resolving assembly paths.
 /// </summary>
 public class AssemblyPathFixingCompilationAssemblyResolver : ICompilationAssemblyResolver
 {

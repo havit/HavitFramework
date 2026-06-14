@@ -154,7 +154,7 @@ public class DbUnitOfWork : IUnitOfWork
 		ThrowIfAsyncAfterCommitRegistered();
 
 		List<Action> registeredAfterCommitActions = _afterCommitActions;
-		// Neprve vyčistíme afterCommits, pak je teprve spustíme.
+		// Nejprve vyčistíme afterCommits, pak je teprve spustíme.
 		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
 		_afterCommitActions = null;
 
@@ -176,7 +176,7 @@ public class DbUnitOfWork : IUnitOfWork
 	{
 		List<Action> registeredAfterCommitActions = _afterCommitActions;
 		List<Func<CancellationToken, Task>> registeredAsyncAfterCommitActions = _asyncAfterCommitsActions;
-		// Neprve vyčistíme afterCommits a asyncAfterCommits, pak je teprve spustíme.
+		// Nejprve vyčistíme afterCommits a asyncAfterCommits, pak je teprve spustíme.
 		// Tím umožníme rekurzivní volání Commitu (resp. volání Commitu z AfterCommitAction), při opačném pořadí (nejdřív spustit, pak vyčistit) dojde k zacyklení.
 		_afterCommitActions = null;
 		_asyncAfterCommitsActions = null;

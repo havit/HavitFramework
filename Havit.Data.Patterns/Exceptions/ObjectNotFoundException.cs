@@ -11,7 +11,7 @@ public class ObjectNotFoundException : DataException
 	/// Konstruktor.
 	/// </summary>
 	/// <remarks>
-	/// Pro možnost použití s Moq - Throws vyžaduje typ výjimky s bez parametrickým konstruktorem.
+	/// Pro možnost použití s Moq - Throws vyžaduje typ výjimky s bezparametrickým konstruktorem.
 	/// </remarks>
 	public ObjectNotFoundException()
 	{

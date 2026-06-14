@@ -219,7 +219,7 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 		dbDataLoader.Load(master, m => m.Children);
 
 		// Assert
-		// No exception was thown
+		// No exception was thrown
 	}
 
 	[TestMethod]
@@ -277,8 +277,8 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 		dataLoader.LoadAll(new Master[] { master1, master2 }, m => m.Children);
 
 		// Assert
-		Assert.IsTrue(master1.Children.All(item => item != null), "Položky kolekce Children proměné master1 nejsou načteny.");
-		Assert.IsTrue(master2.Children.All(item => item != null), "Položky kolekce Children proměné master2 nejsou načteny.");
+		Assert.IsTrue(master1.Children.All(item => item != null), "Položky kolekce Children proměnné master1 nejsou načteny.");
+		Assert.IsTrue(master2.Children.All(item => item != null), "Položky kolekce Children proměnné master2 nejsou načteny.");
 	}
 
 	[TestMethod]

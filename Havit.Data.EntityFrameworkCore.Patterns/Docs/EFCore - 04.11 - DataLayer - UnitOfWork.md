@@ -18,7 +18,7 @@ Fyzické smazání entity podporující soft delete není aktuálně možné (kd
 
 ### RegisterAfterCommitAction
 Umožňuje přidat zvenku nějakou akci k provedení po commitu (odeslání emailu, smazání cache, atp.)
-Umožnuje přidat jak synchronní akci tak asynchronní akci.
+Umožňuje přidat jak synchronní akci tak asynchronní akci.
 Asynchronní akce funguje pouze v asynchronním commitu, v případě registrace asynchronní akce a spuštění synchronního commitu dojde k vyhození výjimky.
 
 #### Příklad

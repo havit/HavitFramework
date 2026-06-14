@@ -3,7 +3,7 @@
 namespace Havit.Linq;
 
 /// <summary>
-/// Extension methods for IColllection&lt;T&gt;.
+/// Extension methods for ICollection&lt;T&gt;.
 /// </summary>
 public static class CollectionExt
 {

@@ -9,7 +9,7 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 public partial class DbDataLoader
 {
 	/// <summary>
-	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
+	/// Zajistí načtení vlastnosti, která je referencí (není kolekcí). Voláno reflexí.
 	/// </summary>
 	private LoadPropertyInternalResult LoadReferencePropertyInternal<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities, string propertyPathString)
 		where TEntity : class
@@ -63,7 +63,7 @@ public partial class DbDataLoader
 	}
 
 	/// <summary>
-	/// Zajistí načtení vlastnosti, která je referencí (není kolkecí). Voláno reflexí.
+	/// Zajistí načtení vlastnosti, která je referencí (není kolekcí). Voláno reflexí.
 	/// </summary>
 	private async ValueTask<LoadPropertyInternalResult> LoadReferencePropertyInternalAsync<TEntity, TProperty>(string propertyName, IEnumerable<TEntity> distinctNotNullEntities, string propertyPathString, CancellationToken cancellationToken /* no default */)
 		where TEntity : class
@@ -192,7 +192,7 @@ public partial class DbDataLoader
 		// získáme query pro načtení objektů
 
 		// https://github.com/aspnet/EntityFrameworkCore/issues/14408
-		// Jako workadound stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
+		// Jako workaround stačí místo v EF.Property<object> namísto object zvolit skutečný typ. Aktuálně používáme jen int, hardcoduji tedy int bez vynakládání většího úsilí na obecnější řešení.
 		List<int> foreignKeysToQueryInt = foreignKeysToLoad.Cast<int>().ToList();
 		return _dbContext.Set<TProperty>()
 			.AsQueryable($"{nameof(DbDataLoader)} ({typeof(TEntity).Name} {propertyPathString})")

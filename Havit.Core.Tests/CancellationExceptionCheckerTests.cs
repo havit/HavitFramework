@@ -55,7 +55,7 @@ public class CancellationExceptionCheckerTests
 
 					// Act
 					// Execute the sql command but cancel it after 10 ms.
-					// It should be SqlException but sometimes 10 ms is not enough to trigger network communication so TaskCancelledException is thrown insted.
+					// It should be SqlException but sometimes 10 ms is not enough to trigger network communication so TaskCanceledException is thrown instead.
 					// Both exceptions should be recognized as cancellation exceptions.
 					exception = await Assert.ThrowsAsync<Exception>(async () => await sqlCommand.ExecuteNonQueryAsync(cts.Token));
 				}

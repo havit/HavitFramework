@@ -48,7 +48,7 @@ public class PairByValuesTests
 		_ = new PairByValues(new object[] { null }).GetHashCode();
 
 		// Assert
-		// no exception was thown
+		// no exception was thrown
 	}
 
 }

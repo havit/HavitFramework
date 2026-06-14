@@ -6,7 +6,7 @@ public class MathExtTests
 	[TestMethod]
 	public void MathExt_IsInteger_ReturnsFalseForNull()
 	{
-		// arange
+		// arrange
 		string text = null;
 		bool expected = false;
 

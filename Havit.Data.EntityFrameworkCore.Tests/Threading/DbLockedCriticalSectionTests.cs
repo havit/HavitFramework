@@ -173,7 +173,7 @@ public class DbLockedCriticalSectionTests
 	private SqlConnection CreateSqlConnection()
 	{
 		// chceme existující databázi, do které nebudeme zapisovat
-		// nemáme zde migrace, které by databázi založili
+		// nemáme zde migrace, které by databázi založily
 		return new SqlConnection("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=tempdb;Application Name=Havit.Data.EntityFrameworkCore.Tests");
 	}
 

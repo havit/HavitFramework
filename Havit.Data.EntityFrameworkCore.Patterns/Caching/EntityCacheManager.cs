@@ -89,7 +89,7 @@ public class EntityCacheManager : IEntityCacheManager
 
 			Contract.Assert<InvalidOperationException>(entry.State != Microsoft.EntityFrameworkCore.EntityState.Detached, "Entity must be attached to DbContext."); // abychom mohli získat smysluplné entry.OriginalValues, musí být entita trackovaná (podmínka nutná, nikoliv postačující - neříká, zda má OriginalValues dobře nastaveny).
 
-			// entry.OriginalValues vrací abstraktní PropertyValues, ten nese spoustu vlastostí vč. DbContextu.
+			// entry.OriginalValues vrací abstraktní PropertyValues, ten nese spoustu vlastností vč. DbContextu.
 			// Držením těchto instancí v cache bychom zabránili GC vyčistit je z paměti.
 			// Cachovat proto budeme nový objekt, který reprezentuje originální hodnoty.
 			// Ten získáme tak, že zavoláme entry.OriginalValues.ToObject(), což vrátí novou instanci entity ve stavu Detached.
@@ -439,7 +439,7 @@ public class EntityCacheManager : IEntityCacheManager
 			// odebereme všechny prvky, které mohou mít objekt v kolekci
 			PrepareCacheInvalidation_NavigationsInternal(change, cacheKeysToInvalidate);
 
-			// GetAll a GetEntity není nutné řešit, objekty reprezentující vztah asiciační třídu pro dekomponovaný vztah ManyToMany se do cache nedostávají
+			// GetAll a GetEntity není nutné řešit, objekty reprezentující vztah asociační třídu pro dekomponovaný vztah ManyToMany se do cache nedostávají
 		}
 		else
 		{

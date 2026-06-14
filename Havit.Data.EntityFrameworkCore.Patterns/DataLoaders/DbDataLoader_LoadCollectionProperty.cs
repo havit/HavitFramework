@@ -273,7 +273,7 @@ public partial class DbDataLoader
 	}
 
 	/// <summary>
-	/// Označí entitám vlatnost propertyName jako načtenou.
+	/// Označí entitám vlastnost propertyName jako načtenou.
 	/// </summary>
 	private void LoadCollectionPropertyInternal_MarkAsLoaded<TEntity>(ICollection<TEntity> entities, string propertyName)
 		where TEntity : class

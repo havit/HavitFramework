@@ -38,7 +38,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 		// - Kolekce Invoice.Items má být cachována, pokud jsou cachovány InvoiceItems.
 		// - Při vybavování dat z cache pro Invoice.Items je důležité, aby byly v cache k dispozici InvoiceItems.
 
-		// 2) kolekce one-to-many reprezentující dekomponovaný vztak many-to-many (např. User.Memberships)
+		// 2) kolekce one-to-many reprezentující dekomponovaný vztah many-to-many (např. User.Memberships)
 		// - Je jen specifické použití prvního bodu, platí tedy totéž:
 		// - Kolekce má být cachována, pokud jsou cachovány Memberships.
 		// - Při vybavování dat z cache pro User.Memberships je důležité, aby byly v cache k dispozici Memberships.		
@@ -50,7 +50,7 @@ public class AnnotationsEntityCacheSupportDecision : IEntityCacheSupportDecision
 		// - SkipNavigation entitu v DbDataloaderu nějak konstruujeme...
 
 		// 4) reference one-to-one (backreference)
-		// - Opet platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
+		// - Opět platí, že je při vybavování dat z cache je důležité, aby byly v cache entity protistrany.
 
 		return ShouldCacheEntityType(_navigationTargetService.GetNavigationTarget(entityType, propertyName).TargetClrType);
 	}

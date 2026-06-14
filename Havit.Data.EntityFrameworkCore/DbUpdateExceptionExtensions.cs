@@ -8,7 +8,7 @@ namespace Havit.Data.EntityFrameworkCore;
 public static class DbUpdateExceptionExtensions
 {
 	/// <summary>
-	/// Formátuje výjimkou do textu.
+	/// Formátuje výjimku do textu.
 	/// Pokud má <see cref="DbUpdateException" /> InnerException, vrací sloučený <see cref="DbUpdateException" />.Message a <see cref="DbUpdateException" />.InnerException.Message.
 	/// Jinak jen text výjimky (<see cref="DbUpdateException" />.Message).
 	/// </summary>

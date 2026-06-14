@@ -41,7 +41,7 @@ public abstract class DataEntries<TEntity, TKey>
 
 	/// <summary>
 	/// Vrátí objekt pro daný enum.
-	/// Pokud byla v konstruktoru předá dataEntrySymbolService, je mapování provedeno přes ni (mapování přes "symbol"),
+	/// Pokud byla v konstruktoru předána dataEntrySymbolService, je mapování provedeno přes ni (mapování přes "symbol"),
 	/// pokud nebyla předána, pak dojde k přímému mapování enumu na int.
 	/// </summary>
 	protected internal TEntity GetEntry(Enum entry)
@@ -57,7 +57,7 @@ public abstract class DataEntries<TEntity, TKey>
 
 	/// <summary>
 	/// Vrátí objekt pro daný enum.
-	/// Pokud byla v konstruktoru předá dataEntrySymbolService, je mapování provedeno přes ni (mapování přes "symbol"),
+	/// Pokud byla v konstruktoru předána dataEntrySymbolService, je mapování provedeno přes ni (mapování přes "symbol"),
 	/// pokud nebyla předána, pak dojde k přímému mapování enumu na int.
 	/// </summary>
 	protected internal async ValueTask<TEntity> GetEntryAsync(Enum entry, CancellationToken cancellationToken = default)

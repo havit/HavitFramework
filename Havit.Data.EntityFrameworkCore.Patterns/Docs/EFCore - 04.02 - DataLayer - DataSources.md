@@ -4,7 +4,7 @@ Zprostředkovává přístup k datům jako `IQueryable`. Umožňuje snadné pods
 
 ### I*Entity*DataSource, IDataSource<*Entity*>
 
-Poskytuje dvě vlastnosti: `Data` a `DataIncludingDeleted`. Pokud obsahuje třída příznak smazání (soft delete), pak vlastnost `Data` automaticky odfiltruje přínakem smazané záznamy.
+Poskytuje dvě vlastnosti: `Data` a `DataIncludingDeleted`. Pokud obsahuje třída příznak smazání (soft delete), pak vlastnost `Data` automaticky odfiltruje příznakem smazané záznamy.
 
 Pro každou entitu vzniká jeden interface pojmenovaný `IEntityDataSource` (např. `ILanguageDataSource`).
 
@@ -18,7 +18,7 @@ Data jsou získávána z databáze (resp. z `IDbContextu` a jeho `DbSet`u).
 
 ### Fake*Entity*DataSource
 
-* Jedná se rovněž o generované třídy implementující `IEntityDataSource` (rovněž je pro každou entity jedna třída `FakeEntityDataSource`, např. `FakeLaguageDataSource`), avšak nejsou napojeny na databázi.
+* Jedná se rovněž o generované třídy implementující `IEntityDataSource` (rovněž je pro každou entity jedna třída `FakeEntityDataSource`, např. `FakeLanguageDataSource`), avšak nejsou napojeny na databázi.
 * Třídy jsou dekorovány atributem `[Fake]` a jsou vnořeny do namespace `Fakes`.
 * Data jsou čerpána z kolekce předané v konstruktoru. Určeno pro podstrčení dat v unit testech tam, kde je použita závislost `IEntityDataSource` (ev. službám ve frameworku se závislostí `IDataSource<Entity>`).
 * Implementace využívá [MockQueryable.EntityFrameworkCore](https://www.nuget.org/packages/MockQueryable.EntityFrameworkCore), čímž zajistíme fungování i asynchronních operací (což nad prostým `IQueryable<Entity>` nefunguje).

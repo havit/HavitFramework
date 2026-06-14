@@ -3,10 +3,10 @@
 ### Jak to funguje
 Implementace cachování je realizována na úrovni `Repositories`, `DbDataLoader` a `UnitOfWork`:
 
-* `XyDbRespository.GetObject[Async]` - pokud nemá objekt v identity mapě, pokusí se ho najít v cache, pokud není ani v cache, načítá jej z databáze, poté jej uloží do cache
-* `XyDbRespository.GetObjects[Async]`- objekty, které nemá v identity mapě se pokusí najít v cache, objekty, které nejsou ani v cache, načítá z databáze a uloží je do cache
+* `XyDbRepository.GetObject[Async]` - pokud nemá objekt v identity mapě, pokusí se ho najít v cache, pokud není ani v cache, načítá jej z databáze, poté jej uloží do cache
+* `XyDbRepository.GetObjects[Async]`- objekty, které nemá v identity mapě se pokusí najít v cache, objekty, které nejsou ani v cache, načítá z databáze a uloží je do cache
 * `XyDbRepository.GetAll[Async]()` - hledá v cache identifikátory objektů
-* `DbDataLooader.Load[Async]`, `DbDataLooader.LoadAll[Async]` - při načítání referencí i kolekcí se pokusí najít objekty v cache, objekty, které nejsou v cache, načítá z databáze a uloží je do cache
+* `DbDataLoader.Load[Async]`, `DbDataLoader.LoadAll[Async]` - při načítání referencí i kolekcí se pokusí najít objekty v cache, objekty, které nejsou v cache, načítá z databáze a uloží je do cache
 * `DbUnitOfWork.Commit[Async]` - invaliduje položky v cache
 * `XyEntries.Item` - pod pokličkou volá `XyDbRepository.GetObject`
 
@@ -90,7 +90,7 @@ public class StavLocalization : ILocalization<Stav>
 
 Číselník stavů je cachovaný vč. svých lokalizací.
 
-Attribut `[Cache]` je třeba uvést na obou třídách, žádný předpoklad, "když X je cachované, tak XLocalization také" není uplatňován.
+Atribut `[Cache]` je třeba uvést na obou třídách, žádný předpoklad, "když X je cachované, tak XLocalization také" není uplatňován.
 
 Z cache se proto mohou odbavovat např.:
 
@@ -102,7 +102,7 @@ Z cache se proto mohou odbavovat např.:
 
 #### Ukázková situace: Dekomponovaný vztah M:N do asociační třídy s kolekcí 1:N
 
-```sharp
+```csharp
 public class LoginAccount
 {
 	public int Id { get; set; }

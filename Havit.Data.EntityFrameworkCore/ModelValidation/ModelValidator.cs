@@ -107,7 +107,7 @@ public class ModelValidator
 		typeof(Int32),
 		typeof(Int64),
 		//typeof(Int128),
-		//typeof(BigIngeter),
+		//typeof(BigInteger),
 
 		// unsigned integer types
 		typeof(Byte),

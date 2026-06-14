@@ -122,7 +122,7 @@ public class LocalAsyncScopeRepositoryTests
 		// pustíme všechny dál k dispose scopu
 		orchestrator_NotifyReadyForDisposeScpe_ManualResetEvent.Set();
 
-		await Task.WhenAll(task1, task2); // nepotřebujeme čekat, spíš pro kontrolu, že máme dobře práci s MenualResetEventy
+		await Task.WhenAll(task1, task2); // nepotřebujeme čekat, spíš pro kontrolu, že máme dobře práci s ManualResetEventy
 
 		// Assert
 		Assert.AreSame(task1InstanceToScope, task1InstanceFromScope);

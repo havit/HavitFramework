@@ -214,6 +214,160 @@ namespace TestNamespace
 		await VerifyAnalyzerAsync(source);
 	}
 
+	[TestMethod]
+	public async Task AddMethodsWithEnumerableArgumentAnalyzer_AddForInsert_ReportsDiagnosticForArray()
+	{
+		const string source = @"
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class TestClass
+	{
+		public void TestMethod(IUnitOfWork unitOfWork)
+		{
+			MyEntity[] entities = new MyEntity[0];
+			unitOfWork.AddForInsert({|#0:entities|});
+		}
+	}
+}";
+
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddIEnumerableArgument)
+			.WithLocation(0)
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddForInsertMethodName, UnitOfWorkConstants.AddRangeForInsertMethodName);
+
+		await VerifyAnalyzerAsync(source, expected);
+	}
+
+	[TestMethod]
+	public async Task AddMethodsWithEnumerableArgumentAnalyzer_AddForInsert_ReportsDiagnosticForNamedArgument()
+	{
+		const string source = @"
+using System.Collections.Generic;
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class TestClass
+	{
+		public void TestMethod(IUnitOfWork unitOfWork)
+		{
+			IEnumerable<MyEntity> entities = new List<MyEntity>();
+			unitOfWork.AddForInsert(entity: {|#0:entities|});
+		}
+	}
+}";
+
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddIEnumerableArgument)
+			.WithLocation(0)
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddForInsertMethodName, UnitOfWorkConstants.AddRangeForInsertMethodName);
+
+		await VerifyAnalyzerAsync(source, expected);
+	}
+
+	[TestMethod]
+	public async Task AddMethodsWithEnumerableArgumentAnalyzer_AddForInsert_ReportsDiagnosticForConcreteUnitOfWork()
+	{
+		const string source = @"
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class MyUnitOfWork : IUnitOfWork
+	{
+		public void Commit() { }
+		public Task CommitAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+		public void AddForInsert<TEntity>(TEntity entity) where TEntity : class { }
+		public ValueTask AddForInsertAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default) where TEntity : class => default;
+		public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities) where TEntity : class { }
+		public ValueTask AddRangeForInsertAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) where TEntity : class => default;
+		public void AddForUpdate<TEntity>(TEntity entity) where TEntity : class { }
+		public void AddRangeForUpdate<TEntity>(IEnumerable<TEntity> entities) where TEntity : class { }
+		public void AddForDelete<TEntity>(TEntity entity) where TEntity : class { }
+		public void AddRangeForDelete<TEntity>(IEnumerable<TEntity> entities) where TEntity : class { }
+		public void RegisterAfterCommitAction(Action action) { }
+		public void RegisterAfterCommitAction(Func<CancellationToken, Task> asyncAction) { }
+		public void Clear() { }
+	}
+
+	public class TestClass
+	{
+		public void TestMethod(MyUnitOfWork unitOfWork)
+		{
+			IEnumerable<MyEntity> entities = new List<MyEntity>();
+			unitOfWork.AddForInsert({|#0:entities|});
+		}
+	}
+}";
+
+		var expected = new DiagnosticResult(Analyzers.Diagnostics.UnitOfWorkAddIEnumerableArgument)
+			.WithLocation(0)
+			.WithArguments("MyEntity", UnitOfWorkConstants.AddForInsertMethodName, UnitOfWorkConstants.AddRangeForInsertMethodName);
+
+		await VerifyAnalyzerAsync(source, expected);
+	}
+
+	[TestMethod]
+	public async Task AddMethodsWithEnumerableArgumentAnalyzer_AddForInsert_NoDiagnosticForString()
+	{
+		// string implements IEnumerable<char> but must not be treated as a collection of entities.
+		const string source = @"
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IUnitOfWork unitOfWork)
+		{
+			string value = ""text"";
+			unitOfWork.AddForInsert(value);
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
+	[TestMethod]
+	public async Task AddMethodsWithEnumerableArgumentAnalyzer_AddForInsert_NoDiagnosticForNonUnitOfWorkType()
+	{
+		// A same-named method on a type that is not IUnitOfWork must not be flagged.
+		const string source = @"
+using System.Collections.Generic;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class NotAUnitOfWork
+	{
+		public void AddForInsert<TEntity>(TEntity entity) where TEntity : class { }
+	}
+
+	public class TestClass
+	{
+		public void TestMethod(NotAUnitOfWork service)
+		{
+			IEnumerable<MyEntity> entities = new List<MyEntity>();
+			service.AddForInsert(entities);
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
 	private static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
 	{
 		var test = new CSharpAnalyzerTest<AddMethodsWithEnumerableArgumentAnalyzer, DefaultVerifier>

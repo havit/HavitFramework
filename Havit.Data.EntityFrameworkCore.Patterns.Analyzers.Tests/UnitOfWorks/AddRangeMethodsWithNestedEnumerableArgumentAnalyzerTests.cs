@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Havit.Data.EntityFrameworkCore.Patterns.Analyzers.UnitOfWorks;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
@@ -212,6 +212,58 @@ namespace TestNamespace
 		}
 	}
 }";
+		await VerifyAnalyzerAsync(source);
+	}
+
+	[TestMethod]
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForInsert_NoDiagnosticForEnumerableOfString()
+	{
+		// IEnumerable<string> is a flat collection of (string) entities - string must not be treated as a nested collection of char.
+		const string source = @"
+using System.Collections.Generic;
+using Havit.Data.Patterns.UnitOfWorks;
+
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IUnitOfWork unitOfWork)
+		{
+			IEnumerable<string> values = new List<string>();
+			unitOfWork.AddRangeForInsert(values);
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
+	[TestMethod]
+	public async Task AddRangeMethodsWithNestedEnumerableArgumentAnalyzer_AddRangeForInsert_NoDiagnosticForNonUnitOfWorkType()
+	{
+		// A same-named method on a type that is not IUnitOfWork must not be flagged.
+		const string source = @"
+using System.Collections.Generic;
+
+namespace TestNamespace
+{
+	public class MyEntity { }
+
+	public class NotAUnitOfWork
+	{
+		public void AddRangeForInsert<TEntity>(IEnumerable<TEntity> entities) where TEntity : class { }
+	}
+
+	public class TestClass
+	{
+		public void TestMethod(NotAUnitOfWork service)
+		{
+			List<List<MyEntity>> nestedList = new List<List<MyEntity>>();
+			service.AddRangeForInsert(nestedList);
+		}
+	}
+}";
+
 		await VerifyAnalyzerAsync(source);
 	}
 

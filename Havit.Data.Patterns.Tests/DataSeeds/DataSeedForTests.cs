@@ -1,4 +1,5 @@
 ﻿using Havit.Data.Patterns.DataSeeds;
+using Havit.Data.Patterns.Tests.DataSeeds.Infrastructure;
 using Havit.Data.Patterns.Tests.Localizations.Model;
 
 namespace Havit.Data.Patterns.Tests.DataSeeds;
@@ -80,4 +81,49 @@ public class DataSeedForTests
 		Assert.HasCount(2, dataSeedForLocalizedEntityLocalization.ChildDataForsRegistry);
 	}
 
+	// ----------------------------------------------------------------------------------------------------
+	// Dědičnost v EF Core modelu (Change 1A): dokud není podporováno heterogenní seedování přes bázový typ,
+	// DataSeedFor odmítá data bázového typu obsahující instance potomků (fail-fast místo tichého poškození).
+	// Tento blok testů lze odstranit / uvolnit, až bude plná podpora dědičnosti hotová.
+	// ----------------------------------------------------------------------------------------------------
+
+	[TestMethod]
+	public void DataSeedFor_Constructor_DoesNotThrowForExactBaseType()
+	{
+		// homogenní data přímo bázového typu (žádný potomek) – guard se nesmí spustit
+		_ = new DataSeedFor<Animal>(new Animal[] { new Animal(), new Animal() });
+	}
+
+	[TestMethod]
+	public void DataSeedFor_Constructor_DoesNotThrowForConcreteDerivedType()
+	{
+		// seedování konkrétního (listového) typu je podporováno; reflexe najde i zděděnou vlastnost Symbol
+		_ = new DataSeedFor<Dog>(new Dog[] { new Dog(), new Dog() });
+	}
+
+	[TestMethod]
+	public void DataSeedFor_Constructor_DoesNotThrowForEmptyData()
+	{
+		_ = new DataSeedFor<Animal>(new Animal[] { });
+	}
+
+	[TestMethod]
+	public void DataSeedFor_Constructor_ThrowsForDerivedInstanceInBaseTypeData()
+	{
+		// data bázového typu obsahující instanci potomka nejsou podporována
+		Assert.ThrowsExactly<NotSupportedException>(() =>
+		{
+			_ = new DataSeedFor<Animal>(new Animal[] { new Dog() });
+		});
+	}
+
+	[TestMethod]
+	public void DataSeedFor_Constructor_ThrowsForMixedExactAndDerivedInstances()
+	{
+		// kombinace instance bázového typu a potomka rovněž není podporována
+		Assert.ThrowsExactly<NotSupportedException>(() =>
+		{
+			_ = new DataSeedFor<Animal>(new Animal[] { new Animal(), new Cat() });
+		});
+	}
 }

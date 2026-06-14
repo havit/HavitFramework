@@ -21,6 +21,19 @@ internal class DataSeedFor<TEntity> : IDataSeedFor<TEntity>, IDataSeedForPaired<
 	/// <param name="data">Objekty, které mají být seedovány.</param>
 	public DataSeedFor(TEntity[] data)
 	{
+		// Dědičnost zatím není podporována: jeden DataSeedConfiguration<TEntity> popisuje právě jeden konkrétní typ.
+		// Heterogenní data obsahující instance potomků TEntity by se nespárovala ani neuložila korektně
+		// (výchozí konvence, seznam vlastností i zakládání nových entit vychází z typeof(TEntity), nikoliv z runtime typu instance).
+		// Dokud podpora dědičnosti není hotová, hlásíme srozumitelnou chybu místo tichého poškození dat.
+		if (data != null)
+		{
+			TEntity derivedItem = data.FirstOrDefault(item => (item != null) && (item.GetType() != typeof(TEntity)));
+			if (derivedItem != null)
+			{
+				throw new NotSupportedException($"Seeding base type '{typeof(TEntity).Name}' with derived instances (e.g. '{derivedItem.GetType().Name}') is not supported. Seed each concrete type separately, e.g. For<{derivedItem.GetType().Name}>(...).");
+			}
+		}
+
 		this.Configuration = new DataSeedConfiguration<TEntity>(data);
 
 		InitializeDefaults();

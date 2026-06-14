@@ -35,8 +35,6 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>, IModelSource
 				ModelClassFullName = registeredEntity.ClrType.FullName,
 				ModelClassPrimaryKeyTypeName = registeredEntity.FindPrimaryKey().Properties.Single().ClrType.FullName,
 				ModelClassPrimaryKeyPropertyName = registeredEntity.FindPrimaryKey().Properties.Single().Name,
-				//GenerateGetObjectByEntryEnumMethod = !registeredEntity.HasDatabaseGeneratedIdentity && registeredEntity.HasEntryEnum,
-				//DataSourceDependencyFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, "DataSources") + ".I" + registeredEntity.ClrType.Name + "DataSource"
 			}).ToList();
 	}
 
@@ -50,9 +48,9 @@ public class RepositoryModelSource : IModelSource<RepositoryModel>, IModelSource
 	private string GetNamespaceName(string namespaceName, string typeNamespace = "Repositories")
 	{
 		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
-		if (namespaceName.StartsWith(modelProjectNamespace))
+		if (NamespaceHelper.TryGetRelativeNamespace(namespaceName, modelProjectNamespace, out string relativeNamespace))
 		{
-			return _dataLayerProject.GetProjectRootNamespace() + "." + typeNamespace + namespaceName.Substring(modelProjectNamespace.Length);
+			return _dataLayerProject.GetProjectRootNamespace() + "." + typeNamespace + relativeNamespace;
 		}
 		else
 		{

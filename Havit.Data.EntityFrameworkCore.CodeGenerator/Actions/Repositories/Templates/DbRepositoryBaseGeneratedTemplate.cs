@@ -111,33 +111,6 @@ namespace ");
             #line hidden
             this.Write("> repositoryQueryProvider)\r\n\t\t: base(dbContext, entityKeyAccessor, dataLoader, so" +
                     "ftDeleteManager, entityCacheManager, repositoryQueryProvider)\r\n\t{\r\n\t}\r\n\r\n");
-            
-            #line 26 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
- if (Model.GenerateGetObjectByEntryEnumMethod) { 
-            
-            #line default
-            #line hidden
-            this.Write("\tpublic virtual ");
-            
-            #line 27 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(" GetObject(");
-            
-            #line 27 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(".Entry entry)\r\n\t{\r\n\t\treturn GetObject((int)entry);\r\n\t}\r\n\r\n");
-            
-            #line 32 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\DbRepositoryBaseGeneratedTemplate.tt"
- } 
-            
-            #line default
-            #line hidden
             this.Write("}");
             return this.GenerationEnvironment.ToString();
         }

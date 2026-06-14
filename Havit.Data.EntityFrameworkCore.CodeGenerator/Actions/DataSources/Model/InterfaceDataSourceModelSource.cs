@@ -31,9 +31,9 @@ public class InterfaceDataSourceModelSource : IModelSource<InterfaceDataSourceMo
 	private string GetNamespaceName(string namespaceName)
 	{
 		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
-		if (namespaceName.StartsWith(modelProjectNamespace))
+		if (NamespaceHelper.TryGetRelativeNamespace(namespaceName, modelProjectNamespace, out string relativeNamespace))
 		{
-			return _dataLayerProject.GetProjectRootNamespace() + ".DataSources" + namespaceName.Substring(modelProjectNamespace.Length);
+			return _dataLayerProject.GetProjectRootNamespace() + ".DataSources" + relativeNamespace;
 		}
 		else
 		{

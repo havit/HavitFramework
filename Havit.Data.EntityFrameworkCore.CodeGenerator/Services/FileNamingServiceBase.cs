@@ -29,9 +29,9 @@ public abstract class FileNamingServiceBase<TModel> : IFileNamingService<TModel>
 		string projectRootNamespace = _project.GetProjectRootNamespace();
 
 		string namespaceFolder;
-		if (namespaceName.StartsWith(projectRootNamespace))
+		if (NamespaceHelper.TryGetRelativeNamespace(namespaceName, projectRootNamespace, out string relativeNamespace))
 		{
-			namespaceFolder = namespaceName.Substring(projectRootNamespace.Length).Trim('.').Replace('.', Path.DirectorySeparatorChar);
+			namespaceFolder = relativeNamespace.Trim('.').Replace('.', Path.DirectorySeparatorChar);
 		}
 		else
 		{

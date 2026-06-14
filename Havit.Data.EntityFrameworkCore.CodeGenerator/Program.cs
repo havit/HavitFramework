@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataLayerServiceExtensions;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Projects;
 using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Model;
+using Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator;
 
@@ -51,6 +52,7 @@ public static class Program
 
 		services.AddSingleton<IModelErrorsProvider, ModelErrorsProvider>();
 		services.AddSingleton<IModelSourceErrorsProvider, RepositoryModelSource>();
+		services.AddSingleton<IModelSourceErrorsProvider, DataEntriesModelSource>();
 
 		services.AddSingleton<IRelicsCleaner, RelicsCleaner>();
 
@@ -67,7 +69,13 @@ public static class Program
 		List<string> errors = modelErrorsProvider.GetErrors();
 		if (errors.Count > 0)
 		{
+			Console.ForegroundColor = ConsoleColor.Red;
 			errors.ForEach(Console.Error.WriteLine);
+			Console.ResetColor();
+
+			// Chyby modelu signalizujeme nenulovým exit code, aby je build/CI nepřehlédl.
+			// (CodeGenerator.Tool spouští tuto metodu ve stejném procesu a Environment.ExitCode nepřepisuje.)
+			Environment.ExitCode = 1;
 		}
 
 		stopwatch.Stop();

@@ -48,9 +48,9 @@ public class MetadataClassModelSource : IModelSource<MetadataClass>
 	{
 		string metadataProjectNamespace = _metadataProject.GetProjectRootNamespace();
 		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
-		if (namespaceName.StartsWith(modelProjectNamespace))
+		if (NamespaceHelper.TryGetRelativeNamespace(namespaceName, modelProjectNamespace, out string relativeNamespace))
 		{
-			return metadataProjectNamespace + "." + _configuration.MetadataNamespace + namespaceName.Substring(modelProjectNamespace.Length);
+			return metadataProjectNamespace + "." + _configuration.MetadataNamespace + relativeNamespace;
 		}
 		else
 		{

@@ -64,33 +64,6 @@ namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.Repositories.Temp
             #line default
             #line hidden
             this.Write(">\r\n{\r\n");
-            
-            #line 15 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
- if (Model.GenerateGetObjectByEntryEnumMethod) { 
-            
-            #line default
-            #line hidden
-            this.Write("\t");
-            
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(" GetObject(");
-            
-            #line 16 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Model.ModelClassFullName));
-            
-            #line default
-            #line hidden
-            this.Write(".Entry entry);\r\n");
-            
-            #line 17 "D:\Dev\002.HFW-HavitFramework\Havit.Data.EntityFrameworkCore.CodeGenerator\Actions\Repositories\Templates\InterfaceRepositoryGeneratedTemplate.tt"
- } 
-            
-            #line default
-            #line hidden
             this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }

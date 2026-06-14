@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Havit.Data.EntityFrameworkCore.CodeGenerator.Actions.DataEntries.Model;
 
-public class DataEntriesModelSource : IModelSource<DataEntriesModel>
+public class DataEntriesModelSource : IModelSource<DataEntriesModel>, IModelSourceErrorsProvider
 {
 	private readonly DbContext _dbContext;
 	private readonly IModelProject _modelProject;
@@ -27,6 +27,8 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 			from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 			let entriesEnumType = GetEntriesEnum(registeredEntity.ClrType)
 			where (entriesEnumType != null)
+			// Entity s data entries (vnořeným enumem Entry) musí mít právě jeden primární klíč; ostatní jsou hlášeny v GetModelErrors a do generování nevstupují.
+			where (registeredEntity.FindPrimaryKey()?.Properties.Count == 1)
 			select new DataEntriesModel
 			{
 				UseDataEntrySymbolStorage = registeredEntity.FindPrimaryKey().Properties.Any(property =>
@@ -55,6 +57,14 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 			}).ToList();
 	}
 
+	public IEnumerable<string> GetModelErrors()
+	{
+		return from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
+			   where GetEntriesEnum(registeredEntity.ClrType) != null
+			   where registeredEntity.FindPrimaryKey()?.Properties.Count != 1
+			   select $"Entity {registeredEntity.ClrType.FullName} has a nested Entry enum (data entries) but does not have exactly one primary key property.";
+	}
+
 	private Type GetEntriesEnum(Type type)
 	{
 		Type entriesType = type.GetNestedType("Entry");
@@ -68,13 +78,13 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	private string GetNamespaceName(string namespaceName)
 	{
 		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
-		if (namespaceName.StartsWith(modelProjectNamespace))
+		if (NamespaceHelper.TryGetRelativeNamespace(namespaceName, modelProjectNamespace, out string relativeNamespace))
 		{
-			return _dataLayerProject.GetProjectRootNamespace() + ".DataEntries" + namespaceName.Substring(modelProjectNamespace.Length);
+			return _dataLayerProject.GetProjectRootNamespace() + ".DataEntries" + relativeNamespace;
 		}
 		else
 		{
-			return namespaceName + ".DataSources";
+			return namespaceName + ".DataEntries";
 		}
 	}
 
@@ -83,8 +93,8 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 		string entityNamespaceName = entityType.Namespace;
 		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 
-		string repositoryNamespace = entityNamespaceName.StartsWith(modelProjectNamespace)
-			? _dataLayerProject.GetProjectRootNamespace() + ".Repositories" + entityNamespaceName.Substring(modelProjectNamespace.Length)
+		string repositoryNamespace = NamespaceHelper.TryGetRelativeNamespace(entityNamespaceName, modelProjectNamespace, out string relativeNamespace)
+			? _dataLayerProject.GetProjectRootNamespace() + ".Repositories" + relativeNamespace
 			: entityNamespaceName + ".Repositories";
 
 		return repositoryNamespace + ".I" + entityType.Name + "Repository";

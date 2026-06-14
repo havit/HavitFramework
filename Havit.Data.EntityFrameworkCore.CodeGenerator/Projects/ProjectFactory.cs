@@ -36,7 +36,8 @@ public class ProjectFactory : IProjectFactory
 
 		Console.ForegroundColor = ConsoleColor.Red;
 		Console.WriteLine($"{csprojPath} has an old csproj format, use the new csproj format.");
-		return null;
+		Console.ResetColor();
+		throw new InvalidOperationException();
 	}
 
 	private bool IsDotNetCoreProject(XDocument content)

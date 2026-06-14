@@ -34,9 +34,9 @@ public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 		string modelProjectNamespace = _modelProject.GetProjectRootNamespace();
 		string fakesString = addFakes ? ".Fakes" : "";
 
-		if (namespaceName.StartsWith(modelProjectNamespace))
+		if (NamespaceHelper.TryGetRelativeNamespace(namespaceName, modelProjectNamespace, out string relativeNamespace))
 		{
-			return _dataLayerProject.GetProjectRootNamespace() + ".DataSources" + namespaceName.Substring(modelProjectNamespace.Length) + fakesString;
+			return _dataLayerProject.GetProjectRootNamespace() + ".DataSources" + relativeNamespace + fakesString;
 		}
 		else
 		{

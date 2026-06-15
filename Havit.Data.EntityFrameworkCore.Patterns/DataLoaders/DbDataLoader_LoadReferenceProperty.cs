@@ -196,7 +196,7 @@ public partial class DbDataLoader
 		List<int> foreignKeysToQueryInt = foreignKeysToLoad.Cast<int>().ToList();
 		return _dbContext.Set<TProperty>()
 			.AsQueryable($"{nameof(DbDataLoader)} ({typeof(TEntity).Name} {propertyPathString})")
-			.Where(foreignKeysToQueryInt.ContainsEffective<TProperty>(item => EF.Property<int>(item, propertyPrimaryKey)));
+			.Where(foreignKeysToQueryInt.ContainsEffectiveInteger<TProperty, int>(item => EF.Property<int>(item, propertyPrimaryKey)));
 	}
 
 	private void LoadReferencePropertyInternal_StoreToCache<TProperty>(List<TProperty> loadedProperties)

@@ -6,20 +6,20 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Internal;
 public class QueryHelpersTests
 {
 	[TestMethod]
-	public void QueryHelpers_ContainsEffective_Zero()
+	public void QueryHelpers_ContainsEffectiveInteger_Zero()
 	{
 		// Act
-		var result = GetData().Where(new List<int> { }.ContainsEffective<TestClass>(p => p.Id)).ToList();
+		var result = GetData().Where(new List<int> { }.ContainsEffectiveInteger<TestClass, int>(p => p.Id)).ToList();
 
 		// Assert
 		Assert.IsFalse(result.Any());
 	}
 
 	[TestMethod]
-	public void QueryHelpers_ContainsEffective_One()
+	public void QueryHelpers_ContainsEffectiveInteger_One()
 	{
 		// Act
-		var result = GetData().Where(new List<int> { 2 }.ContainsEffective<TestClass>(p => p.Id)).ToList();
+		var result = GetData().Where(new List<int> { 2 }.ContainsEffectiveInteger<TestClass, int>(p => p.Id)).ToList();
 
 		// Assert
 		Assert.HasCount(1, result, "Count");
@@ -27,10 +27,10 @@ public class QueryHelpersTests
 	}
 
 	[TestMethod]
-	public void QueryHelpers_ContainsEffective_Sorted()
+	public void QueryHelpers_ContainsEffectiveInteger_Sorted()
 	{
 		// Act
-		var result = GetData().Where(new List<int> { 2, 3, 4 }.ContainsEffective<TestClass>(p => p.Id)).ToList();
+		var result = GetData().Where(new List<int> { 2, 3, 4 }.ContainsEffectiveInteger<TestClass, int>(p => p.Id)).ToList();
 
 		// Assert
 		Assert.HasCount(3, result, "Count");
@@ -40,10 +40,10 @@ public class QueryHelpersTests
 	}
 
 	[TestMethod]
-	public void QueryHelpers_ContainsEffective_NotSorted()
+	public void QueryHelpers_ContainsEffectiveInteger_NotSorted()
 	{
 		// Act
-		var result = GetData().Where(new List<int> { 1, 2, 3, 5 }.ContainsEffective<TestClass>(p => p.Id)).ToList();
+		var result = GetData().Where(new List<int> { 1, 2, 3, 5 }.ContainsEffectiveInteger<TestClass, int>(p => p.Id)).ToList();
 
 		// Assert
 		Assert.HasCount(4, result, "Count");
@@ -54,10 +54,10 @@ public class QueryHelpersTests
 	}
 
 	[TestMethod]
-	public void QueryHelpers_ContainsConsecutiveSequence_SortedSequence()
+	public void QueryHelpers_TryGetConsecutiveRange_SortedSequence()
 	{
 		// Act
-		var result = QueryHelpers.ContainsConsecutiveSequence(new List<int> { 1, 2, 3, 4, 4, 5 }, out int minValue, out int maxValue);
+		var result = QueryHelpers.TryGetConsecutiveRange(new List<int> { 1, 2, 3, 4, 4, 5 }, out int minValue, out int maxValue);
 
 		// Assert
 		Assert.IsTrue(result);
@@ -66,10 +66,10 @@ public class QueryHelpersTests
 	}
 
 	[TestMethod]
-	public void QueryHelpers_ContainsConsecutiveSequence_UnsortedSequence()
+	public void QueryHelpers_TryGetConsecutiveRange_UnsortedSequence()
 	{
 		// Act
-		var result = QueryHelpers.ContainsConsecutiveSequence(new List<int> { 4, 5, 4, 2, 3, 1 }, out int minValue, out int maxValue);
+		var result = QueryHelpers.TryGetConsecutiveRange(new List<int> { 4, 5, 4, 2, 3, 1 }, out int minValue, out int maxValue);
 
 		// Assert
 		Assert.IsTrue(result);
@@ -78,10 +78,10 @@ public class QueryHelpersTests
 	}
 
 	[TestMethod]
-	public void QueryHelpers_ContainsConsecutiveSequence_NotSequence()
+	public void QueryHelpers_TryGetConsecutiveRange_NotSequence()
 	{
 		// Act
-		var result = QueryHelpers.ContainsConsecutiveSequence(new List<int> { 4, 5, 4, 3, 1 }, out int _, out int _);
+		var result = QueryHelpers.TryGetConsecutiveRange(new List<int> { 4, 5, 4, 3, 1 }, out int _, out int _);
 
 		// Assert
 		Assert.IsFalse(result);

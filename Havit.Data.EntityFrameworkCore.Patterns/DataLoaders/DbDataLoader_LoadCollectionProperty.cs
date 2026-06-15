@@ -187,8 +187,8 @@ public partial class DbDataLoader
 			// Zkompilovat a spustit jde pro oba případy jen varianta s int, avšak v runtime způsobí client-side evaluation (podmínka se nedostane do dotazu, ale je vyhodnocena entity frameworkem), což z výkonových důvodů opravdu nechceme.
 			// Proto doplníme variantu pro int?, která tento problém vyřeší.
 			// Toto chování není chráněno žádným testem.
-			.WhereIf(foreignKeyProperty.ClrType == typeof(int?), primaryKeysToLoad.ContainsEffective<TProperty>(item => (int)EF.Property<int?>(item, foreignKeyProperty.Name)))
-			.WhereIf(foreignKeyProperty.ClrType == typeof(int), primaryKeysToLoad.ContainsEffective<TProperty>(item => EF.Property<int>(item, foreignKeyProperty.Name)));
+			.WhereIf(foreignKeyProperty.ClrType == typeof(int?), primaryKeysToLoad.ContainsEffectiveInteger<TProperty, int>(item => (int)EF.Property<int?>(item, foreignKeyProperty.Name)))
+			.WhereIf(foreignKeyProperty.ClrType == typeof(int), primaryKeysToLoad.ContainsEffectiveInteger<TProperty, int>(item => EF.Property<int>(item, foreignKeyProperty.Name)));
 	}
 
 	private void LoadCollectionPropertyInternal_StoreCollectionsToCache<TEntity, TPropertyItem>(List<TEntity> loadedEntities, string propertyName)

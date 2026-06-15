@@ -46,7 +46,10 @@ internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 		if (node.NodeType == ExpressionType.MemberAccess)
 		{
 			Type propertyType = ((PropertyInfo)node.Member).PropertyType;
-			Type enumerableInterfaceType = propertyType.GetInterfaces().FirstOrDefault(item => item.IsGenericType && item.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+			// string a byte[] sice implementují IEnumerable<>, ale nejsou to navigace na kolekce - nesmí být klasifikovány jako kolekce.
+			Type enumerableInterfaceType = ((propertyType != typeof(string)) && (propertyType != typeof(byte[])))
+				? propertyType.GetInterfaces().FirstOrDefault(item => item.IsGenericType && item.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+				: null;
 
 			if (enumerableInterfaceType != null)
 			{

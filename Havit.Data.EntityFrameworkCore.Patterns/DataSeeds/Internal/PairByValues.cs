@@ -21,6 +21,12 @@ internal class PairByValues : IEquatable<PairByValues>
 
 	public override int GetHashCode()
 	{
-		return Data.Aggregate(0, (value, item) => value ^ (item?.GetHashCode() ?? 0));
+		// Pořadí-citlivé skládání hashe (konzistentní s Equals přes SequenceEqual); XOR by se u symetrických hodnot rušil a zvyšoval kolize.
+		HashCode hashCode = new HashCode();
+		foreach (object item in Data)
+		{
+			hashCode.Add(item);
+		}
+		return hashCode.ToHashCode();
 	}
 }

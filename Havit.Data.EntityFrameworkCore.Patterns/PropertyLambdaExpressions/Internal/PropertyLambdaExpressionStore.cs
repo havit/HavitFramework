@@ -57,7 +57,7 @@ public class PropertyLambdaExpressionStore : IPropertyLambdaExpressionStore
 
 		public override int GetHashCode()
 		{
-			return EntityType.GetHashCode() ^ PropertyType.GetHashCode() ^ PropertyName.GetHashCode();
+			return HashCode.Combine(EntityType, PropertyType, PropertyName);
 		}
 
 		public override bool Equals(object obj)

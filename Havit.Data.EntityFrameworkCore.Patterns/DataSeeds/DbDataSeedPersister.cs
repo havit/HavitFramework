@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using Havit.Data.EntityFrameworkCore.Patterns.DataSeeds.Internal;
 using Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 using Havit.Data.Patterns.DataSeeds;
@@ -335,14 +336,18 @@ public class DbDataSeedPersister : IDataSeedPersister
 			.Concat((configuration.PairByExpressions ?? Enumerable.Empty<Expression<Func<TEntity, object>>>()))
 			.ToList());
 
-		// we will set 
+		// PropertyInfo vytáhneme jednou dopředu (ne GetProperty pro každou property každého páru). SetValue umožní nastavit i membery s protected settery, což DataBinderExt neumí.
+		PropertyInfo[] propertyInfosForInserting = propertiesForInserting.Select(property => typeof(TEntity).GetProperty(property.Name)).ToArray();
+		PropertyInfo[] propertyInfosForUpdating = propertiesForUpdating.Select(property => typeof(TEntity).GetProperty(property.Name)).ToArray();
+
 		foreach (SeedDataPair<TEntity> pair in pairs)
 		{
-			Type dbEntityType = pair.DbEntity.GetType(); // očekáváme TEntity, snad jen v případě dědičnosti by mohl být potomek
-			foreach (IProperty property in (pair.IsNew ? propertiesForInserting : propertiesForUpdating))
+			List<IProperty> properties = pair.IsNew ? propertiesForInserting : propertiesForUpdating;
+			PropertyInfo[] propertyInfos = pair.IsNew ? propertyInfosForInserting : propertyInfosForUpdating;
+			for (int i = 0; i < properties.Count; i++)
 			{
-				object value = DataBinderExt.GetValue(pair.SeedEntity, property.Name);
-				dbEntityType.GetProperty(property.Name).SetValue(pair.DbEntity, value); // tímto umožníme nastavit i membery s protected settery, což DataBinderExt neumí
+				object value = DataBinderExt.GetValue(pair.SeedEntity, properties[i].Name);
+				propertyInfos[i].SetValue(pair.DbEntity, value);
 			}
 		}
 	}

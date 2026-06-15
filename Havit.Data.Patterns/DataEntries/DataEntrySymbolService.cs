@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 using Havit.Data.Patterns.DataSources;
 using Havit.Data.Patterns.Exceptions;
@@ -14,8 +15,8 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	private readonly IDataEntrySymbolStorage<TEntity, TKey> _dataEntrySymbolStorage;
 	private readonly IDataSource<TEntity> _dataSource; // TODO: QueryTags nedokonalé, bude se hlásit query tag dle DbDataSource.
 
-	// PERF: Příznak úspěšně provedené validace typu TEntity (per uzavřený generický typ).
-	private static bool s_entityTypeValidated;
+	// PERF: Typy TEntity, jejichž validace už proběhla. Validace (reflexe) závisí jen na typu, provádíme ji proto jen jednou per typ.
+	private static readonly ConcurrentDictionary<Type, bool> s_validatedEntityTypes = new ConcurrentDictionary<Type, bool>();
 
 	/// <summary>
 	/// Konstruktor.
@@ -23,13 +24,12 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 	public DataEntrySymbolService(IDataEntrySymbolStorage<TEntity, TKey> dataEntrySymbolStorage, IDataSource<TEntity> dataSource)
 	{
 		// PERF: Služba bývá registrována jako transientní, validace (reflexe) by tak probíhala při každé konstrukci.
-		// Výsledek validace závisí jen na typu TEntity, proto ji provádíme jen jednou per uzavřený generický typ.
-		// (Případný souběh vláken při prvních konstrukcích není problém, validace je idempotentní.)
-		if (!s_entityTypeValidated)
+		// Provádíme ji proto jen jednou per typ TEntity. (Případný souběh vláken při prvních konstrukcích není problém, validace je idempotentní.)
+		s_validatedEntityTypes.GetOrAdd(typeof(TEntity), static _ =>
 		{
 			ValidateEntityType();
-			s_entityTypeValidated = true;
-		}
+			return true;
+		});
 
 		this._dataEntrySymbolStorage = dataEntrySymbolStorage;
 		this._dataSource = dataSource;

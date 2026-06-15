@@ -16,7 +16,7 @@ public class EntityActivatorTests
 	public void EntityActivator_CreateInstance_ParametirezedPublicConstructor()
 	{
 		// Assert
-		Assert.ThrowsExactly<MissingMemberException>(() =>
+		Assert.ThrowsExactly<InvalidOperationException>(() =>
 		{
 			// Act
 			Assert.IsNotNull(EntityActivator.CreateInstance<ClassWithParametirezedPublicConstuctor>());

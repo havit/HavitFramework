@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System.Collections.Concurrent;
+using System.Data;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching.Internal;
@@ -23,6 +25,13 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.Caching;
 /// </summary>
 public class EntityCacheManager : IEntityCacheManager
 {
+	// PropertyInfo klíčových vlastností se reflexí získají jen jednou per typ - byly hledány opakovaně na cache-hit cestě (TryGetNavigation_ManyToManyDecomposedToOneToMany).
+	private static readonly ConcurrentDictionary<Type, PropertyInfo[]> s_keyPropertyInfos = new ConcurrentDictionary<Type, PropertyInfo[]>();
+
+	// StoreEntity je generická; abychom ji na invalidační cestě nemuseli volat opakovaně reflexí (MethodInfo.Invoke),
+	// držíme si pro každý typ zkompilovaný delegát. Způsob volání generické metody je vlastnost typu, lze jej tedy cachovat staticky napříč instancemi.
+	private static readonly ConcurrentDictionary<Type, Action<EntityCacheManager, object>> s_storeEntityDelegates = new ConcurrentDictionary<Type, Action<EntityCacheManager, object>>();
+
 	private readonly ICacheService _cacheService;
 	private readonly IEntityCacheSupportDecision _entityCacheSupportDecision;
 	private readonly IEntityCacheKeyGenerator _entityCacheKeyGenerator;
@@ -188,7 +197,10 @@ public class EntityCacheManager : IEntityCacheManager
 		object[][] entityPropertyMembersKeys = (object[][])cacheEntityPropertyMembersKeys;
 
 		var dbSet = _dbContext.Set<TPropertyItem>();
-		var propertyNames = _entityKeyAccessor.GetEntityKeyPropertyNames(typeof(TPropertyItem));
+		PropertyInfo[] keyPropertyInfos = s_keyPropertyInfos.GetOrAdd(
+			typeof(TPropertyItem),
+			(type, keyAccessor) => keyAccessor.GetEntityKeyPropertyNames(type).Select(propertyName => type.GetProperty(propertyName)).ToArray(),
+			_entityKeyAccessor);
 
 		// Pro všechny objekty, které mají být v kolekci typu many-to-many (dekomponované na dva one-to-many)
 		// vytvoříme instanci reprezentující vazební entitu a tu nastavíme jako trackovanou.
@@ -198,9 +210,9 @@ public class EntityCacheManager : IEntityCacheManager
 			if (dbSet.FindTracked(entityPropertyMemberKey) == null) // už je načtený, nemůžeme volat TryGetEntity
 			{
 				TPropertyItem instance = EntityActivator.CreateInstance<TPropertyItem>();
-				for (int i = 0; i < propertyNames.Length; i++)
+				for (int i = 0; i < keyPropertyInfos.Length; i++)
 				{
-					typeof(TPropertyItem).GetProperty(propertyNames[i]).SetValue(instance, entityPropertyMemberKey[i]);
+					keyPropertyInfos[i].SetValue(instance, entityPropertyMemberKey[i]);
 				}
 				dbSet.Attach(instance);
 			}
@@ -307,7 +319,9 @@ public class EntityCacheManager : IEntityCacheManager
 	{
 		// Pro vazbu OneToOne se prostě pokusíme získat instanci protistrany vazby.
 
-		return TryGetEntity<TPropertyItem>(((object[])cacheEntityPropertyMembersKeys).Single(), out _);
+		object entityPropertyMemberKey = ((object[])cacheEntityPropertyMembersKeys).Single();
+		return (_dbContext.Set<TPropertyItem>().FindTracked(entityPropertyMemberKey) != null) // už je načtený, nemůžeme volat TryGetEntity
+			|| TryGetEntity<TPropertyItem>(entityPropertyMemberKey, out _);
 	}
 
 	/// <inheritdoc />
@@ -385,39 +399,17 @@ public class EntityCacheManager : IEntityCacheManager
 			_cacheService.RemoveAll(cacheKeysToInvalidate);
 
 			// aktualizujeme v cache změněné entity
-			Dictionary<Type, MethodInfo> methodInfosDictionary = new Dictionary<Type, MethodInfo>();
-			object[] invokeArguments = new object[1];
-
-			MethodInfo storeEntityGenericMethodDefinition = this.GetType().GetMethod(nameof(StoreEntity));
-
 			foreach (object entityToUpdateInCache in entitiesToUpdateInCache)
 			{
-				// protože je metoda StoreEntity generická, musíme přes reflexi
-				invokeArguments[0] = entityToUpdateInCache; // eliminace alokace pole pro každý průchod
 				Type entityToUpdateInCacheType = entityToUpdateInCache.GetType();
-				if (!methodInfosDictionary.TryGetValue(entityToUpdateInCacheType, out MethodInfo methodInfo))
-				{
-					// Uložíme si odkaz na metodu StoreEntity, ovšem jen pro typy entit, které může cachovat.
-					// Pro ostatní si uložíme hodnotu null.
-					if (_entityCacheSupportDecision.ShouldCacheEntityType(entityToUpdateInCacheType))
-					{
-						methodInfo = storeEntityGenericMethodDefinition.MakeGenericMethod(entityToUpdateInCacheType);
-						methodInfosDictionary.Add(entityToUpdateInCacheType, methodInfo);
-					}
-					else
-					{
-						methodInfo = null;
-						methodInfosDictionary.Add(entityToUpdateInCacheType, null);
-					}
-				}
 
-				try
+				// StoreEntity je generická, typ entity však známe až za běhu. Voláme ji proto přes zkompilovaný delegát,
+				// který si pro každý typ vyrobíme jen jednou (statická cache s_storeEntityDelegates).
+				// Filtrujeme jen na cachovatelné typy - rozhodnutí je závislé na konfiguraci (instanci), proto se na něj ptáme zde a není součástí statické cache.
+				if (_entityCacheSupportDecision.ShouldCacheEntityType(entityToUpdateInCacheType))
 				{
-					methodInfo?.Invoke(this, invokeArguments); // pro necachovatelné entity je methodInfo null
-				}
-				catch (TargetInvocationException targetInvocationException)
-				{
-					ExceptionDispatchInfo.Throw(targetInvocationException.InnerException);
+					Action<EntityCacheManager, object> storeEntityDelegate = s_storeEntityDelegates.GetOrAdd(entityToUpdateInCacheType, CreateStoreEntityDelegate);
+					storeEntityDelegate.Invoke(this, entityToUpdateInCache);
 				}
 			}
 		});
@@ -519,6 +511,17 @@ public class EntityCacheManager : IEntityCacheManager
 		{
 			cacheKeysToInvalidate.Add(_entityCacheKeyGenerator.GetAllKeysCacheKey(type));
 		}
+	}
+
+	// Vytvoří delegát ekvivalentní volání manager.StoreEntity&lt;entityType&gt;((entityType)entity).
+	// Volá se jen jednou per typ (přes GetOrAdd nad statickou cache), runtime cesta je pak přímé volání delegátu bez reflexe.
+	private static Action<EntityCacheManager, object> CreateStoreEntityDelegate(Type entityType)
+	{
+		ParameterExpression managerParameter = Expression.Parameter(typeof(EntityCacheManager), "manager");
+		ParameterExpression entityParameter = Expression.Parameter(typeof(object), "entity");
+		MethodInfo storeEntityMethod = typeof(EntityCacheManager).GetMethod(nameof(StoreEntity)).MakeGenericMethod(entityType);
+		MethodCallExpression call = Expression.Call(managerParameter, storeEntityMethod, Expression.Convert(entityParameter, entityType));
+		return Expression.Lambda<Action<EntityCacheManager, object>>(call, managerParameter, entityParameter).Compile();
 	}
 
 	/// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using Havit.Data.EntityFrameworkCore.Patterns.Caching;
@@ -20,6 +21,17 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 /// </summary>
 public partial class DbDataLoader : IDataLoader
 {
+	// Otevřené generické metody se vyhledají reflexí jen jednou; uzavřené (MakeGenericMethod) se cachují per kombinace typových argumentů, aby se nevyráběly na každé načtení property.
+	private static readonly MethodInfo s_loadReferencePropertyInternalMethod = typeof(DbDataLoader).GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic);
+	private static readonly MethodInfo s_loadCollectionPropertyInternalMethod = typeof(DbDataLoader).GetMethod(nameof(LoadCollectionPropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic);
+	private static readonly MethodInfo s_loadReferencePropertyInternalAsyncMethod = typeof(DbDataLoader).GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic);
+	private static readonly MethodInfo s_loadCollectionPropertyInternalAsyncMethod = typeof(DbDataLoader).GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic);
+
+	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), MethodInfo> s_loadReferencePropertyInternalGenericMethods = new();
+	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), MethodInfo> s_loadReferencePropertyInternalAsyncGenericMethods = new();
+	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType, Type OriginalTargetType, Type CollectionItemType), MethodInfo> s_loadCollectionPropertyInternalGenericMethods = new();
+	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType, Type OriginalTargetType, Type CollectionItemType), MethodInfo> s_loadCollectionPropertyInternalAsyncGenericMethods = new();
+
 	private readonly IDbContext _dbContext;
 	private readonly IPropertyLoadSequenceResolver _propertyLoadSequenceResolver;
 	private readonly IPropertyLambdaExpressionManager _lambdaExpressionManager;
@@ -58,6 +70,8 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
+		ArgumentNullException.ThrowIfNull(propertyPath);
+
 		if (entity == null)
 		{
 			return new NullFluentDataLoader<TProperty>();
@@ -238,16 +252,14 @@ public partial class DbDataLoader : IDataLoader
 				invokeLoadReferencePropertyInternalMethodArguments[2] = propertyPathString;
 				try
 				{
-					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
-						.GetMethod(nameof(LoadReferencePropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
-						.MakeGenericMethod(
-							propertyToLoad.SourceType,
-							propertyToLoad.TargetType)
-						.Invoke(this, invokeLoadReferencePropertyInternalMethodArguments);
+					MethodInfo loadReferencePropertyInternalMethod = s_loadReferencePropertyInternalGenericMethods.GetOrAdd(
+						(propertyToLoad.SourceType, propertyToLoad.TargetType),
+						static key => s_loadReferencePropertyInternalMethod.MakeGenericMethod(key.SourceType, key.TargetType));
+					loadPropertyInternalResult = (LoadPropertyInternalResult)loadReferencePropertyInternalMethod.Invoke(this, invokeLoadReferencePropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					_logger.LogError(ex.Message);
+					_logger.LogError(ex.InnerException, "Error while loading entity property.");
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -260,18 +272,14 @@ public partial class DbDataLoader : IDataLoader
 				invokeLoadCollectionPropertyInternalMethodArguments[3] = propertyPathString;
 				try
 				{
-					loadPropertyInternalResult = (LoadPropertyInternalResult)typeof(DbDataLoader)
-						.GetMethod(nameof(LoadCollectionPropertyInternal), BindingFlags.Instance | BindingFlags.NonPublic)
-						.MakeGenericMethod(
-							propertyToLoad.SourceType,
-							propertyToLoad.TargetType,
-							propertyToLoad.OriginalTargetType,
-							propertyToLoad.CollectionItemType)
-						.Invoke(this, invokeLoadCollectionPropertyInternalMethodArguments);
+					MethodInfo loadCollectionPropertyInternalMethod = s_loadCollectionPropertyInternalGenericMethods.GetOrAdd(
+						(propertyToLoad.SourceType, propertyToLoad.TargetType, propertyToLoad.OriginalTargetType, propertyToLoad.CollectionItemType),
+						static key => s_loadCollectionPropertyInternalMethod.MakeGenericMethod(key.SourceType, key.TargetType, key.OriginalTargetType, key.CollectionItemType));
+					loadPropertyInternalResult = (LoadPropertyInternalResult)loadCollectionPropertyInternalMethod.Invoke(this, invokeLoadCollectionPropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					_logger.LogError(ex.Message);
+					_logger.LogError(ex.InnerException, "Error while loading entity property.");
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -315,16 +323,14 @@ public partial class DbDataLoader : IDataLoader
 				invokeLoadReferencePropertyInternalMethodArguments[3] = cancellationToken;
 				try
 				{
-					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
-						.GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-						.MakeGenericMethod(
-							propertyToLoad.SourceType,
-							propertyToLoad.TargetType)
-						.Invoke(this, invokeLoadReferencePropertyInternalMethodArguments);
+					MethodInfo loadReferencePropertyInternalAsyncMethod = s_loadReferencePropertyInternalAsyncGenericMethods.GetOrAdd(
+						(propertyToLoad.SourceType, propertyToLoad.TargetType),
+						static key => s_loadReferencePropertyInternalAsyncMethod.MakeGenericMethod(key.SourceType, key.TargetType));
+					task = (ValueTask<LoadPropertyInternalResult>)loadReferencePropertyInternalAsyncMethod.Invoke(this, invokeLoadReferencePropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					_logger.LogError(ex.Message);
+					_logger.LogError(ex.InnerException, "Error while loading entity property.");
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}
@@ -338,18 +344,14 @@ public partial class DbDataLoader : IDataLoader
 				invokeLoadCollectionPropertyInternalMethodArguments[4] = cancellationToken;
 				try
 				{
-					task = (ValueTask<LoadPropertyInternalResult>)typeof(DbDataLoader)
-						.GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic)
-						.MakeGenericMethod(
-							propertyToLoad.SourceType,
-							propertyToLoad.TargetType,
-							propertyToLoad.OriginalTargetType,
-							propertyToLoad.CollectionItemType)
-						.Invoke(this, invokeLoadCollectionPropertyInternalMethodArguments);
+					MethodInfo loadCollectionPropertyInternalAsyncMethod = s_loadCollectionPropertyInternalAsyncGenericMethods.GetOrAdd(
+						(propertyToLoad.SourceType, propertyToLoad.TargetType, propertyToLoad.OriginalTargetType, propertyToLoad.CollectionItemType),
+						static key => s_loadCollectionPropertyInternalAsyncMethod.MakeGenericMethod(key.SourceType, key.TargetType, key.OriginalTargetType, key.CollectionItemType));
+					task = (ValueTask<LoadPropertyInternalResult>)loadCollectionPropertyInternalAsyncMethod.Invoke(this, invokeLoadCollectionPropertyInternalMethodArguments);
 				}
 				catch (TargetInvocationException ex)
 				{
-					_logger.LogError(ex.Message);
+					_logger.LogError(ex.InnerException, "Error while loading entity property.");
 					ExceptionDispatchInfo.Throw(ex.InnerException);
 				}
 			}

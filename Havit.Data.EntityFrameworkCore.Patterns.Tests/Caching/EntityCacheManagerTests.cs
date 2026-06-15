@@ -329,6 +329,42 @@ public class EntityCacheManagerTests
 	}
 
 	[TestMethod]
+	public void EntityCacheManager_Scenario_OneToOne_TryGetNavigation_SupportsAlreadyTrackedEntity()
+	{
+		// Arrange
+		ICacheService cacheService = new DictionaryCacheService();
+
+		CachingTestDbContext dbContext1 = new CachingTestDbContext();
+
+		ClassOneToOneA classOneToOneA = new ClassOneToOneA { Id = 1 };
+		ClassOneToOneB classOneToOneB = new ClassOneToOneB { Id = 2, ClassAId = 1 };
+		classOneToOneA.ClassB = classOneToOneB;
+		dbContext1.Attach(classOneToOneA);
+		dbContext1.Attach(classOneToOneB);
+
+		var entityCacheManager1 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext1, cacheService: cacheService);
+
+		CachingTestDbContext dbContext2 = new CachingTestDbContext();
+		ClassOneToOneA classOneToOneAResult = new ClassOneToOneA { Id = 1 };
+		ClassOneToOneB classOneToOneBTracked = new ClassOneToOneB { Id = 2, ClassAId = 1 };
+		dbContext2.Attach(classOneToOneAResult);
+		dbContext2.Attach(classOneToOneBTracked); // protistrana vazby je již trackovaná (např. načtená jiným dotazem)
+
+		var entityCacheManager2 = CachingTestHelper.CreateEntityCacheManager(dbContext: dbContext2, cacheService: cacheService);
+
+		// Act
+		entityCacheManager1.StoreNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneA, nameof(ClassOneToOneA.ClassB));
+		entityCacheManager1.StoreEntity<ClassOneToOneB>(classOneToOneB);
+		bool success = entityCacheManager2.TryGetNavigation<ClassOneToOneA, ClassOneToOneB>(classOneToOneAResult, nameof(ClassOneToOneA.ClassB)); // nesmí se pokusit o Attach již trackované entity
+
+		// Assert
+		Assert.IsTrue(success);
+		Assert.IsNotNull(classOneToOneAResult.ClassB);
+		Assert.AreSame(classOneToOneBTracked, classOneToOneAResult.ClassB);
+		AssertDbContextDoesNotContainChanges(dbContext2);
+	}
+
+	[TestMethod]
 	public void EntityCacheManager_Scenario_OneToOne_StoreNavigation_DoesNothingWhenNavigationIsNull()
 	{
 		// Arrange

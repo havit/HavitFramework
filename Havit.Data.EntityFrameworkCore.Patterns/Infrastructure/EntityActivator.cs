@@ -1,14 +1,22 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
+
+namespace Havit.Data.EntityFrameworkCore.Patterns.Infrastructure;
 
 internal static class EntityActivator
 {
-	// TODO EF Core 9: Service + storage + FrozenDictionary (13 -> 4 ns) na získání konstruktoru.
+	// ConstructorInfo se vyhledá reflexí jen jednou per typ; opakované GetConstructor by bylo zbytečně drahé.
+	// Constructor.Invoke (ne kompilovaná Expression.New) zachovává podporu neveřejných (protected/internal) bezparametrických konstruktorů.
+	private static readonly ConcurrentDictionary<Type, ConstructorInfo> s_constructors = new ConcurrentDictionary<Type, ConstructorInfo>();
+
 	public static TEntity CreateInstance<TEntity>()
 	{
-		var constructor = typeof(TEntity).GetConstructor(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, Array.Empty<Type>(), null);
+		ConstructorInfo constructor = s_constructors.GetOrAdd(
+			typeof(TEntity),
+			static type => type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null));
 		if (constructor == null)
 		{
-			throw new MissingMemberException($"Type {typeof(TEntity).Name} does not have a parameterless constructor.");
+			throw new InvalidOperationException($"Type {typeof(TEntity).Name} does not have a parameterless constructor.");
 		}
 		return (TEntity)constructor.Invoke(null);
 	}

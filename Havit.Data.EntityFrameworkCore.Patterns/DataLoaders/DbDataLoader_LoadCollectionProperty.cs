@@ -253,7 +253,7 @@ public partial class DbDataLoader
 				MethodInfo setter = typeof(TEntity).GetProperty(propertyName).GetSetMethod();
 				if (setter == null)
 				{
-					throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {{typeof(TEntity).FullName}} while it does not have a public setter.");
+					throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {typeof(TEntity).FullName} while it does not have a public setter.");
 				}
 
 				var setterArgument = new object[1];
@@ -265,7 +265,7 @@ public partial class DbDataLoader
 			}
 			else
 			{
-				throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {typeof(TEntity).FullName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}.");
+				throw new InvalidOperationException($"DataLoader cannot set collection property {propertyName} on type {typeof(TEntity).FullName} while it is not type of List<{typeof(TPropertyItem).Name}> or IList<{typeof(TPropertyItem).Name}>.");
 			}
 		}
 

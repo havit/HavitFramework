@@ -1,0 +1,13 @@
+v2.0.37 (6/2026)
+• Contract.Requires, Contract.Assert nově využívá [ConstantExpected].
+• Úpravy z AI code review a vylepšení napříč knihovnou (CollectionExt, UniversalTypeConverter, EnumExt, MathExt, Reflector, CriticalSection, PasswordGenerator, StringExt, RegexPatterns, ...).
+
+v2.0.36 (2/2026)
+• CancellationExceptionChecker - ladění detekce cancellation výjimky
+
+v2.0.35 (1/2026)
+• CancellationExceptionChecker - ladění detekce cancellation výjimky
+
+v2.0.34 (11/2025)
+• Targetování rozšířeno i pro .NET 10.
+• CollectionExt - přidána metoda UpdateFromAsync (s ValueTask).

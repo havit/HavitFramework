@@ -1,6 +1,6 @@
 ﻿using Havit.Finance;
 
-namespace Havit.FinanceTests;
+namespace Havit.Core.Tests.Finance;
 
 [TestClass]
 public class FinanceMathTests

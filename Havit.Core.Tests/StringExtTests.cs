@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 
-namespace Havit.Tests;
+namespace Havit.Core.Tests;
 
 [TestClass]
 public class StringExtTests

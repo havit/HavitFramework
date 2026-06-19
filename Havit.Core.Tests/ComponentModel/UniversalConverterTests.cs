@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Havit.Tests.ComponentModel;
+namespace Havit.Core.Tests.ComponentModel;
 
 [TestClass]
 public class UniversalConverterTests

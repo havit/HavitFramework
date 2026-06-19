@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Moq;
 
-namespace Havit.Tests;
+namespace Havit.Core.Tests;
 
 [TestClass]
 public class CultureInfoExtTests

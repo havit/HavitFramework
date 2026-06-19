@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using Havit.Diagnostics;
 
-namespace Havit.Tests.Diagnostics;
+namespace Havit.Core.Tests.Diagnostics;
 
 [TestClass]
 public class SmtpTraceListenerTests

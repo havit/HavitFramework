@@ -1,6 +1,6 @@
 ﻿using Havit.Linq;
 
-namespace Havit.Tests.Linq;
+namespace Havit.Core.Tests.Linq;
 
 [TestClass]
 public class CollectionExtTests

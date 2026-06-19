@@ -1,4 +1,4 @@
-namespace Havit.Tests;
+namespace Havit.Core.Tests;
 
 [TestClass]
 public class EnumExtTests

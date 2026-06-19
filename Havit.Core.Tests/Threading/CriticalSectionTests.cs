@@ -1,6 +1,6 @@
 ﻿using Havit.Threading;
 
-namespace Havit.Tests.Threading;
+namespace Havit.Core.Tests.Threading;
 
 [TestClass]
 public class CriticalSectionTests

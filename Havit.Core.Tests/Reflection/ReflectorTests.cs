@@ -1,4 +1,4 @@
-﻿namespace Havit.Tests.Reflection;
+﻿namespace Havit.Core.Tests.Reflection;
 
 [TestClass]
 public class ReflectorTests

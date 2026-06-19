@@ -1,6 +1,6 @@
 ﻿using Havit.Scopes;
 
-namespace Havit.Tests.Scopes.Instrastructure;
+namespace Havit.Core.Tests.Scopes.Instrastructure;
 
 internal class TestAsyncLocalScope : Scope<object>
 {

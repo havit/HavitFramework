@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net48</TargetFrameworks>
-		<RootNamespace>Havit.Tests</RootNamespace>
+		<RootNamespace>Havit.Core.Tests</RootNamespace>
 	</PropertyGroup>
 
 	<!-- Unit tests -->

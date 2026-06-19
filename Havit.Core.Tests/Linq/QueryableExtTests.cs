@@ -2,7 +2,7 @@
 using Havit.Linq;
 using System.Linq.Expressions;
 
-namespace Havit.Tests.Linq;
+namespace Havit.Core.Tests.Linq;
 
 [TestClass]
 public class QueryableExtTests

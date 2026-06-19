@@ -1,6 +1,6 @@
 ﻿using Havit.Collections;
 
-namespace Havit.Tests.Collections;
+namespace Havit.Core.Tests.Collections;
 
 [TestClass]
 public class SortDirectionExtensionsTests

@@ -1,6 +1,6 @@
 ﻿using Havit.Security;
 
-namespace Havit.Tests.Security;
+namespace Havit.Core.Tests.Security;
 
 [TestClass]
 public class PasswordHashServiceTests

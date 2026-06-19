@@ -1,7 +1,7 @@
 using System.Globalization;
 using Havit.Text;
 
-namespace Havit.Tests.Text;
+namespace Havit.Core.Tests.Text;
 
 [TestClass]
 public class FileSizeToTextServiceTests

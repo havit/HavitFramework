@@ -1,7 +1,7 @@
 ﻿using Havit.Linq;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Havit.Tests.Linq;
+namespace Havit.Core.Tests.Linq;
 
 [TestClass]
 [SuppressMessage("SonarLint", "S2114", Justification = "Pravidlo pro nás není vhodné, všechny tyto vznikné duplicity v seznamech pro účely testu chceme.")]

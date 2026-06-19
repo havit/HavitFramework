@@ -1,4 +1,4 @@
-﻿namespace Havit.Tests.Collections.Generic;
+﻿namespace Havit.Core.Tests.Collections.Generic;
 
 [TestClass]
 public class LookupTests

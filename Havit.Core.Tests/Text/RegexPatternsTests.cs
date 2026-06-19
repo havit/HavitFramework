@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Havit.Text.RegularExpressions;
 
-namespace Havit.Tests.Text;
+namespace Havit.Core.Tests.Text;
 
 [TestClass]
 public class RegexPatternsTests

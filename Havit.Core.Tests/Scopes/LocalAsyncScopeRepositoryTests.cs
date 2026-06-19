@@ -1,6 +1,6 @@
-﻿using Havit.Tests.Scopes.Instrastructure;
+﻿using Havit.Core.Tests.Scopes.Instrastructure;
 
-namespace Havit.Tests.Scopes;
+namespace Havit.Core.Tests.Scopes;
 
 [TestClass]
 public class LocalAsyncScopeRepositoryTests

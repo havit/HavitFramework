@@ -1,6 +1,6 @@
 ﻿using Havit.Diagnostics.Contracts;
 
-namespace Havit.Tests.Diagnostics.Contracts;
+namespace Havit.Core.Tests.Diagnostics.Contracts;
 
 [TestClass]
 public class ContractTests

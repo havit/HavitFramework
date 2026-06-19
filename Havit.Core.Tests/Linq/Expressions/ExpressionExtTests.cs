@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Havit.Linq.Expressions;
 
-namespace Havit.Tests.Linq.Expressions;
+namespace Havit.Core.Tests.Linq.Expressions;
 
 [TestClass]
 public class ExpressionExtTests

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 
@@ -11,6 +12,15 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.UnitOfWorks.EntityValidation;
 public class EntityValidationRunner : IEntityValidationRunner
 {
 	private readonly IEntityValidatorsFactory _entityValidatorsFactory;
+
+	// Cache IEntityValidator<TEntity>.Validate metody dle CLR typu entity - vyhneme se opakovanému MakeGenericType + GetMethod.
+	// Díky kontravarianci IEntityValidator<in TEntity> je metoda získaná pro typ skupiny použitelná i pro validátory předků.
+	private static readonly ConcurrentDictionary<Type, MethodInfo> _validateMethodsByEntityType = new ConcurrentDictionary<Type, MethodInfo>();
+
+	// Cache uzavřené generické IEntityValidatorsFactory.Create<TEntity>() metody dle CLR typu entity - vyhneme se opakovanému GetMethod + MakeGenericMethod.
+	// Metoda je brána z rozhraní (ne z konkrétního typu factory), takže je nezávislá na instanci a invoke se virtuálně nadispatchuje na implementaci.
+	private static readonly MethodInfo _createValidatorsMethodDefinition = typeof(IEntityValidatorsFactory).GetMethod(nameof(IEntityValidatorsFactory.Create));
+	private static readonly ConcurrentDictionary<Type, MethodInfo> _createValidatorsMethodsByEntityType = new ConcurrentDictionary<Type, MethodInfo>();
 
 	/// <summary>
 	/// Konstruktor.
@@ -39,12 +49,16 @@ public class EntityValidationRunner : IEntityValidationRunner
 			Type type = changesGroup.Key;
 			while (type != null)
 			{
-				supportedValidators.AddRange((IEnumerable<object>)_entityValidatorsFactory.GetType().GetMethod(nameof(IEntityValidatorsFactory.Create)).MakeGenericMethod(type).Invoke(_entityValidatorsFactory, null));
+				MethodInfo createMethod = _createValidatorsMethodsByEntityType.GetOrAdd(
+					type,
+					static t => _createValidatorsMethodDefinition.MakeGenericMethod(t));
+				supportedValidators.AddRange((IEnumerable<object>)createMethod.Invoke(_entityValidatorsFactory, null));
 				type = type.BaseType;
 			}
 
-			Type entityValidatorType = typeof(IEntityValidator<>).MakeGenericType(changesGroup.Key);
-			MethodInfo runMethod = entityValidatorType.GetMethod(nameof(IEntityValidator<object>.Validate));
+			MethodInfo runMethod = _validateMethodsByEntityType.GetOrAdd(
+				changesGroup.Key,
+				static type => typeof(IEntityValidator<>).MakeGenericType(type).GetMethod(nameof(IEntityValidator<object>.Validate)));
 			foreach (Change change in changesGroup)
 			{
 				runMethodParameters[0] = change.ChangeType;

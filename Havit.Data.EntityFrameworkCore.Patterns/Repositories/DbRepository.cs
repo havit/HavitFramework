@@ -359,11 +359,11 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 
 			LoadReferences(allData);
 
-			_all = allData;
 			_dbContext.RegisterAfterSaveChangesAction(() =>
 			{
 				_all = null;
 			});
+			_all = allData;
 		}
 		return new List<TEntity>(_all);
 	}
@@ -404,11 +404,11 @@ public abstract class DbRepository<TEntity, TKey> : IRepository<TEntity, TKey>
 			}
 			await LoadReferencesAsync(allData, cancellationToken).ConfigureAwait(false);
 
-			_all = allData;
 			_dbContext.RegisterAfterSaveChangesAction(() =>
 			{
 				_all = null;
 			});
+			_all = allData;
 		}
 		return new List<TEntity>(_all);
 	}

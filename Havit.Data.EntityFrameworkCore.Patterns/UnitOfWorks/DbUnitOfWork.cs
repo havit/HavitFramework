@@ -230,7 +230,7 @@ public class DbUnitOfWork : IUnitOfWork
 	{
 		if (_asyncAfterCommitsActions != null)
 		{
-			throw new InvalidOperationException($"Cannot use asynchronous after commit actions for {nameof(Commit)} method method. Call {nameof(CommitAsync)} method or use only synchronous after commit actions.");
+			throw new InvalidOperationException($"Cannot use asynchronous after commit actions for {nameof(Commit)} method. Call {nameof(CommitAsync)} method or use only synchronous after commit actions.");
 		}
 	}
 

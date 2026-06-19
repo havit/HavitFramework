@@ -16,7 +16,7 @@
 			S publikací nové verze je nutno vypublikovat též Havit.Data.Entity6.Patterns, protože zde jsme odebrali závislost na Microsoft.CSharp,
 			která se v Havit.Data.Entity6.Patterns používá. Verze Havit.Data.Entity6.Patterns připravena k publikování si závislosti přidá jako svou vlastní.
 		-->
-		<PackageVersion>2.1.34-pre01</PackageVersion>
+		<PackageVersion>2.1.34</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Data Patterns</Description>
 	</PropertyGroup>
 

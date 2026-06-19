@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<!-- NuGet -->
-	<Import Project="../NuGet.targets" />
+	<!--<Import Project="../NuGet.targets" />-->
 	<PropertyGroup>
 		<PackageVersion>2.0.30-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire extensions</Description>

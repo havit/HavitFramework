@@ -31,7 +31,7 @@ public class DataSeedRunner : IDataSeedRunner
 
 		this._dataSeeds = dataSeeds.ToList();
 
-		if (this._dataSeeds.Select(item => item.GetType()).Distinct().Count() != this._dataSeeds.Count())
+		if (this._dataSeeds.Select(item => item.GetType()).Distinct().Count() != this._dataSeeds.Count)
 		{
 			throw new ArgumentException("Contains dataseed type duplicity.", nameof(dataSeeds));
 		}

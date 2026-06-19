@@ -34,7 +34,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 				return reader.ReadToEnd();
 			}
 		}
-		catch
+		catch (FileNotFoundException)
 		{
 			return null;
 		}
@@ -59,7 +59,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 #endif
 			}
 		}
-		catch
+		catch (FileNotFoundException)
 		{
 			return null;
 		}

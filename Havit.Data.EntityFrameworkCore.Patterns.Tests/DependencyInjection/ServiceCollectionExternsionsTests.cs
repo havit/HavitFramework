@@ -261,13 +261,13 @@ public class ServiceCollectionExtensionsTests
 		if (pooling)
 		{
 			builder.Services.AddDbContextPool<IDbContext, ApplicationDbContext>(options => options
-				.UseSqlite("Data Source=FAKE.DAT")
+				.UseSqlServer("Data Source=FAKE.DAT")
 				.UseDefaultHavitConventions());
 		}
 		else
 		{
 			builder.Services.AddDbContext<IDbContext, ApplicationDbContext>(options => options
-				.UseSqlite("Data Source=FAKE.DAT")
+				.UseSqlServer("Data Source=FAKE.DAT")
 				.UseDefaultHavitConventions());
 		}
 

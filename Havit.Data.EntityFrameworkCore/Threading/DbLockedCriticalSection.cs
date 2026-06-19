@@ -146,14 +146,21 @@ public class DbLockedCriticalSection : IDbLockedCriticalSection
 			}
 			finally
 			{
-				if (mustClose)
+				try
 				{
-					await sqlConnection.CloseAsync().ConfigureAwait(false);
-				}
+					if (mustClose)
+					{
+						await sqlConnection.CloseAsync().ConfigureAwait(false);
+					}
 
-				if (_ownsConnection)
+					if (_ownsConnection)
+					{
+						await sqlConnection.DisposeAsync().ConfigureAwait(false);
+					}
+				}
+				catch
 				{
-					await sqlConnection.DisposeAsync().ConfigureAwait(false);
+					// NOOP
 				}
 			}
 		});

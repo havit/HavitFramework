@@ -180,7 +180,7 @@ public static partial class UniversalTypeConverter
 		}
 		if (destinationType == typeof(DateTime))
 		{
-			if (DateTime.TryParse(value, formatProvider, DateTimeStyles.None, out DateTime parsed)) { result = parsed; return true; }
+			if (DateTime.TryParse(value, formatProvider, DateTimeStyles.AllowWhiteSpaces, out DateTime parsed)) { result = parsed; return true; }
 			return false;
 		}
 		if (destinationType == typeof(Char))

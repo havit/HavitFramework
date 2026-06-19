@@ -196,6 +196,25 @@ public class UniversalConverterTests
 	}
 
 	[TestMethod]
+	public void UniversalConverter_TryConvertTo_DateTime_AllowsLeadingAndTrailingWhitespace()
+	{
+		object result;
+		bool success;
+
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(" 1/2/2013", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-US"));
+		Assert.IsTrue(success, "leading space");
+		Assert.AreEqual(new DateTime(2013, 1, 2), (DateTime)result);
+
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo("1/2/2013 ", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-US"));
+		Assert.IsTrue(success, "trailing space");
+		Assert.AreEqual(new DateTime(2013, 1, 2), (DateTime)result);
+
+		success = Havit.ComponentModel.UniversalTypeConverter.TryConvertTo(" 1/2/2013 ", typeof(DateTime), out result, CultureInfo.GetCultureInfo("en-US"));
+		Assert.IsTrue(success, "leading and trailing space");
+		Assert.AreEqual(new DateTime(2013, 1, 2), (DateTime)result);
+	}
+
+	[TestMethod]
 	public void UniversalConverter_TryConvertTo_DBNull()
 	{
 		object result;

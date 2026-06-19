@@ -225,13 +225,13 @@ public static class CollectionExt
 		var targetLookup = target.ToLookup(targetKeySelector);
 		var sourceLookup = source.ToLookup(sourceKeySelector);
 
-		// Iterate the lookup groups directly (no extra HashSet of keys, no repeated key re-hashing via Contains+indexer).
+		// Iterate the lookup groups directly (no extra HashSet of keys, single hash lookup per target group).
 		// Target loop covers matched + target-only keys; source loop then adds only the source-only keys.
 		foreach (var targetGroup in targetLookup)
 		{
-			if (sourceLookup.Contains(targetGroup.Key))
+			var sourceGroup = sourceLookup[targetGroup.Key];
+			if (sourceGroup.Any())
 			{
-				var sourceGroup = sourceLookup[targetGroup.Key];
 				foreach (TTarget targetItem in targetGroup)
 				{
 					foreach (TSource sourceItem in sourceGroup)

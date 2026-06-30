@@ -1,3 +1,6 @@
+v2.0.38 (6/2026)
+• Contract.Requires, Contract.Assert - odebrán atribut [ConstantExpected], neosvědčilo se
+
 v2.0.37 (6/2026)
 • Contract.Requires, Contract.Assert nově využívá [ConstantExpected].
 • Úpravy z AI code review a vylepšení napříč knihovnou (CollectionExt, UniversalTypeConverter, EnumExt, MathExt, Reflector, CriticalSection, PasswordGenerator, StringExt, RegexPatterns, ...).

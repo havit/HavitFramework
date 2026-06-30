@@ -16,7 +16,7 @@ public static class Contract
 	/// </summary>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
-	public static void Requires([DoesNotReturnIf(false)] bool condition, [ConstantExpected, CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Requires([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 	public static void Requires(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
@@ -34,7 +34,7 @@ public static class Contract
 	/// <typeparam name="TException">The type of exception that is thrown if the condition is not met.</typeparam>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
-	public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [ConstantExpected, CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 	public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
@@ -52,7 +52,7 @@ public static class Contract
 	/// </summary>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
-	public static void Assert([DoesNotReturnIf(false)] bool condition, [ConstantExpected, CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Assert([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 	public static void Assert(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
@@ -79,7 +79,7 @@ public static class Contract
 	/// <typeparam name="TException">The type of exception that is thrown if the condition is not met.</typeparam>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
-	public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [ConstantExpected, CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
 	public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)

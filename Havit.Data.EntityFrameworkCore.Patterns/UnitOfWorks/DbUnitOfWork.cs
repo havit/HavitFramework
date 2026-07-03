@@ -202,6 +202,10 @@ public class DbUnitOfWork : IUnitOfWork
 	/// Registruje akci k provedení po commitu. Akce je provedena metodou AfterCommit.
 	/// Při opakovaném commitu již akce není volána.
 	/// </summary>
+	/// <remarks>
+	/// After commit akce běží až po úspěšném uložení do databáze a spouští se v pořadí registrace.
+	/// Akce nesmí vyhazovat výjimku - pokud ji vyhodí, případné další registrované after commit akce se již neprovedou (data jsou přitom v databázi již uložena).
+	/// </remarks>
 	public void RegisterAfterCommitAction(Action action)
 	{
 		ArgumentNullException.ThrowIfNull(action);
@@ -216,6 +220,10 @@ public class DbUnitOfWork : IUnitOfWork
 	/// Registruje asynchronní akci k provedení po commitu. Akce je provedena metodou AfterCommit.
 	/// Při opakovaném commitu již akce není volána.
 	/// </summary>
+	/// <remarks>
+	/// After commit akce běží až po úspěšném uložení do databáze a spouští se v pořadí registrace (nejprve synchronní, poté asynchronní).
+	/// Akce nesmí vyhazovat výjimku - pokud ji vyhodí, případné další registrované after commit akce se již neprovedou (data jsou přitom v databázi již uložena).
+	/// </remarks>
 	public void RegisterAfterCommitAction(Func<CancellationToken, Task> asyncAction)
 	{
 		ArgumentNullException.ThrowIfNull(asyncAction);

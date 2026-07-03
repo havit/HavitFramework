@@ -8,6 +8,11 @@
 	<!-- NuGet -->
 	<!--<Import Project="../NuGet.targets" />-->
 	<PropertyGroup>
+		<!-- POZOR, AKTUÁLNE NEPUBLIKOVATELNÁ PRODUKČNÍ VERZE:
+			Došlo k odebrání závislostí a implementace ApplicationInsights, ukázalo se však že tato implementace bude stále potřeba
+			pro staré projekty, které nehodláme aktualizovat (WebForms).  Před publikací je toto nutno vyřešit, ať už návratem závislosti
+			a implementace nebo extrahováním do nového samostatného nuget balíčku.
+		-->
 		<PackageVersion>2.0.30-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Hangfire extensions</Description>
 	</PropertyGroup>

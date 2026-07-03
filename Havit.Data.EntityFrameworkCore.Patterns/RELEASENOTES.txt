@@ -1,4 +1,9 @@
-﻿v2.10.3 (6/2026)
+﻿v2.10.4 (7/2026)
+* DbDataLoader - podpora načítání vlastností pro entity předané typem interface 
+  List<ISomeEntity> entities = ...; dataLoader.LoadAll(entities, x => x.Property)
+  (ISomeEntity je interface, všechny entities musí být stejného typu)
+
+v2.10.3 (6/2026)
 • SoftDeleteManager - reimplementace bez dynamic (výkonová optimalizace).
 • DbRepository.GetAllAsync - ukládání načtených záznamů do cache (bugfix).
 • LookupServiceBase - korektnější použití zámku (double-check locking), do query doplněn TagWith.

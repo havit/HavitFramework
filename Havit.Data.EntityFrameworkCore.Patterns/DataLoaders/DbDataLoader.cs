@@ -18,6 +18,10 @@ namespace Havit.Data.EntityFrameworkCore.Patterns.DataLoaders;
 /// Explicit data loader.
 /// Načte hodnoty vlastnosti třídy, pokud ještě nejsou načteny.
 /// Podporováno je zřetězení (subjekt => subjekt.Adresa.Zeme.Svetadil) vč. varianty s kolekcemi, kdy je třeba použít AllItems (subjekt => subjekt.Adresy.AllItems().Zeme).
+/// Entity smí být typovány i interface za těchto předpokladů:
+/// vlastnost předepsaná interfacem je entitou implementována implicitně (stejnojmenná public vlastnost),
+/// všechny entity jednoho volání jsou téhož typu.
+/// Pro prázdnou kolekci entit typovanou interfacem nedojde k žádnému načtení.
 /// </summary>
 public partial class DbDataLoader : IDataLoader
 {
@@ -27,10 +31,15 @@ public partial class DbDataLoader : IDataLoader
 	private static readonly MethodInfo s_loadReferencePropertyInternalAsyncMethod = typeof(DbDataLoader).GetMethod(nameof(LoadReferencePropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic);
 	private static readonly MethodInfo s_loadCollectionPropertyInternalAsyncMethod = typeof(DbDataLoader).GetMethod(nameof(LoadCollectionPropertyInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic);
 
+	private static readonly MethodInfo s_loadInternalMethod = typeof(DbDataLoader).GetMethod(nameof(LoadInternal), BindingFlags.Instance | BindingFlags.NonPublic);
+	private static readonly MethodInfo s_loadInternalAsyncMethod = typeof(DbDataLoader).GetMethod(nameof(LoadInternalAsync), BindingFlags.Instance | BindingFlags.NonPublic);
+
 	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), MethodInfo> s_loadReferencePropertyInternalGenericMethods = new();
 	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), MethodInfo> s_loadReferencePropertyInternalAsyncGenericMethods = new();
 	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType, Type OriginalTargetType, Type CollectionItemType), MethodInfo> s_loadCollectionPropertyInternalGenericMethods = new();
 	private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType, Type OriginalTargetType, Type CollectionItemType), MethodInfo> s_loadCollectionPropertyInternalAsyncGenericMethods = new();
+	private static readonly ConcurrentDictionary<(Type EntityType, Type PropertyType), MethodInfo> s_loadInternalGenericMethods = new();
+	private static readonly ConcurrentDictionary<(Type EntityType, Type PropertyType), MethodInfo> s_loadInternalAsyncGenericMethods = new();
 
 	private readonly IDbContext _dbContext;
 	private readonly IPropertyLoadSequenceResolver _propertyLoadSequenceResolver;
@@ -229,6 +238,13 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
+		// TEntity může být interface implementovaný entitou modelu.
+		// V takovém případě určíme skutečný typ entit, přepíšeme propertyPath na tento typ a načtení delegujeme zpět do LoadInternal uzavřeného nad skutečným typem.
+		if (typeof(TEntity).IsInterface)
+		{
+			return LoadInternalWithParameterTypeSubstitution(distinctNotNullEntities, propertyPath);
+		}
+
 		// vytáhneme posloupnost vlastností, které budeme načítat
 		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 		string propertyPathString = propertyPath.ToString(); // ev. by šlo použít CallerArgumentExpression, ale je to breaking change do IDataLoader
@@ -300,6 +316,13 @@ public partial class DbDataLoader : IDataLoader
 		where TEntity : class
 		where TProperty : class
 	{
+		// TEntity může být interface implementovaný entitou modelu.
+		// V takovém případě určíme skutečný typ entit, přepíšeme propertyPath na tento typ a načtení delegujeme zpět do LoadInternalAsync uzavřeného nad skutečným typem.
+		if (typeof(TEntity).IsInterface)
+		{
+			return await LoadInternalWithParameterTypeSubstitutionAsync(distinctNotNullEntities, propertyPath, cancellationToken).ConfigureAwait(false);
+		}
+
 		// vytáhneme posloupnost vlastností, které budeme načítat
 		PropertyToLoad[] propertiesSequenceToLoad = _propertyLoadSequenceResolver.GetPropertiesToLoad(propertyPath);
 		string propertyPathString = propertyPath.ToString(); // ev. by šlo použít CallerArgumentExpression, ale je to breaking change do IDataLoader
@@ -365,6 +388,119 @@ public partial class DbDataLoader : IDataLoader
 		}
 
 		return (IFluentDataLoader<TProperty>)fluentDataLoader;
+	}
+
+	/// <summary>
+	/// Zajistí načtení vlastností entit, které jsou typovány interface.
+	/// Určí skutečný typ entit, přepíše propertyPath na tento typ a deleguje načtení do LoadInternal uzavřeného nad skutečným typem entit.
+	/// </summary>
+	private IFluentDataLoader<TProperty> LoadInternalWithParameterTypeSubstitution<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath)
+		where TEntity : class
+		where TProperty : class
+	{
+		(Array entities, LambdaExpression substitutedPropertyPath) = LoadInternalWithParameterTypeSubstitution_PrepareArguments(distinctNotNullEntities, propertyPath);
+
+		if (entities == null) // žádné entity - není z čeho určit skutečný typ, ale ani co načítat
+		{
+			return new NullFluentDataLoader<TProperty>();
+		}
+
+		MethodInfo loadInternalMethod = s_loadInternalGenericMethods.GetOrAdd(
+			(entities.GetType().GetElementType(), typeof(TProperty)),
+			static key => s_loadInternalMethod.MakeGenericMethod(key.EntityType, key.PropertyType));
+
+		try
+		{
+			return (IFluentDataLoader<TProperty>)loadInternalMethod.Invoke(this, [entities, substitutedPropertyPath]);
+		}
+		catch (TargetInvocationException ex)
+		{
+			_logger.LogError(ex.InnerException, "Error while loading entity property.");
+			ExceptionDispatchInfo.Throw(ex.InnerException);
+			throw; // unreachable
+		}
+	}
+
+	/// <summary>
+	/// Zajistí načtení vlastností entit, které jsou typovány interface.
+	/// Určí skutečný typ entit, přepíše propertyPath na tento typ a deleguje načtení do LoadInternalAsync uzavřeného nad skutečným typem entit.
+	/// </summary>
+	private async ValueTask<IFluentDataLoader<TProperty>> LoadInternalWithParameterTypeSubstitutionAsync<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath, CancellationToken cancellationToken)
+		where TEntity : class
+		where TProperty : class
+	{
+		(Array entities, LambdaExpression substitutedPropertyPath) = LoadInternalWithParameterTypeSubstitution_PrepareArguments(distinctNotNullEntities, propertyPath);
+
+		if (entities == null) // žádné entity - není z čeho určit skutečný typ, ale ani co načítat
+		{
+			return new NullFluentDataLoader<TProperty>();
+		}
+
+		MethodInfo loadInternalAsyncMethod = s_loadInternalAsyncGenericMethods.GetOrAdd(
+			(entities.GetType().GetElementType(), typeof(TProperty)),
+			static key => s_loadInternalAsyncMethod.MakeGenericMethod(key.EntityType, key.PropertyType));
+
+		ValueTask<IFluentDataLoader<TProperty>> task = default;
+		try
+		{
+			task = (ValueTask<IFluentDataLoader<TProperty>>)loadInternalAsyncMethod.Invoke(this, [entities, substitutedPropertyPath, cancellationToken]);
+		}
+		catch (TargetInvocationException ex)
+		{
+			_logger.LogError(ex.InnerException, "Error while loading entity property.");
+			ExceptionDispatchInfo.Throw(ex.InnerException);
+		}
+
+		return await task.ConfigureAwait(false);
+	}
+
+	/// <summary>
+	/// Připraví argumenty pro delegování načtení do LoadInternal(Async) uzavřeného nad skutečným typem entit:
+	/// pole entit typované skutečným typem entit a propertyPath přepsaný na tento typ.
+	/// Pokud nejsou žádné entity, vrací (null, null) - skutečný typ není z čeho určit, avšak není ani co načítat.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	/// Pokud entity nejsou téhož typu, pokud skutečný typ entit není entitou modelu
+	/// nebo pokud vlastnost není na skutečném typu entit dostupná jako stejnojmenná public vlastnost.
+	/// </exception>
+	private (Array Entities, LambdaExpression PropertyPath) LoadInternalWithParameterTypeSubstitution_PrepareArguments<TEntity, TProperty>(IEnumerable<TEntity> distinctNotNullEntities, Expression<Func<TEntity, TProperty>> propertyPath)
+		where TEntity : class
+	{
+		List<TEntity> entitiesList = distinctNotNullEntities.ToList();
+		if (entitiesList.Count == 0)
+		{
+			return (null, null);
+		}
+
+		Type runtimeType = entitiesList[0].GetType();
+
+		// kontrola homogenity - všechny entity musí být téhož typu (jinak bychom je nemohli načíst jedním průchodem nad jedním typem)
+		for (int i = 1; i < entitiesList.Count; i++)
+		{
+			Type currentRuntimeType = entitiesList[i].GetType();
+			if (currentRuntimeType != runtimeType)
+			{
+				throw new InvalidOperationException($"DataLoader cannot load properties of entities typed as {typeof(TEntity).FullName} while the entities are instances of different types ({runtimeType.FullName}, {currentRuntimeType.FullName}). All entities in a single call must be of the same type.");
+			}
+		}
+
+		// určíme skutečný typ entity v modelu (FindRuntimeEntityType řeší i případné proxy či odvozené typy)
+		Type entityClrType = _dbContext.Model.FindRuntimeEntityType(runtimeType)?.ClrType;
+		if (entityClrType == null)
+		{
+			throw new InvalidOperationException($"DataLoader cannot load properties of entities typed as {typeof(TEntity).FullName} while their runtime type {runtimeType.FullName} is not an entity type of the model.");
+		}
+
+		// K zacyklení delegovaného volání LoadInternal(Async) nemůže dojít - entityClrType pochází z modelu, takže to není interface a substituce se v delegovaném volání znovu nespustí.
+		LambdaExpression substitutedPropertyPath = new PropertyPathParameterTypeSubstitutionExpressionVisitor().SubstituteParameterType(propertyPath, entityClrType);
+
+		Array entities = Array.CreateInstance(entityClrType, entitiesList.Count);
+		for (int i = 0; i < entitiesList.Count; i++)
+		{
+			entities.SetValue(entitiesList[i], i);
+		}
+
+		return (entities, substitutedPropertyPath);
 	}
 
 	/// <summary>

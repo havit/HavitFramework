@@ -7,6 +7,7 @@ public class DataLoaderTestDbContext : Havit.Data.EntityFrameworkCore.DbContext
 {
 	public DbSet<Master> Master { get; set; }
 	public DbSet<Child> Child { get; set; }
+	public DbSet<AnotherChild> AnotherChild { get; set; }
 
 	public DbSet<LoginAccount> LoginAccount { get; set; }
 	public DbSet<Role> Role { get; set; }
@@ -34,6 +35,7 @@ public class DataLoaderTestDbContext : Havit.Data.EntityFrameworkCore.DbContext
 		// 1:N
 		modelBuilder.Entity<Master>().Ignore(master => master.Children);
 		modelBuilder.Entity<Master>().HasMany(master => master.ChildrenIncludingDeleted).WithOne(child => child.Parent);
+		modelBuilder.Entity<AnotherChild>().HasOne(anotherChild => anotherChild.Parent).WithMany();
 
 		// M:N
 		modelBuilder.Entity<Membership>().HasKey(membership => new { membership.LoginAccountId, membership.RoleId });

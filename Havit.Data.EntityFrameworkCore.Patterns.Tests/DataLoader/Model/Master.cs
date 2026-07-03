@@ -2,7 +2,7 @@
 
 namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 
-public class Master
+public class Master : IMasterWithChildren
 {
 	public int Id { get; set; }
 

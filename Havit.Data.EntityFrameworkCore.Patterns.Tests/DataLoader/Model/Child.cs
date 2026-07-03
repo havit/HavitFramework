@@ -1,6 +1,6 @@
 ﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Tests.DataLoader.Model;
 
-public class Child
+public class Child : IChildWithParent, IChildWithParentExplicit
 {
 	public int Id { get; set; }
 
@@ -9,4 +9,6 @@ public class Child
 	public int? ParentId { get; set; }
 
 	public DateTime? Deleted { get; set; }
+
+	Master IChildWithParentExplicit.ParentExplicit => Parent;
 }

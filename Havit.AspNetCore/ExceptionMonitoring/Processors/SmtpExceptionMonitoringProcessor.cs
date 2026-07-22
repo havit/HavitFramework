@@ -11,6 +11,8 @@ namespace Havit.AspNetCore.ExceptionMonitoring.Processors;
 /// </summary>
 public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
 {
+	private const int MaxMailMessageSubjectLength = 255;
+
 	private readonly IExceptionFormatter exceptionFormatter;
 	private readonly ILogger<SmtpExceptionMonitoringProcessor> logger;
 	private readonly SmtpExceptionMonitoringOptions options;
@@ -134,7 +136,17 @@ public class SmtpExceptionMonitoringProcessor : IExceptionMonitoringProcessor
 
 		int counter = Interlocked.Increment(ref _mailCounter);
 
-		return $"{options.Subject}: {message} (#{counter})";
+		string suffix = $" (#{counter})";
+		string prefix = $"{options.Subject}: {message}";
+
+		if (prefix.Length + suffix.Length > MaxMailMessageSubjectLength)
+		{
+			const string ellipsis = "...";
+			int maxPrefixLength = MaxMailMessageSubjectLength - suffix.Length - ellipsis.Length;
+			prefix = prefix.Substring(0, Math.Max(0, maxPrefixLength)) + ellipsis;
+		}
+
+		return prefix + suffix;
 	}
 
 	/// <summary>

@@ -1,3 +1,6 @@
+v2.0.39 (7/2026)
+• RegexPatterns - opravena regrese z v2.0.37: patterny (EmailStrict, Identifier, Time24h, IPAddress, Integer) jsou opět ukotvené pomocí $ místo \z. Kotva \z není podporována JavaScriptem, takže patterny nebyly použitelné pro klientskou validaci (RegularExpressionAttribute, RegularExpressionValidator, HTML atribut pattern).
+
 v2.0.38 (6/2026)
 • Contract.Requires, Contract.Assert - odebrán atribut [ConstantExpected], neosvědčilo se
 

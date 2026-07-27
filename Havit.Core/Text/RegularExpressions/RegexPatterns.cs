@@ -6,6 +6,19 @@ namespace Havit.Text.RegularExpressions;
 /// <summary>
 /// Typical search patterns for regular expressions.
 /// </summary>
+/// <remarks>
+/// The validation patterns are intentionally anchored by <c>^</c> and <c>$</c> only, so that they are usable by the
+/// JavaScript (ECMAScript) regular expression engine as well - they can therefore be handed over to client-side
+/// validation (RegularExpressionAttribute, RegularExpressionValidator, HTML pattern attribute, ...) without any
+/// translation. Do not replace <c>$</c> with <c>\z</c>: <c>\z</c> is a .NET-only construct that JavaScript rejects.
+/// <para>
+/// Note that in .NET <c>$</c> also matches right before a single trailing <c>\n</c>, so e.g. "123\n" passes
+/// as a valid integer (JavaScript is stricter here and rejects it). Anything beyond that trailing <c>\n</c>
+/// is rejected by both engines ("123\r\n", "123\n\n", "123\nabc"). Trim the input if you need strict behavior.
+/// </para>
+/// Do not combine the patterns with <see cref="RegexOptions.Multiline"/>: it would turn <c>^</c> and <c>$</c> into
+/// per-line anchors and the patterns would start matching individual lines of a multi-line input.
+/// </remarks>
 public static class RegexPatterns
 {
 	/// <summary>
@@ -24,19 +37,19 @@ public static class RegexPatterns
 	/// http://www.regexlib.com/REDetails.aspx?regexp_id=295
 	/// </remarks>
 	public const string EmailStrict = @"^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.)|([A-Za-z0-9]+\++)|([A-Za-z0-9]+'+))*[A-Za-z0-9]+"
-									+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,20}\z";
+									+ @"@(([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.))*[A-Za-z0-9]{1,63}\.[a-zA-Z]{2,20}$";
 
 	/// <summary>
 	/// Pattern for checking identifiers.
 	/// The identifier must start with a letter or underscore, followed by letters, digits, or underscores.
 	/// </summary>
-	public const string Identifier = @"^[a-zA-Z_][a-zA-Z0-9_]*\z";
+	public const string Identifier = @"^[a-zA-Z_][a-zA-Z0-9_]*$";
 
 	/// <summary>
 	/// Pattern for checking time. 24-hour format, colon separator, optional seconds. For example, 23:59:00.
 	/// Does not accept 24:00.
 	/// </summary>
-	public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})\z";
+	public const string Time24h = @"^(20|21|22|23|[01]\d|\d)(([:][0-5]\d){1,2})$";
 
 	/// <summary>
 	/// Pattern for checking IPv4 addresses.
@@ -45,7 +58,7 @@ public static class RegexPatterns
 	public const string IPAddress = @"^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\."
 									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\."
 									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\."
-									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\z";
+									+ @"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$";
 
 	/// <summary>
 	/// Pattern for checking integers.
@@ -54,7 +67,7 @@ public static class RegexPatterns
 	/// Accepts: [1], [+15], [0], [-10], [+0]<br/>
 	/// Rejects: [1.0], [abc], [+], [1,15]
 	/// </remarks>
-	public const string Integer = @"^[-+]?\d+\z";
+	public const string Integer = @"^[-+]?\d+$";
 
 	/// <summary>
 	/// Returns a regular expression for searching in text.

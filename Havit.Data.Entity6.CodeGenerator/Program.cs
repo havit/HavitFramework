@@ -18,6 +18,7 @@ using Havit.Data.Entity.CodeGenerator.Actions.QueryableExtensions.Template;
 using Havit.Data.Entity.CodeGenerator.Actions.Repositories;
 using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Model;
 using Havit.Data.Entity.CodeGenerator.Actions.Repositories.Templates;
+using Havit.Data.Entity.CodeGenerator.Configuration;
 using Havit.Data.Entity.CodeGenerator.Entity;
 using Havit.Data.Entity.CodeGenerator.Services;
 using Havit.Data.Entity.CodeGenerator.Services.SourceControl;
@@ -44,6 +45,15 @@ internal static class Program
 				throw new InvalidOperationException("Solution file was not found.");
 			}
 			solutionDirectory = solutionDirectory.Parent;
+		}
+
+		CodeGeneratorConfiguration configuration = GetConfiguration(solutionDirectory);
+		bool hasExternalModel = !String.IsNullOrEmpty(configuration.ModelRootNamespace);
+		if (hasExternalModel && configuration.GenerateMetadata)
+		{
+			// Metadata třídy by neměly kam být vygenerovány - projekt modelu v solution není.
+			Console.WriteLine("ModelRootNamespace is configured (the model is not a project in the solution), therefore GenerateMetadata has to be set to false.");
+			return;
 		}
 
 		string[] files = System.IO.Directory.GetFiles(Path.Combine(solutionDirectory.FullName, @"Entity\bin"), "*.Entity.dll", SearchOption.AllDirectories);
@@ -95,7 +105,9 @@ internal static class Program
 				MethodInfo setInitializerMethod = typeof(System.Data.Entity.Database).GetMethod("SetInitializer", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(dbContextType);
 				setInitializerMethod.Invoke(null, new object[] { nullDatabaseInitializer });
 			},
-			() => modelProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
+			() => modelProject = hasExternalModel
+				? new ExternalModelProject(configuration.ModelRootNamespace)
+				: new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"Model\Model.csproj")),
 			() => dataLayerProject = new ProjectFactory().Create(Path.Combine(solutionDirectory.FullName, @"DataLayer\DataLayer.csproj"))
 		);
 
@@ -112,7 +124,13 @@ internal static class Program
 		var dataEntriesModelSource = new DataEntriesModelSource(dbContext, modelProject, dataLayerProject, cammelCaseNamingStrategy);
 
 		Parallel.Invoke(
-			() => GenerateMetadata(modelProject, dbContext, sourceControlClient),
+			() =>
+			{
+				if (configuration.GenerateMetadata)
+				{
+					GenerateMetadata(modelProject, dbContext, sourceControlClient);
+				}
+			},
 			() => GenerateDataSources(dataLayerProject, sourceControlClient, modelProject, dbContext),
 			() => GenerateDataEntries(dataLayerProject, sourceControlClient, dataEntriesModelSource),
 			() => GenerateRepositories(dataLayerProject, sourceControlClient, dbContext, modelProject, dataEntriesModelSource)/*,
@@ -152,6 +170,29 @@ internal static class Program
 
 		codeGenerationStopwath.Stop();
 		Console.WriteLine("Code generation completed in {0} ms.", (int)codeGenerationStopwath.Elapsed.TotalMilliseconds);
+	}
+
+	/// <summary>
+	/// Hledá konfigurační soubor od aktuálního adresáře (typicky DataLayer) výše až po adresář solution.
+	/// Není-li nalezen, vrací výchozí konfiguraci, tj. chování shodné se stavem před zavedením konfigurace.
+	/// </summary>
+	private static CodeGeneratorConfiguration GetConfiguration(DirectoryInfo solutionDirectory, DirectoryInfo currentDirectory = null)
+	{
+		currentDirectory ??= new DirectoryInfo(Environment.CurrentDirectory);
+
+		string configurationFileName = Path.Combine(currentDirectory.FullName, "entity6.codegenerator.json");
+		if (File.Exists(configurationFileName))
+		{
+			Console.WriteLine($"Using configuration from {configurationFileName}.");
+			return CodeGeneratorConfiguration.ReadFromFile(configurationFileName);
+		}
+
+		if ((currentDirectory.Parent == null) || (solutionDirectory.FullName == currentDirectory.FullName))
+		{
+			return CodeGeneratorConfiguration.Defaults;
+		}
+
+		return GetConfiguration(solutionDirectory, currentDirectory.Parent);
 	}
 
 #if DEBUG

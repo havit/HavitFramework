@@ -1,0 +1,47 @@
+name: Build
+run-name: "Build | #${{ github.run_number }}${{ github.event_name == 'schedule' && ' [Scheduled]' || (github.event_name == 'pull_request' && ' [PullRequest]' || '') }}"
+
+# Vyžadovaná konfigurace repozitáře (Settings -> Secrets and variables -> Actions):
+# vars:
+#   AZURE_CLIENT_ID   # client ID user-assigned managed identity s GitHub federated credentials (OIDC) pro toto repo
+#   AZURE_TENANT_ID   # Entra ID tenant
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    # Neděle 08:00 UTC
+    - cron: '0 8 * * 0'
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: havit-internal/002.HFW-PipelineTemplates/.github/workflows/build-net.yml@master
+    # Explicitní permissions: id-token kvůli OIDC federaci do Azure (Key Vault),
+    # checks + actions vyžaduje test-reporter v šabloně, contents kvůli checkoutu.
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      actions: read
+    with:
+      checkout_sources_scheduled_build_ref: ''
+      build_projects_to_build: |
+        [
+          { "ProjectFile": "HavitFramework.Build.slnf" },
+        ]
+      publish_to_stage_enabled: false
+      # Explicitní nastavení env variables pro Azure WorkloadIdentityCredential (větev DefaultAzureCredential) - testy si přes ni čtou secrets z Azure Key Vaultu.
+      run_unit_tests_before_script: |
+        $response = Invoke-RestMethod `
+          -Uri "$($env:ACTIONS_ID_TOKEN_REQUEST_URL)&audience=api://AzureADTokenExchange" `
+          -Headers @{ Authorization = "Bearer $($env:ACTIONS_ID_TOKEN_REQUEST_TOKEN)" }
+        $tokenFile = Join-Path $env:RUNNER_TEMP 'azure-federated-token'
+        Set-Content -Path $tokenFile -Value $response.value -NoNewline
+        "AZURE_CLIENT_ID=${{ vars.AZURE_CLIENT_ID }}"   | Out-File $env:GITHUB_ENV -Append
+        "AZURE_TENANT_ID=${{ vars.AZURE_TENANT_ID }}"   | Out-File $env:GITHUB_ENV -Append
+        "AZURE_FEDERATED_TOKEN_FILE=$tokenFile"         | Out-File $env:GITHUB_ENV -Append

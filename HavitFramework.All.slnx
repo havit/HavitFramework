@@ -148,7 +148,6 @@
     <Project Path="EFCoreTests/Model/Model.csproj" />
   </Folder>
   <Folder Name="/Tools/">
-    <Project Path="Havit.Tools.AzureDevopsPermissionChecker/Havit.Tools.AzureDevOpsPermissionChecker.csproj" />
     <Project Path="Havit.Tools.Win1250ToUtf8/Havit.Tools.Win1250ToUtf8.csproj" />
   </Folder>
   <Folder Name="/_Solution Items/">

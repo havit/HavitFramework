@@ -97,7 +97,6 @@
 			"Havit.Services.TestHelpers\\Havit.Services.TestHelpers.csproj",
 			"Havit.Services.Tests\\Havit.Services.Tests.csproj",
 			"Havit.Services\\Havit.Services.csproj",
-			"Havit.Tools.AzureDevopsPermissionChecker\\Havit.Tools.AzureDevOpsPermissionChecker.csproj",
 			"Havit.Tools.Win1250ToUtf8\\Havit.Tools.Win1250ToUtf8.csproj",
 			"Havit.Web.Bootstrap\\Havit.Web.Bootstrap.csproj",
 			"Havit.Web.ClientContent\\Havit.Web.ClientContent.csproj",

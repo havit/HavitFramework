@@ -42,6 +42,36 @@ public class DbDataLoader_InterfaceTypedEntities_Tests : DbDataLoaderTestsBase
 	}
 
 	[TestMethod]
+	public void DbDataLoader_Load_Reference_SupportsGenericTypeParameterConstrainedByInterface()
+	{
+		// Arrange
+		SeedOneToManyTestData();
+
+		DataLoaderTestDbContext dbContext = new DataLoaderTestDbContext();
+
+		Child child = dbContext.Child.First();
+
+		Assert.IsNull(child.Parent, "Pro ověření DbDataLoaderu se předpokládá, že hodnota child.Parent je null.");
+
+		IDataLoader dataLoader = CreateDataLoader(dbContext);
+
+		// Vlastnost Parent se v expression tree naváže na interface IChildWithParent, přestože TEntity je typu Child (není interface),
+		// takže nedojde k substituci typu parametru jako u entit typovaných interfacem.
+		void LoadParent<TEntity>(TEntity entity)
+			where TEntity : class, IChildWithParent
+		{
+			dataLoader.Load(entity, item => item.Parent);
+		}
+
+		// Act
+		LoadParent(child);
+
+		// Assert
+		Assert.IsNotNull(child.Parent, "DbDataLoader nenačetl hodnotu pro child.Parent.");
+		Assert.IsTrue(dbContext.GetEntry(child, suppressDetectChanges: false).Reference(nameof(Model.Child.Parent)).IsLoaded, "DbContext nepovažuje vlastnost za načtenou.");
+	}
+
+	[TestMethod]
 	public async Task DbDataLoader_LoadAsync_Reference_SupportsInterfaceTypedEntity()
 	{
 		// Arrange

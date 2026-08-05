@@ -45,37 +45,44 @@ internal class PropertiesSequenceExpressionVisitor : ExpressionVisitor
 
 		if (node.NodeType == ExpressionType.MemberAccess)
 		{
-			Type propertyType = ((PropertyInfo)node.Member).PropertyType;
+			PropertyInfo property = GetPropertyToLoad(node);
+
+			Type propertyType = property.PropertyType;
 			// string a byte[] sice implementují IEnumerable<>, ale nejsou to navigace na kolekce - nesmí být klasifikovány jako kolekce.
 			Type enumerableInterfaceType = ((propertyType != typeof(string)) && (propertyType != typeof(byte[])))
 				? propertyType.GetInterfaces().FirstOrDefault(item => item.IsGenericType && item.GetGenericTypeDefinition() == typeof(IEnumerable<>))
 				: null;
 
-			if (enumerableInterfaceType != null)
+			propertiesToLoad.Add(new PropertyToLoad
 			{
-				propertiesToLoad.Add(new PropertyToLoad
-				{
-					SourceType = node.Member.DeclaringType,
-					PropertyName = node.Member.Name,
-					OriginalPropertyName = node.Member.Name,
-					TargetType = ((PropertyInfo)node.Member).PropertyType,
-					OriginalTargetType = ((PropertyInfo)node.Member).PropertyType,
-					CollectionItemType = enumerableInterfaceType.GetGenericArguments()[0]
-				});
-
-			}
-			else
-			{
-				propertiesToLoad.Add(new PropertyToLoad
-				{
-					SourceType = node.Member.DeclaringType,
-					PropertyName = node.Member.Name,
-					OriginalPropertyName = node.Member.Name,
-					TargetType = ((PropertyInfo)node.Member).PropertyType,
-					OriginalTargetType = ((PropertyInfo)node.Member).PropertyType
-				});
-			}
+				SourceType = property.DeclaringType,
+				PropertyName = property.Name,
+				OriginalPropertyName = property.Name,
+				TargetType = propertyType,
+				OriginalTargetType = propertyType,
+				CollectionItemType = enumerableInterfaceType?.GetGenericArguments()[0]
+			});
 		}
 		return result;
+	}
+
+	/// <summary>
+	/// Vrací vlastnost, která má být pro daný member access načtena.
+	/// Pokud je v expression tree vlastnost navázána na interface (lambda vzniklá v generické metodě s type parametrem omezeným interfacem),
+	/// remapuje ji na stejnojmennou public vlastnost typu, na kterém k přístupu dochází (předpokládá se implicitní implementace).
+	/// SourceType tak není interface, se kterým by DataLoader dále pracovat neuměl.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">Pokud na typu, na kterém k přístupu dochází, stejnojmenná public vlastnost není (např. explicitní implementace interface).</exception>
+	private PropertyInfo GetPropertyToLoad(MemberExpression node)
+	{
+		PropertyInfo property = (PropertyInfo)node.Member;
+
+		if (property.DeclaringType.IsInterface && !node.Expression.Type.IsInterface)
+		{
+			property = node.Expression.Type.GetProperty(property.Name, BindingFlags.Public | BindingFlags.Instance)
+				?? throw new InvalidOperationException($"DataLoader cannot load property {property.Name} declared on interface {property.DeclaringType.FullName} while there is no public property of the same name on type {node.Expression.Type.FullName}. The property is required to be implemented implicitly (as a public property with the same name).");
+		}
+
+		return property;
 	}
 }

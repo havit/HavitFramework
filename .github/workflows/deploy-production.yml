@@ -15,6 +15,7 @@ jobs:
     permissions:
       id-token: write # OIDC token pro NuGet Trusted Publishing (NuGet/login)
       contents: read
+      actions: read # dawidd6/action-download-artifact potřebuje list workflow runs
     environment:
       name: Production # Použije vars/secrets ze stejnojmenného GitHub Environment
       deployment: false  # Nezakládat automatický GitHub Deployment - ukazoval by na HEAD větve,

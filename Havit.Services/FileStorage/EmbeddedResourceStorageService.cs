@@ -58,7 +58,9 @@ public class EmbeddedResourceStorageService : FileStorageServiceBase
 	/// <inheritdoc />
 	protected override Task<Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 	{
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
 		return Task.FromResult(OpenRead(fileName)); // no async version
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 	}
 
 	/// <inheritdoc />
@@ -73,7 +75,7 @@ public class EmbeddedResourceStorageService : FileStorageServiceBase
 	/// <inheritdoc />
 	protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 	{
-		using (Stream resourceStream = OpenRead(fileName))
+		using (Stream resourceStream = await OpenReadAsync(fileName, cancellationToken).ConfigureAwait(false))
 		{
 			await resourceStream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 		}

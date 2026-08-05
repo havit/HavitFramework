@@ -372,7 +372,9 @@ public class DataSeedRunner : IDataSeedRunner
 		dataSeedPersister.AttachDataSeed(dataSeed);
 		try
 		{
+#pragma warning disable VSTHRD103 // Call async methods when in an async method - zde chceme zavolat synchronní metodu, protože potomek DataSeed<TProfile> může overridnout libovolnou z nich. Výchozí implementace SeedDataAsync vrací Task.CompletedTask, takže pokud potomek overridnul jen SeedData, async volání je NOOP.
 			dataSeed.SeedData(dataSeedPersister);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 			await dataSeed.SeedDataAsync(dataSeedPersister, cancellationToken).ConfigureAwait(false);
 		}
 		finally

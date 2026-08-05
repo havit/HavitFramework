@@ -113,7 +113,9 @@ public class DbDataSeedPersister : IDataSeedPersister
 
 		if (synchronizationMode == SynchronizationMode.Synchronous)
 		{
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
 			_unitOfWork.Commit();
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 		}
 		else
 		{

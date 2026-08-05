@@ -94,7 +94,7 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 	/// </summary>
 	protected override async Task PerformReadToStreamAsync(string fileName, Stream stream, CancellationToken cancellationToken = default)
 	{
-		using (Stream fileStream = PerformOpenRead(fileName))
+		using (Stream fileStream = await PerformOpenReadAsync(fileName, cancellationToken).ConfigureAwait(false))
 		{
 			await fileStream.CopyToAsync(stream, 81920 /* default */, cancellationToken).ConfigureAwait(false);
 		}

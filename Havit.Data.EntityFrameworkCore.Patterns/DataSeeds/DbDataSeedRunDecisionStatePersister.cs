@@ -86,7 +86,9 @@ public class DbDataSeedRunDecisionStatePersister : IDataSeedRunDecisionStatePers
 		if (dataSeedVersion == null)
 		{
 			dataSeedVersion = new DataSeedVersion { ProfileName = profileName };
+#pragma warning disable VSTHRD103 // Call async methods when in an async method
 			_dbContext.Set<DataSeedVersion>().Add(dataSeedVersion);
+#pragma warning restore VSTHRD103 // Call async methods when in an async method
 		}
 		dataSeedVersion.Version = currentState;
 		await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

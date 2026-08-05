@@ -85,7 +85,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	{
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName), nameof(fileName));
 
-		ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+		ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false);
 		return await shareFileClient.ExistsAsync(cancellationToken).ConfigureAwait(false);
 	}
 
@@ -114,7 +114,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	protected override async Task PerformReadToStreamAsync(string fileName, System.IO.Stream stream, CancellationToken cancellationToken = default)
 	{
-		ShareFileClient shareFileClient = GetShareFileClient(fileName);
+		ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false);
 		ShareFileDownloadInfo shareFileDownloadInfo;
 
 		try
@@ -150,7 +150,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	protected override async Task<System.IO.Stream> PerformOpenReadAsync(string fileName, CancellationToken cancellationToken = default)
 	{
-		ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+		ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false);
 		try
 		{
 			return await shareFileClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -239,7 +239,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// <inheritdoc />
 	protected override async Task PerformMoveAsync(string sourceFileName, string targetFileName, CancellationToken cancellationToken)
 	{
-		ShareFileClient shareSourceFileClient = GetShareFileClient(sourceFileName);
+		ShareFileClient shareSourceFileClient = await GetShareFileClientAsync(sourceFileName, cancellationToken: cancellationToken).ConfigureAwait(false);
 		ShareFileClient shareTargetFileClient = await GetShareFileClientAsync(targetFileName, createDirectoryStructure: options.AutoCreateDirectories, cancellationToken).ConfigureAwait(false);
 
 		await shareSourceFileClient.RenameAsync(shareTargetFileClient.Path, new ShareFileRenameOptions { ReplaceIfExists = true }, cancellationToken).ConfigureAwait(false);
@@ -263,7 +263,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	{
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-		ShareFileClient shareFileClient = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+		ShareFileClient shareFileClient = await GetShareFileClientAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false);
 		await shareFileClient.DeleteIfExistsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 
@@ -450,7 +450,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	{
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(fileName));
 
-		ShareFileClient file = GetShareFileClient(fileName); // nechceme zakládat složku, můžeme použít synchronní kód v asynchronní metodě
+		ShareFileClient file = await GetShareFileClientAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false);
 		ShareFileProperties properties;
 
 		try
@@ -614,7 +614,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// <inheritdoc />
 	protected override async ValueTask<string> GetContentTypeAsync(string sourceFileName, CancellationToken cancellationToken)
 	{
-		return (await GetShareFileClient(sourceFileName).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
+		return (await (await GetShareFileClientAsync(sourceFileName, cancellationToken: cancellationToken).ConfigureAwait(false)).GetPropertiesAsync(cancellationToken).ConfigureAwait(false)).Value.ContentType;
 	}
 
 	/// <inheritdoc />

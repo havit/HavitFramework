@@ -12,6 +12,9 @@ jobs:
       group: deploy-Production
       cancel-in-progress: false # Souběžný deploy do stejného prostředí se má počkat ve frontě,
                                 # ne zrušit rozdělaný běh uprostřed (např. během MigrationTool).
+    permissions:
+      id-token: write # OIDC token pro NuGet Trusted Publishing (NuGet/login)
+      contents: read
     environment:
       name: Production # Použije vars/secrets ze stejnojmenného GitHub Environment
       deployment: false  # Nezakládat automatický GitHub Deployment - ukazoval by na HEAD větve,
@@ -40,13 +43,19 @@ jobs:
           path: ./artifacts/PublicNugets
 
       - name: Setup NuGet.exe
-        uses: nuget/setup-nuget@v4
+        uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4
+
+      - name: NuGet Login (Trusted Publishing)
+        id: nuget-login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: HAVIT
 
       - name: Publish NuGet packages to nuget.org
         shell: pwsh
         run: |
           Get-ChildItem -Path ./artifacts/PublicNugets -Filter *.nupkg -Recurse | ForEach-Object {
-            nuget push $_.FullName -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate
+            nuget push $_.FullName -ApiKey ${{ steps.nuget-login.outputs.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate
           }
 
       - name: Clean workspace

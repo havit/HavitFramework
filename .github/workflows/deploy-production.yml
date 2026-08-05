@@ -1,0 +1,54 @@
+name: Deploy - Production
+run-name: "Deploy - Production"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy - Production
+    runs-on: [self-hosted, windows, deployment]
+    concurrency:
+      group: deploy-Production
+      cancel-in-progress: false # Souběžný deploy do stejného prostředí se má počkat ve frontě,
+                                # ne zrušit rozdělaný běh uprostřed (např. během MigrationTool).
+    environment:
+      name: Production # Použije vars/secrets ze stejnojmenného GitHub Environment
+      deployment: false  # Nezakládat automatický GitHub Deployment - ukazoval by na HEAD větve,
+                         # ze které byl workflow spuštěn, ne na nasazovaný commit. Deployment se
+                         # zakládá ručně níže (Create GitHub Deployment) se správným ref.
+    steps:
+      # Self-hosted runner nemaže workspace mezi joby. Komunitní cleanup akce
+      # (TooMuch4U/actions-clean apod.) jsou Docker-based, tedy Linux-only - na Windows
+      # runneru se workspace čistí vlastními kroky na začátku a konci jobu (viz Cleanup níže).
+      - name: Clean workspace
+        shell: pwsh
+        run: Get-ChildItem -Force $env:GITHUB_WORKSPACE | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+
+      # ── Stažení posledních artefaktů z build workflow ────────────────────
+      # branch: master vyloučí PR buildy (ty mají ref: refs/pull/N/merge)
+
+      - name: '[FromLatestBuild] Download artifact: PublicNugets'
+        id: download-publicnugets
+        uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: build.yml
+          workflow_conclusion: success
+          branch: master
+          name: PublicNugets
+          path: ./artifacts/PublicNugets
+
+      - name: Setup NuGet.exe
+        uses: nuget/setup-nuget@v4
+
+      - name: Publish NuGet packages to nuget.org
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path ./artifacts/PublicNugets -Filter *.nupkg -Recurse | ForEach-Object {
+            nuget push $_.FullName -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate
+          }
+
+      - name: Clean workspace
+        shell: pwsh
+        run: Get-ChildItem -Force $env:GITHUB_WORKSPACE | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue

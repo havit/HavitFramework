@@ -42,8 +42,9 @@ public class Program
 		// LastWriteTime (LastAccessTime je na NTFS často vypnutý a na APFS se chová odlišně, řazení by bylo nahodilé).
 		FileInfo[] files = codeGeneratorToolConfiguration.EntityProjectDirectory
 			.GetFiles(codeGeneratorToolConfiguration.EntityAssemblyName + ".dll", SearchOption.AllDirectories)
-			.Where(file => !file.Name.EndsWith("Havit.Entity.dll"))
-			.Where(file => !file.Name.Contains("ref"))
+			// Vynecháváme referenční assemblies (bin/<konfigurace>/<tfm>/ref[int]) - jsou metadata-only a nelze je spustit.
+			.Where(file => !string.Equals(file.Directory.Name, "ref", StringComparison.OrdinalIgnoreCase)
+				&& !string.Equals(file.Directory.Name, "refint", StringComparison.OrdinalIgnoreCase))
 			.OrderByDescending(file => projectAssets.TargetFrameworks.Contains(file.Directory.Name, StringComparer.OrdinalIgnoreCase))
 			.ThenByDescending(item => item.LastWriteTime)
 			.ToArray();
@@ -67,6 +68,14 @@ public class Program
 			return;
 		}
 		Console.WriteLine($"Using dependency manifest {entityDepsFile.FullName}.");
+
+		if (projectAssets.CodeGeneratorReferenced == false)
+		{
+			Console.WriteLine($"The {CodeGeneratorAssemblyName} package is not referenced by the Entity project.");
+			Console.WriteLine($"Add the {CodeGeneratorAssemblyName} package reference to the Entity project and rebuild it.");
+			Environment.ExitCode = 1;
+			return;
+		}
 
 		// Restart ourselves as a child process with the Entity project dependency graph provided to the .NET host.
 		// The host then resolves all package assemblies (CodeGenerator, EF Core, ...) natively from NuGet package folders
@@ -127,6 +136,12 @@ public class Program
 						result.TargetFrameworks.Add(framework.Name);
 					}
 				}
+				if (assetsJson.RootElement.TryGetProperty("libraries", out JsonElement libraries))
+				{
+					// Klíče mají tvar "<název>/<verze>", CodeGenerator zde figuruje jako package i jako project(ová reference).
+					result.CodeGeneratorReferenced = libraries.EnumerateObject()
+						.Any(library => library.Name.StartsWith(CodeGeneratorAssemblyName + "/", StringComparison.OrdinalIgnoreCase));
+				}
 			}
 		}
 		catch (Exception exception) when (exception is IOException or JsonException)
@@ -153,6 +168,11 @@ public class Program
 	{
 		public List<string> PackageFolders { get; } = new List<string>();
 		public List<string> TargetFrameworks { get; } = new List<string>();
+
+		/// <summary>
+		/// Indikace, zda je CodeGenerator v grafu závislostí Entity projektu. Null = nepodařilo se zjistit (chybějící/nečitelný project.assets.json).
+		/// </summary>
+		public bool? CodeGeneratorReferenced { get; set; }
 	}
 
 	private static async Task RunCodeGeneratorAsync(string entityAssemblyPath, string solutionDirectory)

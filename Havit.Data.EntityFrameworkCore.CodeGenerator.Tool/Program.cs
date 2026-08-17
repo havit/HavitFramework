@@ -61,6 +61,11 @@ public class Program
 
 		var assemblyLoader = new DependencyContextAssemblyLoader(entityDependencyContext, entityAssetsContext, applicationEntityAssemblyFileInfo.Directory.FullName);
 		assemblyLoader.RegisterResolvingEvent(assemblyLoadContext);
+
+		// The Entity assembly itself is not listed in project.assets.json (the file describes only project dependencies),
+		// so the resolving event cannot resolve it. We preload it explicitly from the known path, so that the subsequent
+		// Assembly.Load(entityAssemblyName) in CodeGenerator finds it already loaded in the AssemblyLoadContext.
+		assemblyLoadContext.LoadFromAssemblyPath(applicationEntityAssemblyFileInfo.FullName);
 		Assembly assembly;
 		try
 		{

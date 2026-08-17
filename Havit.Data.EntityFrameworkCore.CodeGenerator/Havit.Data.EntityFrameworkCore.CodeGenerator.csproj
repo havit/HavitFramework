@@ -8,8 +8,10 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.10.3</PackageVersion>
+		<PackageVersion>2.10.4-pre01</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Entity Framework Core Extensions - Code Generator</Description>
+		<!-- Instalace balíčku vygeneruje referenci s PrivateAssets="all" - balíček (vč. transitivních závislostí, zejména Microsoft.EntityFrameworkCore.Design) se nedostává do publish výstupu aplikací. -->
+		<DevelopmentDependency>true</DevelopmentDependency>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -164,8 +166,6 @@
 		<None Update="Actions\Repositories\Templates\InterfaceRepositoryTemplate.tt">
 			<Generator>TextTemplatingFilePreprocessor</Generator>
 			<LastGenOutput>InterfaceRepositoryTemplate.cs</LastGenOutput>
-		</None>
-		<None Update="Havit.Data.EntityFrameworkCore.CodeGenerator.props" Pack="true" PackagePath="build\netstandard2.0">
 		</None>
 	</ItemGroup>
 

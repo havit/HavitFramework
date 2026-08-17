@@ -97,7 +97,25 @@ public static class Program
 	private static DbContext GetDbContext(string entityAssemblyName)
 	{
 		Console.WriteLine("Initializing DbContext...");
-		Assembly assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
+
+		Assembly assembly;
+		try
+		{
+			assembly = Assembly.Load(new AssemblyName { Name = entityAssemblyName });
+		}
+		catch (FileNotFoundException)
+		{
+			// S aktuálním CodeGenerator Toolem nemůže nastat (Entity assembly načítá explicitně před spuštěním generátoru).
+			// Nastává s CodeGenerator Toolem < 2.10.4, který spoléhal na to, že CodeGenerator je nakopírován v bin složce
+			// Entity projektu (balíček do verze 2.10.3 vynucoval CopyLocalLockFileAssemblies) a Entity assembly se dohledala
+			// jako vedlejší efekt Assembly.LoadFrom probingu.
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine($"The Entity assembly {entityAssemblyName} could not be loaded.");
+			Console.WriteLine("This usually means this version of the CodeGenerator package is run by an outdated CodeGenerator Tool.");
+			Console.WriteLine("Update the tool (version 2.10.4 or newer is required): dotnet tool update Havit.Data.EntityFrameworkCore.CodeGenerator.Tool");
+			Console.ResetColor();
+			throw new InvalidOperationException();
+		}
 
 		Type[] assemblyTypes = null;
 		try

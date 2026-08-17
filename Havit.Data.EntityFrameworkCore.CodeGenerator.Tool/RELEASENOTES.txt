@@ -1,2 +1,5 @@
+v2.10.5 (8/2026)
+• Oprava FileNotFoundException pro assemblies ze sdílených frameworků (Microsoft.AspNetCore.App) - generátor se spouští s runtimeconfig.json Entity projektu (resp. s vygenerovanou náhradou dle project.assets.json).
+
 v2.10.4 (8/2026)
 • Tool přepsán na spouštění generátoru přes dotnet exec s deps.json Entity projektu.

@@ -9,6 +9,7 @@ public class Program
 {
 	private const string LaunchModeArgument = "--launch";
 	private const string CodeGeneratorAssemblyName = "Havit.Data.EntityFrameworkCore.CodeGenerator";
+	private const string NetCoreAppFrameworkName = "Microsoft.NETCore.App";
 
 	public static async Task Main(string[] args)
 	{
@@ -77,17 +78,39 @@ public class Program
 			return;
 		}
 
+		// The Entity project may depend on shared frameworks beyond Microsoft.NETCore.App (typically Microsoft.AspNetCore.App,
+		// e.g. via a transitive FrameworkReference from an identity-related package). Assemblies provided by shared frameworks
+		// are not listed in deps.json, so the child process host must load the same frameworks as the Entity project itself,
+		// otherwise the framework-provided assemblies fail to resolve (FileNotFoundException).
+		string entityRuntimeConfigFile = Path.ChangeExtension(applicationEntityAssemblyFileInfo.FullName, ".runtimeconfig.json");
+		string temporaryRuntimeConfigFile = null;
+		if (File.Exists(entityRuntimeConfigFile))
+		{
+			Console.WriteLine($"Using runtime configuration {entityRuntimeConfigFile}.");
+		}
+		else
+		{
+			// runtimeconfig.json is generated for class libraries only when GenerateRuntimeConfigurationFiles is set
+			// (e.g. by Microsoft.EntityFrameworkCore.Design.props for its direct referencers) - fall back to a generated one.
+			entityRuntimeConfigFile = temporaryRuntimeConfigFile = TryWriteTemporaryRuntimeConfig(projectAssets, applicationEntityAssemblyFileInfo);
+		}
+
 		// Restart ourselves as a child process with the Entity project dependency graph provided to the .NET host.
 		// The host then resolves all package assemblies (CodeGenerator, EF Core, ...) natively from NuGet package folders
 		// and project reference outputs from the folder of the deps.json file.
 		var startInfo = new ProcessStartInfo
 		{
-			FileName = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet",
+			FileName = GetDotnetHostPath(),
 			UseShellExecute = false
 		};
 		startInfo.ArgumentList.Add("exec");
 		startInfo.ArgumentList.Add("--depsfile");
 		startInfo.ArgumentList.Add(entityDepsFile.FullName);
+		if (entityRuntimeConfigFile != null)
+		{
+			startInfo.ArgumentList.Add("--runtimeconfig");
+			startInfo.ArgumentList.Add(entityRuntimeConfigFile);
+		}
 		foreach (string packageFolder in projectAssets.PackageFolders)
 		{
 			startInfo.ArgumentList.Add("--additionalprobingpath");
@@ -103,12 +126,98 @@ public class Program
 		using Process process = Process.Start(startInfo);
 		process.WaitForExit();
 		Environment.ExitCode = process.ExitCode;
+
+		if (temporaryRuntimeConfigFile != null)
+		{
+			try
+			{
+				File.Delete(temporaryRuntimeConfigFile);
+			}
+			catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+			{
+				// best effort - opuštěný soubor v temp složce nezpůsobí žádnou škodu
+			}
+		}
 	}
 
 	/// <summary>
-	/// Reads NuGet package folders (global packages folder + fallback folders) and target frameworks of the Entity project
-	/// from obj/project.assets.json (reflects nuget.config overrides). Package folders fall back to the NUGET_PACKAGES
-	/// environment variable or the default global packages folder, target frameworks are empty when unavailable.
+	/// Returns the dotnet host to launch the child process with. Prefers the official DOTNET_HOST_PATH environment
+	/// variable, then the host of the current process (a framework-dependent dotnet tool runs under the dotnet muxer;
+	/// a global tool shim does not, then the condition does not match), and falls back to "dotnet" from PATH.
+	/// </summary>
+	private static string GetDotnetHostPath()
+	{
+		string dotnetHostPath = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH");
+		if (!string.IsNullOrEmpty(dotnetHostPath))
+		{
+			return dotnetHostPath;
+		}
+
+		string processPath = Environment.ProcessPath;
+		if (string.Equals(Path.GetFileNameWithoutExtension(processPath), "dotnet", StringComparison.OrdinalIgnoreCase))
+		{
+			return processPath;
+		}
+
+		return "dotnet";
+	}
+
+	/// <summary>
+	/// Writes a temporary runtimeconfig.json for the Entity project so that the child process host loads
+	/// the shared frameworks required by the Entity project (beyond Microsoft.NETCore.App provided by default).
+	/// Returns null when no additional shared framework is referenced (the default host configuration is then sufficient)
+	/// or when the required information is not available (missing project.assets.json, unsupported target framework moniker).
+	/// </summary>
+	private static string TryWriteTemporaryRuntimeConfig(ProjectAssetsInfo projectAssets, FileInfo entityAssemblyFileInfo)
+	{
+		List<string> additionalFrameworks = projectAssets.FrameworkReferences
+			.Where(framework => !string.Equals(framework, NetCoreAppFrameworkName, StringComparison.OrdinalIgnoreCase))
+			.Order(StringComparer.OrdinalIgnoreCase)
+			.ToList();
+		if (additionalFrameworks.Count == 0)
+		{
+			return null;
+		}
+
+		// Stejná preference jako při výběru assembly - složka výstupu odpovídající target frameworku projektu.
+		string targetFramework = projectAssets.TargetFrameworks.Find(tfm => string.Equals(tfm, entityAssemblyFileInfo.Directory.Name, StringComparison.OrdinalIgnoreCase))
+			?? projectAssets.TargetFrameworks.FirstOrDefault();
+
+		// Z TFM odvozujeme verzi frameworků stejně jako .NET SDK při generování runtimeconfig.json pro class libraries
+		// (net10.0 → 10.0.0). Platform-specific TFM (net10.0-windows) ořežeme na verzi, ostatní tvary (netstandard2.0) vzdáváme.
+		if ((targetFramework == null)
+			|| !targetFramework.StartsWith("net", StringComparison.OrdinalIgnoreCase)
+			|| !Version.TryParse(targetFramework["net".Length..].Split('-')[0], out Version frameworkVersion)
+			|| (frameworkVersion.Major < 5))
+		{
+			return null;
+		}
+		string frameworkVersionString = $"{frameworkVersion.Major}.{frameworkVersion.Minor}.0";
+
+		var runtimeConfig = new
+		{
+			runtimeOptions = new
+			{
+				tfm = targetFramework,
+				frameworks = new[] { NetCoreAppFrameworkName }.Concat(additionalFrameworks)
+					.Select(framework => new { name = framework, version = frameworkVersionString })
+					.ToArray()
+			}
+		};
+
+		string temporaryRuntimeConfigFile = Path.Combine(Path.GetTempPath(), $"efcodegenerator.{Path.GetRandomFileName()}.runtimeconfig.json");
+		File.WriteAllText(temporaryRuntimeConfigFile, JsonSerializer.Serialize(runtimeConfig));
+
+		Console.WriteLine($"Using generated runtime configuration for shared frameworks: {string.Join(", ", additionalFrameworks)}.");
+
+		return temporaryRuntimeConfigFile;
+	}
+
+	/// <summary>
+	/// Reads NuGet package folders (global packages folder + fallback folders), target frameworks and shared framework
+	/// references of the Entity project from obj/project.assets.json (reflects nuget.config overrides). Package folders
+	/// fall back to the NUGET_PACKAGES environment variable or the default global packages folder, target frameworks
+	/// and framework references are empty when unavailable.
 	/// </summary>
 	private static ProjectAssetsInfo ReadProjectAssets(DirectoryInfo entityBinDirectory)
 	{
@@ -134,6 +243,35 @@ public class Program
 					foreach (JsonProperty framework in frameworks.EnumerateObject())
 					{
 						result.TargetFrameworks.Add(framework.Name);
+
+						// Přímé FrameworkReference projektu (vč. implicitní Microsoft.NETCore.App).
+						if (framework.Value.TryGetProperty("frameworkReferences", out JsonElement projectFrameworkReferences))
+						{
+							foreach (JsonProperty frameworkReference in projectFrameworkReferences.EnumerateObject())
+							{
+								result.FrameworkReferences.Add(frameworkReference.Name);
+							}
+						}
+					}
+				}
+				if (assetsJson.RootElement.TryGetProperty("targets", out JsonElement targets))
+				{
+					// FrameworkReference přinesené (i tranzitivně) balíčky - např. Duende.IdentityServer → Microsoft.AspNetCore.App.
+					foreach (JsonProperty target in targets.EnumerateObject())
+					{
+						foreach (JsonProperty library in target.Value.EnumerateObject())
+						{
+							if (library.Value.TryGetProperty("frameworkReferences", out JsonElement libraryFrameworkReferences))
+							{
+								foreach (JsonElement frameworkReference in libraryFrameworkReferences.EnumerateArray())
+								{
+									if (frameworkReference.ValueKind == JsonValueKind.String)
+									{
+										result.FrameworkReferences.Add(frameworkReference.GetString());
+									}
+								}
+							}
+						}
 					}
 				}
 				if (assetsJson.RootElement.TryGetProperty("libraries", out JsonElement libraries))
@@ -168,6 +306,11 @@ public class Program
 	{
 		public List<string> PackageFolders { get; } = new List<string>();
 		public List<string> TargetFrameworks { get; } = new List<string>();
+
+		/// <summary>
+		/// Sdílené frameworky (FrameworkReference) v grafu závislostí Entity projektu - přímé i přinesené balíčky.
+		/// </summary>
+		public HashSet<string> FrameworkReferences { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
 		/// Indikace, zda je CodeGenerator v grafu závislostí Entity projektu. Null = nepodařilo se zjistit (chybějící/nečitelný project.assets.json).
@@ -231,18 +374,42 @@ public class Program
 			return;
 		}
 
-		Task mainTask = (Task)main.Invoke(null, new object[]
+		try
 		{
-			new string[] { solutionDirectory, Path.GetFileNameWithoutExtension(entityAssemblyPath) }
-		});
+			Task mainTask = (Task)main.Invoke(null, new object[]
+			{
+				new string[] { solutionDirectory, Path.GetFileNameWithoutExtension(entityAssemblyPath) }
+			});
 
-		if (mainTask == null)
-		{
-			Console.WriteLine($"{CodeGeneratorAssemblyName} entry point (method) did not return a Task.");
-			Environment.ExitCode = 1;
-			return;
+			if (mainTask == null)
+			{
+				Console.WriteLine($"{CodeGeneratorAssemblyName} entry point (method) did not return a Task.");
+				Environment.ExitCode = 1;
+				return;
+			}
+
+			await mainTask;
 		}
+		catch (Exception exception) when (GetAssemblyLoadFileNotFoundException(exception) is not null)
+		{
+			// Scénář resolvingu assemblies, se kterým zatím nepočítáme - čitelná hláška místo surového stack trace.
+			FileNotFoundException fileNotFoundException = GetAssemblyLoadFileNotFoundException(exception);
+			Console.WriteLine(fileNotFoundException.Message);
+			Console.WriteLine("The assembly was not resolved from the Entity project dependency graph (deps.json), NuGet package folders or shared frameworks.");
+			Console.WriteLine("Make sure the Entity project is properly built. If the problem persists, report the scenario to HAVIT.");
+			Environment.ExitCode = 1;
+		}
+	}
 
-		await mainTask;
+	/// <summary>
+	/// Returns the inner FileNotFoundException when the exception represents an assembly load failure
+	/// (reflection invocation wraps exceptions in TargetInvocationException). Returns null for other exceptions,
+	/// including FileNotFoundException for ordinary files - an assembly load failure carries the assembly
+	/// display name (with Version=...) in FileName, an ordinary missing file just a path.
+	/// </summary>
+	private static FileNotFoundException GetAssemblyLoadFileNotFoundException(Exception exception)
+	{
+		FileNotFoundException fileNotFoundException = ((exception as TargetInvocationException)?.InnerException as FileNotFoundException) ?? (exception as FileNotFoundException);
+		return (fileNotFoundException?.FileName?.Contains("Version=") == true) ? fileNotFoundException : null;
 	}
 }

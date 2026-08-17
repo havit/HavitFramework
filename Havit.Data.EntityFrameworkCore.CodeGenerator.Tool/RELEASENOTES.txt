@@ -1,0 +1,2 @@
+v2.10.4 (8/2026)
+• Tool přepsán na spouštění generátoru přes dotnet exec s deps.json Entity projektu.

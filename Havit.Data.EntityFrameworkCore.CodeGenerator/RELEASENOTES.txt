@@ -1,0 +1,5 @@
+v2.10.4 (8/2026)
+• VYŽADUJE Havit.Data.EntityFrameworkCore.CodeGenerator.Tool >= 2.10.4.
+• Balíček je označen jako DevelopmentDependency — nová instalace vygeneruje referenci s PrivateAssets="all". CodeGenerator ani jeho transitivní závislosti (Microsoft.EntityFrameworkCore.Design, Roslyn — typicky ~80 % objemu publish výstupu) pak netečou do aplikací. U existujících referencí je potřeba atributy doplnit ručně.
+• Balíček již nenastavuje CopyLocalLockFileAssemblies=True v projektu, kde je nainstalován (odebrán packovaný .props soubor) — bin složka Entity projektu se výrazně zmenší.
+• Projekty, do kterých balíček transitivně uniká (chybějící PrivateAssets), dostanou build warning HAVITEFCG001.

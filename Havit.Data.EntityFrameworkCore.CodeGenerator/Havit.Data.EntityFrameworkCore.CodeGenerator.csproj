@@ -167,6 +167,7 @@
 			<Generator>TextTemplatingFilePreprocessor</Generator>
 			<LastGenOutput>InterfaceRepositoryTemplate.cs</LastGenOutput>
 		</None>
+		<None Include="buildTransitive\Havit.Data.EntityFrameworkCore.CodeGenerator.targets" Pack="true" PackagePath="buildTransitive" />
 	</ItemGroup>
 
 	<ItemGroup>

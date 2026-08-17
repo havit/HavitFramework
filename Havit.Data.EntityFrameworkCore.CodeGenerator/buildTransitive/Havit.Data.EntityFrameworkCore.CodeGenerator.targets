@@ -1,0 +1,20 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!--
+		Detekce úniku CodeGeneratoru do výstupu aplikací.
+
+		Tento soubor NuGet importuje do projektu, který balíček referencuje přímo, a TRANSITIVNĚ do všech projektů,
+		do kterých assets balíčku tečou. Pokud je reference v Entity projektu označena PrivateAssets="all"
+		(výchozí stav nové instalace - balíček je DevelopmentDependency), do navazujících projektů se tento soubor
+		vůbec nedostane. Jeho import v projektu BEZ přímé reference tedy znamená přesně to, že balíček
+		(včetně Microsoft.EntityFrameworkCore.Design a Roslyn assemblies) uniká do výstupu - a to je stav,
+		na který upozorňujeme warningem.
+	-->
+	<Target Name="HavitEFCoreCodeGeneratorCheckPrivateAssets"
+			BeforeTargets="PrepareForBuild"
+			Condition="'@(PackageReference->WithMetadataValue('Identity', 'Havit.Data.EntityFrameworkCore.CodeGenerator'))' == ''">
+		<Warning Code="HAVITEFCG001"
+				Text="Havit.Data.EntityFrameworkCore.CodeGenerator (including Microsoft.EntityFrameworkCore.Design and Roslyn assemblies) flows transitively into the output of this project. Add PrivateAssets=&quot;all&quot; to the Havit.Data.EntityFrameworkCore.CodeGenerator PackageReference in the project that references it directly (typically the Entity project)." />
+	</Target>
+
+</Project>

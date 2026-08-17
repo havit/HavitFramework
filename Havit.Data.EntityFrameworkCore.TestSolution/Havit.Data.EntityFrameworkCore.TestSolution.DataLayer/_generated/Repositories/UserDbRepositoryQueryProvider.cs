@@ -14,19 +14,13 @@ namespace Havit.Data.EntityFrameworkCore.TestSolution.DataLayer.Repositories;
 
 internal class UserDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.Data.EntityFrameworkCore.TestSolution.Model.User, System.Int32>
 {
-	private readonly ISoftDeleteManager _softDeleteManager;
-
 	private readonly Func<DbContext, System.Int32, Havit.Data.EntityFrameworkCore.TestSolution.Model.User> _getObjectQuery;
 	private readonly Func<DbContext, System.Int32, CancellationToken, Task<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> _getObjectAsyncQuery;
 	private readonly Func<DbContext, System.Int32[], IEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> _getObjectsQuery;
 	private readonly Func<DbContext, System.Int32[], IAsyncEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> _getObjectsAsyncQuery;
-	private readonly Func<DbContext, IEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> _getAllQuery;
-	private readonly Func<DbContext, IAsyncEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> _getAllAsyncQuery;
 
-	public UserDbRepositoryQueryProvider(ISoftDeleteManager softDeleteManager)
+	public UserDbRepositoryQueryProvider()
 	{
-		_softDeleteManager = softDeleteManager;
-
 		_getObjectQuery = EF.CompileQuery((DbContext dbContext, System.Int32 id) => dbContext
 			.Set<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>()
 			.TagWith("UserDbRepository.GetObject")
@@ -48,22 +42,10 @@ internal class UserDbRepositoryQueryProvider : IRepositoryQueryProvider<Havit.Da
 			.Set<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>()
 			.TagWith("UserDbRepository.GetObjectsAsync")
 			.Where(entity => ids.Contains(entity.Id)));
-
-		_getAllQuery = EF.CompileQuery((DbContext dbContext) => dbContext
-			.Set<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>()
-			.TagWith("UserDbRepository.GetAll")
-			.WhereNotDeleted(_softDeleteManager));
-
-		_getAllAsyncQuery = EF.CompileAsyncQuery((DbContext dbContext) => dbContext
-			.Set<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>()
-			.TagWith("UserDbRepository.GetAllAsync")
-			.WhereNotDeleted(_softDeleteManager));
 	}
 
 	public Func<DbContext, System.Int32, Havit.Data.EntityFrameworkCore.TestSolution.Model.User> GetGetObjectQuery() => _getObjectQuery;
 	public Func<DbContext, System.Int32, CancellationToken, Task<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> GetGetObjectAsyncQuery() => _getObjectAsyncQuery;
 	public Func<DbContext, System.Int32[], IEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> GetGetObjectsQuery() => _getObjectsQuery;
 	public Func<DbContext, System.Int32[], IAsyncEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> GetGetObjectsAsyncQuery() => _getObjectsAsyncQuery;
-	public Func<DbContext, IAsyncEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> GetGetAllAsyncQuery() => _getAllAsyncQuery;
-	public Func<DbContext, IEnumerable<Havit.Data.EntityFrameworkCore.TestSolution.Model.User>> GetGetAllQuery() => _getAllQuery;
 }

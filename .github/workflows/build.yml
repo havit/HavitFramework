@@ -30,7 +30,7 @@ jobs:
       checks: write
       actions: read
     with:
-      checkout_sources_scheduled_build_ref: ''
+      checkout_sources_scheduled_build_ref: 'master'
       build_projects_to_build: |
         [
           { "ProjectFile": "HavitFramework.Build.slnf" },

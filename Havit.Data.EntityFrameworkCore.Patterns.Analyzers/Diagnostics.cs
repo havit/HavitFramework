@@ -47,4 +47,23 @@ public static class Diagnostics
 		isEnabledByDefault: true,
 		description: "Detects when IEnumerable<T> is passed to AddForInsert, AddForInsertAsync, AddForUpdate, or AddForDelete methods instead of a single entity."
 	);
+
+	/// <summary>
+	/// Represents a diagnostic descriptor that identifies and reports cases where a member of type
+	/// <c>FilteringCollection&lt;T&gt;</c> is used within an expression tree which is translated to a database query.
+	/// </summary>
+	/// <remarks>
+	/// <c>FilteringCollection&lt;T&gt;</c> is an in-memory wrapper over the underlying (mapped) collection, it is not
+	/// a mapped navigation property. Entity Framework Core is therefore not able to translate it to SQL: the query either
+	/// fails at runtime, or - when the member is used within the final projection - silently returns no data at all.
+	/// </remarks>
+	public static readonly DiagnosticDescriptor FilteringCollectionInExpressionTree = new DiagnosticDescriptor(
+		id: DiagnosticIdentifiers.FilteringCollectionInExpressionTreeId,
+		title: "FilteringCollection used within a database query",
+		messageFormat: "'{0}' is a FilteringCollection which cannot be translated to SQL - the query fails at runtime or silently returns no data. Use {1} instead.",
+		category: "Usage",
+		defaultSeverity: DiagnosticSeverity.Warning,
+		isEnabledByDefault: true,
+		description: "Detects when a FilteringCollection<T> member is used within an expression tree (LINQ to Entities query). FilteringCollection<T> is an in-memory wrapper which Entity Framework Core cannot translate to SQL."
+	);
 }

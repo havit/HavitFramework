@@ -20,6 +20,10 @@
 		/// </summary>
 		public const string UnitOfWorkAddRangeNestedCollectionId = "HFW1003"; // Category: Usage
 
+		/// <summary>
+		/// FilteringCollection used within an expression tree evaluated by a database query.
+		/// </summary>
+		public const string FilteringCollectionInExpressionTreeId = "HFW1004"; // Category: Usage
 
 	}
 }

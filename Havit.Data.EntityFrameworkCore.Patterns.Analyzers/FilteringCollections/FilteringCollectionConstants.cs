@@ -1,20 +1,20 @@
-﻿namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.FilteringCollections;
+namespace Havit.Data.EntityFrameworkCore.Patterns.Analyzers.FilteringCollections;
 
 internal static class FilteringCollectionConstants
 {
-	internal const string FilteringCollectionTypeName = "FilteringCollection";
-	internal const string FilteringCollectionTypeNamespace = "Havit.Model.Collections.Generic";
+	internal const string FilteringCollectionMetadataName = "Havit.Model.Collections.Generic.FilteringCollection`1";
 
+	// Konvence pojmenování namapovaného protějšku (X -> XIncludingDeleted) je zduplikovaná vůči runtime substituci
+	// v PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSubstitution (Havit.Data.EntityFrameworkCore.Patterns).
+	// Analyzer projekt na Patterns referencovat nemůže. Při změně konvence je potřeba upravit obě místa.
 	internal const string IncludingDeletedSuffix = "IncludingDeleted";
 
-	internal const string ExpressionTypeName = "Expression";
-	internal const string ExpressionTypeNamespace = "System.Linq.Expressions";
+	internal const string ExpressionOfTDelegateMetadataName = "System.Linq.Expressions.Expression`1";
 
-	internal const string QueryableInterfaceName = "IQueryable";
-	internal const string QueryableInterfaceNamespace = "System.Linq";
+	internal const string QueryableMetadataName = "System.Linq.IQueryable";
+	internal const string QueryableOfTMetadataName = "System.Linq.IQueryable`1";
 
-	internal const string DataLoaderNamespace = "Havit.Data.Patterns.DataLoaders";
-	internal const string DataLoaderInterfaceName = "IDataLoader";
-	internal const string FluentDataLoaderInterfaceName = "IFluentDataLoader";
-	internal const string FluentDataLoaderExtensionsTypeName = "FluentDataLoaderExtensions";
+	internal const string DataLoaderMetadataName = "Havit.Data.Patterns.DataLoaders.IDataLoader";
+	internal const string FluentDataLoaderMetadataName = "Havit.Data.Patterns.DataLoaders.IFluentDataLoader`1";
+	internal const string FluentDataLoaderExtensionsMetadataName = "Havit.Data.Patterns.DataLoaders.FluentDataLoaderExtensions";
 }

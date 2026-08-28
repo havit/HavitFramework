@@ -46,6 +46,21 @@ namespace TestNamespace
 		}
 	}
 
+	public class MasterBase
+	{
+		public List<Child> ItemsIncludingDeleted { get; } = new List<Child>();
+	}
+
+	public class DerivedMaster : MasterBase
+	{
+		public FilteringCollection<Child> Items { get; }
+
+		public DerivedMaster()
+		{
+			Items = new FilteringCollection<Child>(ItemsIncludingDeleted, child => child.Deleted == null);
+		}
+	}
+
 	public static class QueryableExtensions
 	{
 		public static IQueryable<TEntity> Include<TEntity, TProperty>(this IQueryable<TEntity> source, Expression<Func<TEntity, TProperty>> navigationPropertyPath) => source;
@@ -296,6 +311,134 @@ namespace TestNamespace
 		public int TestMethod(Master master)
 		{
 			return master.Children.Count;
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
+	/// <summary>
+	/// Query syntax neobsahuje žádný lambda syntax node - dotaz je na lambdy přeložený až v operation tree.
+	/// </summary>
+	[TestMethod]
+	public async Task FilteringCollectionInExpressionTreeAnalyzer_QuerySyntax_ReportsDiagnostic()
+	{
+		const string source = ModelDeclarations + @"
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IQueryable<Master> masters)
+		{
+			var result = from master in masters
+						 where {|#0:master.Children|}.Any()
+						 select master;
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source, ExpectedDiagnostic("Children", "'ChildrenIncludingDeleted' with an explicit filter"));
+	}
+
+	[TestMethod]
+	public async Task FilteringCollectionInExpressionTreeAnalyzer_QuerySyntaxOverInMemoryCollection_DoesNotReportDiagnostic()
+	{
+		const string source = ModelDeclarations + @"
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(List<Master> masters)
+		{
+			var result = from master in masters
+						 where master.Children.Any()
+						 select master;
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
+	/// <summary>
+	/// Vnořená (quoted) lambda uvnitř outer expression tree - diagnostika se musí hlásit právě jednou.
+	/// </summary>
+	[TestMethod]
+	public async Task FilteringCollectionInExpressionTreeAnalyzer_NestedQuotedLambda_ReportsDiagnosticOnce()
+	{
+		const string source = ModelDeclarations + @"
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IQueryable<Master> masters)
+		{
+			masters.Where(master => masters.Any(other => {|#0:master.Children|}.Any()));
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source, ExpectedDiagnostic("Children", "'ChildrenIncludingDeleted' with an explicit filter"));
+	}
+
+	/// <summary>
+	/// Namapovaný protějšek XIncludingDeleted deklarovaný na bázové entitě - návrh ho musí najít přes dědičnost.
+	/// </summary>
+	[TestMethod]
+	public async Task FilteringCollectionInExpressionTreeAnalyzer_IncludingDeletedCounterpartOnBaseType_ReportsDiagnosticWithSuggestion()
+	{
+		const string source = ModelDeclarations + @"
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IQueryable<DerivedMaster> masters)
+		{
+			masters.Where(master => {|#0:master.Items|}.Any());
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source, ExpectedDiagnostic("Items", "'ItemsIncludingDeleted' with an explicit filter"));
+	}
+
+	/// <summary>
+	/// Lambda předaná data loaderu se přeskakuje celá, bez ohledu na tvar (delší property path by data loader
+	/// odmítl za běhu vlastní - srozumitelnou - výjimkou, analyzer ji neřeší).
+	/// </summary>
+	[TestMethod]
+	public async Task FilteringCollectionInExpressionTreeAnalyzer_DataLoaderWithNonWholeBodyLambda_DoesNotReportDiagnostic()
+	{
+		const string source = ModelDeclarations + @"
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IDataLoader dataLoader, Master master)
+		{
+			dataLoader.Load(master, item => item.Children.First().Master);
+		}
+	}
+}";
+
+		await VerifyAnalyzerAsync(source);
+	}
+
+	/// <summary>
+	/// Params overload data loaderu - lambda je v operation tree zabalená do pole (ArrayCreation/ArrayInitializer).
+	/// </summary>
+	[TestMethod]
+	public async Task FilteringCollectionInExpressionTreeAnalyzer_DataLoaderParamsOverload_DoesNotReportDiagnostic()
+	{
+		const string source = ModelDeclarations + @"
+namespace TestNamespace
+{
+	public class TestClass
+	{
+		public void TestMethod(IDataLoader dataLoader, Master master)
+		{
+			dataLoader.Load(master, item => item.Children, item => item.ChildrenIncludingDeleted);
 		}
 	}
 }";

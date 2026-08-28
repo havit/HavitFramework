@@ -18,4 +18,4 @@
 | --- | --- |
 | HFW1002 | `IEnumerable<T>` předaný do `IUnitOfWork.AddFor*` metody, která očekává jednu entitu. |
 | HFW1003 | Vnořená kolekce (`IEnumerable<IEnumerable<T>>`) předaná do `IUnitOfWork.AddRangeFor*` metody. |
-| HFW1004 | `FilteringCollection<T>` použitá v expression tree, tedy v dotazu do databáze. Kolekce je in-memory wrapper nad namapovanou kolekcí, EF Core ji nepřeloží do SQL: dotaz buď spadne za běhu, nebo (ve finální projekci) tiše nevrátí žádná data. Řešením je použít namapovanou kolekci `XIncludingDeleted` s explicitním filtrem. Načítání přes `IDataLoader`/`IFluentDataLoader` hlášeno není - data loader `FilteringCollection<T>` podporuje. |
+| HFW1004 | `FilteringCollection<T>` použitá v expression tree, tedy v dotazu do databáze. Kolekce je in-memory wrapper nad namapovanou kolekcí, EF Core ji nepřeloží do SQL: dotaz buď spadne za běhu, nebo (ve finální projekci) tiše nevrátí žádná data. Řešením je použít namapovanou kolekci `XIncludingDeleted` s explicitním filtrem. Pokrývá method syntax i query syntax. Načítání přes `IDataLoader`/`IFluentDataLoader` hlášeno není - data loader `FilteringCollection<T>` podporuje. |

@@ -19,6 +19,8 @@ public class PropertyLoadSequenceResolverIncludingDeletedFilteringCollectionsSub
 		{
 			// pokud jde o kolekci
 			// a existuje vlastnost s pojmenováním "IncludingDeleted" na konci
+			// (konvence sufixu je zduplikovaná v analyzeru HFW1004 - Havit.Data.EntityFrameworkCore.Patterns.Analyzers,
+			// FilteringCollectionConstants.IncludingDeletedSuffix; při změně konvence je potřeba upravit obě místa)
 			// která obsahuje prvky stejného typu
 			// pak provedeme substituci
 			if (propertyToLoad.IsCollection)

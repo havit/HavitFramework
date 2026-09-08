@@ -152,6 +152,7 @@
   </Folder>
   <Folder Name="/_Solution Items/">
     <File Path=".editorconfig" />
+    <File Path=".globalconfig" />
     <File Path="BuildPipeline-002.HFW-HavitFramework.yml" />
     <File Path="CommonAssemblyInfo.cs" />
     <File Path="DiagnosticsIdentifiers.cs" />

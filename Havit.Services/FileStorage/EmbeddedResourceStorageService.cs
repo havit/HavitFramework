@@ -145,11 +145,11 @@ public class EmbeddedResourceStorageService : FileStorageServiceBase
 	/// <summary>
 	/// Vyhazuje <see cref="NotSupportedException"/>.
 	/// </summary>
-	protected override string GetContentType(string fileName) => throw new NotImplementedException();
+	protected override string GetContentType(string fileName) => throw new NotSupportedException();
 
 	/// <summary>
 	/// Vyhazuje <see cref="NotSupportedException"/>.
 	/// </summary>
-	protected override ValueTask<string> GetContentTypeAsync(string fileName, CancellationToken cancellationToken) => throw new NotImplementedException();
+	protected override ValueTask<string> GetContentTypeAsync(string fileName, CancellationToken cancellationToken) => throw new NotSupportedException();
 	#endregion
 }

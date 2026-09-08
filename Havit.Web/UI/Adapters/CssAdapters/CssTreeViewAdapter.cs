@@ -325,7 +325,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 
 			if (HasChildren(item))
 			{
-				BuildItems(item.ChildNodes, isRoot: false, item.Expanded.Equals(other: true), writer);
+				BuildItems(item.ChildNodes, isRoot: false, isExpanded: item.Expanded, writer);
 			}
 
 			writer.Indent--;

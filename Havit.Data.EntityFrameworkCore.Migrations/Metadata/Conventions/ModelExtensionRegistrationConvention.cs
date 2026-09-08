@@ -44,7 +44,7 @@ public class ModelExtensionRegistrationConvention : IModelFinalizingConvention
 
 				List<IAnnotation> annotations = _modelExtensionAnnotationProvider.GetAnnotations(modelExtension, method);
 
-				annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, false));
+				annotations.ForEach(a => modelBuilder.HasAnnotation(a.Name, a.Value, fromDataAnnotation: false));
 			}
 		}
 	}

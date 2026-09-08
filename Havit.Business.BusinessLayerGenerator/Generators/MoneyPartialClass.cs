@@ -10,7 +10,7 @@ public static class MoneyPartialClass
 {
 	public static void Generate(Table currencyTable, CsprojFile csprojFile)
 	{
-		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, false), "Money", ".partial.cs", FileHelper.GeneratedFolder);
+		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, withDefaultNamespace: false), "Money", ".partial.cs", FileHelper.GeneratedFolder);
 
 		if (csprojFile != null)
 		{
@@ -29,7 +29,7 @@ public static class MoneyPartialClass
 		writer.WriteCommentSummary("Třída reprezentující peněžní částky s měnou.");
 		writer.WriteLine("public partial class Money : MoneyBase");
 		writer.WriteLine("{");
-		MoneyBaseClass.WriteConstructors(writer, "Money", false);
+		MoneyBaseClass.WriteConstructors(writer, "Money", baseClass: false);
 		writer.WriteLine("}");
 
 		writer.WriteLine("}");

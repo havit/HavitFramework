@@ -66,7 +66,7 @@ internal class NavbarSectionInternal : HierarchicalDataBoundControl
 	{
 		base.PerformDataBinding();
 
-		HierarchicalDataSourceView data = GetData(null);
+		HierarchicalDataSourceView data = GetData(viewPath: null);
 		IHierarchicalEnumerable menuDataSource = data.Select();
 		if (menuDataSource != null)
 		{

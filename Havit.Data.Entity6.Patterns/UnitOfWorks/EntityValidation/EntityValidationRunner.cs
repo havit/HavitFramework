@@ -42,7 +42,7 @@ public class EntityValidationRunner : IEntityValidationRunner
 			Type type = changeGroup.Type;
 			while (type != null)
 			{
-				supportedValidators.AddRange((IEnumerable<object>)entityValidatorsFactory.GetType().GetMethod(nameof(IEntityValidatorsFactory.Create)).MakeGenericMethod(type).Invoke(entityValidatorsFactory, null));
+				supportedValidators.AddRange((IEnumerable<object>)entityValidatorsFactory.GetType().GetMethod(nameof(IEntityValidatorsFactory.Create)).MakeGenericMethod(type).Invoke(entityValidatorsFactory, parameters: null));
 				type = type.BaseType;
 			}
 

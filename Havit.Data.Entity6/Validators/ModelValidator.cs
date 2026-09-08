@@ -97,7 +97,7 @@ public class ModelValidator
 	{
 		foreach (var property in entityMap.Properties)
 		{
-			if (property.PropertyName.EndsWith("ID", false, CultureInfo.InvariantCulture))
+			if (property.PropertyName.EndsWith("ID", ignoreCase: false, CultureInfo.InvariantCulture))
 			{
 				yield return $"Class {entityMap.Type.Name} has a property {property.PropertyName} which ends with 'ID' but expected is 'Id'.";
 			}

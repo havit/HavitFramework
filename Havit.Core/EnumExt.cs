@@ -58,7 +58,7 @@ public static class EnumExt
 		var result = new Dictionary<string, string>();
 		foreach (FieldInfo field in enumType.GetFields(BindingFlags.Public | BindingFlags.Static))
 		{
-			var descriptionAttributes = (DescriptionAttribute[])field.GetCustomAttributes(typeof(DescriptionAttribute), true);
+			var descriptionAttributes = (DescriptionAttribute[])field.GetCustomAttributes(typeof(DescriptionAttribute), inherit: true);
 			if (descriptionAttributes.Length > 0)
 			{
 				result[field.Name] = descriptionAttributes[0].Description;

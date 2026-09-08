@@ -24,7 +24,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity> : LookupServiceBase
 	/// Konstruktor.
 	/// </summary>
 	protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity, int> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager)
-		: base(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager, null)
+		: base(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager, distributedLookupDataInvalidationService: null)
 	{
 	}
 

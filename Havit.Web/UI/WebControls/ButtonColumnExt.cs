@@ -126,7 +126,7 @@ public class ButtonColumnExt : System.Web.UI.WebControls.ButtonColumn
 			if (this._confirmationFieldDescriptor == null)
 			{
 				string confirmationDataField = this.ConfirmationDataField;
-				this._confirmationFieldDescriptor = TypeDescriptor.GetProperties(dataItem).Find(confirmationDataField, true);
+				this._confirmationFieldDescriptor = TypeDescriptor.GetProperties(dataItem).Find(confirmationDataField, ignoreCase: true);
 				if (this._confirmationFieldDescriptor == null)
 				{
 					throw new HttpException("Field Not Found - " + confirmationDataField);

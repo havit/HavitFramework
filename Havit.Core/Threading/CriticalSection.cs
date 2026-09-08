@@ -184,7 +184,7 @@ public class CriticalSection<TKey>
 		void IDisposable.Dispose()
 		{
 			// repeated Dispose must not release the semaphore (and decrement the usage counter) again
-			CriticalSection<TKey> owner = Interlocked.Exchange(ref _owner, null);
+			CriticalSection<TKey> owner = Interlocked.Exchange(ref _owner, value: null);
 			if (owner != null)
 			{
 				_criticalSectionLock.Semaphore.Release();

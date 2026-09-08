@@ -168,7 +168,7 @@ public class ModelValidator
 		// GetDeclaredProperties (nikoliv GetProperties) - zděděné vlastnosti zkontrolujeme na předkovi, kde jsou deklarovány (jinak bychom je u dědičnosti hlásili opakovaně).
 		foreach (IReadOnlyProperty property in entityType.GetDeclaredProperties())
 		{
-			if (property.Name.EndsWith("ID", false, CultureInfo.InvariantCulture))
+			if (property.Name.EndsWith("ID", ignoreCase: false, CultureInfo.InvariantCulture))
 			{
 				yield return $"Class {entityType.ClrType.Name} has a property {property.Name} which ends with 'ID' but expected is 'Id'.";
 			}

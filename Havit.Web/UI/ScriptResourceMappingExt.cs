@@ -109,7 +109,7 @@ public static class ScriptResourceMappingExt
 		Contract.Requires<ArgumentNullException>(type != null, nameof(type));
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(embeddedResourceName), nameof(embeddedResourceName));
 
-		EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, page, null, type, embeddedResourceName);
+		EnsureScriptRegistrationForEmbeddedResource(scriptResourceMapping, page, control: null, type, embeddedResourceName);
 	}
 
 	/// <summary>

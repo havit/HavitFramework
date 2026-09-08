@@ -15,10 +15,10 @@ public class CollectionExtendedPropertiesConvention : INavigationAddedConvention
 {
 	public void ProcessForeignKeyPropertiesChanged(IConventionForeignKeyBuilder relationshipBuilder, IReadOnlyList<IConventionProperty> oldDependentProperties, IConventionKey oldPrincipalKey, IConventionContext<IReadOnlyList<IConventionProperty>> context)
 	{
-		var navigation = relationshipBuilder.Metadata.GetNavigation(false);
+		var navigation = relationshipBuilder.Metadata.GetNavigation(pointsToPrincipal: false);
 		if (navigation != null)
 		{
-			Try(relationshipBuilder.Metadata.GetNavigation(false));
+			Try(relationshipBuilder.Metadata.GetNavigation(pointsToPrincipal: false));
 		}
 	}
 

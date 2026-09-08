@@ -12,7 +12,7 @@ public static class DbResourcesPartialClass
 {
 	public static void Generate(Table table, CsprojFile csprojFile)
 	{
-		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(table, false), "DbResources", ".partial.cs", FileHelper.GeneratedFolder);
+		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(table, withDefaultNamespace: false), "DbResources", ".partial.cs", FileHelper.GeneratedFolder);
 
 		if (csprojFile != null)
 		{

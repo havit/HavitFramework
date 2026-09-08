@@ -154,7 +154,7 @@ public class DataEntrySymbolService<TEntity, TKey> : IDataEntrySymbolService<TEn
 		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 
 		// item => !String.IsNullOrEmpty(item.Symbol)
-		Expression<Func<TEntity, bool>> whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.Not(Expression.Call(null, typeof(String).GetMethod(nameof(String.IsNullOrEmpty)), Expression.Property(parameter, "Symbol"))), parameter);
+		Expression<Func<TEntity, bool>> whereExpression = (Expression<Func<TEntity, bool>>)Expression.Lambda(Expression.Not(Expression.Call(instance: null, typeof(String).GetMethod(nameof(String.IsNullOrEmpty)), Expression.Property(parameter, "Symbol"))), parameter);
 
 		// item => new EntryIdentification { Id = item.Id, Symbol = item.Symbol }
 		Expression<Func<TEntity, EntryIdentification<TKey>>> projectionExpression = (Expression<Func<TEntity, EntryIdentification<TKey>>>)Expression.Lambda(

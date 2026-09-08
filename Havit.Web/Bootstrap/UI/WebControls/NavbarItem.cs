@@ -77,7 +77,7 @@ public abstract class NavbarItem : IStateManager
 
 	internal virtual void SetDirty()
 	{
-		this.ViewState.SetDirty(true);
+		this.ViewState.SetDirty(dirty: true);
 	}
 
 	/// <summary>

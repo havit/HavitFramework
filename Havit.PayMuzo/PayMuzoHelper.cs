@@ -146,7 +146,7 @@ public static class PayMuzoHelper
 
 		string rawData = requestData.GetPipedRawData();
 
-		string digest = CreateDigest(rawData, certificate, true);
+		string digest = CreateDigest(rawData, certificate, urlEncode: true);
 
 		requestData.Add("DIGEST", digest);
 	}
@@ -255,7 +255,7 @@ public static class PayMuzoHelper
 		MatchCollection matches = Regex.Matches(rawQueryString, @"(?<=(\?|&))(?<NAME>\w+)=(?<VALUE>[^&]+)(?=(&|$))");
 		foreach (Match match in matches)
 		{
-			if (String.Compare(match.Groups["NAME"].Value, "RESULTTEXT", true) == 0)
+			if (String.Compare(match.Groups["NAME"].Value, "RESULTTEXT", ignoreCase: true) == 0)
 			{
 				// RESULTTEXT je ve Windows-1250 a UrlEncoded
 				data.Add(match.Groups["NAME"].Value, System.Web.HttpUtility.UrlDecode(match.Groups["VALUE"].Value, Encoding.GetEncoding(1250)));

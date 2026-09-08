@@ -64,7 +64,7 @@ public class DbDataSeedRunner : DataSeedRunner
 							throw;
 						}
 					},
-					null);
+verifySucceeded: null);
 				});
 			}
 			else
@@ -105,7 +105,7 @@ public class DbDataSeedRunner : DataSeedRunner
 					{
 						await base.SeedDataAsync(dataSeedProfileType, forceRun, cancellationToken).ConfigureAwait(false);
 					},
-					null,
+verifySucceeded: null,
 					cancellationToken).ConfigureAwait(false);
 				}, cancellationToken).ConfigureAwait(false);
 			}

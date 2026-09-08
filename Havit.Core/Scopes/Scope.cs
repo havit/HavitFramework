@@ -67,7 +67,7 @@ public class Scope<T> : IDisposable
 	/// </summary>
 	/// <param name="instance">the instance wrapped by the scope</param>
 	/// <param name="scopeRepository">scope storage repository</param>
-	protected Scope(T instance, IScopeRepository<T> scopeRepository) : this(instance, scopeRepository, true) { }
+	protected Scope(T instance, IScopeRepository<T> scopeRepository) : this(instance, scopeRepository, ownsInstance: true) { }
 
 	/// <summary>
 	/// Creates an instance of the <see cref="Scope{T}"/> class around the instance.
@@ -93,7 +93,7 @@ public class Scope<T> : IDisposable
 	/// </summary>
 	public void Dispose()
 	{
-		Dispose(true);
+		Dispose(disposing: true);
 		// no unmanaged resources owned, not needed: Finalize() + GC.SuppressFinalize(this);
 	}
 

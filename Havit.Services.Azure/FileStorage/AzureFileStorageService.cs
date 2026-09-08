@@ -32,7 +32,7 @@ public class AzureFileStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	/// <param name="fileStorageConnectionString">Connection string pro připojení k Azure File Storage.</param>
 	/// <param name="fileShareName">File Share ve File Storage pro práci se soubory.</param>
-	public AzureFileStorageService(string fileStorageConnectionString, string fileShareName) : this(fileStorageConnectionString, fileShareName, null)
+	public AzureFileStorageService(string fileStorageConnectionString, string fileShareName) : this(fileStorageConnectionString, fileShareName, rootDirectoryName: null)
 	{
 		// NOOP
 	}

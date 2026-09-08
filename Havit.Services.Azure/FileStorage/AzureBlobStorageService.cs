@@ -30,7 +30,7 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 	/// </summary>
 	/// <param name="blobStorageConnectionString">Connection string pro připojení k Azure Blob Storage.</param>
 	/// <param name="containerName">Container v Blob Storage pro práci se soubory.</param>
-	public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, null)
+	public AzureBlobStorageService(string blobStorageConnectionString, string containerName) : this(blobStorageConnectionString, containerName, encryptionOptions: null)
 	{
 	}
 
@@ -331,7 +331,7 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		{
 			BlobClient sourceBlobClient = this.GetBlobClient(sourceFileName);
 			BlobClient targetBlobClient = targetAzureBlobStorageService.GetBlobClient(targetFileName);
-			CopyFromUriOperation operation = await targetBlobClient.StartCopyFromUriAsync(sourceBlobClient.Uri, null, cancellationToken).ConfigureAwait(false);
+			CopyFromUriOperation operation = await targetBlobClient.StartCopyFromUriAsync(sourceBlobClient.Uri, options: null, cancellationToken).ConfigureAwait(false);
 			await operation.WaitForCompletionAsync(cancellationToken).ConfigureAwait(false);
 		}
 		else
@@ -522,7 +522,7 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 	{
 		EnsureContainer();
 		BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
-		return GetBlobClient(fileName).OpenWrite(true, new BlobOpenWriteOptions { HttpHeaders = blobHttpHeaders });
+		return GetBlobClient(fileName).OpenWrite(overwrite: true, new BlobOpenWriteOptions { HttpHeaders = blobHttpHeaders });
 	}
 
 	/// <inheritdoc />
@@ -531,7 +531,7 @@ public class AzureBlobStorageService : FileStorageServiceBase, IFileStorageServi
 		await EnsureContainerAsync(cancellationToken).ConfigureAwait(false);
 
 		BlobHttpHeaders blobHttpHeaders = GetUploadHttpHeaders(contentType);
-		return await GetBlobClient(fileName).OpenWriteAsync(true, new BlobOpenWriteOptions { HttpHeaders = blobHttpHeaders }, cancellationToken: cancellationToken).ConfigureAwait(false);
+		return await GetBlobClient(fileName).OpenWriteAsync(overwrite: true, new BlobOpenWriteOptions { HttpHeaders = blobHttpHeaders }, cancellationToken: cancellationToken).ConfigureAwait(false);
 	}
 
 	private BlobHttpHeaders GetUploadHttpHeaders(string contentType)

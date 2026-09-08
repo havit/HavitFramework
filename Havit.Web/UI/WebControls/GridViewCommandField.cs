@@ -493,7 +493,7 @@ public class GridViewCommandField : CommandFieldExt
 				newDisabledCssClass = InsertDisabledCssClass;
 				newImageUrl = InsertImageUrl;
 			}
-			AddButtonToCell(cell, CommandNames.New, HttpUtilityExt.GetResourceString(newText), HttpUtilityExt.GetResourceString(newTooltip), newCssClass, newDisabledCssClass, false, String.Empty, rowIndex, newImageUrl);
+			AddButtonToCell(cell, CommandNames.New, HttpUtilityExt.GetResourceString(newText), HttpUtilityExt.GetResourceString(newTooltip), newCssClass, newDisabledCssClass, causesValidation: false, String.Empty, rowIndex, newImageUrl);
 		}
 		else if (cellType == DataControlCellType.DataCell)
 		{
@@ -530,7 +530,7 @@ public class GridViewCommandField : CommandFieldExt
 								child = new LiteralControl("&nbsp;");
 								cell.Controls.Add(child);
 							}
-							this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), CancelCssClass, CancelDisabledCssClass, false, string.Empty, rowIndex, this.CancelImageUrl);
+							this.AddButtonToCell(cell, "Cancel", HttpUtilityExt.GetResourceString(this.CancelText), HttpUtilityExt.GetResourceString(this.CancelTooltip), CancelCssClass, CancelDisabledCssClass, causesValidation: false, string.Empty, rowIndex, this.CancelImageUrl);
 						}
 					}
 					if (((rowState & DataControlRowState.Insert) != DataControlRowState.Normal) && showInsertButton)
@@ -553,7 +553,7 @@ public class GridViewCommandField : CommandFieldExt
 					insertSpace = false;
 					if (showSelectButton)
 					{
-						this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), SelectCssClass, SelectDisabledCssClass, false, string.Empty, rowIndex, this.SelectImageUrl);
+						this.AddButtonToCell(cell, "Select", HttpUtilityExt.GetResourceString(this.SelectText), HttpUtilityExt.GetResourceString(this.SelectTooltip), SelectCssClass, SelectDisabledCssClass, causesValidation: false, string.Empty, rowIndex, this.SelectImageUrl);
 						insertSpace = true;
 					}
 					if (showEditButton)
@@ -563,7 +563,7 @@ public class GridViewCommandField : CommandFieldExt
 							child = new LiteralControl("&nbsp;");
 							cell.Controls.Add(child);
 						}
-						this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), EditCssClass, EditDisabledCssClass, false, string.Empty, rowIndex, this.EditImageUrl);
+						this.AddButtonToCell(cell, "Edit", HttpUtilityExt.GetResourceString(this.EditText), HttpUtilityExt.GetResourceString(this.EditTooltip), EditCssClass, EditDisabledCssClass, causesValidation: false, string.Empty, rowIndex, this.EditImageUrl);
 						insertSpace = true;
 					}
 					if (showDeleteButton)
@@ -574,7 +574,7 @@ public class GridViewCommandField : CommandFieldExt
 							cell.Controls.Add(child);
 						}
 
-						IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), DeleteCssClass, DeleteDisabledCssClass, false, string.Empty, rowIndex, this.DeleteImageUrl);
+						IButtonControl button = this.AddButtonToCell(cell, "Delete", HttpUtilityExt.GetResourceString(this.DeleteText), HttpUtilityExt.GetResourceString(this.DeleteTooltip), DeleteCssClass, DeleteDisabledCssClass, causesValidation: false, string.Empty, rowIndex, this.DeleteImageUrl);
 					}
 				}
 			}
@@ -594,7 +594,7 @@ public class GridViewCommandField : CommandFieldExt
 		if ((attributeAccessor != null) && (_registerWebFormsScriptMethod != null))
 		{
 			// Tato metoda zajistí vložení vložení WebForms skriptů do stránky pro emulaci funčnosti DefaultButton u Panelu (který nepřímo tuto metodu používá taky - přes jinou internal)
-			_registerWebFormsScriptMethod.Invoke(control.Page, null);
+			_registerWebFormsScriptMethod.Invoke(control.Page, parameters: null);
 
 			string firstScript = attributeAccessor.GetAttribute("onkeypressed") ?? String.Empty;
 			if (!String.IsNullOrEmpty(firstScript) && !firstScript.EndsWith(";"))
@@ -632,7 +632,7 @@ public class GridViewCommandField : CommandFieldExt
 				LinkButton linkButton;
 				if ((container == null) || causesValidation)
 				{
-					linkButton = new DataControlLinkButtonExt(null);
+					linkButton = new DataControlLinkButtonExt(container: null);
 				}
 				else
 				{

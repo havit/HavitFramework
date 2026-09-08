@@ -102,12 +102,12 @@ public static class Program
 	{
 		string fileContent;
 
-		using (TextReader reader = new StreamReader(filename, Encoding.GetEncoding(1250), true))
+		using (TextReader reader = new StreamReader(filename, Encoding.GetEncoding(1250), detectEncodingFromByteOrderMarks: true))
 		{
 			fileContent = reader.ReadToEnd();
 		}
 
-		using (TextWriter writer = new StreamWriter(filename, false, Encoding.UTF8))
+		using (TextWriter writer = new StreamWriter(filename, append: false, Encoding.UTF8))
 		{
 			writer.Write(fileContent);
 		}

@@ -24,7 +24,7 @@ public class GridViewInsertEventArgs : CancelEventArgs
 	/// </summary>
 	/// <param name="rowIndex">index řádku GridView, v kterém se odehrává Insert</param>
 	public GridViewInsertEventArgs(int rowIndex)
-		: base(false)
+		: base(cancel: false)
 	{
 		this._rowIndex = rowIndex;
 	}

@@ -54,7 +54,7 @@ public class DistributedCacheInvalidationReceiverBackgroundService(
 
 		// nastavíme zprávy, které chceme odebírat
 		_logger.LogDebug("Attaching message handlers...");
-		connection.On(nameof(ICacheService.Clear), new Type[0], HandleClearMessageAsync, null);
+		connection.On(nameof(ICacheService.Clear), new Type[0], HandleClearMessageAsync, state: null);
 		connection.On<string[]>(nameof(ICacheService.Remove), HandleRemoveMessageAsync);
 		_logger.LogDebug("Message handlers attached.");
 

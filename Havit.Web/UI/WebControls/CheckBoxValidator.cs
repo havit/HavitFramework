@@ -76,8 +76,8 @@ public class CheckBoxValidator : BaseValidator
 
 		if (EnableClientScript)
 		{
-			writer.AddAttribute("data-val-evaluationfunction", "CheckBoxValidatorEvaluateIsValid", false);
-			writer.AddAttribute("data-val-validCheckedState", ValidCheckedState ? "true" : "false", false);
+			writer.AddAttribute("data-val-evaluationfunction", "CheckBoxValidatorEvaluateIsValid", fEndode: false);
+			writer.AddAttribute("data-val-validCheckedState", ValidCheckedState ? "true" : "false", fEndode: false);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class CheckBoxValidator : BaseValidator
 
 		if (EnableClientScript)
 		{
-			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(CheckBoxValidator), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, true);
+			ScriptManager.RegisterClientScriptBlock(this.Page, typeof(CheckBoxValidator), "Havit.Web.UI.WebControls.CheckBoxValidator", validationScript, addScriptTags: true);
 		}
 	}
 

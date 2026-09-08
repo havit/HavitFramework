@@ -461,7 +461,7 @@ public static class ColumnHelper
 		{
 			return CloneMode.Shallow;
 		}
-		CloneMode result = (CloneMode)Enum.Parse(typeof(CloneMode), cloneMode, true);
+		CloneMode result = (CloneMode)Enum.Parse(typeof(CloneMode), cloneMode, ignoreCase: true);
 		return result;
 	}
 

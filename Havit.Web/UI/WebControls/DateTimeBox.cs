@@ -297,7 +297,7 @@ public class DateTimeBox : Control, INamingContainer
 		}
 		set
 		{
-			SetValue(value, true);
+			SetValue(value, isValid: true);
 		}
 	}
 
@@ -534,18 +534,18 @@ public class DateTimeBox : Control, INamingContainer
 		string text = valueTextBox.Text.Trim();
 		if (String.IsNullOrEmpty(text))
 		{
-			SetValue(null, true);
+			SetValue(value: null, isValid: true);
 		}
 		else
 		{
 			DateTime dt;
 			if (DateTime.TryParse(text, Thread.CurrentThread.CurrentCulture.DateTimeFormat, DateTimeStyles.None, out dt))
 			{
-				SetValue(dt, true);
+				SetValue(dt, isValid: true);
 			}
 			else
 			{
-				SetValue(null, false);
+				SetValue(value: null, isValid: false);
 			}
 		}
 	}

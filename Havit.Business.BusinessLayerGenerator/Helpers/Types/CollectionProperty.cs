@@ -97,7 +97,7 @@ public class CollectionProperty
 				}
 				else
 				{
-					cloneMode = (CloneMode)Enum.Parse(typeof(CloneMode), cloneModeValue, true);
+					cloneMode = (CloneMode)Enum.Parse(typeof(CloneMode), cloneModeValue, ignoreCase: true);
 				}
 			}
 			return cloneMode.Value;

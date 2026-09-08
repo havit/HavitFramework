@@ -16,7 +16,7 @@ public static class BitmapExt
 	/// <param name="rotateFlipType"><see cref="System.Drawing.RotateFlipType"/> určující směr otočení a/nebo překlopení.</param>
 	public static void RotateFlip(string sourceFilename, string destinationFilename, RotateFlipType rotateFlipType)
 	{
-		if (String.Compare(sourceFilename, destinationFilename, true) == 0)
+		if (String.Compare(sourceFilename, destinationFilename, ignoreCase: true) == 0)
 		{
 			// pro stejný zdroj a cíl musíme použít modifikovanou verzi
 			RotateFlip(sourceFilename, rotateFlipType);
@@ -113,12 +113,12 @@ public static class BitmapExt
 					destinationSize.Width = originalBitmap.Width;
 					destinationSize.Height = originalBitmap.Height;
 
-					if (String.Compare(Path.GetFullPath(destinationFilename), Path.GetFullPath(sourceFilename), true) == 0)
+					if (String.Compare(Path.GetFullPath(destinationFilename), Path.GetFullPath(sourceFilename), ignoreCase: true) == 0)
 					{
 						// soubor je v pořádku
 						return destinationSize;
 					}
-					else if (String.Compare(Path.GetExtension(sourceFilename), Path.GetExtension(destinationFilename), true) == 0)
+					else if (String.Compare(Path.GetExtension(sourceFilename), Path.GetExtension(destinationFilename), ignoreCase: true) == 0)
 					{
 						// zrychlující zkratka - nic se nemění, typ souboru stejný, takže jenom zkopírujem
 						File.Copy(sourceFilename, destinationFilename);
@@ -151,8 +151,8 @@ public static class BitmapExt
 			}
 
 			bool saved = false;
-			if ((String.Compare(Path.GetExtension(destinationFilename), ".jpg", true) == 0)
-				|| (String.Compare(Path.GetExtension(destinationFilename), ".jpeg", true) == 0))
+			if ((String.Compare(Path.GetExtension(destinationFilename), ".jpg", ignoreCase: true) == 0)
+				|| (String.Compare(Path.GetExtension(destinationFilename), ".jpeg", ignoreCase: true) == 0))
 			{
 				ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
 				ImageCodecInfo jpegEncoder = null;

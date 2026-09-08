@@ -125,7 +125,7 @@ public static class FormsRolesAuthentication
 				username,                                   // name
 				DateTime.Now,                               // issueDate
 				DateTime.Now.AddYears(50),                  // expiration
-				true,                                       // isPersistent
+isPersistent: true,                                       // isPersistent
 				userData,                                   // userData
 				cookiePath);                                // cookiePath
 		}
@@ -136,7 +136,7 @@ public static class FormsRolesAuthentication
 				username,                                       // name
 				DateTime.Now,                                   // issueDate
 				DateTime.Now.AddMinutes(timeout.Value), // expiration
-				false,                                          // isPersistent
+isPersistent: false,                                          // isPersistent
 				userData,                                       // userData
 				cookiePath);                                    // cookiePath
 		}
@@ -222,7 +222,7 @@ public static class FormsRolesAuthentication
 			}
 
 			AddAuthCookie(username, roles, createPersistentCookie, cookiePath);
-			context.Response.Redirect(redirectUrl, true);
+			context.Response.Redirect(redirectUrl, endResponse: true);
 		}
 	}
 
@@ -235,7 +235,7 @@ public static class FormsRolesAuthentication
 	/// <param name="createPersistentCookie"><c>true</c>, pokud se má vytvořit trvalá cookie, která přežije session browseru; jinak <c>false</c></param>
 	public static void RedirectFromLoginPage(string username, string[] roles, bool createPersistentCookie)
 	{
-		RedirectFromLoginPage(username, roles, createPersistentCookie, null, null);
+		RedirectFromLoginPage(username, roles, createPersistentCookie, cookiePath: null, redirectUrl: null);
 	}
 
 	/// <summary>
@@ -246,7 +246,7 @@ public static class FormsRolesAuthentication
 	/// <param name="roles">role, které uživateli přísluší</param>
 	public static void RedirectFromLoginPage(string username, string[] roles)
 	{
-		RedirectFromLoginPage(username, roles, false, null, null);
+		RedirectFromLoginPage(username, roles, createPersistentCookie: false, cookiePath: null, redirectUrl: null);
 	}
 
 	/// <summary>
@@ -280,7 +280,7 @@ public static class FormsRolesAuthentication
 	/// <returns>autentizační cookie, která byla vytvořena a přidána do Response</returns>
 	public static HttpCookie AddAuthCookie(string username, string[] roles)
 	{
-		return AddAuthCookie(username, roles, false, null);
+		return AddAuthCookie(username, roles, createPersistentCookie: false, cookiePath: null);
 	}
 
 	/// <summary>
@@ -292,6 +292,6 @@ public static class FormsRolesAuthentication
 	/// <returns>autnetizační cookie, která byla vytvořena a přidána do Response</returns>
 	public static HttpCookie AddAuthCookie(string username, string[] roles, bool createPersistentCookie)
 	{
-		return AddAuthCookie(username, roles, createPersistentCookie, null);
+		return AddAuthCookie(username, roles, createPersistentCookie, cookiePath: null);
 	}
 }

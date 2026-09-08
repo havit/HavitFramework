@@ -50,7 +50,7 @@ internal static class ValidatorRenderExtender
 		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(baseValidator.Page, ClientScripts.BootstrapClientScriptHelper.WebUIValidationExtensionScriptResourceMappingName);
 
 		// register hookup script - in every request (must be included also in asynchronnous requests!)
-		ScriptManager.RegisterStartupScript(baseValidator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_Validation_StartUp(); });", true);
+		ScriptManager.RegisterStartupScript(baseValidator, typeof(ValidatorRenderExtender), "StartUp", "$(function() { Havit_Validation_StartUp(); });", addScriptTags: true);
 	}
 
 	/// <summary>
@@ -64,7 +64,7 @@ internal static class ValidatorRenderExtender
 			Control controlToValidate = ((Control)validator).NamingContainer.FindControl(validator.ControlToValidate);
 			// no check needed - ControlToValidate already checked
 
-			ValidationDisplayTargetAttribute validationDisplayTargetAttribute = controlToValidate.GetType().GetCustomAttributes(typeof(ValidationDisplayTargetAttribute), true).Cast<ValidationDisplayTargetAttribute>().FirstOrDefault();
+			ValidationDisplayTargetAttribute validationDisplayTargetAttribute = controlToValidate.GetType().GetCustomAttributes(typeof(ValidationDisplayTargetAttribute), inherit: true).Cast<ValidationDisplayTargetAttribute>().FirstOrDefault();
 			if (validationDisplayTargetAttribute != null)
 			{
 				Control validationDisplayTarget = controlToValidate.FindControl(validationDisplayTargetAttribute.DisplayTargetControl);

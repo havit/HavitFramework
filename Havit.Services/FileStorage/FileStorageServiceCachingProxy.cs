@@ -151,7 +151,7 @@ public class FileStorageServiceCachingProxy : IFileStorageService
 		cacheOptions.Size = bytes.Length;
 
 		cacheService.Add(cacheKey, bytes, cacheOptions);
-		return new MemoryStream(bytes, false);
+		return new MemoryStream(bytes, writable: false);
 	}
 
 	/// <inheritdoc />

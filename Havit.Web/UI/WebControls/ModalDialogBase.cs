@@ -229,7 +229,7 @@ public abstract class ModalDialogBase : Control
 		if (!String.IsNullOrEmpty(showScript))
 		{
 			string script = String.Format("$(document).ready(function() {{ {0} }});", showScript);
-			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
+			ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, addScriptTags: true);
 		}
 	}
 
@@ -242,7 +242,7 @@ public abstract class ModalDialogBase : Control
 		string script = String.Format(
 			"$(document).ready(function() {{ {0} }});",
 			GetHideScript());
-		ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, true);
+		ScriptManager.RegisterStartupScript(this.Page, typeof(BasicModalDialog), this.ClientID, script, addScriptTags: true);
 	}
 
 	/// <summary>

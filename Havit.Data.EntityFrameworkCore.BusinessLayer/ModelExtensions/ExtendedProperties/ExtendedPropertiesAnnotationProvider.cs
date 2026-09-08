@@ -9,7 +9,7 @@ public class ExtendedPropertiesAnnotationProvider : IModelExtensionAnnotationPro
 {
 	public List<IAnnotation> GetAnnotations(IModelExtension dbAnnotation, MemberInfo memberInfo)
 	{
-		var attributes = memberInfo.GetCustomAttributes(typeof(ModelExtensionExtendedPropertiesAttribute), false).Cast<ModelExtensionExtendedPropertiesAttribute>();
+		var attributes = memberInfo.GetCustomAttributes(typeof(ModelExtensionExtendedPropertiesAttribute), inherit: false).Cast<ModelExtensionExtendedPropertiesAttribute>();
 		return attributes.SelectMany(attr => ExtendedPropertiesForExtraDatabaseObjectsBuilder.ForExtraDatabaseObject(attr.GetExtendedProperties(memberInfo), attr.ObjectType, dbAnnotation.ObjectName))
 			.ToList();
 	}

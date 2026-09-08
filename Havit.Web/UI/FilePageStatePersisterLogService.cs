@@ -19,7 +19,7 @@ internal class FilePageStatePersisterLogService : FilePageStatePersister.ILogSer
 	/// </summary>
 	public void Log(string message, TraceEventType eventType = TraceEventType.Information)
 	{
-		traceSource.TraceEvent(eventType, 0, message, null);
+		traceSource.TraceEvent(eventType, 0, message, args: null);
 		traceSource.Flush();
 	}
 }

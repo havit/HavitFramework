@@ -55,7 +55,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 		writer.WriteAttribute("method", this.Method);
 		this.Attributes.Remove("method");
 
-		writer.WriteAttribute("action", this.Action, true);
+		writer.WriteAttribute("action", this.Action, fEncode: true);
 		this.Attributes.Remove("action");
 
 		string submitEvent = this.Page_ClientOnSubmitEvent;
@@ -91,7 +91,7 @@ public class HtmlFormExt : System.Web.UI.HtmlControls.HtmlForm
 	{
 		Type formType = typeof(System.Web.UI.HtmlControls.HtmlForm);
 		MethodInfo actionMethod = formType.GetMethod("GetActionAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
-		object result = actionMethod.Invoke(this, null);
+		object result = actionMethod.Invoke(this, parameters: null);
 		return (string)result;
 	}
 }

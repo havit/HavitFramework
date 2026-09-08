@@ -15,7 +15,7 @@ public static class ExtensionMethodsClass
 		// tabulky rozdělíme po namespaces
 		// extension metody dáváme do příslušného namespace
 
-		var tableNamespacesGroups = tables.ToLookup(table => NamespaceHelper.GetNamespaceName(table, false));
+		var tableNamespacesGroups = tables.ToLookup(table => NamespaceHelper.GetNamespaceName(table, withDefaultNamespace: false));
 
 		foreach (var tableNamespacesGroup in tableNamespacesGroups.OrderBy(group => group.Key, StringComparer.InvariantCultureIgnoreCase))
 		{
@@ -35,12 +35,12 @@ public static class ExtensionMethodsClass
 
 			BusinessObjectUsings.WriteUsings(writer);
 
-			writer.WriteLine("namespace " + NamespaceHelper.GetNamespaceName(tableNamespacesGroup.ElementAt(0), true));
+			writer.WriteLine("namespace " + NamespaceHelper.GetNamespaceName(tableNamespacesGroup.ElementAt(0), withDefaultNamespace: true));
 			writer.WriteLine("{");
 
 			writer.WriteCommentSummary("Rozšiřující metody.");
 
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 
 			writer.WriteLine("public static partial class ExtensionMethods");

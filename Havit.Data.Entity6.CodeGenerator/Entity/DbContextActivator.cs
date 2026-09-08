@@ -11,7 +11,7 @@ public class DbContextActivator
 	public DbContext Activate(Type dbContextType)
 	{
 		// pokud existuje, spustíme metodu InitializeForCodeGenerator s parametrem connection stringu
-		MethodInfo configureForCodeGeneratorMethod = dbContextType.GetMethod("ConfigureForCodeGenerator", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(string) }, null);
+		MethodInfo configureForCodeGeneratorMethod = dbContextType.GetMethod("ConfigureForCodeGenerator", BindingFlags.Public | BindingFlags.Static, binder: null, new[] { typeof(string) }, modifiers: null);
 		if (configureForCodeGeneratorMethod != null)
 		{
 			configureForCodeGeneratorMethod.Invoke(null, new object[] { ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString });

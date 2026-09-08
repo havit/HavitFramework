@@ -25,7 +25,7 @@ public class ActiveDirectoryServices
 	/// <summary>
 	/// Creates an instance of ActiveDirectoryServices class.
 	/// </summary>
-	public ActiveDirectoryServices() : this(null, null, null)
+	public ActiveDirectoryServices() : this(directoryServicesUsername: null, directoryServicesPassword: null, domainController: null)
 	{
 	}
 
@@ -285,7 +285,7 @@ public class ActiveDirectoryServices
 
 		foreach (string group in groups)
 		{
-			List<string> groupMembers = new List<string>(GetGroupMembers(group, false, traverseNestedGroups));
+			List<string> groupMembers = new List<string>(GetGroupMembers(group, includeGroups: false, traverseNestedGroups));
 			if (groupMembers.Contains(username, StringComparer.CurrentCultureIgnoreCase))
 			{
 				result.Add(group);

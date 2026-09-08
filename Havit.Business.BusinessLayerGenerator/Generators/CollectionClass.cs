@@ -27,7 +27,7 @@ public static class CollectionClass
 
 			BusinessObjectUsings.WriteUsings(writer);
 			CollectionBaseClass.WriteNamespaceBegin(writer, table);
-			WriteClassBegin(writer, table, false);
+			WriteClassBegin(writer, table, partial: false);
 			CollectionBaseClass.WriteClassEnd(writer);
 			CollectionBaseClass.WriteNamespaceEnd(writer);
 

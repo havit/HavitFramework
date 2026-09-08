@@ -43,7 +43,7 @@ public class SequenceRecurringJobScheduler
 		string[] recurringJobIdsToRunInSequence,
 		JobContinuationOptions jobContinuationOptions)
 	{
-		EnqueueNextRecurringJob(sequenceRecurringJobId, null, recurringJobIdsToRunInSequence, jobContinuationOptions);
+		EnqueueNextRecurringJob(sequenceRecurringJobId, previousSequenceRecurringJobId: null, recurringJobIdsToRunInSequence, jobContinuationOptions);
 	}
 
 	/// <summary>

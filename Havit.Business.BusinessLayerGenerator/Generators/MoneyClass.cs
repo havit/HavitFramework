@@ -10,7 +10,7 @@ public static class MoneyClass
 {
 	public static void Generate(Table currencyTable, CsprojFile csprojFile)
 	{
-		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, false), "Money", ".cs", "");
+		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, withDefaultNamespace: false), "Money", ".cs", "");
 
 		if (csprojFile != null)
 		{

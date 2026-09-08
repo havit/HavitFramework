@@ -112,7 +112,7 @@ public static class StoredProcedureHelper
 		{
 			return StoreProcedureResultType.None;
 		}
-		return (StoreProcedureResultType)Enum.Parse(typeof(StoreProcedureResultType), result, true);
+		return (StoreProcedureResultType)Enum.Parse(typeof(StoreProcedureResultType), result, ignoreCase: true);
 	}
 
 	/// <summary>

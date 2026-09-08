@@ -71,7 +71,7 @@ public class DataRecord
 	/// </summary>
 	/// <param name="row">datový zdroj typu <see cref="System.Data.DataRow"/></param>
 	[Obsolete]
-	public DataRecord(DataRow row) : this(row, true)
+	public DataRecord(DataRow row) : this(row, fullLoad: true)
 	{
 	}
 
@@ -110,7 +110,7 @@ public class DataRecord
 	/// </summary>
 	/// <param name="record">datový zdroj <see cref="System.Data.IDataRecord"/> (např. <see cref="System.Data.SqlClient.SqlDataReader"/>)</param>
 	[Obsolete]
-	public DataRecord(IDataRecord record) : this(record, true)
+	public DataRecord(IDataRecord record) : this(record, fullLoad: true)
 	{
 	}
 

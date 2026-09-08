@@ -26,7 +26,7 @@ public class IgnoreSucceededDependenciesWithNoParentIdProcessor : ITelemetryProc
 	/// <inheritdoc />
 	public void Process(ITelemetry item)
 	{
-		if ((item is DependencyTelemetry dependencyTelemetry) && (dependencyTelemetry.Success.GetValueOrDefault(false) /* Success je nullable */) && String.IsNullOrEmpty(item.Context.Operation.ParentId))
+		if ((item is DependencyTelemetry dependencyTelemetry) && (dependencyTelemetry.Success.GetValueOrDefault(defaultValue: false) /* Success je nullable */) && String.IsNullOrEmpty(item.Context.Operation.ParentId))
 		{
 			return; // ignorujeme položku
 		}

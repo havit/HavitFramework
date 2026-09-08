@@ -12,6 +12,6 @@ public static class PropertyBuilderExtensions
 	/// </summary>
 	public static PropertyBuilder<TProperty> SuppressModelValidatorRule<TProperty>(this PropertyBuilder<TProperty> propertyBuilder, ModelValidatorRule modelValidatorRule)
 	{
-		return propertyBuilder.HasAnnotation(modelValidatorRule.SuppressModelValidatorRuleAnnotationName, true);
+		return propertyBuilder.HasAnnotation(modelValidatorRule.SuppressModelValidatorRuleAnnotationName, value: true);
 	}
 }

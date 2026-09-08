@@ -50,7 +50,7 @@ public abstract class DateTimeBoxDateCustomization
 			}
 		}
 
-		ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), DateCustomizationFunctionName, DateCustomizationFunctionContent, true);
+		ScriptManager.RegisterClientScriptBlock(page, typeof(DateTimeBoxDateCustomization), DateCustomizationFunctionName, DateCustomizationFunctionContent, addScriptTags: true);
 
 		return DateCustomizationFunctionName;
 	}

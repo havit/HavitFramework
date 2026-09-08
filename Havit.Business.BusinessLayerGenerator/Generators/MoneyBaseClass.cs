@@ -10,7 +10,7 @@ public static class MoneyBaseClass
 {
 	public static void Generate(Table currencyTable, CsprojFile csprojFile)
 	{
-		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, false), "Money", "Base.cs", FileHelper.GeneratedFolder);
+		string fileName = FileHelper.GetFilename(NamespaceHelper.GetNamespaceName(currencyTable, withDefaultNamespace: false), "Money", "Base.cs", FileHelper.GeneratedFolder);
 
 		if (csprojFile != null)
 		{
@@ -27,13 +27,13 @@ public static class MoneyBaseClass
 		writer.WriteLine("{");
 
 		writer.WriteCommentSummary("Třída reprezentující peněžní částky s měnou.");
-		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 		writer.WriteGeneratedCodeAttribute();
 		writer.WriteLine("[System.Diagnostics.DebuggerDisplay(\"{GetType().FullName,nq} (Amount={Amount, nq}, Currency={Currency == null ? \\\"null\\\" : Currency.ID.ToString(), nq})\")]");
 		writer.WriteLine("public class MoneyBase : Havit.Business.MoneyImplementationBase<Currency, Money>");
 		writer.WriteLine("{");
 		writer.WriteLine();
-		WriteConstructors(writer, "MoneyBase", true);
+		WriteConstructors(writer, "MoneyBase", baseClass: true);
 		writer.WriteLine("}");
 
 		writer.WriteLine("}");
@@ -48,7 +48,7 @@ public static class MoneyBaseClass
 
 		if (!baseClass)
 		{
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 		}
 
@@ -60,7 +60,7 @@ public static class MoneyBaseClass
 
 		if (!baseClass)
 		{
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 		}
 

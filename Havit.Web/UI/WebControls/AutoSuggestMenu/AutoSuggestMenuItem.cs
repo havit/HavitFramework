@@ -53,7 +53,7 @@ public class AutoSuggestMenuItem
 		writer.WriteNameValue("label", _label);
 		writer.WriteNameValue("value", _value);
 		writer.WriteNameValue("isSelectable", _isSelectable);
-		writer.WriteNameValue("cssClass", _cssClass, true);
+		writer.WriteNameValue("cssClass", _cssClass, formatValue: true);
 
 		return writer.ToString();
 	}

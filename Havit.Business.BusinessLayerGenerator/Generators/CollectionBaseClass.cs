@@ -25,7 +25,7 @@ public static class CollectionBaseClass
 		WriteNamespaceBegin(writer, table);
 		WriteClassBegin(writer, table);
 
-		WriteConstructors(writer, table, true);
+		WriteConstructors(writer, table, baseClass: true);
 		WriteFind(writer, table);
 		WriteSort(writer, table);
 		WriteLoadAll(writer, table);
@@ -51,7 +51,7 @@ public static class CollectionBaseClass
 			interfaces += ", ILocalizationCollection";
 		}
 		writer.WriteCommentSummary(String.Format("Kolekce business objektů typu {0}.", ClassHelper.GetClassFullName(table)));
-		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 		writer.WriteGeneratedCodeAttribute();
 		writer.WriteLine(String.Format("{0} partial class {1} : {2}{3}",
 			TableHelper.GetAccessModifier(table),
@@ -263,7 +263,7 @@ public static class CollectionBaseClass
 
 		if (!baseClass)
 		{
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 		}
 
@@ -276,7 +276,7 @@ public static class CollectionBaseClass
 
 		if (!baseClass)
 		{
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 		}
 

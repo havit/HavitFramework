@@ -33,7 +33,7 @@ public class LocalizationTableIndexConvention : IStoreModelConvention<EntitySet>
 					// pokud máme k dispozici vlastnosti (sloupce) LanguageId a ParentId (teoreticky mohou být v předkovi nebo nemusí vůbec existovat, protože interface ILocalization<,> je nepředepisuje, apod.)
 					if ((languageIdProperty != null) && (parentIdProperty != null))
 					{
-						IndexHelper.AddIndex(new EdmProperty[] { parentIdProperty, languageIdProperty }, true);
+						IndexHelper.AddIndex(new EdmProperty[] { parentIdProperty, languageIdProperty }, unique: true);
 					}
 				}
 			}

@@ -247,7 +247,7 @@ public class CheckBoxDropDownList : ListBoxExt
 
 		ClientScripts.HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryMultipleSelectResourceMappingName);
-		ScriptManager.RegisterStartupScript(this.Page, typeof(CheckBoxDropDownList), "Startup", "havitDropDownCheckBoxListExtensions.init();", true);
+		ScriptManager.RegisterStartupScript(this.Page, typeof(CheckBoxDropDownList), "Startup", "havitDropDownCheckBoxListExtensions.init();", addScriptTags: true);
 	}
 
 	/// <summary>

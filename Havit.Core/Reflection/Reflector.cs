@@ -63,7 +63,7 @@ public static class Reflector
 			propertyName,
 			BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 		return (property != null)
-			? property.GetValue(target, null)
+			? property.GetValue(target, index: null)
 			: null;
 	}
 
@@ -72,7 +72,7 @@ public static class Reflector
 		PropertyInfo property = GetCachedProperty(targetType, propertyName, bindingFlags);
 		if (property != null)
 		{
-			return property.GetValue(target, null);
+			return property.GetValue(target, index: null);
 		}
 		else
 		{
@@ -96,7 +96,7 @@ public static class Reflector
 		{
 			throw new InvalidOperationException(String.Format("The property {0} was not found in the class {1}.", propertyName, targetType.FullName));
 		}
-		property.SetValue(target, value, null);
+		property.SetValue(target, value, index: null);
 	}
 
 	/// <summary>
@@ -119,7 +119,7 @@ public static class Reflector
 		{
 			throw new InvalidOperationException(String.Format("The property {0} was not found in the class {1}.", propertyName, target.GetType().FullName));
 		}
-		property.SetValue(target, value, null);
+		property.SetValue(target, value, index: null);
 	}
 
 	/// <summary>

@@ -52,7 +52,7 @@ public class LocalizationTableIndexConvention : IModelFinalizingConvention
 				// vytvoříme unikátní index
 				entityType.Builder
 					.HasIndex(new List<IConventionProperty> { parentForeignKeyProperty, languageForeignKeyProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */)
-					?.IsUnique(true, fromDataAnnotation: false /* Convention */);
+					?.IsUnique(unique: true, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

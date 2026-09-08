@@ -26,7 +26,7 @@ internal static class RadioButtonListCheckBoxListHelper
 		// vyrenderujeme jednotlivé položky
 		for (int i = 0; i < control.Items.Count; i++)
 		{
-			control.RenderItem(ListItemType.Item, i, null, writer);
+			control.RenderItem(ListItemType.Item, i, repeatInfo: null, writer);
 		}
 		// ukončíme obalující SPAN
 		writer.RenderEndTag();

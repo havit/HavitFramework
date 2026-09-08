@@ -13,7 +13,7 @@ public static class BusinessObjectConstructors
 		{
 			writer.WriteCommentSummary("Vytvoří instanci objektu jako nový prvek.");
 			// čas od času se může hodit konstruktor bez parametrů
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 			writer.WriteLine("protected " + className + "() : this(ConnectionMode.Connected)");
 			writer.WriteLine("{");
@@ -23,7 +23,7 @@ public static class BusinessObjectConstructors
 
 		writer.WriteCommentSummary("Vytvoří instanci objektu jako nový prvek.");
 		writer.WriteCommentLine("<param name=\"connectionMode\">Režim business objektu.</param>");
-		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 		writer.WriteGeneratedCodeAttribute();
 		writer.WriteLine("protected " + className + "(ConnectionMode connectionMode) : base(connectionMode)");
 		writer.WriteLine("{");
@@ -36,7 +36,7 @@ public static class BusinessObjectConstructors
 
 		if (!baseClass)
 		{
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 		}
 
@@ -59,7 +59,7 @@ public static class BusinessObjectConstructors
 
 		if (!baseClass)
 		{
-			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+			writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 			writer.WriteGeneratedCodeAttribute();
 		}
 

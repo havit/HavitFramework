@@ -214,7 +214,7 @@ public static class FileStorageServiceTestHelpers
 
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				sw.Write(content);
 			}
@@ -225,7 +225,7 @@ public static class FileStorageServiceTestHelpers
 
 		using (Stream stream = fileStorageService.OpenRead(filename))
 		{
-			using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, false, 1024, true))
+			using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, 1024, leaveOpen: true))
 			{
 				// Act
 				string readContent = sr.ReadToEnd();
@@ -239,7 +239,7 @@ public static class FileStorageServiceTestHelpers
 		{
 			fileStorageService.ReadToStream(filename, ms);
 			ms.Seek(0, SeekOrigin.Begin);
-			using (StreamReader sr = new StreamReader(ms, Encoding.UTF8, false, 1024, true))
+			using (StreamReader sr = new StreamReader(ms, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, 1024, leaveOpen: true))
 			{
 				// Act
 				string readContent = sr.ReadToEnd();
@@ -263,7 +263,7 @@ public static class FileStorageServiceTestHelpers
 
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				await sw.WriteAsync(content);
 			}
@@ -274,7 +274,7 @@ public static class FileStorageServiceTestHelpers
 
 		using (Stream stream = await fileStorageService.OpenReadAsync(filename))
 		{
-			using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, false, 1024, true))
+			using (StreamReader sr = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, 1024, leaveOpen: true))
 			{
 				// Act
 				string readContent = await sr.ReadToEndAsync();
@@ -288,7 +288,7 @@ public static class FileStorageServiceTestHelpers
 		{
 			await fileStorageService.ReadToStreamAsync(filename, ms);
 			ms.Seek(0, SeekOrigin.Begin);
-			using (StreamReader sr = new StreamReader(ms, Encoding.UTF8, false, 1024, true))
+			using (StreamReader sr = new StreamReader(ms, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, 1024, leaveOpen: true))
 			{
 				// Act
 				string readContent = await sr.ReadToEndAsync();
@@ -311,7 +311,7 @@ public static class FileStorageServiceTestHelpers
 
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				sw.Write(content1);
 			}
@@ -326,7 +326,7 @@ public static class FileStorageServiceTestHelpers
 		// Act
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				sw.Write(content2);
 			}
@@ -351,7 +351,7 @@ public static class FileStorageServiceTestHelpers
 
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				await sw.WriteAsync(content1);
 			}
@@ -366,7 +366,7 @@ public static class FileStorageServiceTestHelpers
 		// Act
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				await sw.WriteAsync(content2);
 			}
@@ -392,7 +392,7 @@ public static class FileStorageServiceTestHelpers
 		}
 
 		// Act + Assert
-		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, null, testFilename), "no mask");
+		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, searchPattern: null, testFilename), "no mask");
 		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "*", testFilename), "*");
 		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "*.*", testFilename), "*.*");
 		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, "test*", testFilename), "test*");
@@ -421,7 +421,7 @@ public static class FileStorageServiceTestHelpers
 		}
 
 		// Act + Assert
-		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, null, testFilename), "no mask");
+		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, searchPattern: null, testFilename), "no mask");
 		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "*", testFilename), "*");
 		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "*.*", testFilename), "*.*");
 		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, "test*", testFilename), "test*");
@@ -492,7 +492,7 @@ public static class FileStorageServiceTestHelpers
 		}
 
 		// Act + Assert
-		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, null, testFilename), "no mask");
+		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, searchPattern: null, testFilename), "no mask");
 
 		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"*", testFilename), @"*");
 		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"*.*", testFilename), @"*.*");
@@ -539,7 +539,7 @@ public static class FileStorageServiceTestHelpers
 
 		// Act + Assert
 
-		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, null, testFilename), "no mask");
+		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, searchPattern: null, testFilename), "no mask");
 
 		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, @"*", testFilename), @"*");
 		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, @"*.*", testFilename), @"*.*");
@@ -697,7 +697,7 @@ public static class FileStorageServiceTestHelpers
 		// zapíšeme 3 řádky
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				for (int i = 0; i < 1000; i++)
 				{
@@ -746,7 +746,7 @@ public static class FileStorageServiceTestHelpers
 		// zapíšeme 3 řádky
 		using (MemoryStream ms = new MemoryStream())
 		{
-			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, true))
+			using (StreamWriter sw = new StreamWriter(ms, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				for (int i = 0; i < 1000; i++)
 				{

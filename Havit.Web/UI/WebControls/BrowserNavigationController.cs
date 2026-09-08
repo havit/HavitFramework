@@ -44,6 +44,6 @@ public class BrowserNavigationController : Control
 		}
 		string script = String.Format("havitBrowserNavigationControllerExtension.startup('{0}');", backUrl.Replace("'", "\\'"));
 
-		ScriptManager.RegisterStartupScript(this.Page, typeof(BrowserNavigationController), "StartUp", script, true);
+		ScriptManager.RegisterStartupScript(this.Page, typeof(BrowserNavigationController), "StartUp", script, addScriptTags: true);
 	}
 }

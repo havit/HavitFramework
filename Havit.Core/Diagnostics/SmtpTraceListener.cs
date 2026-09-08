@@ -179,7 +179,7 @@ public class SmtpTraceListener : TraceListener
 				: new NetworkCredential("", "");
 
 			smtpClient.Port = _smtpPort.GetValueOrDefault(25);
-			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
+			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(defaultValue: false);
 
 			smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 		}
@@ -334,7 +334,7 @@ public class SmtpTraceListener : TraceListener
 	/// </PermissionSet>
 	public override void TraceData(TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
 	{
-		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, null, data))
+		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, formatOrMessage: null, args: null, data1: null, data))
 		{
 			SendTrace(eventCache, source, eventType, id, data);
 		}
@@ -354,7 +354,7 @@ public class SmtpTraceListener : TraceListener
 	/// </PermissionSet>
 	public override void TraceData(TraceEventCache eventCache, string source, TraceEventType eventType, int id, object data)
 	{
-		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, data, null))
+		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, formatOrMessage: null, args: null, data, data: null))
 		{
 			SendTrace(eventCache, source, eventType, id, data);
 		}
@@ -374,7 +374,7 @@ public class SmtpTraceListener : TraceListener
 	/// </PermissionSet>
 	public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
 	{
-		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, message, null, null, null))
+		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, message, args: null, data1: null, data: null))
 		{
 			SendTrace(eventCache, source, eventType, id, message);
 		}
@@ -395,7 +395,7 @@ public class SmtpTraceListener : TraceListener
 	/// </PermissionSet>
 	public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
 	{
-		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, format, args, null, null))
+		if ((Filter == null) || Filter.ShouldTrace(eventCache, source, eventType, id, format, args, data1: null, data: null))
 		{
 			SendTrace(eventCache, source, eventType, id, String.Format(CultureInfo.InvariantCulture, format, args));
 		}
@@ -420,7 +420,7 @@ public class SmtpTraceListener : TraceListener
 	/// <param name="message">A message to write.</param>
 	public override void Write(string message)
 	{
-		TraceEvent(null, "Write", TraceEventType.Information, 0, message);
+		TraceEvent(eventCache: null, "Write", TraceEventType.Information, 0, message);
 	}
 
 	/// <summary>

@@ -13,11 +13,11 @@ internal static class EntityActivator
 	{
 		ConstructorInfo constructor = s_constructors.GetOrAdd(
 			typeof(TEntity),
-			static type => type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null));
+			static type => type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, binder: null, Type.EmptyTypes, modifiers: null));
 		if (constructor == null)
 		{
 			throw new InvalidOperationException($"Type {typeof(TEntity).Name} does not have a parameterless constructor.");
 		}
-		return (TEntity)constructor.Invoke(null);
+		return (TEntity)constructor.Invoke(parameters: null);
 	}
 }

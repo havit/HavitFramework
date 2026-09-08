@@ -29,8 +29,8 @@ public class FakeDataSourceModelSource : IModelSource<FakeDataSourceModel>
 		return (from registeredEntity in _dbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: false)
 				select new FakeDataSourceModel
 				{
-					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace, true),
-					InterfaceDataSourceFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, false) + ".I" + registeredEntity.ClrType.Name + "DataSource",
+					NamespaceName = GetNamespaceName(registeredEntity.ClrType.Namespace, addFakes: true),
+					InterfaceDataSourceFullName = GetNamespaceName(registeredEntity.ClrType.Namespace, addFakes: false) + ".I" + registeredEntity.ClrType.Name + "DataSource",
 					FakeDataSourceClassName = "Fake" + registeredEntity.ClrType.Name + "DataSource",
 					ModelClassFullName = registeredEntity.ClrType.FullName
 				}).ToList();

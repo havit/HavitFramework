@@ -312,7 +312,7 @@ public class NavbarItemCollection : IList<NavbarItem>, IStateManager, ICollectio
 		{
 			for (int i = 0; i < items.Count; i++)
 			{
-				items[i].LoadViewState(null);
+				items[i].LoadViewState(state: null);
 			}
 		}
 	}

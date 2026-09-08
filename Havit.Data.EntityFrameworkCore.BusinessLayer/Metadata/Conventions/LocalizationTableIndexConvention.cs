@@ -51,7 +51,7 @@ public class LocalizationTableIndexConvention : IForeignKeyAddedConvention, IFor
 				// vytvoříme unikátní index
 				IConventionIndexBuilder indexBuilder = entityType.Builder.HasIndex(new List<IConventionProperty> { parentLocalizationProperty, languageProperty }.AsReadOnly(), fromDataAnnotation: false);
 				indexBuilder.HasDatabaseName(ForeignKeysIndexConvention.GetIndexName(indexBuilder.Metadata));
-				indexBuilder.IsUnique(true, fromDataAnnotation: false /* Convention */);
+				indexBuilder.IsUnique(unique: true, fromDataAnnotation: false /* Convention */);
 				createdIndexes[entityType] = indexBuilder.Metadata; // zaznamenáme si vytvořený index
 			}
 		}

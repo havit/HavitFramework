@@ -418,7 +418,7 @@ public class BusinessObjectCollection<TItem, TCollection> : Collection<TItem>, I
 	/// </summary>
 	public virtual void SaveAll()
 	{
-		SaveAll(null);
+		SaveAll(transaction: null);
 	}
 
 	/// <summary>

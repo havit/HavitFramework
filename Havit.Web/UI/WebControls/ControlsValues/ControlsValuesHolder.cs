@@ -255,11 +255,11 @@ public class ControlsValuesHolder
 					{
 						throw new InvalidOperationException(String.Format("Assembly {0} se nepodařilo načíst.", valueAssembly));
 					}
-					type = assembly.GetType(valueType, true);
+					type = assembly.GetType(valueType, throwOnError: true);
 				}
 				else
 				{
-					type = Type.GetType(valueType, true);
+					type = Type.GetType(valueType, throwOnError: true);
 				}
 
 				XmlSerializer valueSerializer = new XmlSerializer(type);

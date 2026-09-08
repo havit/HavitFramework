@@ -43,11 +43,11 @@ internal sealed class SuppressConventionAnnotation : IMergeableAnnotation
 	{
 		if ((other == null) || (other is SuppressConventionAnnotation))
 		{
-			return new CompatibilityResult(true, "");
+			return new CompatibilityResult(isCompatible: true, "");
 		}
 		else
 		{
-			return new CompatibilityResult(false, "Must be type of SuppressConventionAnnotation (or null).");
+			return new CompatibilityResult(isCompatible: false, "Must be type of SuppressConventionAnnotation (or null).");
 		}
 	}
 

@@ -92,7 +92,7 @@ public class PageNavigator
 
 		if (buffer != null) // pokud je hodnota parametru poškozena, získáváme null
 		{
-			using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(buffer, false))
+			using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream(buffer, writable: false))
 			{
 				using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Decompress))
 				{
@@ -190,7 +190,7 @@ public class PageNavigator
 		Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(toUrl), nameof(toUrl));
 
 		toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
-		return GetNavigationToUrlInternal(null, toUrl, true);
+		return GetNavigationToUrlInternal(fromUrl: null, toUrl, passHistoryUrls: true);
 	}
 
 	/// <summary>
@@ -212,7 +212,7 @@ public class PageNavigator
 		fromUrl = GetUrlWithoutNavigationUrlParameter(fromUrl);
 		toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
 
-		return GetNavigationToUrlInternal(fromUrl, toUrl, true);
+		return GetNavigationToUrlInternal(fromUrl, toUrl, passHistoryUrls: true);
 	}
 
 	/// <summary>
@@ -229,7 +229,7 @@ public class PageNavigator
 		string fromUrl = GetUrlWithoutNavigationUrlParameter(_currentContext.Request.RawUrl);
 		toUrl = GetUrlWithoutNavigationUrlParameter(toUrl);
 
-		return GetNavigationToUrlInternal(fromUrl, toUrl, true);
+		return GetNavigationToUrlInternal(fromUrl, toUrl, passHistoryUrls: true);
 	}
 
 	/// <summary>
@@ -247,7 +247,7 @@ public class PageNavigator
 
 		string url = HistoryUrls[0];
 		HistoryUrls.RemoveAt(0);
-		string targetUrl = GetNavigationToUrlInternal(null, url, true);
+		string targetUrl = GetNavigationToUrlInternal(fromUrl: null, url, passHistoryUrls: true);
 		HistoryUrls.Insert(0, url);
 		return targetUrl;
 	}
@@ -302,7 +302,7 @@ public class PageNavigator
 				else
 				{
 					// pokud už nemáme co z historie ubrat, vrátíme url bez historie adres.
-					return GetNavigationToUrlInternal(null, toUrl, false);
+					return GetNavigationToUrlInternal(fromUrl: null, toUrl, passHistoryUrls: false);
 				}
 			}
 		}
@@ -319,7 +319,7 @@ public class PageNavigator
 		byte[] buffer;
 		using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
 		{
-			using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Compress, true))
+			using (System.IO.Compression.DeflateStream compressStream = new System.IO.Compression.DeflateStream(memoryStream, System.IO.Compression.CompressionMode.Compress, leaveOpen: true))
 			{
 				using (System.IO.StreamWriter writer = new System.IO.StreamWriter(compressStream, Encoding.UTF8))
 				{

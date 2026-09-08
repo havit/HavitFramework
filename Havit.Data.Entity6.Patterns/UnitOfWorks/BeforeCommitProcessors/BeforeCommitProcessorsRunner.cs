@@ -41,7 +41,7 @@ public class BeforeCommitProcessorsRunner : IBeforeCommitProcessorsRunner
 			Type type = changeGroup.Type;
 			while (type != null)
 			{
-				supportedProcessors.AddRange((IEnumerable<object>)beforeCommitProcessorsFactory.GetType().GetMethod(nameof(IBeforeCommitProcessorsFactory.Create)).MakeGenericMethod(type).Invoke(beforeCommitProcessorsFactory, null));
+				supportedProcessors.AddRange((IEnumerable<object>)beforeCommitProcessorsFactory.GetType().GetMethod(nameof(IBeforeCommitProcessorsFactory.Create)).MakeGenericMethod(type).Invoke(beforeCommitProcessorsFactory, parameters: null));
 				type = type.BaseType;
 			}
 

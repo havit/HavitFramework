@@ -69,10 +69,10 @@ internal static class ListControlExtensions
 	private static void RenderContents_ListItem(ListItem item, HtmlTextWriter writer, ref bool selectedValueRendered, Action verifyMultiSelect)
 	{
 		writer.WriteBeginTag("option");
-		writer.WriteAttribute("value", item.Value, true);
+		writer.WriteAttribute("value", item.Value, fEncode: true);
 		if (item.Selected)
 		{
-			writer.WriteAttribute("selected", "selected", false);
+			writer.WriteAttribute("selected", "selected", fEncode: false);
 
 			if (selectedValueRendered)
 			{
@@ -110,7 +110,7 @@ internal static class ListControlExtensions
 			}
 			if (dataValueField.Length > 0)
 			{
-				item.Value = DataBinderExt.GetValue(dataItem, dataValueField, null);
+				item.Value = DataBinderExt.GetValue(dataItem, dataValueField, format: null);
 			}
 		}
 		else
@@ -128,7 +128,7 @@ internal static class ListControlExtensions
 
 		if (dataOptionGroupField.Length != 0)
 		{
-			item.SetOptionGroup(DataBinderExt.GetValue(dataItem, dataOptionGroupField, null));
+			item.SetOptionGroup(DataBinderExt.GetValue(dataItem, dataOptionGroupField, format: null));
 		}
 
 		return item;

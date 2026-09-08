@@ -32,7 +32,7 @@ public class ConstraintViolationException : Exception, ISerializable
 	/// <param name="businessObject">Business object, ve kterém došlo k porušení pravidla.</param>
 	/// <param name="message">Popis výjimky.</param>
 	public ConstraintViolationException(BusinessObjectBase businessObject, string message)
-		: this(businessObject, message, null)
+		: this(businessObject, message, innerException: null)
 	{
 	}
 

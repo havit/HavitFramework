@@ -62,7 +62,7 @@ public static class HttpResponseExt
 	/// <param name="url">Cílová adresa.</param>
 	public static void MovedPermanently(string url)
 	{
-		HttpResponseExt.MovedPermanently(url, true);
+		HttpResponseExt.MovedPermanently(url, endResponse: true);
 	}
 
 	/// <summary>
@@ -94,6 +94,6 @@ public static class HttpResponseExt
 	/// </summary>
 	public static void Gone()
 	{
-		HttpResponseExt.Gone(true);
+		HttpResponseExt.Gone(endResponse: true);
 	}
 }

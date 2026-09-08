@@ -75,7 +75,7 @@ public static class DataBinderExt
 		PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
 
 		// This almost costs nothing
-		System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, true);
+		System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expression, ignoreCase: true);
 
 		if (descriptor == null)
 		{
@@ -157,7 +157,7 @@ public static class DataBinderExt
 		PropertyDescriptorCollection properties = GetValueTypeProperties(currentDataItem);
 
 		// This almost costs nothing
-		System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expressionSet, true);
+		System.ComponentModel.PropertyDescriptor descriptor = properties.Find(expressionSet, ignoreCase: true);
 		if (descriptor == null)
 		{
 			// The standard DataBinder throws an HttpException, I don't want to change the types of exceptions for possible try/catch.

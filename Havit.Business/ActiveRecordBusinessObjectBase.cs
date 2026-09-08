@@ -47,10 +47,10 @@ public abstract class ActiveRecordBusinessObjectBase : BusinessObjectBase
 	/// <param name="record"><see cref="Havit.Data.DataRecord"/> s daty objektu načtenými z databáze</param>
 	protected ActiveRecordBusinessObjectBase(int id, DataRecord record) : base(
 		id, // ID
-		false, // IsNew
-		false, // IsDirty
-		false, // IsLoaded
-		false)  // IsOffline
+isNew: false, // IsNew
+isDirty: false, // IsDirty
+isLoaded: false, // IsLoaded
+isDisconnected: false)  // IsOffline
 	{
 		Contract.Requires<ArgumentNullException>(record != null);
 

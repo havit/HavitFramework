@@ -187,7 +187,7 @@ public static class TableHelper
 					string collectionFieldName = parsedValues[parsedValues.Length - 1];
 
 					Table joinTable = null;
-					Table targetTable = (collectionTableSchemaName == null) ? DatabaseHelper.FindTable(collectionTableName, table.Schema, true) : DatabaseHelper.FindTable(collectionTableName, collectionTableSchemaName);
+					Table targetTable = (collectionTableSchemaName == null) ? DatabaseHelper.FindTable(collectionTableName, table.Schema, includeIgnored: true) : DatabaseHelper.FindTable(collectionTableName, collectionTableSchemaName);
 					if (targetTable == null)
 					{
 						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyla nalezena tabulka '{2}'.", collectionPropertyName, table.Name, collectionTableName));
@@ -244,7 +244,7 @@ public static class TableHelper
 
 				string description = "Lokalizované hodnoty.";
 
-				CollectionProperty localizationProperty = new CollectionProperty(table, "Localizations", null, targetTable, referenceColumn, description, false, "public", null, false);
+				CollectionProperty localizationProperty = new CollectionProperty(table, "Localizations", joinTable: null, targetTable, referenceColumn, description, loadAll: false, "public", sorting: null, includeDeleted: false);
 				collectionColumns.Add(localizationProperty);
 			}
 

@@ -370,7 +370,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		PerformSave_EnsureFolderFor(substitutedFilename);
 
 		var sftpClient = GetConnectedSftpClient();
-		sftpClient.UploadFile(fileContent, substitutedFilename, true);
+		sftpClient.UploadFile(fileContent, substitutedFilename, canOverride: true);
 	}
 
 	/// <inheritdoc />

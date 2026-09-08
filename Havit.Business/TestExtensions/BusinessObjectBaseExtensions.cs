@@ -33,7 +33,7 @@ public static class BusinessObjectBaseExtensions
 			propertyToAssignExpression, // kam přiřazujeme
 			Expression.Constant(value, typeof(TValue))); // co přiřazujeme
 
-		var lambda = Expression.Lambda(assignExpression, null); // vyrobíme lambdu bez parametrů (jde kompilovat)
+		var lambda = Expression.Lambda(assignExpression, parameters: null); // vyrobíme lambdu bez parametrů (jde kompilovat)
 		var compiledLambda = lambda.Compile(); // zkompilujeme
 		compiledLambda.DynamicInvoke(); // a vykonáme
 	}

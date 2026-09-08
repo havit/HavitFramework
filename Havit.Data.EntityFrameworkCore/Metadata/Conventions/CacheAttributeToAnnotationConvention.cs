@@ -50,12 +50,12 @@ public class CacheAttributeToAnnotationConvention : TypeAttributeConventionBase<
 
 		if (attribute.CacheEntities)
 		{
-			entityTypeBuilder.HasAnnotation(CacheEntitiesAnnotationName, true, fromDataAnnotation: true /* DataAnnotation */);
+			entityTypeBuilder.HasAnnotation(CacheEntitiesAnnotationName, value: true, fromDataAnnotation: true /* DataAnnotation */);
 		}
 
 		if (attribute.CacheAllKeys)
 		{
-			entityTypeBuilder.HasAnnotation(CacheAllKeysAnnotationName, true, fromDataAnnotation: true /* DataAnnotation */);
+			entityTypeBuilder.HasAnnotation(CacheAllKeysAnnotationName, value: true, fromDataAnnotation: true /* DataAnnotation */);
 		}
 
 		if (attribute.AbsoluteExpirationSeconds != 0)

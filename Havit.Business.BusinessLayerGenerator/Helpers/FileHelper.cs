@@ -13,7 +13,7 @@ public static class FileHelper
 	/// </summary>
 	public static string GetFilename(Table table, string suffix, string organizationFolder)
 	{
-		string namespaceName = NamespaceHelper.GetNamespaceName(table, false);
+		string namespaceName = NamespaceHelper.GetNamespaceName(table, withDefaultNamespace: false);
 		string className = ClassHelper.GetClassName(table);
 		return GetFilename(namespaceName, className, suffix, organizationFolder);
 	}

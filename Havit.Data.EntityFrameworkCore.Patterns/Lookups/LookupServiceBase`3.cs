@@ -43,7 +43,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 	/// Konstruktor.
 	/// </summary>
 	protected LookupServiceBase(IEntityLookupDataStorage lookupStorage, IRepository<TEntity, TKey> repository, IDbContext dbContext, IEntityKeyAccessor entityKeyAccessor, ISoftDeleteManager softDeleteManager)
-		: this(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager, null)
+		: this(lookupStorage, repository, dbContext, entityKeyAccessor, softDeleteManager, distributedLookupDataInvalidationService: null)
 	{
 	}
 
@@ -303,7 +303,7 @@ public abstract class LookupServiceBase<TLookupKey, TEntity, TKey> : ILookupData
 			Expression.Bind(typeof(EntityLookupPair<TKey, TLookupKey>).GetProperty(nameof(EntityLookupPair<TKey, TLookupKey>.LookupKey)), ExpressionExt.ReplaceParameter(lookupKeyExpression.Body, lookupKeyExpression.Parameters[0], expressionParameter))),
 			expressionParameter);
 
-		IQueryable<EntityLookupPair<TKey, TLookupKey>> pairsQuery = (IncludeDeleted ? dbContext.Set<TEntity>().AsQueryable(null) : dbContext.Set<TEntity>().AsQueryable(null).WhereNotDeleted(softDeleteManager))
+		IQueryable<EntityLookupPair<TKey, TLookupKey>> pairsQuery = (IncludeDeleted ? dbContext.Set<TEntity>().AsQueryable(queryTag: null) : dbContext.Set<TEntity>().AsQueryable(queryTag: null).WhereNotDeleted(softDeleteManager))
 			.WhereIf(Filter != null, Filter)
 			.Select(lambdaExpression);
 

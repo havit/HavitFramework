@@ -29,7 +29,7 @@ public static class CacheHelperClass
 		writer.WriteLine("{");
 
 		writer.WriteCommentSummary("Pomocné metody pro práci s cache.");
-		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 		writer.WriteGeneratedCodeAttribute();
 		writer.WriteLine("public static partial class CacheHelper");
 		writer.WriteLine("{");
@@ -68,7 +68,7 @@ public static class CacheHelperClass
 		foreach (Table table in tables)
 		{
 			if (TableHelper.IsCachable(table) // jen pro cachované tabulky
-				&& (!ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "Cache_SuppressPreload", table.Name).GetValueOrDefault(false)) // které nemají potlačen preload
+				&& (!ExtendedPropertiesHelper.GetBool(ExtendedPropertiesKey.FromTable(table), "Cache_SuppressPreload", table.Name).GetValueOrDefault(defaultValue: false)) // které nemají potlačen preload
 				&& (!(LocalizationHelper.IsLocalizationTable(table) /* jde o lokalizační tabulku */ && TableHelper.GetGetAllIncludeLocalizations(LocalizationHelper.GetLocalizationParentTable(table)) /* parent tabulka má načíst lokalizace */)) // a není třeba načítat lokalizace tabulky, která je lokalizovaná a přednačítá lokalizace - její GetAll obsahuje načtení lokalizací (jinak bychom načítali lokalizace 2x)
 			)
 			{

@@ -295,7 +295,7 @@ public class NavbarItemCollection : IList<NavbarItem>, IStateManager, ICollectio
 							RemoveAt(entry.Index.Value);
 							break;
 
-						default: throw new ApplicationException("Unknown LogItemType.");
+						default: throw new InvalidOperationException("Unknown LogItemType.");
 					}
 				}
 			}

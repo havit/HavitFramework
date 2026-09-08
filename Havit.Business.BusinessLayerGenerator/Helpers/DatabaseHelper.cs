@@ -13,7 +13,7 @@ public static class DatabaseHelper
 		{
 			if (_database == null)
 			{
-				throw new ApplicationException("Databáze nebyla nastavena.");
+				throw new InvalidOperationException("Databáze nebyla nastavena.");
 			}
 			return _database;
 		}

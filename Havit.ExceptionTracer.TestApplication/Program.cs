@@ -8,6 +8,6 @@ internal static class Program
 	{
 		ExceptionTracer.Default.SubscribeToUnhandledExceptions();
 
-		throw new ApplicationException("Test na Havit.Diagnostics.ExceptionTracer a Havit.Diagnostics.SmtpTraceListener.");
+		throw new InvalidOperationException("Test na Havit.Diagnostics.ExceptionTracer a Havit.Diagnostics.SmtpTraceListener.");
 	}
 }

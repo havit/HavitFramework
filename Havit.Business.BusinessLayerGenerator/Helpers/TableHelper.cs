@@ -86,7 +86,7 @@ public static class TableHelper
 				{
 					if (result != null)
 					{
-						throw new ApplicationException(String.Format("V tabulce '{0}' bylo nalezeno více sloupců, které jsou primárním klíčem.", table.Name));
+						throw new InvalidOperationException(String.Format("V tabulce '{0}' bylo nalezeno více sloupců, které jsou primárním klíčem.", table.Name));
 					}
 					result = column;
 				}
@@ -94,7 +94,7 @@ public static class TableHelper
 
 			if (result == null)
 			{
-				throw new ApplicationException(String.Format("V tabulce '{0}' nebyl nalezen primární klíč.", table.Name));
+				throw new InvalidOperationException(String.Format("V tabulce '{0}' nebyl nalezen primární klíč.", table.Name));
 			}
 
 			getPrimaryKeyCache[table] = result;
@@ -179,7 +179,7 @@ public static class TableHelper
 					string[] parsedValues = ((string)extendedProperty.Value).Split(new string[] { "." }, StringSplitOptions.None);
 					if ((parsedValues.Length < 2) || (parsedValues.Length > 3))
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' se nepodařilo zpracovat hodnotu '{2}'.", collectionPropertyName, table.Name, extendedPropertyValue));
+						throw new InvalidOperationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' se nepodařilo zpracovat hodnotu '{2}'.", collectionPropertyName, table.Name, extendedPropertyValue));
 					}
 
 					string collectionTableSchemaName = (parsedValues.Length == 3) ? parsedValues[0] : null;
@@ -190,21 +190,21 @@ public static class TableHelper
 					Table targetTable = (collectionTableSchemaName == null) ? DatabaseHelper.FindTable(collectionTableName, table.Schema, includeIgnored: true) : DatabaseHelper.FindTable(collectionTableName, collectionTableSchemaName);
 					if (targetTable == null)
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyla nalezena tabulka '{2}'.", collectionPropertyName, table.Name, collectionTableName));
+						throw new InvalidOperationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyla nalezena tabulka '{2}'.", collectionPropertyName, table.Name, collectionTableName));
 					}
 					else if (TableHelper.IsIgnored(targetTable))
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byla nalezena tabulka '{2}', která je však ignorovaná.", collectionPropertyName, table.Name, collectionTableName));
+						throw new InvalidOperationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byla nalezena tabulka '{2}', která je však ignorovaná.", collectionPropertyName, table.Name, collectionTableName));
 					}
 
 					Column referenceColumn = targetTable.Columns.Cast<Column>().SingleOrDefault(c => c.Name.Equals(collectionFieldName, StringComparison.OrdinalIgnoreCase));
 					if (referenceColumn == null)
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyl nalezen sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
+						throw new InvalidOperationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' nebyl nalezen sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
 					}
 					if (ColumnHelper.IsIgnored(referenceColumn))
 					{
-						throw new ApplicationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byl nalezen ignorovaný sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
+						throw new InvalidOperationException(String.Format("Při zpracování kolekce '{0}' v tabulce '{1}' byl nalezen ignorovaný sloupec '{2}' v tabulce '{3}'.", collectionPropertyName, table.Name, collectionFieldName, targetTable.Name));
 					}
 
 					if (TableHelper.IsJoinTable(targetTable))
@@ -235,11 +235,11 @@ public static class TableHelper
 
 				if (referenceColumn == null)
 				{
-					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' nebyl nalezen sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumn.Name, targetTable.Name));
+					throw new InvalidOperationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' nebyl nalezen sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumn.Name, targetTable.Name));
 				}
 				if (ColumnHelper.IsIgnored(referenceColumn))
 				{
-					throw new ApplicationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' byl nalezen ignorovaný sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumn.Name, targetTable.Name));
+					throw new InvalidOperationException(String.Format("Při zpracování kolekce Localizations v tabulce '{0}' byl nalezen ignorovaný sloupec '{1}' v tabulce '{2}'.", table.Name, referenceColumn.Name, targetTable.Name));
 				}
 
 				string description = "Lokalizované hodnoty.";
@@ -320,7 +320,7 @@ public static class TableHelper
 			}
 		}
 
-		throw new ApplicationException("Chyba v programu.");
+		throw new InvalidOperationException("Chyba v programu.");
 	}
 
 	/// <summary>
@@ -378,7 +378,7 @@ public static class TableHelper
 		{
 			if (table.FindColumn(nameColumn) == null)
 			{
-				throw new ApplicationException(
+				throw new InvalidOperationException(
 					String.Format("Sloupec '{0}' nebyl v tabulce '{1}' nalezen (EnumPropertyNameField).", nameColumn, table.Name));
 			}
 		}
@@ -389,7 +389,7 @@ public static class TableHelper
 
 		if (nameColumn == null)
 		{
-			throw new ApplicationException("Nepodařilo se určit název sloupce pro název property výčtu.");
+			throw new InvalidOperationException("Nepodařilo se určit název sloupce pro název property výčtu.");
 		}
 
 		string commentColumn = ColumnHelper.FindFirstExistingColumn(table, "Komentar", "Comment");
@@ -628,7 +628,7 @@ public static class TableHelper
 
 			if (column == null)
 			{
-				throw new ApplicationException(String.Format("Sloupec {0} definovaný jako owner field v tabulce {1} nebyl nalezen.", fieldName, table.Name));
+				throw new InvalidOperationException(String.Format("Sloupec {0} definovaný jako owner field v tabulce {1} nebyl nalezen.", fieldName, table.Name));
 			}
 
 			result.Add(column);

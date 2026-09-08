@@ -315,7 +315,7 @@ public class EnterpriseDropDownList : DropDownListExt
 		{
 			if (itemPropertyInfo.Nullable != nullable)
 			{
-				throw new ApplicationException("Je-li nastavena hodnota ItemPropertyInfo a Nullable, musí být ItemPropertyInfo.Nullable a Nullable shodné. Nyní se liší.");
+				throw new InvalidOperationException("Je-li nastavena hodnota ItemPropertyInfo a Nullable, musí být ItemPropertyInfo.Nullable a Nullable shodné. Nyní se liší.");
 			}
 		}
 	}

@@ -913,7 +913,7 @@ public static class BusinessObjectBaseClass
 						}
 						else
 						{
-							throw new ApplicationException(
+							throw new InvalidOperationException(
 								String.Format(
 									"Tabulka {0}: Sloupec {1} pro smazané záznamy není podporovaného typu.",
 									collectionProperty.TargetTable.Name,
@@ -1854,7 +1854,7 @@ public static class BusinessObjectBaseClass
 			}
 			catch (Exception e)
 			{
-				throw new ApplicationException(String.Format("Tabulka {0}: Chyba při zpracování extended property GetAll_Sorting ({1}).", table.Name, sorting), e);
+				throw new InvalidOperationException(String.Format("Tabulka {0}: Chyba při zpracování extended property GetAll_Sorting ({1}).", table.Name, sorting), e);
 			}
 		}
 

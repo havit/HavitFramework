@@ -129,13 +129,13 @@ public static class StoredProcedureHelper
 		string[] parsedValues = tableName.Split(new string[] { "." }, StringSplitOptions.None);
 		if (parsedValues.Length > 2)
 		{
-			throw new ApplicationException(String.Format("Při zpracování SP '{0}' se nepodařilo zpracovat hodnotu '{1}'.", procedure.Name, tableName));
+			throw new InvalidOperationException(String.Format("Při zpracování SP '{0}' se nepodařilo zpracovat hodnotu '{1}'.", procedure.Name, tableName));
 		}
 
 		Table result = (parsedValues.Length == 1) ? DatabaseHelper.FindTable(parsedValues[0], procedure.Schema) : DatabaseHelper.FindTable(parsedValues[1], parsedValues[0]);
 		if (result == null)
 		{
-			throw new ApplicationException(String.Format("Při zpracování SP '{0}' se nepodařilo nalézt tabulku '{1}'.", procedure.Name, tableName));
+			throw new InvalidOperationException(String.Format("Při zpracování SP '{0}' se nepodařilo nalézt tabulku '{1}'.", procedure.Name, tableName));
 		}
 		return result;
 	}

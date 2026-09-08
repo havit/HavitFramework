@@ -279,7 +279,7 @@ public static class BusinessObjectStoredProcedures
 				}
 			default:
 				{
-					throw new ApplicationException("Neznámá hodnota typu StoreProcedureResultType.");
+					throw new InvalidOperationException("Neznámá hodnota typu StoreProcedureResultType.");
 				}
 		}
 		line.Append(" ");

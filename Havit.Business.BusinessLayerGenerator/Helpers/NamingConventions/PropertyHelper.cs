@@ -64,7 +64,7 @@ public static class PropertyHelper
 						Table referencedTable = ColumnHelper.GetReferencedTable(column);
 						if (referencedTable == null)
 						{
-							throw new ApplicationException(String.Format("Sloupec {0}: Obsahuje referenci na tabulku, která nebyla nalezena (Ignored?).", column.Name));
+							throw new InvalidOperationException(String.Format("Sloupec {0}: Obsahuje referenci na tabulku, která nebyla nalezena (Ignored?).", column.Name));
 						}
 						result = ClassHelper.GetClassName(referencedTable);
 					}

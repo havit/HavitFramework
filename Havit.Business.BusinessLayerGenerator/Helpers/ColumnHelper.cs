@@ -85,7 +85,7 @@ public static class ColumnHelper
 			}
 		}
 
-		throw new ApplicationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
+		throw new InvalidOperationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
 	}
 	private static Dictionary<Column, ForeignKey> _getForeignKeys = new Dictionary<Column, ForeignKey>();
 

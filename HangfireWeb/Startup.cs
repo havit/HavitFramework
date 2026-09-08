@@ -62,6 +62,6 @@ public class Startup
 		});
 		//.RequireAuthorization(PolicyNames.HangfireDashboardAcccessPolicy);
 
-		app.Map("/custom-error", _ => throw new System.ApplicationException("My application exception"));
+		app.Map("/custom-error", _ => throw new InvalidOperationException("My application exception"));
 	}
 }

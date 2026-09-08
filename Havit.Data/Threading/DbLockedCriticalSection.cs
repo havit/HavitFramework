@@ -57,7 +57,7 @@ public class DbLockedCriticalSection
 				case SpGetAppLockResultCode.Error:
 					throw new DbLockedCriticalSectionException($"Unable to get lock for resource '{lockValue}'. Result code: '{Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}'");
 				default:
-					throw new ApplicationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}");
+					throw new InvalidOperationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}");
 			}
 
 			ReleaseLock(lockValue, sqlConnection);
@@ -98,7 +98,7 @@ public class DbLockedCriticalSection
 				case SpGetAppLockResultCode.Error:
 					throw new DbLockedCriticalSectionException($"Unable to get lock for resource '{lockValue}'. Result code: '{Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}'");
 				default:
-					throw new ApplicationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}");
+					throw new InvalidOperationException($"Unknown SpGetAppLockResultCode: {Enum.GetName(typeof(SpGetAppLockResultCode), GetAppLockResultCode)}");
 			}
 
 			// cancellationToken - můžeme si dovolit nečekat na uvolnění zámku - zámek je uvolněn zavřením spojení

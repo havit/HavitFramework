@@ -362,7 +362,7 @@ public class BoundFieldExt : System.Web.UI.WebControls.BoundField, IIdentifiable
 				cell.Controls.Add(autoFilterDropDownList);
 				break;
 
-			default: throw new ApplicationException("Neznámá hodnota vlastnosti FilterMode.");
+			default: throw new InvalidOperationException("Neznámá hodnota vlastnosti FilterMode.");
 		}
 	}
 }

@@ -759,7 +759,7 @@ public class DynarchCalendar : System.Web.UI.Control
 			if ((HttpContext.Current.Response.ContentEncoding != Encoding.UTF8) &&
 				!((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs") && (HttpContext.Current.Response.ContentEncoding == Encoding.GetEncoding(1250))))
 			{
-				throw new ApplicationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
+				throw new InvalidOperationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
 			}
 
 			if ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs"))

@@ -576,7 +576,7 @@ public class DateTimeBox : Control, INamingContainer
 						break;
 
 					default:
-						throw new ApplicationException("Neznámá hodnota DateTimeMode.");
+						throw new InvalidOperationException("Neznámá hodnota DateTimeMode.");
 				}
 			}
 		}
@@ -708,7 +708,7 @@ public class DateTimeBox : Control, INamingContainer
 				}
 				break;
 			default:
-				throw new ApplicationException("Neznámý DateTimeMode.");
+				throw new InvalidOperationException("Neznámý DateTimeMode.");
 		}
 
 		if (IsEnabled)

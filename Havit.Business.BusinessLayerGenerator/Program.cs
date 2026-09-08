@@ -161,7 +161,7 @@ internal static class Program
 			Generators.Generator.Generate(database, csprojFile);
 
 		}
-		catch (ApplicationException e)
+		catch (InvalidOperationException e)
 		{
 			ConsoleHelper.WriteLineError(e.Message);
 		}

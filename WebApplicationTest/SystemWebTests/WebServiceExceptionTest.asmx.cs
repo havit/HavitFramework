@@ -14,6 +14,6 @@ public class WebServiceExceptionTest : System.Web.Services.WebService
 	[WebMethod]
 	public void DoException()
 	{
-		throw new ApplicationException("Zkoušíme HealtMonitoring v ASMX.");
+		throw new InvalidOperationException("Zkoušíme HealtMonitoring v ASMX.");
 	}
 }

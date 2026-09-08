@@ -40,7 +40,7 @@ public partial class SmtpTraceListenerTest : System.Web.UI.Page
 	{
 		try
 		{
-			throw new ApplicationException(message);
+			throw new InvalidOperationException(message);
 		}
 		catch (Exception exception)
 		{

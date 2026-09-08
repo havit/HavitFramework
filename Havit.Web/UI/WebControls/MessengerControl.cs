@@ -248,7 +248,7 @@ public class MessengerControl : Literal
 				break;
 
 			default:
-				throw new ApplicationException("Neznámá hodnota MessageType.");
+				throw new InvalidOperationException("Neznámá hodnota MessageType.");
 		}
 
 		string toasterMessage = message.Text.TrimEnd().Replace("'", "\\'").Replace("\n", "<br />").Replace("\r", "");

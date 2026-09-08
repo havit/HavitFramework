@@ -38,7 +38,7 @@ public partial class GridViewExtTest : System.Web.UI.Page
 	{
             if (mainGVDataBindingCalled)
             {
-                throw new ApplicationException("Necheme v jednom requestu více databindingů (testujeme VirtualItemsCount a vliv na modaleditorextender)!");
+                throw new InvalidOperationException("Necheme v jednom requestu více databindingů (testujeme VirtualItemsCount a vliv na modaleditorextender)!");
             }
             SubjektCollection subjekty = Subjekt.GetAll().OrderBy(item => item.Nazev).ToCollection();
 

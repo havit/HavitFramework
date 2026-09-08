@@ -3,7 +3,7 @@
 /// <summary>
 /// Go pay exception
 /// </summary>
-public class GoPayResponseException : ApplicationException
+public class GoPayResponseException : Exception
 {
 	/// <summary>
 	/// Konstruktor

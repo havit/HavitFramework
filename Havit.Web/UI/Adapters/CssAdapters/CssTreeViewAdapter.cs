@@ -325,7 +325,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 
 			if (HasChildren(item))
 			{
-				BuildItems(item.ChildNodes, isRoot: false, isExpanded: item.Expanded, writer);
+				BuildItems(item.ChildNodes, isRoot: false, isExpanded: item.Expanded == true, writer);
 			}
 
 			writer.Indent--;
@@ -337,7 +337,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 	private void WriteNodeExpander(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 	{
 		writer.WriteBeginTag("span");
-		writer.WriteAttribute("class", (item.Expanded.Equals(other: true) ? "AspNet-TreeView-Collapse" : "AspNet-TreeView-Expand"));
+		writer.WriteAttribute("class", (item.Expanded == true ? "AspNet-TreeView-Collapse" : "AspNet-TreeView-Expand"));
 		if (HasChildren(item))
 		{
 			writer.WriteAttribute("onclick", "ExpandCollapse__AspNetTreeView(this)");
@@ -681,7 +681,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 			{
 				if (IsExpandable(node))
 				{
-					if (node.Expanded.Equals(other: true))
+					if (node.Expanded == true)
 					{
 						state += "e";
 						state = ComposeViewState(node.ChildNodes, state);

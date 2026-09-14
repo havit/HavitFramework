@@ -23,7 +23,7 @@ public class FileSystemStorageService : FileStorageServiceBase, IFileStorageServ
 	/// Konstruktor.
 	/// </summary>
 	/// <param name="storagePath">Cesta k "rootu" použitého úložiště ve file systému.</param>
-	public FileSystemStorageService(string storagePath) : this(storagePath, false, null)
+	public FileSystemStorageService(string storagePath) : this(storagePath, useFullyQualifiedPathNames: false, encryptionOptions: null)
 	{
 		// NOOP
 	}

@@ -31,7 +31,7 @@ public static class Generator
 					{
 						TableHelper.GetPrimaryKey(table);
 					}
-					catch (ApplicationException)
+					catch (InvalidOperationException)
 					{
 						ConsoleHelper.WriteLineWarning("Přeskakuji tabulku {0} - nemá primární klíč nebo je primární klíč složený.", table.Name);
 						continue;

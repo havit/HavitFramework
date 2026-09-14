@@ -44,7 +44,7 @@ internal sealed class DataControlImageButtonExt : ImageButton
 
 			PostBackOptions postBackOptions = this.GetPostBackOptions();
 			Page.ClientScript.RegisterForEventValidation(postBackOptions);
-			string postBackEventReference = Page.ClientScript.GetPostBackEventReference(postBackOptions, false);
+			string postBackEventReference = Page.ClientScript.GetPostBackEventReference(postBackOptions, registerForEventValidation: false);
 			string result = EnsureStartWithJavascript(MergeScript(MergeScript(MergeScript(onClientClick, onClick), postBackEventReference), "return false;"));
 
 			getPostBackOptionsDisabled = true;

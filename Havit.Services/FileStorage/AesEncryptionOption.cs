@@ -75,13 +75,13 @@ public class AesEncryptionOption : EncryptionOptions, IDisposable
 	/// </summary>
 	public static string CreateRandomKeyAndIvAsBase64String()
 	{
-		using (Aes aes = Aes.Create())
+		using (Aes aesAlgorithm = Aes.Create())
 		{
-			aes.GenerateKey();
-			aes.GenerateIV();
-			Contract.Assert(aes.Key.Length == 32);
-			Contract.Assert(aes.IV.Length == 16);
-			return Convert.ToBase64String(aes.Key.Concat(aes.IV).ToArray());
+			aesAlgorithm.GenerateKey();
+			aesAlgorithm.GenerateIV();
+			Contract.Assert(aesAlgorithm.Key.Length == 32);
+			Contract.Assert(aesAlgorithm.IV.Length == 16);
+			return Convert.ToBase64String(aesAlgorithm.Key.Concat(aesAlgorithm.IV).ToArray());
 		}
 	}
 }

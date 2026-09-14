@@ -16,7 +16,7 @@ public static class PasswordHashService
 	/// <param name="passwordCharacterSet">The character set for selecting the salt (default value is PasswordCharacterSet.LettersAndDigits).</param>
 	public static string CreateSalt(int saltLength = 8, PasswordCharacterSet passwordCharacterSet = PasswordCharacterSet.LettersAndDigits)
 	{
-		return PasswordGenerator.Generate(saltLength, saltLength, passwordCharacterSet, true, true);
+		return PasswordGenerator.Generate(saltLength, saltLength, passwordCharacterSet, allowRepeatingCharacters: true, allowConsecutiveCharacters: true);
 	}
 
 	/// <summary>

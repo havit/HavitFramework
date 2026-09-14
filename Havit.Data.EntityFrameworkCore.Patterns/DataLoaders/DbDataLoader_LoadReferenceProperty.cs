@@ -135,7 +135,7 @@ public partial class DbDataLoader
 
 		// získáme klíče objektů, které potřebujeme načíst (z "běžných vlastností" nebo z shadow properties)
 		// ignorujeme nenastavené reference (null)
-		IEnumerable<object> foreignKeyValues = entitiesToLoadReference.Select(entity => _dbContext.GetEntry(entity, true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct();
+		IEnumerable<object> foreignKeyValues = entitiesToLoadReference.Select(entity => _dbContext.GetEntry(entity, suppressDetectChanges: true).CurrentValues[foreignKeyForReference]).Where(value => value != null).Distinct();
 
 		IDbSet<TProperty> dbSet = _dbContext.Set<TProperty>();
 

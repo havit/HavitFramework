@@ -34,7 +34,7 @@ public class CacheAttribute : ExtendedPropertiesAttribute
 			{ "Cache", "true" }
 		}
 		.AddIfNotDefault("Cache_Priority", Priority, CacheItemPriority.Normal)
-		.AddIfNotDefault("Cache_SuppressPreload", SuppressPreload, false)
+		.AddIfNotDefault("Cache_SuppressPreload", SuppressPreload, businessLayerGeneratorDefaultValue: false)
 		.AddIfNotDefault("Cache_AbsoluteExpiration", AbsoluteExpiration, 0)
 		.AddIfNotDefault("Cache_SlidingExpiration", SlidingExpiration, 0);
 }

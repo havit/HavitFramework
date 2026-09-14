@@ -29,7 +29,7 @@ public class WebRequestErrorEventExt : WebRequestErrorEvent
 	/// Konstruktor.
 	/// </summary>
 	[Obsolete]
-	public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, null)
+	public WebRequestErrorEventExt(string message, object eventSource, Exception exception) : this(message, eventSource, exception, currentHttpContext: null)
 	{
 	}
 

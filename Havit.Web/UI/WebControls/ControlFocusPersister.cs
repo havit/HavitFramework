@@ -29,6 +29,6 @@ public class ControlFocusPersister : Control
 		HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(Page);
 		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(Page, "jquery.ui.combined");
 
-		ScriptManager.RegisterStartupScript(this.Page, typeof(ControlFocusPersister), "ControlFocusPersister", "$(document).ready(function () { havitControlFocusPersisterExtensions.init(); });", true);
+		ScriptManager.RegisterStartupScript(this.Page, typeof(ControlFocusPersister), "ControlFocusPersister", "$(document).ready(function () { havitControlFocusPersisterExtensions.init(); });", addScriptTags: true);
 	}
 }

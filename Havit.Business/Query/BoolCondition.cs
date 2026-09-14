@@ -55,7 +55,7 @@ public static class BoolCondition
 	{
 		Contract.Requires<ArgumentNullException>(operand != null, "operand");
 
-		return CreateEquals(operand, true);
+		return CreateEquals(operand, value: true);
 	}
 
 	/// <summary>
@@ -65,6 +65,6 @@ public static class BoolCondition
 	{
 		Contract.Requires<ArgumentNullException>(operand != null, "operand");
 
-		return CreateEquals(operand, false);
+		return CreateEquals(operand, value: false);
 	}
 }

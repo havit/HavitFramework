@@ -252,7 +252,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 			{
 				writer.Indent++;
 				_checkboxIndex = 1;
-				BuildItems(treeView.Nodes, true, true, writer);
+				BuildItems(treeView.Nodes, isRoot: true, isExpanded: true, writer);
 				writer.Indent--;
 				writer.WriteLine();
 			}
@@ -325,7 +325,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 
 			if (HasChildren(item))
 			{
-				BuildItems(item.ChildNodes, false, item.Expanded.Equals(true), writer);
+				BuildItems(item.ChildNodes, isRoot: false, isExpanded: item.Expanded == true, writer);
 			}
 
 			writer.Indent--;
@@ -337,14 +337,14 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 	private void WriteNodeExpander(TreeView treeView, TreeNode item, HtmlTextWriter writer)
 	{
 		writer.WriteBeginTag("span");
-		writer.WriteAttribute("class", (item.Expanded.Equals(true) ? "AspNet-TreeView-Collapse" : "AspNet-TreeView-Expand"));
+		writer.WriteAttribute("class", (item.Expanded == true ? "AspNet-TreeView-Collapse" : "AspNet-TreeView-Expand"));
 		if (HasChildren(item))
 		{
 			writer.WriteAttribute("onclick", "ExpandCollapse__AspNetTreeView(this)");
 		}
 		else
 		{
-			writer.WriteAttribute("onclick", Page.ClientScript.GetPostBackEventReference(treeView, "p" + (Page.Server.HtmlEncode(item.ValuePath)).Replace("/", "\\"), true));
+			writer.WriteAttribute("onclick", Page.ClientScript.GetPostBackEventReference(treeView, "p" + (Page.Server.HtmlEncode(item.ValuePath)).Replace("/", "\\"), registerForEventValidation: true));
 		}
 		writer.Write(HtmlTextWriter.TagRightChar);
 		writer.Write("&nbsp;");
@@ -418,7 +418,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 			{
 				codePrefix = "p";
 			}
-			writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(treeView, codePrefix + (Page.Server.HtmlEncode(item.ValuePath)).Replace("/", "\\"), true));
+			writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(treeView, codePrefix + (Page.Server.HtmlEncode(item.ValuePath)).Replace("/", "\\"), registerForEventValidation: true));
 		}
 
 		WebControlAdapterExtender.WriteTargetAttribute(writer, item.Target);
@@ -681,7 +681,7 @@ public class CssTreeViewAdapter : System.Web.UI.WebControls.Adapters.Hierarchica
 			{
 				if (IsExpandable(node))
 				{
-					if (node.Expanded.Equals(true))
+					if (node.Expanded == true)
 					{
 						state += "e";
 						state = ComposeViewState(node.ChildNodes, state);

@@ -47,7 +47,7 @@ public class Money<TCurrency>
 	/// <summary>
 	/// Inicializuje třídu money s prázdními hodnotami (Amount i Currency jsou null).
 	/// </summary>
-	public Money() : this(null, null)
+	public Money() : this(amount: null, currency: null)
 	{
 	}
 

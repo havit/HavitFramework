@@ -665,42 +665,42 @@ public class DynarchCalendar : System.Web.UI.Control
 		// inicializujeme kolekci podporovaných jazyků
 		// protože jde o statický konstruktor, nemusíme řešit žádné zámky
 		supportedLanguages = new System.Collections.Generic.Dictionary<string, string>();
-		supportedLanguages.Add("af", null);
-		supportedLanguages.Add("ak", null);
-		supportedLanguages.Add("bg", null);
-		supportedLanguages.Add("br", null);
-		supportedLanguages.Add("ca", null);
+		supportedLanguages.Add("af", value: null);
+		supportedLanguages.Add("ak", value: null);
+		supportedLanguages.Add("bg", value: null);
+		supportedLanguages.Add("br", value: null);
+		supportedLanguages.Add("ca", value: null);
 		// cs má výjimky v kódu kvůli Win1250 + Utf8
-		supportedLanguages.Add("da", null);
-		supportedLanguages.Add("de", null);
-		supportedLanguages.Add("du", null);
-		supportedLanguages.Add("el", null);
-		supportedLanguages.Add("en", null);
-		supportedLanguages.Add("es", null);
-		supportedLanguages.Add("fi", null);
-		supportedLanguages.Add("fr", null);
-		supportedLanguages.Add("he", null);
-		supportedLanguages.Add("hr", null);
-		supportedLanguages.Add("hu", null);
-		supportedLanguages.Add("it", null);
-		supportedLanguages.Add("jp", null);
-		supportedLanguages.Add("ko", null);
-		supportedLanguages.Add("lt", null);
-		supportedLanguages.Add("lv", null);
-		supportedLanguages.Add("nl", null);
-		supportedLanguages.Add("nb", null);
-		supportedLanguages.Add("no", null);
-		supportedLanguages.Add("pl", null);
-		supportedLanguages.Add("pt", null);
-		supportedLanguages.Add("ro", null);
-		supportedLanguages.Add("ru", null);
-		supportedLanguages.Add("si", null);
-		supportedLanguages.Add("sl", null);
-		supportedLanguages.Add("sk", null);
-		supportedLanguages.Add("sp", null);
-		supportedLanguages.Add("sv", null);
-		supportedLanguages.Add("tr", null);
-		supportedLanguages.Add("zh", null);
+		supportedLanguages.Add("da", value: null);
+		supportedLanguages.Add("de", value: null);
+		supportedLanguages.Add("du", value: null);
+		supportedLanguages.Add("el", value: null);
+		supportedLanguages.Add("en", value: null);
+		supportedLanguages.Add("es", value: null);
+		supportedLanguages.Add("fi", value: null);
+		supportedLanguages.Add("fr", value: null);
+		supportedLanguages.Add("he", value: null);
+		supportedLanguages.Add("hr", value: null);
+		supportedLanguages.Add("hu", value: null);
+		supportedLanguages.Add("it", value: null);
+		supportedLanguages.Add("jp", value: null);
+		supportedLanguages.Add("ko", value: null);
+		supportedLanguages.Add("lt", value: null);
+		supportedLanguages.Add("lv", value: null);
+		supportedLanguages.Add("nl", value: null);
+		supportedLanguages.Add("nb", value: null);
+		supportedLanguages.Add("no", value: null);
+		supportedLanguages.Add("pl", value: null);
+		supportedLanguages.Add("pt", value: null);
+		supportedLanguages.Add("ro", value: null);
+		supportedLanguages.Add("ru", value: null);
+		supportedLanguages.Add("si", value: null);
+		supportedLanguages.Add("sl", value: null);
+		supportedLanguages.Add("sk", value: null);
+		supportedLanguages.Add("sp", value: null);
+		supportedLanguages.Add("sv", value: null);
+		supportedLanguages.Add("tr", value: null);
+		supportedLanguages.Add("zh", value: null);
 	}
 
 	/// <summary>
@@ -759,7 +759,7 @@ public class DynarchCalendar : System.Web.UI.Control
 			if ((HttpContext.Current.Response.ContentEncoding != Encoding.UTF8) &&
 				!((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs") && (HttpContext.Current.Response.ContentEncoding == Encoding.GetEncoding(1250))))
 			{
-				throw new ApplicationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
+				throw new InvalidOperationException("Response encoding must be UTF8 (or Windows-1250 for czech). Otherwise DynarchCalendar's javascripts won't work.");
 			}
 
 			if ((Thread.CurrentThread.CurrentUICulture.Name.Substring(0, 2) == "cs"))
@@ -1085,7 +1085,7 @@ public class DynarchCalendar : System.Web.UI.Control
 		//writer.Indent--;
 		//writer.WriteLine("</script>");
 
-		ScriptManager.RegisterStartupScript(this, typeof(DynarchCalendar), this.ClientID + "-Calendar.setup", sb.ToString(), true);
+		ScriptManager.RegisterStartupScript(this, typeof(DynarchCalendar), this.ClientID + "-Calendar.setup", sb.ToString(), addScriptTags: true);
 	}
 
 	/// <summary>

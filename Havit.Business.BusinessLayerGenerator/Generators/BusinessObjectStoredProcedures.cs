@@ -32,7 +32,7 @@ public static class BusinessObjectStoredProcedures
 	{
 		Table resultTypeTable = StoredProcedureHelper.GetResultTypeTable(procedure);
 
-		WriteStoredProcedureMethodHeader(writer, procedure, false);
+		WriteStoredProcedureMethodHeader(writer, procedure, withTransactionParameter: false);
 
 		StringBuilder line = new StringBuilder();
 		bool wasFirst = false;
@@ -74,7 +74,7 @@ public static class BusinessObjectStoredProcedures
 		writer.WriteLine("}");
 		writer.WriteLine();
 
-		WriteStoredProcedureMethodHeader(writer, procedure, true);
+		WriteStoredProcedureMethodHeader(writer, procedure, withTransactionParameter: true);
 
 		// hlavicka metody - protected void X(int a) - apod., contract a otevírací závorka
 
@@ -210,7 +210,7 @@ public static class BusinessObjectStoredProcedures
 				writer.WriteLine(String.Format("{0} = (dbParameter{1}.Value == DBNull.Value) ? null : ({2})dbParameter{1}.Value;",
 					ConventionsHelper.GetCammelCase(parameter.Name.Substring(1)),
 					parameter.Name.Substring(1),
-					TypeHelper.GetFieldSystemTypeName(parameter.DataType, true)));
+					TypeHelper.GetFieldSystemTypeName(parameter.DataType, nullable: true)));
 			}
 		}
 
@@ -279,7 +279,7 @@ public static class BusinessObjectStoredProcedures
 				}
 			default:
 				{
-					throw new ApplicationException("Neznámá hodnota typu StoreProcedureResultType.");
+					throw new InvalidOperationException("Neznámá hodnota typu StoreProcedureResultType.");
 				}
 		}
 		line.Append(" ");
@@ -299,7 +299,7 @@ public static class BusinessObjectStoredProcedures
 				line.Append("out ");
 			}
 
-			line.Append(TypeHelper.GetFieldSystemTypeName(parameter.DataType, true));
+			line.Append(TypeHelper.GetFieldSystemTypeName(parameter.DataType, nullable: true));
 			line.Append(" ");
 			line.Append(ConventionsHelper.GetCammelCase(parameter.Name.Substring(1)));
 

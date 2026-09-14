@@ -150,7 +150,7 @@ public class NavbarLinkItem : NavbarItem
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public NavbarLinkItem(string text, string url, params NavbarItem[] childItems) : this(text, url, null, childItems)
+	public NavbarLinkItem(string text, string url, params NavbarItem[] childItems) : this(text, url, visibleFunc: null, childItems)
 	{
 	}
 

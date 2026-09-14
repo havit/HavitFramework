@@ -121,7 +121,7 @@ public class QueryStringBuilder : NameValueCollection
 	/// <returns>url-encoded QueryString bez úvodního ? (otazníku)</returns>
 	public override string ToString()
 	{
-		return this.ToString(true);
+		return this.ToString(urlEncoded: true);
 	}
 
 	/// <summary>
@@ -212,7 +212,7 @@ public class QueryStringBuilder : NameValueCollection
 	/// <param name="queryString">queryString z kterého se mají data převzít</param>
 	public void FillFromString(string queryString)
 	{
-		this.FillFromString(queryString, true);
+		this.FillFromString(queryString, urlEncoded: true);
 	}
 
 	/**********************************************************/
@@ -237,6 +237,6 @@ public class QueryStringBuilder : NameValueCollection
 	/// <returns>QueryStringBuilder s rozparsovanými daty vstupního queryStringu</returns>
 	public static QueryStringBuilder Parse(string queryString)
 	{
-		return Parse(queryString, true);
+		return Parse(queryString, urlEncoded: true);
 	}
 }

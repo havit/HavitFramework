@@ -568,10 +568,10 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 			jsonMenuItems.Add(jsonMenuItem);
 		}
 
-		writer.WriteList("menuItems", jsonMenuItems, false);
+		writer.WriteList("menuItems", jsonMenuItems, formatValues: false);
 
 		//Add total results
-		writer.WriteNameValue("totalResults", totalResults, true);
+		writer.WriteNameValue("totalResults", totalResults, formatValue: true);
 	}
 
 	/// <summary>
@@ -626,11 +626,11 @@ public class AutoSuggestMenu : WebControl, INamingContainer
 	{
 		if (IsInPartialRendering())
 		{
-			ScriptManager.RegisterStartupScript(this, this.GetType(), key, script, true);
+			ScriptManager.RegisterStartupScript(this, this.GetType(), key, script, addScriptTags: true);
 		}
 		else
 		{
-			this.Page.ClientScript.RegisterStartupScript(this.GetType(), key, script, true);
+			this.Page.ClientScript.RegisterStartupScript(this.GetType(), key, script, addScriptTags: true);
 		}
 	}
 }

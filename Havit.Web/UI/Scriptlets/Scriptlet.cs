@@ -198,7 +198,7 @@ public sealed class Scriptlet : Control, IScriptControl
 				typeof(Scriptlet),
 				this.UniqueID,
 				builder.ToString(),
-				true);
+addScriptTags: true);
 		}
 	}
 

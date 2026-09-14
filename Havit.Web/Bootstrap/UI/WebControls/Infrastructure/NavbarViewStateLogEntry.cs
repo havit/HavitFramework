@@ -103,7 +103,7 @@ internal class NavbarViewStateLogEntry : IStateManager
 
 	public void SetDirty()
 	{
-		_viewstate.SetDirty(true);
+		_viewstate.SetDirty(dirty: true);
 		if (!IsTrackingViewState)
 		{
 			TrackViewState();

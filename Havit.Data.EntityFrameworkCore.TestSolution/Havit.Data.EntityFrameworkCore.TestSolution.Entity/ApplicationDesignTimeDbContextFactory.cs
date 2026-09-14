@@ -20,7 +20,7 @@ public class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContextFactory
 		IConfigurationRoot configuration = new ConfigurationBuilder()
 			.SetBasePath(Path.GetDirectoryName(GetType().Assembly.Location))
 			.AddJsonFile("appsettings.json")
-			.AddJsonFile($"appsettings.{environment}.json", true)
+			.AddJsonFile($"appsettings.{environment}.json", optional: true)
 			.Build();
 
 		string connectionString = configuration.GetConnectionString("Database");

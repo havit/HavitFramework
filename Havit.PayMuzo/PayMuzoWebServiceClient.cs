@@ -78,7 +78,7 @@ public class PayMuzoWebServiceClient
 		request.Add("MERCHANTNUMBER", merchantNumber.ToString());
 		request.Add("ORDERNUMBER", orderNumber.ToString());
 
-		string digest = PayMuzoHelper.CreateDigest(request.GetPipedRawData(), merchantCertificate, false);
+		string digest = PayMuzoHelper.CreateDigest(request.GetPipedRawData(), merchantCertificate, urlEncode: false);
 
 		Havit.PayMuzo.WebServiceProxies.OrderStateResponse rawResponse = webServiceProxy.queryOrderState(merchantNumber.ToString(), orderNumber.ToString(), digest);
 		this.LastRawResponse = rawResponse;

@@ -81,7 +81,7 @@ public static class BusinessObjectSqlParameter
 					lines.Add(String.Format("{0}.TypeName = \"{1}\";", dbParameterName, parameterDataType.Name));
 					break;
 
-				default: throw new ApplicationException("Chyba v aplikaci - nenalezena sekce pro user defined type.");
+				default: throw new InvalidOperationException("Chyba v aplikaci - nenalezena sekce pro user defined type.");
 			}
 		}
 

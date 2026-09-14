@@ -20,7 +20,7 @@ public class SymbolPropertyIndexConvention : IStoreModelConvention<EdmProperty>
 		{
 			if (!member.DeclaringType.IsConventionSuppressed(typeof(SymbolPropertyIndexConvention)) && !member.IsConventionSuppressed(typeof(SymbolPropertyIndexConvention)))
 			{
-				IndexHelper.AddIndex(member, true);
+				IndexHelper.AddIndex(member, unique: true);
 			}
 		}
 	}

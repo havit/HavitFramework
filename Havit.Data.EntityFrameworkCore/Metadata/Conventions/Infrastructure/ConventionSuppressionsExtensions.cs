@@ -30,6 +30,6 @@ public static class ConventionSuppressionsExtensions
 	/// </summary>
 	private static bool IsConventionSuppressed(this ICustomAttributeProvider customAttributeProvider, string conventionIdentifier)
 	{
-		return customAttributeProvider.GetCustomAttributes(typeof(SuppressConventionAttribute), true).Cast<SuppressConventionAttribute>().Any(attribute => attribute.ConventionIdentifierToSuppress == conventionIdentifier);
+		return customAttributeProvider.GetCustomAttributes(typeof(SuppressConventionAttribute), inherit: true).Cast<SuppressConventionAttribute>().Any(attribute => attribute.ConventionIdentifierToSuppress == conventionIdentifier);
 	}
 }

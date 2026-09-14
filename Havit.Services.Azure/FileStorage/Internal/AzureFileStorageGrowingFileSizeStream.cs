@@ -27,7 +27,7 @@ internal class AzureFileStorageGrowingFileSizeStream : Stream
 	{
 		this.shareFileClient = shareFileClient;
 
-		underlyingStream = shareFileClient.OpenWrite(true, 0, new ShareFileOpenWriteOptions
+		underlyingStream = shareFileClient.OpenWrite(overwrite: true, 0, new ShareFileOpenWriteOptions
 		{
 			MaxSize = initialFileSize
 		});

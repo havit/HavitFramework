@@ -470,9 +470,9 @@ public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIn
 					|| (((IButtonControl)control).CommandName == CommandNames.Previous)
 					|| (((IButtonControl)control).CommandName == CommandNames.Next)));
 
-			List<IButtonControl> validationButtons = headerFormView.FindControls(isValidationButtonPredicate, false)
-				.Concat(contentFormView.FindControls(isValidationButtonPredicate, false))
-				.Concat(modalDialog.FooterTemplateContainer.FindControls(isValidationButtonPredicate, false))
+			List<IButtonControl> validationButtons = headerFormView.FindControls(isValidationButtonPredicate, traverseNestedNamingContainers: false)
+				.Concat(contentFormView.FindControls(isValidationButtonPredicate, traverseNestedNamingContainers: false))
+				.Concat(modalDialog.FooterTemplateContainer.FindControls(isValidationButtonPredicate, traverseNestedNamingContainers: false))
 				.OfType<IButtonControl>()
 				.ToList();
 			validationButtons.ForEach(button => button.ValidationGroup = this.ValidationGroup);
@@ -484,12 +484,12 @@ public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIn
 	/// </summary>
 	private void SetPreviousNextButtons()
 	{
-		List<WebControl> previousButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.Previous, false).OfType<WebControl>().ToList();
-		List<WebControl> nextButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.Next, false).OfType<WebControl>().ToList();
+		List<WebControl> previousButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.Previous, traverseNestedNamingContainers: false).OfType<WebControl>().ToList();
+		List<WebControl> nextButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.Next, traverseNestedNamingContainers: false).OfType<WebControl>().ToList();
 
 		if (previousButtons.Count > 0)
 		{
-			DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(false);
+			DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(data: false);
 			this.OnGetCanNavigatePrevious(dataEventArgs);
 			bool canNavigatePrevious = dataEventArgs.Data;
 			previousButtons.ForEach(button => button.Enabled = canNavigatePrevious);
@@ -497,7 +497,7 @@ public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIn
 
 		if (nextButtons.Count > 0)
 		{
-			DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(false);
+			DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(data: false);
 			this.OnGetCanNavigateNext(dataEventArgs);
 			bool canNavigateNext = dataEventArgs.Data;
 			nextButtons.ForEach(button => button.Enabled = canNavigateNext);
@@ -509,11 +509,11 @@ public class ModalEditorExtender : DataBoundControlWithHiddenPublicMembersFromIn
 	/// </summary>
 	private void SetNewButtons()
 	{
-		List<WebControl> newButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.New, false).OfType<WebControl>().ToList();
+		List<WebControl> newButtons = this.modalDialog.FooterTemplateContainer.FindControls(control => (control is IButtonControl) && ((IButtonControl)control).CommandName == CommandNames.New, traverseNestedNamingContainers: false).OfType<WebControl>().ToList();
 
 		if (newButtons.Count > 0)
 		{
-			DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(false);
+			DataEventArgs<bool> dataEventArgs = new DataEventArgs<bool>(data: false);
 			this.OnGetCanCreateNew(dataEventArgs);
 			bool canCreateNewItem = dataEventArgs.Data;
 			newButtons.ForEach(button => button.Enabled = canCreateNewItem);

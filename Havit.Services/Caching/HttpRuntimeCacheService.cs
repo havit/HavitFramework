@@ -49,7 +49,7 @@ public class HttpRuntimeCacheService : ICacheService
 		{
 			if (options.CacheDependencyKeys != null)
 			{
-				cacheDependency = new CacheDependency(null, options.CacheDependencyKeys);
+				cacheDependency = new CacheDependency(filenames: null, options.CacheDependencyKeys);
 			}
 
 			if (options.AbsoluteExpiration != null)
@@ -92,7 +92,7 @@ public class HttpRuntimeCacheService : ICacheService
 			absoluteExpiration,
 			slidingExpiration,
 			priority,
-			null // callback
+onRemoveCallback: null // callback
 		);
 	}
 

@@ -147,7 +147,7 @@ public class EnterpriseGridView : GridViewExt
 
 			if (!type.IsSubclassOf(typeof(BusinessObjectBase)))
 			{
-				throw new ApplicationException(String.Format("GridViewRow není nabindován business objektem (potomkem BusinessObjectBase), ale typem '{0}'.", type.FullName));
+				throw new InvalidOperationException(String.Format("GridViewRow není nabindován business objektem (potomkem BusinessObjectBase), ale typem '{0}'.", type.FullName));
 			}
 
 			MethodInfo mi = type.GetMethod("GetObject", new Type[] { typeof(int) });
@@ -165,12 +165,12 @@ public class EnterpriseGridView : GridViewExt
 
 		if (insertRowDataItem == null)
 		{
-			throw new ApplicationException("Událost GetInsertRowDataItem vrátila null.");
+			throw new InvalidOperationException("Událost GetInsertRowDataItem vrátila null.");
 		}
 
 		if (!(insertRowDataItem is BusinessObjectBase))
 		{
-			throw new ApplicationException(
+			throw new InvalidOperationException(
 				String.Format(
 					"GetInsertRowDataItem nevrátila business objekt (potomek BusinessObjectBase), ale typ '{0}'.",
 					insertRowDataItem.GetType().FullName));

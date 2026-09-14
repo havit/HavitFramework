@@ -301,7 +301,7 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 
 }";
 
-		ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), clientScriptKey, toggleCollapser, true);
+		ScriptManager.RegisterClientScriptBlock(this.Page, this.GetType(), clientScriptKey, toggleCollapser, addScriptTags: true);
 
 		string toggleScript = String.Format("havitCollapserToggle('{0}', '{0}State', '{1}', '{2}', '{3}');",
 			this.ClientID,
@@ -318,7 +318,7 @@ function havitCollapserExpand(collapserElementId, collapserStateElementId, conte
 				this.CssClassCollapsedFull);
 
 			ScriptManager.RegisterStartupScript(this.Page, this.GetType(), clientScriptKey + ResolveID(this.ContentElement),  // zajistí jediné volání pro element
-				collapseScript, true);
+				collapseScript, addScriptTags: true);
 		}
 	}
 

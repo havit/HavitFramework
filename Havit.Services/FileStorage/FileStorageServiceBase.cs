@@ -23,7 +23,7 @@ public abstract class FileStorageServiceBase : IFileStorageService
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	protected FileStorageServiceBase() : this(null)
+	protected FileStorageServiceBase() : this(encryptionOptions: null)
 	{
 	}
 

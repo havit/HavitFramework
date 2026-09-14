@@ -110,7 +110,7 @@ public class ControlsValuesPersister : Control
 	/// <param name="control">Nastavovaný control.</param>
 	internal static void ApplyValues(ControlsValuesHolder dataHolder, Control control)
 	{
-		ApplyValues(dataHolder, control, control, PersisterControlExtenderRepository.Default, null);
+		ApplyValues(dataHolder, control, control, PersisterControlExtenderRepository.Default, callback: null);
 	}
 
 	private static void ApplyValues(ControlsValuesHolder dataHolder, Control control, Control containerControl, PersisterControlExtenderRepository persisterControlExtenderRepository, Action<ControlValueEventArgs> callback = null)

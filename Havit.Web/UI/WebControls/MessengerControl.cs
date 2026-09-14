@@ -111,7 +111,7 @@ public class MessengerControl : Literal
 					{
 						//string script = String.Format("alert('{0}');", messageBoxText.Replace("'", "\\'"));
 						string script = String.Format("window.setTimeout(function() {{ alert('{0}'); }}, 10);", messageBoxText.Replace("'", "\\'"));
-						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, true);
+						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "MessageBox", script, addScriptTags: true);
 					}
 				}
 
@@ -120,7 +120,7 @@ public class MessengerControl : Literal
 					string toastrScript = this.GetToastrScript();
 					if (!String.IsNullOrEmpty(toastrScript))
 					{
-						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, true);
+						System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, typeof(MessengerControl), "Toastr", toastrScript, addScriptTags: true);
 					}
 				}
 
@@ -248,7 +248,7 @@ public class MessengerControl : Literal
 				break;
 
 			default:
-				throw new ApplicationException("Neznámá hodnota MessageType.");
+				throw new InvalidOperationException("Neznámá hodnota MessageType.");
 		}
 
 		string toasterMessage = message.Text.TrimEnd().Replace("'", "\\'").Replace("\n", "<br />").Replace("\r", "");

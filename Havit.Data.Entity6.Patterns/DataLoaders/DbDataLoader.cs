@@ -306,11 +306,11 @@ public partial class DbDataLoader : IDataLoader
 	{
 		var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
-		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
+		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, isPropertyCollection: false);
 
 		if (ids.Count > 0)
 		{
-			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
+			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, isPropertyCollection: false);
 			loadQuery.Load();
 		}
 
@@ -326,11 +326,11 @@ public partial class DbDataLoader : IDataLoader
 	{
 		var propertyLambdaExpression = lambdaExpressionManager.GetPropertyLambdaExpression<TEntity, TProperty>(propertyName);
 
-		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, false);
+		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, isPropertyCollection: false);
 
 		if (ids.Count > 0)
 		{
-			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, false);
+			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, isPropertyCollection: false);
 			await loadQuery.LoadAsync(cancellationToken).ConfigureAwait(false);
 		}
 
@@ -349,11 +349,11 @@ public partial class DbDataLoader : IDataLoader
 
 		InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
-		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
+		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, isPropertyCollection: true);
 
 		if (ids.Count > 0)
 		{
-			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
+			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, isPropertyCollection: true);
 			loadQuery.Load();
 		}
 
@@ -372,11 +372,11 @@ public partial class DbDataLoader : IDataLoader
 
 		InitializeCollectionsForAddedEntities<TEntity, TPropertyCollection, TPropertyItem>(entities, propertyLambdaExpression.LambdaCompiled, propertyName);
 
-		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, true);
+		List<int> ids = GetEntitiesIdsToLoadProperty(entities, propertyName, isPropertyCollection: true);
 
 		if (ids.Count > 0)
 		{
-			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, true);
+			IQueryable loadQuery = GetLoadQuery(propertyLambdaExpression.LambdaExpression, ids, isPropertyCollection: true);
 			await loadQuery.LoadAsync(cancellationToken).ConfigureAwait(false);
 		}
 
@@ -513,6 +513,6 @@ public partial class DbDataLoader : IDataLoader
 			}
 		}
 
-		addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, true));
+		addedNonLoadedEntities.ForEach(item => dbContext.SetEntityCollectionLoaded<TEntity>(item, propertyName, loadedValue: true));
 	}
 }

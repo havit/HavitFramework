@@ -11,11 +11,11 @@ internal static class PrimitivePropertyConfigurationExtensions
 		// inspirováno z https://github.com/mj1856/EntityFramework.IndexingExtensions/blob/master/EntityFramework.IndexingExtensions/IndexingExtensions.cs
 		var configuration = typeof(PrimitivePropertyConfiguration)
 			.GetProperty("Configuration", BindingFlags.Instance | BindingFlags.NonPublic)
-			.GetValue(property, null);
+			.GetValue(property, index: null);
 
 		var annotations = (IDictionary<string, object>)configuration.GetType()
 			.GetProperty("Annotations", BindingFlags.Instance | BindingFlags.Public)
-			.GetValue(configuration, null);
+			.GetValue(configuration, index: null);
 
 		object annotation;
 		if (annotations.TryGetValue(annotationName, out annotation))

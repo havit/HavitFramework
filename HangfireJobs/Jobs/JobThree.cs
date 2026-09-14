@@ -5,6 +5,6 @@ public class JobThree : IJobThree
 	public Task ExecuteAsync(CancellationToken cancellationToken)
 	{
 		Console.WriteLine("Job three");
-		throw new ApplicationException("Job three failed.");
+		throw new InvalidOperationException("Job three failed.");
 	}
 }

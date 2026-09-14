@@ -144,7 +144,7 @@ public class SmtpWebEventProvider : WebEventProvider
 				: new NetworkCredential("", "");
 
 			smtpClient.Port = _smtpPort.GetValueOrDefault(25);
-			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(false);
+			smtpClient.EnableSsl = _smtpEnableSsl.GetValueOrDefault(defaultValue: false);
 
 			smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
 		}
@@ -216,7 +216,7 @@ public class SmtpWebEventProvider : WebEventProvider
 	/// </summary>
 	protected virtual string GetMailMessageBody(WebBaseEvent raisedEvent)
 	{
-		return raisedEvent.ToString(true, true);
+		return raisedEvent.ToString(includeAppInfo: true, includeCustomEventDetails: true);
 	}
 
 	/// <summary>

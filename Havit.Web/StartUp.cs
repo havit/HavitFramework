@@ -9,6 +9,7 @@ using Havit.Web.UI.ClientScripts;
 /// Performs application startup tasks.
 /// </summary>
 [SuppressMessage("SonarLint", "S3903", Justification = "Je to špatně, ale z důvodu zpětné kompatibility neměním.")]
+[SuppressMessage("Meziantou.Analyzer", "MA0047", Justification = "Je to špatně, ale z důvodu zpětné kompatibility neměním.")]
 public static class StartUp
 {
 	/// <summary>

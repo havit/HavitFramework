@@ -39,7 +39,7 @@ public class MemoryCacheService : ICacheService
 	/// Nebude použita podpora pro cache dependencies.
 	/// </summary>
 	/// <param name="memoryCache">IMemoryCache, která bude použita pro cachování.</param>		
-	public MemoryCacheService(IMemoryCache memoryCache) : this(memoryCache, false)
+	public MemoryCacheService(IMemoryCache memoryCache) : this(memoryCache, useCacheDependenciesSupport: false)
 	{
 		// NOOP
 	}
@@ -207,7 +207,7 @@ public class MemoryCacheService : ICacheService
 		MethodInfo clearMethod = memoryCache.GetType().GetMethod("Clear", BindingFlags.Instance | BindingFlags.Public);
 		if (clearMethod != null)
 		{
-			clearMethod.Invoke(memoryCache, null);
+			clearMethod.Invoke(memoryCache, parameters: null);
 			return;
 		}
 
@@ -226,7 +226,7 @@ public class MemoryCacheService : ICacheService
 			{
 				throw new NotSupportedException("IMemoryCache.EntriesCollection does not have a Clear() method.");
 			}
-			cacheEntriesClearMethod.Invoke(cacheEntriesCollection, null);
+			cacheEntriesClearMethod.Invoke(cacheEntriesCollection, parameters: null);
 			return;
 		}
 

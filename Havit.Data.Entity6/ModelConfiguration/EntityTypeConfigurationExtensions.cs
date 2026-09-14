@@ -19,7 +19,7 @@ public static class EntityTypeConfigurationExtensions
 	public static void HasIndex<TEntity>(this EntityTypeConfiguration<TEntity> _, string indexName, params PrimitivePropertyConfiguration[] properties)
 		where TEntity : class
 	{
-		HasIndexInternal(indexName, properties, false);
+		HasIndexInternal(indexName, properties, isUnique: false);
 	}
 
 	/// <summary>
@@ -28,7 +28,7 @@ public static class EntityTypeConfigurationExtensions
 	public static void HasUniqueIndex<TEntity>(this EntityTypeConfiguration<TEntity> _, string indexName, params PrimitivePropertyConfiguration[] properties)
 		where TEntity : class
 	{
-		HasIndexInternal(indexName, properties, true);
+		HasIndexInternal(indexName, properties, isUnique: true);
 	}
 
 	private static void HasIndexInternal(string indexName, PrimitivePropertyConfiguration[] properties, bool isUnique)
@@ -77,11 +77,11 @@ public static class EntityTypeConfigurationExtensions
 	{
 		var configuration = entityTypeConfiguration.GetType()
 			.GetProperty("Configuration", BindingFlags.Instance | BindingFlags.NonPublic)
-			.GetValue(entityTypeConfiguration, null);
+			.GetValue(entityTypeConfiguration, index: null);
 
 		var annotations = (IDictionary<string, object>)configuration.GetType()
 			.GetProperty("Annotations", BindingFlags.Instance | BindingFlags.Public)
-			.GetValue(configuration, null);
+			.GetValue(configuration, index: null);
 
 		object annotation;
 		if (annotations.TryGetValue(annotationName, out annotation))

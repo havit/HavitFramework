@@ -30,7 +30,7 @@ public static class PropertiesClass
 		writer.WriteLine("{");
 
 		writer.WriteCommentSummary(String.Format("Objektová reprezentace metadat vlastností typu {0}.", ClassHelper.GetClassName(table)));
-		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 		writer.WriteGeneratedCodeAttribute();
 		writer.WriteLine(String.Format("{0} class {1}",
 			TableHelper.GetAccessModifier(table),
@@ -125,7 +125,7 @@ public static class PropertiesClass
 				ConventionsHelper.GetCammelCase(collectionProperty.PropertyName),
 				collectionProperty.PropertyName,
 				ClassHelper.GetClassFullName(collectionProperty.TargetTable),
-				ColumnHelper.GetSqlSelectFieldStatementForCollectionProperty(table, collectionProperty, false)));
+				ColumnHelper.GetSqlSelectFieldStatementForCollectionProperty(table, collectionProperty, collectionQueryBySqlParameter: false)));
 
 			if (propertiesBuilder.Length > 0)
 			{

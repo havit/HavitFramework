@@ -409,7 +409,7 @@ public partial class ModalDialog : ModalDialogBase, IPostBackEventHandler
 			ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
 			scriptManager.RegisterAsyncPostBackControl(this);
 
-			postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", null, false, false, false, true, false, null), false);
+			postbackScript = this.Page.ClientScript.GetPostBackEventReference(new PostBackOptions(this, "Escape", actionUrl: null, autoPostBack: false, requiresJavaScriptProtocol: false, trackFocus: false, clientSubmit: true, performValidation: false, validationGroup: null), registerForEventValidation: false);
 		}
 
 		string script = String.Format(

@@ -425,7 +425,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 	{
 		writer.AddAttribute("class", "autocomplete-textbox");
 
-		writer.AddAttribute("data-autocompletetextbox", null);
+		writer.AddAttribute("data-autocompletetextbox", value: null);
 		writer.AddAttribute("data-serviceurl", ResolveClientUrl(ServiceUrl));
 		writer.AddAttribute("data-minchars", MinSuggestedChars.ToString());
 		writer.AddAttribute("data-deferRequest", DeferRequest.ToString());
@@ -448,7 +448,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 
 		if (!UseClientCache)
 		{
-			writer.AddAttribute("data-nocache", null);
+			writer.AddAttribute("data-nocache", value: null);
 		}
 		if (!String.IsNullOrWhiteSpace(Context))
 		{
@@ -457,7 +457,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 
 		if (AutoPostBack)
 		{
-			writer.AddAttribute("data-postbackscript", Page.ClientScript.GetPostBackEventReference(this, null));
+			writer.AddAttribute("data-postbackscript", Page.ClientScript.GetPostBackEventReference(this, argument: null));
 		}
 		writer.RenderBeginTag(HtmlTextWriterTag.Span);
 		base.RenderControl(writer);
@@ -491,7 +491,7 @@ public class AutoCompleteTextBox : Control, INamingContainer, IPostBackDataHandl
 
 		HavitFrameworkClientScriptHelper.RegisterHavitFrameworkClientScript(this.Page);
 		ScriptManager.ScriptResourceMapping.EnsureScriptRegistration(this.Page, HavitFrameworkClientScriptHelper.JQueryAutoCompleteResourceMappingName);
-		ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", true);
+		ScriptManager.RegisterStartupScript(this, typeof(AutoCompleteTextBox), "InitScript", "havitAutoCompleteTextBoxExtensions.init();", addScriptTags: true);
 		if (AutoRegisterStyleSheets)
 		{
 			RegisterStylesheets(this.Page);

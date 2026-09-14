@@ -3,7 +3,7 @@
 /// <summary>
 /// Předek výjimek vracených z volání Nespolehlivého plátce DPH.
 /// </summary>	
-public class PlatceDphException : ApplicationException
+public class PlatceDphException : Exception
 {
 	/// <summary>
 	/// Podrobný Typ chyby. Chyba se může vyskytnout na WebService (kladné hodnoty), během spojení nebo během parsování XML odpovědi. 

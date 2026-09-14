@@ -53,6 +53,6 @@ public class ToolTip : System.Web.UI.WebControls.WebControl
 	protected override void OnPreRender(EventArgs e)
 	{
 		base.OnPreRender(e);
-		ScriptManager.RegisterStartupScript(this, typeof(ToolTip), "ToolTipInitialization", @"$(function() { $('[data-toggle=""tooltip""]').tooltip(); });", true);
+		ScriptManager.RegisterStartupScript(this, typeof(ToolTip), "ToolTipInitialization", @"$(function() { $('[data-toggle=""tooltip""]').tooltip(); });", addScriptTags: true);
 	}
 }

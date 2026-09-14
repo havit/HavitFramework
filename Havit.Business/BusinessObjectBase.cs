@@ -152,9 +152,9 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </summary>
 	protected BusinessObjectBase(ConnectionMode connectionMode) : this(
 		NoID, // ID
-		true, // IsNew
-		false, // IsDirty
-		true,       // IsLoaded
+isNew: true, // IsNew
+isDirty: false, // IsDirty
+isLoaded: true,       // IsLoaded
 		connectionMode == ConnectionMode.Disconnected) // IsDisconnected
 	{
 		/*
@@ -175,8 +175,8 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	protected BusinessObjectBase(int id, ConnectionMode connectionMode)
 		: this(
 		id, // ID
-		false, // IsNew
-		false, // IsDirty
+isNew: false, // IsNew
+isDirty: false, // IsDirty
 		connectionMode == ConnectionMode.Disconnected, // IsLoaded
 		connectionMode == ConnectionMode.Disconnected) // IsOffline
 	{
@@ -281,7 +281,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </remarks>
 	public void Load()
 	{
-		Load(null);
+		Load(transaction: null);
 	}
 
 	/// <summary>
@@ -294,7 +294,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </remarks>
 	public bool TryLoad()
 	{
-		return TryLoad(null);
+		return TryLoad(transaction: null);
 	}
 
 	/// <summary>
@@ -362,7 +362,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </remarks>
 	public void Save()
 	{
-		Save(null);
+		Save(transaction: null);
 	}
 
 	/// <summary>
@@ -431,7 +431,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	/// </remarks>
 	public void Delete()
 	{
-		Delete(null);
+		Delete(transaction: null);
 	}
 
 	/// <summary>
@@ -450,7 +450,7 @@ public abstract class BusinessObjectBase : INotifyPropertyChanged
 	[EditorBrowsable(EditorBrowsableState.Advanced)]
 	protected void EnsureLoaded()
 	{
-		EnsureLoaded(null);
+		EnsureLoaded(transaction: null);
 	}
 
 	/// <summary>

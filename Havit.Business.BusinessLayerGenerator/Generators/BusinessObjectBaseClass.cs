@@ -31,7 +31,7 @@ public static class BusinessObjectBaseClass
 
 		WriteStaticConstructor(writer, table);
 
-		BusinessObjectConstructors.WriteConstructors(writer, ClassHelper.GetBaseClassName(table), TableHelper.GetPrimaryKey(table).Name, true);
+		BusinessObjectConstructors.WriteConstructors(writer, ClassHelper.GetBaseClassName(table), TableHelper.GetPrimaryKey(table).Name, baseClass: true);
 
 		Converters.WriteConverters(writer, table);
 
@@ -276,7 +276,7 @@ public static class BusinessObjectBaseClass
 			interfaces += ", ILocalizable";
 		}
 
-		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(false));
+		writer.WriteMicrosoftContract(ContractHelper.GetContractVerificationAttribute(requiresVerification: false));
 		writer.WriteGeneratedCodeAttribute();
 
 		writer.WriteLine(String.Format("{0} abstract class {1} : {2}{3}",
@@ -479,7 +479,7 @@ public static class BusinessObjectBaseClass
 		StringBuilder select = new StringBuilder();
 		select.Append("SELECT ");
 
-		select.Append(TableHelper.GetSqlSelectFields(table, true));
+		select.Append(TableHelper.GetSqlSelectFields(table, collectionQueryBySqlParameter: true));
 
 		select.AppendFormat(" FROM {0} ", TableHelper.GetFullTableName(table));
 		select.AppendFormat("WHERE [{0}] = @{0}", TableHelper.GetPrimaryKey(table).Name);
@@ -756,14 +756,14 @@ public static class BusinessObjectBaseClass
 			// chceme zjistit, zda bude zapsána nějaká kolekce, která používá DeletedDateTime
 			// takovou informaci vrací WriteSaveUpdate_Collections, jenže my chceme vypsat kód ještě před tuto metodu
 			// proto metodu zavoláme z fake-ovým CodeWriterem
-			WriteSaveUpdate_Collections(new CodeWriter("::nofile::", false), table, false, out bool shouldWriteDeletedDateTimeSqlParameter);
+			WriteSaveUpdate_Collections(new CodeWriter("::nofile::", eliminateEmptyLinesBeforeClosingParenthesis: false), table, deleteMode: false, out bool shouldWriteDeletedDateTimeSqlParameter);
 			if (shouldWriteDeletedDateTimeSqlParameter)
 			{
 				writer.WriteLine("bool dirtyCollectionWithDeletedDateTimeExists = false;");
 			}
 
 			// nyní skutečný zápis kódu;
-			WriteSaveUpdate_Collections(writer, table, false, out shouldWriteDeletedDateTimeSqlParameter);
+			WriteSaveUpdate_Collections(writer, table, deleteMode: false, out shouldWriteDeletedDateTimeSqlParameter);
 
 			writer.WriteLine("// pokud je objekt dirty, ale žádná property není dirty (Save_MinimalInsert poukládal všechno), neukládáme");
 			writer.WriteLine("if (dirtyFieldExists || dirtyCollectionExists)");
@@ -913,7 +913,7 @@ public static class BusinessObjectBaseClass
 						}
 						else
 						{
-							throw new ApplicationException(
+							throw new InvalidOperationException(
 								String.Format(
 									"Tabulka {0}: Sloupec {1} pro smazané záznamy není podporovaného typu.",
 									collectionProperty.TargetTable.Name,
@@ -1002,12 +1002,12 @@ public static class BusinessObjectBaseClass
 
 	public static void WriteSaveFullInsert(CodeWriter writer, Table table)
 	{
-		WriteSaveInsert(writer, table, true);
+		WriteSaveInsert(writer, table, fullInsert: true);
 	}
 
 	public static void WriteSaveMinimalInsert(CodeWriter writer, Table table)
 	{
-		WriteSaveInsert(writer, table, false);
+		WriteSaveInsert(writer, table, fullInsert: false);
 	}
 
 	private static void WriteSaveInsert(CodeWriter writer, Table table, bool fullInsert)
@@ -1326,7 +1326,7 @@ public static class BusinessObjectBaseClass
 				writer.WriteLine();
 				writer.WriteLine("StringBuilder commandBuilder = new StringBuilder();");
 				bool shouldWriteDeletedDateTimeSqlParameter;
-				WriteSaveUpdate_Collections(writer, table, true, out shouldWriteDeletedDateTimeSqlParameter);
+				WriteSaveUpdate_Collections(writer, table, deleteMode: true, out shouldWriteDeletedDateTimeSqlParameter);
 
 				writer.WriteLine(String.Format("commandBuilder.AppendFormat(\"DELETE FROM {0} WHERE [{1}] = @{1}\");",
 					TableHelper.GetFullTableName(table),
@@ -1854,7 +1854,7 @@ public static class BusinessObjectBaseClass
 			}
 			catch (Exception e)
 			{
-				throw new ApplicationException(String.Format("Tabulka {0}: Chyba při zpracování extended property GetAll_Sorting ({1}).", table.Name, sorting), e);
+				throw new InvalidOperationException(String.Format("Tabulka {0}: Chyba při zpracování extended property GetAll_Sorting ({1}).", table.Name, sorting), e);
 			}
 		}
 

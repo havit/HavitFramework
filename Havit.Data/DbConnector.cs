@@ -172,7 +172,7 @@ public class DbConnector
 	/// </summary>
 	public DbConnection GetConnection()
 	{
-		return GetConnection(false);
+		return GetConnection(openConnection: false);
 	}
 
 	/// <summary>
@@ -745,7 +745,7 @@ public class DbConnector
 	{
 		Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
 
-		ExecuteTransaction(transactionWork, null, isolationLevel);
+		ExecuteTransaction(transactionWork, outerTransaction: null, isolationLevel);
 	}
 
 	/// <summary>
@@ -757,7 +757,7 @@ public class DbConnector
 	{
 		Contract.Requires<ArgumentNullException>(transactionWork != null, nameof(transactionWork));
 
-		ExecuteTransaction(transactionWork, null, IsolationLevel.Unspecified);
+		ExecuteTransaction(transactionWork, outerTransaction: null, IsolationLevel.Unspecified);
 	}
 
 	/**********************************************************************************************************/

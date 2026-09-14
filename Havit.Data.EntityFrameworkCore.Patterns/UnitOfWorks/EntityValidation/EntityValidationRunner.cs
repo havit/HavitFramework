@@ -52,7 +52,7 @@ public class EntityValidationRunner : IEntityValidationRunner
 				MethodInfo createMethod = _createValidatorsMethodsByEntityType.GetOrAdd(
 					type,
 					static t => _createValidatorsMethodDefinition.MakeGenericMethod(t));
-				supportedValidators.AddRange((IEnumerable<object>)createMethod.Invoke(_entityValidatorsFactory, null));
+				supportedValidators.AddRange((IEnumerable<object>)createMethod.Invoke(_entityValidatorsFactory, parameters: null));
 				type = type.BaseType;
 			}
 

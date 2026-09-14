@@ -55,7 +55,7 @@ public static class CacheHelper
 		}
 
 		string shortName = ClassHelper.GetClassName(table);
-		string longName = ClassHelper.GetClassFullName(table, false);
+		string longName = ClassHelper.GetClassFullName(table, withDefaultNamespace: false);
 
 		// pokud je stejný název třídy ve více namespaces, pak použijeme název vč. namespace, jinak jen samotný název třídy
 		var duplicates = DatabaseHelper.GetWorkingTables().Select(dbTable => ClassHelper.GetClassName(dbTable)).Where(name => name == shortName).Count();

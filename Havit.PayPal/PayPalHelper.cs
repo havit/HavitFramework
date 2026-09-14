@@ -31,7 +31,7 @@ public static class PayPalHelper
 		PayPalLandingPage landingPage,
 		string paymentName)
 	{
-		PayPalRequestData request = CreateSetExpressCheckoutRequest(amount, returnUrl, cancelUrl, paymentAction, currency, landingPage, true, false, paymentName, null, null, null, null, null, null, null);
+		PayPalRequestData request = CreateSetExpressCheckoutRequest(amount, returnUrl, cancelUrl, paymentAction, currency, landingPage, suppressShippingInformation: true, allowNote: false, paymentName, shipToName: null, shipToStreet: null, shipToStreet2: null, shipToCity: null, shipToZip: null, shipToState: null, shipToPayPalCountryCode: null);
 
 		return request;
 	}

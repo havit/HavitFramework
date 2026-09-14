@@ -94,7 +94,7 @@ internal static class Program
 			Generators.Generator.Generate(database, modelCsprojFile, entityCsprojFile);
 
 		}
-		catch (ApplicationException e)
+		catch (InvalidOperationException e)
 		{
 			ConsoleHelper.WriteLineError(e.Message);
 		}

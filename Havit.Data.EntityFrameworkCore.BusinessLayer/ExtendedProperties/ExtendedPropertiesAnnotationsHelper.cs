@@ -47,7 +47,7 @@ internal static class ExtendedPropertiesAnnotationsHelper
 
 	internal static void AddExtendedPropertyAnnotations(IMutableAnnotatable annotatable, MemberInfo memberInfo)
 	{
-		var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), false).Cast<ExtendedPropertiesAttribute>();
+		var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), inherit: false).Cast<ExtendedPropertiesAttribute>();
 		foreach (var attribute in attributes)
 		{
 			AddExtendedPropertyAnnotations(annotatable, attribute.GetExtendedProperties(memberInfo));
@@ -69,7 +69,7 @@ internal static class ExtendedPropertiesAnnotationsHelper
 
 	internal static void AddExtendedPropertyAnnotations(IConventionAnnotatable annotatable, MemberInfo memberInfo, bool fromDataAnnotation)
 	{
-		var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), false).Cast<ExtendedPropertiesAttribute>();
+		var attributes = memberInfo.GetCustomAttributes(typeof(ExtendedPropertiesAttribute), inherit: false).Cast<ExtendedPropertiesAttribute>();
 		foreach (var attribute in attributes)
 		{
 			AddExtendedPropertyAnnotations(annotatable, attribute.GetExtendedProperties(memberInfo), fromDataAnnotation);

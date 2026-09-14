@@ -78,7 +78,7 @@ public partial class FilePageStatePersister
 		/// </summary>
 		public static void DeleteOldAnonymousFiles(IFileStorageService fileStorageService, TimeSpan? fileAge = null)
 		{
-			DeleteUserFiles(fileStorageService, null, fileAge ?? new TimeSpan(2, 0, 0, 0)); // 2 dny
+			DeleteUserFiles(fileStorageService, username: null, fileAge ?? new TimeSpan(2, 0, 0, 0)); // 2 dny
 		}
 
 		/// <summary>

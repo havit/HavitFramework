@@ -22,38 +22,38 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	}
 
 	private readonly SftpStorageServiceOptions options;
-	private SftpClient sftpClient;
+	private SftpClient _sftpClient;
 
 	internal ISftpClient GetConnectedSftpClient()
 	{
-		if (sftpClient == null)
+		if (_sftpClient == null)
 		{
 			var connectionInfo = options.ConnectionInfoFunc();
-			sftpClient = new SftpClient(connectionInfo);
+			_sftpClient = new SftpClient(connectionInfo);
 		}
 
-		if (!sftpClient.IsConnected)
+		if (!_sftpClient.IsConnected)
 		{
-			sftpClient.Connect();
+			_sftpClient.Connect();
 		}
 
-		return sftpClient;
+		return _sftpClient;
 	}
 
 	internal async ValueTask<ISftpClient> GetConnectedSftpClientAsync(CancellationToken cancellationToken)
 	{
-		if (sftpClient == null)
+		if (_sftpClient == null)
 		{
 			var connectionInfo = options.ConnectionInfoFunc();
-			sftpClient = new SftpClient(connectionInfo);
+			_sftpClient = new SftpClient(connectionInfo);
 		}
 
-		if (!sftpClient.IsConnected)
+		if (!_sftpClient.IsConnected)
 		{
-			await sftpClient.ConnectAsync(cancellationToken).ConfigureAwait(false);
+			await _sftpClient.ConnectAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		return sftpClient;
+		return _sftpClient;
 	}
 
 	/// <summary>
@@ -61,9 +61,9 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// </summary>
 	public void Disconnect()
 	{
-		if ((sftpClient != null) && sftpClient.IsConnected)
+		if ((_sftpClient != null) && _sftpClient.IsConnected)
 		{
-			sftpClient?.Disconnect();
+			_sftpClient?.Disconnect();
 		}
 	}
 
@@ -370,7 +370,7 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		PerformSave_EnsureFolderFor(substitutedFilename);
 
 		var sftpClient = GetConnectedSftpClient();
-		sftpClient.UploadFile(fileContent, substitutedFilename, true);
+		sftpClient.UploadFile(fileContent, substitutedFilename, canOverride: true);
 	}
 
 	/// <inheritdoc />
@@ -516,11 +516,12 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 		// Implementace je ochranou před:
 		// The requested operation cannot be performed because there is a file transfer in progress.
 
+		var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
+
 		// download to temp tile
 		string tempFilename = System.IO.Path.GetTempFileName();
 		using (var tempStream = System.IO.File.OpenWrite(tempFilename))
 		{
-			var sftpClient = await GetConnectedSftpClientAsync(cancellationToken).ConfigureAwait(false);
 			await sftpClient.DownloadFileAsync(SubstituteFileName(sourceFileName), tempStream, cancellationToken).ConfigureAwait(false);
 		}
 
@@ -576,8 +577,8 @@ public class SftpStorageService : FileStorageServiceBase, IFileStorageService, I
 	/// <inheritdoc />
 	public void Dispose()
 	{
-		sftpClient?.Dispose();
-		sftpClient = null;
+		_sftpClient?.Dispose();
+		_sftpClient = null;
 	}
 
 	private string SubstituteFileName(string sourceFileName)

@@ -36,7 +36,7 @@ public class DbDataSeedPersister : IDataSeedPersister
 	/// </summary>
 	public void AttachDataSeed(IDataSeed dataSeed)
 	{
-		string dataSeedPersisterQueryTag = QueryTagBuilder.CreateTag(this.GetType(), null);
+		string dataSeedPersisterQueryTag = QueryTagBuilder.CreateTag(this.GetType(), memberName: null);
 		string dataSeedTypeName = dataSeed.GetType().FullName;
 		_queryTag = $"{dataSeedPersisterQueryTag} for {dataSeedTypeName}";
 	}

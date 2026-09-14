@@ -72,7 +72,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	{
 		using (MemoryStream memoryStream = new MemoryStream())
 		{
-			using (StreamWriter writer = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true))
+			using (StreamWriter writer = new StreamWriter(memoryStream, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				writer.Write(currentState);
 			}
@@ -89,7 +89,7 @@ public class FileStorageDataSeedRunDecisionStatePersister : IDataSeedRunDecision
 	{
 		using (MemoryStream memoryStream = new MemoryStream())
 		{
-			using (StreamWriter writer = new StreamWriter(memoryStream, Encoding.UTF8, 1024, true))
+			using (StreamWriter writer = new StreamWriter(memoryStream, Encoding.UTF8, 1024, leaveOpen: true))
 			{
 				await writer.WriteAsync(currentState).ConfigureAwait(false);
 			}

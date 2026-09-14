@@ -68,7 +68,7 @@ public class DataEntriesModelSource : IModelSource<DataEntriesModel>
 	private static bool IsValueObsolete(Type type, string value)
 	{
 		var fi = type.GetField(value);
-		var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), false);
+		var attributes = (ObsoleteAttribute[])fi.GetCustomAttributes(typeof(ObsoleteAttribute), inherit: false);
 		return (attributes != null) && (attributes.Length > 0);
 	}
 }

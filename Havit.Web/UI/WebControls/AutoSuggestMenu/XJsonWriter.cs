@@ -9,7 +9,7 @@ internal class XJsonWriter : StringWriter
 {
 	public void WriteNameValue(string name, object value)
 	{
-		WriteNameValue(name, value, true);
+		WriteNameValue(name, value, formatValue: true);
 	}
 
 	public void WriteNameValue(string name, object value, bool formatValue)
@@ -33,7 +33,7 @@ internal class XJsonWriter : StringWriter
 
 	public void WriteList(string name, IList list)
 	{
-		WriteList(name, list, true);
+		WriteList(name, list, formatValues: true);
 	}
 
 	public void WriteList(string name, IList list, bool formatValues)
@@ -54,7 +54,7 @@ internal class XJsonWriter : StringWriter
 		}
 
 		string listText = this.NewLine + "[" + this.NewLine + sb.ToString() + this.NewLine + "]";
-		WriteNameValue(name, listText, false);
+		WriteNameValue(name, listText, formatValue: false);
 	}
 
 	private string GetValueText(object value, bool formatValue)

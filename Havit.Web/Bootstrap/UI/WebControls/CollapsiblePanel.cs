@@ -213,7 +213,7 @@ public class CollapsiblePanel : Control, INamingContainer
 					""{this.ClientID}"",
 					""{collapsedHiddenField.ClientID}"",
 					""{autoPostBackScript}""
-				); ", true);
+				); ", addScriptTags: true);
 	}
 
 	/// <summary>

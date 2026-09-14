@@ -23,7 +23,7 @@ public class LanguageUiCultureIndexConvention : IEntityTypeAddedConvention
 			{
 				entityTypeBuilder
 					.HasIndex(new List<IConventionProperty> { uiCultureProperty }.AsReadOnly(), fromDataAnnotation: false /* Convention */)
-					.IsUnique(true, fromDataAnnotation: false /* Convention */);
+					.IsUnique(unique: true, fromDataAnnotation: false /* Convention */);
 			}
 		}
 	}

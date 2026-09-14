@@ -14,7 +14,7 @@ public class ExtendedPropertiesConvention : IEntityTypeAddedConvention, IPropert
 		// Systémové tabulky - nemá cenu řešit, nebudou mít attribut.
 		// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
 
-		ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityTypeBuilder.Metadata, entityTypeBuilder.Metadata.ClrType, false);
+		ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(entityTypeBuilder.Metadata, entityTypeBuilder.Metadata.ClrType, fromDataAnnotation: false);
 	}
 
 	public void ProcessPropertyAdded(IConventionPropertyBuilder propertyBuilder, IConventionContext<IConventionPropertyBuilder> context)
@@ -35,6 +35,6 @@ public class ExtendedPropertiesConvention : IEntityTypeAddedConvention, IPropert
 		// Systémové tabulky - nemá cenu řešit, jejich vlastnosti nebudou mít attribut.
 		// Podpora pro suppress - nemá význam, stačí nepoužít attribut.
 
-		ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(navigationBuilder.Metadata.DeclaringEntityType, navigationBuilder.Metadata.PropertyInfo, false);
+		ExtendedPropertiesAnnotationsHelper.AddExtendedPropertyAnnotations(navigationBuilder.Metadata.DeclaringEntityType, navigationBuilder.Metadata.PropertyInfo, fromDataAnnotation: false);
 	}
 }

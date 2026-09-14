@@ -40,7 +40,7 @@ public abstract class FakeDataSource<TEntity> : IDataSource<TEntity>
 	/// </summary>
 	/// <param name="data">Data, která budou intancí vracena.</param>
 	protected FakeDataSource(params TEntity[] data)
-		: this(data.AsEnumerable(), null)
+		: this(data.AsEnumerable(), softDeleteManager: null)
 	{
 	}
 

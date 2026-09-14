@@ -37,5 +37,5 @@ public class PropertyTypeAttribute : ExtendedPropertiesAttribute
 		{
 			{ "PropertyType", PropertyType }
 		}
-		.AddIfNotDefault("PropertyTypeConverter", Converter, null);
+		.AddIfNotDefault("PropertyTypeConverter", Converter, businessLayerGeneratorDefaultValue: null);
 }

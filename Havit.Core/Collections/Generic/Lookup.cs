@@ -13,14 +13,14 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public Lookup() : this(null, null)
+	public Lookup() : this(source: null, equalityComparer: null)
 	{
 	}
 
 	/// <summary>
 	/// Constructor.
 	/// </summary>
-	public Lookup(IEqualityComparer<TKey> equalityComparer) : this(null, equalityComparer)
+	public Lookup(IEqualityComparer<TKey> equalityComparer) : this(source: null, equalityComparer)
 	{
 	}
 
@@ -28,7 +28,7 @@ public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
 	/// Constructor.
 	/// </summary>
 	/// <param name="source">The source data with which the Lookup is populated.</param>
-	public Lookup(ILookup<TKey, TElement> source) : this(source, null)
+	public Lookup(ILookup<TKey, TElement> source) : this(source, equalityComparer: null)
 	{
 	}
 

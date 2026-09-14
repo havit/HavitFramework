@@ -329,7 +329,7 @@ public abstract class DbRepository<TEntity> : IRepository<TEntity, int>
 		ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "item");
 		Expression<Func<TEntity, bool>> expression = Expression.Lambda<Func<TEntity, bool>>(
 				Expression.Call(
-				null,
+instance: null,
 				typeof(System.Linq.Enumerable)
 						.GetMethods(BindingFlags.Public | BindingFlags.Static)
 						 .Where(m => m.Name == "Contains")

@@ -13,7 +13,15 @@
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<MeziantouAnalysisMode>None</MeziantouAnalysisMode>
 	</PropertyGroup>
+
+	<ItemGroup Condition="'$(ProjectName.EndsWith(`Tests`))' == 'False' AND '$(ProjectName)' != 'Entity'">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.200">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" Condition="Exists($([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../')))"/>
 

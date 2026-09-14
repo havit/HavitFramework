@@ -225,6 +225,6 @@ public static class ServiceCollectionExtensions
 	/// </summary>
 	private static bool DoesNotHaveFakeAttribute(Type type)
 	{
-		return !type.IsDefined(typeof(FakeAttribute), true);
+		return !type.IsDefined(typeof(FakeAttribute), inherit: true);
 	}
 }

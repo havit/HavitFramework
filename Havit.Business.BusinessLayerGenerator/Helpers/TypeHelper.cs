@@ -60,7 +60,7 @@ public static class TypeHelper
 					break;
 
 				default:
-					throw new ApplicationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedDataType \"{0}\" na systémový typ.", systemType));
+					throw new InvalidOperationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedDataType \"{0}\" na systémový typ.", systemType));
 			}
 		}
 		else if (dataType.SqlDataType == SqlDataType.UserDefinedType)
@@ -72,7 +72,7 @@ public static class TypeHelper
 					break;
 
 				default:
-					throw new ApplicationException(String.Format("Nepodařilo se přeložit UserDefinedType \"{0}\" na systémový typ.", dataType.Name));
+					throw new InvalidOperationException(String.Format("Nepodařilo se přeložit UserDefinedType \"{0}\" na systémový typ.", dataType.Name));
 			}
 		}
 		else if (dataType.SqlDataType == SqlDataType.UserDefinedTableType)
@@ -84,7 +84,7 @@ public static class TypeHelper
 					break;
 
 				default:
-					throw new ApplicationException(String.Format("Nepodařilo se přeložit UserDefinedTableType \"{0}\" na systémový typ.", dataType.Name));
+					throw new InvalidOperationException(String.Format("Nepodařilo se přeložit UserDefinedTableType \"{0}\" na systémový typ.", dataType.Name));
 			}
 		}
 		else
@@ -256,7 +256,7 @@ public static class TypeHelper
 
 		if (result == null)
 		{
-			throw new ApplicationException(String.Format("Nepodařilo se přeložit SqlDataType \"{0}\" na systémový typ.", dataType.SqlDataType));
+			throw new InvalidOperationException(String.Format("Nepodařilo se přeložit SqlDataType \"{0}\" na systémový typ.", dataType.SqlDataType));
 		}
 		return nullable ? result : result.Replace("?", "");
 	}
@@ -275,7 +275,7 @@ public static class TypeHelper
 					return SqlDbType.Structured;
 
 				default:
-					throw new ApplicationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedTableType \"{0}\" na SqlDbType.", dataType.Name));
+					throw new InvalidOperationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedTableType \"{0}\" na SqlDbType.", dataType.Name));
 			}
 		}
 
@@ -307,7 +307,7 @@ public static class TypeHelper
 					return SqlDbType.NVarChar;
 
 				default:
-					throw new ApplicationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedDataType \"{0}\" na SqlDbType.", systemType));
+					throw new InvalidOperationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedDataType \"{0}\" na SqlDbType.", systemType));
 			}
 		}
 
@@ -376,7 +376,7 @@ public static class TypeHelper
 				case "geo": return DbType.String;
 				default:
 					{
-						throw new ApplicationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedDataType \"{0}\" na SqlDbType.", systemType));
+						throw new InvalidOperationException(String.Format("Nepodařilo se přeložit SqlDataType.UserDefinedDataType \"{0}\" na SqlDbType.", systemType));
 					}
 			}
 		}
@@ -472,7 +472,7 @@ public static class TypeHelper
 			Table referencedTable = ColumnHelper.GetReferencedTable(column);
 			if (referencedTable == null)
 			{
-				throw new ApplicationException(String.Format("Sloupec {0}: Obsahuje referenci na tabulku, která nebyla nalezena (Ignored?).", column.Name));
+				throw new InvalidOperationException(String.Format("Sloupec {0}: Obsahuje referenci na tabulku, která nebyla nalezena (Ignored?).", column.Name));
 			}
 			return ClassHelper.GetClassFullName(referencedTable);
 		}

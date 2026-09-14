@@ -106,12 +106,12 @@ public static class Contract
 		{
 			if (typeof(TException) == typeof(ArgumentNullException))
 			{
-				resultException = new ArgumentNullException(null, message);
+				resultException = new ArgumentNullException(paramName: null, message);
 			}
 			else if (typeof(TException) == typeof(ArgumentOutOfRangeException))
 			{
 				// the single-string constructor is (string paramName), the message would end up as ParamName
-				resultException = new ArgumentOutOfRangeException(null, message);
+				resultException = new ArgumentOutOfRangeException(paramName: null, message);
 			}
 			else
 			{

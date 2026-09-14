@@ -74,7 +74,7 @@ public class ValidationSummary : System.Web.UI.WebControls.ValidationSummary
 			errors = errors.Select(item => item.Replace("\\", "\\\\").Replace("'", "\\'").Replace("\"", "\\\"")).ToArray();
 			string message = String.Join("\\r\\n", errors);
 			string script = String.Format("$(function() {{ window.setTimeout(function() {{ alert('{0}'); }}, 1); }});", message);
-			ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "MessageBox", script, true);
+			ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "MessageBox", script, addScriptTags: true);
 		}
 
 	}
@@ -92,7 +92,7 @@ public class ValidationSummary : System.Web.UI.WebControls.ValidationSummary
 			errors = errors.Select(item => item.Replace("\\", "\\\\").Replace("'", "\\'").Replace("\"", "\\\"")).ToArray();
 			string message = String.Join("<br />", errors);
 			string script = String.Format("$(function() {{ Havit_ValidationSummary_ShowToastrError('{0}'); }});", message);
-			ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "Toastr", script, true);
+			ScriptManager.RegisterStartupScript(this.Page, typeof(ValidationSummary), this.ClientID + "Toastr", script, addScriptTags: true);
 		}
 	}
 

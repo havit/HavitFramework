@@ -119,7 +119,7 @@ public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
 		if (Extender.AdapterEnabled)
 		{
 			writer.Indent++;
-			BuildItems(Control.Items, true, writer);
+			BuildItems(Control.Items, isRoot: true, writer);
 			writer.Indent--;
 			writer.WriteLine();
 		}
@@ -211,7 +211,7 @@ public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
 					}
 					else
 					{
-						writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(menu, "b" + item.ValuePath.Replace(menu.PathSeparator.ToString(), "\\"), true));
+						writer.WriteAttribute("href", Page.ClientScript.GetPostBackClientHyperlink(menu, "b" + item.ValuePath.Replace(menu.PathSeparator.ToString(), "\\"), registerForEventValidation: true));
 					}
 
 					writer.WriteAttribute("class", GetItemClass(menu, item));
@@ -263,7 +263,7 @@ public class CssMenuAdapter : System.Web.UI.WebControls.Adapters.MenuAdapter
 
 			if ((item.ChildItems != null) && (item.ChildItems.Count > 0))
 			{
-				BuildItems(item.ChildItems, false, writer);
+				BuildItems(item.ChildItems, isRoot: false, writer);
 			}
 
 			writer.Indent--;

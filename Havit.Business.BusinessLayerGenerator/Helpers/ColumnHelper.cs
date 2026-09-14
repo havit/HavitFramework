@@ -85,7 +85,7 @@ public static class ColumnHelper
 			}
 		}
 
-		throw new ApplicationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
+		throw new InvalidOperationException(String.Format("Tabulka {0}, Sloupec {1}: Referovanou tabulku se nepodařilo nalést.", ownerTable.Name, column.Name));
 	}
 	private static Dictionary<Column, ForeignKey> _getForeignKeys = new Dictionary<Column, ForeignKey>();
 
@@ -461,7 +461,7 @@ public static class ColumnHelper
 		{
 			return CloneMode.Shallow;
 		}
-		CloneMode result = (CloneMode)Enum.Parse(typeof(CloneMode), cloneMode, true);
+		CloneMode result = (CloneMode)Enum.Parse(typeof(CloneMode), cloneMode, ignoreCase: true);
 		return result;
 	}
 

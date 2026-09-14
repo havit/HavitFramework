@@ -62,7 +62,7 @@ public class GoPayClient : IGoPayClient
 				stringScope = "payment-all";
 				break;
 			default:
-				throw new ArgumentOutOfRangeException(nameof(scope), scope, null);
+				throw new ArgumentOutOfRangeException(nameof(scope), scope, message: null);
 		}
 
 		return SendPost(TokenUrl, clientId, clientSecret, new FormUrlEncodedContent(new[]

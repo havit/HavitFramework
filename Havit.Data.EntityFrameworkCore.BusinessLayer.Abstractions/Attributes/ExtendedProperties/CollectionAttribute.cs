@@ -36,8 +36,8 @@ public class CollectionAttribute : ExtendedPropertiesAttribute
 
 	/// <inheritdoc />
 	public override IDictionary<string, string> GetExtendedProperties(MemberInfo memberInfo) => new Dictionary<string, string>()
-		.AddIfNotDefault($"Collection_{memberInfo.Name}_IncludeDeleted", IncludeDeleted, false)
+		.AddIfNotDefault($"Collection_{memberInfo.Name}_IncludeDeleted", IncludeDeleted, businessLayerGeneratorDefaultValue: false)
 		//.AddIfNotDefault($"Collection_{memberInfo.Name}_LoadAll", LoadAll)
 		.AddIfNotDefault($"Collection_{memberInfo.Name}_PropertyAccessModifier", PropertyAccessModifier, AccessModifier.Public)
-		.AddIfNotDefault($"Collection_{memberInfo.Name}_Sorting", Sorting, null);
+		.AddIfNotDefault($"Collection_{memberInfo.Name}_Sorting", Sorting, businessLayerGeneratorDefaultValue: null);
 }

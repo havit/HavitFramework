@@ -70,12 +70,12 @@ internal static class Program
 
 		if (!String.IsNullOrEmpty(commandLineArguments["strategy"]))
 		{
-			GeneratorSettings.Strategy = (GeneratorStrategy)Enum.Parse(typeof(GeneratorStrategy), commandLineArguments["strategy"], true);
+			GeneratorSettings.Strategy = (GeneratorStrategy)Enum.Parse(typeof(GeneratorStrategy), commandLineArguments["strategy"], ignoreCase: true);
 		}
 
 		if (!String.IsNullOrEmpty(commandLineArguments["targetplatform"]))
 		{
-			GeneratorSettings.TargetPlatform = (TargetPlatform)Enum.Parse(typeof(TargetPlatform), commandLineArguments["targetplatform"], true);
+			GeneratorSettings.TargetPlatform = (TargetPlatform)Enum.Parse(typeof(TargetPlatform), commandLineArguments["targetplatform"], ignoreCase: true);
 		}
 
 		if (!String.IsNullOrEmpty(commandLineArguments["systemmemoryspansupported"]))
@@ -138,8 +138,8 @@ internal static class Program
 		// prefetch Table + Column -> 56 sec
 		// prefetch Column -> 29 sec
 		// žádný prefetch -> 36 sec		    
-		sqlServer.SetDefaultInitFields(typeof(Column), true);
-		sqlServer.SetDefaultInitFields(typeof(ForeignKey), true);
+		sqlServer.SetDefaultInitFields(typeof(Column), allFields: true);
+		sqlServer.SetDefaultInitFields(typeof(ForeignKey), allFields: true);
 
 		Database database = sqlServer.Databases[GeneratorSettings.DatabaseName];
 
@@ -150,7 +150,7 @@ internal static class Program
 			return;
 		}
 
-		database.Parent.SetDefaultInitFields(true);
+		database.Parent.SetDefaultInitFields(allFields: true);
 
 		try
 		{
@@ -161,7 +161,7 @@ internal static class Program
 			Generators.Generator.Generate(database, csprojFile);
 
 		}
-		catch (ApplicationException e)
+		catch (InvalidOperationException e)
 		{
 			ConsoleHelper.WriteLineError(e.Message);
 		}

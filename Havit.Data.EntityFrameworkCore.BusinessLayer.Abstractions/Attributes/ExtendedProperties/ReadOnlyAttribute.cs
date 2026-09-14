@@ -16,7 +16,7 @@ public class ReadOnlyAttribute : ExtendedPropertiesAttribute
 	/// <summary>
 	/// Konstruktor.
 	/// </summary>
-	public ReadOnlyAttribute() : this(true)
+	public ReadOnlyAttribute() : this(value: true)
 	{
 		// NOOP
 	}

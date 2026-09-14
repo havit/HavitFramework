@@ -6,7 +6,9 @@ namespace Havit.Data.Patterns.DataEntries;
 /// <summary>
 /// Předek pro implementace IDataEntries pro jednotlivé entity.
 /// </summary>
+#pragma warning disable MA0049 // Type name matches containing namespace for public framework base class
 public abstract class DataEntries<TEntity, TKey>
+#pragma warning restore MA0049
 	where TEntity : class
 {
 	private readonly IDataEntrySymbolService<TEntity, TKey> _dataEntrySymbolService;

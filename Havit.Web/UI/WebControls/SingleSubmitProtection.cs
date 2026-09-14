@@ -81,7 +81,7 @@ public class SingleSubmitProtection : WebControl
 					typeof(SingleSubmitProtection),
 					"SingleSubmit_Startup",
 					ClearProcessingJavaScript,
-					true);
+addScriptTags: true);
 			}
 		}
 	}

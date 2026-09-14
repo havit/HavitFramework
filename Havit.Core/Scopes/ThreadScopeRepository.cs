@@ -42,6 +42,6 @@ public class ThreadScopeRepository<T> : IScopeRepository<T>
 	/// </summary>
 	public void RemoveCurrentScope()
 	{
-		Thread.SetData(this.threadDataStoreSlot, null);
+		Thread.SetData(this.threadDataStoreSlot, data: null);
 	}
 }

@@ -29,7 +29,7 @@ public class ObjectCacheService : ICacheService
 	/// Nebude použita podpora pro cache dependencies.
 	/// </summary>
 	/// <param name="objectCache">Object cache, která bude použita pro cachování.</param>
-	public ObjectCacheService(ObjectCache objectCache) : this(objectCache, false)
+	public ObjectCacheService(ObjectCache objectCache) : this(objectCache, useCacheDependenciesSupport: false)
 	{
 		// NOOP
 	}

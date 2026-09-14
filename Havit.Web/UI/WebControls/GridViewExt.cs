@@ -1424,7 +1424,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		if (!args.Cancel && !String.IsNullOrEmpty(RowClickCommandName))
 		{
 			CommandEventArgs originalArgs = new CommandEventArgs(RowClickCommandName, rowIndex.ToString());
-			GridViewCommandEventArgs e = new GridViewCommandEventArgs(null, this, originalArgs);
+			GridViewCommandEventArgs e = new GridViewCommandEventArgs(row: null, this, originalArgs);
 			OnBubbleEvent(this, e);
 		}
 	}
@@ -1720,13 +1720,13 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 				((this.EditorExtenderEditIndexInternal == null) || (this.EditorExtenderEditIndex == -1)) ? -1 : this.Rows[this.EditorExtenderEditIndex].RowIndex, // 1
 				this.EditorExtenderEditCssClass); // 2
 
-			ScriptManager.RegisterStartupScript(this.Page, typeof(GridViewExt), "SelectExternalEditorEditedRow", script, true);
+			ScriptManager.RegisterStartupScript(this.Page, typeof(GridViewExt), "SelectExternalEditorEditedRow", script, addScriptTags: true);
 		}
 
 		if (this.AllowRowClick)
 		{
 			string script = String.Format("havitGridViewExtensions.initializeRowClick('{0}');", this.ClientID);
-			ScriptManager.RegisterStartupScript(this, typeof(GridViewExt), String.Format("InitializeRowClick-{0}", this.ClientID), script, true);
+			ScriptManager.RegisterStartupScript(this, typeof(GridViewExt), String.Format("InitializeRowClick-{0}", this.ClientID), script, addScriptTags: true);
 		}
 	}
 
@@ -1845,19 +1845,19 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		switch (PagerSettings.Mode)
 		{
 			case PagerButtons.NextPrevious:
-				this.CreateBootstrapNextPrevPagination(paginationControl, pagedDataSource, false);
+				this.CreateBootstrapNextPrevPagination(paginationControl, pagedDataSource, addFirstLastPageButtons: false);
 				break;
 
 			case PagerButtons.Numeric:
-				this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, false);
+				this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, addFirstLastPageButtons: false);
 				break;
 
 			case PagerButtons.NextPreviousFirstLast:
-				this.CreateBootstrapNextPrevPagination(paginationControl, pagedDataSource, true);
+				this.CreateBootstrapNextPrevPagination(paginationControl, pagedDataSource, addFirstLastPageButtons: true);
 				break;
 
 			case PagerButtons.NumericFirstLast:
-				this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, true);
+				this.CreateBootstrapNumericPagination(paginationControl, pagedDataSource, addFirstLastPageButtons: true);
 				break;
 
 			default:
@@ -1952,17 +1952,17 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 
 		if (firstVisiblePageIndexDenormalized != 1)
 		{
-			AddBootstrapPagerButton(container, "...", null, (firstVisiblePageIndexDenormalized - 1).ToString(NumberFormatInfo.InvariantInfo));
+			AddBootstrapPagerButton(container, "...", cssClass: null, (firstVisiblePageIndexDenormalized - 1).ToString(NumberFormatInfo.InvariantInfo));
 		}
 
 		for (int i = firstVisiblePageIndexDenormalized; i <= lastVisiblePageIndexDenormalized; i++)
 		{
-			AddBootstrapPagerButton(container, i.ToString(NumberFormatInfo.CurrentInfo), null, i.ToString(NumberFormatInfo.InvariantInfo), i != currentPageIndexDenormalized, i == currentPageIndexDenormalized);
+			AddBootstrapPagerButton(container, i.ToString(NumberFormatInfo.CurrentInfo), cssClass: null, i.ToString(NumberFormatInfo.InvariantInfo), i != currentPageIndexDenormalized, i == currentPageIndexDenormalized);
 		}
 
 		if (pageCount > lastVisiblePageIndexDenormalized)
 		{
-			AddBootstrapPagerButton(container, "...", null, (lastVisiblePageIndexDenormalized + 1).ToString(NumberFormatInfo.InvariantInfo));
+			AddBootstrapPagerButton(container, "...", cssClass: null, (lastVisiblePageIndexDenormalized + 1).ToString(NumberFormatInfo.InvariantInfo));
 		}
 
 		if (addFirstLastPageButtons)
@@ -2087,7 +2087,7 @@ public class GridViewExt : HighlightingGridView, ICommandFieldStyle, IEditorExte
 		Contract.Requires(dataObject != null);
 
 		System.Collections.Specialized.IOrderedDictionary fieldValues = new System.Collections.Specialized.OrderedDictionary();
-		this.ExtractRowValues(fieldValues, row, false, false);
+		this.ExtractRowValues(fieldValues, row, includeReadOnlyFields: false, includePrimaryKey: false);
 		DataBinderExt.SetValues(dataObject, fieldValues);
 	}
 

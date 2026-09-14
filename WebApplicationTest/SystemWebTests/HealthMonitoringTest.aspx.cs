@@ -19,11 +19,11 @@ public partial class HealthMonitoringTest : System.Web.UI.Page
 
 	private void DoExceptionButton_Click(object sender, EventArgs e)
 	{
-		Contract.Requires(false, "Zkoušíme HealtMonitoring v tradičním synchronním postbacku.");
+		Contract.Requires(condition: false, "Zkoušíme HealtMonitoring v tradičním synchronním postbacku.");
 	}
 
 	private void DoException2Button_Click(object sender, EventArgs e)
 	{
-		Contract.Requires(false, "Zkoušíme HealtMonitoring v asynchronním postbacku.");
+		Contract.Requires(condition: false, "Zkoušíme HealtMonitoring v asynchronním postbacku.");
 	}
 }

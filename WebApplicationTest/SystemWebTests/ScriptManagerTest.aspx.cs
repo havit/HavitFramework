@@ -30,7 +30,7 @@ public partial class ScriptManagerTest : System.Web.UI.Page
 	{
 		base.OnPreRender(e);
 
-		ScriptManager.RegisterClientScriptBlock(this, typeof(ScriptManagerTest), "ClientScriptBlock-A", "//ClientScriptBlock-A", true);
+		ScriptManager.RegisterClientScriptBlock(this, typeof(ScriptManagerTest), "ClientScriptBlock-A", "//ClientScriptBlock-A", addScriptTags: true);
 		ScriptManager.RegisterClientScriptInclude(this, typeof(ScriptManagerTest), "Key", "~/a.js");
 		//ScriptManager.RegisterClientScriptBlock(this, typeof(ScriptManagerTest), "ClientScriptBlock-B", "//ClientScriptBlock-B", true);
 		//ScriptManager.RegisterClientScriptBlock(this, typeof(ScriptManagerTest), "ClientScriptBlock-C", "//ClientScriptBlock-C", true);
@@ -38,7 +38,7 @@ public partial class ScriptManagerTest : System.Web.UI.Page
 		//ScriptManager.RegisterClientScriptBlock(this, typeof(ScriptManagerTest), "ClientScriptBlock-E", "//ClientScriptBlock-E", true);
 		//ScriptManager.RegisterClientScriptBlock(this, typeof(ScriptManagerTest), "ClientScriptBlock-F", "//ClientScriptBlock-F", true);
 
-		ScriptManager.RegisterStartupScript(this, typeof(ScriptManagerTest), "StartupScript-B", "//StartupScript-B", true);
+		ScriptManager.RegisterStartupScript(this, typeof(ScriptManagerTest), "StartupScript-B", "//StartupScript-B", addScriptTags: true);
 
 		//ScriptManager.RegisterClientScriptResource(this, typeof(ScriptManagerTest), "WebApplicationTest.a.js");
 

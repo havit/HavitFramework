@@ -36,6 +36,7 @@ jobs:
           { "ProjectFile": "HavitFramework.Build.slnf" },
         ]
       publish_to_stage_enabled: false
+      publish_artifacts_enabled: true
       # Explicitní nastavení env variables pro Azure WorkloadIdentityCredential (větev DefaultAzureCredential) - testy si přes ni čtou secrets z Azure Key Vaultu.
       run_unit_tests_before_script: |
         $response = Invoke-RestMethod `

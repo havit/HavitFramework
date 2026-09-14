@@ -1,4 +1,6 @@
-﻿namespace Havit.Collections;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Havit.Collections;
 
 /// <summary>
 /// Compares the values of properties of two objects. Property names are provided and compared in the specified order.
@@ -17,6 +19,10 @@
 /// <typeparam name="T">The type of the object whose values are being compared.</typeparam>
 public class GenericPropertyComparer<T> : IComparer<T>
 {
+	// The RequiresUnreferencedCode annotation is placed on the constructors, not on Compare - Compare implements IComparer<T>.Compare,
+	// which is not annotated, so the annotation cannot be put there (IL2046).
+	private const string SortItemLookupIsNotTrimCompatibleMessage = "The sorted properties are resolved by name using DataBinderExt (reflection over the runtime type of the compared objects). Those members might be removed when trimming.";
+
 	private readonly IList<SortItem> sortItems;
 	private readonly Dictionary<object, IComparable>[] getValueCacheList;
 
@@ -24,6 +30,7 @@ public class GenericPropertyComparer<T> : IComparer<T>
 	/// Creates an instance of the comparer for sorting by the specified property.
 	/// </summary>
 	/// <param name="sortItem">Specifies the sort parameter.</param>
+	[RequiresUnreferencedCode(SortItemLookupIsNotTrimCompatibleMessage)]
 	public GenericPropertyComparer(SortItem sortItem) : this(new SortItem[] { sortItem })
 	{
 	}
@@ -32,6 +39,7 @@ public class GenericPropertyComparer<T> : IComparer<T>
 	/// Creates an instance of the comparer for sorting by the collection of properties.
 	/// </summary>
 	/// <param name="sortItems">Specifies the sort parameters.</param>
+	[RequiresUnreferencedCode(SortItemLookupIsNotTrimCompatibleMessage)]
 	public GenericPropertyComparer(IList<SortItem> sortItems)
 	{
 		this.sortItems = sortItems;
@@ -103,6 +111,7 @@ public class GenericPropertyComparer<T> : IComparer<T>
 	/// Returns the value of the index-th property of the object.
 	/// If the value of this property is DBNull.Value, returns null.
 	/// </summary>
+	[UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "An instance can only be created through a constructor annotated with RequiresUnreferencedCode.")]
 	private IComparable GetValue(object obj, int index)
 	{
 		if ((obj == null) || (obj == DBNull.Value))

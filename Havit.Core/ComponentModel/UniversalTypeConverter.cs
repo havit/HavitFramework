@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Havit.ComponentModel;
 
@@ -7,6 +8,7 @@ namespace Havit.ComponentModel;
 /// Inspired by UniversalTypeConverter (http://www.codeproject.com/Articles/248440/Universal-Type-Converter).
 /// Conversions using DefaultTypeConverter and IConvertible are taken.
 /// </summary>
+[RequiresUnreferencedCode("The conversions not covered by IConvertible fall back to a TypeConverter resolved by TypeDescriptor. A custom TypeConverter (or the members it needs) might be removed when trimming and the conversion then fails (TryConvertTo returns false, ConvertTo throws InvalidConversionException).")]
 public static partial class UniversalTypeConverter
 {
 	/// <summary>

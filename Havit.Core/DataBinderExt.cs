@@ -3,6 +3,7 @@ using Havit.Reflection;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Havit;
 
@@ -12,6 +13,7 @@ namespace Havit;
 /// <remarks>
 /// Used, for example, for resolving BoundFieldExt.DataField, DropDownListExt.DataTextField, ...
 /// </remarks>
+[RequiresUnreferencedCode("DataBinderExt resolves the properties by name using reflection (TypeDescriptor) over the runtime type of the data item. Those members might be removed when trimming.")]
 public static class DataBinderExt
 {
 	private static readonly char[] indexExprStartChars = new char[] { '[', '(' };

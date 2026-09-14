@@ -4,6 +4,7 @@
 		<TargetFrameworks>net10.0;net8.0;net48;netstandard2.0</TargetFrameworks>
 		<RootNamespace>Havit</RootNamespace>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IsTrimmable>true</IsTrimmable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,7 +14,7 @@
 	<!-- NuGet -->
 	<Import Project="../NuGet.targets" />
 	<PropertyGroup>
-		<PackageVersion>2.0.39</PackageVersion>
+		<PackageVersion>2.0.40</PackageVersion>
 		<Description>HAVIT .NET Framework Extensions - Basic Class Library</Description>
 	</PropertyGroup>
 	<ItemGroup>

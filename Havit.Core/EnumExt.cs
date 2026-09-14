@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Havit;
@@ -37,7 +38,7 @@ public static class EnumExt
 	///	}<br/>
 	///	</code>
 	/// </example>
-	public static string GetDescription(Type enumType, object value)
+	public static string GetDescription([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] Type enumType, object value)
 	{
 		string name = System.Enum.GetName(enumType, value);
 		if (name == null)
@@ -46,14 +47,21 @@ public static class EnumExt
 			return "";
 		}
 
-		Dictionary<string, string> descriptions = descriptionCache.GetOrAdd(enumType, BuildDescriptionMap);
+		// Deliberately not GetOrAdd(key, valueFactory): passing BuildDescriptionMap as a delegate would drop the
+		// [DynamicallyAccessedMembers] annotation of its parameter (the trimmer cannot flow annotations through a delegate).
+		// Building the map twice for the same type in a race is harmless (the result is identical) - GetOrAdd gives no stronger guarantee either.
+		if (!descriptionCache.TryGetValue(enumType, out Dictionary<string, string> descriptions))
+		{
+			descriptions = BuildDescriptionMap(enumType);
+			descriptionCache.TryAdd(enumType, descriptions);
+		}
 
 		return descriptions.TryGetValue(name, out string description)
 			? description
 			: "";
 	}
 
-	private static Dictionary<string, string> BuildDescriptionMap(Type enumType)
+	private static Dictionary<string, string> BuildDescriptionMap([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] Type enumType)
 	{
 		var result = new Dictionary<string, string>();
 		foreach (FieldInfo field in enumType.GetFields(BindingFlags.Public | BindingFlags.Static))

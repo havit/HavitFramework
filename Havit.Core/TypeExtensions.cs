@@ -1,4 +1,6 @@
-﻿namespace Havit;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Havit;
 
 /// <summary>
 /// Extension methods for Type.
@@ -8,7 +10,7 @@ public static class TypeExtensions
 	/// <summary>
 	/// Returns true if the given type implements the specified interface.
 	/// </summary>
-	public static bool ImplementsInterface(this Type type, Type interfaceType)
+	public static bool ImplementsInterface([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] this Type type, Type interfaceType)
 	{
 		return type.GetInterfaces().Any(typeInterfaceType => typeInterfaceType == interfaceType);
 	}

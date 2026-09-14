@@ -34,10 +34,10 @@ public static class Contract
 	/// <typeparam name="TException">The type of exception that is thrown if the condition is not met.</typeparam>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
-	public static void Requires<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Requires<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-	public static void Requires<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Requires<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		where TException : Exception
 	{
@@ -79,10 +79,10 @@ public static class Contract
 	/// <typeparam name="TException">The type of exception that is thrown if the condition is not met.</typeparam>
 	[DebuggerStepThrough]
 #if NET6_0_OR_GREATER
-	public static void Assert<TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Assert<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #else
 	[JetBrains.Annotations.ContractAnnotation("condition:false => halt")]
-	public static void Assert<TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
+	public static void Assert<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(bool condition, [CallerArgumentExpression("condition")] string userMessage = null)
 #endif
 		where TException : Exception
 	{
@@ -92,8 +92,13 @@ public static class Contract
 		}
 	}
 
+	// [DynamicallyAccessedMembers(PublicConstructors)] keeps the constructors of TException when trimming.
+	// The exception is constructed here through reflection (Activator.CreateInstance below) and nowhere else statically,
+	// so the trimmer would remove its (string) constructor. The resulting MissingMethodException would be swallowed by the catch below
+	// and the caller would silently get a ContractException instead of the expected TException.
+	// The annotation must be repeated on Requires<TException>/Assert<TException> - the requirement has to flow through the whole call chain.
 	[DebuggerStepThrough]
-	private static void ThrowException<TException>(string message)
+	private static void ThrowException<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(string message)
 		where TException : Exception
 	{
 		Exception resultException;

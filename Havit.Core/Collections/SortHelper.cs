@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using Havit.Diagnostics.Contracts;
 
 namespace Havit.Collections;
@@ -6,6 +7,7 @@ namespace Havit.Collections;
 /// <summary>
 /// Helper class for sorting.
 /// </summary>
+[RequiresUnreferencedCode("The sorted properties are resolved by name using DataBinderExt (reflection over the runtime type of the sorted objects). Those members might be removed when trimming.")]
 public static class SortHelper
 {
 	/// <summary>

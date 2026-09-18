@@ -1,4 +1,4 @@
-﻿v2.10.4 (7/2026)
+﻿v2.10.4 (9/2026)
 * DbDataLoader - podpora načítání vlastností pro entity předané typem interface 
   List<ISomeEntity> entities = ...; dataLoader.LoadAll(entities, x => x.Property)
   (ISomeEntity je interface, všechny entities musí být stejného typu)

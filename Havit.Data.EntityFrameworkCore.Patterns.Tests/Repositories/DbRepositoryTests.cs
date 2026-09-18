@@ -71,7 +71,7 @@ public class DbRepositoryTests
 		SeedData(true);
 
 		int[] ids = testDbContext.Set<ItemWithDeleted>().Where(item => item.Deleted != null).Select(item => item.Id).ToArray();
-		Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+		Assert.IsNotEmpty(ids, "Pro test jsou potřeba data smazaná příznakem.");
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
@@ -94,7 +94,7 @@ public class DbRepositoryTests
 		SeedData(true);
 
 		int[] ids = testDbContext.Set<ItemWithDeleted>().Where(item => item.Deleted != null).Select(item => item.Id).ToArray();
-		Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+		Assert.IsNotEmpty(ids, "Pro test jsou potřeba data smazaná příznakem.");
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
@@ -217,7 +217,7 @@ public class DbRepositoryTests
 		SeedData();
 
 		int[] ids = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).ToArray();
-		Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
+		Assert.IsNotEmpty(ids, "Pro test jsou potřeba data.");
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
@@ -240,7 +240,7 @@ public class DbRepositoryTests
 		SeedData();
 
 		int[] ids = testDbContext.Set<ItemWithDeleted>().Select(item => item.Id).ToArray();
-		Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data.");
+		Assert.IsNotEmpty(ids, "Pro test jsou potřeba data.");
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
@@ -266,7 +266,7 @@ public class DbRepositoryTests
 			.Where(item => item.Deleted != null)
 			.Select(item => item.Id)
 			.ToArray();
-		Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+		Assert.IsNotEmpty(ids, "Pro test jsou potřeba data smazaná příznakem.");
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);
@@ -292,7 +292,7 @@ public class DbRepositoryTests
 			.Where(item => item.Deleted != null)
 			.Select(item => item.Id)
 			.ToArray();
-		Assert.AreNotEqual(0, ids.Length, "Pro test jsou potřeba data smazaná příznakem.");
+		Assert.IsNotEmpty(ids, "Pro test jsou potřeba data smazaná příznakem.");
 
 		var dataLoader = new FakeDataLoader();
 		var entityKeyAccessor = CreateEntityKeyAccessor<ItemWithDeleted>(testDbContext);

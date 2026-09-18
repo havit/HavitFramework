@@ -41,8 +41,8 @@ public class ExtendedMigrationsTests
 
 			Assert.HasCount(2, generatorTypes);
 
-			CollectionAssert.Contains(generatorTypes, typeof(FirstMigrationOperationSqlGenerator));
-			CollectionAssert.Contains(generatorTypes, typeof(SecondMigrationOperationSqlGenerator));
+			Assert.Contains(typeof(FirstMigrationOperationSqlGenerator), generatorTypes);
+			Assert.Contains(typeof(SecondMigrationOperationSqlGenerator), generatorTypes);
 		}
 	}
 

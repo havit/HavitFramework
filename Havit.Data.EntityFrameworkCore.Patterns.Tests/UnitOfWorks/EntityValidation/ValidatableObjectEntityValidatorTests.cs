@@ -17,7 +17,7 @@ public class ValidatableObjectEntityValidatorTests
 		var result = validator.Validate(Patterns.UnitOfWorks.ChangeType.Delete, entity);
 
 		// Assert
-		CollectionAssert.AreEquivalent(new[] { "Message" }, result.ToList());
+		Assert.AreSequenceEqual(new[] { "Message" }, result.ToList(), Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder);
 	}
 
 	[TestMethod]
@@ -31,7 +31,7 @@ public class ValidatableObjectEntityValidatorTests
 		var result = validator.Validate(Patterns.UnitOfWorks.ChangeType.Delete, entity);
 
 		// Assert
-		CollectionAssert.AreEquivalent(new[] { "Message [Property]" }, result.ToList());
+		Assert.AreSequenceEqual(new[] { "Message [Property]" }, result.ToList(), Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder);
 	}
 
 	[TestMethod]
@@ -45,7 +45,7 @@ public class ValidatableObjectEntityValidatorTests
 		var result = validator.Validate(Patterns.UnitOfWorks.ChangeType.Delete, entity);
 
 		// Assert
-		CollectionAssert.AreEquivalent(new[] { "Message [Property1, Property2]" }, result.ToList());
+		Assert.AreSequenceEqual(new[] { "Message [Property1, Property2]" }, result.ToList(), Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder);
 	}
 
 	[TestMethod]
@@ -59,7 +59,7 @@ public class ValidatableObjectEntityValidatorTests
 		var result = validator.Validate(Patterns.UnitOfWorks.ChangeType.Delete, entity);
 
 		// Assert
-		CollectionAssert.AreEquivalent(new[] { "Message1", "Message2" }, result.ToList());
+		Assert.AreSequenceEqual(new[] { "Message1", "Message2" }, result.ToList(), Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder);
 	}
 
 	public class Entity : IValidatableObject

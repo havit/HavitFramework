@@ -77,6 +77,6 @@ public class NavigationTargetServiceTests
 		Assert.AreEqual(NavigationType.Reference, navigationTarget.NavigationType);
 
 		// A nic víc!
-		Assert.AreEqual(12, navigationTargetStorage.Value.Count());
+		Assert.HasCount(12, navigationTargetStorage.Value);
 	}
 }

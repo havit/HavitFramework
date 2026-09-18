@@ -15,7 +15,7 @@ public class BusinessObject_Tests
 		{
 			RoleCollection roleCollection1 = Role.GetAll();
 			RoleCollection roleCollection2 = Role.GetAll();
-			Assert.AreNotEqual(roleCollection2, roleCollection1);
+			Assert.AreSequenceEqual(roleCollection2, roleCollection1);
 		}
 	}
 

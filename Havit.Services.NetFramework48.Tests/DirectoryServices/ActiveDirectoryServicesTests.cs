@@ -45,7 +45,9 @@ public class ActiveDirectoryServicesTests
 		}
 		catch (ActiveDirectoryObjectNotFoundException)
 		{
+#pragma warning disable MSTEST0058 // Do not use asserts in catch blocks
 			Assert.Inconclusive("Test can successfully run only on machine in HAVIT on-prem domain.");
+#pragma warning restore MSTEST0058 // Do not use asserts in catch blocks
 		}
 	}
 }

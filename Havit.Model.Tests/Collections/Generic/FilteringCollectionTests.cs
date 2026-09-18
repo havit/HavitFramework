@@ -249,7 +249,7 @@ public class FilteringCollectionTests
 		filteringCollection.CopyTo(target, 0);
 
 		// Assert
-		CollectionAssert.AreEqual(new[] { 2, 4 }, target);
+		Assert.AreSequenceEqual(new[] { 2, 4 }, target);
 	}
 
 	[TestMethod]
@@ -263,7 +263,7 @@ public class FilteringCollectionTests
 		filteringCollection.CopyTo(target, 1);
 
 		// Assert
-		CollectionAssert.AreEqual(new[] { 0, 2, 4 }, target);
+		Assert.AreSequenceEqual(new[] { 0, 2, 4 }, target);
 	}
 
 	[TestMethod]
@@ -307,7 +307,7 @@ public class FilteringCollectionTests
 		}
 
 		// Assert
-		CollectionAssert.AreEqual(new[] { 2, 4 }, result);
+		Assert.AreSequenceEqual(new[] { 2, 4 }, result);
 	}
 
 	[TestMethod]

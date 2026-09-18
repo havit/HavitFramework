@@ -13,5 +13,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Business\Havit.Business.csproj" />
 	</ItemGroup>
-
+	
 </Project>

@@ -64,7 +64,7 @@ public class AresServicesTests
 	}
 
 	// Padal na to program, tak jsem udělal tento test, ale 15.5.2024 někdo doplnil adresu. Tím se stal zbytečným
-	[Ignore]
+	[Ignore("Test je zbytečný, protože 15.5.2024 někdo doplnil adresu.")]
 	[TestMethod]
 	public async Task AresService_GetEkonomickeSubjektyDleIcoAsync_NemaSidlo()
 	{
@@ -116,7 +116,7 @@ public class AresServicesTests
 		var ekonomickeSubjekty = await new AresService().GetEkonomickeSubjektyDleObchodnihoJmenaAsync(ObchodniJmeno, cancellationToken: TestContext.CancellationToken);
 
 		// Assert
-		Assert.IsTrue(ekonomickeSubjekty.Items.Any(x => x.EkonomickySubjektAres.ObchodniJmeno == "HAVIT, s.r.o." && x.EkonomickySubjektAres.Ico == "25612697"));
+		Assert.Contains(x => x.EkonomickySubjektAres.ObchodniJmeno == "HAVIT, s.r.o." && x.EkonomickySubjektAres.Ico == "25612697", ekonomickeSubjekty.Items);
 	}
 
 

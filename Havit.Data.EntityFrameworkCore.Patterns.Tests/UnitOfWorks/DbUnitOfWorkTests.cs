@@ -129,7 +129,7 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Items.Count(), "Changes contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Items, "Changes contains a registered change.");
 	}
 
 	[TestMethod]
@@ -152,7 +152,7 @@ public class DbUnitOfWorkTests
 		Changes allKnownChanges = dbUnitOfWork.GetAllKnownChanges();
 
 		// Assert
-		Assert.AreEqual(0, allKnownChanges.Items.Count(), "Changes contains a registered change.");
+		Assert.IsEmpty(allKnownChanges.Items, "Changes contains a registered change.");
 	}
 
 	[TestMethod]
@@ -553,20 +553,20 @@ public class DbUnitOfWorkTests
 		dbUnitOfWork.RegisterAfterCommitAction(async (CancellationToken _) => await Task.Yield() /* something */);
 
 		// Prerequisities
-		Assert.AreEqual(1, dbUnitOfWork.GetAllKnownChanges().Items.Count());
+		Assert.HasCount(1, dbUnitOfWork.GetAllKnownChanges().Items);
 		Assert.HasCount(1, dbUnitOfWork._afterCommitActions);
 		Assert.HasCount(1, dbUnitOfWork._asyncAfterCommitsActions);
-		Assert.AreEqual(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
+		Assert.HasCount(1, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false));
 
 		// Act
 		dbUnitOfWork.Clear();
 
 		// Assert
-		Assert.AreEqual(0, dbUnitOfWork.GetAllKnownChanges().Items.Count());
+		Assert.IsEmpty(dbUnitOfWork.GetAllKnownChanges().Items);
 		Assert.IsEmpty(dbUnitOfWork._updateRegistrations);
 		Assert.IsNull(dbUnitOfWork._afterCommitActions);
 		Assert.IsNull(dbUnitOfWork._asyncAfterCommitsActions);
-		Assert.AreEqual(0, dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false).Count());
+		Assert.IsEmpty(dbUnitOfWork.DbContext.GetEntries(suppressDetectChanges: false));
 	}
 
 	[TestMethod]

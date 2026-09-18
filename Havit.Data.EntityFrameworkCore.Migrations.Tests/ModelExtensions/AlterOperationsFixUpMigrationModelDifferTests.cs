@@ -79,7 +79,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			var operations = source.Diff(target);
 
 			// Changing table name yields multiple operations (such as recreating PK), we are interested only in AlterTableOperation
-			Assert.AreEqual(1, operations.OfType<AlterTableOperation>().Count());
+			Assert.HasCount(1, operations.OfType<AlterTableOperation>());
 
 			var operation = operations.OfType<AlterTableOperation>().First();
 			Assert.AreEqual("TargetTable", operation.Name);
@@ -114,7 +114,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			Assert.HasCount(1, operations);
 
 			var operation = (AlterTableOperation)operations[0];
-			Assert.AreEqual(1, operation.GetAnnotations().Count());
+			Assert.HasCount(1, operation.GetAnnotations());
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.GetAnnotations().First().Name);
 			Assert.AreEqual("ValueB_amended", operation.GetAnnotations().First().Value);
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldTable.GetAnnotations().First().Name);
@@ -192,7 +192,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			var operations = source.Diff(target);
 
 			// Changing table name yields other operations (such as renaming column), we are interested only in AlterColumnOperation
-			Assert.AreEqual(1, operations.OfType<AlterColumnOperation>().Count());
+			Assert.HasCount(1, operations.OfType<AlterColumnOperation>());
 
 			var operation = operations.OfType<AlterColumnOperation>().First();
 			Assert.AreEqual("TargetColumn", operation.Name);
@@ -234,7 +234,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			Assert.HasCount(1, operations);
 
 			var operation = (AlterColumnOperation)operations[0];
-			Assert.AreEqual(1, operation.GetAnnotations().Count());
+			Assert.HasCount(1, operation.GetAnnotations());
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.GetAnnotations().First().Name);
 			Assert.AreEqual("ValueB_amended", operation.GetAnnotations().First().Value);
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldColumn.GetAnnotations().First().Name);
@@ -302,7 +302,7 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			Assert.HasCount(1, operations);
 
 			var operation = (AlterDatabaseOperation)operations[0];
-			Assert.AreEqual(1, operation.GetAnnotations().Count());
+			Assert.HasCount(1, operation.GetAnnotations());
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.GetAnnotations().First().Name);
 			Assert.AreEqual("ValueB_amended", operation.GetAnnotations().First().Value);
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldDatabase.GetAnnotations().First().Name);
@@ -324,8 +324,8 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			Assert.HasCount(1, operations);
 
 			var operation = (AlterDatabaseOperation)operations[0];
-			Assert.AreEqual(0, operation.GetAnnotations().Count());
-			Assert.AreEqual(1, operation.OldDatabase.GetAnnotations().Count());
+			Assert.IsEmpty(operation.GetAnnotations());
+			Assert.HasCount(1, operation.OldDatabase.GetAnnotations());
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation2", operation.OldDatabase.GetAnnotations().First().Name);
 			Assert.AreEqual("ValueB", operation.OldDatabase.GetAnnotations().First().Value);
 		}
@@ -347,8 +347,8 @@ public class AlterOperationsFixUpMigrationModelDifferTests
 			Assert.HasCount(1, operations);
 
 			var operation = (AlterDatabaseOperation)operations[0];
-			Assert.AreEqual(1, operation.GetAnnotations().Count());
-			Assert.AreEqual(0, operation.OldDatabase.GetAnnotations().Count());
+			Assert.HasCount(1, operation.GetAnnotations());
+			Assert.IsEmpty(operation.OldDatabase.GetAnnotations());
 			Assert.AreEqual($"{TestAnnotationPrefix}Annotation3", operation.GetAnnotations().First().Name);
 			Assert.AreEqual("Something", operation.GetAnnotations().First().Value);
 		}

@@ -52,13 +52,13 @@ public class CollectionExtTests
 
 		// assert
 		// Item 1 updated
-		CollectionAssert.Contains(targetList, targetItem1);
+		Assert.Contains(targetItem1, targetList);
 		var item1 = targetList.Single(i => i.Id == 1);
 		Assert.AreEqual("FAKE_SOURCE_1", item1.StringProperty);
 		Assert.AreSame(targetItem1, result.ItemsUpdating.Single());
 
 		// Item 3 removed
-		CollectionAssert.DoesNotContain(targetList, targetItem3);
+		Assert.DoesNotContain(targetItem3, targetList);
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
@@ -148,13 +148,13 @@ public class CollectionExtTests
 
 		// assert
 		// Item 1 updated
-		CollectionAssert.Contains(targetList, targetItem1);
+		Assert.Contains(targetItem1, targetList);
 		var item1 = targetList.Single(i => i.StringProperty == null);
 		Assert.AreEqual("0", item1.OtherProperty);
 		Assert.AreSame(item1, result.ItemsUpdating.Single());
 
 		// Item 3 removed
-		CollectionAssert.DoesNotContain(targetList, targetItem3);
+		Assert.DoesNotContain(targetItem3, targetList);
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
@@ -213,7 +213,7 @@ public class CollectionExtTests
 
 		// assert
 		// Item 1 updated
-		CollectionAssert.Contains(targetList, targetItem1);
+		Assert.Contains(targetItem1, targetList);
 		var item1 = targetList.Single(i => i.Id == 1);
 		Assert.AreEqual("FAKE_SOURCE_12", item1.StringProperty);
 		Assert.IsEmpty(itemsAdded);
@@ -275,8 +275,8 @@ public class CollectionExtTests
 
 		// assert
 		// Item 1 updated
-		CollectionAssert.Contains(targetList, targetItem1);
-		CollectionAssert.Contains(targetList, targetItem2);
+		Assert.Contains(targetItem1, targetList);
+		Assert.Contains(targetItem2, targetList);
 		Assert.HasCount(2, targetList);
 		Assert.AreEqual("FAKE_SOURCE_1", targetList[0].StringProperty);
 		Assert.AreEqual("FAKE_SOURCE_1", targetList[1].StringProperty);
@@ -284,8 +284,8 @@ public class CollectionExtTests
 		Assert.IsEmpty(result.ItemsAdding);
 		Assert.HasCount(2, itemsUpdated);
 		Assert.HasCount(2, result.ItemsUpdating);
-		CollectionAssert.Contains(result.ItemsUpdating, targetItem1);
-		CollectionAssert.Contains(result.ItemsUpdating, targetItem2);
+		Assert.Contains(targetItem1, result.ItemsUpdating);
+		Assert.Contains(targetItem2, result.ItemsUpdating);
 		Assert.IsEmpty(itemsRemoved);
 		Assert.IsEmpty(result.ItemsRemoving);
 	}
@@ -366,7 +366,7 @@ public class CollectionExtTests
 		// assert
 		Assert.HasCount(2, targetList);
 		Assert.AreEqual("ITEM_TO_UPDATE", targetList.Single(i => i.Id == 1).StringProperty);
-		Assert.AreEqual(1, targetList.Count(i => i.Id == 2));
+		Assert.ContainsSingle(i => i.Id == 2, targetList);
 		Assert.IsEmpty(result.ItemsUpdating);
 	}
 
@@ -409,9 +409,9 @@ public class CollectionExtTests
 
 		// assert
 		Assert.HasCount(3, targetList);
-		Assert.AreEqual(1, targetList.Count(i => i.Id == 1));
-		Assert.AreEqual(1, targetList.Count(i => i.Id == 2));
-		Assert.AreEqual(1, targetList.Count(i => i.Id == 3));
+		Assert.ContainsSingle(i => i.Id == 1, targetList);
+		Assert.ContainsSingle(i => i.Id == 2, targetList);
+		Assert.ContainsSingle(i => i.Id == 3, targetList);
 		Assert.IsEmpty(result.ItemsRemoving);
 	}
 
@@ -457,13 +457,13 @@ public class CollectionExtTests
 
 		// assert
 		// Item 1 updated
-		CollectionAssert.Contains(targetList, targetItem1);
+		Assert.Contains(targetItem1, targetList);
 		var item1 = targetList.Single(i => i.Id == 1);
 		Assert.AreEqual("FAKE_SOURCE_1", item1.StringProperty);
 		Assert.AreSame(targetItem1, result.ItemsUpdating.Single());
 
 		// Item 3 removed
-		CollectionAssert.DoesNotContain(targetList, targetItem3);
+		Assert.DoesNotContain(targetItem3, targetList);
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added
@@ -596,13 +596,13 @@ public class CollectionExtTests
 
 		// assert
 		// Item 1 updated
-		CollectionAssert.Contains(targetList, targetItem1);
+		Assert.Contains(targetItem1, targetList);
 		var item1 = targetList.Single(i => i.Id == 1);
 		Assert.AreEqual("1", item1.OtherProperty);
 		Assert.AreSame(targetItem1, result.ItemsUpdating.Single());
 
 		// Item 3 removed
-		CollectionAssert.DoesNotContain(targetList, targetItem3);
+		Assert.DoesNotContain(targetItem3, targetList);
 		Assert.AreSame(targetItem3, result.ItemsRemoving.Single());
 
 		// Item 2 added

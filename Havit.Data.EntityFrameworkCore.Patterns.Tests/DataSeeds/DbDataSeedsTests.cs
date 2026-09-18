@@ -283,10 +283,10 @@ public class DbDataSeedsTests
 				var items = dbContext.Set<ItemWithDeleted>().AsQueryable(queryTag: this.GetType().Name).OrderBy(s => s.Id).ToArray();
 
 				Assert.HasCount(4, items);
-				Assert.IsTrue(items.Single(item => item.Symbol == "A").Deleted != null);
-				Assert.IsTrue(items.Single(item => item.Symbol == "B").Deleted != null);
-				Assert.IsTrue(items.Single(item => item.Symbol == "C").Deleted == null);
-				Assert.IsTrue(items.Single(item => item.Symbol == "D").Deleted != null);
+				Assert.IsNotNull(items.Single(item => item.Symbol == "A").Deleted);
+				Assert.IsNotNull(items.Single(item => item.Symbol == "B").Deleted);
+				Assert.IsNull(items.Single(item => item.Symbol == "C").Deleted);
+				Assert.IsNotNull(items.Single(item => item.Symbol == "D").Deleted);
 			}
 		}
 

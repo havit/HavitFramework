@@ -17,7 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(ProjectName.EndsWith(`Tests`))' == 'False' AND '$(ProjectName)' != 'Entity'">
-		<PackageReference Include="Meziantou.Analyzer" Version="3.0.200">
+		<PackageReference Include="Meziantou.Analyzer" Version="3.0.259">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>

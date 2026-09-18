@@ -18,6 +18,6 @@ public class TypeInterfacesExtractorTests
 		Assert.Contains(typeof(IFirstService), interfacesToRegister1, nameof(IFirstService));
 		Assert.DoesNotContain(typeof(ISecondService), interfacesToRegister1, nameof(ISecondService));
 		Assert.Contains(typeof(IGenericService<,>), interfacesToRegister2, nameof(IGenericService<object, object>));
-		Assert.IsFalse(interfacesToRegister3.Any(), nameof(MyStringService<object>));
+		Assert.IsEmpty(interfacesToRegister3, nameof(MyStringService<object>));
 	}
 }

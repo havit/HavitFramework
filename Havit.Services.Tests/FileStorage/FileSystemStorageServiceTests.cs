@@ -239,7 +239,7 @@ public class FileSystemStorageServiceTests
 		List<Havit.Services.FileStorage.FileInfo> fileInfos = fileSystemStorageService.EnumerateFiles().ToList();
 
 		// Assert 
-		Assert.IsFalse(fileInfos.Any(fileInfo => fileInfo.Name.Contains(storagePath)));
+		Assert.DoesNotContain(fileInfo => fileInfo.Name.Contains(storagePath), fileInfos);
 
 		// Clean-up
 		fileSystemStorageService.Delete(testFilename);
@@ -262,7 +262,7 @@ public class FileSystemStorageServiceTests
 		List<Havit.Services.FileStorage.FileInfo> fileInfos = await fileSystemStorageService.EnumerateFilesAsync(cancellationToken: TestContext.CancellationToken).ToListAsync();
 
 		// Assert 
-		Assert.IsFalse(fileInfos.Any(fileInfo => fileInfo.Name.Contains(storagePath)));
+		Assert.DoesNotContain(fileInfo => fileInfo.Name.Contains(storagePath), fileInfos);
 
 		// Clean-up
 		await fileSystemStorageService.DeleteAsync(testFilename, TestContext.CancellationToken);

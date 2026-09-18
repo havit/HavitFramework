@@ -35,7 +35,7 @@ public class CompositeMigrationsAnnotationProviderExtensionTests
 		{
 			_ = dbContext.Model;
 
-			Assert.AreEqual(1, dbContext.CompositeMigrationsAnnotationProviderExtension.Providers.Count(type => type == typeof(FakeMigrationsAnnotationProvider)));
+			Assert.ContainsSingle(type => type == typeof(FakeMigrationsAnnotationProvider), dbContext.CompositeMigrationsAnnotationProviderExtension.Providers);
 		}
 	}
 

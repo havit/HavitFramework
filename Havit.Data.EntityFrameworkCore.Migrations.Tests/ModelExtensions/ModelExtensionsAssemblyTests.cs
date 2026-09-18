@@ -59,7 +59,7 @@ public class ModelExtensionsAssemblyTests
 		TypeInfo testModelExtenderType = typeof(TestModelExtender).GetTypeInfo();
 
 		// Act + Assert
-		CollectionAssert.Contains(modelExtensionsAssembly.ModelExtenders.ToArray(), testModelExtenderType);
+		Assert.Contains(testModelExtenderType, modelExtensionsAssembly.ModelExtenders.ToArray());
 	}
 
 	[TestMethod]

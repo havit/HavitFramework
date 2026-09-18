@@ -15,8 +15,8 @@ public class ModelValidatorTests
 		ModelValidator modelValidator = new ModelValidator();
 
 		// Act + Assert
-		Assert.IsFalse(modelValidator.CheckWhenEnabled(false, () => throw new InvalidOperationException()).Any()); // jednak se nevolá action a jednak nic nevrátí
-		Assert.IsTrue(modelValidator.CheckWhenEnabled(true, () => new List<string> { "ok" }).Contains("ok")); // jednak se volá action a je jeho hodnota ve výsledku
+		Assert.IsEmpty(modelValidator.CheckWhenEnabled(false, () => throw new InvalidOperationException())); // jednak se nevolá action a jednak nic nevrátí
+		Assert.Contains("ok", modelValidator.CheckWhenEnabled(true, () => new List<string> { "ok" })); // jednak se volá action a je jeho hodnota ve výsledku
 	}
 
 	[TestMethod]

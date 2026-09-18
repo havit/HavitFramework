@@ -12,7 +12,7 @@ public class QueryHelpersTests
 		var result = GetData().Where(new List<int> { }.ContainsEffectiveInteger<TestClass, int>(p => p.Id)).ToList();
 
 		// Assert
-		Assert.IsFalse(result.Any());
+		Assert.IsEmpty(result);
 	}
 
 	[TestMethod]
@@ -23,7 +23,7 @@ public class QueryHelpersTests
 
 		// Assert
 		Assert.HasCount(1, result, "Count");
-		Assert.IsTrue(result.Any(item => item.Id == 2), "2");
+		Assert.Contains(item => item.Id == 2, result, "2");
 	}
 
 	[TestMethod]
@@ -34,9 +34,9 @@ public class QueryHelpersTests
 
 		// Assert
 		Assert.HasCount(3, result, "Count");
-		Assert.IsTrue(result.Any(item => item.Id == 2), "2");
-		Assert.IsTrue(result.Any(item => item.Id == 3), "3");
-		Assert.IsTrue(result.Any(item => item.Id == 4), "4");
+		Assert.Contains(item => item.Id == 2, result, "2");
+		Assert.Contains(item => item.Id == 3, result, "3");
+		Assert.Contains(item => item.Id == 4, result, "4");
 	}
 
 	[TestMethod]
@@ -47,10 +47,10 @@ public class QueryHelpersTests
 
 		// Assert
 		Assert.HasCount(4, result, "Count");
-		Assert.IsTrue(result.Any(item => item.Id == 1), "1");
-		Assert.IsTrue(result.Any(item => item.Id == 2), "2");
-		Assert.IsTrue(result.Any(item => item.Id == 3), "3");
-		Assert.IsTrue(result.Any(item => item.Id == 5), "5");
+		Assert.Contains(item => item.Id == 1, result, "1");
+		Assert.Contains(item => item.Id == 2, result, "2");
+		Assert.Contains(item => item.Id == 3, result, "3");
+		Assert.Contains(item => item.Id == 5, result, "5");
 	}
 
 	[TestMethod]

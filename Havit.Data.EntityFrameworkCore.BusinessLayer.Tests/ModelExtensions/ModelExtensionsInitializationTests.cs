@@ -17,7 +17,7 @@ public class ModelExtensionsInitializationTests
 		{
 			var modelExtensions = annotationProvider.GetModelExtensions(dbContext.Model.GetAnnotations().ToList());
 
-			Assert.AreNotEqual(0, modelExtensions.Count);
+			Assert.IsNotEmpty(modelExtensions);
 		}
 	}
 

@@ -25,7 +25,7 @@ public class BusinessObject_Load
 	/// Scénář 2 toto neříká, teoreticky může thread 2 objekt ještě opravit. Snažíme se však eliminovat i tyto výpadky.
 	/// </summary>
 	[TestMethod]
-	[Ignore] // runtime > 10 sekund
+	[Ignore("Běží déle než 10 sekund, nechceme zdržovat build.")] // runtime > 10 sekund
 	public void BusinessObject_Load_DataRecord_CheckParallel()
 	{
 		// Problém se dařilo zreprodukovat během cca 2-3 iterací.

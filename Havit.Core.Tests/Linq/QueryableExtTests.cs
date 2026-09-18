@@ -66,7 +66,7 @@ public class QueryableExtTests
 		List<int> result = numbers.OrderBy(null, (Func<string, Expression<Func<int, object>>>)(sortExpression => throw new InvalidOperationException(sortExpression))).ToList();
 
 		// Assert (order is not changed)
-		CollectionAssert.AreEqual(numbers.ToList(), result);
+		Assert.AreSequenceEqual(numbers.ToList(), result);
 	}
 
 	[TestMethod]
@@ -111,6 +111,6 @@ public class QueryableExtTests
 		List<int> result = numbers.OrderByMultiple(null, (Func<string, List<Expression<Func<int, object>>>>)(sortExpression => throw new InvalidOperationException(sortExpression))).ToList();
 
 		// Assert (order is not changed)
-		CollectionAssert.AreEqual(numbers.ToList(), result);
+		Assert.AreSequenceEqual(numbers.ToList(), result);
 	}
 }

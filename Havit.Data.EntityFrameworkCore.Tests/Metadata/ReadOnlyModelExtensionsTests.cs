@@ -20,7 +20,7 @@ public class ReadOnlyModelExtensionsTests
 		IReadOnlyEntityType[] applicationEntityTypes = modelValidatingDbContext.Model.GetApplicationEntityTypes().ToArray();
 
 		// Assert
-		CollectionAssert.Contains(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass)));
+		Assert.Contains(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass)), applicationEntityTypes);
 	}
 
 	[TestMethod]
@@ -33,7 +33,7 @@ public class ReadOnlyModelExtensionsTests
 		IReadOnlyEntityType[] applicationEntityTypes = modelValidatingDbContext.Model.GetApplicationEntityTypes().ToArray();
 
 		// Assert
-		CollectionAssert.DoesNotContain(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(DataSeedVersion)));
+		Assert.DoesNotContain(modelValidatingDbContext.Model.FindEntityType(typeof(DataSeedVersion)), applicationEntityTypes);
 	}
 
 	[TestMethod]
@@ -46,7 +46,7 @@ public class ReadOnlyModelExtensionsTests
 		IReadOnlyEntityType[] applicationEntityTypes = modelValidatingDbContext.Model.GetApplicationEntityTypes().ToArray();
 
 		// Assert
-		CollectionAssert.DoesNotContain(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(OwnedType)));
+		Assert.DoesNotContain(modelValidatingDbContext.Model.FindEntityType(typeof(OwnedType)), applicationEntityTypes);
 	}
 
 	[TestMethod]
@@ -59,7 +59,7 @@ public class ReadOnlyModelExtensionsTests
 		IReadOnlyEntityType[] applicationEntityTypes = modelValidatingDbContext.Model.GetApplicationEntityTypes().ToArray();
 
 		// Assert
-		CollectionAssert.DoesNotContain(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(KeylessClass)));
+		Assert.DoesNotContain(modelValidatingDbContext.Model.FindEntityType(typeof(KeylessClass)), applicationEntityTypes);
 	}
 
 	[TestMethod]
@@ -72,7 +72,7 @@ public class ReadOnlyModelExtensionsTests
 		IReadOnlyEntityType[] applicationEntityTypes = modelValidatingDbContext.Model.GetApplicationEntityTypes(includeManyToManyEntities: true).ToArray();
 
 		// Assert
-		CollectionAssert.Contains(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership)));
+		Assert.Contains(modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership)), applicationEntityTypes);
 	}
 
 	[TestMethod]
@@ -86,7 +86,7 @@ public class ReadOnlyModelExtensionsTests
 
 		// Assert
 		// Běžná aplikační entita zůstává, M:N vztahová entita je vyloučena.
-		CollectionAssert.Contains(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass)));
-		CollectionAssert.DoesNotContain(applicationEntityTypes, modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership)));
+		Assert.Contains(modelValidatingDbContext.Model.FindEntityType(typeof(OneCorrectKeyClass)), applicationEntityTypes);
+		Assert.DoesNotContain(modelValidatingDbContext.Model.FindEntityType(typeof(UserRoleMembership)), applicationEntityTypes);
 	}
 }

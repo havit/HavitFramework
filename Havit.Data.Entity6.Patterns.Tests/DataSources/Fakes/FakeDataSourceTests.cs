@@ -32,7 +32,7 @@ public class FakeDataSourceTests
 		List<int> resultData = dataSource.Data.ToList();
 
 		// Assert
-		CollectionAssert.AreEqual(sourceData, resultData);
+		Assert.AreSequenceEqual(sourceData, resultData);
 	}
 
 	[TestMethod]
@@ -46,7 +46,7 @@ public class FakeDataSourceTests
 		List<int> resultData = await dataSource.Data.ToListAsync();
 
 		// Assert
-		CollectionAssert.AreEqual(sourceData, resultData);
+		Assert.AreSequenceEqual(sourceData, resultData);
 	}
 
 	[TestMethod]
@@ -60,7 +60,7 @@ public class FakeDataSourceTests
 		List<int> resultData = await dataSource.Data.Skip(5).Where(i => i > 3).Skip(1).Take(3).ToListAsync();
 
 		// Assert
-		CollectionAssert.AreEqual(new List<int> { 7, 8, 9 }, resultData);
+		Assert.AreSequenceEqual(new List<int> { 7, 8, 9 }, resultData);
 	}
 
 	[TestMethod]

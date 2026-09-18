@@ -79,7 +79,7 @@ public class DataSeedRunnerTests
 		runner.SeedData<ProfileWithPrerequisite>();
 
 		// Assert
-		CollectionAssert.AreEqual(new[] { "prerequisite", "dependent" }, seedOrder, "Prerekvizitní profil musí být naseedován před závislým profilem (a každý právě jednou).");
+		Assert.AreSequenceEqual(new[] { "prerequisite", "dependent" }, seedOrder, "Prerekvizitní profil musí být naseedován před závislým profilem (a každý právě jednou).");
 	}
 
 	[TestMethod]
@@ -100,7 +100,7 @@ public class DataSeedRunnerTests
 		await runner.SeedDataAsync<ProfileWithPrerequisite>(cancellationToken: TestContext.CancellationToken);
 
 		// Assert
-		CollectionAssert.AreEqual(new[] { "prerequisite", "dependent" }, seedOrder, "Prerekvizitní profil musí být naseedován před závislým profilem (a každý právě jednou).");
+		Assert.AreSequenceEqual(new[] { "prerequisite", "dependent" }, seedOrder, "Prerekvizitní profil musí být naseedován před závislým profilem (a každý právě jednou).");
 	}
 
 	[TestMethod]

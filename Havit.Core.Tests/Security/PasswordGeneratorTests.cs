@@ -40,7 +40,7 @@ public class PasswordGeneratorTests
 
 		// Assert
 		Assert.AreEqual(setSize, actual.Length);
-		Assert.AreEqual(setSize, actual.Distinct().Count(), "Heslo neobsahuje všechny znaky sady.");
+		Assert.HasCount(setSize, actual.Distinct(), "Heslo neobsahuje všechny znaky sady.");
 		Assert.Contains('z', actual, "Poslední znak sady ('z') nebyl vygenerován.");
 		Assert.Contains('a', actual);
 	}

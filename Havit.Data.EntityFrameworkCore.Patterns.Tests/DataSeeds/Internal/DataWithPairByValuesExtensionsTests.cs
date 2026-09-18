@@ -34,7 +34,9 @@ public class DataWithPairByValuesExtensionsTests
 		}
 		catch (InvalidOperationException exception)
 		{
+#pragma warning disable MSTEST0058 // Do not use asserts in catch blocks
 			Assert.AreEqual("Duplicates: (LanguageId: 123, Code: CodeX), (LanguageId: 234, Code: null).", exception.Message);
+#pragma warning restore MSTEST0058 // Do not use asserts in catch blocks
 		}
 	}
 

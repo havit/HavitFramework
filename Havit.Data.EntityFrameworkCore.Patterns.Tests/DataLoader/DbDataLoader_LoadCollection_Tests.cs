@@ -25,7 +25,7 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 
 		Master master = dbContext.Master.First();
 
-		Assert.IsFalse(master.Children.Any(), "Pro ověření DbDataLoaderu se předpokládá, že master.Children je prázdná.");
+		Assert.IsEmpty(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že master.Children je prázdná.");
 
 		IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage = new DbEntityKeyAccessorStorageBuilder(dbContext).Build();
 		IEntityKeyAccessor entityKeyAccessor = new DbEntityKeyAccessor(dbEntityKeyAccessorStorage);
@@ -98,7 +98,7 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 
 		Master master = dbContext.Master.First();
 
-		Assert.IsFalse(master.Children.Any(), "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children je prázdná.");
+		Assert.IsEmpty(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že hodnota master.Children je prázdná.");
 
 		IDbEntityKeyAccessorStorage dbEntityKeyAccessorStorage = new DbEntityKeyAccessorStorageBuilder(dbContext).Build();
 		IEntityKeyAccessor entityKeyAccessor = new DbEntityKeyAccessor(dbEntityKeyAccessorStorage);
@@ -300,6 +300,6 @@ public class DbDataLoader_LoadCollection_Tests : DbDataLoaderTestsBase
 		FluentDataLoader<FilteringCollection<Child>, Child> fluentDataLoader = (FluentDataLoader<FilteringCollection<Child>, Child>)dataLoader.Load(master, m => m.Children); ;
 
 		// Assert
-		Assert.AreEqual(0, fluentDataLoader.Data.Count(), "Jsou vybráni smazané Child k načítání závislostí.");
+		Assert.IsEmpty(fluentDataLoader.Data, "Jsou vybráni smazané Child k načítání závislostí.");
 	}
 }

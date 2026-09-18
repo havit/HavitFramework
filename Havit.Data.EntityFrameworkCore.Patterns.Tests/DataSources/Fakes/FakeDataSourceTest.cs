@@ -33,7 +33,7 @@ public class FakeDataSourceTest
 		List<Employee> resultData = dataSource.Data.ToList();
 
 		// Assert
-		CollectionAssert.AreEqual(sourceData, resultData);
+		Assert.AreSequenceEqual(sourceData, resultData);
 	}
 
 	[TestMethod]
@@ -47,7 +47,7 @@ public class FakeDataSourceTest
 		List<Employee> resultData = await dataSource.Data.ToListAsync(TestContext.CancellationToken);
 
 		// Assert
-		CollectionAssert.AreEqual(sourceData, resultData);
+		Assert.AreSequenceEqual(sourceData, resultData);
 	}
 
 	[TestMethod]

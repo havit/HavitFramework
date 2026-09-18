@@ -21,7 +21,7 @@ public class SortHelperTests
 		List<object> result = SortHelper.PropertySort(data, "Value").Cast<object>().ToList();
 
 		// Assert
-		CollectionAssert.AreEqual(new[] { 1, 2, 3 }, result.Cast<Item>().Select(i => i.Value).ToArray());
+		Assert.AreSequenceEqual(new[] { 1, 2, 3 }, result.Cast<Item>().Select(i => i.Value).ToArray());
 	}
 
 	private class Item

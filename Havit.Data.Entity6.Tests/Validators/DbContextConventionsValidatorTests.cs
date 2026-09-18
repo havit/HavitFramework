@@ -26,7 +26,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.GetRegisteredEntities(typeof(MoreInvalidKeysClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("only one is expected")));
+		Assert.Contains(item => item.Contains("only one is expected"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -40,7 +40,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyType(modelValidatingDbContext.GetRegisteredEntities(typeof(StringIdClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("type int (System.Int32) is expected")));
+		Assert.Contains(item => item.Contains("type int (System.Int32) is expected"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -54,7 +54,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckPrimaryKeyName(modelValidatingDbContext.GetRegisteredEntities(typeof(InvalidNameOfPrimaryKey))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("but 'Id' is expected")));
+		Assert.Contains(item => item.Contains("but 'Id' is expected"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -70,7 +70,7 @@ public class DbContextConventionsValidatorTests
 		errorsOneCorrectKeyClass.AddRange(modelValidator.CheckPrimaryKeyIsNotComposite(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))));
 
 		// Assert			
-		Assert.IsFalse(errorsOneCorrectKeyClass.Any());
+		Assert.IsEmpty(errorsOneCorrectKeyClass);
 	}
 
 	[TestMethod]
@@ -84,7 +84,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(CapitalIDClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("which ends with")));
+		Assert.Contains(item => item.Contains("which ends with"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -98,7 +98,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckIdPascalCaseNamingConvention(modelValidatingDbContext.GetRegisteredEntities(typeof(OneCorrectKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsEmpty(errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -112,7 +112,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.GetRegisteredEntities(typeof(NoMaxLengthAttributeClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("MaxLengthAttribute on property is expected")));
+		Assert.Contains(item => item.Contains("MaxLengthAttribute on property is expected"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -126,7 +126,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckStringsHaveMaxLengths(modelValidatingDbContext.GetRegisteredEntities(typeof(MaxLengthAttributeWithPositiveValueClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsEmpty(errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -140,7 +140,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedClassClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
+		Assert.Contains(item => item.Contains("unsupported nested type"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -154,7 +154,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedEnumOtherClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("unsupported nested type")));
+		Assert.Contains(item => item.Contains("unsupported nested type"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -168,7 +168,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckSupportedNestedTypes(modelValidatingDbContext.GetRegisteredEntities(typeof(WithNestedEnumEntryClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsEmpty(errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -182,7 +182,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckForeignKeyForNavigationProperties(modelValidatingDbContext.GetRegisteredEntities(typeof(NavigationPropertyWithoutForeignKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsMoreInvalidKeysClass.Any(item => item.Contains("no foreign key")));
+		Assert.Contains(item => item.Contains("no foreign key"), errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -196,7 +196,7 @@ public class DbContextConventionsValidatorTests
 		string[] errorsMoreInvalidKeysClass = modelValidator.CheckForeignKeyForNavigationProperties(modelValidatingDbContext.GetRegisteredEntities(typeof(NavigationPropertyWithForeignKeyClass))).ToArray();
 
 		// Assert			
-		Assert.IsFalse(errorsMoreInvalidKeysClass.Any());
+		Assert.IsEmpty(errorsMoreInvalidKeysClass);
 	}
 
 	[TestMethod]
@@ -213,10 +213,10 @@ public class DbContextConventionsValidatorTests
 		string[] errorsEntryWithPrimaryKeyAndWithSymbol = modelValidator.CheckSymbolVsPrimaryKeyForEntries(modelValidatingDbContext.GetRegisteredEntities(typeof(EntryWithPrimaryKeyAndWithSymbol))).ToArray();
 
 		// Assert			
-		Assert.IsTrue(errorsEntryWithGeneratedPrimaryKeyAndNoSymbol.Any()); // obsahuje chybu (není dle čeho párovat)
-		Assert.IsFalse(errorsEntryWithGeneratedPrimaryKeyAndWithSymbol.Any()); // neobsahuje chybu
-		Assert.IsFalse(errorsEntryWithPrimaryKeyAndNoSymbol.Any()); // neobsahuje chybu
-		Assert.IsTrue(errorsEntryWithPrimaryKeyAndWithSymbol.Any()); // obsahuje chybu (duplicitní možnost párování)
+		Assert.IsNotEmpty(errorsEntryWithGeneratedPrimaryKeyAndNoSymbol); // obsahuje chybu (není dle čeho párovat)
+		Assert.IsEmpty(errorsEntryWithGeneratedPrimaryKeyAndWithSymbol); // neobsahuje chybu
+		Assert.IsEmpty(errorsEntryWithPrimaryKeyAndNoSymbol); // neobsahuje chybu
+		Assert.IsNotEmpty(errorsEntryWithPrimaryKeyAndWithSymbol); // obsahuje chybu (duplicitní možnost párování)
 
 	}
 }

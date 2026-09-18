@@ -518,11 +518,11 @@ public static class FileStorageServiceTestHelpers
 		Assert.IsTrue(FileStorageService_EnumerateFiles_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\test123.txt", testFilename), @"subfolder1\sub*\test*");
 
 		// složka samotná není nalezena
-		Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1").Any(), @"Folder subfolder1");
-		Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1\").Any(), @"Folder subfolder1\");
-		Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1\subfolder2").Any(), @"Folder subfolder1\subfolder2");
-		Assert.IsFalse(fileStorageService.EnumerateFiles("subfolder1/subfolder2").Any(), "Folder subfolder1/subfolder2");
-		Assert.IsFalse(fileStorageService.EnumerateFiles(@"subfolder1\subfolder2\").Any(), @"Folder subfolder1\subfolder2\");
+		Assert.IsEmpty(fileStorageService.EnumerateFiles(@"subfolder1"), @"Folder subfolder1");
+		Assert.IsEmpty(fileStorageService.EnumerateFiles(@"subfolder1\"), @"Folder subfolder1\");
+		Assert.IsEmpty(fileStorageService.EnumerateFiles(@"subfolder1\subfolder2"), @"Folder subfolder1\subfolder2");
+		Assert.IsEmpty(fileStorageService.EnumerateFiles("subfolder1/subfolder2"), "Folder subfolder1/subfolder2");
+		Assert.IsEmpty(fileStorageService.EnumerateFiles(@"subfolder1\subfolder2\"), @"Folder subfolder1\subfolder2\");
 
 		// Clean-up
 		fileStorageService.Delete(testFilename);
@@ -565,11 +565,11 @@ public static class FileStorageServiceTestHelpers
 		Assert.IsTrue(await FileStorageService_EnumerateFilesAsync_SupportsSearchPattern_ContainsFile(fileStorageService, @"subfolder1\sub*\test123.txt", testFilename), @"subfolder1\sub*\test*");
 
 		// složka samotná není nalezena
-		Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1").ToListAsync()).Any(), @"Folder subfolder1");
-		Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\").ToListAsync()).Any(), @"Folder subfolder1\");
-		Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2").ToListAsync()).Any(), @"Folder subfolder1\subfolder2");
-		Assert.IsFalse((await fileStorageService.EnumerateFilesAsync("subfolder1/subfolder2").ToListAsync()).Any(), "Folder subfolder1/subfolder2");
-		Assert.IsFalse((await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2\").ToListAsync()).Any(), @"Folder subfolder1\subfolder2\");
+		Assert.IsEmpty(await fileStorageService.EnumerateFilesAsync(@"subfolder1").ToListAsync(), @"Folder subfolder1");
+		Assert.IsEmpty(await fileStorageService.EnumerateFilesAsync(@"subfolder1\").ToListAsync(), @"Folder subfolder1\");
+		Assert.IsEmpty(await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2").ToListAsync(), @"Folder subfolder1\subfolder2");
+		Assert.IsEmpty(await fileStorageService.EnumerateFilesAsync("subfolder1/subfolder2").ToListAsync(), "Folder subfolder1/subfolder2");
+		Assert.IsEmpty(await fileStorageService.EnumerateFilesAsync(@"subfolder1\subfolder2\").ToListAsync(), @"Folder subfolder1\subfolder2\");
 
 		// Clean-up
 		await fileStorageService.DeleteAsync(testFilename);
@@ -672,7 +672,7 @@ public static class FileStorageServiceTestHelpers
 
 		// Assert
 		Assert.IsNotNull(files);
-		Assert.IsFalse(files.Any());
+		Assert.IsEmpty(files);
 	}
 
 	public static async Task FileStorageService_EnumerateFilesAsync_ReturnsEmptyOnNonExistingFolder(IFileStorageService fileStorageService)
@@ -683,7 +683,7 @@ public static class FileStorageServiceTestHelpers
 		List<FileInfo> files = await fileStorageService.EnumerateFilesAsync("NONEXISTING_FOLDER\\*").ToListAsync();
 
 		// Assert
-		Assert.IsFalse(files.Any());
+		Assert.IsEmpty(files);
 	}
 
 	public static void FileStorageService_OpenRead_StopReadingFarBeforeEndDoesNotThrowCryptographicException(FileStorageServiceBase fileStorageService)
@@ -868,7 +868,7 @@ public static class FileStorageServiceTestHelpers
 			var readBytes = stream.Read(readBuffer, 0, readBuffer.Length);
 
 			Assert.AreEqual(writeBuffer.Length, readBytes);
-			CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			Assert.AreSequenceEqual(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */, Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder); // assert
 		}
 
 		// Clean-up
@@ -896,7 +896,7 @@ public static class FileStorageServiceTestHelpers
 			var readBytes = await stream.ReadAsync(readBuffer, 0, readBuffer.Length);
 
 			Assert.AreEqual(writeBuffer.Length, readBytes);
-			CollectionAssert.AreEquivalent(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */); // assert
+			Assert.AreSequenceEqual(writeBuffer, readBuffer.Take(readBytes).ToArray() /* readBuffer je záměrně větší než write buffer, ale porovnat chceme jen počet přečtených bytes */, Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder); // assert
 		}
 
 		// Clean-up

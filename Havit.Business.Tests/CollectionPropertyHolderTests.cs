@@ -21,9 +21,9 @@ public class CollectionPropertyHolderTests
 
 			// Assert
 			Assert.HasCount(3, collectionPropertyHolder.Value);
-			Assert.IsTrue(collectionPropertyHolder.Value.Any(item => item.ID == 3));
-			Assert.IsTrue(collectionPropertyHolder.Value.Any(item => item.ID == 4));
-			Assert.IsTrue(collectionPropertyHolder.Value.Any(item => item.ID == 5));
+			Assert.Contains(item => item.ID == 3, collectionPropertyHolder.Value);
+			Assert.Contains(item => item.ID == 4, collectionPropertyHolder.Value);
+			Assert.Contains(item => item.ID == 5, collectionPropertyHolder.Value);
 		}
 	}
 }

@@ -146,7 +146,7 @@ public class EntityCacheManagerTests
 		Assert.IsTrue(success);
 		Assert.IsNotNull(roleResult);
 		Assert.AreNotSame(role, roleResult);
-		Assert.AreEqual(roleResult.Name, roleResult.Name);
+		Assert.AreEqual("Reader", roleResult.Name);
 		Assert.AreEqual(dbContext1.Entry(role).CurrentValues.GetValue<string>(nameof(Role.Name)), dbContext2.Entry(roleResult).CurrentValues.GetValue<string>(nameof(Role.Name)));
 		Assert.AreEqual(dbContext1.Entry(role).OriginalValues.GetValue<string>(nameof(Role.Name)), dbContext2.Entry(roleResult).OriginalValues.GetValue<string>(nameof(Role.Name)));
 		Assert.AreEqual(Microsoft.EntityFrameworkCore.EntityState.Unchanged, dbContext2.Entry(roleResult).State);
@@ -208,9 +208,9 @@ public class EntityCacheManagerTests
 		// Assert
 		Assert.IsTrue(success, "Načtění kolekce z cache nebylo úspěšné.");
 		Assert.HasCount(master.Children.Count, masterResult.Children);
-		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child1.Id));
-		Assert.IsTrue(masterResult.Children.Any(child => child.Id == child2.Id));
-		Assert.AreEqual(4, master.Children.Union(masterResult.Children).Distinct().Count()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
+		Assert.Contains(child => child.Id == child1.Id, masterResult.Children);
+		Assert.Contains(child => child.Id == child2.Id, masterResult.Children);
+		Assert.HasCount(4, master.Children.Union(masterResult.Children).Distinct()); // nejsou sdílené žádné instance (tj. master.Children[0] != master.Children[1] != masterResult.Children[0] != masterResult.Children[1]
 		AssertDbContextDoesNotContainChanges(dbContext2);
 	}
 

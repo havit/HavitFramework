@@ -223,7 +223,7 @@ public class DbUnitOfWorkTests
 		Changes changes = dbUnitOfWork.GetRegisteredChanges();
 
 		// Assert
-		Assert.IsTrue(changes.Inserts.Contains(language));
+		Assert.Contains(language, changes.Inserts);
 	}
 
 	[TestMethod]
@@ -244,7 +244,7 @@ public class DbUnitOfWorkTests
 		Changes changes = dbUnitOfWork.GetRegisteredChanges();
 
 		// Assert
-		Assert.IsTrue(changes.Updates.Contains(language));
+		Assert.Contains(language, changes.Updates);
 	}
 
 	[TestMethod]
@@ -279,10 +279,10 @@ public class DbUnitOfWorkTests
 			Changes changes = dbUnitOfWork.GetRegisteredChanges();
 
 			// Assert
-			Assert.IsFalse(changes.Updates.Contains(language));
-			Assert.IsTrue(changes.Deletes.Contains(language));
-			Assert.IsTrue(changes.Updates.Contains(itemWithDeleted));
-			Assert.IsFalse(changes.Deletes.Contains(itemWithDeleted));
+			Assert.DoesNotContain(language, changes.Updates);
+			Assert.Contains(language, changes.Deletes);
+			Assert.Contains(itemWithDeleted, changes.Updates);
+			Assert.DoesNotContain(itemWithDeleted, changes.Deletes);
 		}
 	}
 

@@ -85,7 +85,7 @@ public class StoredProceduresExtendedPropertiesEndToEndTests
 
 			var commands = source.Migrate(target);
 
-			Assert.AreNotEqual(0, commands.Count);
+			Assert.IsNotEmpty(commands);
 
 			var addExtendedPropertyCommands = commands.Where(c => c.CommandText.StartsWith("EXEC sys.sp_addextendedproperty @name=N'MS_Description'"));
 			var command = addExtendedPropertyCommands.FirstOrDefault(c => c.CommandText.EndsWith(@$"@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'PROCEDURE', @level1name=N'{nameof(InvoiceStoredProcedures.TotalAmount)}';
@@ -131,7 +131,7 @@ public class StoredProceduresExtendedPropertiesEndToEndTests
 
 			var commands = source.Migrate(target);
 
-			Assert.AreNotEqual(0, commands.Count);
+			Assert.IsNotEmpty(commands);
 
 			var dropExtendedPropertyCommand = commands.First(c => c.CommandText.Contains("EXEC sys.sp_dropextendedproperty @name=N'MS_Description'"));
 
@@ -177,7 +177,7 @@ END
 
 			var commands = source.Migrate(target).ToList();
 
-			Assert.AreNotEqual(0, commands.Count);
+			Assert.IsNotEmpty(commands);
 
 			// currently checking only whether CREATE PROCEDURE command is before EXEC sys.sp_addextendedproperty commands
 			// (should make it less prone it breakage, when more extensions (that modify generated migration commands) are added to DbContext

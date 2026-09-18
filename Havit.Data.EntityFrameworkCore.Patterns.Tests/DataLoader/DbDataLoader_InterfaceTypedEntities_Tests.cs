@@ -124,7 +124,7 @@ public class DbDataLoader_InterfaceTypedEntities_Tests : DbDataLoaderTestsBase
 
 		IMasterWithChildren master = dbContext.Master.First();
 
-		Assert.IsFalse(master.Children.Any(), "Pro ověření DbDataLoaderu se předpokládá, že master.Children je prázdná.");
+		Assert.IsEmpty(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že master.Children je prázdná.");
 
 		IDataLoader dataLoader = CreateDataLoader(dbContext);
 
@@ -146,7 +146,7 @@ public class DbDataLoader_InterfaceTypedEntities_Tests : DbDataLoaderTestsBase
 
 		IMasterWithChildren master = dbContext.Master.First();
 
-		Assert.IsFalse(master.Children.Any(), "Pro ověření DbDataLoaderu se předpokládá, že master.Children je prázdná.");
+		Assert.IsEmpty(master.Children, "Pro ověření DbDataLoaderu se předpokládá, že master.Children je prázdná.");
 
 		IDataLoader dataLoader = CreateDataLoader(dbContext);
 
@@ -196,7 +196,7 @@ public class DbDataLoader_InterfaceTypedEntities_Tests : DbDataLoaderTestsBase
 
 		// Assert
 		Assert.IsNotNull(child.Parent, "DbDataLoader nenačetl hodnotu pro child.Parent.");
-		Assert.IsTrue(child.Parent.Children.Any(), "DbDataLoader nenačetl objekty do child.Parent.Children.");
+		Assert.IsNotEmpty(child.Parent.Children, "DbDataLoader nenačetl objekty do child.Parent.Children.");
 	}
 
 	[TestMethod]

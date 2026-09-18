@@ -49,5 +49,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Havit.Core\Havit.Core.csproj" />
 	</ItemGroup>
-	
+
 </Project>

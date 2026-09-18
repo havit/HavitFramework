@@ -10,7 +10,7 @@ public class LookupTests
 		IEnumerable<object> enumerable = lookup["MissingKey"];
 
 		Assert.IsNotNull(enumerable);
-		Assert.AreEqual(0, enumerable.Count());
+		Assert.IsEmpty(enumerable);
 	}
 
 	[TestMethod]
@@ -18,6 +18,6 @@ public class LookupTests
 	{
 		var lookup = new Havit.Collections.Generic.Lookup<int, int>(new int[] { 1, 2, 3 }.ToLookup(i => 0));
 
-		Assert.AreEqual(1, lookup.Count());
+		Assert.HasCount(1, lookup);
 	}
 }

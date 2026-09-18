@@ -53,8 +53,8 @@ public class ServiceAttributeTests
 		Type[] serviceTypes2 = new ServiceAttribute { ServiceTypes = new[] { typeof(IFirstService), typeof(ISecondService) } }.GetServiceTypes();
 
 		// Assert
-		CollectionAssert.AreEquivalent(new[] { typeof(IFirstService) }, serviceTypes1);
-		CollectionAssert.AreEquivalent(new[] { typeof(IFirstService), typeof(ISecondService) }, serviceTypes2);
+		Assert.AreSequenceEqual(new[] { typeof(IFirstService) }, serviceTypes1, Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder);
+		Assert.AreSequenceEqual(new[] { typeof(IFirstService), typeof(ISecondService) }, serviceTypes2, Microsoft.VisualStudio.TestTools.UnitTesting.SequenceOrder.InAnyOrder);
 	}
 
 	[TestMethod]

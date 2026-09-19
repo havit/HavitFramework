@@ -1,3 +1,6 @@
+v2.0.41 (9/2026)
+Added Havit.DateOnlyRange with independently nullable start and end dates on net8.0 and net10.0. Supports empty and open-ended ranges without validating or normalizing endpoints. Not available on net48 or netstandard2.0; DateTimeRange remains unchanged.
+
 v2.0.39 (7/2026)
 • RegexPatterns - opravena regrese z v2.0.37: patterny (EmailStrict, Identifier, Time24h, IPAddress, Integer) jsou opět ukotvené pomocí $ místo \z. Kotva \z není podporována JavaScriptem, takže patterny nebyly použitelné pro klientskou validaci (RegularExpressionAttribute, RegularExpressionValidator, HTML atribut pattern).
 

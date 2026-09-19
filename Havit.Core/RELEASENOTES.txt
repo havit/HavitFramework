@@ -1,0 +1,2 @@
+2.0.37
+Added Havit.DateOnlyRange with independently nullable start and end dates on net8.0 and net10.0. Supports empty and open-ended ranges without validating or normalizing endpoints. Not available on net48 or netstandard2.0; DateTimeRange remains unchanged.

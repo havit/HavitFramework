@@ -18,6 +18,7 @@
 			"Havit.AspNetCore.Mvc\\Havit.AspNetCore.Mvc.csproj",
 			"Havit.AspNetCore.Tests\\Havit.AspNetCore.Tests.csproj",
 			"Havit.AspNetCore\\Havit.AspNetCore.csproj",
+			"Havit.Business.Benchmarks\\Havit.Business.Benchmarks.csproj",
 			"Havit.Business.BusinessLayerGenerator.NuGetPackage\\Havit.Business.BusinessLayerGenerator.NuGetPackage.csproj",
 			"Havit.Business.BusinessLayerGenerator\\Havit.Business.BusinessLayerGenerator.csproj",
 			"Havit.Business.Tests\\Havit.Business.Tests.csproj",

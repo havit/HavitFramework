@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Buffers;
+using System.Buffers.Text;
+using System.Text;
 
 namespace Havit.Business;
 
@@ -127,13 +129,24 @@ public class CollectionPropertyHolder<CollectionType, BusinessObjectType> : Prop
 
 					if (itemIDsWithDelemiter.Length > 25)
 					{
-						Span<byte> itemIDsSpan = Encoding.UTF8.GetBytes(itemIDsWithDelemiter);
-						while (itemIDsSpan.Length > 0)
+						// Buffer si půjčíme z ArrayPool, abychom pro každou inicializaci kolekce nealokovali nové pole (u velkých kolekcí i na LOH).
+						// Řetězec obsahuje jen ASCII znaky (číslice, '-' a oddělovač '|'), v UTF-8 tedy počet bajtů odpovídá počtu znaků.
+						byte[] itemIDsBuffer = ArrayPool<byte>.Shared.Rent(itemIDsWithDelemiter.Length);
+						try
 						{
-							System.Buffers.Text.Utf8Parser.TryParse(itemIDsSpan, out int id, out int bytesConsumed);
-							_value.Add(getObjectFunc(id));
+							int itemIDsBytesCount = Encoding.UTF8.GetBytes(itemIDsWithDelemiter, 0, itemIDsWithDelemiter.Length, itemIDsBuffer, 0);
+							Span<byte> itemIDsSpan = itemIDsBuffer.AsSpan(0, itemIDsBytesCount);
+							while (itemIDsSpan.Length > 0)
+							{
+								Utf8Parser.TryParse(itemIDsSpan, out int id, out int bytesConsumed);
+								_value.Add(getObjectFunc(id));
 
-							itemIDsSpan = itemIDsSpan.Slice(bytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+								itemIDsSpan = itemIDsSpan.Slice(bytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+							}
+						}
+						finally
+						{
+							ArrayPool<byte>.Shared.Return(itemIDsBuffer);
 						}
 					}
 					else

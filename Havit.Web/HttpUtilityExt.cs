@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Buffers;
+using System.Text;
 using System.Web;
 using System.Globalization;
 using System.Resources;
@@ -48,9 +49,33 @@ public static partial class HttpUtilityExt
 		{
 			e = Encoding.UTF8;
 		}
-		byte[] buffer1 = e.GetBytes(str);
-		buffer1 = HttpUtilityExt.UrlEncodeBytesToBytesNonAscii(buffer1);
-		return Encoding.ASCII.GetString(buffer1);
+
+		// Mezivýsledky (bajty textu a zakódované bajty) jsou jen dočasné, půjčíme si pro ně buffery z ArrayPool.
+		byte[] bytesBuffer = ArrayPool<byte>.Shared.Rent(e.GetMaxByteCount(str.Length));
+		try
+		{
+			int bytesCount = e.GetBytes(str, 0, str.Length, bytesBuffer, 0);
+			int nonAsciiBytesCount = GetNonAsciiBytesCount(bytesBuffer, bytesCount);
+			if (nonAsciiBytesCount == 0)
+			{
+				return Encoding.ASCII.GetString(bytesBuffer, 0, bytesCount);
+			}
+
+			byte[] encodedBytesBuffer = ArrayPool<byte>.Shared.Rent(bytesCount + (nonAsciiBytesCount * 2));
+			try
+			{
+				int encodedBytesCount = UrlEncodeBytesToBytesNonAscii(bytesBuffer, bytesCount, encodedBytesBuffer);
+				return Encoding.ASCII.GetString(encodedBytesBuffer, 0, encodedBytesCount);
+			}
+			finally
+			{
+				ArrayPool<byte>.Shared.Return(encodedBytesBuffer);
+			}
+		}
+		finally
+		{
+			ArrayPool<byte>.Shared.Return(bytesBuffer);
+		}
 	}
 
 	/// <summary>
@@ -65,35 +90,55 @@ public static partial class HttpUtilityExt
 	public static byte[] UrlEncodeBytesToBytesNonAscii(byte[] bytes)
 	{
 		int count = bytes.Length;
-		int num1 = 0;
-		for (int num2 = 0; num2 < count; num2++)
-		{
-			if ((bytes[num2] & 0x80) != 0)
-			{
-				num1++;
-			}
-		}
-		if (num1 == 0)
+		int nonAsciiBytesCount = GetNonAsciiBytesCount(bytes, count);
+		if (nonAsciiBytesCount == 0)
 		{
 			return bytes;
 		}
-		byte[] buffer1 = new byte[count + (num1 * 2)];
-		int num3 = 0;
-		for (int num4 = 0; num4 < count; num4++)
+		byte[] result = new byte[count + (nonAsciiBytesCount * 2)];
+		UrlEncodeBytesToBytesNonAscii(bytes, count, result);
+		return result;
+	}
+
+	/// <summary>
+	/// Vrátí počet non-ASCII bajtů v prvních count bajtech pole.
+	/// </summary>
+	private static int GetNonAsciiBytesCount(byte[] bytes, int count)
+	{
+		int nonAsciiBytesCount = 0;
+		for (int i = 0; i < count; i++)
 		{
-			byte num5 = bytes[num4];
-			if ((bytes[num4] & 0x80) == 0)
+			if ((bytes[i] & 0x80) != 0)
 			{
-				buffer1[num3++] = num5;
+				nonAsciiBytesCount++;
+			}
+		}
+		return nonAsciiBytesCount;
+	}
+
+	/// <summary>
+	/// Zapíše do pole destination prvních count bajtů z pole bytes, non-ASCII bajty zakóduje (%XX).
+	/// Pole destination musí mít alespoň count + 2 * (počet non-ASCII bajtů) prvků.
+	/// </summary>
+	/// <returns>Počet zapsaných bajtů.</returns>
+	private static int UrlEncodeBytesToBytesNonAscii(byte[] bytes, int count, byte[] destination)
+	{
+		int destinationIndex = 0;
+		for (int i = 0; i < count; i++)
+		{
+			byte b = bytes[i];
+			if ((b & 0x80) == 0)
+			{
+				destination[destinationIndex++] = b;
 			}
 			else
 			{
-				buffer1[num3++] = 0x25;
-				buffer1[num3++] = (byte)StringExt.IntToHex((num5 >> 4) & 15);
-				buffer1[num3++] = (byte)StringExt.IntToHex(num5 & 15);
+				destination[destinationIndex++] = 0x25;
+				destination[destinationIndex++] = (byte)StringExt.IntToHex((b >> 4) & 15);
+				destination[destinationIndex++] = (byte)StringExt.IntToHex(b & 15);
 			}
 		}
-		return buffer1;
+		return destinationIndex;
 	}
 
 	/// <summary>

@@ -62,6 +62,54 @@ public static partial class StringExt
 	/// <returns>text without diacritics</returns>
 	public static string RemoveDiacritics(this string text)
 	{
+#if NET9_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(text);
+
+		// ASCII text contains no diacritics (no NonSpacingMark characters) - return the same instance, no allocation.
+		if (Ascii.IsValid(text))
+		{
+			return text;
+		}
+
+		// Decompose (FormD) into a stack/pooled buffer and drop NonSpacingMark characters in place
+		// - no intermediate decomposed string and no StringBuilder.
+		ReadOnlySpan<char> source = text;
+		int decomposedLength = source.GetNormalizedLength(NormalizationForm.FormD);
+
+		char[] rentedBuffer = null;
+		Span<char> buffer = (decomposedLength <= RemoveDiacriticsStackallocThreshold)
+			? stackalloc char[RemoveDiacriticsStackallocThreshold]
+			: (rentedBuffer = System.Buffers.ArrayPool<char>.Shared.Rent(decomposedLength));
+
+		try
+		{
+			if (!source.TryNormalize(buffer, out int decomposedCharsWritten, NormalizationForm.FormD))
+			{
+				throw new InvalidOperationException("The buffer for the decomposed text is too small.");
+			}
+
+			int length = 0;
+			for (int i = 0; i < decomposedCharsWritten; i++)
+			{
+				char c = buffer[i];
+				if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+				{
+					buffer[length++] = c;
+				}
+			}
+
+			// Recompose back to FormC - characters which were decomposed but are not NonSpacingMark (e.g. Korean Hangul) would otherwise stay decomposed.
+			// Normalize returns the same instance when the text is already in FormC (e.g. it is ASCII now), so typically no additional allocation happens.
+			return new string(buffer.Slice(0, length)).Normalize(NormalizationForm.FormC);
+		}
+		finally
+		{
+			if (rentedBuffer != null)
+			{
+				System.Buffers.ArrayPool<char>.Shared.Return(rentedBuffer);
+			}
+		}
+#else
 		text = text.Normalize(NormalizationForm.FormD);
 
 		StringBuilder sb = new StringBuilder(text.Length);
@@ -76,7 +124,13 @@ public static partial class StringExt
 
 		// Recompose back to FormC - characters which were decomposed but are not NonSpacingMark (e.g. Korean Hangul) would otherwise stay decomposed.
 		return sb.ToString().Normalize(NormalizationForm.FormC);
+#endif
 	}
+
+#if NET9_0_OR_GREATER
+	// Maximum length (in chars) of the decomposed text processed in a stack-allocated buffer (512 B); longer texts use ArrayPool.
+	private const int RemoveDiacriticsStackallocThreshold = 256;
+#endif
 
 	/// <summary>
 	/// Removes diacritics from the text, i.e. converts it to text without diacritics.

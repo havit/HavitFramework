@@ -1,8 +1,4 @@
-﻿using System.Buffers;
-using System.Buffers.Text;
-using System.Text;
-
-namespace Havit.Business;
+﻿namespace Havit.Business;
 
 /// <summary>
 /// Třída pro objekt, který nese kolekci property BusinessObjectu.
@@ -127,35 +123,30 @@ public class CollectionPropertyHolder<CollectionType, BusinessObjectType> : Prop
 				{
 					_value = new CollectionType();
 
-					if (itemIDsWithDelemiter.Length > 25)
+					// Identifikátory parsujeme přímo ze znaků řetězce - jediný průchod, bez alokací, pro všechny délky vstupu.
+					// Dle Havit.Business.Benchmarks je to rychlejší než Split + FastIntParse i než Encoding.UTF8.GetBytes + Utf8Parser.
+					// Předpokládá se korektní formát (celá čísla v invariant formátu, za každou (i za poslední) položkou je oddělovač '|').
+					unchecked
 					{
-						// Buffer si půjčíme z ArrayPool, abychom pro každou inicializaci kolekce nealokovali nové pole (u velkých kolekcí i na LOH).
-						// Řetězec obsahuje jen ASCII znaky (číslice, '-' a oddělovač '|'), v UTF-8 tedy počet bajtů odpovídá počtu znaků.
-						byte[] itemIDsBuffer = ArrayPool<byte>.Shared.Rent(itemIDsWithDelemiter.Length);
-						try
+						int id = 0;
+						bool negative = false;
+						for (int i = 0; i < itemIDsWithDelemiter.Length; i++)
 						{
-							int itemIDsBytesCount = Encoding.UTF8.GetBytes(itemIDsWithDelemiter, 0, itemIDsWithDelemiter.Length, itemIDsBuffer, 0);
-							Span<byte> itemIDsSpan = itemIDsBuffer.AsSpan(0, itemIDsBytesCount);
-							while (itemIDsSpan.Length > 0)
+							char c = itemIDsWithDelemiter[i];
+							if (c == '|')
 							{
-								Utf8Parser.TryParse(itemIDsSpan, out int id, out int bytesConsumed);
-								_value.Add(getObjectFunc(id));
-
-								itemIDsSpan = itemIDsSpan.Slice(bytesConsumed + 1); // za každou (i za poslední) položkou je oddělovač
+								_value.Add(getObjectFunc(negative ? -id : id));
+								id = 0;
+								negative = false;
 							}
-						}
-						finally
-						{
-							ArrayPool<byte>.Shared.Return(itemIDsBuffer);
-						}
-					}
-					else
-					{
-						string[] itemIDs = itemIDsWithDelemiter.Split('|');
-						int itemIDsLength = itemIDs.Length - 1; // za každou (i za poslední) položkou je oddělovač
-						for (int i = 0; i < itemIDsLength; i++)
-						{
-							_value.Add(getObjectFunc(BusinessObjectBase.FastIntParse(itemIDs[i])));
+							else if (c == '-')
+							{
+								negative = true;
+							}
+							else
+							{
+								id = (10 * id) + (c - '0');
+							}
 						}
 					}
 				}

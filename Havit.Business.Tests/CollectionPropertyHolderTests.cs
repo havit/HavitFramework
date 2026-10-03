@@ -37,11 +37,11 @@ public class CollectionPropertyHolderTests
 			CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization> collectionPropertyHolder = new CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization>(role, RoleLocalization.GetObject);
 
 			// Act
-			collectionPropertyHolder.Initialize("1|22|333|"); // kratší než 25 znaků
+			collectionPropertyHolder.Initialize("1|22|333|");
 			int[] actual = collectionPropertyHolder.Value.Select(item => item.ID).ToArray();
 
 			// Assert
-			CollectionAssert.AreEqual(new int[] { 1, 22, 333 }, actual);
+			Assert.AreSequenceEqual(new int[] { 1, 22, 333 }, actual);
 		}
 	}
 
@@ -53,7 +53,7 @@ public class CollectionPropertyHolderTests
 			// Arrange
 			Role role = Role.CreateDisconnectedObject();
 			int[] expected = Enumerable.Range(1, 1000).Select(i => i * 997).ToArray();
-			string itemIDsWithDelimiter = String.Concat(expected.Select(id => id + "|")); // delší než 25 znaků
+			string itemIDsWithDelimiter = String.Concat(expected.Select(id => id + "|"));
 			CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization> collectionPropertyHolder = new CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization>(role, RoleLocalization.GetObject);
 
 			// Act
@@ -61,30 +61,25 @@ public class CollectionPropertyHolderTests
 			int[] actual = collectionPropertyHolder.Value.Select(item => item.ID).ToArray();
 
 			// Assert
-			CollectionAssert.AreEqual(expected, actual);
+			Assert.AreSequenceEqual(expected, actual);
 		}
 	}
 
 	[TestMethod]
-	public void CollectionPropertyHolder_Value_ParsesLongItemIDsAfterLongerInput()
+	public void CollectionPropertyHolder_Value_ParsesNegativeItemIDs()
 	{
-		// buffer pro parsování je půjčován z ArrayPool, ověřujeme, že zbytek dat z předchozího (delšího) vstupu nemá vliv na výsledek
-
 		using (new IdentityMapScope())
 		{
 			// Arrange
 			Role role = Role.CreateDisconnectedObject();
-			CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization> collectionPropertyHolder1 = new CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization>(role, RoleLocalization.GetObject);
-			CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization> collectionPropertyHolder2 = new CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization>(role, RoleLocalization.GetObject);
-			collectionPropertyHolder1.Initialize("100001|100002|100003|100004|100005|100006|100007|100008|");
-			_ = collectionPropertyHolder1.Value; // force initialization
+			CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization> collectionPropertyHolder = new CollectionPropertyHolder<RoleLocalizationCollection, RoleLocalization>(role, RoleLocalization.GetObject);
 
 			// Act
-			collectionPropertyHolder2.Initialize("1|2|3|4|5|6|7|8|9|10|11|12|");
-			int[] actual = collectionPropertyHolder2.Value.Select(item => item.ID).ToArray();
+			collectionPropertyHolder.Initialize("-1|0|-22|333|-123456789|");
+			int[] actual = collectionPropertyHolder.Value.Select(item => item.ID).ToArray();
 
 			// Assert
-			CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, actual);
+			Assert.AreSequenceEqual(new int[] { -1, 0, -22, 333, -123456789 }, actual);
 		}
 	}
 }
